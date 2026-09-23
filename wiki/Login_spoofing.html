@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Login spoofing</title>
+<meta name="description" content="It is possible for malware to masquerade as a login prompt in order to steal login passwords. Prevent Malware from Sniffing the Root Password. Using SysRq + r. (unraw)">
+<meta property="og:description" content="It is possible for malware to masquerade as a login prompt in order to steal login passwords. Prevent Malware from Sniffing the Root Password. Using SysRq + r. (unraw)">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Login_spoofing.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Login_spoofing.html">
+<meta property="og:title" content="Login Spoofing">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Loginspoofing132.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Default_Passwords.html">Default
+Passwords</a></li>
+<li><a href="Passwords.html">Passwords</a></li>
+<li><a href="User.html">Account Management</a></li>
+<li><a href="Login.html">Login</a></li>
+<li><a href="Login_spoofing.html">Login Spoofing</a></li>
+<li><a href="Root.html">Safely Use Root Commands</a></li>
+<li><a href="Sysmaint.html"><code>sysmaint</code>
+Account</a></li>
+<li><a href="System_Maintenance_Panel.html">System
+Maintenance Panel</a></li>
+<li><a href="Unrestricted_admin_mode.html">Unrestricted
+Admin Mode</a></li>
+<li><a href="Protection_Against_Physical_Attacks.html">Protection against Physical Attacks</a></li>
+<li><a href="Dev/Strong_Linux_User_Account_Isolation.html">User Account Isolation (developers)</a></li>
+<li><a href="Dev/user-sysmaint-split.html"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><a href="Polkit.html">Polkit (formerly PolicyKit) /
+<code>pkexec</code></a></li>
+<li><a href="Privleap.html">privleap /
+<code>leaprun</code></a></li>
+</ul>
+</div>
+<p><img src="../media/Loginspoofing132.png.webp" alt="Loginspoofing132.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>It is possible for <a href="Malware_and_Firmware_Trojans.html">malware</a> to masquerade as a login prompt in order to
+steal login passwords. This page documents this advanced threat model
+and how to prevent malware from sniffing the root password using <a href="SysRq.html"><code>SysRq</code></a> + <code>r</code>.
+(<code>unraw</code>)</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>This attack assumes an advanced <a href="Threat_Modeling.html">threat model</a>:</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+A system is configured with a limited account (for example
+"<code>user</code>") that uses a graphical display server session (such
+as X11 or Wayland) which is separate from the account with
+administrative (<a href="Root.html"><code>root</code></a>/<code>sudo</code>) permissions
+(for example "<a href="Sysmaint.html"><code>sysmaint</code></a>").</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+The limited account is compromised at some point by <a href="Malware_and_Firmware_Trojans.html">malware</a>.</p>
+<p>Or:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Multiple non-root accounts share the same computer and use different <a href="Desktop.html#Virtual_Consoles">virtual
+consoles</a>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+A compromised or malicious account could pretend to have logged out of
+the virtual console, but actually started a spoofed login screen.</p>
+<p><u>Note</u>: If there is only one account that also has
+administrative (<code>root</code>/<code>sudo</code>) access, malware can
+<a href="Dev/Strong_Linux_User_Account_Isolation.html#sudo_password_sniffing">sniff the administrative password</a> and an advanced
+login spoofing attack is unnecessary.</p>
+<h1 id="Security_Benefit_of_Compartmentalization">Security Benefit of
+Compartmentalization</h1>
+<p>Under many threat models, the compromise of the limited account is
+considered catastrophic, since running malware:</p>
+<ul>
+<li><u>Full access to user data:</u> Malware has full access to all
+user-accessible files.</li>
+<li><u>Credential and session capture:</u> Malware can view all keyboard
+inputs and take over login sessions.</li>
+<li><u>Screen deception:</u> Malware may present false information on
+the screen.</li>
+<li><u>Additional malicious actions:</u> Malware can perform other
+malicious actions, see: <a href="Malware_and_Firmware_Trojans.html#The_Importance_of_a_Malware_Free_System">The Importance of a Malware-Free System</a>.</li>
+</ul>
+<p>However, if multiple (virtual) machines are used for
+compartmentalization, the harmful impact of malware might not be
+catastrophic. For instance, other goals of this configuration include
+prevention of root compromise to help protect the virtualizer and avoid
+host compromise, and similarly to avoid hardware compromise. This is
+further elaborated in the rationale section of the <a href="Root.html#Rationale">Safely Use Root Commands</a> wiki
+chapter.</p>
+<p>A broken graphical system (X11 or Wayland) can block switching to a
+virtual console. It logically follows that malware which has compromised
+the graphical system can also perform this action. In this case, the
+<code>SysRq</code> + <code>r</code> combination can take control away
+from the graphical system. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> This is a safer procedure;
+otherwise, a compromised graphical system could simulate a virtual
+console login prompt in order to sniff an account login password with
+root access. (<a href="https://en.wikipedia.org/wiki/Login_spoofing">login spoofing in
+Wikipedia</a>).</p>
+<p><code>SysRq</code> + <code>k</code> (Secure Access Key) can be used
+to defeat login spoofing because it will terminate all programs on that
+<a href="Desktop.html#Virtual_Consoles">virtual
+console</a>.</p>
+<p><a href="https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html#okay-so-what-can-i-use-them-for">Quote
+Linux Kernel Documentation</a>:</p>
+<p><blockquote><p>Sak (Secure Access Key) is useful when you want to be sure there is
+no trojan program running at console which could grab your password when
+you would try to login. It will kill all programs on the given console,
+thus letting you make sure that the login prompt you see is actually the
+one from init, not some trojan program.</p></blockquote></p>
+<p><a href="https://www.kernel.org/doc/Documentation/SAK.txt">Quote
+Linux Kernel Secure Attention Key Documentation</a>:</p>
+<p><blockquote><p>An operating system's Secure Attention Key is a security tool which
+is provided as protection against trojan password capturing programs. It
+is an undefeatable way of killing all programs which could be
+masquerading as login applications. Users need to be taught to enter
+this key sequence before they log in to the system.</p></blockquote></p>
+<p>Even if using Wayland as a replacement for the X11:</p>
+<ul>
+<li><u>Secure Access Key still required:</u> Secure Access Key will
+still be required.</li>
+<li><u>Potential KVM VM issues:</u> Issues with KVM VMs: <a href="https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3930">Graphical
+corruption and related issues with virtio graphics (no virgl)</a>.</li>
+</ul>
+<p>Taking steps to defeat login spoofing probably only makes sense when
+also performing actions to <a href="Root.html#Prevent_Malware_from_Sniffing_the_Root_Password">Prevent Malware from Sniffing the Root
+Password</a>.</p>
+<h1 id="Kicksecure_Default">Kicksecure Default</h1>
+<p>The SysRq Key is disabled in Kicksecure by default for security
+reasons. See <a href="SysRq.html">System Recovery using
+SysRq Key</a> on how to enable it.</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="SysRq.html">System Recovery using SysRq
+Key</a></li>
+<li><a href="Sysmaint.html"><code>sysmaint</code> - System
+Maintenance User</a></li>
+<li><a href="Root.html">Safely Use Root Commands</a></li>
+<li><a href="Root.html#Prevent_Malware_from_Sniffing_the_Root_Password">Prevent Malware from Sniffing the Root
+Password</a></li>
+<li><a href="Dev/Strong_Linux_User_Account_Isolation.html">Strong Linux User Account Isolation</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">This is because the Linux kernel removes control of the graphical
+system from the console. The Linux kernel has higher privileges than the
+display server.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

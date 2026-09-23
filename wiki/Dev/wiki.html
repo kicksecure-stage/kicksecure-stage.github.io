@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/wiki</title>
+<meta name="description" content="Syntax Highlighting vs Link Suggestions, Links with Web Archive, Onions, CodeSelect, Wiki Editor Save Buttons, Floppy Disc Restore Button, Super Menu, Table of Contents Level Switcher, Back to the Top Button, Full Screen Button, Expand Button, Mini Navigation, External Redirects Documentation, MultiWiki, mass search and replace - ReplaceText, and more.">
+<meta property="og:description" content="Syntax Highlighting vs Link Suggestions, Links with Web Archive, Onions, CodeSelect, Wiki Editor Save Buttons, Floppy Disc Restore Button, Super Menu, Table of Contents Level Switcher, Back to the Top Button, Full Screen Button, Expand Button, Mini Navigation, External Redirects Documentation, MultiWiki, mass search and replace - ReplaceText, and more.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/wiki.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/wiki.html">
+<meta property="og:title" content="Documentation for Kicksecure Wiki Editors">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>wiki</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Default_Mediawiki_Internal_Link_Creation">Default Mediawiki
+Internal Link Creation</a></li><li class="toc-l3"><a href="#Internal_Direct_Links_to_Anchors">Internal Direct Links to
+Anchors</a></li><li class="toc-l2"><a href="#Default_MediaWiki_External_Link_Creation">Default MediaWiki
+External Link Creation</a></li><li class="toc-l2"><a href="#Manual_External_links_(archived,_onion_or_plain)">Manual External
+links (archived, onion or plain)</a></li><li class="toc-l3"><a href="#Use_case_:_plain_external_link,_no_icons">Use case : plain external
+link, no icons</a></li><li class="toc-l3"><a href="#Use_case_:_clearnet_+_archive_+_onion">Use case : clearnet + archive +
+onion</a></li><li class="toc-l3"><a href="#Use_case_:_clearnet_+_archive_(No_Onion)">Use case : clearnet +
+archive (No Onion)</a></li><li class="toc-l3"><a href="#Use_case_:_Archived_Only">Use case : Archived Only</a></li><li class="toc-l3"><a href="#ExtLink_Common_Usage_Mistakes">ExtLink Common Usage
+Mistakes</a></li><li class="toc-l2"><a href="#Kicksecure_wiki_link">Kicksecure wiki link</a></li><li class="toc-l2"><a href="#Kicksecure_website_link">Kicksecure website link</a></li><li class="toc-l2"><a href="#Twitter_link">Twitter link</a></li><li class="toc-l2"><a href="#Section_1">Section 1</a></li><li class="toc-l2"><a href="#Section_2">Section 2</a></li><li class="toc-l2"><a href="#Setting_up_External_Redirects">Setting up External
+Redirects</a></li><li class="toc-l2"><a href="#Editing_Existing_External_Redirects">Editing Existing External
+Redirects</a></li><li class="toc-l2"><a href="#Social_Media_Link_Preview_Tests">Social Media Link Preview
+Tests</a></li><li class="toc-l2"><a href="#strict-list-columns">strict-list-columns</a></li><li class="toc-l2"><a href="#ReplaceText_regex_Examples">ReplaceText regex Examples</a></li><li class="toc-l2"><a href="#space_removal_in_template_invocations">space removal in template
+invocations</a></li><li class="toc-l2"><a href="#template_rename">template rename</a></li><li class="toc-l2"><a href="#image_remove_absolute_links">image remove absolute links</a></li><li class="toc-l2"><a href="#image_remove_px">image remove px</a></li><li class="toc-l2"><a href="#Diaspora">Diaspora</a></li><li class="toc-l2"><a href="#Technical_Illustration_Image">Technical Illustration Image</a></li><li class="toc-l2"><a href="#Social_Preview_Image">Social Preview Image</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="website.html" title="Dev/website"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/website</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="wiki_todo.html" title="Dev/wiki todo"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/wiki
+todo</span></a><span class="info"><span class="prev">Previous page:
+Dev/website</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/wiki
+todo</span></span></span>Documentation for Kicksecure Wiki Editors</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Wiki_Enhancements.html">Wiki
+Enhancements</a></li>
+<li><a href="wiki_todo.html">Wiki Editor ToDo</a></li>
+<li><a href="wiki.html">Wiki Editor Docs</a></li>
+<li><a href="website.html">Wiki Dev ToDo</a></li>
+<li><a href="mediawiki/Archive.html">Wiki Dev
+(archived)</a></li>
+<li><a href="mediawiki.html">Wiki Dev Docs</a></li>
+<li><a href="wikitest.html">Wiki Test Page</a></li>
+<li><a href="../PerformanceTests.html">Wiki Performance
+Tests</a></li>
+<li><a href="../TestpageForFlyInNotification.html">Fly-In-Banner Test</a></li>
+<li><a href="discourse.html">Discourse Dev Docs</a></li>
+<li><a href="todo.html">Developer ToDo</a></li>
+<li><a href="todo/archived.html">Developer ToDo
+(archived)</a></li>
+<li><a href="../Progress_Reports.html">Progress
+Reports</a></li>
+<li><a href="../Progress_Reports_1.html">(1)</a></li>
+<li><a href="../Progress_Reports_2.html">(2)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Syntax Highlighting vs Link Suggestions, Links with Web Archive,
+Onions, CodeSelect, Wiki Editor Save Buttons, Floppy Disc Restore
+Button, Super Menu, Table of Contents Level Switcher, Back to the Top
+Button, Full Screen Button, Expand Button, Mini Navigation, External
+Redirects Documentation, MultiWiki, mass search and replace -
+ReplaceText, and more.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Wiki_History">Wiki History</h1>
+<p>Check the
+<img src="../../media/Supermenu3.png.webp" width="30" alt="Super Menu" />
+(down) ("<code>↓</code>") symbol in the wiki website header. In the wiki
+header. Not here in this wiki text content. This is also called <a href="wiki.html#Super_Menu">Super Menu</a>.</p>
+<p>Click on <code>History</code>. It leads, for example, here:</p>
+<ul>
+<li><a href="https://www.whonix.org/w/index.php?title=Telegram&amp;action=history">https://www.whonix.org/w/index.php?title=Telegram&amp;action=history</a></li>
+</ul>
+<p>Login required.</p>
+<p>Login is unfortunately required for wiki history due to scraping bots
+by AI companies and others. Details: <a href="../Wiki_History.html">Wiki History</a></p>
+<h1 id="Flagged_Revisions">Flagged Revisions</h1>
+<p>There you can see which edits were successfully registered and which
+ones were not. The wiki interface is based on <a href="https://www.mediawiki.org/wiki/MediaWiki">MediaWiki</a>, the same
+Free Software platform used by Wikipedia. While we have applied
+customizations, they do not affect the explanation provided here.</p>
+<p>An important inherited feature from MediaWiki is the ability to
+compare any two revisions of a page. This makes it straightforward to
+verify which edits have been received and whether any content has
+changed.</p>
+<p>One common source of confusion is <a href="https://www.mediawiki.org/wiki/Extension:FlaggedRevs">Extension:FlaggedRevs</a>,
+a MediaWiki extension that we use to moderate edits. This extension
+introduces a distinction between submitted edits and publicly visible
+edits.</p>
+<p>Most users -- those who visit the wiki to read but do not contribute
+-- are shown the last revision that has been reviewed and approved by an
+administrator. This is referred to as the "live website version" or the
+"stable version." Consequently, editors may believe that their edits
+were lost if they do not immediately appear on the live site. However,
+this is a misunderstanding: the edits have been saved but have not yet
+been approved.</p>
+<p>If an edit has not yet been reviewed, the wiki will display a label
+such as <code>Pending</code> or <code>Checked</code> in the top right
+corner of the page. These indicators signify that one or more edits are
+awaiting moderation and have not been confirmed yet.</p>
+<p>There is no requirement to wait for admin confirmation before making
+further edits. When you click the edit button while viewing the live
+version of a page, you will already be editing the latest pending
+version -- meaning your changes will be layered on top of the most
+recent unapproved content.</p>
+<p>After you save your changes, all pending (unconfirmed) edits --
+including yours and those from other contributors -- will continue to be
+visible to you and other editors who are logged in.</p>
+<p>To view pending edits more explicitly, hover your mouse over the
+<code>Pending</code> or <code>Checked</code> label in the upper right. A
+tooltip (passive popup) will appear with information like:</p>
+<p><blockquote><p>This is the stable version, checked on 27 April 2025. 3 pending
+changes await review.</p></blockquote></p>
+<p>The phrase <code>3 pending changes</code> is a clickable link.
+Clicking it brings you to a *diff* -- a side-by-side display of what was
+changed -- comparing the latest confirmed version against the
+unconfirmed version. Below this difference view, the full pending
+(unconfirmed) version of the page is shown.</p>
+<p>If you prefer direct access to the unconfirmed version of a page, you
+can use a specific URL format:</p>
+<p>Note: Replace <code>Dev/wiki</code> with the actual title of the wiki
+page, such as <code>Telegram</code>.</p>
+<p><span class="code-select"><a href="https://www.whonix.org/w/index.php?title=Telegram&amp;stable=0s">https://www.whonix.org/w/index.php?title=Telegram&amp;stable=0s</a></span></p>
+<p>This URL forces the browser to display the pending version, bypassing
+the default view of the stable version.</p>
+<p>Even if edits have been approved, caching issues can lead to
+non-logged in users stills the old version. Sometimes this will fix
+itself spontaneously or will be fixed once admins manually purge the
+cache.</p>
+<h1 id="Header_versus_Extraneous_Newline_at_the_Top">Header versus
+Extraneous Newline at the Top</h1>
+<p>Header should come first on every page</p>
+<p>WikiSEO newline</p>
+<p><a href="https://github.com/octfx/wiki-seo/issues/30">https://github.com/octfx/wiki-seo/issues/30</a></p>
+<h1 id="Save_Buttons">Save Buttons</h1>
+<p>JavaScript (JS) version:</p>
+<ul>
+<li><code>Save Continue</code>
+<img src="../../media/Savecontinuebutton.png.webp" alt="Savecontinuebutton.png" />
+- easy</li>
+<li><code>Save Changes</code> [Missing Screenshot] - advanced
+editors</li>
+</ul>
+<p>If you are not sure which button to use, the
+<code>Save Changes</code> is a good choice. Feel free to experiment with
+the <code>Save Changes</code> button and use it if it seems useful for
+you.</p>
+<p>no-JavaScript (noJS) version:</p>
+<ul>
+<li><code>Submit changes</code><img src="../../media/Submitechangesbutton.png.webp" alt="Submitechangesbutton.png" /></li>
+</ul>
+<p>A bit of potential confusion:<br />
+The button <code>Submit changes</code> is renamed to
+<code>Save Changes</code> when JS is enabled.</p>
+<h1 id="Pen_Symbol_-_Syntax_Highlighting">Pen Symbol - Syntax
+Highlighting</h1>
+<p><img src="../../media/Pensymbole3.png.webp" alt="Pen Symbol" /></p>
+<p>Enabling/Disabling syntax highlighting which is useful for
+editors.</p>
+<p>With:</p>
+<p><img src="../../media/Pensymbole.png.webp" width="470" alt="Pensymbole.png" /></p>
+<p>Without</p>
+<p><img src="../../media/Pensymbole2.png.webp" width="470" alt="Pensymbole2.png" /></p>
+<p>Symbol:</p>
+<p><img src="../../media/Pensymbole3.png.webp" width="90" alt="Pensymbole3.png" /></p>
+<p>This is thanks to <a href="https://www.mediawiki.org/wiki/Extension:CodeMirror">extension
+CodeMirror</a>.</p>
+<h1 id="Syntax_Highlighting_vs_Link_Suggestions">Syntax Highlighting vs
+Link Suggestions</h1>
+<p>When enabling syntax highlighting using the <code>Pen Symbol</code>,
+link suggestions (by <a href="https://www.mediawiki.org/wiki/Extension:LinkSuggest">extension
+LinkSuggest</a>) will be broken. This is an upstream bug. <a href="https://phabricator.wikimedia.org/T300618">Extension:CodeMirror
+incompatibility with, breaks Extension:LinkSuggest</a></p>
+<p>So if the editor wishes to receive link suggestions, (temporarily)
+disable syntax highlighting using the <code>Pen Symbol</code>. When the
+editing task requires no link suggestions, enabling syntax highlighting
+might be useful. It is easy to switch from one mode to another.</p>
+<h1 id="Floppy_Disc_Restore_Button">Floppy Disc Restore Button</h1>
+<p><img src="../../media/Savebutton2.png.webp" width="90" alt="Floppy Disc Save Button" /></p>
+<p>This feature requires JavaScript (JS).</p>
+<p>Every time you press one of the following buttons:</p>
+<ul>
+<li><code>Save Continue</code>
+<img src="../../media/Savecontinuebutton.png.webp" alt="Savecontinuebutton.png" /></li>
+<li><code>Save Changes</code></li>
+</ul>
+<p>it will store the page edits in your browser local storage. To
+restore it press the <code>Floppy Disk Restore</code>
+<img src="../../media/Savebutton2.png.webp" width="30" alt="Savebutton2.png" />
+button again.</p>
+<p><strong>Figure:</strong> <em>Floppy Disc Restore Button
+Screenshot</em></p>
+<p><img src="../../media/Savebutton.png.webp" width="470" alt="Savebutton.png" /></p>
+<h1 id="Super_Menu">Super Menu</h1>
+<p><img src="../../media/Supermenu3.png.webp" alt="Super Menu" /></p>
+<p>This is the Super Menu. Not much to explain about it. Just mentioned
+here to define what is meant by <code>Super Menu</code>.</p>
+<p><strong>Figure:</strong> <strong><code>Super Menu</code>
+Screenshot</strong></p>
+<p><img src="../../media/Supermenu.png.webp" width="470" alt="Supermenu.png" /></p>
+<p><strong>Figure:</strong>
+<strong><code>Super Menu When Logged In</code> Screenshot</strong></p>
+<p><img src="../../media/Supermenuloggedin.png.webp" width="470" alt="Supermenuloggedin.png" /></p>
+<h1 id="CodeSelect">CodeSelect</h1>
+<p>Syntax:</p>
+<pre><code>{{CodeSelect|code=
+text
+}}</code></pre>
+<p>Example:</p>
+<pre><code>{{CodeSelect|code=
+example text
+}}</code></pre>
+<p>Result:</p>
+<p><span class="code-select">example text</span></p>
+<h1 id="CodeSelect_Syntax_Highlight">CodeSelect Syntax Highlight</h1>
+<ul>
+<li>Simple example
+<ul>
+<li><span class="code-select">echo 'Hello World'</span></li>
+</ul></li>
+<li>Simple example inline
+<ul>
+<li>This can also be inline <span class="code-select inline-style">echo
+'Hello World'</span> like this.</li>
+</ul></li>
+<li>Simple example with html
+<ul>
+<li></li>
+</ul></li>
+</ul>
+<p><span class="code-select" data-language="html">&lt;div
+class="html-example"&gt;</p>
+<p><code> Hello World</code></p>
+<p>&lt;/div&gt;</span></p>
+<ul>
+<li>Html example no highlight
+<ul>
+<li><span class="code-select" data-language="none">&lt;div
+class="html-example"&gt;</li>
+</ul></li>
+</ul>
+<p><code> Hello World</code></p>
+<p>&lt;/div&gt;</span></p>
+<ul>
+<li>Html example force Bash (makes no sense, just for demonstration)
+<ul>
+<li><span class="code-select" data-language="bash">&lt;div
+class="html-example"&gt;</li>
+</ul></li>
+</ul>
+<p><code> Hello World</code></p>
+<p>&lt;/div&gt;</span></p>
+<ul>
+<li>Html insert mode <a href="../Shell.html#Hidden_Text_Attacks">hidden text attack</a> example</li>
+</ul>
+<div class="code-select insert-mode-html">
+<p>sudo
+apt<span>
+install malware1</p>
+<p>sudo apt install malware2</p>
+<p>sudo apt</span> update</p>
+</div>
+<ul>
+<li>Html insert mode styling example
+<ul>
+<li><span class="code-select insert-mode-html">More <b>Info</b>
+here</span></li>
+</ul></li>
+<li>Button image example without source
+<ul>
+<li><span class="code-select" data-button-image-src="">echo "Hello
+World"</span></li>
+</ul></li>
+<li>Button image example with source
+<ul>
+<li><span class="code-select" data-button-image-src="../../media/Supermenu3.png.webp">echo
+"Hello World"</span></li>
+</ul></li>
+<li>Target example text only</li>
+</ul>
+<p><span class="code-select" data-target="#my-codeselect-target-example1">warning-code-not-set</span></p>
+<pre><code>This is
+example 1</code></pre>
+<ul>
+<li>Target example with image</li>
+</ul>
+<p><span class="code-select" data-button-image-src="../../media/Supermenu3.png.webp" data-target="#my-codeselect-target-example2">warning-code-not-set</span></p>
+<pre><code>This is
+example 2</code></pre>
+<ul>
+<li>Target example with html, but default lang bash</li>
+</ul>
+<p><span class="code-select" data-button-image-src="" data-target="#my-codeselect-target-example3">warning-code-not-set</span></p>
+<pre><code>&lt;html&gt;
+  &lt;body class=&quot;active-body&quot;&gt;
+    This is our HTML example!
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul>
+<li>Target example with html</li>
+</ul>
+<p><span class="code-select" data-language="html" data-button-image-src="" data-target="#my-codeselect-target-example4">warning-code-not-set</span></p>
+<pre><code>&lt;html&gt;
+  &lt;body class=&quot;active-body&quot;&gt;
+    This is our HTML example!
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul>
+<li>Target example with html, but lang none</li>
+</ul>
+<p><span class="code-select" data-language="none" data-button-image-src="" data-target="#my-codeselect-target-example5">warning-code-not-set</span></p>
+<pre><code>&lt;html&gt;
+  &lt;body class=&quot;active-body&quot;&gt;
+    This is our HTML example!
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<h1 id="Table_of_Contents_Level_Switcher">Table of Contents Level
+Switcher</h1>
+<p>Change the orientation of the table of contents. Choose which one
+suits you.</p>
+<p><img src="../../media/TOCswitcher2.png.webp" width="90" alt="Table of Contents Level Switcher wiki button" /></p>
+<p><strong>Figure:</strong> <em>Table of Contents Level
+Switcher</em></p>
+<p><img src="../../media/TOCswitcher1.png.webp" width="470" alt="TOCswitcher1.png" /></p>
+<h1 id="Back_to_the_Top_Button">Back to the Top Button</h1>
+<p>It is the arrow down button allow user to press on it and send the
+scrolling to top of the page immediately instead of scrolling up.</p>
+<p><img src="../../media/BackToTheTopButton2.png.webp" alt="Illustrative, cropped screenshot of the back to the top scrolling button" /></p>
+<p><strong>Figure:</strong> <em>Back to the Top Button</em></p>
+<p><img src="../../media/BackToTheTopButton1.png.webp" width="470" alt="BackToTheTopButton1.png" /></p>
+<h1 id="Full_Screen_Button">Full Screen Button</h1>
+<p><img src="../../media/fullscreenbutton2.png.webp" width="200" alt="full screen button in wiki editor" /></p>
+<p>When editing a wiki page the full screen symbol will fill the entire
+page.</p>
+<p><strong>Figure:</strong> <em>Full Screen Button</em></p>
+<p><img src="../../media/fullscreenbutton.png.webp" width="470" alt="fullscreenbutton.png" /></p>
+<h1 id="LinkSuggest_vs_CodeMirror">LinkSuggest vs CodeMirror</h1>
+<p>Unfortunately, <a href="https://www.mediawiki.org/wiki/Extension:CodeMirror">Extension:CodeMirror</a>
+breaks <a href="https://www.mediawiki.org/wiki/Extension:LinkSuggest">Extension:LinkSuggest</a>.</p>
+<p>Workaround: CodeMirror can be disabled by pressing the <a href="https://www.mediawiki.org/wiki/File:Codemirror-icon.png">Codemirror-icon.png</a>.</p>
+<p>upstream bug reports:</p>
+<ul>
+<li><a href="https://phabricator.wikimedia.org/T95100#7666796">https://phabricator.wikimedia.org/T95100#7666796</a></li>
+<li><a href="https://phabricator.wikimedia.org/T300618">https://phabricator.wikimedia.org/T300618</a></li>
+</ul>
+<h1 id="Links">Links</h1>
+<h2 id="Default_Mediawiki_Internal_Link_Creation">Default Mediawiki
+Internal Link Creation</h2>
+<ul>
+<li>Links to the wiki you're on are created by using the wiki syntax
+<ul>
+<li>Syntax:
+<code>[[Documentation|Example: Documentation page]]</code></li>
+<li>Result: <a href="../Documentation.html">Example:
+Documentation page</a></li>
+</ul></li>
+</ul>
+<h3 id="Internal_Direct_Links_to_Anchors">Internal Direct Links to
+Anchors</h3>
+<ul>
+<li>For direct links to anchors on internal pages, use this syntax
+<ul>
+<li>Syntax
+<code>[[#Internal_direct_links_to_anchors|Example direct link to this very chapter]]</code></li>
+<li>Result <a href="#Internal_direct_links_to_anchors">Example direct link to this very chapter</a></li>
+</ul></li>
+<li>Or if you want to link to a chapter / anchor on another page on this
+wiki
+<ul>
+<li>Syntax
+<code>[[Dev/wiki#Internal_direct_links_to_anchors|Same direct link to this very chapter, but how you would use it on another page]]</code></li>
+<li>Result <a href="wiki.html#Internal_direct_links_to_anchors">Same direct link to this very chapter, but how you
+would use it on another page</a></li>
+</ul></li>
+</ul>
+<h2 id="Default_MediaWiki_External_Link_Creation">Default MediaWiki
+External Link Creation</h2>
+<ol>
+<li>clearnet -> automatically adding links to web archives
+<ul>
+<li>Syntax:
+<pre><code>[https://www.kicksecure.com Kicksecure Homepage]</code></pre></li>
+<li>Result: <a href="https://www.kicksecure.com">Kicksecure
+Homepage</a></li>
+</ul></li>
+<li>onion -> no extraneous onion archive link
+<ul>
+<li>Syntax:
+<pre><code>[http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion Kicksecure Homepage]</code></pre></li>
+<li>Result: <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion">Kicksecure
+Homepage</a></li>
+</ul></li>
+<li>link to web archive -> icon link added, but no other no extraneous
+archive link
+<ul>
+<li>Syntax:
+<pre><code>[https://web.archive.org/web/https://www.kicksecure.com this link]</code></pre></li>
+<li>Result: <a href="https://web.archive.org/web/https://www.kicksecure.com">this
+link</a></li>
+</ul></li>
+<li>link to archive.today -> icon link added, but no other no extraneous
+archive link
+<ul>
+<li>Syntax:
+<pre><code>[https://archive.today/https://www.kicksecure.com this link]</code></pre></li>
+<li>Result: <a href="https://web.archive.org/web/https://www.kicksecure.com">this
+link</a></li>
+</ul></li>
+<li>Technical Background:
+<ul>
+<li>This is not based on any wiki template.</li>
+<li>This is thanks to <a href="https://github.com/adrelanos/mediawiki-link-to-archive">link-to-archive</a>
+MediaWiki Extension.</li>
+<li>This is the simplest and most common way for wiki editors to write
+most links.</li>
+</ul></li>
+</ol>
+<h2 id="Manual_External_links_(archived,_onion_or_plain)">Manual External
+links (archived, onion or plain)</h2>
+<ul>
+<li>Technical Background:
+<ul>
+<li>This is based on our wiki <a href="../Template:ExtLink.html">Template:ExtLink</a>. (Source code documentation under
+<a href="mediawiki.html#ExtLink_.28Template.29">ExtLink
+(Template)</a>)</li>
+<li>No MediaWiki extension is involved.</li>
+<li>This is for special links, i.e. links which might be archived only
+(no more clearnet version available), onion only (no clearnet version
+available) or for links which should not automatically add a link icon
+to the web archive. Used for example in special places (header, footer)
+or for stylistic reasons.</li>
+</ul></li>
+</ul>
+<h3 id="Use_case_:_plain_external_link,_no_icons">Use case : plain external
+link, no icons</h3>
+<ul>
+<li>If an external link is needed, specifically without archive or onion
+icons behind it, this is the way
+<ul>
+<li>Syntax:
+<span class="code-select">[Broken-ExtLink--no-url-was-provided]</li>
+<li>Result: [Broken-ExtLink--no-url-was-provided]</li>
+</ul></li>
+</ul>
+<h3 id="Use_case_:_clearnet_+_archive_+_onion">Use case : clearnet + archive +
+onion</h3>
+<ul>
+<li>Syntax:
+<span class="code-select">[Broken-ExtLink--no-url-was-provided]</li>
+<li>Result: [Broken-ExtLink--no-url-was-provided]</li>
+</ul>
+<h3 id="Use_case_:_clearnet_+_archive_(No_Onion)">Use case : clearnet +
+archive (No Onion)</h3>
+<ul>
+<li>Syntax:
+<span class="code-select">[Broken-ExtLink--no-url-was-provided]</li>
+<li>Result: [Broken-ExtLink--no-url-was-provided]
+<ul>
+<li>Similar to Default MediaWiki Link Creation.</li>
+<li>In this case, Default MediaWiki Link Creation might be simpler.</li>
+</ul></li>
+</ul>
+<h3 id="Use_case_:_Archived_Only">Use case : Archived Only</h3>
+<ul>
+<li>The use case: If the live version of a page is permanently
+unavailable.
+<ul>
+<li>Syntax
+<span class="code-select">[Broken-ExtLink--no-url-was-provided]</li>
+<li>Result: [Broken-ExtLink--no-url-was-provided]</li>
+</ul></li>
+</ul>
+<h3 id="ExtLink_Common_Usage_Mistakes">ExtLink Common Usage
+Mistakes</h3>
+<ol>
+<li>Protocol handler <code>http</code> or <code>https</code> is
+required.</li>
+<li>wrong for onion: <code>|{{QubesOS_onion}}</code></li>
+<li>correct for onion: <code>|http://{{QubesOS_onion}}</code></li>
+<li><strong>IMPORTANT NOTE</strong>: In rare cases - especially if the
+URL is constructed using other templates - the anonymous parameters
+might not work! In this case use numbered parameters instead, like
+<code>|1=(first-url)|2=(second-url)</code> ...
+<ul>
+<li>Example
+<ul>
+<li>This does NOT work
+<span class="code-select">[Broken-ExtLink--no-url-was-provided]</li>
+<li>Result [Broken-ExtLink--no-url-was-provided]</li>
+<li>This DOES work
+<span class="code-select"><code>[Broken-ExtLink--no-url-was-provided]</code></li>
+<li>Result [Broken-ExtLink--no-url-was-provided]</li>
+</ul></li>
+</ul></li>
+</ol>
+<h2 id="Kicksecure_wiki_link">Kicksecure wiki link</h2>
+<ul>
+<li>To specifically link to the kicksecure wiki use this shortcut</li>
+<li>Only the specific page is required</li>
+<li>Syntax:
+<pre><code>{{Kicksecure_wiki|wikipage=Test|text=Test new security features}}</code></pre></li>
+<li>Result: <a href="../Test.html">Test new security
+features</a></li>
+</ul>
+<h2 id="Kicksecure_website_link">Kicksecure website link</h2>
+<ul>
+<li>To specifically link to the kicksecure wiki use this shortcut</li>
+<li>Similar to <a href="#Kicksecure_wiki_link">#Kicksecure_wiki_link</a>, but (1) the parameters are
+not named, one is page and two is text and (2) the page always has to
+have <code>wiki/</code> explicitely as a prefix</li>
+<li>Syntax:
+<pre><code>{{Kicksecure_link|wiki/Test|Kicksecure}}</code></pre></li>
+<li>Result: [Broken-ExtLink--no-url-was-provided]</li>
+</ul>
+<h2 id="Twitter_link">Twitter link</h2>
+<ul>
+<li>Syntax:
+<pre><code>{{Twitter_link|link-without-domain-name|description}}</code></pre></li>
+<li>Preformatted Example:
+<pre><code>{{Twitter_link|moxie/status/1337434126186553345|was debunked by Moxie Marlinspike}}</code></pre></li>
+<li>Live Example: <a href="https://x.com/moxie/status/1337434126186553345">was debunked by
+Moxie Marlinspike</a> (<a href="https://xcancel.com/moxie/status/1337434126186553345">xcancel</a>)</li>
+</ul>
+<h1 id="Special:SpecialPages">Special:SpecialPages</h1>
+<p><img src="../../media/Specialpages.png.webp" width="500" alt="Specialpages.png" /></p>
+<h1 id="Expand_Button">Expand Button</h1>
+<pre><code>&lt;div class=&quot;toccolours mw-collapsible mw-collapsed&quot;&gt;
+For {{project_name_short}} VirtualBox import instructions, please press on expand on the right.
+&lt;div class=&quot;mw-collapsible-content&quot;&gt;
+Hidden Text Here
+&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<h1 id="CodeSelect_with_pipes">CodeSelect with pipes</h1>
+<p>Use</p>
+<pre><code>{{!}}</code></pre>
+<p>rather than</p>
+<pre><code>|</code></pre>
+<p>Or simply have a look at the mediawiki markup for the following
+example.</p>
+<p><span class="code-select">Exec=cat file | grep something</span></p>
+<p>related: <a href="mediawiki.html#New_Vector_Skin_and_Skin_Preferences">CodeSelect implementation source code
+documentation</a></p>
+<h1 id="pre_tag_with_white_spaces">pre tag with white spaces</h1>
+<p>Try making the opening tag</p>
+<pre><code>&lt;pre style=&quot;white-space: pre-wrap;&quot;&gt;
+...</code></pre>
+<p>instead of normal <code>pre&gt;</code>.</p>
+<p>Example with pre-wrap:</p>
+<pre><code>   leading white space example</code></pre>
+<p>Example without pre-wrap:</p>
+<pre><code>   leading white space example</code></pre>
+<p>Seems currently not required with the mediawiki skin used at time of
+writing.</p>
+<p>There are a number of <a href="https://www.w3schools.com/cssref/pr_text_white-space.asp">other
+wrapping/whitespace options</a> if that doesn't work for what you
+need.</p>
+<h1 id="pre_tags_with_variables">pre tags with variables</h1>
+<p>Syntax:</p>
+<pre><code>{{PreBox|
+
+}}</code></pre>
+<p>Syntax example:</p>
+<pre><code>{{PreBox|
+{{project_name_short}}
+&lt;code&gt;{{VersionNew}}&lt;/code&gt;
+}}</code></pre>
+<p>Live example:</p>
+<pre><code>Kicksecure
+&lt;code&gt;18.2.1.9&lt;/code&gt;</code></pre>
+<h1 id="JavaScript_vs_no-JavaScript">JavaScript vs no-JavaScript</h1>
+<p>Syntax example:</p>
+<pre><code>&lt;div class=&quot;show-for-nojs-only&quot;&gt;
+NoScript version: Text is only show when JavaScript is not active
+&lt;/div&gt;
+
+&lt;div class=&quot;show-for-js-only&quot;&gt;
+JavaScript version: Text is only show when JavaScript is active
+&lt;/div&gt;</code></pre>
+<p>Live test:</p>
+<div class="show-for-nojs-only">
+<p>NoScript version: Text is only show when JavaScript is not active</p>
+</div>
+<div class="show-for-js-only">
+<p>JavaScript version: Text is only show when JavaScript is active</p>
+</div>
+<h1 id="Mini_Navigation">Mini Navigation</h1>
+<p>Example syntax:</p>
+<pre><code>&lt;div class=&quot;mininav&quot;&gt;
+* [[Documentation]]
+* [[FAQ]]
+* [[Support]]
+* [[Advanced Documentation]]
+&lt;/div&gt;</code></pre>
+<p>Live example:</p>
+<div class="mininav">
+<ul>
+<li><a href="../Documentation.html">Documentation</a></li>
+<li><a href="../FAQ.html">FAQ</a></li>
+<li><a href="../Support.html">Support</a></li>
+<li><a href="../Advanced_Documentation.html">Advanced
+Documentation</a></li>
+</ul>
+</div>
+<p>Live Wiki Pages Examples:</p>
+<ul>
+<li><a href="../Documentation.html">Documentation</a></li>
+<li><a href="../Template:Support_Choice.html">Template:Support
+Choice</a></li>
+<li><a href="../Template:Legal_documents.html">Template:Legal
+documents</a></li>
+</ul>
+<h1 id="Thumbnails">Thumbnails</h1>
+<ul>
+<li>thunbnail including link but without thubnail enlarge button.
+<ul>
+<li>example:
+<ul>
+<li><code>
+<div class="thumb-hide-enlarge">
+<p><img src="../../media/Download-vbox.jpg.webp" width="250" alt="Download-vbox.jpg" /></p></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<p></code></p>
+<h1 id="Tab_Controller">Tab Controller</h1>
+<p>Example tab controller:</p>
+<div class="tab-content-controller tcc-indent" data-tcc-linkid="link1">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Logo-linux-500x500.png.webp" width="25" alt="Logo-linux-500x500.png" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Section_1">Section 1</h2>
+</div>
+<div class="tcc-content">
+<p>Section 1 content</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="Section_2">Section 2</h2>
+</div>
+<div class="tcc-content">
+<p>Section 2 content</p>
+</div>
+</div>
+</div>
+</div>
+<p>Using tab controllers is difficult. See <a href="mediawiki.html#Tab_Template_.2F_Tab_Content_Controller">Tab Template / Tab Content Controller</a>.</p>
+<h1 id="MediaWiki_Spam_whitelist">MediaWiki Spam whitelist</h1>
+<p>Mediawiki spam filter <a href="https://meta.wikimedia.org/w/index.php?title=Spam_blacklist&amp;action=raw&amp;sb_ver=1">list</a>
+has blocked archive.ph and perplexity.ai by default, which led to the
+inability to submit any modifications to any page in the wiki, even with
+admin rights. So both have been whitelisted in <a href="../MediaWiki:Spam-whitelist.html">Kicksecure</a> and <a href="https://www.whonix.org/wiki/MediaWiki:Spam-whitelist">Whonix</a>.</p>
+<h1 id="Homepage_Edits">Homepage Edits</h1>
+<p>The root page kicksecure.com (without anything after the slash
+(<code>/</code>)) is being referred to as homepage.</p>
+<p><a href="../Contribute.html#Documentation">Editing the wiki
+is simple.</a> Please consider doing some (minor) wiki edits first to
+learn that process generally.</p>
+<p>Editing the homepage is unfortunately not that simple.</p>
+<p>The edit button on the homepage is functional but the wiki source is
+not obvious how that works. Homepage is raw HTML based on a wiki widget,
+<a href="../Widget:Page_Homepage.html">Widget:Page_Homepage</a>
+but that cannot be edited by non-admins for security reasons. The
+MediaWiki Widget extension lacks the capability to moderate edits.</p>
+<p>The homepage widget source code however can be viewed in a copy/paste
+friendly format.</p>
+<p><strong>1.</strong> View <a href="../Widget:Page_Homepage.html">Widget:Page_Homepage</a> wiki source and copy it as-is
+to <a href="Page_Homepage.html">Dev/Page_Homepage</a> to
+update that page as updates to that page are currently manual.</p>
+<p><strong>2.</strong> Edit <a href="Page_Homepage.html">Dev/Page_Homepage</a>.</p>
+<p><strong>3.</strong> Testing.</p>
+<p>Testing is difficult. Setting up a replication of the wiki is a
+rather complicated, time consuming process. Short of that, please just
+check that the modified HTML is valid (at least has no more issues than
+the original) using some HTML validator.</p>
+<p><strong>4.</strong> Notify in the forums that an edit was
+suggested.</p>
+<p><strong>5.</strong> It will then be reviewed by admins.</p>
+<p><strong>6.</strong> Discuss this process in the forums in case of
+issues (such as two people working at the same time on it, unlikely for
+now).</p>
+<h1 id="External_Redirects_Documentation">External Redirects
+Documentation</h1>
+<h2 id="Setting_up_External_Redirects">Setting up External
+Redirects</h2>
+<p>For example, https://www.whonix.org/wiki/Software was moved to
+https://www.kicksecure.com/wiki/Software</p>
+<p><u>Note:</u> Using <code>Software</code> as an example here.</p>
+<p><strong>1)</strong> Go to migrated page from Whonix wiki:</p>
+<ul>
+<li>Go to https://www.whonix.org/wiki/Software</li>
+</ul>
+<p><strong>2)</strong> Create the redirect to the <code>Moved:</code>
+namespace.</p>
+<ul>
+<li><strong>A)</strong> Edit the page.</li>
+<li><strong>B)</strong> Delete all of its contents.</li>
+<li><strong>C)</strong> Replace it will the following contents. Paste.
+<ul>
+<li><u>Note:</u> Textual string <code>Software</code> needs to be
+replaced.</li>
+<li><span class="code-select">#REDIRECT <a href="../Moved:Software.html">Moved:Software</a></span></li>
+</ul></li>
+<li><strong>D)</strong> Save.</li>
+</ul>
+<p><strong>3)</strong> Go to the new <code>Software</code> stub page in
+the <code>Moved:</code> namespace.</p>
+<p>The link which is now visible due to step 2 should now be
+visible.</p>
+<p><strong>4)</strong> Create the external redirect.</p>
+<ul>
+<li>On https://www.whonix.org/wiki/Moved:Software</li>
+<li>Paste.</li>
+</ul>
+<pre><code>{{#externalredirect: https://www.kicksecure.com/wiki/Software}}</code></pre>
+<ul>
+<li>Save.</li>
+</ul>
+<p><strong>5)</strong> Test the redirect.</p>
+<p>For example, https://www.whonix.org/wiki/Software should now be
+re-directing to https://www.kicksecure.com/wiki/Software.</p>
+<p><strong>6)</strong> Done.</p>
+<p>Redirection setup complete.</p>
+<h2 id="Editing_Existing_External_Redirects">Editing Existing External
+Redirects</h2>
+<p>NOTE: Replace <code>OpenPGP</code> with the actual wiki page
+name.</p>
+<ul>
+<li><a href="https://www.whonix.org/w/index.php?title=OpenPGP&amp;redirect=no">https://www.whonix.org/w/index.php?title=OpenPGP&amp;redirect=no</a></li>
+<li><a href="https://www.whonix.org/wiki/Moved:OpenPGP">https://www.whonix.org/wiki/Moved:OpenPGP</a></li>
+</ul>
+<h1 id="Wiki_Editors_Terminology_for_Wiki_Migration">Wiki Editors
+Terminology for Wiki Migration</h1>
+<ul>
+<li>copy (duplicate from Whonix wiki to Kicksecure wiki and remove
+Whonix specific parts from Kicksecure wiki)</li>
+<li>migrate from Whonix to Kicksecure</li>
+<li>sort it out</li>
+</ul>
+<h1 id="Social_Media_Posting">Social Media Posting</h1>
+<h2 id="Social_Media_Link_Preview_Tests">Social Media Link Preview
+Tests</h2>
+<ul>
+<li><a href="https://cards-dev.twitter.com/validator">https://cards-dev.twitter.com/validator</a></li>
+<li>telegram <code>@WebpageBot</code> / <a href="https://t.me/WebpageBot">https://t.me/WebpageBot</a></li>
+</ul>
+<h2 id="strict-list-columns">strict-list-columns</h2>
+<p>Example: <a href="../Mobile_Phone_Security.html#Data_Harvesting_by_Most_Phones">Mobile_Phone_Security#Data_Harvesting_by_Most_Phones</a></p>
+<pre><code>&lt;div class=&quot;use-2-columns strict-list-columns mw-collapsible-content&quot;&gt;</code></pre>
+<p>Example: <a href="../Documentation.html">Documentation</a></p>
+<pre><code>&lt;div class=&quot;use-3-columns mw-collapsible-content&quot;&gt;</code></pre>
+<h1 id="MultiWiki">MultiWiki</h1>
+<p><code>Category</code> <code>MultiWiki</code> is used as a tag. Wiki
+pages with this tag are every now and then (currently only started by
+administators) mirrored from the Kicksecure wiki to the Whonix wiki with
+the assistance of automated scripting.</p>
+<p>To add a wiki page to <code>Category</code> <code>MultiWiki</code>,
+the following text needs to be added to that wiki page. By convention,
+it should be in the footnotes or section or very bottom the footer of
+the wiki page.</p>
+<p><strong>A)</strong> If it is a wiki <u>page</u>, add:</p>
+<pre><code></code></pre>
+<p><strong>B)</strong> If it is a wiki <u>template</u> or a
+<u>widget</u>, add:</p>
+<pre><code></code></pre>
+<p><strong>C)</strong> If it is a <u>CSS page</u> or <u>JS page</u>,
+add:</p>
+<pre><code>/*
+
+*/</code></pre>
+<p>Examples wiki <u>page</u>s that have been added to
+<code>Category</code> <code>MultiWiki</code>:</p>
+<ul>
+<li><a href="../Contact.html#Footnotes"><code>Contact</code>,
+chapter <code>Footnotes</code></a></li>
+</ul>
+<p>Examples wiki <u>template</u>s that have been added to
+<code>Category</code> <code>MultiWiki</code>:</p>
+<ul>
+<li><a href="../Template:Gpg_key.html">Template:Gpg_key</a></li>
+</ul>
+<p>The full list of wiki pages currently in <code>Category</code>
+<code>MultiWiki</code> can be found on the category page:</p>
+<ul>
+<li><a href="../:Category:MultiWiki.html">:Category:MultiWiki</a></li>
+</ul>
+<p>For web developer to start mirroring, run:</p>
+<p><span class="code-select">mw-multi-wiki</span></p>
+<p>Notes:</p>
+<ul>
+<li>Pages that have not been changed in the source wiki will not result
+in a recorded change (null edit) in the destination wiki.</li>
+</ul>
+<p>How to test:</p>
+<p><strong>1.</strong> Modify a page that is already in <a href="../:Category:MultiWiki.html">:Category:MultiWiki</a> such
+as <a href="../Testpage.html">Testpage</a> in the source
+wiki.</p>
+<p><strong>2.</strong> Then run <code>mw-multi-wiki</code>.</p>
+<p><strong>3.</strong> Check for example if <a href="https://www.whonix.org/wiki/Testpage">Testpage was modified in the
+destination wiki</a> by looking at its content or <a href="https://www.whonix.org/w/index.php?title=Testpage&amp;action=history">Testpage
+history</a>.</p>
+<h1 id="Gadgets">Gadgets</h1>
+<p>Under <a href="../Special:SpecialPages.html">Special:SpecialPages</a> look for:</p>
+<p><span class="code-select">Gadgets</span></p>
+<p>See:</p>
+<ul>
+<li><a href="../Special:Gadgets.html">Special:Gadgets</a></li>
+<li><a href="../Special:Preferences.html#mw-prefsection-gadgets">Special:Preferences#mw-prefsection-gadgets</a></li>
+</ul>
+<h1 id="Reference_Tooltips">Reference Tooltips</h1>
+<p>An interesting <a href="#Gadgets">gadget</a> to have
+would be <a href="https://www.mediawiki.org/wiki/Reference_Tooltips">Reference
+Tooltips</a>.</p>
+<p>In the past, the MediaWiki Reference Tooltips gadget has lead to
+<code>wgCanonicalNamespace</code> error in browser console. After
+disabling the Reference Tooltips JavaScript file, the browser console
+error was gone.</p>
+<p>An alternative could be <a href="https://www.mediawiki.org/wiki/Extension:Popups">Extension:Popups</a>.
+However, quote <a href="https://www.mediawiki.org/wiki/Extension:WikiSEO#Known_issues">Extension:WikiSEO
+known issues</a>:</p>
+<p><blockquote><p>Extension:PageImages will add an og:image tag if an image is found on
+the page. If another image was set using WikiSEO, both og:image will be
+added to the page.</p></blockquote></p>
+<p><a href="https://phabricator.wikimedia.org/T300587">https://phabricator.wikimedia.org/T300587</a></p>
+<p><a href="https://github.com/octfx/wiki-seo/issues/32">https://github.com/octfx/wiki-seo/issues/32</a></p>
+<h1 id="Find_Widgets_in_Wiki">Find Widgets in Wiki</h1>
+<p><span class="code-select">#widget:widget_name</span></p>
+<p>Example:</p>
+<ul>
+<li><span class="code-select">#widget:Icon_Bullet_List</span>
+<ul>
+<li><a href="https://www.kicksecure.com/w/index.php?search=%23widget%3AIcon_Bullet_List">https://www.kicksecure.com/w/index.php?search=%23widget%3AIcon_Bullet_List</a></li>
+</ul></li>
+</ul>
+<h1 id="ReplaceText">ReplaceText</h1>
+<p><strong>1.</strong> Go to <a href="../Special:ReplaceText.html">Special:ReplaceText</a>.</p>
+<p><strong>2.</strong> If:</p>
+<ul>
+<li>A) <u>regex is not required:</u> No special action required.</li>
+<li>B) <u>regex is required:</u> To use regex, check box
+<code>Use regular expressions</code> is required. For regex examples,
+see below.</li>
+</ul>
+<h2 id="ReplaceText_regex_Examples">ReplaceText regex Examples</h2>
+<pre><code>\(\[http\:\/\/www\.webcitation\.org\/\S{9} w\]\)</code></pre>
+<pre><code>\(\[http\:\/\/www\.webcitation\.org\/\S{9} \(w\)\]\)</code></pre>
+<pre><code>\[http\:\/\/www\.webcitation\.org\/\S{9} \(w\)\]</code></pre>
+<pre><code>\&lt;ref\&gt;\s*http\:\/\/www\.webcitation\.org\/\S{9}\s*\&lt;\/ref\&gt;</code></pre>
+<pre><code>http\:\/\/www\.webcitation\.org\/\S{9}</code></pre>
+<h2 id="space_removal_in_template_invocations">space removal in template
+invocations</h2>
+<p><strong>4</strong></p>
+<p>regex:</p>
+<pre><code>\{\{(\w+)\s(\w+)\s(\w+)\s(\w+)\}\}</code></pre>
+<p>replace:</p>
+<pre><code>{{$1_$2_$3_$4}}</code></pre>
+<p>(<code>\s</code> means "white space".)</p>
+<p><strong>3</strong></p>
+<pre><code>\{\{(\w+)\s(\w+)\s(\w+)\}\}</code></pre>
+<pre><code>{{$1_$2_$3}}</code></pre>
+<p><strong>2</strong></p>
+<pre><code>\{\{(\w+)\s(\w+)\}\}</code></pre>
+<pre><code>{{$1_$2}}</code></pre>
+<h2 id="template_rename">template rename</h2>
+<pre><code>(?i)workstation.product.name.short</code></pre>
+<pre><code>(?i)\{\{project.name\}\}</code></pre>
+<h2 id="image_remove_absolute_links">image remove absolute links</h2>
+<p>wiki old example:</p>
+<pre><code>|image=https://www.kicksecure.com/w/images/thumb/5/5c/Logo-usb-500x500.png/200px-Logo-usb-500x500.png</code></pre>
+<p>wiki new example:</p>
+<pre><code>|image=200px-Logo-usb-500x500.png</code></pre>
+<p>regex search:</p>
+<pre><code>\|image\=https\:\/\/www\.\S+\/([A-Za-z0-9_-]+)\.jpg(?!\/)</code></pre>
+<p>regex replace:</p>
+<pre><code>|image=$1.jpg</code></pre>
+<h2 id="image_remove_px">image remove px</h2>
+<p>existing wiki:</p>
+<pre><code>|image=98px-Kicksecure-basic-logo.png</code></pre>
+<p>wanted wiki (new):</p>
+<pre><code>|image=Kicksecure-basic-logo.png</code></pre>
+<p>regex search:</p>
+<pre><code>\|image\=\d{2,4}px\-([A-Za-z0-9_-]+)\.jpg</code></pre>
+<p>regex replace:</p>
+<pre><code>|image=$1.jpg</code></pre>
+<h1 id="Hiding_Broken_Links_From_Indexes">Hiding Broken Links From
+Indexes</h1>
+<p>If there is a broken link which has no online replacement or even
+archived is better to just make it unclickable link:</p>
+<p>Use the <code>&lt;nowiki&gt;</code> tag.</p>
+<p>In other words, surround the link with the
+<code>&lt;nowiki&gt;</code> <code>&lt;/nowiki&gt;</code> tag.</p>
+<p>Example:</p>
+<pre><code>broken link: &amp;lt;nowiki&amp;gt;https://example.com&amp;lt;/nowiki&amp;gt;</code></pre>
+<p>Should look similar to this:</p>
+<p>broken link: https://example.com</p>
+<h1 id="Table_Style">Table Style</h1>
+<table>
+<caption>Example Table Caption</caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Variant A</p></th>
+<th><p>Variant B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Default behavior</p></td>
+<td><p>Some text</p></td>
+<td><p>Other text</p></td>
+</tr>
+<tr class="even">
+<td><p>Notes</p></td>
+<td><p>Yet other text</p></td>
+<td><p>Yet more text</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Footer">Footer</h1>
+<h2 id="Diaspora">Diaspora</h2>
+<p><a href="../Widget:Footer.html">Widget:Footer</a></p>
+<pre><code>      &lt;a class=&quot;expand-button-50&quot; href=&quot;https://diasp.org/u/&lt;!--{$projectNameShortLowerCase}--&gt;&quot; target=&quot;_blank&quot; title=&quot;&lt;!--{$projectName}--&gt; on Diaspora&quot;&gt;
+        &lt;img src=&quot;/media/Diaspora-logo.png.webp&quot; /&gt;
+      &lt;/a&gt;</code></pre>
+<h1 id="Custom_CSS_JavaScript_Debugging">Custom CSS JavaScript
+Debugging</h1>
+<p><strong>1.</strong> Go to some wiki page you like to test. For
+example: <a href="wikitest.html">Dev/wikitest</a></p>
+<p><strong>2.</strong> You will end up on the usual URL such as:</p>
+<p><span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest">https://www.kicksecure.com/wiki/Dev/wikitest</a></span></p>
+<p><strong>3.</strong> See syntax.</p>
+<p>Just have a look. Here are some choices. Choices:</p>
+<ul>
+<li>general mediawiki debug mode:
+<span class="code-select">?debug=true</span></li>
+<li>do not load some custom JS:
+<span class="code-select">?dontload=js</span></li>
+<li>do not load some custom CSS:
+<span class="code-select">?dontload=css</span></li>
+<li>do not load some custom JS / CSS:
+<span class="code-select">?dontload=jscss</span></li>
+</ul>
+<p><strong>4.</strong> Append an extra query parameter to the URL.</p>
+<p>Examples:</p>
+<ul>
+<li>do not load some custom JS: <span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest?dontload=js">https://www.kicksecure.com/wiki/Dev/wikitest?dontload=js</a></span></li>
+<li>do not load some custom CSS:<span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest?dontload=css">https://www.kicksecure.com/wiki/Dev/wikitest?dontload=css</a></span></li>
+<li>do not load some custom JS / CSS: <span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest?dontload=jscss">https://www.kicksecure.com/wiki/Dev/wikitest?dontload=jscss</a></span></li>
+<li>enable debug mode and do not load some custom JS / CSS (The first
+symbol to start the query parameter is an <code>?</code>, the separator
+to add another query parameter is an <code>&amp;</code> The following
+example is most likely correct.): <span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest?debug=true&amp;dontload=jscss">https://www.kicksecure.com/wiki/Dev/wikitest?debug=true&amp;dontload=jscss</a></span></li>
+</ul>
+<p><strong>5.</strong> Load the website.</p>
+<p>Press enter to reload the website with the new query parameters
+enabled.</p>
+<p><strong>6.</strong> How to see the difference?</p>
+<p>For example:</p>
+<ul>
+<li><strong>Normal <code>/wiki/</code> page example:</strong>
+<ul>
+<li><strong>A)</strong> <u>Normal URL:</u> <span class="code-select"><a href="https://www.kicksecure.com/wiki/Dev/wikitest">https://www.kicksecure.com/wiki/Dev/wikitest</a></span>
+<ul>
+<li>In case of A), the <a href="#CodeSelect"><code>CodeSelect</code></a> copy button should be
+visible.</li>
+</ul></li>
+<li><strong>B)</strong> <u>URL with <code>dontload=jscss</code> query
+parameter:</u> <span class="code-select"><a href="https://www.kicksecure.com/wiki/Testpage?dontload=jscss">https://www.kicksecure.com/wiki/Testpage?dontload=jscss</a></span>
+<ul>
+<li>In case of B), the <a href="#CodeSelect"><code>CodeSelect</code></a> copy button should not be
+visible.</li>
+</ul></li>
+</ul></li>
+<li><strong><code>Special:</code> pages example:</strong>
+<ul>
+<li><strong>A)</strong> <u>Normal URL:</u> <span class="code-select"><a href="https://www.kicksecure.com/wiki/Special:RecentChanges">https://www.kicksecure.com/wiki/Special:RecentChanges</a></span>
+<ul>
+<li>In case of A), ...</li>
+</ul></li>
+<li><strong>B)</strong> <u>URL with <code>dontload=jscss</code> query
+parameter:</u> <span class="code-select"><a href="https://www.kicksecure.com/wiki/Special:RecentChanges?dontload=jscss">https://www.kicksecure.com/wiki/Special:RecentChanges?dontload=jscss</a></span>
+<ul>
+<li>In case of B), no visible difference at time of writing.</li>
+</ul></li>
+</ul></li>
+<li><strong><code>index.php</code> edit wiki page example:</strong>
+<ul>
+<li><strong>A)</strong> <u>Normal URL:</u> <span class="code-select"><a href="https://www.kicksecure.com/w/index.php?title=Dev/wikitest&amp;action=edit">https://www.kicksecure.com/w/index.php?title=Dev/wikitest&amp;action=edit</a></span>
+<ul>
+<li>In case of A), the the <code>Save Continue</code> and
+<code>Save changes</code> buttons should be visible.</li>
+</ul></li>
+<li><strong>B)</strong> <u>URL with <code>dontload=jscss</code> query
+parameter:</u> <span class="code-select"><a href="https://www.kicksecure.com/w/index.php?title=Dev/wikitest&amp;action=edit&amp;dontload=jscss">https://www.kicksecure.com/w/index.php?title=Dev/wikitest&amp;action=edit&amp;dontload=jscss</a></span>
+<ul>
+<li>In case of B), only the <code>Submit changes</code> button should be
+visible.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="AI_Image_Creation">AI Image Creation</h1>
+<p>add links to gemini sessions</p>
+<p><a href="https://www.kicksecure.com/wiki/File:DNS-Security-Ilustrative.png">https://www.kicksecure.com/wiki/File:DNS-Security-Ilustrative.png</a>
+-&gt; Edit -&gt; Add link to session</p>
+<h2 id="Technical_Illustration_Image">Technical Illustration Image</h2>
+<p>good example: <a href="https://www.kicksecure.com/wiki/File:Deep_Scan_Ready_versus_Deep_Scan_Restricted.png">https://www.kicksecure.com/wiki/File:Deep_Scan_Ready_versus_Deep_Scan_Restricted.png</a></p>
+<p><span class="code-select">Summarize this website. Visit that page
+only. Do not visit any other websites.</p>
+<p>Creation of a technical illustration.</p>
+<p>Export as JPG or PNG. Whichever is smaller.</p>
+<p>Keep the file reasonably small while preserving visual
+quality</span></p>
+<h2 id="Social_Preview_Image">Social Preview Image</h2>
+<p>good example: <a href="https://www.kicksecure.com/wiki/File:Deep_scan_ready_icon.png">https://www.kicksecure.com/wiki/File:Deep_scan_ready_icon.png</a></p>
+<p><span class="code-select">Summarize visit that page only. Do not
+visit any other websites.</p>
+<p>Creation of a social preview image for this page.</p>
+<p>Requirements: - Format: horizontal OG/social preview image - Aspect
+ratio: 1.91:1 - Target size: 1200x630 - Include a single clear focal
+point - Keep the composition simple, bold, and readable at small
+thumbnail sizes - Use high contrast and clean visual hierarchy -
+Minimize text; if text is included, keep it short, large, and highly
+legible - Avoid tiny details, busy layouts, dense UI, and clutter - Keep
+important subjects, text, and logos centered with generous safe margins
+away from the edges - Make the image feel specific to the page topic,
+not generic brand filler - Prefer a clean background and strong subject
+separation - Export as JPG or PNG. Whichever is smaller. - Keep the file
+reasonably small while preserving visual quality</p>
+<p>Goal: An image that looks strong and recognizable in link previews
+across social platforms.</span></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Documentation_Guidelines.html">Dev/Documentation Guidelines</a></li>
+<li><a href="Documentation_Markup_Format_Converters.html">Dev/Documentation Markup Format Converters</a></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="website.html" title="Dev/website"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/website</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="wiki_todo.html" title="Dev/wiki todo"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/wiki
+todo</span></a><span class="info"><span class="prev">Previous page:
+Dev/website</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/wiki
+todo</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:MultiWiki.html">MultiWiki</a> <a href="../Category:MultiWiki.html">MultiWiki</a> <a href="../Category:MultiWiki.html">MultiWiki</a> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

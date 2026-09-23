@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Hardened Malloc/Manual Installation</title>
+<meta name="description" content="memory allocator for many applications to increase security - manual installation">
+<meta property="og:description" content="memory allocator for many applications to increase security - manual installation">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation.html">
+<meta property="og:title" content="Hardened Malloc/Manual Installation">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Hardened Malloc</span> / <span>Manual Installation</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Install_Hardened_Malloc">Install Hardened Malloc</a></li><li class="toc-l2"><a href="#Systemd_Services">Systemd Services</a></li><li class="toc-l2"><a href="#Other_Applications">Other Applications</a></li><li class="toc-l2"><a href="#All_Applications_by_Default">All Applications by Default</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>memory allocator for many applications to increase security - manual
+installation</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<u><strong>Look into <a href="../Hardened_Malloc.html">Hardened
+Malloc</a> first.</strong></u></p>
+</div>
+<h2 id="Install_Hardened_Malloc">Install Hardened Malloc</h2>
+<p>Users of Linux distributions that are not based on Debian must
+compile Hardened Malloc from source. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> To do this, it
+is necessary to install g++ for compilation.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Update the package lists.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><strong>2.</strong> Install <code>g++</code>, and <code>git</code> to
+clone the repository.</p>
+<p><span class="code-select">sudo apt install g++ git</span></p>
+<p><strong>3.</strong> The following block explains how to download and
+signature verify hardened malloc.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+While git is cryptographically secure, it is <u>not</u> foolproof. See
+<a href="https://en.wikipedia.org/wiki/Web_of_trust">Web of Trust</a>
+and <a href="https://forums.whonix.org/t/how-safe-are-signed-git-tags-only-as-safe-as-sha-1-or-somehow-safer/643">How
+safe are signed git tags? Only as safe as SHA-1 or somehow safer?</a>
+for further information.</p>
+</div>
+<div class="info-box ">
+<p>Run the following commands in a terminal to download and verify the
+signing key and source code.</p>
+<p>Retrieve the signing key. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p><span class="code-select">scurl-download <a href="https://github.com/thestinger.gpg">https://github.com/thestinger.gpg</a></span></p>
+<p>Verify the key fingerprint.</p>
+<p><span class="code-select">gpg --keyid-format long --with-fingerprint
+thestinger.gpg</span></p>
+<p>Should show.</p>
+<p><blockquote><p><blockquote><p>gpg: WARNING: no command supplied. Trying to guess what you mean
+...<br />
+pub rsa4096/F9E712E59AF5F22A 2012-12-06 [SC]<br />
+Key fingerprint = 65EE FE02 2108 E2B7 08CB FCF7 F9E7 12E5 9AF5
+F22A<br />
+uid Daniel Micay &lt;danielmicay@gmail.com&gt;<br />
+uid Daniel Micay &lt;daniel.micay@copperhead.co&gt;<br />
+uid Daniel Micay &lt;security@attestation.app&gt;<br />
+uid Daniel Micay &lt;security@seamlessupdate.app&gt;<br />
+uid Daniel Micay &lt;security@grapheneos.org&gt;<br />
+sub rsa4096/7363D2F61FDC8A7F 2012-12-06 [E]</p></blockquote></p></blockquote></p>
+<p>Import the key.</p>
+<p><span class="code-select">gpg --import thestinger.gpg</span></p>
+<p>Get the source code.</p>
+<p><span class="code-select">git clone <a href="https://github.com/GrapheneOS/hardened_malloc">https://github.com/GrapheneOS/hardened_malloc</a></span></p>
+<p>Navigate to the <code>hardened_malloc</code> folder.</p>
+<p><span class="code-select">cd hardened_malloc</span></p>
+<p><a href="../Warning.html#Always_Verify_Signatures">Always
+verify software signatures!</a> Check the hardened malloc signature.</p>
+<p><span class="code-select">git tag --verify 8</span></p>
+<p>Should show.</p>
+<p><blockquote><p><blockquote><p>object d80919fa1e8042a070a3f9b2560ff2ecac8a75da type commit tag 8
+tagger Daniel Micay &lt;danielmicay@gmail.com&gt; 1562939118 -0400</p>
+<p>8 gpg: Signature made Fri 12 Jul 2019 09:45:21 AM EDT gpg: using RSA
+key 65EEFE022108E2B708CBFCF7F9E712E59AF5F22A gpg: issuer
+"danielmicay@gmail.com" gpg: Good signature from "Daniel Micay
+&lt;danielmicay@gmail.com&gt;" [unknown] gpg: aka "Daniel Micay
+&lt;security@attestation.app&gt;" [unknown] gpg: aka "Daniel Micay
+&lt;security@seamlessupdate.app&gt;" [unknown] gpg: aka "Daniel Micay
+&lt;security@grapheneos.org&gt;" [unknown] gpg: WARNING: This key is not
+certified with a trusted signature! gpg: There is no indication that the
+signature belongs to the owner. Primary key fingerprint: 65EE FE02 2108
+E2B7 08CB FCF7 F9E7 12E5 9AF5 F22A</p></blockquote></p></blockquote></p>
+</div>
+<p><strong>4.</strong> Checkout the tag.</p>
+<p><span class="code-select">git checkout 8</span></p>
+<p><strong>5.</strong> Build the program.</p>
+<p>This will only take a few seconds, depending on your system's
+resources.</p>
+<p><span class="code-select">make</span></p>
+<p><strong>6.</strong> Move the hardened_malloc library to the system
+library folder</p>
+<p>Create folder <code>/usr/lib/libhardened_malloc.so</code></p>
+<p><span class="code-select">sudo mkdir -p
+/usr/lib/libhardened_malloc.so</span></p>
+<p>Move the library.</p>
+<p><span class="code-select">sudo mv libhardened_malloc.so
+/usr/lib/x86_64-linux-gnu/libhardened_malloc-light.so</span></p>
+<p><strong>7.</strong> Set SUID (<code>set-user-id</code>).</p>
+<p><sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p><span class="code-select">sudo chmod u+s
+/lib/x86_64-linux-gnu/libhardened_malloc.so</span></p>
+<p><strong>8.</strong> Done.</p>
+<p>Installation of Hardened Malloc has been completed.</p>
+</div>
+<h1 id="How-to:_Launch_Applications_with_Hardened_Malloc">How-to: Launch
+Applications with Hardened Malloc</h1>
+<h2 id="Systemd_Services">Systemd Services</h2>
+<p>To launch individual systemd services with hardened malloc, add drop
+a systemd configuration snippet.</p>
+<p><span class="code-select">Environment="LD_PRELOAD='libhardened_malloc.so'"</span></p>
+<h2 id="Other_Applications">Other Applications</h2>
+<p>To launch other applications with Hardened Malloc, the
+<code>LD_PRELOAD</code> environment variable must be edited before
+starting the application. For example, to launch
+<code>application-name</code> in this way, run.</p>
+<p><span class="code-select">LD_PRELOAD='libhardened_malloc.so'
+application-name</span></p>
+<h2 id="All_Applications_by_Default">All Applications by Default</h2>
+<p><u>Note</u>: This action may break numerous applications such as man,
+apt or Xorg.</p>
+<p>It is possible to make all applications use Hardened Malloc as the
+default memory allocator. To configure this option, the path to the
+<code>hardened_malloc.so</code> library must be added to the
+<code>/etc/ld.so.preload</code> file.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Open file <code>/etc/ld.so.preload</code> in an
+editor with administrative ("<a href="../Root.html"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes.html">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes.html#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific.html">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>2.</strong> Add the <code>hardened_malloc.so</code>
+library.</p>
+<p><span class="code-select">libhardened_malloc.so</span></p>
+<p><strong>3.</strong> Save the file.</p>
+<p>The procedure is complete.</p>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Hardened Malloc is available form the Kicksecure APT repository for
+Debian-based distributions.</li>
+<li id="cite_note-2"><a href="https://grapheneos.org/install">https://grapheneos.org/install</a>
+<a href="https://github.com/GrapheneOS/hardened_malloc/issues/82">https://github.com/GrapheneOS/hardened_malloc/issues/82</a></li>
+<li id="cite_note-3">* <a href="https://web.archive.org/web/20231223101913/https://gist.github.com/SkewedZeppelin/7f293d64c1c651bdc21526519d9e192b">https://web.archive.org/web/20231223101913/https://gist.github.com/SkewedZeppelin/7f293d64c1c651bdc21526519d9e192b</a>
+* <a href="https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/224">https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/224</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

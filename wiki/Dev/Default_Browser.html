@@ -1,0 +1,1578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Default Browser</title>
+<meta name="description" content="Exploring the ideal default browser for Kicksecure with a focus on security and privacy, browser hardening, considering user freedom, maintainability, security, privacy, no phone home, radio silence.">
+<meta property="og:description" content="Exploring the ideal default browser for Kicksecure with a focus on security and privacy, browser hardening, considering user freedom, maintainability, security, privacy, no phone home, radio silence.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Default_Browser.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Default_Browser.html">
+<meta property="og:title" content="Kicksecure Default Browser - Development Considerations">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>Default Browser</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Overview_of_Browser_Hardening_Approaches">Overview of Browser
+Hardening Approaches</a></li><li class="toc-l2"><a href="#Criteria">Criteria</a></li><li class="toc-l2"><a href="#Installation_Source">Installation Source</a></li><li class="toc-l3"><a href="#Flatpak">Flatpak</a></li><li class="toc-l2"><a href="#Disregarded_Solutions">Disregarded Solutions</a></li><li class="toc-l3"><a href="#No_browser_installed_by_default">No browser installed by
+default</a></li><li class="toc-l3"><a href="#Install_both_firefox-esr_and_chromium_by_default">Install both
+firefox-esr and chromium by default</a></li><li class="toc-l2"><a href="#Potential_Future_Solutions">Potential Future Solutions</a></li><li class="toc-l3"><a href="#Browser_Choice_Dialog">Browser Choice Dialog</a></li><li class="toc-l3"><a href="#Cache_Browser_Installation_Files">Cache Browser Installation
+Files</a></li><li class="toc-l2"><a href="#Original_Firefox">Original Firefox</a></li><li class="toc-l3"><a href="#Firefox_Selling_User_Data">Firefox Selling User Data</a></li><li class="toc-l3"><a href="#Firefox_Miscellaneous">Firefox Miscellaneous</a></li><li class="toc-l3"><a href="#Firefox_Security_-_ESR_(Extended_Support_Release)_versus_Rapid_Release">Firefox
+Security - ESR (Extended Support Release) versus Rapid Release</a></li><li class="toc-l3"><a href="#Firefox_directly_from_Upstream_Mozilla_using_Flatpak">Firefox
+directly from Upstream Mozilla using Flatpak</a></li><li class="toc-l3"><a href="#Firefox_directly_from_Upstream_Mozilla_using_packages.mozilla.org">Firefox
+directly from Upstream Mozilla using packages.mozilla.org</a></li><li class="toc-l3"><a href="#Firefox_from_packages.debian.org">Firefox from
+packages.debian.org</a></li><li class="toc-l3"><a href="#Disclaimer">Disclaimer</a></li><li class="toc-l3"><a href="#Firefox_Potential_Legal_Risk">Firefox Potential Legal Risk</a></li><li class="toc-l3"><a href="#Correspondence_with_Mozilla_about_its_Trademark">Correspondence
+with Mozilla about its Trademark</a></li><li class="toc-l3"><a href="#Firefox_Potential_Legal_Risk_-_Workaround">Firefox Potential
+Legal Risk - Workaround</a></li><li class="toc-l2"><a href="#Brave_Browser">Brave Browser</a></li><li class="toc-l2"><a href="#Chromium">Chromium</a></li><li class="toc-l2"><a href="#ungoogled-chromium">ungoogled-chromium</a></li><li class="toc-l2"><a href="#LibreWolf">LibreWolf</a></li><li class="toc-l3"><a href="#LibreWolf_-_Lack_of_Radio_Silence_as_a_Development_Goal">LibreWolf -
+Lack of Radio Silence as a Development Goal</a></li><li class="toc-l3"><a href="#LibreWolf_-_IJWY_(I_Just_Want_You_To_Shut_Up)_Feature_Removal">LibreWolf
+- IJWY (I Just Want You To Shut Up) Feature Removal</a></li><li class="toc-l3"><a href="#LibreWolf_-_Updates">LibreWolf - Updates</a></li><li class="toc-l3"><a href="#LibreWolf_-_Bugs">LibreWolf - Bugs</a></li><li class="toc-l2"><a href="#LibreFox">LibreFox</a></li><li class="toc-l2"><a href="#Mullvad_Browser">Mullvad Browser</a></li><li class="toc-l2"><a href="#Tor_Browser">Tor Browser</a></li><li class="toc-l2"><a href="#Tor_Browser_without_Tor">Tor Browser without Tor</a></li><li class="toc-l2"><a href="#Base_Browser">Base Browser</a></li><li class="toc-l2"><a href="#Unbranded_or_Rebranded_Browser">Unbranded or Rebranded
+Browser</a></li><li class="toc-l2"><a href="#In-House_Browser_Development">In-House Browser Development</a></li><li class="toc-l2"><a href="#Waterfox">Waterfox</a></li><li class="toc-l2"><a href="#Pale_Moon">Pale Moon</a></li><li class="toc-l2"><a href="#GNUzilla_/_IceCat">GNUzilla / IceCat</a></li><li class="toc-l2"><a href="#Trivalent">Trivalent</a></li><li class="toc-l2"><a href="#Ladybird">Ladybird</a></li><li class="toc-l2"><a href="#Servo">Servo</a></li><li class="toc-l2"><a href="#Zen_Browser">Zen Browser</a></li><li class="toc-l2"><a href="#Orion_Browser">Orion Browser</a></li><li class="toc-l2"><a href="#Customized_Settings_Projects">Customized Settings Projects</a></li><li class="toc-l3"><a href="#ffprofile.com">ffprofile.com</a></li><li class="toc-l3"><a href="#arkenfox">arkenfox</a></li><li class="toc-l3"><a href="#deskapps-harden">deskapps-harden</a></li><li class="toc-l3"><a href="#pyllyukko_user.js">pyllyukko user.js</a></li><li class="toc-l3"><a href="#More">More</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Browser.html">Browser</a></li>
+<li><a href="../Firefox.html">Firefox</a></li>
+<li><a href="../Chrome.html">Chrome</a></li>
+<li><a href="../Chromium.html">Chromium</a></li>
+<li><a href="../Mullvad_Browser.html">Mullvad Browser</a></li>
+<li><a href="../Tor_Browser.html">Tor Browser</a></li>
+<li><a href="../Browser_Tests.html">Browser Tests</a></li>
+<li><a href="../Gemini.html">Gemini</a></li>
+<li><a href="../Browser-choice.html">Browser Choice - Browser
+Selection Installer Dialog</a></li>
+<li><a href="browser-choice.html">Browser Choice
+(<u>dev</u>elopers)</a></li>
+<li><a href="Default_Browser.html">Default Browser
+(dev)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Exploring the ideal default browser for Kicksecure with a focus on
+security and privacy, considering user freedom, maintainability,
+security, privacy, no phone home, radio silence.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Kicksecure_Default_Browser_Considerations">Kicksecure Default
+Browser Considerations</h1>
+<h2 id="Introduction">Introduction</h2>
+<p><a href="../About.html">Kicksecure</a> is primarily a
+security-focused Linux distribution. When a choice must be made between
+improving security or privacy, security is prioritized. However,
+Kicksecure will never include features that compromise privacy, such as
+tracking users or collecting telemetry data without their explicit
+consent. In fact, Kicksecure offers slightly better privacy than most
+Linux distributions. For example, it does not include tools like the
+"popularity contest" package, which reports usage statistics.</p>
+<p>That said, Kicksecure does not aim to match the strong privacy
+protections provided by <a href="../Whonix.html">Whonix</a>.
+Even so, Kicksecure is still a suitable host system for running
+Kicksecure -- at least until the dedicated
+[Broken-ExtLink--no-url-was-provided] becomes available. This is not a
+contradiction, since Kicksecure can run effectively on any secure Linux
+distribution that avoids privacy-compromising practices. See also <a href="../Privacy.html">Privacy Goals and Non-Goals of
+Kicksecure</a>.</p>
+<p>For some, considerations such as <a href="../Miscellaneous_Threats_to_User_Freedom.html#Beyond_Licensing">concerns about user autonomy related to browser market
+dominance</a> and <a href="Chromium.html#Chromium_reduced_capabilities_to_plugin_with_adblocker">reduced capabilities to plugin with adblocker</a> might
+play a role.</p>
+<p>Choosing a default browser in Kicksecure is therefore a complex
+decision.</p>
+<p>Firefox is no longer installed by default due to the issue of <a href="Default_Browser.html#Firefox_Selling_User_Data">Firefox selling user data</a>.</p>
+<p>Instead <a href="../Browser-choice.html">browser-choice</a>
+is being provided.</p>
+<p>This decision is guided by what is achievable within current
+development resources and priorities. Developing a secure Linux
+distribution is already a substantial task. Kicksecure is not attempting
+to solve every broad or systemic issue, such as the many <a href="../Miscellaneous_Threats_to_User_Freedom.html">Miscellaneous Threats to User Freedom</a>, from the
+very beginning.</p>
+<p>See also <a href="#Potential_Future_Solutions">#Potential Future Solutions</a> for options that might
+be explored later in the project's development.</p>
+<h2 id="Overview_of_Browser_Hardening_Approaches">Overview of Browser
+Hardening Approaches</h2>
+<ul>
+<li><strong>Settings projects:</strong> These are tools or files that
+try to improve security and privacy by tweaking thousands of browser
+settings. But mainstream browsers like Firefox and Chromium have so many
+settings - some of which change over time, get ignored, or are reversed
+by the browser itself - that trying to get and keep all these settings
+right is probably a losing battle. This is why it may be seen as a
+"mission impossible."</li>
+</ul>
+<ul>
+<li><strong>Soft forks:</strong> This means taking an existing browser
+like Firefox or Chromium and making only small changes, then continuing
+to update the fork with new changes from the original browser. The
+problem is, these browsers are so huge and complex that even small
+changes can break things. Also, keeping up with changes in the original
+project - called <strong>re-basing</strong> - can become very difficult
+and time-consuming. For more technical background, see:
+<ul>
+<li><a href="About_Computer_Insecurity.html#Too_Much_Source_Code">Too Much Source Code</a></li>
+<li><a href="About_Computer_Insecurity.html#Too_Much_Complexity">Too Much Complexity</a></li>
+<li><a href="Default_Browser.html#Difficulty_to_Create_a_Browser">Difficulty to Create a Browser</a></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Hard forks:</strong> These are more extreme. A <strong>hard
+fork</strong> means copying the entire browser and making major changes
+- often enough that it becomes difficult or impossible to merge in
+changes from the original browser later on. This can be better for
+removing unwanted parts of the software ("anti-features"), but it's much
+more expensive in terms of developer time. A project would need to be
+large and well-funded to do this correctly and securely.</li>
+</ul>
+<ul>
+<li><strong>Independent browsers not based on Chromium or
+Firefox:</strong> These are built from scratch or from a completely
+different codebase. This is probably the best long-term option, since it
+avoids inheriting unwanted problems from Firefox or Chromium. But it's
+very rare, because building a browser from scratch is extremely
+difficult and resource-intensive.</li>
+</ul>
+<h2 id="Criteria">Criteria</h2>
+<ul>
+<li><u>Security-first approach:</u> The top priority for Kicksecure is
+<strong>security</strong>. This means choosing options that reduce the
+risk of attacks, even if that means making reasonable trade-offs with
+other features like convenience or privacy enhancements.
+<ul>
+<li><u>Reasonable?</u> See <a href="../Stable_Version_User_Experience.html">Kicksecure Stable Version User Experience</a>.</li>
+</ul></li>
+<li><u>Anti-fingerprinting is secondary:</u> Making every browser look
+the same (to avoid being tracked by its "fingerprint") is useful, but
+comes after baseline security. It helps prevent websites from
+identifying users based on subtle technical differences in how their
+browser behaves.
+<ul>
+<li><u>Kicksecure Privacy:</u> See <a href="../Privacy.html">Privacy Goals and Non-Goals of Kicksecure</a>.</li>
+</ul></li>
+<li><u>Disabled telemetry:</u> This stops the browser from sending data
+back to its developers. It enhances both:
+<ul>
+<li><u>Security:</u> because it reduces the browser's <strong>attack
+surface</strong> (the parts of the software that an attacker could
+potentially exploit).</li>
+<li><u>Privacy:</u> because it stops unsolicited data leaks.</li>
+</ul></li>
+<li><u>Radio Silence:</u> The browser should not silently connect to the
+internet by itself (such as checking for updates or showing sponsored
+content). This is important for users to remain in control and prevent
+unwanted background communication. See <a href="https://codeberg.org/librewolf/issues/issues/1779">LibreWolf's
+Radio Silence request</a>.</li>
+<li><u>Clean source code:</u> If using a fork of an existing browser,
+any <strong>anti-features</strong> (like adware, trackers, or DRM
+modules) must be removed from the source code entirely - not just
+disabled in settings. Otherwise, there's a risk they could be re-enabled
+by accident or after an update.
+<ul>
+<li><u>DRM:</u> If DRM is needed at all, it should be a browser plugin
+and packaged separately.</li>
+</ul></li>
+<li><u>No hardcoded connections:</u> The browser's source code should
+not include specific IP addresses or domain names. These can force the
+browser to "phone home" (connect to developer servers) in ways the user
+may not expect or control.</li>
+<li><u>Long-term maintainability:</u> The browser project should be
+active and well-funded (or backed by a strong community), with regular
+security updates. If it's abandoned or poorly maintained, users could be
+left vulnerable to known exploits. Also, switching browsers is hard for
+some users. Therefore, the default browser must be a stable choice for
+years.</li>
+<li><u>Vendor neutrality:</u>
+<ul>
+<li><u>Definition:</u> The principle of avoiding favoritism or
+affiliation with any specific commercial provider within a software
+project, platform, or service. A vendor-neutral approach ensures that no
+particular company's branding, products, or services are endorsed,
+promoted, or required by default.</li>
+<li><u>Advantages:</u> This enhances user freedom and avoids perceived
+or actual conflicts of interest. Maintaining vendor neutrality is
+important for preserving trust, promoting long-term sustainability, and
+ensuring that technology choices remain open, interchangeable, and not
+dependent on specific proprietary ecosystems.</li>
+<li><u>Generic description:</u> A vendor-neutral project does not
+include pre-configured integrations with a specific company's
+infrastructure, use company-branded names or logos in its user
+interface, or redirect users to company-hosted web services. Instead, it
+is developed and maintained independently or by a community, with the
+goal of serving users without implicit or explicit commercial bias.</li>
+<li><u>Example of a vendor-neutral project:</u> GIMP (GNU Image
+Manipulation Program) is a vendor-neutral software project. It is
+developed by a community of contributors and does not promote or depend
+on any specific commercial provider. The application does not include
+proprietary branding, cloud integrations, or advertisements for paid
+services. Users can download, use, and modify GIMP without being
+directed toward a company or locked into a commercial ecosystem. This
+neutrality supports user freedom, trust, and long-term
+sustainability.</li>
+<li><u>Specific examples of vendor affiliations:</u>
+<ul>
+<li><u>The opposite of vendor neutrality:</u>
+<ul>
+<li>Advertising companies.</li>
+<li>VPN companies.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><u>No DNS settings changes:</u> DNS settings should be configured at
+the operating system level for all applications and traffic. Not at the
+browser level.</li>
+<li><u>Follow UNIX philosophy:</u>
+<ul>
+<li>DOTADIW: Do One Thing And Do It Well</li>
+<li>POLA: Principle of least astonishment</li>
+</ul></li>
+</ul>
+<h2 id="Installation_Source">Installation Source</h2>
+<h3 id="Flatpak">Flatpak</h3>
+<p>In some cases, <a href="../Install_Software.html#Flatpak">Flatpak</a> might be unsuitable. See <a href="../Install_Software.html#Flatpak_Breaking_the_Native_Sandbox_of_Applications">Flatpak Breaking the Native Sandbox of
+Applications</a>.</p>
+<h2 id="Disregarded_Solutions">Disregarded Solutions</h2>
+<h3 id="No_browser_installed_by_default">No browser installed by
+default</h3>
+<p>Due to <a href="Default_Browser.html#Firefox_Selling_User_Data">Firefox Selling User Data</a> the following has been
+recinded.</p>
+<p><s>That would result in a terrible user experience, especially for
+Live ISO / USB users, who would have to wait until all browser-related
+packages are downloaded and installed using APT. Users want a
+ready-to-go solution. The fact that they already have to invest time in
+getting a new operating system is already a barrier. Asking them to wait
+until a browser downloads is too much.</s></p>
+<p>In other words, no browser installed by default and <a href="../Browser-choice.html">browser-choice</a> is provided
+instead.</p>
+<h3 id="Install_both_firefox-esr_and_chromium_by_default">Install both
+firefox-esr and chromium by default</h3>
+<ul>
+<li>A waste of disk space.</li>
+<li>Longer update times, as both packages would need to be downloaded in
+the future.</li>
+<li>Does not take a strong stance against Chromium.</li>
+</ul>
+<h2 id="Potential_Future_Solutions">Potential Future Solutions</h2>
+<p>Might be implemented in a later version but not in the initial
+versions.</p>
+<h3 id="Browser_Choice_Dialog">Browser Choice Dialog</h3>
+<p>Similar to this:</p>
+<p><a href="https://upload.wikimedia.org/wikipedia/en/e/e2/BrowserChoice.gif">https://upload.wikimedia.org/wikipedia/en/e/e2/BrowserChoice.gif</a></p>
+<p>See <a href="../Browser-choice.html">browser-choice</a> and
+<a href="browser-choice.html">Dev/browser-choice</a>.</p>
+<h3 id="Cache_Browser_Installation_Files">Cache Browser Installation
+Files</h3>
+<p>During the build process of Kicksecure, download (cache) both
+packages, firefox-esr and chromium, but do not install them. This is to
+avoid APT traffic and time wasted on network downloads. In more
+technical terms, similar to this:</p>
+<pre><code>sudo apt update
+sudo apt install --download-only firefox-esr
+sudo apt install --download-only chromium</code></pre>
+<p>The packages will then be cached but not actually installed. These
+downloaded package files will reside in the folder
+<code>/var/cache/apt/archives</code> and otherwise do nothing. They
+would be cleaned up once the user runs <code>sudo apt clean</code>.</p>
+<p>This approach would work well for an ISO release but not for
+installation from a repository. The latter may not be a long-term
+priority and perhaps only relevant for servers (server vendors will not
+offer Kicksecure pre-installed anytime soon), but then, servers do not
+require a browser.</p>
+<p>It is not yet certain if this can work with the ISO build
+process.</p>
+<p>Additionally, there is a technical issue after the first boot.
+Suppose users run <code>sudo apt update</code> followed by
+<code>sudo apt full-upgrade</code> before ever starting a browser, which
+is recommended and good security practice. Then, when running the
+browser choice dialog (by clicking the browser icon in the start
+menu)...</p>
+<p>At this point, the browser choice tool will likely be unable to run
+<code>sudo apt install firefox-esr</code> or
+<code>sudo apt install chromium</code> on behalf of the user without
+network traffic. This is because dependencies and package versions may
+have changed in the meantime. (Users who ran
+<code>sudo apt update</code> would have noticed this.) This decreases
+usability. Thus, the browser choice tool would change from
+<code>offline install of a previously downloaded browser package</code>
+to a
+<code>network-dependent download and install of the browser</code>.</p>
+<p>To keep the browser choice tool as an
+<code>offline install of a previously downloaded browser package</code>,
+should the browser choice prompt appear as a popup at first boot?</p>
+<p>There may be technical solutions for all of this, but making the
+default browser choice a seamless experience would be a major
+development task.</p>
+<h1 id="Comparison_of_Browsers">Comparison of Browsers</h1>
+<h2 id="Original_Firefox">Original Firefox</h2>
+<p><strong>Trademark Disclaimer:</strong> Kicksecure is not officially
+associated with Mozilla Firefox. See <a href="#Disclaimer">Disclaimer</a>.</p>
+<p><strong>Advantages:</strong></p>
+<p><blockquote><p>Keeping the Firefox branding and improving upon it might be more
+user-friendly than shipping unpopular brand
+browsers.<span class="blockquote-context"><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/192#issuecomment-1910675642">Kicksecure/security-misc</a></span></span></p></blockquote></p>
+<p><strong>Issues:</strong></p>
+<ul>
+<li><strong>Trademark issues:</strong>
+<ul>
+<li><strong>With Debian:</strong> Past trademark disputes with Mozilla,
+see <a href="https://en.wikipedia.org/wiki/Debian%E2%80%93Mozilla_trademark_dispute">Debian-Mozilla
+trademark dispute</a>. This was resolved and hopefully will not happen
+again.</li>
+<li><strong>With LibreFox:</strong> What happened? See <a href="#LibreFox">LibreFox</a>.</li>
+<li><strong>Future:</strong> <a href="Default_Browser.html#Firefox_Potential_Legal_Risk">Firefox Potential Legal Risk</a></li>
+</ul></li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li><strong>Promotes non-freedom software:</strong> Easily downloads the
+non-freedom <a href="https://www.fsf.org/campaigns/drm.html">DRM</a>
+plugin from Google. Related: <a href="../Avoid_nonfreedom_software.html">Avoid non-freedom software</a>
+<ul>
+<li><a href="https://support.mozilla.org/en-US/kb/enable-drm">https://support.mozilla.org/en-US/kb/enable-drm</a></li>
+<li>DRM test website: <a href="https://bitmovin.com/demos/drm">https://bitmovin.com/demos/drm</a></li>
+</ul></li>
+<li><strong>Needs hardening:</strong> Not as hardened by default (lower
+attack surface, disabled telemetry) as it could be, creating demand for
+a hardened Firefox fork or Firefox settings project such as
+Arkenfox.</li>
+<li><strong>Punycode security issue:</strong> <a href="https://forums.whonix.org/t/very-hard-to-notice-phishing-scam-firefox-tor-browser-url-not-showing-real-domain-name-homograph-attack-punycode/8373">Very
+hard to notice phishing scam - Firefox / Tor Browser URL not showing
+real domain name - Homograph attack (Punycode)</a> A homograph attack is
+a type of phishing attack where characters from different writing
+systems are used to create deceptive URLs. These URLs appear identical
+or very similar to legitimate ones. Punycode is a way of encoding these
+special characters so they can be used in domain names.</li>
+</ul>
+<p><strong>Enabling non-freedom DRM is just one click away:</strong></p>
+<p><blockquote><p>You must enable DRM to play some audio or video on this page. <a href="https://support.mozilla.org/en-US/kb/enable-drm">Learn more</a>
+<code>[Enable DRM]</code><span class="blockquote-context">Firefox when
+visiting a DRM test website</span></p></blockquote></p>
+<p><strong>Other:</strong></p>
+<ul>
+<li><a href="https://consumerrights.wiki/Mozilla">https://consumerrights.wiki/Mozilla</a></li>
+</ul>
+<p><strong>TODO:</strong></p>
+<ul>
+<li>As part of taming Firefox, a Firefox settings project such as
+Arkenfox or Firefox might make it harder to accidentally enable
+DRM?</li>
+</ul>
+<h3 id="Firefox_Selling_User_Data">Firefox Selling User Data</h3>
+<p>Mozilla Firefox website used to have a promise.</p>
+<p><blockquote><p>Does Firefox sell your personal data?</p>
+<p>Nope. Never have, never will. And we protect you from many of the
+advertisers who do. Firefox products are designed to protect your
+privacy. That's a promise.</p></blockquote></p>
+<p>This promise has been deleted. (<a href="https://github.com/mozilla/bedrock/commit/d459addab846d8144b61939b7f4310eb80c5470e#diff-a24e74e4595fa85440a2f4e7e5dcfe68aba6e1e593aef05a2d35581a91423847L65">recorded
+in this git commit</a>)</p>
+<ul>
+<li><a href="https://www.theregister.com/2025/03/02/mozilla_introduces_terms_of_use/">https://www.theregister.com/2025/03/02/mozilla_introduces_terms_of_use/</a></li>
+</ul>
+<p>This was perceived very badly by the community.</p>
+<ul>
+<li><a href="https://discourse.mozilla.org/t/why-does-mozilla-now-require-a-nonexclusive-royalty-free-worldwide-license-when-entering-information-in-firefox/140700">https://discourse.mozilla.org/t/why-does-mozilla-now-require-a-nonexclusive-royalty-free-worldwide-license-when-entering-information-in-firefox/140700</a></li>
+<li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1951088">https://bugzilla.mozilla.org/show_bug.cgi?id=1951088</a></li>
+<li><a href="https://connect.mozilla.org/t5/discussions/information-about-the-new-terms-of-use-and-updated-privacy/m-p/88189/highlight/true">https://connect.mozilla.org/t5/discussions/information-about-the-new-terms-of-use-and-updated-privacy/m-p/88189/highlight/true</a></li>
+<li>pocket</li>
+<li><a href="https://discuss.privacyguides.net/t/mozillas-new-terms-of-use-causes-confusion-among-firefox-users/25325">https://discuss.privacyguides.net/t/mozillas-new-terms-of-use-causes-confusion-among-firefox-users/25325</a></li>
+<li><a href="https://mastodon.social/@sarahjamielewis/114078061987172475">https://mastodon.social/@sarahjamielewis/114078061987172475</a></li>
+</ul>
+<p><a href="https://blog.mozilla.org/en/products/firefox/update-on-terms-of-use/">Mozilla
+attempted to "clarify" this issue</a> but rarely posts by users could be
+found that believed the clarification.</p>
+<p>These issues are not new and have existed long before. Privacy must
+be by design, technology. Not by privacy policy.</p>
+<p>Firefox long had functionality considered spyware by many people.
+Here are some examples of features often considered spyware:</p>
+<ul>
+<li><a href="https://codeberg.org/librewolf/issues/issues/1779">Feature
+Request: Radio Silence by Default for Browser Startup and Background
+Connections aka "Disable Phone Home"</a></li>
+<li><a href="https://www.pcmag.com/news/firefox-mozilla-data-collection-feature-sparks-privacy-concerns">https://www.pcmag.com/news/firefox-mozilla-data-collection-feature-sparks-privacy-concerns</a></li>
+<li><a href="https://support.mozilla.org/en-US/kb/privacy-preserving-attribution#w_how-does-privacy-preserving-attribution-protect-my-data">https://support.mozilla.org/en-US/kb/privacy-preserving-attribution#w_how-does-privacy-preserving-attribution-protect-my-data</a></li>
+<li><a href="https://github.com/mozilla/activity-stream/blob/master/docs/v2-system-addon/data_events.md">https://github.com/mozilla/activity-stream/blob/master/docs/v2-system-addon/data_events.md</a>
+<ul>
+<li><a href="https://www.reddit.com/r/privacy/comments/e1unj8/is_pocket_really_that_bad/">https://www.reddit.com/r/privacy/comments/e1unj8/is_pocket_really_that_bad/</a></li>
+<li><a href="https://www.reddit.com/r/privacy/comments/ab7wcz/how_would_you_guys_rate_the_privacy_of_the_pocket/">https://www.reddit.com/r/privacy/comments/ab7wcz/how_would_you_guys_rate_the_privacy_of_the_pocket/</a></li>
+<li><a href="https://getpocket.com/privacy">https://getpocket.com/privacy</a></li>
+</ul></li>
+<li><a href="https://www.mozilla.org/en-US/privacy/firefox/">https://www.mozilla.org/en-US/privacy/firefox/</a></li>
+<li><a href="https://www.mozilla.org/en-US/advertising/">Mozilla is an
+advertising company.</a>
+<ul>
+<li><a href="https://www.reddit.com/r/browsers/comments/1e0p62h/mozilla_is_an_advertising_company_now/">https://www.reddit.com/r/browsers/comments/1e0p62h/mozilla_is_an_advertising_company_now/</a></li>
+</ul></li>
+<li><a href="https://consumerrights.wiki/Mozilla_introduces_TOS_to_Firefox">https://consumerrights.wiki/Mozilla_introduces_TOS_to_Firefox</a></li>
+</ul>
+<p><blockquote><p>So they will sell your personal data, just anonymized which we know
+doesn't really work.</p>
+<p>OHTTPS requires you to trust third
+parties.<span class="blockquote-context"><a href="https://www.reddit.com/r/firefox/comments/1iznn90/in_response_to_people_saying_mozilla_is_removing/">https://www.reddit.com/r/firefox/comments/1iznn90/in_response_to_people_saying_mozilla_is_removing/</a></span></p></blockquote></p>
+<h3 id="Firefox_Miscellaneous">Firefox Miscellaneous</h3>
+<ul>
+<li><a href="https://www.kuketz-blog.de/firefox-datenschutzverstoss-bei-der-android-version/">https://www.kuketz-blog.de/firefox-datenschutzverstoss-bei-der-android-version/</a></li>
+<li><a href="https://seirdy.one/notes/2024/10/06/chromium-influence-on-chromium-alternatives/">https://seirdy.one/notes/2024/10/06/chromium-influence-on-chromium-alternatives/</a></li>
+</ul>
+<h3 id="Firefox_Security_-_ESR_(Extended_Support_Release)_versus_Rapid_Release">Firefox
+Security - ESR (Extended Support Release) versus Rapid Release</h3>
+<p>Firefox ESR might be less secure than Firefox stable.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>Over time the ESR will be less secure than the regular release of
+Firefox, as new functionality will not be added at the same pace as
+Firefox, and only high-risk/impact security patches will be backported.
+It is important that organizations deploying this software understand
+and accept this.<span class="blockquote-context"><a href="https://wiki.mozilla.org/Enterprise/Firefox/ExtendedSupport:Proposal#Risks">https://wiki.mozilla.org/Enterprise/Firefox/ExtendedSupport:Proposal#Risks</a></span></p></blockquote></p>
+<p>A newer statement or research could not be found at time of
+writing.</p>
+<h3 id="Firefox_directly_from_Upstream_Mozilla_using_Flatpak">Firefox
+directly from Upstream Mozilla using Flatpak</h3>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Fast stable Firefox upgrades directly from upstream, Mozilla.</li>
+</ul>
+<p><strong>Issues:</strong></p>
+<ul>
+<li>Most likely ignores <code>/etc/firefox</code> settings folder. It is
+most likely possible to add a workaround for that.</li>
+<li>Potential issue: <a href="../Install_Software.html#Flatpak_Breaking_the_Native_Sandbox_of_Applications">Flatpak Breaking the Native Sandbox of
+Applications</a>.</li>
+</ul>
+<p><strong>See also:</strong></p>
+<ul>
+<li><a href="../Install_Software.html#Flatpak">Flatpak</a></li>
+</ul>
+<h3 id="Firefox_directly_from_Upstream_Mozilla_using_packages.mozilla.org">Firefox
+directly from Upstream Mozilla using packages.mozilla.org</h3>
+<p>advantages:</p>
+<ul>
+<li>Fast stable Firefox upgrades directly from upstream, Mozilla.</li>
+</ul>
+<p>potential issues:</p>
+<ul>
+<li>TODO: Does it honor <code>/etc/firefox</code> settings folder? It
+might not as this might only be a feature by Debian's firefox-esr
+package.</li>
+</ul>
+<p>disadvantages:</p>
+<ul>
+<li>Same as in above wiki chapter.</li>
+<li><a href="../Install_Software.html#Foreign_Sources">Foreign
+Sources</a></li>
+</ul>
+<h3 id="Firefox_from_packages.debian.org">Firefox from
+packages.debian.org</h3>
+<p>Also when using Debian's Firefox package, enabling non-freedom
+software DRM is just 1 click away.</p>
+<h3 id="Disclaimer">Disclaimer</h3>
+<p>There are two different entities.</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<a href="https://www.mozilla.org"><u>Mozilla:</u></a> Developer of the
+Mozilla Firefox browser. Versus,</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<a href="https://www.kicksecure.com"><u>Kicksecure:</u> An independent
+Linux distribution.</a></li>
+</ul>
+<p>Kicksecure is <u>not</u> officially associated with Mozilla Firefox.
+The Mozilla Firefox logo is trademarked by Mozilla.</p>
+<p>Why this disclaimer? See <a href="Default_Browser.html#Firefox_Potential_Legal_Risk">Firefox Potential Legal Risk</a>.</p>
+<h3 id="Firefox_Potential_Legal_Risk">Firefox Potential Legal Risk</h3>
+<p>Background story: <a href="https://en.wikipedia.org/wiki/Debian%E2%80%93Mozilla_trademark_dispute">Debian-Mozilla
+trademark dispute</a> (resolved in 2017)</p>
+<p>Quote:</p>
+<p><blockquote><h1 id="About_the_Debian_specific_patches">About the Debian specific
+patches</h1>
+<p>Mozilla recognizes that patches applied to Iceweasel/Firefox don't
+impact the quality of the product. Patches which should be reported
+upstream to improve the product always have been forward upstream by the
+Debian packagers. Mozilla agrees about specific patches to facilitate
+the support of Iceweasel on architecture supported by Debian or
+Debian-specific patches.</p>
+<p>More generally, Mozilla trusts the Debian packagers to use their best
+judgment to achieve the same quality as the official Firefox
+binaries.</p>
+<p>In case of derivatives of Debian, Firefox branding can be used as
+long as the patches applied are in the same category as described above.
+Ubuntu having a different packaging, this does not apply to that
+distribution.<span class="blockquote-context">Debian issue tracker, <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=815006">Renaming
+Iceweasel to Firefox</a></span></p></blockquote></p>
+<p>Opinion by a non-lawyer:</p>
+<p>The phrasing
+<code>can be used as long as the patches applied are in the same category as described above</code>
+could be interpreted as in a patch which disables all telemetry,
+tracking and phone-home as much as possible would be in a different
+category and hence might in the viewpoint of Mozilla violate their
+trademark.</p>
+<p><strong><a href="https://github.com/portapps/phyrox-portable/issues/11">Mozilla vs
+portapps.io</a></strong> from 2019</p>
+<p><blockquote><p>Following a trademark violation report (<a href="https://github.com/portapps/phyrox-portable/issues/11">#11</a>)
+from Mozilla, Firefox portable has been named Phyrox portable on
+Portapps. Nothing changes except its
+name.<span class="blockquote-context"><a href="https://github.com/portapps/phyrox-portable">phyrox-portable</a></span></p></blockquote></p>
+<p><blockquote><p>But even modest changes to preferences (such as whether "Know Your
+Rights" information is displayed to users) are sufficient to violate our
+policy against distributing modified versions of Mozilla software with
+our trademarks. Of course, end-users may choose to change preferences
+and settings in Firefox. But we don't allow others to distribute
+unofficial versions of "Firefox" with modified configurations or
+preferences.<span class="blockquote-context"><a href="https://github.com/portapps/phyrox-portable/issues/11#issuecomment-550461232">phyrox-portable
+published an e-mail from a Mozilla attorney.</a></span></p></blockquote></p>
+<p>Does this apply to Linux distributions that is not really primarily
+about distributing Firefox? Probably yes, since Mozilla had also a past
+conflict with Debian.</p>
+<p><blockquote><p>Changes requiring Mozilla's prior written permission include (but are
+not limited to):</p>
+<ul>
+<li>Changing the default home page or adding
+bookmarks,<span class="blockquote-context"><a href="https://www.mozilla.org/en-US/foundation/trademarks/distribution-policy/">Mozilla
+Trademark Distribution Policy</a></span></li>
+</ul></blockquote></p>
+<p>Potentially also <a href="#LibreFox">Mozilla vs
+LibreFox</a> had a trademark conflict.</p>
+<h3 id="Correspondence_with_Mozilla_about_its_Trademark">Correspondence
+with Mozilla about its Trademark</h3>
+<h4 id="15_February_2024">15 February 2024</h4>
+<p>From:</p>
+<pre><code>adrelanos</code></pre>
+<p>To:</p>
+<pre><code>trademark-permissions@mozilla.com</code></pre>
+<p>subject:</p>
+<pre><code>Kicksecure Default Browser Configuration Trademark Question</code></pre>
+<p>body:</p>
+<pre><code>I am the lead developer of the Kicksecure project, a Linux distribution focused on security and based on Debian. Kicksecure is developed by the same team as Whonix, which is somewhat more well-known.
+
+Our hardened defaults extend to the default user applications on the system, including a daily drivable web browser.
+
+We are currently in the process of reviewing and considering potential candidates to be the default web browser on Kicksecure.
+
+With good intentions, various Kicksecure contributors have suggested shipping Mozilla Firefox as the default browser. However, some contributors, including myself, are concerned about the modifications to Firefox&#39;s default settings we intend to make, versus Mozilla&#39;s Trademark Policy. We have no intention of rebranding or changing the compilation options of Firefox binaries. In fact, we prefer to keep the Mozilla trademarked names for the products to provide our users with a sense of familiarity.
+
+We would acquire unaltered binaries from one of the following sources:
+
+- Debian&#39;s official packages.debian.org repository
+- Mozilla&#39;s official packages.mozilla.org repository
+- Mozilla&#39;s official Firefox Flathub repository
+
+Ideally, we would use Mozilla sources.
+
+Here is a trademark-respecting list of things we are aware of and want to avoid for understandable reasons:
+
+* Not using Mozilla trademarks in the name of our business, product, service, app, domain name, publication, or other offering.
+* Not using marks, logos, company names, slogans, domain names, or designs that are confusingly similar to Mozilla trademarks.
+* Not using Mozilla trademarks in a way that incorrectly implies affiliation with, or sponsorship, endorsement, or approval by Mozilla of our products or services.
+* Not displaying Mozilla trademarks more prominently than our product, service, or company name.
+* Not using Mozilla trademarks on merchandise for sale (e.g., selling t-shirts, mugs, etc.)
+* Not using Mozilla trademarks for any other form of commercial use (e.g., offering technical support services), unless such use is limited to a truthful and descriptive reference (e.g., &quot;Independent technical support for Mozilla&#39;s Firefox browser&quot;).
+* Not modifying Mozilla&#39;s trademarks, abbreviating them, or combining them with any other symbols, words, or images, or incorporating them into a tagline or slogan.
+
+And here is a list of things that we would like to do. Our primary intention is to have a default policy (or employ other means if more appropriate) to do the following:
+
+* Use unaltered binaries.
+* Disable all Telemetry, Studies, Reports, and non-essential implicit outgoing connections.
+* Force install the addon &quot;uBlock Origin&quot; by Raymond Hill.
+* Set and lock hardened SSL/TLS-related settings, including, but not limited to, setting HTTPS-only mode as the default, blocking mixed content, not trusting unsafe negotiations, disabling unencrypted background requests, etc.
+* Disable sponsored components, like bookmarks and suggestions.
+* Set and lock strict mode for ETP.
+* Change the default homepage.
+* Disable the default display of the &quot;Know Your Rights&quot; information page.
+
+As an illustrative point of how specifically we plan to apply these changes:
+
+- Our intended changes would be made by providing a separate package (for example, named &quot;hardened-browser-config&quot;).
+- This package would install config file(s) in folder(s) such as /etc/firefox or /etc/firefox-esr.
+- The package would be installed by default.
+
+We are willing to elaborate on the details and consider making modifications upon request by Mozilla.
+
+We are not asking for any special permission that does not extend to derivatives. As stated on the Debian issue tracker:
+
+&gt; In case of derivatives of Debian, Firefox branding can be used as long
+&gt; as the patches applied are in the same category as described above.
+
+This is related to the Debian Free Software Guidelines (DFSG) (item 8):
+
+&gt; License must not be specific to Debian
+&gt;
+&gt; The rights attached to the program must not depend on the program&#39;s being part of a Debian system. If the program is extracted from Debian and used or distributed without Debian but otherwise within the terms of the program&#39;s license, all parties to whom the program is redistributed should have the same rights as those that are granted in conjunction with the Debian system.
+
+We would like to be able to state similarly:
+
+&gt; In case of derivatives of Kicksecure, Firefox branding can be used as long as the patches applied are in the same category as described above.
+
+We are asking for your opinion on whether this would be in conflict with Mozilla&#39;s Trademark Policy.
+
+We intend to publish our correspondence for the sake of transparency. Our communications and your responses will be publicized in full, verbatim, without modifications.</code></pre>
+<h4 id="06_March_2024">06 March 2024</h4>
+<pre><code>Patrick,
+
+Thanks for your email.
+
+Unfortunately the changes you would like to make do not comply with our
+distribution policy
+&lt;https://www.mozilla.org/foundation/trademarks/distribution-policy/&gt;,
+including the following:
+
+You may not add to, remove, or change any part of the software, including
+the Mozilla trademarks themselves. For example, you may not add any
+extensions to Firefox, change default settings, or alter search codes.
+
+If you would like to distribute Firefox unmodified, you can use our .deb.
+
+You can, of course, make any modifications you wish to Firefox&#39;s open
+source software if you distribute a browser without Mozilla and Firefox
+trademarks. Based on your requirements, the Tor Browser might also be an
+option you could consider.
+
+Mike Kaply
+Technical Partner Lead
+Mozilla Corporation</code></pre>
+<p>For the full e-mail including headers see footnote.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h3 id="Firefox_Potential_Legal_Risk_-_Workaround">Firefox Potential
+Legal Risk - Workaround</h3>
+<p>Opinion by a non-lawyer:</p>
+<p>If there was an opt-in package that users can choose to install, this
+might not violate Mozilla's trademark. This is because this solution
+would be similar to a user visiting the <a href="Default_Browser.html#arkenfox">arkenfox</a>
+project website and manually installing a settings file in
+<code>/etc/firefox</code> or <code>/etc/firefox-esr</code> folder. This
+solution might be good enough for Kicksecure.</p>
+<h2 id="Brave_Browser">Brave Browser</h2>
+<ul>
+<li><u>Built-in ad blocker:</u> Brave includes an advertisement blocker
+by default, which helps reduce tracking and speeds up web browsing.</li>
+<li><u>Ad-funded business model:</u> Despite blocking ads, Brave is
+itself an advertising company. It replaces traditional ads with its own
+ad system.
+<ul>
+<li><a href="https://en.m.wikipedia.org/wiki/Brave_(web_browser)#Business_model">Brave
+Business Model on Wikipedia</a></li>
+</ul></li>
+<li><u>Market stance:</u> Using Brave is seen by some as a stand against
+the dominance of Firefox and Chrome, although using any alternative
+browser could also be interpreted this way.</li>
+<li><u>Controversies:</u> Brave has faced criticism for certain business
+decisions and privacy concerns.
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Brave_(web_browser)#Controversies">Brave
+Controversies on Wikipedia</a></li>
+</ul></li>
+</ul>
+<h2 id="Chromium">Chromium</h2>
+<ul>
+<li><a href="../Chromium.html">Chromium</a></li>
+<li><a href="https://madaidans-insecurities.github.io/firefox-chromium.html">Chromium
+might be more secure than Firefox.</a>
+<ul>
+<li><a href="Chromium.html#Firefox_and_Chromium_Security">Dev/Chromium#Firefox_and_Chromium_Security</a></li>
+</ul></li>
+<li><a href="../Miscellaneous_Threats_to_User_Freedom.html#Beyond_Licensing">concerns about user autonomy related to browser market
+dominance</a></li>
+<li><a href="Chromium.html#Chromium_reduced_capabilities_to_plugin_with_adblocker">potentially weaker ad-blocking features in the
+future</a></li>
+<li><a href="Chromium.html#Chromium_Debian_Package_Security">security issues with the Chromium package in
+Debian</a></li>
+<li>privacy issues:
+<ul>
+<li><a href="https://digdeeper.club/articles/browsers.xhtml#chromebased">https://digdeeper.club/articles/browsers.xhtml#chromebased</a></li>
+<li><a href="https://unixdigest.com/articles/choose-your-browser-carefully.html#chrome">https://unixdigest.com/articles/choose-your-browser-carefully.html#chrome</a></li>
+</ul></li>
+</ul>
+<h2 id="ungoogled-chromium">ungoogled-chromium</h2>
+<ul>
+<li><a href="https://digdeeper.club/articles/browsers.xhtml#ungoogled">https://digdeeper.club/articles/browsers.xhtml#ungoogled</a></li>
+<li><a href="https://unixdigest.com/articles/choose-your-browser-carefully.html#ungoogled-chromium">https://unixdigest.com/articles/choose-your-browser-carefully.html#ungoogled-chromium</a></li>
+<li>Security issues:
+<ul>
+<li><a href="https://seirdy.one/notes/2024/07/15/caveats-to-ungoogled-chromium-recommendations/">https://seirdy.one/notes/2024/07/15/caveats-to-ungoogled-chromium-recommendations/</a></li>
+<li><a href="https://github.com/RKNF404/chromium-hardening-guide#ungoogled-chromium">https://github.com/RKNF404/chromium-hardening-guide#ungoogled-chromium</a>
+<ul>
+<li><a href="https://qua3k.github.io/ungoogled/">https://qua3k.github.io/ungoogled/</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="LibreWolf">LibreWolf</h2>
+<h3 id="LibreWolf_-_Lack_of_Radio_Silence_as_a_Development_Goal">LibreWolf -
+Lack of Radio Silence as a Development Goal</h3>
+<p>LibreWolf inherits many of the same phone home features from Firefox.
+At the time of writing, LibreWolf feature request <a href="https://codeberg.org/librewolf/issues/issues/1779">Radio Silence
+by Default for Browser Startup and Background Connections aka "Disable
+Phone Home" #1779</a> has not been acknowledged by LibreWolf developers
+as a development goal.</p>
+<p>LibreWolf FAQ: <a href="https://librewolf.net/docs/faq/#does-librewolf-make-any-outgoing-connections">Does
+LibreWolf make any outgoing connections?</a></p>
+<h3 id="LibreWolf_-_IJWY_(I_Just_Want_You_To_Shut_Up)_Feature_Removal">LibreWolf
+- IJWY (I Just Want You To Shut Up) Feature Removal</h3>
+<p>LibreFox, from which LibreWolf was forked, also had a IJWY (I Just
+Want You To Shut Up) feature.</p>
+<p><blockquote><p>This is a set of settings that aim to remove all the server links
+embedded in Firefox and other calling home functions in the purpose of
+blocking un-needed connections. The objective is zero unauthorized
+connection
+(ping/telemetry/Mozilla/Google...).<span class="blockquote-context">LibreFox,
+<a href="https://github.com/intika/Librefox/tree/master?tab=readme-ov-file#ijwy-i-just-want-you-to-shut-up">IJWY
+(I Just Want You To Shut Up)</a> feature</span></p></blockquote></p>
+<p>Last mention of IJWY in LibreWolf's settings file has been removed in
+this git diff.</p>
+<pre><code>git diff -C eac7585b211bf11bf60ee6548213be5c43cdff3b^ eac7585b211bf11bf60ee6548213be5c43cdff3b</code></pre>
+<p>In this way to huge change which would be very time-intensive to
+audit: <a href="https://codeberg.org/librewolf/settings/commit/eac7585b211bf11bf60ee6548213be5c43cdff3b#diff-a99c222015516778b4c513319f0596469737a885">eac7585b21
+(diff-a99c222015516778b4c513319f0596469737a885)</a></p>
+<pre><code>   commit eac7585b211bf11bf60ee6548213be5c43cdff3b
+   Author: fabrizio ft.compiled@simplelogin.co
+   Date:   Mon May 10 08:55:27 2021 +0000
+
+       Settings revamp</code></pre>
+<h3 id="LibreWolf_-_Updates">LibreWolf - Updates</h3>
+<p>LibreWolf lags behind Firefox a few days up to 1 week.</p>
+<p><blockquote><p>Regarding Librewolf's slow updates, I think this issue has been very
+greatly exaggerated, having used it as one of my browsers for almost
+over 30 months, I personally do not recall it ever really being more
+than one week behind Firefox, usually it is only a couple working days
+at
+worst.<span class="blockquote-context"><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/192#issuecomment-1910407278">Kicksecure/security-misc</a></span></span></p></blockquote></p>
+<h3 id="LibreWolf_-_Bugs">LibreWolf - Bugs</h3>
+<p>Bugs reported to only be reproducible in LibreWolf but not in
+Firefox:</p>
+<ul>
+<li><a href="https://codeberg.org/librewolf/issues/issues/1769">https://codeberg.org/librewolf/issues/issues/1769</a></li>
+</ul>
+<p>Bugs maybe specific to LibreWolf only but not Firefox:</p>
+<ul>
+<li><a href="https://codeberg.org/librewolf/issues/issues/1774">https://codeberg.org/librewolf/issues/issues/1774</a></li>
+</ul>
+<h2 id="LibreFox">LibreFox</h2>
+<p><a href="https://github.com/intika/Librefox">https://github.com/intika/Librefox</a>
+is dead as per <a href="https://github.com/intika/Librefox/issues/141">https://github.com/intika/Librefox/issues/141</a></p>
+<p><a href="#LibreWolf">LibreWolf</a>
+(https://librewolf-community.gitlab.io/) is active.</p>
+<p>LibreFox had a potential legal issue with Mozilla:</p>
+<ul>
+<li><a href="https://github.com/intika/Librefox/commit/45a4d3ce647b8c896e81ce3e5ac5ddc95ff045e0">https://github.com/intika/Librefox/commit/45a4d3ce647b8c896e81ce3e5ac5ddc95ff045e0</a>
+mentions legal issues.</li>
+<li>Question about it: <a href="https://github.com/intika/Librefox/issues/125#issuecomment-1913347606">https://github.com/intika/Librefox/issues/125#issuecomment-1913347606</a></li>
+</ul>
+<p><a href="https://github.com/intika">intika</a>, the developer of
+Librefox disappeared. The website <a href="https://linuxhacks.org/">linuxhacks.org</a> is still online so one
+could assume that someone is still paying the bills. Still active on <a href="https://stackexchange.com/users/3950473/intika?tab=activity">StackExchange</a>.</p>
+<h2 id="Mullvad_Browser">Mullvad Browser</h2>
+<p><strong>Upstream Documentation:</strong></p>
+<ul>
+<li><a href="https://mullvad.net/en/browser">https://mullvad.net/en/browser</a></li>
+<li><a href="https://mullvad.net/en/browser/hard-facts">https://mullvad.net/en/browser/hard-facts</a></li>
+</ul>
+<p><strong>Kicksecure user documentation:</strong></p>
+<ul>
+<li><u>Opt-in Installation:</u> Users can easily choose to install <a href="../Mullvad_Browser.html">Mullvad Browser</a> (MB). It is
+not installed by default but available for installation.</li>
+</ul>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li><u>Anti-browser fingerprinting:</u> Helps protect user privacy by
+making it harder for websites to create a unique identifier (called a
+"fingerprint") based on a browser's settings and behavior. This reduces
+tracking even without cookies.</li>
+<li><u>Company stability:</u> Mullvad is a long-standing and well-known
+VPN provider. Because the organization is established and reputable, its
+browser software is less likely to be discontinued unexpectedly.</li>
+<li><u>VPN support:</u> Mullvad Browser is compatible with virtual
+private networks (VPNs), including Mullvad VPN. However, the browser
+does not rely on a VPN to function and does not activate one
+automatically.</li>
+<li><u>Security features:</u> Includes a "security level slider", that
+allows users to choose between different levels of protection. Higher
+levels can disable certain browser features (like JavaScript) to reduce
+attack surface, at the cost of website compatibility.</li>
+<li><u>Installation:</u> <a href="https://mullvad.net/en/download/browser/linux">Debian package
+repository available.</a> This means users on Debian-based systems,
+including Kicksecure, can install and update Mullvad Browser more easily
+using standard package management tools like <code>apt</code>. It
+simplifies maintenance and ensures users receive updates
+automatically.</li>
+<li><u>Software compatibility:</u> Fully supported by tools like
+<code>tb-updater</code> and <code>tb-starter</code>, which are part of
+Kicksecure. These tools help users install and launch privacy-focused
+browsers easily.</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li><u>Vendor branding:</u> Mullvad Browser includes visual elements and
+default configurations that are closely tied to the Mullvad company and
+its VPN service. This makes it not "vendor-neutral". It is clearly
+associated with and promoting a specific commercial provider.
+<ul>
+<li><u>Vendor neutral example:</u> To explain what is meant by
+vendor-neutrality, consider an example like GIMP (GNU Image Manipulation
+Program). GIMP is developed and maintained by a dedicated team, but it
+does not promote a particular company, paid service, or infrastructure.
+When users install GIMP, they are not presented with branding for a
+cloud provider, upsell to a premium version, or integration with a
+specific company's services.</li>
+<li><u>Why Mullvad Browser is not vendor neutral?</u> Mullvad Browser,
+by contrast, includes the Mullvad name in its title, uses Mullvad's DNS
+servers by default, and sets its homepage and extensions to promote the
+Mullvad VPN.</li>
+<li><u>Home page and extensions:</u> The browser comes with a default
+home page and browser extension designed by Mullvad.
+<ul>
+<li><blockquote><p>MULLVAD BROWSER</p></blockquote></li>
+<li><blockquote><p>Developed in collaboration between the Tor Project and Mullvad
+VPN</p></blockquote></li>
+<li><code>Disable Mullvad DoH (encrypted DNS)</code>: a setting to
+disable Mullvad's default DNS-over-HTTPS service.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><u>Purpose of browser:</u>
+<ul>
+<li><u>Opinion:</u> These points are interpretive and based on
+perspective.
+<ul>
+<li>A) <u>For Mullvad users:</u> The browser seems designed primarily to
+complement and enhance Mullvad's VPN service.</li>
+<li>B) <u>As advertising:</u> The browser can also be viewed as a way to
+promote Mullvad and differentiate it from other VPN providers.</li>
+<li>C) <u>For all users (even non-customers):</u> It still provides
+strong privacy and security features regardless of whether the user
+subscribes to Mullvad VPN.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><u>VPN confusion:</u> Because of its branding, some users may
+wrongly assume that the browser automatically connects to Mullvad VPN.
+It does not. This misunderstanding is addressed in the <a href="../Mullvad_Browser.html#Mullvad_VPN">Mullvad VPN</a>
+section of the documentation.</li>
+</ul>
+<ul>
+<li><u>Browser basis:</u> Mullvad Browser is built on Firefox ESR
+(Extended Support Release), which prioritizes stability over having the
+newest features. It does not include the latest Firefox updates
+immediately. Firefox ESR might be less secure than Firefox Rapid
+Release, see <a href="Default_Browser.html#Firefox_Security_-_ESR_.28Extended_Support_Release.29_versus_Rapid_Release">Firefox Security - ESR (Extended Support Release)
+versus Rapid Release</a>.</li>
+</ul>
+<ul>
+<li><u>DNS configuration:</u>
+<ul>
+<li><u>Default behavior:</u> By default, Mullvad Browser uses DNS over
+HTTPS (DoH) and sends all DNS queries through Mullvad's own DNS servers.
+This means DNS traffic is encrypted, but also centralized.</li>
+<li><u>Privacy implications:</u> DNS queries (which convert website
+names like example.com into IP addresses) do not use the DNS server set
+by the user or their network (like a home router). Instead, they go to
+Mullvad's server, giving Mullvad insight into the websites being
+accessed.</li>
+<li><u>Violation of separation of power:</u> Some might consider this
+design problematic because it combines software creation and
+infrastructure control. For example, the Tor Project develops the Tor
+software, but independent volunteers run the relays. By comparison, it
+could be argued that browser developers should not also run core
+infrastructure like DNS servers.</li>
+<li><u>Inconsistency with system settings:</u> The browser uses its own
+DNS settings, which may differ from the rest of the system. This could
+confuse users or system administrators.</li>
+<li><u>Usability issue:</u> Breaks the "Principle of Least Astonishment"
+(POLA). Users typically expect the browser to follow the system's DNS
+settings, not override them.</li>
+<li><u>Increased complexity:</u> If someone changes the system DNS
+settings (for more privacy or security), it won't affect Mullvad Browser
+unless the change is made there separately. This makes DNS management
+harder.</li>
+<li><u>See also:</u> <a href="../DNS_Security.html">DNS
+Security</a> and this forum thread: <a href="https://forums.whonix.org/t/use-dnscrypt-by-default-in-kicksecure-not-whonix/8117">Use
+DNSCrypt by default in Kicksecure? (not Whonix)</a></li>
+</ul></li>
+</ul>
+<ul>
+<li><u>Usability:</u>
+<ul>
+<li><u>No stored logins:</u> Mullvad Browser does not keep cookies after
+closing. This means websites will not remember the user, and users have
+to log in again each time they open the browser.</li>
+<li><u>No built-in password manager:</u> The browser does not have a
+feature to save passwords. Users must type in their login details every
+time they visit a site. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+</ul></li>
+</ul>
+<p><strong>Other:</strong></p>
+<ul>
+<li><u>uBlock Origin:</u> This powerful and popular ad and tracker
+blocker is included with Mullvad Browser by default.</li>
+</ul>
+<p><strong>Related:</strong></p>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/tor-project-is-resurrecting-secbrowser-as-mullvad-browser/101">https://forums.kicksecure.com/t/tor-project-is-resurrecting-secbrowser-as-mullvad-browser/101</a></li>
+</ul>
+<p><strong>Mullvad Browser as Kicksecure Default Browser</strong></p>
+<ul>
+<li><u>Summary:</u> No. This is a <a href="../Declined.html">declined feature request</a>. Details? See below.</li>
+<li><u>Comparison with others:</u> No other Linux distribution is
+installing Mullvad Browser by default. This implies that such a decision
+needs to be considered with extra care.
+<ul>
+<li><u>Qubes:</u> At time of writing, there is <a href="https://github.com/QubesOS/qubes-issues/issues?q=is%3Aissue+is%3Aopen+mullvad+in%3Atitle">no
+Mullvad Browser related feature request at the Qubes issue
+tracker</a>.</li>
+</ul></li>
+<li><u>Opinion:</u> By Kicksecure founder and developer:
+<ul>
+<li><u>Trademark:</u> No trademark policy issues.</li>
+<li><u>Not vendor neutral:</u> Unfortunately, Mullvad Browser is not a
+vendor-neutral browser project as <a href="#Base_Browser">Base Browser</a> might be.</li>
+<li><u>Community project vs corporate project:</u> MB is developed by a
+VPN company and not a community project solely focusing on maintaining
+an independent web browser.</li>
+<li><u>Omnipresent VPN company advertisements:</u> Many or even most
+podcasts, popular YouTube channels, and so forth contain advertisements
+for VPN companies. While Mullvad at the time of writing does not seem to
+sponsor any content creators, it is in the same category as VPN
+companies, which matters for reputational reasons.</li>
+<li><u>VPN review websites:</u> Most VPN review websites and reviews
+seem to be sponsored by VPN companies. This seems to be a <a href="https://www.reddit.com/r/Windscribe/comments/18oi48c/im_starting_to_think_all_these_vpnreview_sites/">popular
+opinion</a>.</li>
+<li><u>Low Quality and Questionable Morality of VPNs generally:</u> VPNs
+often come across as low-quality due to their pervasive and morally
+dubious advertising practices. [Broken-ExtLink--no-url-was-provided] but
+are often advertised or perceived as anonymity tools by many users. For
+examples of that, please follow [Broken-ExtLink--no-url-was-provided]
+and press expand on the right side. This criticism is general and not
+directed at Mullvad, which does not seem to engage in such
+practices.</li>
+<li><u>Implied Relationship of VPN Company Sponsoring:</u> If any Linux
+distribution (such as Kicksecure) would install a browser by default
+that contains the branding of a VPN company (such as Mullvad Browser),
+this might lead to users strongly suspecting that the VPN company is
+paying the Linux distribution for this and as a result might have
+inappropriate influence over the Linux distributions. This would happen
+irrespective of whether there actually has been an advertisement deal or
+not. Disclaimers would only partially help as these might often either
+not be noticed or regarded as incredible.</li>
+<li><u>Reputational impact:</u> Any reputation risk or damage is best
+avoided. Reputational integrity is deemed to be more foundational for
+the project's success than any technical advantages that any browser
+might provide.</li>
+<li><u>Actual impact:</u> While the facts (non-existence of a
+sponsorship deal, no influence by the VPN company on the Linux
+distribution) are all positive, avoidance of easily confused and
+negative impressions is best pursued for pragmatic reasons to avoid
+jeopardizing the overall success of the project.</li>
+<li><u>Conclusion:</u> To avoid any confusion, suspicion of having sold
+out, I have decided not to install any software by default that comes
+with branding or advertisements from any VPN companies.</li>
+</ul></li>
+</ul>
+<h2 id="Tor_Browser">Tor Browser</h2>
+<p>Not an option by default in Kicksecure because it is torified, hence
+slow. For that use case, it would be better to use <a href="../Whonix.html">Whonix</a>. See also <a href="../Privacy.html">Privacy Goals and Non-Goals of Kicksecure</a>.</p>
+<p>However, easily installable, opt-in for users of Kicksecure, see <a href="../Tor_Browser.html">Tor Browser</a>.</p>
+<h2 id="Tor_Browser_without_Tor">Tor Browser without Tor</h2>
+<p>As long as Tor Browser still says "Tor Browser" in the title bar, it
+will be too confusing. Same issue that
+[Broken-ExtLink--no-url-was-provided] had. Related: <a href="Default_Browser.html#In-House_Browser_Development">In-House Browser Development</a></p>
+<h2 id="Base_Browser">Base Browser</h2>
+<p>Both Mullvad Browser (MB) and Tor Browser (TB) are based on Base
+Browser (BB). However, Base Browser only exists as a source code
+repository. There are no binary builds available. Base Browser
+presumably has neither the Mullvad Browser nor Tor Browser branding,
+which is good. It is not separately maintained as a standalone project
+by any upstream. Not suitable for the same reasons as documented in
+chapter <a href="Default_Browser.html#Unbranded_or_Rebranded_Browser">Unbranded or Rebranded Browser</a>.</p>
+<p>Feature Request <a href="https://gitlab.torproject.org/tpo/applications/team/-/issues/28">Maintain
+a Standalone "Base Browser"</a> has been rejected.</p>
+<h2 id="Unbranded_or_Rebranded_Browser">Unbranded or Rebranded
+Browser</h2>
+<p>Unbranded or Rebranded Browser is not a third-party project. It means
+that the Kicksecure project would take an existing browser such as
+Mullvad Browser to unbrand or rebrand it.</p>
+<p>This is not an option at this time because it is difficult and
+time-consuming to unbrand, for example, Mullvad Browser, and compile it.
+The maintenance effort is high and not justified given the current
+available project resources.</p>
+<p>Mozilla Firefox feature request: <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1897432">Add an
+Unbranding Option in Firefox Settings</a></p>
+<p>Related:</p>
+<ul>
+<li><a href="https://wiki.mozilla.org/Add-ons/Extension_Signing#Unbranded_Builds">https://wiki.mozilla.org/Add-ons/Extension_Signing#Unbranded_Builds</a></li>
+<li><a href="Default_Browser.html#In-House_Browser_Development">In-House Browser Development</a></li>
+</ul>
+<p><a href="https://searchfox.org/mozilla-central/source/browser/branding/unofficial">https://searchfox.org/mozilla-central/source/browser/branding/unofficial</a></p>
+<h2 id="In-House_Browser_Development">In-House Browser Development</h2>
+<p>Not possible with the current available project resources. See also
+<a href="About_Computer_Insecurity.html#Too_Much_Source_Code">Too Much Source Code</a>, <a href="About_Computer_Insecurity.html#Too_Much_Complexity">Too Much Complexity</a> and <a href="Default_Browser.html#Difficulty_to_Create_a_Browser">Difficulty to Create a Browser</a>.</p>
+<p>For example, see <a href="https://codeberg.org/librewolf/issues/issues">https://codeberg.org/librewolf/issues/issues</a>
+to see the flood of complex issues that are constantly coming up.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="PureBrowser">PureBrowser</span></p>
+<p>PureOS previously maintained PureBrowser, but it got deprecated due
+to the too high maintenance effort.</p>
+<p><blockquote><p>There seem to be lots projects out there to "unMozilla" Firefox
+(removing things like DRM, telemetry, Pocket integration, etc) but it's
+getting harder to do that with every Firefox release. That's what we
+were up against with PureBrowser and it unfortunately became too
+daunting of a task (even with tracking ESR like we were). We also wanted
+to release close to upstream so we had the latest security patches ASAP
+but again, became unfeasible for our small
+team.<span class="blockquote-context"><a href="https://forums.puri.sm/t/purebrowser-removed-after-update/8635/11">https://forums.puri.sm/t/purebrowser-removed-after-update/8635/11</a></span></p></blockquote></p>
+<p>A Librewolf developer also confirmed that hard forking Firefox is
+infeasible.</p>
+<p><blockquote><p>[...]</p>
+<p>No, we are absolutely not prepared to do that. We are a (very) small
+team with a rather limited amount of time (and energy) to work on
+LibreWolf even with it just the way it currently is. We would not even
+remotely be able to fork and maintain a browser fully, let alone to
+continually develop and improve it. Nor would we have the expertise to
+do so. Which would mean that if we tried to do that, we would most
+certainly release an insecure product, getting worse over time, which I
+would not ever want to be responsible for.</p>
+<p>Sorry to disappoint on that front - but: it is what it
+is.<span class="blockquote-context">Librewolf feature request: <a href="https://codeberg.org/librewolf/issues/issues/2252">Prepared to
+fork Firefox?</a>, reply by <a href="https://codeberg.org/ohfp">ohfp</a>, Librewolf
+developer</span></p></blockquote></p>
+<h2 id="Waterfox">Waterfox</h2>
+<p><a href="https://www.waterfox.net/">https://www.waterfox.net/</a></p>
+<p>Developed by BrowserWorks Ltd. <a href="https://browser.works/">https://browser.works/</a> A soft-fork of
+Firefox. First released in March 2011<sup class="reference"><a href="#cite_note-4">[4]</a></sup> and continuously
+maintained since then as of March 2025. Claims to not send any telemetry
+by default.</p>
+<p>Several concerns listed at
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/192#issuecomment-2269688442">Kicksecure/security-misc</a></span>
+Some additional concerns and comments:</p>
+<ul>
+<li>Very little information about Waterfox is visible on the front page,
+aside from general claims about security and privacy. Much more info is
+visible in the Waterfox blog at <a href="https://www.waterfox.net/blog/">https://www.waterfox.net/blog/</a></li>
+<li>BrowserWorks' website is very minimal. It links to Waterfox Desktop,
+Waterfox Android, Waterfox Search (broken), and "Oblivious Proxy" (link
+appears to do nothing). The primary email address given for contacting
+BrowserWorks is someone's personal fastmail.com email address. This
+raises some maintainability concerns, though Waterfox has been
+continuously maintained for a long time.</li>
+<li>Waterfox is not "part of the hyper-privacy community" according to
+the lead developer. They recommend the use of Tor for users with high
+privacy requirements. <a href="https://www.waterfox.net/blog/waterfox-has-joined-system1/#ethics-and-privacy">https://www.waterfox.net/blog/waterfox-has-joined-system1/#ethics-and-privacy</a>
+It is focused on speed and customization, it does not appear to have
+security hardening as a primary goal.</li>
+<li>No pre-built deb package, binaries are only available as a
+tarball.</li>
+<li>Only supports x86_64, no ARM64 binaries.</li>
+<li>Does NOT pass the radio silence test - Wireshark shows a flurry of
+activity as soon as Waterfox is launched for the first time, much of
+which appears to be connecting to Google's CDN.</li>
+</ul>
+<h2 id="Pale_Moon">Pale Moon</h2>
+<p><a href="https://www.palemoon.org/">https://www.palemoon.org/</a></p>
+<p>Several concerns listed at
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/192#issuecomment-2276225662.">Kicksecure/security-misc</a></span>
+Very small development team, potentially high risk of security
+vulnerabilities due to low developer resources. Extreme amounts of
+controversy and drama within the project have led to questionable
+decisions with regard to browser development
+(https://www.palemoon.org/history.shtml, section "2021, or: how Open
+Source ends"), and they report on this same history page that their
+infrastructure has been compromised at least once (section "A (failed)
+reboot into the Goanna Runtime Environment").</p>
+<h2 id="GNUzilla_/_IceCat">GNUzilla / IceCat</h2>
+<ul>
+<li><a href="https://www.gnu.org/software/gnuzilla/">https://www.gnu.org/software/gnuzilla/</a></li>
+<li><a href="https://directory.fsf.org/wiki/Gnuzilla">https://directory.fsf.org/wiki/Gnuzilla</a></li>
+</ul>
+<p>Developed by the Free Software Foundation. A Firefox ESR soft-fork.
+Appears to be actively maintained by a team of three
+developers<sup class="reference"><a href="#cite_note-5">[5]</a></sup> as of March 2025. Additional features
+include:</p>
+<ul>
+<li>Non-free JavaScript blocking</li>
+<li>Blocks all third-party content linked to by web pages by default,
+thus automatically blocking ads</li>
+<li>Some forms of anti-fingerprinting (such as JShelter and avoiding
+leaking IP addresses when using WebRTC)</li>
+<li>Supposedly disabled telemetry<sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>No official binaries available for any platform, must be built from
+source or installed via the Guix package manager</li>
+<li>Does not appear to have security hardening as a primary objective,
+though disabling non-free JS is a good step in that direction</li>
+</ul>
+<p><a href="https://icecatbrowser.org/">https://icecatbrowser.org/</a></p>
+<h2 id="Trivalent">Trivalent</h2>
+<p><span class="manually-placed-anchor " id="hardened-chromium"></span></p>
+<ul>
+<li>As per contributed understanding at the time of writing...</li>
+<li><a href="https://github.com/secureblue/Trivalent">https://github.com/secureblue/Trivalent</a></li>
+<li>Developed by the the secureblue project. A soft-fork of Chromium,
+basically applies two patch stacks on top of Fedora's packaged version
+of Chromium.</li>
+<li>Primary goal is security hardening.</li>
+<li>Uses patches from GrapheneOS's Vanadium project, a security-hardened
+Chromium soft-fork for Android. Explicitly designed to be used with
+hardened_malloc.</li>
+<li>Makes secondary browser features opt-in rather than opt-out (such as
+search suggestions).</li>
+<li>If it was available from packages.debian.org, Trivalent would be
+considered for being Kicksecure default browser.</li>
+<li>Only offers binaries for secureblue itself, unclear whether these
+binaries would work on even Fedora.</li>
+<li>Fedora-centric build process, may be difficult or very difficult to
+build for Debian.</li>
+</ul>
+<h2 id="Ladybird">Ladybird</h2>
+<ul>
+<li><a href="https://ladybird.org/">https://ladybird.org/</a></li>
+<li>Fully independent web browser, not based on Firefox or
+Chromium.</li>
+<li>Still in early development, not generally usable and very likely has
+security issues in its current state of development.</li>
+<li>May be usable in the future, once mature and packaged for Debian.
+Will likely require multiple years more development before it is secure
+and usable.</li>
+</ul>
+<h2 id="Servo">Servo</h2>
+<ul>
+<li><a href="https://servo.org/">https://servo.org/</a></li>
+<li>todo</li>
+</ul>
+<h2 id="Zen_Browser">Zen Browser</h2>
+<ul>
+<li><a href="https://zen-browser.app/">https://zen-browser.app/</a></li>
+<li>todo</li>
+</ul>
+<h2 id="Orion_Browser">Orion Browser</h2>
+<ul>
+<li>Orion Browser by Kagi</li>
+<li><a href="https://kagi.com/orion/">https://kagi.com/orion/</a></li>
+<li>not Open Source at time of writing:
+<ul>
+<li><a href="https://help.kagi.com/orion/faq/faq.html#oss">https://help.kagi.com/orion/faq/faq.html#oss</a></li>
+<li><a href="https://orionfeedback.org/d/3882-open-source-the-browser">https://orionfeedback.org/d/3882-open-source-the-browser</a></li>
+<li><a href="https://orionfeedback.org/d/3882-open-source-the-browser/42">https://orionfeedback.org/d/3882-open-source-the-browser/42</a></li>
+</ul></li>
+<li><a href="https://youtube.com/watch?v=oyF21g5YI1o">https://youtube.com/watch?v=oyF21g5YI1o</a></li>
+</ul>
+<h2 id="Customized_Settings_Projects">Customized Settings Projects</h2>
+<p>There are a number of projects that provide customized settings for
+Firefox. It is unlikely that most of these projects will be useful to
+Kicksecure, since they may enable settings that are potentially
+dangerous or disable settings that users need enabled, thus adding extra
+risk and support burden to the project. They are listed together here
+since they are not really web browsers, simply different ways of
+configuring existing browsers.</p>
+<h3 id="ffprofile.com">ffprofile.com</h3>
+<ul>
+<li><a href="https://ffprofile.com/">https://ffprofile.com/</a></li>
+<li><a href="https://github.com/allo-/ffprofile">https://github.com/allo-/ffprofile</a></li>
+</ul>
+<p>Creates custom configuration profiles for Firefox, allowing one to
+customize a large number of settings that Firefox does not directly
+expose to the user. Can also provide features beyond ones included in
+Firefox by default via browser extensions.</p>
+<ul>
+<li>Provides a wizard-like user interface to the end user for selecting
+settings.</li>
+<li>Takes all of the input from the user, and builds it into two files,
+<code>profile.zip</code> and <code>enterprise_policy.zip</code>. The
+user is supposed to then unzip these files into appropriate directories
+to apply their selected settings to the web browser.</li>
+<li>Pros:
+<ul>
+<li>Allows customizing a large number of privacy-related features,
+including disabling telemetry and features that could be used to more
+easily track a user.</li>
+<li>Relatively intuitive, wizard-like user interface, with each page
+similar to an application's settings dialog. Much easier to use than
+having to fiddle with <a href="about:config"><code>about:config</code></a> and enterprise policy
+JSON manually.</li>
+<li>Avoids some of the problems with opinionated configuration projects
+such as arkenfox, Betterfox, and the like - the user gets to choose
+their own settings rather than living with whatever settings a random
+stranger decided was good for them.</li>
+</ul></li>
+<li>Cons:
+<ul>
+<li>The profile config files are built <em>on the server side</em>, not
+on the client side in the web browser itself, meaning if the project's
+web server is compromised, it may serve compromised zip files.</li>
+<li>Can bundle Firefox extensions into the zip files, further increasing
+the damage a web server compromise could do.</li>
+<li>Running locally requires setting up a local web app, which is
+non-trivial. You can't just download it and run it.</li>
+<li>The extensions appear to be stored directly on the host server, not
+downloaded dynamically from Mozilla. This further increases the risk of
+a compromised project.</li>
+<li>Requires the user to manually unzip the built files into the correct
+directories. This is arguably the best that a web app can do, however
+this is likely to be a very challenging step for non-technical users,
+and may even be slightly tricky for technical users.</li>
+<li>To avoid trusting the project to be fully trustworthy, the end user
+would have to read through the entire generated configuration, ensuring
+no harmful features were enabled, and no important features were
+disabled. Browser addons would also have to be removed from the
+configuration, and then manually installed by the end user directly from
+Mozilla.</li>
+<li>The applicable versions of Firefox are not spelled out on the
+website, thus it is unclear if all of the configuration options are
+actually available in Firefox ESR or if attempting to enable them would
+break Firefox ESR.</li>
+</ul></li>
+<li>Potential ideas:
+<ul>
+<li>Re-implement an audited version of ffprofile as a desktop app and
+include in Kicksecure? The app would be able to download addons from
+Mozilla directly (if it offered addons as a feature), install
+configuration automatically, and would come from a source users of
+Kicksecure already trust. Configuration builds would also be done
+client-side, removing most of the risks inherent if a compromised server
+provided the configuration.</li>
+<li>Would require a simple "use recommended settings, please proceed"
+button for most users.</li>
+</ul></li>
+</ul>
+<h3 id="arkenfox">arkenfox</h3>
+<p><a href="https://github.com/arkenfox/user.js">https://github.com/arkenfox/user.js</a></p>
+<p>A settings file improving Firefox security and privacy.</p>
+<p><strong>Todo</strong></p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Disabled telemetry by default.</li>
+</ul>
+<p><strong>Issues:</strong></p>
+<ul>
+<li>Phone home. Does not do anything about Firefox phone home. <a href="https://github.com/arkenfox/user.js/issues/1807">Feature Request:
+Radio Silence by Default for Browser Startup and Background Connections
+aka "Disable Phone Home"</a> got instantly closed, rejected and locked
+for further discussion.
+<ul>
+<li><a href="https://github.com/arkenfox/user.js/issues/917">https://github.com/arkenfox/user.js/issues/917</a>
+was deleted but is still available on <a href="https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/917#issuecomment-609087428">https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/917#issuecomment-609087428</a>
+<ul>
+<li>Also deleted:
+<ul>
+<li><a href="https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/892">https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/892</a></li>
+<li><a href="https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/893">https://web.archive.org/web/20210602135212/https://github.com/arkenfox/user.js/issues/893</a></li>
+</ul></li>
+</ul></li>
+<li>Has a different viewpoint on telemetry. Quote <a href="https://github.com/arkenfox/user.js/blob/4f37c32a0e219cc7deefff33b5683f546e3d8ac9/user.js">https://github.com/arkenfox/user.js/blob/4f37c32a0e219cc7deefff33b5683f546e3d8ac9/user.js</a></li>
+</ul></li>
+</ul>
+<pre><code>/*** [SECTION 8500]: TELEMETRY
+   Arkenfox does not consider Firefox telemetry to be a privacy or security concern - comments below. But
+   since most arkenfox users prefer it disabled for peace of mind, we&#39;ll do that rather than cause overrides.
+
+   Opt-out
+   - Telemetry is essential: a browser engine is a _very_ large complex beast costing billions to maintain
+   - Opt-in telemetry _does not_ work and results in data that is unrepresentative and may be misleading
+   Choice
+   - Every new profile on first use provides data collection/use policy and the abillty to opt-out
+   - It can be disabled at any time (Settings&gt;Privacy &amp; Security&gt;Data Collection and Use)
+   Data
+   - no PII (Personally Identifiable Information)
+   - all data can be viewed in about:telemetry
+   - uses Prio [1][2][3], Glean [4], Oblivious HTTP [5][6]
+
+   Firefox code is open source. Mozilla is responsible with opt-out. They are transparent, and they have gone
+   above and beyond in terms of privacy preserving technologies. At this point, if you don&#39;t trust Firefox,
+   then why are you using their browser?
+   - not to be confused with holding them to a higher standard and checking browser changes/implementations
+
+   [1] https://crypto.stanford.edu/prio/
+   [2] https://hacks.mozilla.org/2018/10/testing-privacy-preserving-telemetry-with-prio/
+   [3] https://blog.mozilla.org/security/2019/06/06/next-steps-in-privacy-preserving-telemetry-with-prio/
+   [4] https://firefox-source-docs.mozilla.org/toolkit/components/glean/index.html
+   [5] https://firefox-source-docs.mozilla.org/toolkit/components/glean/user/ohttp.html
+   [6] https://blog.mozilla.org/en/tag/oblivious-http/
+***/</code></pre>
+<p><strong>Non-issues:</strong></p>
+<ul>
+<li><a href="https://github.com/arkenfox/user.js/issues/1795">https://github.com/arkenfox/user.js/issues/1795</a></li>
+<li>Telemetry. Ticket <a href="https://github.com/arkenfox/user.js/issues/1660">https://github.com/arkenfox/user.js/issues/1660</a>
+is confusing but it's not about enabling telemetry. Only about moving it
+to its own section in the config file. Which is more like a textual,
+stylistic change.</li>
+<li>Using <code>pref(</code> instead of <code>user_pref(</code> is not
+an issue as per:
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/183#issuecomment-1895948795">Kicksecure/security-misc</a></span></li>
+</ul>
+<p>That could easily be handled during the package build process with
+something like this:</p>
+<pre><code>search=&#39;pref(&quot;&#39;
+replace=&#39;user_pref(&quot;&#39;
+file_name=&#39;user.js&#39;
+str_replace &quot;$search&quot; &quot;$replace&quot; &quot;$file_name&quot;</code></pre>
+<p>The <code>diff</code> would be reasonably simple.</p>
+<h3 id="deskapps-harden">deskapps-harden</h3>
+<p><a href="https://github.com/monsieuremre/deskapps-harden">https://github.com/monsieuremre/deskapps-harden</a></p>
+<p>A settings file improving Firefox security and privacy.</p>
+<p><strong>todo:</strong></p>
+<ul>
+<li>Discuss if settings locking is really necessary:
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/192#issuecomment-1905981518">Kicksecure/security-misc</a></span></li>
+</ul>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Responsive upstream.</li>
+<li>Founded by a Kicksecure contributor.</li>
+<li>Clean, small, policy, single 1 file.</li>
+</ul>
+<p><strong>Disadvantages:</strong></p>
+<ul>
+<li>New project.</li>
+<li>Few users, bug reports, and feature requests yet, hence difficult to
+judge the merits of the project.</li>
+<li>No known third-party reviews yet.</li>
+<li>Project name might be too limiting to gain lots of non-Kicksecure
+users using the same, which would be an advantage to get more users
+(fingerprint shared by more users and hopefully more review,
+suggestions).</li>
+<li>Seems to no longer be actively maintained.</li>
+</ul>
+<h3 id="pyllyukko_user.js">pyllyukko user.js</h3>
+<p><a href="https://github.com/pyllyukko/user.js">https://github.com/pyllyukko/user.js</a></p>
+<p>no phone home feature request: <a href="https://github.com/pyllyukko/user.js/issues/509#issuecomment-1947855378">https://github.com/pyllyukko/user.js/issues/509#issuecomment-1947855378</a></p>
+<h3 id="More">More</h3>
+<ul>
+<li><a href="https://codeberg.org/rusty-snake/firefox-config">https://codeberg.org/rusty-snake/firefox-config</a></li>
+<li><a href="https://github.com/crssi/Firefox">https://github.com/crssi/Firefox</a></li>
+<li><a href="https://github.com/yokoffing/Betterfox">https://github.com/yokoffing/Betterfox</a></li>
+<li><a href="https://codeberg.org/celenity/Phoenix/">https://codeberg.org/celenity/Phoenix/</a></li>
+</ul>
+<p>TODO: ?</p>
+<h1 id="Conclusion">Conclusion</h1>
+<p>A lot of presumably more secure by default (and better privacy by
+default) browsers have been considered.</p>
+<p>No suitable, well-maintained with timely security upgrades,
+vendor-neutral, acceptable usability browser project could be found.</p>
+<h1 id="Discussions">Discussions</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/chromium-browser-for-kicksecure-discussions-not-whonix/10388">Chromium
+Browser for Kicksecure Discussions (not Whonix)</a></li>
+<li><a href="https://github.com/Kicksecure/security-misc/issues/192">Kicksecure
+Default Browser Discussion</a></li>
+<li><a href="https://forum.qubes-os.org/t/is-there-a-reason-firefox-needs-to-have-vulnerable-insecure-settings-in-the-templates/23566">https://forum.qubes-os.org/t/is-there-a-reason-firefox-needs-to-have-vulnerable-insecure-settings-in-the-templates/23566</a></li>
+<li><a href="https://forum.qubes-os.org/t/is-firefox-really-an-appropriate-default-browser-for-qubes/26042">https://forum.qubes-os.org/t/is-firefox-really-an-appropriate-default-browser-for-qubes/26042</a></li>
+</ul>
+<h1 id="Resources">Resources</h1>
+<ul>
+<li><a href="https://www.unixsheikh.com/articles/choose-your-browser-carefully.html">https://www.unixsheikh.com/articles/choose-your-browser-carefully.html</a>
+<ul>
+<li><a href="https://archive.is/lTOFc">https://archive.is/lTOFc</a></li>
+</ul></li>
+<li><a href="https://digdeeper.club/articles/browsers.xhtml">https://digdeeper.club/articles/browsers.xhtml</a></li>
+<li><a href="https://privacytests.org/">https://privacytests.org/</a></li>
+</ul>
+<h1 id="Difficulty_to_Create_a_Browser">Difficulty to Create a
+Browser</h1>
+<p><blockquote><p>This is an application which can require more than 6 hours per build
+on a fast computer. We allocated a new build server with high
+specifications (Ryzen 9 3900, 128GB RAM, NMVe) and reduced the time it
+took to build Chromium to a little more than an
+hour.<span class="blockquote-context"><a href="https://blog.linuxmint.com/?p=3978">Linux Mint</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=z1Eq0xlVs3g">https://www.youtube.com/watch?v=z1Eq0xlVs3g</a></li>
+<li><a href="https://blog.samuelmaddock.com/posts/google-widevine-blocked-my-browser/">https://blog.samuelmaddock.com/posts/google-widevine-blocked-my-browser/</a></li>
+<li><a href="https://www.theregister.com/2019/04/03/googles_widevine_drm/">https://www.theregister.com/2019/04/03/googles_widevine_drm/</a></li>
+</ul>
+<h1 id="Hard_Fork_versus_Soft_Fork">Hard Fork versus Soft Fork</h1>
+<p><a href="https://codeberg.org/librewolf/issues/issues/2252">https://codeberg.org/librewolf/issues/issues/2252</a></p>
+<h1 id="Browser_Deals">Browser Deals</h1>
+<ul>
+<li><a href="https://www.theregister.com/2022/01/12/mint_203_mozilla/">https://www.theregister.com/2022/01/12/mint_203_mozilla/</a></li>
+</ul>
+<h1 id="Related">Related</h1>
+<ul>
+<li><a href="../Chrome.html">Chrome</a></li>
+<li><a href="../Chromium.html">Chromium</a></li>
+<li><a href="Chromium.html">Dev/Chromium</a></li>
+<li><a href="Default_Browser.html">Dev/Default
+Browser</a></li>
+<li><a href="../Google_Chrome_Repository_Insecurity.html">Google Chrome Repository Insecurity</a></li>
+<li><a href="https://forums.whonix.org/t/chromium-browser-for-kicksecure-discussions-not-whonix/10388">https://forums.whonix.org/t/chromium-browser-for-kicksecure-discussions-not-whonix/10388</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">* <a href="https://support.mozilla.org/en-US/questions/1117407">https://support.mozilla.org/en-US/questions/1117407</a>
+* <a href="https://www.infoq.com/news/2012/01/Firefox-ESR/">https://www.infoq.com/news/2012/01/Firefox-ESR/</a></li>
+<li id="cite_note-2"><pre><code> From - Wed Mar 6 09:46:50 2024 X-Account-Key: account17 X-UIDL: 000007a4614cbb3b X-Mozilla-Status: 0001 X-Mozilla-Status2: 00000000 X-Mozilla-Keys: Return-Path: &lt;mkaply@mozilla.com&gt; X-Original-To: adrelanos@kicksecure.com Delivered-To: adrelanos@kicksecure.com DMARC-Filter: OpenDMARC Filter v1.4.2 kicksecure.com 434B3360215 Authentication-Results: OpenDMARC; dmarc=pass (p=none dis=none) header.from=mozilla.com Authentication-Results: kicksecure.com; dkim=pass (1024-bit key; unprotected) header.d=mozilla.com header.i=@mozilla.com header.a=rsa-sha256 header.s=google header.b=KO0pwwTC; dkim-atps=neutral Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.128.41; helo=mail-wm1-f41.google.com; envelope-from=mkaply@mozilla.com; receiver=kicksecure.com Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384) (No client certificate requested) by kicksecure.com (Postfix) with ESMTPS id 434B3360215 for &lt;adrelanos@kicksecure.com&gt;; Mon, 4 Mar 2024 21:53:55 +0000 (UTC) Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-412ecbe4b57so5235e9.3 for &lt;adrelanos@kicksecure.com&gt;; Mon, 04 Mar 2024 13:53:56 -0800 (PST) DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mozilla.com; s=google; t=1709589235; x=1710194035; darn=kicksecure.com; h=to:subject:message-id:date:from:in-reply-to:references:mime-version :from:to:cc:subject:date:message-id:reply-to; bh=XP05dmdJPTeHoyDZnAH+TBrLnk5Pk9nN86hupFmiynM=; b=KO0pwwTCrnXP5ndCK8Idwaw02FaGISaHDio7cvLHI5kUVEftpDvfZqIwVUiUlf+ejo Vwza2tyLTSXsXargMX/r6DweuvcaXr/ORbStaNFj6/5FIdggVHnuFWRt3z7YpaiUX55u Bg5c4HLAlo22WBp/GbDgA5CPz1NLOfBnLH+a0= X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20230601; t=1709589235; x=1710194035; h=to:subject:message-id:date:from:in-reply-to:references:mime-version :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to; bh=XP05dmdJPTeHoyDZnAH+TBrLnk5Pk9nN86hupFmiynM=; b=Bcwyyj+W6zE5/e+hllNZwdi+utLxDjBq+Km8vDpIZ4hqd7yTkgfmxGJwMgJlKjV9Su 5kSnHn+9cHaDYqj97VgHiMojtHCdfR+AuXAj8R3eKcd82BPYLuD/o0FPz22KviwxyOOi gH7VMuTkeYh1bDu60PdHKj4Qf5ihieIK+ZzH4a0+Uty0IiqdsE1sIfa8Li6HWkspd8pK wtWM9+ba+KZE6AlE7YlmkB24QzI8U/JCRvKbRBIC2nJgk8a/G7IRAC5VRSeeuWS9PAqY hGOAcimCEzLwge2yYe9wBLzlCuw132yGwb9lku72aDxDhM7BGzLac3lmH97qKLrOfLEl o2pg== X-Gm-Message-State: AOJu0YxpDPXGivRK0mFs4G9dtgoxCoyTfJ/mX6t7leiFUBLyQI2wez40 IQvQ4VkXhchvSNDMu9PEn2ZPA32/fuMZtTXo1/Y2nHnm6iCosmb7zOT9bxH4jmL+J2qyDibpTbB XbXJvmbMkTV+18tIkP72ZCCabFHBunQ2vdgQGK/UAGc8VC/HydA== X-Google-Smtp-Source: AGHT+IEGi33bUA1HhC2dlhFxFORD6YygNB0bn9HZl9i8sVjS5DMuaQWavGTA9U6pafzoOu4Qw7iQzV6Y/MLCJ+h7FPc= X-Received: by 2002:a05:600c:3581:b0:412:c29d:a3d7 with SMTP id p1-20020a05600c358100b00412c29da3d7mr7819910wmq.16.1709589235005; Mon, 04 Mar 2024 13:53:55 -0800 (PST) MIME-Version: 1.0 References: &lt;0cff8095-6714-43e2-abcc-effba6bd1ba9@kicksecure.com&gt; &lt;CABrFwTKbdhb9Dso46ywiVW1KOoLzF1PmEEM7z0cYAMMWXr2XuA@mail.gmail.com&gt; In-Reply-To: &lt;CABrFwTKbdhb9Dso46ywiVW1KOoLzF1PmEEM7z0cYAMMWXr2XuA@mail.gmail.com&gt; From: Mike Kaply &lt;mkaply@mozilla.com&gt; Date: Mon, 4 Mar 2024 16:53:43 -0500 Message-ID: &lt;CAHueOzDskb_3-oCNwja0D6ea2TMnOHTqJ==xV0bn-5VcBJv-Wg@mail.gmail.com&gt; Subject: Fwd: Kicksecure Default Browser Configuration Trademark Question To: adrelanos@kicksecure.com Content-Type: multipart/alternative; boundary=&quot;000000000000109e5d0612dcc396&quot; X-Spam-Status: No, score=-1.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID, DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,RCVD_IN_MSPIKE_H2, URIBL_BLOCKED autolearn=ham autolearn_force=no version=4.0.0 X-Spam-Report: * -1.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2) * [209.85.128.41 listed in wl.mailspike.net] * 0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was blocked. * See http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block * for more information. * [URI: mozilla.org] * 0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily * valid * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from * envelope-from domain * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author&#39;s * domain * 0.0 HTML_MESSAGE BODY: HTML included in message X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on kicksecure.com --000000000000109e5d0612dcc396 Content-Type: text/plain; charset=&quot;UTF-8&quot; Content-Transfer-Encoding: quoted-printable Patrick, Thanks for your email. Unfortunately the changes you would like to make do not comply with our distribution policy &lt;https://www.mozilla.org/foundation/trademarks/distribution-policy/&gt;, including the following: You may not add to, remove, or change any part of the software, including the Mozilla trademarks themselves. For example, you may not add any extensions to Firefox, change default settings, or alter search codes. If you would like to distribute Firefox unmodified, you can use our .deb. You can, of course, make any modifications you wish to Firefox=E2=80=99s op= en source software if you distribute a browser without Mozilla and Firefox trademarks. Based on your requirements, the Tor Browser might also be an option you could consider. Mike Kaply Technical Partner Lead Mozilla Corporation On Thu, Feb 15, 2024 at 12:32=E2=80=AFAM &#39;Patrick Schleizer&#39; via trademark permissions &lt;trademark-permissions@mozilla.com&gt; wrote: &gt; I am the lead developer of the Kicksecure project, a Linux distribution &gt; focused on security and based on Debian. Kicksecure is developed by the &gt; same team as Whonix, which is somewhat more well-known. &gt; &gt; Our hardened defaults extend to the default user applications on the &gt; system, including a daily drivable web browser. &gt; &gt; We are currently in the process of reviewing and considering potential &gt; candidates to be the default web browser on Kicksecure. &gt; &gt; With good intentions, various Kicksecure contributors have suggested &gt; shipping Mozilla Firefox as the default browser. However, some &gt; contributors, including myself, are concerned about the modifications to &gt; Firefox&#39;s default settings we intend to make, versus Mozilla&#39;s Trademark &gt; Policy. We have no intention of rebranding or changing the compilation &gt; options of Firefox binaries. In fact, we prefer to keep the Mozilla &gt; trademarked names for the products to provide our users with a sense of &gt; familiarity. &gt; &gt; We would acquire unaltered binaries from one of the following sources: &gt; &gt; - Debian&#39;s official packages.debian.org repository &gt; - Mozilla&#39;s official packages.mozilla.org repository &gt; - Mozilla&#39;s official Firefox Flathub repository &gt; &gt; Ideally, we would use Mozilla sources. &gt; &gt; Here is a trademark-respecting list of things we are aware of and want &gt; to avoid for understandable reasons: &gt; &gt; * Not using Mozilla trademarks in the name of our business, product, &gt; service, app, domain name, publication, or other offering. &gt; * Not using marks, logos, company names, slogans, domain names, or &gt; designs that are confusingly similar to Mozilla trademarks. &gt; * Not using Mozilla trademarks in a way that incorrectly implies &gt; affiliation with, or sponsorship, endorsement, or approval by Mozilla of &gt; our products or services. &gt; * Not displaying Mozilla trademarks more prominently than our product, &gt; service, or company name. &gt; * Not using Mozilla trademarks on merchandise for sale (e.g., selling &gt; t-shirts, mugs, etc.) &gt; * Not using Mozilla trademarks for any other form of commercial use &gt; (e.g., offering technical support services), unless such use is limited &gt; to a truthful and descriptive reference (e.g., =E2=80=9CIndependent techn= ical &gt; support for Mozilla=E2=80=99s Firefox browser=E2=80=9D). &gt; * Not modifying Mozilla=E2=80=99s trademarks, abbreviating them, or combi= ning &gt; them with any other symbols, words, or images, or incorporating them &gt; into a tagline or slogan. &gt; &gt; And here is a list of things that we would like to do. Our primary &gt; intention is to have a default policy (or employ other means if more &gt; appropriate) to do the following: &gt; &gt; * Use unaltered binaries. &gt; * Disable all Telemetry, Studies, Reports, and non-essential implicit &gt; outgoing connections. &gt; * Force install the addon &quot;uBlock Origin&quot; by Raymond Hill. &gt; * Set and lock hardened SSL/TLS-related settings, including, but not &gt; limited to, setting HTTPS-only mode as the default, blocking mixed &gt; content, not trusting unsafe negotiations, disabling unencrypted &gt; background requests, etc. &gt; * Disable sponsored components, like bookmarks and suggestions. &gt; * Set and lock strict mode for ETP. &gt; * Change the default homepage. &gt; * Disable the default display of the &quot;Know Your Rights&quot; information page. &gt; &gt; As an illustrative point of how specifically we plan to apply these &gt; changes: &gt; &gt; - Our intended changes would be made by providing a separate package &gt; (for example, named &quot;hardened-browser-config&quot;). &gt; - This package would install config file(s) in folder(s) such as &gt; /etc/firefox or /etc/firefox-esr. &gt; - The package would be installed by default. &gt; &gt; We are willing to elaborate on the details and consider making &gt; modifications upon request by Mozilla. &gt; &gt; We are not asking for any special permission that does not extend to &gt; derivatives. As stated on the Debian issue tracker: &gt; &gt; &gt; In case of derivatives of Debian, Firefox branding can be used as long &gt; &gt; as the patches applied are in the same category as described above. &gt; &gt; This is related to the Debian Free Software Guidelines (DFSG) (item 8): &gt; &gt; &gt; License must not be specific to Debian &gt; &gt; &gt; &gt; The rights attached to the program must not depend on the program&#39;s &gt; being part of a Debian system. If the program is extracted from Debian &gt; and used or distributed without Debian but otherwise within the terms of &gt; the program&#39;s license, all parties to whom the program is redistributed &gt; should have the same rights as those that are granted in conjunction &gt; with the Debian system. &gt; &gt; We would like to be able to state similarly: &gt; &gt; &gt; In case of derivatives of Kicksecure, Firefox branding can be used as &gt; long as the patches applied are in the same category as described above. &gt; &gt; We are asking for your opinion on whether this would be in conflict with &gt; Mozilla&#39;s Trademark Policy. &gt; &gt; We intend to publish our correspondence for the sake of transparency. &gt; Our communications and your responses will be publicized in full, &gt; verbatim, without modifications. &gt; &gt; -- &gt; You received this message because you are subscribed to the Google Groups &gt; &quot;trademark permissions&quot; group. &gt; To unsubscribe from this group and stop receiving emails from it, send an &gt; email to trademark-permissions+unsubscribe@mozilla.com. &gt; --000000000000109e5d0612dcc396 Content-Type: text/html; charset=&quot;UTF-8&quot; Content-Transfer-Encoding: quoted-printable &lt;div dir=3D&quot;ltr&quot;&gt;&lt;div&gt;Patrick,&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Thanks for your ema= il.&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Unfortunately the changes you would like t= o make do not comply with our&lt;a href=3D&quot;https://www.mozilla.org/foundation/= trademarks/distribution-policy/&quot;&gt; distribution policy&lt;/a&gt;, including the fo= llowing:&lt;/div&gt;&lt;br&gt;&lt;div style=3D&quot;margin-left:40px&quot;&gt;You may not add to, remov= e, or change any part of the software, including the Mozilla trademarks the= mselves. For example, you may not add any extensions to Firefox, change def= ault settings, or alter search codes.&lt;br&gt;&lt;/div&gt;&lt;br&gt;If you would like to dis= tribute Firefox unmodified, you can use our .deb.&lt;br&gt;&lt;br&gt;You can, of course= , make any modifications you wish to Firefox=E2=80=99s open source software= if you distribute a browser without Mozilla and Firefox trademarks. Based = on your requirements, the Tor Browser might also be an option you could con= sider.&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Mike Kaply&lt;/div&gt;&lt;div&gt;Technical Partner Lead&lt;/= div&gt;&lt;div&gt;Mozilla Corporation&lt;br&gt;&lt;/div&gt;&lt;div class=3D&quot;gmail_quote&quot;&gt;&lt;br&gt;&lt;div c= lass=3D&quot;gmail_quote&quot;&gt;&lt;div dir=3D&quot;ltr&quot; class=3D&quot;gmail_attr&quot;&gt;On Thu, Feb 15, = 2024 at 12:32=E2=80=AFAM &amp;#39;Patrick Schleizer&amp;#39; via trademark permissi= ons &amp;lt;&lt;a href=3D&quot;mailto:trademark-permissions@mozilla.com&quot; target=3D&quot;_bla= nk&quot;&gt;trademark-permissions@mozilla.com&lt;/a&gt;&amp;gt; wrote:&lt;br&gt;&lt;/div&gt;<blockquote><p>I am the lead developer of the Kicksec= ure project, a Linux
+distribution<br />
+focused on security and based on Debian. Kicksecure is developed by the
+&lt;br= &gt; same team as Whonix, which is somewhat more
+well-known.<br />
+<br />
+Our hardened defaults extend to the default user applications on
+the<br />
+system, including a daily drivable web browser.<br />
+<br />
+We are currently in the process of reviewing and considering
+potential<br />
+candidates to be the default web browser on Kicksecure.<br />
+<br />
+With good intentions, various Kicksecure contributors have
+suggested<br />
+shipping Mozilla Firefox as the default browser. However, some<br />
+contributors, including myself, are concerned about the modifications to
+&lt;b= r&gt; Firefox's default settings we intend to make, versus
+Mozilla's Trad= emark<br />
+Policy. We have no intention of rebranding or changing the
+compilation<br />
+options of Firefox binaries. In fact, we prefer to keep the
+Mozilla<br />
+trademarked names for the products to provide our users with a sense of
+&lt;br= &gt; familiarity.<br />
+<br />
+We would acquire unaltered binaries from one of the following
+sources:<br />
+<br />
+- Debian's official &lt;a href=3D"<a href="http://packages.debian.org">http://packages.debian.org</a>"
+rel=3D"noref= errer" target=3D"_blank"&gt;packages.debian.org</a>
+repository<br />
+- Mozilla's official &lt;a href=3D"<a href="http://packages.mozilla.org">http://packages.mozilla.org</a>"
+rel=3D"nor= eferrer" target=3D"_blank"&gt;packages.mozilla.org</a>
+repository<br />
+- Mozilla's official Firefox Flathub repository<br />
+<br />
+Ideally, we would use Mozilla sources.<br />
+<br />
+Here is a trademark-respecting list of things we are aware of and
+want<br />
+to avoid for understandable reasons:<br />
+<br />
+* Not using Mozilla trademarks in the name of our business,
+product,<br />
+service, app, domain name, publication, or other offering.<br />
+* Not using marks, logos, company names, slogans, domain names, or<br />
+designs that are confusingly similar to Mozilla trademarks.<br />
+* Not using Mozilla trademarks in a way that incorrectly implies<br />
+affiliation with, or sponsorship, endorsement, or approval by Mozilla of
+&lt;b= r&gt; our products or services.<br />
+* Not displaying Mozilla trademarks more prominently than our
+product,<br />
+service, or company name.<br />
+* Not using Mozilla trademarks on merchandise for sale (e.g.,
+selling<br />
+t-shirts, mugs, etc.)<br />
+* Not using Mozilla trademarks for any other form of commercial
+use<br />
+(e.g., offering technical support services), unless such use is limited
+&lt;br= &gt; to a truthful and descriptive reference (e.g.,
+=E2=80=9CIndependent technic= al<br />
+support for Mozilla=E2=80=99s Firefox browser=E2=80=9D).<br />
+* Not modifying Mozilla=E2=80=99s trademarks, abbreviating them, or
+combini= ng<br />
+them with any other symbols, words, or images, or incorporating
+them<br />
+into a tagline or slogan.<br />
+<br />
+And here is a list of things that we would like to do. Our primary<br />
+intention is to have a default policy (or employ other means if
+more<br />
+appropriate) to do the following:<br />
+<br />
+* Use unaltered binaries.<br />
+* Disable all Telemetry, Studies, Reports, and non-essential
+implicit<br />
+outgoing connections.<br />
+* Force install the addon "uBlock Origin" by Raymond Hill.<br />
+* Set and lock hardened SSL/TLS-related settings, including, but
+not<br />
+limited to, setting HTTPS-only mode as the default, blocking mixed<br />
+content, not trusting unsafe negotiations, disabling unencrypted<br />
+background requests, etc.<br />
+* Disable sponsored components, like bookmarks and suggestions.<br />
+* Set and lock strict mode for ETP.<br />
+* Change the default homepage.<br />
+* Disable the default display of the "Know Your Rights" informati= on
+page.<br />
+<br />
+As an illustrative point of how specifically we plan to apply these
+changes= :<br />
+<br />
+- Our intended changes would be made by providing a separate
+package<br />
+(for example, named "hardened-browser-config").<br />
+- This package would install config file(s) in folder(s) such as<br />
+/etc/firefox or /etc/firefox-esr.<br />
+- The package would be installed by default.<br />
+<br />
+We are willing to elaborate on the details and consider making<br />
+modifications upon request by Mozilla.<br />
+<br />
+We are not asking for any special permission that does not extend
+to<br />
+derivatives. As stated on the Debian issue tracker:<br />
+<br />
+=C2=A0&gt; In case of derivatives of Debian, Firefox branding can be
+used a= s long<br />
+=C2=A0&gt; as the patches applied are in the same category as described
+abo= ve.<br />
+<br />
+This is related to the Debian Free Software Guidelines (DFSG) (item
+8):<br />
+<br />
+=C2=A0&gt; License must not be specific to Debian<br />
+=C2=A0&gt;<br />
+=C2=A0&gt; The rights attached to the program must not depend on the
+progra= m's<br />
+being part of a Debian system. If the program is extracted from
+Debian<br />
+and used or distributed without Debian but otherwise within the terms of
+&lt;b= r&gt; the program's license, all parties to whom the program is
+redistributed=<br />
+should have the same rights as those that are granted in
+conjunction<br />
+with the Debian system.<br />
+<br />
+We would like to be able to state similarly:<br />
+<br />
+=C2=A0&gt; In case of derivatives of Kicksecure, Firefox branding can be
+us= ed as<br />
+long as the patches applied are in the same category as described
+above.&lt;br= &gt;<br />
+We are asking for your opinion on whether this would be in conflict with
+&lt;b= r&gt; Mozilla's Trademark Policy.<br />
+<br />
+We intend to publish our correspondence for the sake of
+transparency.<br />
+Our communications and your responses will be publicized in full,<br />
+verbatim, without modifications.<br />
+<br />
+--<br />
+You received this message because you are subscribed to the Google
+Groups &amp;= quot;trademark permissions" group.<br />
+To unsubscribe from this group and stop receiving emails from it, send
+an e= mail to &lt;a href=3D"<a href="mailto:trademark-permissions%2Bunsubscribe@mozilla.com">mailto:trademark-permissions%2Bunsubscribe@mozilla.com</a>"
+=
+target=3D"_blank"&gt;trademark-permissions+unsubscribe@mozilla.com</a>.<br />
+</p></blockquote>&lt;/div&gt;&lt;div dir=3D&quot;ltr&quot;&gt;&lt;div&gt;&lt;div dir=3D&quot;ltr&quot;&gt;&lt;div&gt;&lt;br&gt;&lt;span&gt;&lt;s= pan&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt; &lt;/div&gt;&lt;/div&gt; --000000000000109e5d0612dcc396-- </code></pre></li>
+<li id="cite_note-3">* Quote Mullvad: <a href="https://mullvad.net/en/browser/hard-facts">The Mullvad Browser
+hard facts: list of settings and modifications.</a>: <blockquote><p>No password manager (it's better to keep the password manager as a
+separate tool)</p></blockquote>
+* Mullvad Browser issue: <a href="https://github.com/mullvad/mullvad-browser/issues/137">MISSING:
+Settings -&gt; Privacy &amp; Security -&gt; Logins and passwords -&gt;
+Ask to save logins and passwords for websites</a></li>
+<li id="cite_note-4"><a href="https://en.wikipedia.org/wiki/Waterfox">https://en.wikipedia.org/wiki/Waterfox</a></li>
+<li id="cite_note-5">From <a href="https://www.gnu.org/software/gnuzilla/">https://www.gnu.org/software/gnuzilla/</a>:
+"The GNUzilla project is currently maintained by Ruben Rodriguez, Amin
+Bandali, and Mark H. Weaver. Please use the mailing lists for
+contact."</li>
+<li id="cite_note-6"><a href="https://spyware.neocities.org/articles/icecat">https://spyware.neocities.org/articles/icecat</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

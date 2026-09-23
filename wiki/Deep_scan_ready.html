@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Deep scan ready</title>
+<meta name="description" content="Deep scan ready means owners can inspect the full operating system and boot chain from a clean external system, offline or detached, so malware stays inactive while scanning.">
+<meta property="og:description" content="Deep scan ready means owners can inspect the full operating system and boot chain from a clean external system, offline or detached, so malware stays inactive while scanning.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Deep_scan_ready.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Deep_scan_ready.html">
+<meta property="og:title" content="Deep Scan Ready">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Deep_scan_ready_icon.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Malware_and_Firmware_Trojans.html">Malware,
+Computer Viruses and Antivirus Scanners</a></li>
+<li><a href="Backdoor.html">Backdoor</a></li>
+<li><a href="Dev/About_Computer_Insecurity.html">About
+Computer Security</a></li>
+<li><a href="Binary_Build_Locations.html">Binary Build
+Locations</a></li>
+<li><a href="Deep_scan_ready.html">Deep Scan Ready</a></li>
+</ul>
+</div>
+<p><img src="../media/Deep_scan_ready_icon.png.webp" alt="Deep_scan_ready_icon.png" />
+<img src="../media/Deep_Scan_Ready.png.webp" alt="Deep_Scan_Ready.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Deep scan ready means the owner can safely look at everything while
+the device is off, and if necessary, watch what happens when it
+starts.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="ELI5:_What_does_Deep_Scan_Ready_mean?">ELI5: What does "Deep Scan
+Ready" mean?</h1>
+<p>Bear with us, this section is ELI5. More technical explanations
+follow later.</p>
+<p>Imagine your computer is a locked box.</p>
+<p>There are two kinds of boxes.</p>
+<p><strong>Box type A</strong></p>
+<p>You keep the keys. You can turn the box off and safely look at
+everything inside. If needed, you can also choose to place your own
+trusted camera inside the box before anything else starts. Nothing
+inside can run, hide, or secretly come back without being seen.</p>
+<p>This is <strong>Deep Scan Ready</strong>.</p>
+<p><strong>Box type B</strong></p>
+<p>The company that made the box keeps the keys. You are told to trust
+their checker. You cannot look inside first, and you cannot place your
+own monitoring tools inside. If something bad can fool their checker,
+you may never know.</p>
+<p>This is <strong>Deep Scan Restricted</strong>.</p>
+<h1 id="Introduction">Introduction</h1>
+<p><strong>More technically:</strong> Deep scan ready means the device
+owner can inspect the full operating system and boot chain from a clean
+external system while the device is powered off, and, when needed,
+observe what happens during system startup instead of trusting the
+running system blindly.</p>
+<p>In some system designs, security relies on trusting the platform
+vendor (the company that makes the device, firmware, or operating
+system). In other designs, the operating system itself is included in
+the threat model and treated as potentially compromised.</p>
+<p>In the deep scan ready model, users control verification keys
+(cryptographic keys used for verification), verification, and
+modification, meaning the ability to inspect and change the system. This
+includes both inspection of stored data and, when required,
+owner-authorized modification or instrumentation of early boot
+components for investigation purposes.</p>
+<p>An important rule for deep virus scans is: do not boot a device
+suspected of being infected with <a href="Malware_and_Firmware_Trojans.html">malware</a>, because active malware can hide itself,
+fake "clean" results, erase evidence. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> Instead, power
+the device off and inspect the storage from a clean external system by
+performing a read only inspection (so the suspect device cannot write
+changes back while you are checking it). This approach is well suited
+for detecting persistent malware. To learn more, see <a href="Malware_and_Firmware_Trojans.html#Basics_of_Malware_Analysis_and_Backdoor_Hunting">Basics of Malware Analysis and Backdoor
+Hunting</a>.</p>
+<p>Some malware is designed to leave little or no persistent trace on
+disk and instead reappear when the system starts. In cases of <a href="Deep_scan_ready.html#non-persistent_malware">non-persistent malware</a> that reinfects the system, a
+deeper investigation may require observing the boot process itself.</p>
+<p>Deep scans are usually possible with traditional Linux distributions
+but often not on most mobile devices such as stock Android, because you
+generally cannot easily boot a trusted external system or take control
+of early system startup.</p>
+<h1 id="What_does_deep_scan_ready_mean?">What does deep scan ready
+mean?</h1>
+<p>Deep scan ready means you can safely and fully inspect a device for
+malware from outside, while it is powered off, and, if needed,
+temporarily take control of the earliest execution layers to observe
+what happens across boots.</p>
+<ul>
+<li><u>Analyze everything:</u> All files on the disk without exception.
+The file system must be inspectable, meaning the owner can independently
+check it, including a thorough integrity check of the system boot
+chain.</li>
+<li><u>Not only apps:</u> Deep scan ready means you can inspect the
+whole system, not just installed applications.</li>
+<li><u>Include boot components:</u> The scan includes the partition
+table (how the disk is divided), bootloader (the first program that
+starts the system), kernel (the core part of the OS), init (initial
+startup process), system files, etc.</li>
+</ul>
+<p>These two capabilities match two common classes of malware
+behavior:</p>
+<ul>
+<li><u>Persistent compromise:</u> Malware or unauthorized modifications
+that remain present across reboots. Offline inspection and checksum
+comparison are well suited for detecting persistent changes.</li>
+<li><u>Non-persistent reinfection:</u> Malware that is designed to exist
+only temporarily, erase itself, or reinfect after each boot. This is
+called <a href="Deep_scan_ready.html#non-persistent_malware">non-persistent malware</a>. Offline inspection can look
+clean in this case, because there may be little or nothing persistent
+left to find. Detecting this often requires observing the boot process
+itself.</li>
+</ul>
+<p>Deep scan ready requires two related capabilities. Both are about
+what the owner can do with their own device, without asking the vendor
+for permission.</p>
+<ul>
+<li><u>Passive, offline inspection:</u> This is what most people think
+of as an "offline scan". The owner checks the device while it is powered
+off, from a clean external system, so malware stays inactive.
+<ul>
+<li><u>Forensic readiness</u>: This is sometimes called forensic
+readiness for the device owner.</li>
+<li><u>Keep malware inactive while scanning:</u> Malware must not be
+active in memory during the scan. This requires:
+<ul>
+<li><u>Offline deep scan:</u> Or at minimum an Offline Integrity Check;
+a different boot medium must be used, such as booting from USB (Live USB
+Checkup).</li>
+<li><u>Detached deep scan:</u> Even better, remove the disk and scan it
+from a different, clean system, on a different computer.</li>
+</ul></li>
+</ul></li>
+<li><u>Owner-authorized active instrumentation of the boot process:</u>
+Some threats are not primarily about what is stored on disk, but about
+what happens during boot. Deep scan ready also means the owner can, if
+needed, temporarily instrument early boot components (bootloader,
+kernel, init, early startup) to observe what happens when the system
+starts.
+<ul>
+<li><u>Investigative readiness</u>: This is sometimes called
+investigative readiness.</li>
+<li><u>Synonyms:</u> Instrumented Deep Scan, Boot-Time Instrumentation,
+or Owner-Controlled Early Boot Monitoring.</li>
+<li><u>Early execution:</u> Trusted monitoring code can run before
+potential malware.</li>
+</ul></li>
+</ul>
+<p><u>Support both tools and experts:</u> The system can be inspected
+and analyzed in various ways.</p>
+<ul>
+<li><u>Automated checksum verification tools:</u> Important system files
+can be compared by their cryptographic checksums (hash sums) with known
+clean versions. This is being elaborated in chapter <a href="#Deep_Scan_Tools">Deep Scan Tools</a>.</li>
+<li><u>Manual analysis by malware analysts:</u> A human expert can
+inspect suspicious changes, unusual files, and unexpected startup
+components, including analyzing system state across reboots when
+needed.</li>
+<li><u>Boot-time and behavioral investigation tools:</u>
+Owner-authorized instrumentation can be used to observe early startup
+behavior and system actions over time, which is useful for investigating
+non-persistent malware.</li>
+<li><u>Automated by virus scanners:</u> While <a href="Malware_and_Firmware_Trojans.html#The_Utility_of_Antivirus_Tools">The Utility of Antivirus Tools</a> is debatable, it may
+also be an option. Antivirus is not required. Use of antivirus is fully
+optional.</li>
+</ul>
+<h1 id="What_is_the_difference_of_a_deep_scan_versus_a_normal_antivirus_scan?">What
+is the difference of a deep scan versus a normal antivirus scan?</h1>
+<ul>
+<li><u>Normal antivirus scan:</u> Users typically do an antivirus scan
+after booting the system that is suspected of being infected with
+malware. This kind of scan runs inside the system you do not trust, so
+malware may be able to hide, interfere, or show false results.</li>
+<li><u>Deep scan:</u> A deep scan aims to inspect the full storage and
+boot components from outside the suspect system, so malware is not
+running while you scan. If necessary, a deep scan can also involve
+observing what happens when the system starts, to detect malware that
+only appears during boot or reinfects after each restart.</li>
+</ul>
+<h1 id="Why_should_I_care_about_computer_viruses?">Why should I care
+about computer viruses?</h1>
+<p>Malware can secretly spy on you (screenshots, files, keystrokes,
+webcam/mic) and steal or destroy data, including by encrypting your
+drive for ransom. It can also plant fake evidence and turn your computer
+into a "zombie" used for crimes (spam, DDoS, hosting illicit / illegal
+material). Worst of all, some malware can install persistent <a href="Backdoor.html">backdoors</a> (including hardware
+level) that can survive a full operating system reinstall, and if the
+host is compromised, every <u>v</u>irtual <u>m</u>achine (VM) is
+compromised too. See also <a href="Malware_and_Firmware_Trojans.html#The_Importance_of_a_Malware_Free_System">The Importance of a Malware Free System</a>.</p>
+<h1 id="Deep_Scan_Ready_vs_Restricted_Devices">Deep Scan Ready vs
+Restricted Devices</h1>
+<p>Which operating systems are typically deep scan ready? Most, if not
+all, traditional Linux distributions are deep scan ready. You can boot a
+clean system and inspect everything, even if the installed OS is
+compromised. Alternative terminology would be forensic readiness for the
+device owner.</p>
+<p>Which operating systems are typically not deep scan ready? For
+example, stock Android. This is being elaborated on the <a href="Android.html">Android Insecurity</a> wiki page.</p>
+<h1 id="Technical_Implementation">Technical Implementation</h1>
+<p>How can an operating system implement being deep scan ready? There is
+usually no special "deep scan feature" to add. Deep scan readiness is
+mostly about not blocking the owner from inspecting the device from the
+outside.</p>
+<p>In practice, this means the owner must be able to boot a known clean
+external system (for example from USB) and read the storage for
+inspection, without having to trust the installed OS.</p>
+<p>Some designs prevent this, for example a locked bootloader (the first
+startup program) that refuses to boot anything except vendor-approved
+software. This is also known as <a href="Miscellaneous_Threats_to_User_Freedom.html#restricted_boot">restricted boot</a>. Instead, owner-approved software
+should be permissible to boot such as for example with <a href="Sovereign_Boot.html">Sovereign Boot</a>.</p>
+<h1 id="Threat_Model_Differences">Threat Model Differences</h1>
+<p>This section explains a fundamental difference in how devices can be
+designed: who ultimately controls the device, and who must be
+trusted.</p>
+<p>At a high level, it is about <strong>owner capability vs platform
+restriction</strong>. In other words: whether the device primarily
+serves the owner, or whether the owner must rely on the platform vendor
+for permission, visibility, and verification.</p>
+<p>In security terms, these approaches are called different
+<strong>trust models</strong>. A trust model describes who holds power,
+who can verify what is happening, and who must be trusted without being
+able to independently check.</p>
+<p>Two contrasting trust models are described below.</p>
+<ul>
+<li><u>Vendor rooted trust:</u> Vendor lockdown and vendor lock in.
+<ul>
+<li>In this model, the platform decides what is allowed, and the vendor
+controls the root of trust, for example which cryptographic keys are
+accepted and which software is permitted to run.</li>
+<li>This means that the user mainly receives protection against third
+party attackers, but must inherently trust the vendor. If the vendor
+makes a mistake, is compromised, pressured, or behaves maliciously, the
+user has limited ability to independently detect or override that
+behavior.</li>
+</ul></li>
+<li><u>User verifiable trust:</u> Trust minimization through independent
+verification.
+<ul>
+<li>In this model, the platform itself may be included in the threat
+model. This means the system is not automatically trusted simply because
+it is running.</li>
+<li>Because of this assumption, the design focuses on giving the device
+owner ways to check, verify, and if necessary replace the platform from
+outside, without trusting it while it is being inspected.</li>
+</ul></li>
+</ul>
+<p>This leads to several important properties:</p>
+<ul>
+<li><u>Vendor accountability:</u> The vendor cannot quietly, knowingly
+or unknowingly, ship different software or updates to different people.
+Targeted malicious upgrades become detectable rather than
+invisible.</li>
+<li><u>Independent auditability:</u> The system is designed so that
+third parties can inspect and analyze it. Trust does not rely solely on
+the vendor's claims.</li>
+<li><u>Vendor independent verification:</u> The owner can verify the
+system without having to trust the provider. Verification does not
+require permission from the vendor.</li>
+<li><u>Full Device Backup Access:</u> The device owner has the ability
+to make a complete system backup, rather than being restricted to
+partial or vendor approved data access.</li>
+<li><u>Verified Boot:</u> This trust model is compatible with owner
+controlled <a href="Verified_Boot.html">Verified Boot</a>
+(User Settable Root of Trust), where the owner decides which software
+keys are trusted. A sample implementation work in progress is <a href="Sovereign_Boot.html">Sovereign Boot</a>.</li>
+<li><u>Tamper Evident Boot:</u> A related concept is Tamper Evident
+Boot, where unauthorized modifications can be detected not only by the
+vendor, but also by the device owner themselves.</li>
+<li><u>Owner-authorized boot control:</u>: In a user verifiable trust
+model, verification extends beyond static inspection. Offline inspection
+detects persistent state. However, some malware is designed to exist
+only temporarily, reinfecting the system after each boot or erasing
+itself when inspection is attempted. Offline scans alone are
+insufficient in these cases. Deep scan ready systems therefore allow the
+owner, when necessary, to extend "verify and replace" to "observe and
+trap". This is achieved by owner-controlled early execution that runs
+before potential malware and observes system behavior across boots. This
+does not mean every user must deploy such mechanisms. It means the
+platform does not forbid them.</li>
+</ul>
+<p>The central distinction is not about convenience, but about control.
+In one model, trust flows from the vendor to the user. In the other,
+trust can be independently established by the owner.</p>
+<p><blockquote><p>Computer users must not be required to seek external authorization to
+exercise their freedoms.<span class="blockquote-context">Free Software
+Foundation: <a href="https://www.fsf.org/campaigns/campaigns/secure-boot-vs-restricted-boot/">Will
+your computer's "Secure Boot" turn out to be "Restricted
+Boot"?</a></span></p></blockquote></p>
+<p>This quote highlights the concern that a system which requires
+external approval to function places inherent limits on the user's
+autonomy.</p>
+<p><blockquote><p>"Treacherous computing" is a more appropriate name, because the plan
+is designed to make sure your computer will systematically disobey you.
+In fact, it is designed to stop your computer from functioning as a
+general-purpose computer. Every operation may require explicit
+permission.<span class="blockquote-context">The GNU Project: <a href="https://www.gnu.org/philosophy/can-you-trust.en.html">Can You
+Trust Your Computer?</a></span></p></blockquote></p>
+<p>This perspective reflects a long standing critique of systems where
+control is shifted away from the owner and into external entities.</p>
+<p>Similar concepts exist in practice. For example:</p>
+<ul>
+<li>Kali Linux provides a <a href="https://www.kali.org/docs/general-use/kali-linux-forensics-mode/">Forensic
+Mode</a>, which is designed around the idea that a system should be
+inspectable without trusting the environment being inspected. This
+illustrates the broader principle of user verifiable trust.</li>
+</ul>
+<h1 id="Advantages_of_Deep_Scan_Readiness">Advantages of Deep Scan
+Readiness</h1>
+<p>Deep scan readiness discourages targeted malicious upgrades, because
+it is harder to hide changes when owners can verify the full system from
+outside.</p>
+<h1 id="Deep_Scan_Tools">Deep Scan Tools</h1>
+<p>Deep scan readiness is not the same thing as actually running a deep
+scan.</p>
+<p>Deep scan readiness means that the system is designed in a way that
+allows thorough inspection when needed. Performing a deep scan is a
+separate action that can be done later, using appropriate tools.</p>
+<p>Deep scanning itself is <a href="Unspecific.html">unspecific to Kicksecure</a>. In practice, this means
+that the same methods and tools a security expert would use to deeply
+inspect any other Linux distribution, such as Debian, can also be used
+to deep scan Kicksecure.</p>
+<p>There are instructions on how to <a href="Recovery.html#Boot_from_External_Drive">Boot from
+External Drive</a>. Booting from a clean external system allows
+inspection of the internal system without relying on the potentially
+compromised operating system itself. In the future, more documentation
+and tools are planned to make deep scanning easier and more user
+friendly, so that it becomes accessible to a wider range of users.</p>
+<p>One common deep scan method is checksum comparison. A checksum is a
+mathematical fingerprint of a file. If even a single bit of a file
+changes, its checksum changes as well.</p>
+<p>The basic process works as follows:</p>
+<p>1. Boot the device from a clean and trusted external system.</p>
+<p>2. Calculate checksums of important components such as the
+bootloader, kernel, and core system files. These parts are critical
+because they control how the system starts and operates.</p>
+<p>3. Compare the calculated checksums with known clean data. If
+differences are found, this does not automatically mean malware. The
+difference could be caused by a different software version, a custom
+build, or intentional modifications. If necessary, a technical expert
+can examine the differences to determine their cause.</p>
+<p>Tools such as debcheckroot (or debcheckroot alike tools) can help
+verify the root file system by checking whether installed files match
+what the software packages are supposed to contain. This works by
+comparing files on the system with trusted reference data.</p>
+<p>Verification does not have to rely only on locally stored checksum
+data. It can use different sources, such as online repositories, CD, or
+DVD media. Using independent sources can be more reliable than trusting
+data stored on the same system being inspected.</p>
+<p>debcheckroot or similar tools (existing or yet to be invented) could
+support multiple verification sources, offline operation, and
+reproducible comparison against known good data, such as data from an
+official vendor software repository. This enables deep inspection
+without relying on traditional antivirus software. For critical
+components like the bootloader and kernel, checksum verification is
+often much more reliable than malware scanning alone.</p>
+<p>Deep scan readiness enables different investigative approaches. These
+approaches correspond to different kinds of threats and different stages
+of analysis, and they build on each other rather than replacing each
+other.</p>
+<ul>
+<li><u>Offline inspection tools:</u> Checksum comparison, file system
+inspection, and integrity verification to detect persistent compromise.
+These tools focus on stored state and are well suited for identifying
+unauthorized changes that survive reboots.</li>
+<li><u>Boot-time instrumentation tools:</u> Investigative monitoring
+mechanisms that observe early system behavior during startup to detect
+non-persistent reinfection. These tools focus on behavior over time
+rather than static files on disk.</li>
+</ul>
+<p>Boot-time instrumentation is not meant to replace offline inspection.
+Instead, it complements it. Offline inspection answers the question
+"What is stored on the device?", while boot-time instrumentation helps
+answer the question "What happens when the device starts?".</p>
+<p>Blue Pill alike mechanisms are one example of such investigative
+tools. They refer to owner-authorized, low level monitoring approaches
+that execute before potential malware and quietly observe system
+behavior across boots. These mechanisms are not default, not required,
+and not intended for everyday use. They illustrate that deep scan ready
+systems permit the techniques required to investigate even evasive,
+non-persistent threats, rather than forbidding them by design.</p>
+<h1 id="out-of-scope">out-of-scope</h1>
+<p><a href="Backdoor.html#Firmware_Trojan">Firmware
+Trojan</a> such as a <a href="Backdoor.html#Hard_Drive_Firmware_Trojan">hard drive firmware trojan</a> and <a href="Backdoor.html#Hardware_Trojan">Hardware Trojan</a> are
+unfortunately out-of-scope because these are hardware issues that a
+software-only operating system project cannot solve. These kinds of
+threats require hardware replacement or forensic hardware
+inspection.</p>
+<h1 id="objections">objections</h1>
+<table>
+<thead>
+<tr class="header">
+<th><p>Objection</p></th>
+<th><p>Response</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>If someone can access system files from an external system, that
+can be a security downgrade compared to a deep scan restricted system,
+because it could create an extra access path that could be
+abused.</p></td>
+<td><p>The key point is that deep scan readiness is about what the
+<em>owner</em> of the device can do, not about giving new powers to the
+vendor or to random outsiders.</p>
+<p>In simple terms, this means: you, as the owner, are allowed to
+inspect your own device from the outside if you choose to. It does not
+mean that others automatically gain access.</p>
+<p>If the disk is encrypted, outsiders still cannot read the data
+without the owner's decryption credentials. Without your password or
+cryptographic key, the stored data looks like meaningless random data,
+even if someone can physically access the storage.</p>
+<p>If the device uses owner-controlled <a href="Verified_Boot.html">Verified Boot</a> and <a href="Sovereign_Boot.html">Sovereign Boot</a>, outsiders also cannot silently
+replace or modify boot components. The boot process actively checks what
+is being started and can warn the owner or refuse to boot if something
+was altered without authorization.</p>
+<p>The overall design goal of owned-controlled Verified Boot is that
+external inspection or modification is only possible with the owner's
+explicit cooperation. This can include actions such as providing
+decryption credentials, unlocking the device, or physically allowing
+access. Without that cooperation, external access does not provide
+meaningful control or visibility.</p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor mpa-visible" id="non-persistent_malware">non-persistent
+malware</span></p>
+<p>Some malware can try to erase itself when you shut down or restart
+the device (or when it receives a "self delete" command). For example,
+Pegasus is reported to have such features. <sup class="reference"><a href="#cite_note-2">[2]</a></sup> If that
+happens, a deep scan could look clean even though the device was
+infected.</p></td>
+<td><p>This situation can still be investigated, but it often requires
+more advanced forensic techniques and expert involvement. It becomes
+less like running a simple scan and more like detective work.</p>
+<p>Even if the malware deletes its own files, it usually leaves other
+evidence behind. This can include unexpected system changes, failed or
+partial persistence attempts, unusual or inconsistent logs,
+configuration changes, patterns of reinfection, or other indirect
+indicators. In other words, while malware may remove its main
+components, it often cannot perfectly undo every change it made to the
+system.</p>
+<p>In more advanced cases, a trusted technical expert (with the owner's
+permission) could deploy a <a href="https://en.wikipedia.org/wiki/Blue_Pill_(software)">Blue Pill</a>
+alike monitoring approach. This refers to a stealthy, low level
+monitoring mechanism or a kernel hook that runs earlier in the system
+startup process than the malware itself. Because it starts first and
+hides its presence, the malware cannot easily detect or evade it.</p>
+<p>The purpose of such a setup is to quietly observe the malware's
+behavior, including attempts to self delete, reinfect the system, or
+modify components, without alerting the malware that it is being
+monitored.</p>
+<p>This topic is discussed in more detail in the wiki chapter <a href="Android.html#Malware_Analysis_Capabilities:_Traditional_Linux_vs._Android">Malware Analysis Capabilities: Traditional Linux vs.
+Android</a>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Deep scan readiness does not solve all malware issues.</p></td>
+<td><p>Deep scan readiness is not a claim that it "solves all malware
+issues". It means the platform does not forbid the techniques needed to
+investigate persistent and even evasive, non-persistent
+threats.</p></td>
+</tr>
+<tr class="even">
+<td><p><u>M</u>obile <u>V</u>erification <u>T</u>oolkit (MVT)
+exists.</p></td>
+<td><p>See <a href="Android.html#Mobile_Verification_Toolkit_(MVT)_Project">Mobile Verification Toolkit (MVT) Project</a>.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Deep_Scan_Restricted">Deep Scan Restricted</h1>
+<p><img src="../media/Deep_Scan_Restricted.png.webp" alt="Deep_Scan_Restricted.png" /></p>
+<p>Deep scan restricted means that the device owner is not able to fully
+inspect the operating system and the boot process from a clean,
+independent external system.</p>
+<p>This happens because critical components such as the bootloader,
+access to storage, or verification keys are controlled by the vendor
+rather than the owner. As a result, any inspection must rely on the
+already running system, even though that system itself could be faulty,
+compromised, or untrusted.</p>
+<p>In addition, the owner is not able to observe or instrument the early
+boot process. The platform decides what runs first and what can run at
+all, which means the owner cannot independently watch what happens when
+the device starts or investigate non-persistent malware.</p>
+<p>In simple terms, the owner cannot step outside the device to check it
+independently, cannot step in first to observe startup behavior, and
+must trust the platform while trying to verify it.</p>
+<h1 id="Comparison_of_Deep_Scan_Ready_versus_Deep_Scan_Restricted">Comparison
+of Deep Scan Ready versus Deep Scan Restricted</h1>
+<table>
+<caption><em>Comparison</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Deep Scan Ready</p></th>
+<th><p>Deep Scan Restricted</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>User-verifiable trust</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Offline/detached inspection possible</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Detection of non-persistent malware through boot-time
+instrumentation possible</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Owner verifiability prioritized over platform lock-down</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Vendor-enforced uniform security policies prioritized</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Figure:</strong> <em>Deep Scan Ready versus Deep Scan
+Restricted</em></p>
+<p><img src="../media/Deep_Scan_Ready_versus_Deep_Scan_Restricted.png.webp" width="600" alt="Deep_Scan_Ready_versus_Deep_Scan_Restricted.png" /></p>
+<h1 id="rationale_for_this_page">rationale for this page</h1>
+<p>This page documents the concept of deep scan readiness and explains
+how different platform designs affect an owner's ability to inspect and
+investigate their own device. While many traditional Linux distributions
+already support these capabilities, they are not universal across all
+platforms. The page exists to clarify the distinction between
+owner-controlled systems and vendor-restricted systems, and to describe
+how these design choices influence deep scanning, malware analysis, and
+forensic investigation.</p>
+<h1 id="Forum_Discussions">Forum Discussions</h1>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/bootloader-lock-locked-bootloader/1190">locked
+bootloader</a></li>
+<li><a href="https://forums.kicksecure.com/t/boot-device-lockdown/1189">boot
+device lockdown</a></li>
+<li><a href="https://forums.kicksecure.com/t/no-rescue-mode/1171">hard
+rescue mode refusal</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<p><a href="https://www.youtube.com/watch?v=zcFg0ZJ2E_A">https://www.youtube.com/watch?v=zcFg0ZJ2E_A</a></p>
+<div class="mininav">
+<ul>
+<li><a href="Mobile_Phone_Security.html">Mobile Phone
+Security</a></li>
+<li><a href="Mobile_Operating_System_Comparison.html">Mobile
+Operating System Comparison</a></li>
+<li><a href="Android.html">Android Insecurity</a></li>
+<li><a href="IOS.html">iOS (Apple iPhone)
+Insecurity</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Firmware_Security_and_Updates.html">Firmware
+Security and Updates</a></li>
+<li><a href="Boot_firmware.html">Boot Firmware</a></li>
+<li><a href="Secure_Boot.html">Secure Boot</a></li>
+<li><a href="Dev/Secure_Boot.html">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="Verified_Boot.html">Verified Boot</a></li>
+<li><a href="Measured_boot.html">Measured Boot</a></li>
+<li><a href="Sovereign_Boot.html">Sovereign Boot</a></li>
+<li><a href="Out-of-band_Management_Technology.html">Out-of-band Management Technology</a></li>
+<li><a href="Open_Source_Hardware.html">Open Source
+Hardware</a></li>
+<li><a href="Dev/confidential_computing.html">Confidential
+Computing (dev)</a></li>
+<li><a href="Dev/bootstrappable_builds.html">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="Dev/Stateless.html">stateless (dev)</a></li>
+<li><a href="Dev/immutable.html">immutable (dev)</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><blockquote><p>Live analysis provides valuable, volatile information that may not be
+available during an offline analysis of a hard drive, e.g., dynamic data
+such as running processes and open ports, which are only available
+during system operation. However, when one of the processes on a machine
+includes a rootkit, the 90 ADVANCES IN DIGITAL FORENSICS III
+investigator must question if the results of a live analysis are
+tainted. When rootkits are running, the data and processes they have
+modified are still in use by the operating system, but this fact is not
+visible to the user. In fact, our experiments demonstrate that even if a
+live response cannot detect what is hidden, it can still provide an
+investigator with details about what was available to the user. This
+information can also help the investigator determine what the rootkit
+was hiding.<span class="blockquote-context"><a href="https://opendl.ifip-tc6.org/db/conf/ifip11-9/df2007/ToddBPFSR07.pdf">IFIP
+Open Digital Library: Todd et al. PDF</a></span></p></blockquote> <blockquote><p>If you suspect a rootkit virus, one way to detect the infection is to
+power down the computer and execute the scan from a known clean
+system.<span class="blockquote-context"><a href="https://www.kaspersky.com/resource-center/definitions/what-is-rootkit">Kaspersky
+Resource Center: What is a rootkit?</a></span></p></blockquote> <blockquote><p>Hidden malware: Rootkits can install and conceal other types of
+malware within your network, making detecting and removing them
+difficult.<span class="blockquote-context"><a href="https://us.norton.com/blog/malware/rootkit">Norton blog:
+Rootkit</a></span></p></blockquote>
+<blockquote><p>Use offline scanners: If the rootkit is particularly stubborn or your
+regular antivirus software fails to detect it, you can try offline
+scanners. These antivirus tools run from a bootable USB or CD/DVD,
+allowing them to scan your system without the rootkit being
+active.<span class="blockquote-context"><a href="https://us.norton.com/blog/malware/rootkit">Norton blog:
+Rootkit</a></span></p></blockquote> <blockquote><p>By analyzing memory dumps, examiners can ensure clean working
+environment and no active resistance from the
+rootkit.<span class="blockquote-context"><a href="https://www.forensicfocus.com/articles/understanding-rootkits/">Forensic
+Focus: Understanding rootkits</a></span></p></blockquote> See also <a href="https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-offline">Microsoft
+Defender Offline</a>.</li>
+<li id="cite_note-2"><a href="https://info.lookout.com/rs/051-ESQ-475/images/lookout-pegasus-android-technical-analysis.pdf">Lookout
+Pegasus Android technical analysis (PDF)</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Design.html">Design</a> <a href="Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/cryptography</title>
+<meta name="description" content="todo">
+<meta property="og:description" content="todo">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/cryptography.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/cryptography.html">
+<meta property="og:title" content="cryptography">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>cryptography</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Project_Policies.html" title="Project Policies"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Project
+Policies</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Age-api.html" title="Age-api"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Age-api</span></a><span class="info"><span class="prev">Previous
+page: Project Policies</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Age-api</span></span></span>cryptography</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>todo</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported.html">this</a> for
+potential alternatives.</p>
+</div>
+<p><a href="https://crypto.stackexchange.com/questions/5118/is-aes-256-weaker-than-192-and-128-bit-versions">https://crypto.stackexchange.com/questions/5118/is-aes-256-weaker-than-192-and-128-bit-versions</a></p>
+<p><a href="https://www.schneier.com/blog/archives/2009/07/another_new_aes.html">https://www.schneier.com/blog/archives/2009/07/another_new_aes.html</a></p>
+<p><blockquote><p>Speed and its security impact</p>
+<p>Cryptographic performance problems have frequently caused users to
+reduce their cryptographic security levels or to turn off cryptography
+entirely.<span class="blockquote-context"><a href="https://cr.yp.to/highspeed/coolnacl-20120725.pdf">The security
+impact of a new cryptographic library</a> by well-known, respected
+cryptographers <sup class="reference"><a href="#cite_note-1">[1]</a></sup></span></p></blockquote></p>
+<p><blockquote><p>The remaining risk is that users find NaCl too slow and turn it off,
+replacing it with low-security cryptographic software or no cryptography
+at all. NaCl avoids this type of disaster by providing exceptionally
+high speeds.</p></blockquote></p>
+<p><blockquote><p>We have prioritized security over compatibility, and as a consequence
+have also prioritized speed over compatibility</p></blockquote></p>
+<p><blockquote><p>Concretely, think about a demo showing that spending a billion
+dollars on quantum computation can break a thousand X25519 keys. Yikes!
+We should be aiming for much higher security than that! We don't even
+want a billion-dollar attack to be able to break one key! Users who care
+about the security of their data will be happy that we deployed
+post-quantum cryptography. But are the users going to say "Let's turn
+off X25519 and make each session a million dollars cheaper to attack"?
+I'm skeptical. I think users will need to see much cheaper attacks
+before agreeing that X25519 has negligible security
+value.<span class="blockquote-context"><a href="https://blog.cr.yp.to/20240102-hybrid.html">https://blog.cr.yp.to/20240102-hybrid.html</a></span></p></blockquote></p>
+<p><blockquote><p>Speed drives adoption, Daniel J. Bernstein (djb) probably understand
+this more than anyone else. And this is what led Adam Langley to decide
+to either stay on SHA-2 or move to BLAKE2. Is that a good advice? Should
+we all follow his steps?<span class="blockquote-context"><a href="https://cryptologie.net/posts/maybe-you-shouldnt-skip-sha-3/">https://cryptologie.net/posts/maybe-you-shouldnt-skip-sha-3/</a></span></p></blockquote></p>
+<p><blockquote><p>The choice of key size is a tradeoff between the risk of key
+compromise and performance.<span class="blockquote-context"><a href="http://csrc.nist.gov/publications/nistpubs/800-81r1/sp-800-81r1.pdf">http://csrc.nist.gov/publications/nistpubs/800-81r1/sp-800-81r1.pdf</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://iacr.org/archive/pkc2006/39580209/39580209.pdf">https://iacr.org/archive/pkc2006/39580209/39580209.pdf</a></li>
+</ul>
+<p><blockquote><ul>
+<li>Are "special" primes dangerous?</li>
+<li>Are "random" primes dangerous?</li>
+<li>Are primes required to be 3 mod
+4?<span class="blockquote-context"><a href="https://cr.yp.to/papers/safecurves-20240809.pdf">https://cr.yp.to/papers/safecurves-20240809.pdf</a></span></li>
+</ul></blockquote></p>
+<p>These questions go far beyond 128 vs 256 vs 512 bits of security.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">* Daniel J. Bernstein (Department of Computer Science, University of
+Illinois at Chicago, USA) * Tanja Lange (Department of Mathematics and
+Computer Science, Technische Universiteit Eindhoven, Netherlands) *
+Peter Schwabe (Research Center for Information Technology Innovation and
+Institute of Information Science, Academia Sinica, Taiwan)</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Project_Policies.html" title="Project Policies"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Project
+Policies</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Age-api.html" title="Age-api"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Age-api</span></a><span class="info"><span class="prev">Previous
+page: Project Policies</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Age-api</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Full Disk Encryption</title>
+<meta name="description" content="Full Disk Encryption, Additional Security Measures">
+<meta property="og:description" content="Full Disk Encryption, Additional Security Measures">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Full_Disk_Encryption.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Full_Disk_Encryption.html">
+<meta property="og:title" content="Full Disk Encryption (FDE)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Fulldeskencryption423423.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Essentials">Essentials</a></li><li class="toc-l2"><a href="#Coverage">Coverage</a></li><li class="toc-l2"><a href="#Full_Disk_Encryption_versus_Malware">Full Disk Encryption versus
+Malware</a></li><li class="toc-l2"><a href="#Encrypting_Kicksecure_VMs">Encrypting Kicksecure VMs</a></li><li class="toc-l2"><a href="#Plausible_Deniability_-_Deniable_Encryption">Plausible
+Deniability - Deniable Encryption</a></li><li class="toc-l2"><a href="#Measures_Against_Non-violent_Coercion">Measures Against
+Non-violent Coercion</a></li><li class="toc-l2"><a href="#Physical_Access">Physical Access</a></li><li class="toc-l2"><a href="#Protection_Against_Powerful_Adversaries">Protection Against
+Powerful Adversaries</a></li><li class="toc-l2"><a href="#Authenticated_Encryption">Authenticated Encryption</a></li><li class="toc-l2"><a href="#Temporary_Decryption_while_using_FDE">Temporary Decryption while
+using FDE</a></li><li class="toc-l2"><a href="#Permanent_Decryption">Permanent Decryption</a></li><li class="toc-l2"><a href="#New_Removable_Media">New Removable Media</a></li><li class="toc-l2"><a href="#Legacy_Device_Encryption_Upgrade">Legacy Device Encryption
+Upgrade</a></li><li class="toc-l2"><a href="#Zulucrypt">Zulucrypt</a></li><li class="toc-l3"><a href="#Recommended_Security_Settings">Recommended Security
+Settings</a></li><li class="toc-l2"><a href="#Different_Use_Cases">Different Use Cases</a></li><li class="toc-l3"><a href="#TPM_Transparent_Encryption">TPM Transparent Encryption</a></li><li class="toc-l3"><a href="#TPM_as_Additional_Key">TPM as Additional Key</a></li><li class="toc-l3"><a href="#TPM_to_Strengthen_Weak_Passwords">TPM to Strengthen Weak
+Passwords</a></li><li class="toc-l3"><a href="#TPM_plus_Password">TPM plus Password</a></li><li class="toc-l2"><a href="#Complexity_Risk">Complexity Risk</a></li><li class="toc-l2"><a href="#Implementation_Issues">Implementation Issues</a></li><li class="toc-l2"><a href="#Security">Security</a></li><li class="toc-l2"><a href="#Resources">Resources</a></li><li class="toc-l2"><a href="#TPM_Full_Disk_Encryption_Threat_Modeling">TPM Full Disk
+Encryption Threat Modeling</a></li><li class="toc-l2"><a href="#TPM_Encryption_Comparison_Table">TPM Encryption Comparison
+Table</a></li><li class="toc-l2"><a href="#2FA_Considerations">2FA Considerations</a></li><li class="toc-l2"><a href="#2FA_Methods">2FA Methods</a></li><li class="toc-l3"><a href="#Key_Based">Key Based</a></li><li class="toc-l3"><a href="#Static_Password_Key">Static Password Key</a></li><li class="toc-l3"><a href="#Challenge-Response_Authentication_Methods">Challenge-Response
+Authentication Methods</a></li><li class="toc-l2"><a href="#Hardware-Based_Encryption_versus_Software-Based_Encryption">Hardware-Based
+Encryption versus Software-Based Encryption</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack
+Defense</a></li>
+<li><a href="Ram-wipe.html">ram-wipe</a></li>
+<li><a href="Dev/RAM_Wipe.html">ram-wipe
+(Developers)</a></li>
+<li><a href="Emerg-shutdown.html">emerg-shutdown</a></li>
+<li><a href="Encrypted_Images.html">Encrypted VM
+Images</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access.html">System
+Configuration and Access</a></li>
+<li><a href="Protection_Against_Physical_Attacks.html">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization.html">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security.html">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Full disk encryption (FDE) is a way to protect the contents of an
+entire hard drive from unauthorized access. It works by encrypting all
+the data stored on the disk, including the operating system and
+applications. This means that if someone gains physical access to the
+computer or removes the hard drive, they won't be able to read the data
+without the correct password or encryption key. FDE can help protect
+sensitive information such as financial data, personal information, and
+trade secrets.</p>
+<div class="post-intro-p">
+</div>
+<p><span class="manually-placed-anchor " id="support_status"></span></p>
+<div>
+<table>
+<thead>
+<tr class="header">
+<th><p><strong>About this
+<em><span>Full Disk
+Encryption</span></em> Page</strong><br />
+Contributor maintained wiki page.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Support Status</p></td>
+</tr>
+<tr class="even">
+<td><p>Difficulty</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="Contribute.html#Contributor">Contributor</a></p></td>
+</tr>
+<tr class="even">
+<td><p>Support</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="../media/Fulldeskencryption423423.jpg.webp" alt="Fulldeskencryption423423.jpg" /></p>
+<h1 id="Introduction">Introduction</h1>
+<h2 id="Essentials">Essentials</h2>
+<p><u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE) can protect data at
+rest from physical access such as a stolen hard drive in case a computer
+or notebook gets stolen. Data at rest means, that a full disk encrypted
+computer is powered off.</p>
+<p>To provide sufficient security from password cracking brute force
+attempts, it is required to use strong passwords. See <a href="Passwords.html">Passwords</a>.</p>
+<p>In an advanced <a href="Threat_Modeling.html">threat
+model</a> it is also required that the FDE key has also been already
+decayed from the computer's volatile memory (RAM) so it cannot be
+extracted from there either. See also <a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack Defense</a>.</p>
+<h2 id="Coverage">Coverage</h2>
+<p>While called <u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE), it
+might be a bit misleading at first. There is no 100% encryption for
+bootable hard drives, which is neither necessary nor possible. In most
+cases, FDE only means that most of the operating system and all user
+data is encrypted. See the footnote for technical details.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Other drives are <u>not</u> automatically encrypted. If files are
+copied to other hard drives, these are not automatically encrypted. They
+will only be encrypted if FDE or another type of encryption (such as
+container-based encryption) has been set up by the user.</p>
+<h2 id="Full_Disk_Encryption_versus_Malware">Full Disk Encryption versus
+Malware</h2>
+<p>Full disk encryption is generally not designed to defeat <a href="Malware_and_Firmware_Trojans.html">malware</a>.</p>
+<h2 id="Encrypting_Kicksecure_VMs">Encrypting Kicksecure VMs</h2>
+<p>This is currently <a href="Unsupported.html">unsupported</a> and does not provide any additional
+protection. The <a href="Encrypted_Images.html">Encrypted
+Images</a> wiki page provides a detailed explanation, with the
+conclusion noting:</p>
+<p><blockquote><p>The host of security considerations suggest that an unrealistic set
+of operational rules are required to defend the integrity of a purely
+encrypted guest image. Use of <u>F</u>ull <u>D</u>isk <u>E</u>ncryption
+(FDE) is recommended instead.</p></blockquote></p>
+<h2 id="Plausible_Deniability_-_Deniable_Encryption">Plausible
+Deniability - Deniable Encryption</h2>
+<p><u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE) software plausible
+deniability is only effective in jurisdictions that have human rights
+and follow the rule of law. In scenarios where one might face indefinite
+detention or worse, it is actually better to avoid using plausibly
+deniable encryption feature. According to game theory, the adversary
+incurs a negligible cost by prolonging torture or incarceration for the
+captive while the <em>reward</em> of finally breaking the victim is much
+greater, in case there was actually anything to be found.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> In group scenarios, using deniable encryption is a
+strong disincentive against the captured member "defecting" to save
+themselves since they cannot prove to the captor their loyalty.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>At time of writing (October 2024), there are no known ways to
+accomplish FDE with plausible deniability on any Linux distribution.
+This is because cryptsetup which is used for FDE on Linux doesn't
+support plausible deniability. Cryptsetup is an independent software
+project. Such a feature would need to be implemented in cryptsetup,
+which would be an extremely complicated development task. Cryptsetup,
+upstream feature request: <a href="https://gitlab.com/cryptsetup/cryptsetup/-/issues/7">Plausible
+deniability support for LUKS</a> was rejected. For reasons, see <a href="https://gitlab.com/cryptsetup/cryptsetup/-/blob/main/FAQ.md?ref_type=heads#5-security-aspects">cryptsetup
+FAQ</a> and search for <span class="code-select inline-style">Plausible
+Deniability</span> .</p>
+<h2 id="Measures_Against_Non-violent_Coercion">Measures Against
+Non-violent Coercion</h2>
+<p>Even in relatively civilized states, the laws have been misconstrued
+to make civil liberties protections at the border weaker. In the case of
+the US, the Fourth Amendment can be violated at will by customs
+officers. This section assumes a scenario where one is compelled to
+divulge passwords without measures involving physical harm or indefinite
+imprisonment. In such situations it is always recommended to exercise
+your right to remain silent and to request a lawyer. Your devices will
+most likely be impounded and therefore backups of important data should
+be made beforehand.</p>
+<ul>
+<li>This <a href="https://www.eff.org/press/releases/digital-privacy-us-border-new-how-guide-eff">EFF
+Guide</a> provides advice and outlines your rights at the border. Tips
+like storing key material in the cloud should be ignored.</li>
+<li>A <a href="https://www.cypherpunks.ca/~iang/pubs/shattersecrets-spw18.pdf">clever
+technique</a> (page 3) proposed by OTR's designer, Ian Goldberg, uses
+Shamir's Secret Splitting Scheme to split a key-file and distribute it
+among trusted friends to make producing the key a physical
+impossibility.</li>
+<li>Cryptographer Bruce Schneier outlines a simpler variant of the above
+technique. A new random string is added as a password and then passed
+along to a trusted person, with the usual password being removed before
+crossing the border. After arriving, the key to access the drive can be
+retrieved and the original one re-added. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
+</ul>
+<h2 id="Physical_Access">Physical Access</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+It is safest to assume that a machine has been compromised after any
+unauthorized physical access.</p>
+</div>
+<p>If unauthorized access is strongly suspected or confirmed, the
+hardware should not be trusted or used after it is back in your
+possession. This scenario is only relevant to a small minority who are
+already targeted for physical surveillance. A sufficiently skilled
+adversary can infect it with spyware or sabotage it in a number of ways
+that are virtually undetectable. For example, malicious firmware could
+be installed to record all activities, or the machine rendered
+inoperable by bricking the hardware. In that eventuality, none of the
+measures outlined in this chapter will help.</p>
+<h2 id="Protection_Against_Powerful_Adversaries">Protection Against
+Powerful Adversaries</h2>
+<p>As noted above, advanced attackers have virtually limitless
+possibilities to infect a computer under their physical control, such as
+flashing low-level firmware or adding physical implants.</p>
+<p><a href="Full_Disk_Encryption.html#Plausible_Deniability_-_Deniable_Encryption">Plausible deniability</a> and Full Disk Encryption
+(FDE) are also useless if subjected to physical abuse by a captor.</p>
+<p>A safer option is to have not left any discoverable data traces on a
+personal machine in the first place. See <a href="Live_Mode.html">Live Mode</a> and <a href="Anti-Forensics_Precautions.html">Anti-Forensics Precautions</a>.</p>
+<p>To protect against theft of personal information or data, FDE should
+be applied on the host, and the computer turned off when exposed to
+higher-risk situations like traveling. In the case of laptops, the
+battery should be temporarily removed after powering off. This ensures
+that the RAM chips are completely powered down and that any encryption
+key(s) in memory are erased. <sup class="reference"><a href="#cite_note-5">[5]</a></sup> See also <a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack
+Defense</a>.</p>
+<p>Sleep mode:</p>
+<ul>
+<li><s>Hibernation is also a safe alternative because the swap partition
+is encrypted in the default FDE configuration for various platforms
+(like Debian), so long as no changes were made.</s></li>
+<li>Hibernation might be unstable.</li>
+<li>Suspend to RAM is insecure because the FDE key remains in RAM and is
+therefore vulnerable to a cold boot attack.</li>
+</ul>
+<p>Be sure to follow the standard advice for picking <a href="Passwords.html#Generating_Unbreakable_Passwords">strong and unique passphrases</a>, so they cannot be
+feasibly brute-forced. Also, computers should never be left unattended
+in untrusted venues.</p>
+<h2 id="Authenticated_Encryption">Authenticated Encryption</h2>
+<p>TODO: document</p>
+<p>Resoures:</p>
+<ul>
+<li><a href="https://andrea.corbellini.name/2023/03/09/authenticated-encryption/">https://andrea.corbellini.name/2023/03/09/authenticated-encryption/</a></li>
+</ul>
+<h1 id="Debian_Hosts">Debian Hosts</h1>
+<p>Configuring FDE during system install is straightforward. The default
+cipher is AES-256 in XTS mode. Debian's installer supports setting up
+FDE.</p>
+<h1 id="Kicksecure_Hosts">Kicksecure Hosts</h1>
+<p>The Kicksecure <a href="ISO.html">ISO</a> installer also
+supports setting up FDE.</p>
+<h1 id="Pre-Boot_Authentication">Pre-Boot Authentication</h1>
+<p>When using FDE, the password must be entered before booting. This is
+commonly called pre-boot authentication. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> This is
+required so all encrypted data can be temporarily and the operating
+system can load properly. Without entering the correct password, the
+system remains inaccessible, protecting the contents of the disk from
+unauthorized access.</p>
+<p><strong>Figure:</strong> <em>initramfs (dracut) Based Encryption
+Password Prompt (cropped) - Example</em></p>
+<p><u>Note:</u> The text might slightly differ.</p>
+<p><img src="../media/Dracutpass-cropped.png.webp" width="1200" alt="initramfs (dracut) Based Encryption Password Prompt (cropped) - Example" /></p>
+<p><u>See also:</u> <a href="Grub.html#initramfs_.28initramfs-tools_or_dracut.29_Based_Encryption_Password_Prompt">initramfs (dracut) Based Encryption Password
+Prompt</a></p>
+<h1 id="Decryption">Decryption</h1>
+<h2 id="Temporary_Decryption_while_using_FDE">Temporary Decryption while
+using FDE</h2>
+<p>Data is decrypted inside the RAM (volatile, non-persistent memory)
+only. At no point is unencrypted data written to the hard drive
+(persistent storage).</p>
+<h2 id="Permanent_Decryption">Permanent Decryption</h2>
+<p>Removing <u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE).</p>
+<ul>
+<li><u>"Direct" permanent decryption:</u> This is very difficult. <a href="Unsupported.html">Unsupported</a>.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+<li><u>"Indirect" permanent decryption:</u> Data can be copied from the
+encrypted device to other unencrypted drives and will not be encrypted
+there.</li>
+</ul>
+<h1 id="Removable_Media">Removable Media</h1>
+<h2 id="New_Removable_Media">New Removable Media</h2>
+<p>Gnome Disks Utility creates LUKS partitions with AES-128 by default
+which is insufficient in event of quantum computers materializing. This
+has been successfully reported and fixed upstream as of February 2019,
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup> <sup class="reference"><a href="#cite_note-9">[9]</a></sup> but until it lands in Debian, an
+appropriately secure container must be manually created. Afterwards,
+unlock the device and format the internal filesystem as EXT4 in Gnome
+Disks.</p>
+<p>First enumerate the device. They will usually be called 'sdb1', as
+sdaX is reserved for the system on default installs. To avoid confusion,
+only connect one removable device at a time.</p>
+<p><span class="code-select">sudo ls /dev/</span></p>
+<p>Create a LUKS container and change the device name as needed, then
+follow the prompts.</p>
+<p><span class="code-select">sudo cryptsetup --verbose --use-random
+--cipher aes-xts-plain64 --key-size 512 --hash sha512 --use-random
+luksFormat &lt;device&gt;</span></p>
+<h2 id="Legacy_Device_Encryption_Upgrade">Legacy Device Encryption
+Upgrade</h2>
+<p>It is safer to re-encrypt the device with a stronger key rather than
+performing a quick format that will otherwise leave the old/weaker
+header intact.</p>
+<div class="info-box ">
+<p><strong>1.</strong> First enumerate the device.</p>
+<p>They will usually be called 'sdb1', as sdaX is reserved for the
+system on default installs. To avoid confusion, only connect one
+removable device at a time.</p>
+<p><span class="code-select">sudo ls /dev/</span></p>
+<p><strong>2.</strong> View the LUKS header data in order to make
+necessary adjustments.</p>
+<p>Run.</p>
+<p><span class="code-select">sudo cryptsetup luksDump --debug
+&lt;device&gt;</span></p>
+<p>LUKS header data legend:</p>
+<ul>
+<li>'MK' means 'Master Key'. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></li>
+<li>AES in XTS mode uses a key size double its bit size (512 in this
+case) since in XTS the key is split in 2, resulting in AES with 256-bit
+keys. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
+<li>'Payload offset' is 4096 for 256-bit keys and 2048 for 128-bit keys.
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></li>
+</ul>
+<p><strong>3.</strong> Re-encrypt the device with stronger keys.
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<p>Fortunately, header resizing is usually unnecessary (otherwise it
+will abort the process).</p>
+<p><span class="code-select">sudo cryptsetup-reencrypt &lt;device&gt; -c
+aes-xts-plain64 -s 512 --use-directio</span></p>
+<p>Abruptly disconnecting power can cause data loss. To safely pause the
+process (in case of system sleep/shutdown), cryptsetup can be suspended
+(e.g. by <code>Ctrl+C</code>) and it will automatically restart from
+where it left off if temporary header files are present in the home
+directory. <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
+</div>
+<h1 id="Encrypted_Containers">Encrypted Containers</h1>
+<p>Encrypted containers have the twin advantages of flexibility and
+mobility of folders, allowing more files to be added on the fly without
+needing re-compression and re-encryption (as in the case of using
+GPG).</p>
+<h2 id="Zulucrypt">Zulucrypt</h2>
+<p>{{mbox | type = notice | image =
+<img src="../media/Ambox_notice.png.webp" width="40" alt="Info" />
+Zulucrypt is the Linux answer to encrypted containers, making use of the
+reliable LUKS disk encryption specification. It is compatible with
+encrypted <a href="https://www.dyne.org/software/tomb/">tomb files</a>
+and also capable of reading and creating Truecrypt / <a href="https://www.veracrypt.fr/en/Home.html">VeraCrypt</a> containers.
+Note that Veracrypt containers only support a maximum password length of
+64 characters, but LUKS has a maximum value of 32,767 (although a
+recently fixed bug had limited it to only 100 characters).
+<sup class="reference"><a href="#cite_note-15">[15]</a></sup> Until it is possible to use 20-word diceware
+passphrases to lock LUKS containers, it is recommended to use <a href="Passwords.html#Guidelines">makepasswd</a> to generate
+43 character strings. These can then be pasted into a text file that is
+encrypted with GPG -- which does not have low character limits --
+essentially creating a makeshift key file.</p>
+<p>Containers grow dynamically as more data is added. Opened containers
+are mounted under <code>/run/media/private/user</code>. More than one
+password may be added for access, making use of LUKS' key slots feature
+behind the scenes. <sup class="reference"><a href="#cite_note-16">[16]</a></sup></p>
+<p>For further usage instructions please consult the official <a href="https://github.com/mhogomchungu/zuluCrypt/blob/master/docs/zuluCrypt.pdf">manual</a>.</p>
+<h3 id="Recommended_Security_Settings">Recommended Security
+Settings</h3>
+<p><u>Important Note:</u> In order to have post-quantum resistance, the
+<code>aes.xts-plain64.512.sha512</code> option is recommended for
+256-bit encryption (the encryption key-size is split in two with XTS
+mode).</p>
+<p>To view the container header, run. <span class="code-select">sudo
+cryptsetup luksDump --debug /home/user/&lt;file_name&gt;</span></p>
+<p>With LUKS it is possible to nest containers of different encryption
+ciphers; for example, by placing a Serpent and Twofish container inside
+each other, wrapped in an outer AES one. Be sure to select the
+<code>.xts-plain64.512.sha512</code> variants in all cases. Each inner
+layer should be 1 MB less than the outer layer to allow space for each
+container's respective encryption header.</p>
+<p>The <a href="Full_Disk_Encryption.html#Plausible_Deniability_-_Deniable_Encryption">Plausible deniability</a> feature is available with
+volume types <code>Normal+Hidden Truecrypt/Veracrypt</code>. Veracrypt
+volumes support crypto-cascades as a feature, so manual nesting is
+unnecessary. However, be warned that Truecrypt/Veracrypt volume types
+only support AES-128. Plain dm-crypt containers with a non-zero offset
+can be used to provide hidden volumes according to Zulucrypt's manual.
+This is yet to be tested by Kicksecure developers.</p>
+<h1 id="Additional_Measures">Additional Measures</h1>
+<table>
+<caption><em>Additional Protective Measures</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Measure</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Anti Evil Maid</p></td>
+<td><p><a href="AEM.html">Evil Maid Attack</a></p></td>
+</tr>
+<tr class="even">
+<td><p>Erase LUKS Header</p></td>
+<td><p>This is a much quicker alternative to zeroing data on a HDD with
+<a href="https://dban.org/">Darik's Boot and Nuke (DBAN)</a>.
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup> <sup class="reference"><a href="#cite_note-18">[18]</a></sup> This is an effective measure on
+spinning HDDs where wiped data is confirmed to be destroyed. The OS only
+needs to read the LUKS header off disk once - not every single second.
+Wiping the header makes the disk impossible to unlock in the future.
+<sup class="reference"><a href="#cite_note-19">[19]</a></sup></p>
+<p>Replace <code>/dev/sdXY</code> with the encrypted partition. Reply
+<code>YES</code> to the prompt. <span class="code-select">sudo
+cryptsetup luksErase /dev/sdXY</span></p>
+<p>Alternatively, to accomplish the same goal without being prompted,
+run. <span class="code-select">sudo dd if=/dev/zero of=/dev/sdXY bs=1M
+count=2</span></p>
+<p>This will overwrite the first two megabytes of the partition
+<code>/dev/sdXY</code>, which should cover the entire LUKS encryption
+header for version 1. If you are using LUKS2 with cryptsetup version
+2.1.0 (Debian Buster default) the default header size is now 16MiB.
+Previous cryptsetup versions used a 4MiB LUKS2 header. In that case,
+simply adjust the dd command: dd if=/dev/zero of=/dev/sdXY bs=1M
+count=16 (or count=4). Determine your header size with the cryptsetup
+luksDump --debug  command.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Killer</p></td>
+<td><p><code>Killer</code> <sup class="reference"><a href="#cite_note-20">[20]</a></sup> is a newer project that
+supports a range of trigger actions to shutdown a system in the case of
+tampering (disallowed changes) with USB, Bluetooth, AC, Battery, Disk
+Tray, and Ethernet. In the future, custom commands will be supported
+besides shutdown. <sup class="reference"><a href="#cite_note-21">[21]</a></sup> Once the program is packaged, it
+is intended to provide this software in the Kicksecure repositories for
+Debian hosts.</p></td>
+</tr>
+<tr class="even">
+<td><p>LUKS Suspend Scripts</p></td>
+<td><p>On Linux hosts, there is one interesting solution for the risks
+posed by a computer in a suspended state; luks-suspend scripts.
+<sup class="reference"><a href="#cite_note-22">[22]</a></sup> This approach has some limitations because it is not
+yet packaged for Debian, and it has only been tested in the Ubuntu and
+Arch distributions. As of 2018, luks-suspend and keyslot nuking
+(mentioned below) is being merged upstream. <sup class="reference"><a href="#cite_note-23">[23]</a></sup> As of
+2020 <code>cryptsetup-suspend</code> is now available in Debian Bullseye
+and Buster Backports, requiring Linux 5.6+. Keep in mind that while it
+protects LUKS keys by removing them from memory, other sensitive keys
+(GPG and SSH) and documents opened since last boot will still be present
+and extractable from RAM. Other daemons need to independently support
+key sanitization on suspend for enhanced protection.
+<sup class="reference"><a href="#cite_note-24">[24]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Magic Key Feature</p></td>
+<td><p>In an emergency, <a href="About.html">Kicksecure</a> is capable of powering-off the computer
+immediately via the Magic SysRq key feature. This is invoked by pressing
+the key combination: <code>Alt</code> + <code>PrintScreen</code> +
+<code>o</code> (lower-case letter). On bare-metal linux systems, the FDE
+passphrase is prompted after rebooting. <sup class="reference"><a href="#cite_note-25">[25]</a></sup>
+<sup class="reference"><a href="#cite_note-26">[26]</a></sup> <sup class="reference"><a href="#cite_note-27">[27]</a></sup> <s>The magic key feature does
+not work on Qubes hosts because the Xen hypervisor does not recognize
+these commands. <sup class="reference"><a href="#cite_note-28">[28]</a></sup> </s></p></td>
+</tr>
+<tr class="even">
+<td><p>Nuke Patch for cryptsetup</p></td>
+<td><ul>
+<li>The Kali penetration testing distro team has written a <a href="https://www.kali.org/blog/emergency-self-destruction-luks-kali/">nuke
+patch for cryptsetup</a>, which adds the option to nuke all keyslots
+after a certain passphrase is entered; see footnotes.
+<sup class="reference"><a href="#cite_note-29">[29]</a></sup> <sup class="reference"><a href="#cite_note-30">[30]</a></sup></li>
+<li>Supplying the dead-man switch as the "real passphrase" to the
+interceptors of the machine is unlikely to be an effective strategy. It
+is standard forensics procedure to create multiple images of the drive
+beforehand.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Encrypted <code>/boot</code> Partition</p></td>
+<td><p><span class="manually-placed-anchor mpa-visible" id="encrypted_boot">encrypted_boot</span>
+An encrypted <code>/boot</code> partition has some advantages but it's
+imperfect because the bootloader is still necessarily unencrypted. To
+read more on this subject, see <a href="https://twopointfouristan.wordpress.com/2011/04/17/pwning-past-whole-disk-encryption/">Pwning
+Past Whole Disk Encryption</a>. Article <a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">Full
+disk encryption, including /boot: Unlocking LUKS devices from GRUB</a>
+might be helpful.</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/3655516/does-encryption-guarantee-integrity">https://stackoverflow.com/questions/3655516/does-encryption-guarantee-integrity</a></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/2442">https://github.com/QubesOS/qubes-issues/issues/2442</a></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/6151">https://github.com/QubesOS/qubes-issues/issues/6151</a></li>
+</ul>
+<p>A signed <code>/boot</code> partition (next point) however is more
+important than a encrypted boot partition.</p>
+<p>Considered not useful and <a href="Measured_boot.html">measured boot</a> considered superior:</p>
+<ul>
+<li><a href="https://bugs.launchpad.net/ubuntu/+source/calamares/+bug/2016912">https://bugs.launchpad.net/ubuntu/+source/calamares/+bug/2016912</a></li>
+</ul>
+<p><a href="Grub.html">GRUB</a> is the only known bootloader
+for Freedom Software Linux based operating systems that supports
+encrypted <code>/boot</code>.</p>
+<p>Using GRUB to unlock <code>/boot</code> comes with several
+disadvantages.</p>
+<ul>
+<li><u>No keyboard layout support:</u> Only US keyboard layout is
+supported. Other local keyboard layouts are unsupported. If the user has
+chosen a full disk encryption password in calamares in their local
+keyword, chances are that this password will not work.
+<sup class="reference"><a href="#cite_note-31">[31]</a></sup></li>
+<li><u>No password feedback:</u> No asterisk sign ("<code>*</code>") is
+shown during password entry. There is also no option to enable such a
+feature. The user must type the password "blind" without knowing how
+many characters have been typed already.</li>
+<li><u>Slow decryption:</u> Takes much longer to decrypt.</li>
+<li><u>No retry:</u> If the password has been entered wrong, GRUB drops
+to a recovery shell. The user might type (the first few) characters of
+its password again making it visible to anyone shoulder surfing.</li>
+<li><u>Slow development:</u> LUKS2 and Argon2 was unavailable in GRUB
+for a long time.</li>
+<li><u>No dracut support:</u> At time of writing (Debian 12), entering
+the password twice was required. Once for GRUB and once during
+initrd.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Signed <code>/boot</code> Partition and Bootloader (Verified
+Boot)</p></td>
+<td><p><a href="Verified_Boot.html">Verified Boot</a> in
+theory but not yet available for (security-focused) Linux distributions
+such as Debian, Kicksecure and Qubes OS.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Separate <code>/boot</code> Partition</p></td>
+<td><p>When FDE is used on the host, it is inadvisable to keep any
+(unencrypted) partitions such as the <code>/boot</code> partition and
+bootloader on that same physical media which resides in a notebook which
+is sometimes left unattended. High risk users should move the
+<code>/boot</code> partition to a separate USB (or other external) media
+and the bootloader (Grub) should also be installed on the separate
+USB.</p></td>
+</tr>
+<tr class="even">
+<td><p>TRESOR Kernel Patch</p></td>
+<td><p>Another useful protection is the <a href="https://en.wikipedia.org/wiki/TRESOR">TRESOR</a> <a href="https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/">kernel
+patch</a>, which keeps the disk encryption key outside of RAM by storing
+it inside the CPU. TRESOR does have several limitations. It is only
+available for the x86 architecture, and it complicates software
+debugging by disabling DR registers for security reasons.
+<sup class="reference"><a href="#cite_note-32">[32]</a></sup> Moreover, a specialized attacker who can reverse
+engineer hardware designs is also capable of extracting secrets held in
+processor caches or specialized chips like TPMs.</p></td>
+</tr>
+<tr class="odd">
+<td><p>USBKill</p></td>
+<td><ul>
+<li><a href="https://en.wikipedia.org/wiki/USBKill">USBKill</a> is an
+anti-forensics script written in the aftermath of the SilkRoad trial.
+Its purpose is to trigger protection events that prevent adversaries
+from siphoning files, installing malware, or running a mouse jiggler.
+The script creates a white-list of allowable USB devices. If anything
+else is plugged into the machine, the RAM is erased and the computer is
+immediately shutdown.<br />
+</li>
+<li>USBKill can also be configured to exclude all devices from being
+attached. In another high-security configuration, a white-listed flash
+drive serves as a key, and must be in the USB port at all times. If the
+flash drive is forcibly removed, the program will initiate the desired
+routines. <sup class="reference"><a href="#cite_note-33">[33]</a></sup> <sup class="reference"><a href="#cite_note-34">[34]</a></sup></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Increase Costs of Brute-Force Attacks</p></td>
+<td><p>Encryption software uses Password-Based Key Derivation Functions
+(PBKDF) to slow down access attempts and provide some protection against
+low-entropy passphrases. Higher wait times, or iterations, can often be
+used. Iteration values are low by default for impatient users and weak
+processors, also making systematic attempts to access such protected
+data much easier for unauthorized users. Choosing how long wait times
+should be should depend on how long you are willing to wait to access
+your own data and how long someone else should wait if they try.
+Computing power gets cheaper with time, so what works today might be
+weak in the future.</p>
+<ul>
+<li>LUKS version 1 uses PBKDF2 <sup class="reference"><a href="#cite_note-35">[35]</a></sup> and allows the option
+--iter-time (or -i) for the LuksFormat, LuksAddKey, and LuksChangeKey
+commands. Iter-time is measured in milliseconds, so ten seconds would
+look like:</li>
+</ul>
+<p><span class="code-select">sudo cryptsetup luksChangeKey --iter-time
+10000 &lt;device&gt;</span></p>
+<ul>
+<li>LUKS 2 (available with Debian Buster) added support for <a href="https://www.cryptolux.org/index.php/Argon2">Argon2i/Argon2id</a>.
+In addition to processor time, Argon2 iterations use RAM and can be
+multi-threaded, making it difficult for hash bruteforcing using graphics
+cards. <sup class="reference"><a href="#cite_note-36">[36]</a></sup></li>
+</ul>
+<p>Argon2 iterations will vary depending on environment.</p>
+<p><span class="code-select">sudo cryptsetup benchmark</span></p>
+<p>will show you how many iterations could be made in a requested 2000
+ms. To customize wait times, specify (with values) --pbkdf
+--pbkdf-force-iterations --pbkdf-memory <sup class="reference"><a href="#cite_note-37">[37]</a></sup>
+--pbkdf-parallel (number of threads) when using the LuksFormat command.
+Be aware that incorrect values can make wait times extremely long.</p>
+<ul>
+<li>Veracrypt improved upon TrueCrypt's iterations when performing
+operations on volumes.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="TPM">TPM</h1>
+<h2 id="Different_Use_Cases">Different Use Cases</h2>
+<h3 id="TPM_Transparent_Encryption">TPM Transparent Encryption</h3>
+<p>A common usability issue in systems without TPM transparent
+encryption is the need for multiple passwords: one for Full Disk
+Encryption (FDE) and another for <a href="Login.html">login</a>.</p>
+<p>In systems using TPM (Trusted Platform Module) for transparent
+encryption, the encryption key is securely stored within the TPM, and no
+pre-boot authentication is required. FDE is automatic, meaning the
+system can unlock the encrypted disk upon boot, using the TPM to manage
+the encryption key.</p>
+<p>The user only needs to enter a password at the login manager during
+the regular login process, rather than at boot. This enhances user
+convenience while ensuring the encryption key is protected by TPM's
+hardware security features.</p>
+<p>While TPM transparent encryption offers clear usability advantages,
+such as eliminating the need for pre-boot authentication, it also has
+potential vulnerabilities.</p>
+<ul>
+<li><strong>Advantages</strong>:
+<ul>
+<li><strong>Improved Usability</strong>: No more password input during
+pre-boot authentication, offering a seamless experience for the
+user.</li>
+<li><strong>Disk Swap Security</strong>: In the event of a hard drive
+failure or disposal, the data remains secure and cannot be recovered,
+provided the LUKS implementation follows best practices and the
+encryption algorithms used are not compromised. Since the encryption key
+is not stored on the disk itself (and is instead securely managed by the
+TPM or passphrase), even if someone obtains physical access to the
+discarded or damaged drive, they will not be able to decrypt or recover
+the data.</li>
+<li><strong>Remote Password Entry</strong>: It is possible to use FDE
+without needing pre-boot authentication where no networking is
+available. Useful for servers.</li>
+</ul></li>
+<li><strong>Disadvantage</strong>:
+<ul>
+<li><strong>Cold Boot Attack Vulnerability</strong>: TPM transparent
+encryption can be vulnerable to <a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack Defense</a>, including both
+traditional "cold" boot attacks and "warm" boot attacks.
+<ul>
+<li><strong>Cold Boot Attack Overview</strong>: A cold boot attack
+exploits the fact that encryption keys, including FDE keys, are stored
+in volatile memory (RAM) while the system is running. When the system is
+powered off or restarted, data in RAM does not immediately vanish but
+gradually fades. During this brief period, an attacker can quickly
+reboot the machine into a prepared environment or physically remove the
+RAM to read its contents using specialized tools.</li>
+<li><strong>"Cold" vs "Warm" Boot Attacks</strong>: In systems without
+TPM transparent encryption, cold boot attacks can sometimes be mitigated
+by simply powering off the system. However, TPM transparent encryption
+introduces an additional risk: <strong>warm boot attacks</strong>.</li>
+<li><strong>Attack Overview</strong>: In this scenario, if an adversary
+gains physical access to a device using TPM transparent encryption, they
+can simply reboot the machine. Since there is no pre-boot authentication
+required, the system automatically boots, and the encryption key is
+loaded into RAM, making it susceptible to extraction.</li>
+<li><strong>TPM Transparent Encryption &amp; RAM</strong>: In TPM
+transparent encryption, because no pre-boot authentication is involved,
+the system boots automatically, and the TPM releases the encryption key
+into RAM to decrypt the disk. Once the operating system is running, the
+key often remains in RAM to allow continuous access to the encrypted
+disk.</li>
+<li><strong>Vulnerability</strong>: Warm boot attacks exploit this by
+attempting to recover the FDE key from RAM after a sudden shutdown or
+reboot, bypassing the protection the TPM offers when the system is fully
+powered down. Since the encryption key remains in the system's memory
+during operation, an attacker can potentially extract it from RAM if
+they act quickly enough after the shutdown or reset.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Where is the TPM?</p>
+<p>Either</p>
+<ul>
+<li>soldered on the motherboard; or</li>
+<li>inside the CPU; or</li>
+<li>an external security key (FIDO2 security token).</li>
+</ul>
+<p>In case of a TPM stored inside the system (soldered or CPU):</p>
+<p><blockquote><p>Even though this sounds a lot weaker than the FIDO2/PKCS#11 model
+TPM2 still bring benefits for securing your systems: because the
+cryptographic key material stored in TPM2 devices cannot be extracted
+(at least that's the theory), if you bind your hard disk encryption to
+it, it means attackers cannot just copy your disk and analyze it offline
+-- they always need access to the TPM2 chip too to have a chance to
+acquire the necessary cryptographic keys. Thus, they can still steal
+your whole PC and analyze it, but they cannot just copy the disk without
+you noticing and analyze the copy.<span class="blockquote-context"><a href="https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html">https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html</a></span></p></blockquote></p>
+<p>External FIDO2 security token are more secure than built-in TPM
+because the user can more easily carry and/or hide them.</p>
+<h3 id="TPM_as_Additional_Key">TPM as Additional Key</h3>
+<p>LUKS supports multiple keyslots. For instance, a keyslot 1 could be a
+password, keyslot 2 a keyfile and keyslot 3 a TPM. At each boot, the
+user could choose which authentication method to use.</p>
+<p>The use case might be to use TPM Transparent Encryption but have a
+backup password in case of TPM failure or hard disk migration to a
+different system.</p>
+<h3 id="TPM_to_Strengthen_Weak_Passwords">TPM to Strengthen Weak
+Passwords</h3>
+<p><blockquote><p>TPM2 stuff to allow short (4 digits or so) "PINs" for unlocking the
+harddisk, i.e. kind of a low-entropy password you type in. The reason
+this is reasonably safe is that in this case the PIN is passed to the
+TPM2 which enforces that not more than some limited amount of unlock
+attempts may be made within some time frame, and that after too many
+attempts the PIN is invalidated altogether. Thus making dictionary
+attacks harder (which would normally be easier given the short length of
+the PINs).<span class="blockquote-context"><a href="https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html">https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html</a></span></p></blockquote></p>
+<h3 id="TPM_plus_Password">TPM plus Password</h3>
+<p>Full disk encryption password as first factor (something you know)
+plus a TPM as a second factor (something you have).</p>
+<p>At the time of writing, this is unavailable in any Linux
+distribution. See the comparison table below.</p>
+<p><blockquote><p>1) Require a disk encryption password *as well as* the TPM-backed
+key. You want the TPM component in order to avoid a compromised boot
+process giving an attacker access to the disk, but having the entire FDE
+key automatically sent over an unencrypted bus is a
+problem.<span class="blockquote-context"><a href="https://x.com/mjg59/status/1420480679523930116">mjg59's thread on
+disk encryption password <strong><u>and</u></strong> the TPM-backed
+key</a></span></p></blockquote></p>
+<h2 id="Complexity_Risk">Complexity Risk</h2>
+<p>The integration of TPM introduces additional complexity to the
+system. While security is a crucial factor, it is not the only
+consideration. Usability and data safety are equally important,
+particularly in ensuring the user does not face complete data loss.</p>
+<p>The system's complexity should remain within the user's technical
+capabilities. If the setup or recovery process is too complex for the
+user, it could lead to unintended consequences, such as losing access to
+critical data. Therefore, the balance between security, usability, and
+data safety must be carefully managed.</p>
+<h2 id="Implementation_Issues">Implementation Issues</h2>
+<p><blockquote><p>There's still plenty room for further improvement in all of this. In
+particular for the TPM2 case: what the text above doesn't really mention
+is that binding your encrypted volume unlocking to specific software
+versions (i.e. kernel + initrd + OS versions) actually sucks hard: if
+you naively update your system to newer versions you might lose access
+to your TPM2 enrolled keys (which isn't terrible, after all you did
+enroll a recovery key -- right? -- which you then can use to regain
+access.</p>
+<p>[...]</p>
+<p>Nothing updates the enrollment automatically after you initially
+enrolled it, hence after the first kernel/initrd update you have to
+manually re-enroll things again, and again, and again ... after every
+update.<span class="blockquote-context"><a href="https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html">https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html</a></span></p></blockquote></p>
+<h2 id="Security">Security</h2>
+<p>Using full disk encryption with a strong password is more secure than
+using a TPM.</p>
+<p><blockquote><p>According to the researcher, targeted attacks can bypass BitLocker's
+encryption by directly accessing the hardware and extracting the
+encryption keys stored in the computer's Trusted Platform Module (TPM)
+via the LPC bus.<span class="blockquote-context"><a href="https://www.techspot.com/news/101792-microsoft-bitlocker-encryption-can-cracked-43-seconds-4.html">Microsoft
+BitLocker encryption cracked in just 43 seconds with a $4 Raspberry Pi
+Pico</a></span></p></blockquote></p>
+<p><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=wTl4vEednkQ">
+<img src="../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=wTl4vEednkQ">Breaking
+Bitlocker - Bypassing the Windows Disk
+Encryption</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=wTl4vEednkQ"><img src="../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=wTl4vEednkQ"><img src="../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=wTl4vEednkQ"><img src="../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></p>
+<ul>
+<li><a href="https://www.guru3d.com/story/researchers-expose-vulnerabilities-in-amds-firmware-based-tpms/">https://www.guru3d.com/story/researchers-expose-vulnerabilities-in-amds-firmware-based-tpms/</a></li>
+</ul>
+<p><blockquote><p><strong>Security implications</strong></p>
+<p>As you establish an alternative unlock method using only the on-board
+hardware of your platform, you have to trust your platform manufacturer
+to do their job right. This is a delicate topic. There is trust in a
+secure hardware and firmware design. Then there is trust that the UEFI,
+bootloader, kernel, initramfs, etc. are all unmodified. Combined you
+expect a trustworthy environment where it is OK to automatically decrypt
+the disk.</p>
+<p>That being said you have to trust (or better, verify) that the
+manufacturer did not mess anything up in the overall platform design for
+this to be considered a fairly safe decryption alternative. There are a
+range of cases where things did not work out as planned. For example,
+when <a href="https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network">security
+researches showed that BitLocker on a Lenovo notebook would use
+unencrypted SPI communication</a> with the TPM2 leaking the LUKS
+passphrase in plain text without even altering the system, or that
+BitLocker used the native encryption features of SSD drives that you can
+<a href="https://blog.elcomsoft.com/2019/01/life-after-trim-using-factory-access-mode-for-imaging-ssd-drives/">by-pass
+through factory reset</a>.</p>
+<p>These examples are all about BitLocker but it should make it clear
+that if the overall design is broken, then the secret is accessible and
+this alternative method less secure than a passphrase only present in
+your head (and somewhere safe like a password manager). On the other
+hand, keep in mind that in most cases elaborate research and attacks to
+access a drive's data are not worth the effort for an opportunistic bad
+actor. Additionally, not having to enter a passphrase on every boot
+should help adoption of this technology as it is transparent but adds
+additional hurdles to unwanted
+access.<span class="blockquote-context"><a href="https://fedoramagazine.org/automatically-decrypt-your-disk-using-tpm2/">Fedora
+Magazine: Automatically decrypt your disk using TPM2</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://www.bleepingcomputer.com/news/security/new-tpm-20-flaws-could-let-hackers-steal-cryptographic-keys/">https://www.bleepingcomputer.com/news/security/new-tpm-20-flaws-could-let-hackers-steal-cryptographic-keys/</a></li>
+<li><a href="https://arstechnica.com/gadgets/2021/08/how-to-go-from-stolen-pc-to-network-intrusion-in-30-minutes/">https://arstechnica.com/gadgets/2021/08/how-to-go-from-stolen-pc-to-network-intrusion-in-30-minutes/</a></li>
+</ul>
+<h2 id="Resources">Resources</h2>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/9460">https://github.com/QubesOS/qubes-issues/issues/9460</a></li>
+</ul>
+<h2 id="TPM_Full_Disk_Encryption_Threat_Modeling">TPM Full Disk
+Encryption Threat Modeling</h2>
+<p>To make good use of a TPM for full disk encryption, it is important
+define adversary goals and capabilities.</p>
+<p>Adversary goal:</p>
+<ul>
+<li>Access contents circumventing the encryption.</li>
+</ul>
+<p>Adversary capabilities:</p>
+<ul>
+<li>Can bruteforce weak user passwords?</li>
+<li>Can steal the complete notebook?</li>
+<li>Can steal any external USB drive?</li>
+<li>Can steal an external mobile device (mobile phone) used for 2FA (two
+factor authentication)?</li>
+<li>Can make a copy of the notebook hard drive without the user
+noticing?</li>
+<li>Can make a copy of any external USB drive without user
+noticing?</li>
+<li>Can perform a cold boot attack?</li>
+<li>Can perform a warm boot attack (as described above)?</li>
+<li>Can sniff full disk encryption passwords using (hidden) cameras or
+laser microphones?</li>
+<li>Can perform <a href="https://xkcd.com/538/">5$ wrench
+attack</a>?</li>
+<li>Can break the TPM?</li>
+<li>Can perform replay attacks as described <a href="https://tech.michaelaltfield.net/2023/02/16/evil-maid-heads-pureboot/">here</a>?</li>
+<li>Can perform relay attacks as described <a href="https://tech.michaelaltfield.net/2023/02/16/evil-maid-heads-pureboot/">here</a>?</li>
+</ul>
+<p>It is tempting to answer all of these questions with "yes". But there
+is a catch. If "enough" ("the correct") questions are answered with
+"yes", then the adversary can accomplish its goal.</p>
+<p>Unfortunately, some answered must be answered with "no" for the user
+to remain secure.</p>
+<h2 id="TPM_Encryption_Comparison_Table">TPM Encryption Comparison
+Table</h2>
+<table>
+<thead>
+<tr class="header">
+<th><p><strong>Security Feature</strong></p></th>
+<th><p><strong>FDE Password Only</strong></p></th>
+<th><p><strong>FDE Password + USB Keyfile</strong></p></th>
+<th><p><strong>FDE USB Keyfile Only</strong></p></th>
+<th><p><strong>FDE TPM Transparent Encryption</strong></p></th>
+<th><p><strong>FDE Password + TPM</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Cannot bruteforce weak user passwords?</p></td>
+<td><p>No,
+susceptible to bruteforce if the password is weak.</p></td>
+<td><p>Yes,
+keyfile adds significant entropy.</p></td>
+<td><p>Yes,
+keyfile adds significant entropy.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Secure if using a strong password?</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No,
+due to Warm Boot Attacks.</p></td>
+<td><p>In
+theory, yes, but no such implementations exist in practice. There are
+currently no implementations that truly combine a strong user-provided
+password with the unsealed key from the TPM.</p>
+<p>This has significant disadvantages compared to FDE Password + USB
+Keyfile. <sup class="reference"><a href="#cite_note-38">[38]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>No TPM-Specific Risks or Vulnerabilities (<a href="Backdoor.html">Backdoors</a>, Attack Surface, Data Loss)?</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No,
+TPM introduces potential attack surface, is proprietary (non-freedom
+software), and is not as time-tested.</p></td>
+<td><p>No
+(See left.)</p></td>
+</tr>
+<tr class="even">
+<td><p>Not vulnerable to Warm Boot Attacks (as defined above)?</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>No
+(Unless using <a href="Dev/confidential_computing.html">confidential computing</a>, which isn't really
+available with Freedom Software yet.)</p></td>
+<td><p>Yes
+(Due to additional password required at pre-boot
+authentication.)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Not vulnerable to Cold Boot Attacks (as defined above)?</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Not vulnerable to <a href="https://xkcd.com/538/">5$ wrench
+attack</a>?</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Unattended server boot without needing to enter a pre-boot
+authentication password?</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Where would the keyfile be stored?</p></td>
+<td><p>Yes</p></td>
+<td><p>No,
+requires user password for boot.</p></td>
+</tr>
+<tr class="even">
+<td><p>Secure against sniffing of encryption passwords using (hidden)
+cameras or laser microphones?</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Depends:</p>
+<ul>
+<li>Server: Yes, because the user typically logs in over SSH.</li>
+<li>Desktop: No, because the user must type the login manager
+password.</li>
+</ul></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Encryption Key Binding to Specific Hardware (TPM)?</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes,
+key bound to device's hardware through TPM.</p></td>
+<td><p>Yes
+(Same as left.)</p></td>
+</tr>
+<tr class="even">
+<td><p>Protection Against Key File Being Moved to Another
+Device?</p></td>
+<td><p>No</p></td>
+<td><p>No,
+Keyfile can be copied</p></td>
+<td><p>No,
+Keyfile can be copied</p></td>
+<td><p>Yes,
+Keyfile tied to hardware. Discrete TPM (on motherboard) or External TPM
+Security Key both prevent simple copying, but discrete TPM is integrated
+while the external security key is removable.</p></td>
+<td><p>Yes
+(Same as left.)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Supports Multi-Factor Authentication (Password + External
+Device)</p></td>
+<td><p>No
+(password only)</p></td>
+<td><p>Yes,
+password plus USB key</p></td>
+<td><p>No
+(USB key only)</p></td>
+<td><p>No,
+then it no longer fulfills the definition of TPM transparent
+encryption.</p></td>
+<td><p>In
+theory, yes. TPM can be combined with password and potentially other
+factors for multi-factor authentication - in theory - though support
+might require manual setup and maybe even development.</p>
+<p>At time of writing, no Linux distribution installer is known to
+support setting up true key derivation that combines both a password and
+TPM during installation.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Two-factor_Authentication_(2FA)">Two-factor Authentication
+(2FA)</h1>
+<p>todo: document</p>
+<p>Linux LUKS (Linux Unified Key Setup) at time of writing did not have
+native support for 2FA. This might be the case because 2FA is for
+authentication, not for encryption.</p>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="Unsupported.html">this</a> for
+potential alternatives.</p>
+</div>
+<h2 id="2FA_Considerations">2FA Considerations</h2>
+<p>A backup method might be required in case the 2FA device is
+unavailabe (broken, lost, stolen).</p>
+<p>See also:</p>
+<ul>
+<li><a href="Full_Disk_Encryption.html#TPM">TPM</a></li>
+<li><a href="Two-factor_authentication_2FA.html">Two-factor
+Authentication (2FA)</a></li>
+</ul>
+<h2 id="2FA_Methods">2FA Methods</h2>
+<h3 id="Key_Based">Key Based</h3>
+<p><a href="https://docs.nitrokey.com/nitrokeys/features/openpgp-card/hard-disk-encryption/index#hard-disk-encryption-on-gnu-linux-with-luks-dm-crypt">Full-Disk
+Encryption With cryptsetup/LUKS</a> apparently uses the smartchip of the
+stick + a PIN.</p>
+<p>This might be considered 2FA.</p>
+<p>However, to the knowledge of the author, this method cannot be
+combined with a secure password typed by the user. The <a href="Full_Disk_Encryption.html#Hardware-Based_Encryption_versus_Software-Based_Encryption">Hardware-Based Encryption versus Software-Based
+Encryption</a> might apply.</p>
+<h3 id="Static_Password_Key">Static Password Key</h3>
+<p>YubiKey has a <a href="https://www.yubico.com/blog/yubikey-static-password-offers-up-options/">static
+password</a> feature that upon button press, a static password is
+written. YubiKey can act as a keyboard.</p>
+<p><blockquote><p>YubiKey can function as a USB keyboard that types out characters with
+the touch of a button<span class="blockquote-context"><a href="https://www.yubico.com/blog/yubikey-static-password-offers-up-options/">https://www.yubico.com/blog/yubikey-static-password-offers-up-options/</a></span></p></blockquote></p>
+<p>As of September 2024, <a href="https://www.nitrokey.com/blog/2023/nitrokey-3-firmware-release-0">nitokey
+blog comment mentions that Nitrokey does not have a static password
+feature</a>.</p>
+<p><blockquote><p>Ordinary static passwords can be stored securely in the Nitrokey
+hardware. For this purpose the Nitrokey App serves as a simple password
+manager.<span class="blockquote-context"><a href="https://www.nitrokey.com/news/2015/passwords-are-dead-long-live-latchkey">https://www.nitrokey.com/news/2015/passwords-are-dead-long-live-latchkey</a></span></p></blockquote></p>
+<p>This probably will not work during pre-boot authentication.</p>
+<p>(The user typing its own static password +) the key entering a static
+password is an improvement. It's something you know + something you
+have.</p>
+<p>Static passwords typed by keys have a disadvantage. If they key is
+connected elsewhere and the key is pressed to type the password, then
+it's leaked. That's why Challenge-Response Authentication Methods are
+more secure.</p>
+<h3 id="Challenge-Response_Authentication_Methods">Challenge-Response
+Authentication Methods</h3>
+<p>Such as OTP or FIDO U2F.</p>
+<p>Might be possible.</p>
+<p><a href="https://fedoramagazine.org/use-systemd-cryptenroll-with-fido-u2f-or-tpm2-to-decrypt-your-disk/">https://fedoramagazine.org/use-systemd-cryptenroll-with-fido-u2f-or-tpm2-to-decrypt-your-disk/</a></p>
+<p>However, to the knowledge of the author, this method cannot be
+combined with a secure password typed by the user. The <a href="Full_Disk_Encryption.html#Hardware-Based_Encryption_versus_Software-Based_Encryption">Hardware-Based Encryption versus Software-Based
+Encryption</a> might apply.</p>
+<h2 id="Hardware-Based_Encryption_versus_Software-Based_Encryption">Hardware-Based
+Encryption versus Software-Based Encryption</h2>
+<p>When only using Hardware-Based Encryption, instead of relying on a
+secure user-provided password, the user relies on the resistance of the
+smartchip against key extraction.</p>
+<p>related: <a href="OpenPGP.html#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key Encryption vs OpenPGP Hardware
+Protection</a></p>
+<h1 id="Advice_for_Solid-state_Drives_and_USB_Storage">Advice for
+Solid-state Drives and USB Storage</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+In the case of flash-based storage like solid-state drives (SSDs) and
+USBs, the only way to protect data is to never store it unencrypted in
+the first place!</p>
+</div>
+<p>Unlike hard-disk drives (HDDs), overwriting data on SSDs is no longer
+effective in wiping the disk. <sup class="reference"><a href="#cite_note-39">[39]</a></sup> <sup class="reference"><a href="#cite_note-40">[40]</a></sup>
+For instance, it is insecure to rely upon a fast erase mechanism by
+overwriting the header and key-slot area. <sup class="reference"><a href="#cite_note-41">[41]</a></sup></p>
+<p>The most dire potential consequence would that old passwords are not
+erased, and for a significant period. Consider the following concrete
+example: someone changes their computer password because they noticed it
+was exposed to shoulder-surfing or CCTV. On a SSD, the old password may
+still be retrievable. If so, it could be used to decrypt the master key
+and all data. Secure overwriting is only guaranteed with magnetic disks
+that use non-journaling filesystems. <sup class="reference"><a href="#cite_note-42">[42]</a></sup></p>
+<p>Wear-leveling mechanisms like TRIM also leak information about the
+filesystem that can aid forensics. <sup class="reference"><a href="#cite_note-43">[43]</a></sup>
+<sup class="reference"><a href="#cite_note-44">[44]</a></sup> <sup class="reference"><a href="#cite_note-45">[45]</a></sup> <sup class="reference"><a href="#cite_note-46">[46]</a></sup>
+<sup class="reference"><a href="#cite_note-47">[47]</a></sup> <sup class="reference"><a href="#cite_note-48">[48]</a></sup> It is strongly recommended to
+keep TRIM <em>disabled</em> (the default) during Linux LUKS-encrypted
+installations.</p>
+<h1 id="Gnome_Disks_Utility">Gnome Disks Utility</h1>
+<p>Gnome Disks utility provides a convenient way to manipulate LUKS
+container passphrases (including the host's) and the overlying
+filesystems. Previously, it could not be relied upon for encryption
+because it used AES-128 as a hardcoded default <sup class="reference"><a href="#cite_note-49">[49]</a></sup>
+<sup class="reference"><a href="#cite_note-50">[50]</a></sup> (as of Debian stretch). However, this bug was fixed
+in Debian buster so it now provides adequate <a href="PQCrypto.html">post-quantum security</a>. For encrypting removable
+media refer to this <a href="#Protection_Against_Powerful_Adversaries">guide</a>.</p>
+<p>To install it, run.</p>
+<p><span class="code-select">sudo apt install
+gnome-disk-utility</span></p>
+<h1 id="In-Place_Encryption">In-Place Encryption</h1>
+<p>In-place encryption is very difficult on Linux desktop
+distributions.</p>
+<p>Maybe possible as per: <a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening#luks-disk-encryption_encrypting-block-devices-using-luks">https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/html/security_hardening/encrypting-block-devices-using-luks_security-hardening#luks-disk-encryption_encrypting-block-devices-using-luks</a></p>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access.html">System
+Configuration and Access</a></li>
+<li><a href="Protection_Against_Physical_Attacks.html">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization.html">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security.html">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE) usually includes,
+but is not limited to: * <code>/usr</code> (operating system) *
+<code>/home</code> (user data) * <code>/tmp</code> (temporary files) *
+<code>swap</code> partition <u>F</u>ull <u>D</u>isk <u>E</u>ncryption
+(FDE) mostly does not include: * <code>/boot</code> * the bootloader *
+LUKS header The <code>/boot</code> partition is usually unencrypted.
+Encrypted <code>/boot</code> is an advanced topic for <a href="Advanced_Users.html">Advanced Users</a> and is covered
+in the table under <a href="Full_Disk_Encryption.html#Additional_Measures">Additional Measures</a>.</li>
+<li id="cite_note-2"><a href="https://defuse.ca/truecrypt-plausible-deniability-useless-by-game-theory.htm">https://defuse.ca/truecrypt-plausible-deniability-useless-by-game-theory.htm</a></li>
+<li id="cite_note-3"><a href="https://embeddedsw.net/doc/physical_coercion.txt">https://embeddedsw.net/doc/physical_coercion.txt</a></li>
+<li id="cite_note-4"><a href="https://www.schneier.com/blog/archives/2009/07/laptop_security.html">https://www.schneier.com/blog/archives/2009/07/laptop_security.html</a></li>
+<li id="cite_note-5">* <a href="https://security.stackexchange.com/questions/99906/can-ram-retain-data-after-removal">https://security.stackexchange.com/questions/99906/can-ram-retain-data-after-removal</a>
+* <a href="https://security.stackexchange.com/questions/99906/can-ram-retain-data-after-removal/100391#100391">https://security.stackexchange.com/questions/99906/can-ram-retain-data-after-removal/100391#100391</a></li>
+<li id="cite_note-6">Technically, authentication happens during early boot, not
+pre-boot.</li>
+<li id="cite_note-7">There are no known Freedom Software Linux distributions that support
+"direct" permanent decryption. This is due to lack of tooling. Linux
+cryptsetup does not have a "decrypt" feature.</li>
+<li id="cite_note-8"><a href="https://github.com/storaged-project/libblockdev/issues/416">https://github.com/storaged-project/libblockdev/issues/416</a></li>
+<li id="cite_note-9"><a href="https://github.com/vpodzime/libblockdev/commit/9dc4e2463860810cac5a1dbfb7064c47200260f6">https://github.com/vpodzime/libblockdev/commit/9dc4e2463860810cac5a1dbfb7064c47200260f6</a></li>
+<li id="cite_note-10"><a href="https://security.stackexchange.com/questions/109981/how-can-i-extract-the-encrypted-master-key-from-luks-header">https://security.stackexchange.com/questions/109981/how-can-i-extract-the-encrypted-master-key-from-luks-header</a></li>
+<li id="cite_note-11"><a href="https://unix.stackexchange.com/questions/254017/how-to-interpret-cryptsetup-benchmark-results">https://unix.stackexchange.com/questions/254017/how-to-interpret-cryptsetup-benchmark-results</a></li>
+<li id="cite_note-12"><a href="https://wiki.archlinux.org/title/dm-crypt/Device_encryption#Re-encrypting_an_existing_LUKS_partition">https://wiki.archlinux.org/title/dm-crypt/Device_encryption#Re-encrypting_an_existing_LUKS_partition</a></li>
+<li id="cite_note-13"><a href="https://man.archlinux.org/man/cryptsetup-reencrypt.8">https://man.archlinux.org/man/cryptsetup-reencrypt.8</a></li>
+<li id="cite_note-14"><a href="https://asalor.blogspot.com/2012/08/re-encryption-of-luks-device-cryptsetup.html">https://asalor.blogspot.com/2012/08/re-encryption-of-luks-device-cryptsetup.html</a></li>
+<li id="cite_note-15"><a href="https://github.com/mhogomchungu/zuluCrypt/issues/113">https://github.com/mhogomchungu/zuluCrypt/issues/113</a></li>
+<li id="cite_note-16"><a href="https://crypto.stackexchange.com/questions/24022/luks-multiple-key-slots-whats-the-intuition">https://crypto.stackexchange.com/questions/24022/luks-multiple-key-slots-whats-the-intuition</a></li>
+<li id="cite_note-17"><a href="https://en.wikipedia.org/wiki/Darik&#x27;s_Boot_and_Nuke">https://en.wikipedia.org/wiki/Darik's_Boot_and_Nuke</a></li>
+<li id="cite_note-18">DBAN also warns: <blockquote><p>While DBAN is free to use, there's no guarantee your data is
+completely sanitized across the entire drive. It cannot detect or erase
+SSDs and does not provide a certificate of data removal for auditing
+purposes or regulatory compliance. Hardware support (e.g. no RAID
+dismantling), customer support and software updates are not available
+using DBAN.</p></blockquote></li>
+<li id="cite_note-19"><a href="https://superuser.com/questions/1168928/wipe-luks-partition-in-pre-boot/1177362">https://superuser.com/questions/1168928/wipe-luks-partition-in-pre-boot/1177362</a></li>
+<li id="cite_note-20"><a href="https://github.com/Lvl4Sword/Killer">https://github.com/Lvl4Sword/Killer</a></li>
+<li id="cite_note-21"><a href="https://github.com/Lvl4Sword/Killer/issues/48">https://github.com/Lvl4Sword/Killer/issues/48</a></li>
+<li id="cite_note-22"><a href="https://github.com/vianney/arch-luks-suspend/issues/7">https://github.com/vianney/arch-luks-suspend/issues/7</a></li>
+<li id="cite_note-23"><a href="https://blog.freesources.org/posts/2018/06/debian_cryptsetup_sprint_report/">https://blog.freesources.org/posts/2018/06/debian_cryptsetup_sprint_report/</a></li>
+<li id="cite_note-24"><a href="https://blog.freesources.org//posts/2020/08/cryptsetup-suspend/">https://blog.freesources.org//posts/2020/08/cryptsetup-suspend/</a></li>
+<li id="cite_note-25"><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">https://en.wikipedia.org/wiki/Magic_SysRq_key</a></li>
+<li id="cite_note-26"><a href="https://www.thegeekstuff.com/2008/12/safe-reboot-of-linux-using-magic-sysrq-key/">https://www.thegeekstuff.com/2008/12/safe-reboot-of-linux-using-magic-sysrq-key/</a></li>
+<li id="cite_note-27"><a href="https://phabricator.whonix.org/T553">https://phabricator.whonix.org/T553</a></li>
+<li id="cite_note-28"><a href="https://forums.whonix.org/t/full-disk-encryption-fde-emergency-shutdown-feature-testing-requested/2985">https://forums.whonix.org/t/full-disk-encryption-fde-emergency-shutdown-feature-testing-requested/2985</a></li>
+<li id="cite_note-29"><a href="https://github.com/offensive-security/cryptsetup-nuke-keys">https://github.com/offensive-security/cryptsetup-nuke-keys</a></li>
+<li id="cite_note-30">In most emergency situations there will not be enough time to reboot
+the computer and enter the dead-man switch passphrase.</li>
+<li id="cite_note-31">* <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=686817">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=686817</a>
+* <a href="https://github.com/calamares/calamares/issues/1203">https://github.com/calamares/calamares/issues/1203</a>
+* <a href="https://savannah.gnu.org/bugs/index.php?65113">https://savannah.gnu.org/bugs/index.php?65113</a></li>
+<li id="cite_note-32"><a href="https://security.stackexchange.com/questions/89301/was-tresor-integrated-in-the-linux-kernel/119835#119835">https://security.stackexchange.com/questions/89301/was-tresor-integrated-in-the-linux-kernel/119835#119835</a></li>
+<li id="cite_note-33">For example, this can be done quickly if the flash drive is attached
+to your wrist via a lanyard.</li>
+<li id="cite_note-34">* <a href="https://github.com/hephaest0s/usbkill">https://github.com/hephaest0s/usbkill</a>
+* <a href="https://en.wikipedia.org/wiki/USBKill">https://en.wikipedia.org/wiki/USBKill</a>
+* <a href="https://phabricator.whonix.org/T552">https://phabricator.whonix.org/T552</a></li>
+<li id="cite_note-35">See RFC 2898</li>
+<li id="cite_note-36">Argon2 on LUKS can use up to four threads, but will lower the number
+and/or memory if the computer being used can't meet requirements.</li>
+<li id="cite_note-37">The pbkdf-memory option is limited to 4194304 kilobytes. Memory is
+freed after the unlock operation.</li>
+<li id="cite_note-38">Relying solely on TPM with a PIN or password is not the same as
+deriving a cryptographic key from both the password and the TPM. If the
+TPM is compromised - through physical tampering - the encryption is
+broken, even if the password is strong. This creates a single point of
+failure, allowing attackers to bypass password protections entirely once
+the TPM is compromised. Users of FDE Password + USB Keyfile benefit from
+enhanced security because the complete key is genuinely derived from
+both the user-provided password and the USB keyfile. This means that
+both components are required for decryption, adding significant entropy
+and making it much harder for an attacker to compromise the system.
+Unlike setups relying solely on TPM, this approach eliminates a single
+point of failure, requiring an attacker to break both the password and
+the physical key, which provides more robust protection.</li>
+<li id="cite_note-39"><a href="https://web.archive.org/web/20201201150503/https://www.infosecisland.com/blogview/12153-Data-Remains-on-USB-and-SSDs-After-Secure-Erase.html">https://web.archive.org/web/20201201150503/https://www.infosecisland.com/blogview/12153-Data-Remains-on-USB-and-SSDs-After-Secure-Erase.html</a></li>
+<li id="cite_note-40"><a href="https://www.theregister.com/2011/02/21/flash_drive_erasing_peril/">https://www.theregister.com/2011/02/21/flash_drive_erasing_peril/</a></li>
+<li id="cite_note-41"><a href="https://gitlab.com/cryptsetup/cryptsetup/-/wikis/FrequentlyAskedQuestions">cryptsetup
+FAQ - Section: 5.19 What about SSDs, Flash and Hybrid Drives?</a></li>
+<li id="cite_note-42">See 'shred' manual page</li>
+<li id="cite_note-43"><a href="https://asalor.blogspot.com/2011/08/trim-dm-crypt-problems.html">https://asalor.blogspot.com/2011/08/trim-dm-crypt-problems.html</a></li>
+<li id="cite_note-44"><a href="https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29">https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29</a></li>
+<li id="cite_note-45"><a href="https://wiki.archlinux.org/title/Solid_state_drive#dm-crypt">https://wiki.archlinux.org/title/Solid_state_drive#dm-crypt</a></li>
+<li id="cite_note-46"><a href="https://web.archive.org/web/20160709174950/https://www.saout.de/pipermail/dm-crypt/2011-September/002019.html">https://web.archive.org/web/20160709174950/https://www.saout.de/pipermail/dm-crypt/2011-September/002019.html</a></li>
+<li id="cite_note-47"><a href="https://web.archive.org/web/20171122210051/https://www.saout.de/pipermail/dm-crypt/2012-April/002420.html">https://web.archive.org/web/20171122210051/https://www.saout.de/pipermail/dm-crypt/2012-April/002420.html</a></li>
+<li id="cite_note-48"><a href="https://web.archive.org/web/20150122113644/http://forensic.belkasoft.com/en/ssd-2014">https://web.archive.org/web/20150122113644/http://forensic.belkasoft.com/en/ssd-2014</a></li>
+<li id="cite_note-49">As tested by Kicksecure developer HulaHoop.</li>
+<li id="cite_note-50">* Debian bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910249">Bumping
+up encryption to AES-256 by default</a> * Gnome disks utility upstream
+bug report: <a href="https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/issues/103">Bumping
+up encryption to AES-256 by default</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

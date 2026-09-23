@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Anti-Forensics Precautions</title>
+<meta name="description" content="Minimize what is written to the hard drive when using Kicksecure VMs in Live Mode.">
+<meta property="og:description" content="Minimize what is written to the hard drive when using Kicksecure VMs in Live Mode.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Anti-Forensics_Precautions.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Anti-Forensics_Precautions.html">
+<meta property="og:title" content="VM Live Mode: Anti-forensics Precautions">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Fornesic324234.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Disabling_Swap_for_an_Entire_System">Disabling Swap for an
+Entire System</a></li><li class="toc-l2"><a href="#Host">Host</a></li><li class="toc-l2"><a href="#KVM">KVM</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Live_Mode.html">Live Mode</a></li>
+<li><a href="ISO_Live_Mode.html">ISO Live Mode</a></li>
+<li><a href="Read-only.html">read-only</a></li>
+<li><a href="Immutable.html">immutable</a></li>
+<li><a href="Write_protection.html">Write
+Protection</a></li>
+<li><a href="Grub-live.html">Grub-live</a></li>
+<li><a href="USB_Installation.html">Kicksecure on
+USB</a></li>
+<li><a href="Persistent_Mode.html">Persistent Mode</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Read-only.html">read-only</a></li>
+<li><a href="VM_Live_Mode/ro-mode-init.html">VM Live Mode:
+Alternative ro-mode-init Configuration</a></li>
+<li><a href="Anti-Forensics_Precautions.html">VM Live Mode:
+Anti-forensics Precautions</a></li>
+</ul>
+</div>
+<p><img src="../media/Fornesic324234.jpg.webp" alt="Fornesic324234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Anti-forensics Precautions when using Kicksecure VMs in Live
+Mode.</p>
+<p>Minimize what is written to the hard drive when using Kicksecure VMs
+in Live Mode.</p>
+<p>This wiki page is inapplicable using host live mode.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><a href="About.html">Kicksecure</a> users have the
+option of booting into <a href="Live_Mode.html">Live
+Mode</a>. When using this feature in a Kicksecure VM, precautions should
+still be taken on trusted systems (like GNU/Linux hosts) to prevent
+leaving traces -- proprietary operating systems such as <a href="Windows_Hosts.html">Windows</a> and
+[Broken-ExtLink--no-url-was-provided] are a lost cause.</p>
+<p>At the moment, there is only one advantage of this configuration
+compared to using <a href="Live_Mode.html">Live Mode</a> as
+HOST -- achieving selective amnesia for some virtual machines (VM) while
+others remain persistent. This section is a work in progress and not
+exhaustive.</p>
+<p>When Kicksecure VMs are run as a live system, all changes are written
+to non-persistent memory (RAM) by default. However, it is possible for
+this design to be bypassed by <a href="Malware_and_Firmware_Trojans.html">malware</a>, swap files, core dumps, and other relevant
+configurations that are in effect. Fortunately, most of these can be
+disabled. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup>
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>To prevent malware from remounting the hard drive as read-write, it
+is highly recommended to use <a href="Read-only.html">read-only hard drive mode</a>. This raises the bar
+because malware would need to break out of the VM to gain persistence.
+In order to stymie disk forensics, it is suggested to apply <a href="Full_Disk_Encryption.html">full disk encryption</a> on
+the host, and the computer should be powered off when not in use.</p>
+<p>Alternatively or in addition to full disk encryption, the entire host
+operating system could be run in live mode. This is called HOST <a href="Live_Mode.html">Live Mode</a>. In this configuration,
+all writes are redirected to non-persistent memory (RAM). Running the
+host operating system in live mode would additionally benefit from a
+correctly implemented write protection switch; this is not required but
+highly recommended. See <a href="Read-only.html">read-only</a>.</p>
+<p>To make memory forensics harder, make sure you shut down your
+computer normally <sup class="reference"><a href="#cite_note-5">[5]</a></sup> and then remove the machine from
+any power source by pulling the power plug. In the case of notebooks,
+the battery should be removed. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> See also <a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack
+Defense</a>.</p>
+<h1 id="Swap">Swap</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Host swapping may be the biggest threat to anti-forensics on Linux when
+running in a VM. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+</div>
+<h2 id="Disabling_Swap_for_an_Entire_System">Disabling Swap for an
+Entire System</h2>
+<p>Turning off swap for the whole system may cause system instability or
+crashes if the RAM hard limit is reached. However, the ample RAM in new
+systems makes this unlikely and it is worth the tradeoff.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup> Disabling swap also disables the hibernation
+functionality.</p>
+<h2 id="Host">Host</h2>
+<p><u>On the host</u></p>
+<div class="info-box ">
+<p><strong>1.</strong> Disable swap either temporarily or
+persistently.</p>
+<p>The following command will disable swap and delete the file during
+the life of this session.</p>
+<p><span class="code-select">sudo swapoff -a</span></p>
+<p>To disable swap in a persistent way, edit the <code>fstab</code> file
+and comment out the line (using <code>#</code>) with the swap
+partition.</p>
+<p><span class="code-select">sudoedit /etc/fstab</span></p>
+<p><strong>2.</strong> Save and reboot.</p>
+<p><strong>3.</strong> Confirm swap is disabled.</p>
+<p>To check it is off, run the <code>free</code> command. The swap line
+should show zeros.</p>
+<p><span class="code-select">free -h</span></p>
+</div>
+<p>TODO: the existing swap partition should be securely wiped since
+sensitive information like encryption keys might have already leaked
+there.</p>
+<h2 id="KVM">KVM</h2>
+<p><u>Disabling swapping selectively for KVM VM</u></p>
+<p>An alternative KVM-only solution is to set guest memory pages as
+'locked'. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<pre><code>&lt;memoryBacking&gt;&lt;locked/&gt;&lt;/memoryBacking&gt;</code></pre>
+<p>This option is not without disadvantages - it can be abused by
+malicious guests DoSing the host through RAM exhaustion.
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<p>Note: Setting <code>vm.swappiness = 0</code> does not completely
+prevent swapping. <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<h1 id="Disabling_Program_Crash_Dumps">Disabling Program Crash
+Dumps</h1>
+<p>Besides swap, there is the problem of disabling process memory
+dumping to disk.</p>
+<p><u>Kernel</u></p>
+<p>A user must go out of their way to enable kernel memory dumps since
+it is not enabled by default; kdump-tools is utilized in Debian.
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<p><u>Userspace</u></p>
+<p>The default core dump file size is <code>0</code> on Debian Linux:
+<sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
+<p><span class="code-select">ulimit -c 0</span></p>
+<p>This setting is enforced for systemd-coredump too and can be verified
+by inspecting the lack of core files in <code>/var/spool</code> or
+<code>/var/lib/systemd/coredump</code> when an intentional crash is
+induced (<code>/var/crash</code> does not exist in Debian but it may be
+available in other Linux distributions). <sup class="reference"><a href="#cite_note-15">[15]</a></sup></p>
+<p><u>Disable setuid processes dumping their memory</u></p>
+<p>Processes with elevated permissions (or the setuid bit) might still
+be able to perform a core dump, depending on your other settings. These
+processes usually have more access and might contain more sensitive data
+segments in memory, so they should be changed as well. The behavior can
+be altered with a sysctl key, or directly via the <code>/proc</code>
+file system. For permanent settings, the sysctl command and
+configuration is typically used. A setting is called a 'key', which has
+a related value attached to it (also known as a key-value pair).</p>
+<p>To disable programs with the setuid bit from dumping, set the
+fs.suid_dumpable to zero:</p>
+<p><span class="code-select">sudo su</span></p>
+<p><span class="code-select">echo "fs.suid_dumpable=0" &gt;&gt;
+/etc/sysctl.conf</span></p>
+<p>Reload the sysctl configuration with the -p flag to activate any
+changes you made. <span class="code-select">sysctl -p</span></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Core_Dumps.html">Core Dumps</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">[Broken-ExtLink--no-url-was-provided]</li>
+<li id="cite_note-2"><a href="Warning.html#Kicksecure_Persistence_vs_Live_vs_Amnesic">Kicksecure Persistence vs Live vs Amnesic</a></li>
+<li id="cite_note-3"><a href="Encrypted_Images.html#Other_Security_Considerations">Encrypted Guest Images: Other Security
+Considerations</a></li>
+<li id="cite_note-4"><a href="Core_Dumps.html">Core Dumps</a></li>
+<li id="cite_note-5">so the Linux kernel's memory erasing features
+(<code>page_poison</code>, <code>slub_debug</code> or
+<code>init_on_free</code>) and/or your firmware reset attack mitigation
+can kick in</li>
+<li id="cite_note-6">And/or the memory should be wiped upon shutdown. This is a
+theoretical mechanism at present because it is <a href="Unsupported.html">undocumented</a>. <a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596</a></li>
+<li id="cite_note-7">Linux also uses swapping despite having apparent "free" memory. The
+kernel tends to swap out long-inactive and memory-consuming processes.
+This frees up RAM for caches and therefore improves responsiveness.</li>
+<li id="cite_note-8"><a href="https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping">https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping</a></li>
+<li id="cite_note-9"><a href="https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap">https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap</a></li>
+<li id="cite_note-10"><a href="https://libvirt.org/formatdomain.html#memory-backing">https://libvirt.org/formatdomain.html#memory-backing</a></li>
+<li id="cite_note-11">When set and supported by the hypervisor, memory pages belonging to
+the domain will be locked in the host's memory and the host will not be
+allowed to swap them out, which might be required for some workloads
+such as real-time. For QEMU/KVM guests, the memory used by the QEMU
+process itself will be locked too: unlike guest memory, this is an
+amount libvirt has no way of figuring out in advance, so it has to
+remove the limit on locked memory altogether. Thus, enabling this option
+opens up to a potential security risk: the host will be unable to
+reclaim the locked memory back from the guest when it is running out of
+memory. This means a malicious guest allocating large amounts of locked
+memory could cause a denial-of-service attack on the host. Due to the
+risk, this option is discouraged unless your workload demands it. Even
+then, to mitigate these risks it is strongly recommended to set a
+`hard_limit` (see <a href="https://libvirt.org/formatdomain.html#memory-tuning">memory
+tuning</a>) on memory allocation suitable for the specific environment
+at the same time.</li>
+<li id="cite_note-12"><a href="https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0">https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0</a></li>
+<li id="cite_note-13"><a href="https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie">https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie</a></li>
+<li id="cite_note-14"><a href="https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/">https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/</a></li>
+<li id="cite_note-15"><a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps">https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

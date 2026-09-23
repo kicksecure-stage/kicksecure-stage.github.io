@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Encrypted Images</title>
+<meta name="description" content="Full Disk Encryption (FDE) VM images are virtual machine images that have been encrypted with a full disk encryption mechanism. This article examines whether Full Disk Encryption (FDE) is a beneficial and secure method for safeguarding data stored in local virtual machines or cloud computing environments by exploring its advantages and security implications.">
+<meta property="og:description" content="Full Disk Encryption (FDE) VM images are virtual machine images that have been encrypted with a full disk encryption mechanism. This article examines whether Full Disk Encryption (FDE) is a beneficial and secure method for safeguarding data stored in local virtual machines or cloud computing environments by exploring its advantages and security implications.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Encrypted_Images.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Encrypted_Images.html">
+<meta property="og:title" content="Encrypted VM Images">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/EncryptedImage43234.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Full_Disk_Encryption_within_the_Virtual_Machine">Full Disk
+Encryption within the Virtual Machine</a></li><li class="toc-l2"><a href="#Virtual_Machine_Files_in_an_Encrypted_Container">Virtual Machine
+Files in an Encrypted Container</a></li><li class="toc-l2"><a href="#Other_Security_Considerations">Other Security
+Considerations</a></li><li class="toc-l2"><a href="#Open_Security_Research_Questions">Open Security Research
+Questions</a></li><li class="toc-l2"><a href="#Encrypted_Images_Setup">Encrypted Images Setup</a></li><li class="toc-l2"><a href="#Potential_Future_Development">Potential Future Development</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Cold_Boot_Attack_Defense.html">Cold Boot Attack
+Defense</a></li>
+<li><a href="Ram-wipe.html">ram-wipe</a></li>
+<li><a href="Dev/RAM_Wipe.html">ram-wipe
+(Developers)</a></li>
+<li><a href="Emerg-shutdown.html">emerg-shutdown</a></li>
+<li><a href="Encrypted_Images.html">Encrypted VM
+Images</a></li>
+</ul>
+</div>
+<p><span class="manually-placed-anchor " id="support_status"></span></p>
+<div>
+<table>
+<thead>
+<tr class="header">
+<th><p><strong>About this
+<em><span>Encrypted Images</span></em>
+Page</strong><br />
+Contributor maintained wiki page.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Support Status</p></td>
+</tr>
+<tr class="even">
+<td><p>Difficulty</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="Contribute.html#Contributor">Contributor</a></p></td>
+</tr>
+<tr class="even">
+<td><p>Support</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="../media/EncryptedImage43234.jpg.webp" width="200" alt="EncryptedImage43234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Full Disk Encryption (FDE) VM images are virtual machine images that
+have been encrypted with a full disk encryption mechanism. This article
+examines whether Full Disk Encryption (FDE) is a beneficial and secure
+method for safeguarding data stored in local virtual machines or cloud
+computing environments by exploring its advantages and security
+implications.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Encrypted_Guest_Images">Encrypted Guest Images</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This encrypted images chapter:</p>
+<ul>
+<li>applies when using Kicksecure inside VMs.</li>
+<li>is mostly theoretical at this point, because it contains numerous
+open research questions and is currently <a href="Unsupported.html">unsupported</a>.</li>
+</ul>
+</div>
+<p>The greatest security benefit comes from applying full disk
+encryption (FDE) <a href="Full_Disk_Encryption.html">on the
+host</a> because that is the only place where it is most effective.
+Nevertheless, for the interested reader this section makes
+recommendations to deal with the following threat model:</p>
+<ul>
+<li>The host is running when an adversary gets access to it, or the host
+is unencrypted.</li>
+<li>The VM is powered down (otherwise the adversary would already have
+access to it).</li>
+</ul>
+<p><em><span>The following security
+considerations are based on modified quotes by <a href="https://security.stackexchange.com/users/953/iszi">Iszi</a> from
+the answer posted on <a href="https://security.stackexchange.com/a/29538">security.stackexchange.com</a>,
+which was a user contribution to stackexchange, licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/">cc by-sa 3.0</a>
+with <a href="https://stackoverflow.blog/2009/06/25/attribution-required/">attribution
+required</a>.</span></em></p>
+<h2 id="Full_Disk_Encryption_within_the_Virtual_Machine">Full Disk
+Encryption within the Virtual Machine</h2>
+<p>When using FDE within the VM, never save (suspend/pause) the VM
+machine state, but instead shut it down completely. If this advice is
+ignored, the saved machine state could be stored outside of the
+encrypted image. This includes a RAM dump, which contains the encryption
+key required to decrypt the image. Upon resuming the VM, that stored
+file is not necessarily securely deleted, since it is
+virtualizer-specific.</p>
+<p>While the VM is running, the host system's sleep, suspend, or
+hibernate functions should not be used. Similar to the first scenario,
+these actions leave a RAM dump on disk, but this time it belongs to the
+host. This also contains sensitive data, such as encryption keys.</p>
+<h2 id="Virtual_Machine_Files_in_an_Encrypted_Container">Virtual Machine
+Files in an Encrypted Container</h2>
+<p>VM files can also be stored in an encrypted container, such as a LUKS
+container. Newer and native support for LUKS encryption of disk images
+is available as of libvirt 2.10 <sup class="reference"><a href="#cite_note-1">[1]</a></sup> The same precautions
+should be taken as outlined in the previous section, as the risks
+equally apply.</p>
+<p>FDE within the VM, LUKS encrypted containers for VM images, and FDE
+on the host can all be used independently, or in conjunction. However,
+increasing the layers of encryption may begin to significantly degrade
+performance. <em><span>End modified
+quote by Iszi.</span></em></p>
+<h2 id="Other_Security_Considerations">Other Security
+Considerations</h2>
+<p>Encryption is an area with many pitfalls; consider the following
+additional risks.</p>
+<table>
+<caption><em>Additional Encryption Risks</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Memory Dumps</p></td>
+<td><p>These are caused by Blue Screen of Death (BSOD) or kernel crashes
+and can leave unintended traces on the host; see <a href="Core_Dumps.html">Core Dumps</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Powered-down VMs</p></td>
+<td><p>After a VM has shutdown, the RAM that previously contained the
+VM's encryption key might not have been wiped yet. Memory pages
+belonging to a terminated process do not have their contents wiped
+(zeroed) until they are about to be used by another process.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup>
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Swap</p></td>
+<td><p>An encrypted swap provides no protection so long as the host is
+powered up, because the key is still in RAM. Disabling swap requires a
+special, secure wiping of the existing swap -- it is far safer to have
+never used swap before.</p></td>
+</tr>
+<tr class="even">
+<td><p>Virtualizer-specific Issues</p></td>
+<td><ul>
+<li><u>KVM:</u> It is not <em>expected</em> that KVM guests could access
+data from other process' memory pages via <a href="https://www.techopedia.com/definition/30466/memory-ballooning">memory
+ballooning</a>, since KVM guests are Linux processes and subject to
+Linux memory allocation rules. <sup class="reference"><a href="#cite_note-6">[6]</a></sup><br />
+</li>
+<li><u>VirtualBox:</u> In the case of <a href="VirtualBox.html">VirtualBox</a>, the file could end up in the folder
+<em><span>~/.virtualbox</span></em>. A
+definitive answer requires further research.<br />
+</li>
+<li><u>Xen:</u> Memory ballooning in Xen creates privacy concerns
+because when it is enabled the memory contents of other VMs are exposed.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Open_Security_Research_Questions">Open Security Research
+Questions</h2>
+<p>The following questions require further research:</p>
+<ul>
+<li>With swap and crash dumps disabled, it is unknown whether the
+virtualizer writes parts of the VM's RAM contents to the disk. TODO:
+Specifically ask virtualizer vendors about this possibility.</li>
+</ul>
+<h2 id="Encrypted_Images_Setup">Encrypted Images Setup</h2>
+<p>Installing Debian inside a VM first including full disk encryption
+(FDE) and using <a href="Distribution_Morphing.html">Distribution Morphing</a> to <a href="Debian.html">morph Debian into Kicksecure</a> and result in an
+encrypted Kicksecure VM image.</p>
+<h2 id="Potential_Future_Development">Potential Future Development</h2>
+<p>This is mostly theoretic and very most likely will not happen unless
+a volunteer contributes it which seems very unlikely.</p>
+<ul>
+<li>An encryption feature could be added to <a href="https://grml.org/grml-debootstrap/"><code>grml-debootstrap</code></a>
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup> <sup class="reference"><a href="#cite_note-9">[9]</a></sup> and/or the Kicksecure build
+script. There was an <a href="https://forums.whonix.org/t/whonix-container-encryption-options/193">attempt</a>
+to do that, but this effort has stalled.</li>
+<li><a href="https://manpages.debian.org/trixie/cryptsetup-bin/cryptsetup-reencrypt.8.en.html">cryptsetup-reencrypt</a>
+could be used, allowing for the shipping of encrypted Kicksecure images.
+The master key and the password (potentially blank) would be known to
+the public at first. Later on, <code>cryptsetup-reencrypt</code> would
+be used to fix the master key and password, that is, to make the
+encryption effective.</li>
+</ul>
+<h1 id="Conclusion">Conclusion</h1>
+<p>The host of security considerations suggest that an unrealistic set
+of operational rules are required to defend the integrity of a purely
+encrypted guest image. Use of <a href="Full_Disk_Encryption.html">Full Disk Encryption (FDE)</a> is recommended
+instead.</p>
+<p>For further information about encrypted images, see <a href="https://forums.whonix.org/t/how-useful-is-in-guest-encryption/1253">How
+Useful is In-Guest Encryption?</a> Readers interested in running
+Kicksecure as a live OS should refer to <a href="Live_Mode.html">Live Mode</a>.</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Full_Disk_Encryption.html">Full Disk Encryption
+(FDE)</a></li>
+<li><a href="https://www.whonix.org/wiki/Dev/cloud">https://www.whonix.org/wiki/Dev/cloud</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://libvirt.org/formatstorageencryption.html#StorageEncryptionLuks">https://libvirt.org/formatstorageencryption.html#StorageEncryptionLuks</a></li>
+<li id="cite_note-2"><a href="https://security.stackexchange.com/questions/42179/is-there-any-linux-distro-or-kernel-patch-that-wipes-a-process-memory-space-afte/42186#42186">https://security.stackexchange.com/questions/42179/is-there-any-linux-distro-or-kernel-patch-that-wipes-a-process-memory-space-afte/42186#42186</a>
+<blockquote><p>Linux zeroes out (i.e. fills with zeros) all pages of memory not when
+they are released, but when they are given to another process. Thus, no
+process may obtain data excerpts from another process. However, the
+pages will retain their old contents until they are reused.</p></blockquote></li>
+<li id="cite_note-3"><a href="https://superuser.com/questions/894463/does-linux-zero-memory-released-by-applications/894936#894936">https://superuser.com/questions/894463/does-linux-zero-memory-released-by-applications/894936#894936</a></li>
+<li id="cite_note-4"><a href="https://askubuntu.com/questions/721084/linux-overwriting-ram-with-zeroes-on-free/721207#721207">https://askubuntu.com/questions/721084/linux-overwriting-ram-with-zeroes-on-free/721207#721207</a></li>
+<li id="cite_note-5">The threat is similar to <a href="Cold_Boot_Attack_Defense.html">cold boot attacks</a>, but in this case it might even
+be a "warm" attack, because under this threat model, the machine and RAM
+is still powered. <a href="https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Sanitize_all_freed_memory">PAX_MEMORY_SANITIZE</a>
+and its <a href="https://github.com/GrapheneOS/linux-hardened/wiki#sanitize-all-freed-memory">KSPP
+successor</a> may mitigate this, but at the cost of a non-trivial
+performance hit.</li>
+<li id="cite_note-6"><a href="https://www.techopedia.com/definition/30466/memory-ballooning">https://www.techopedia.com/definition/30466/memory-ballooning</a>
+<blockquote><p>Memory ballooning is a memory management feature used in most
+virtualization platforms which allows a host system to artificially
+enlarge its pool of memory by taking advantage or reclaiming unused
+memory previously allocated to various virtual machines.</p></blockquote></li>
+<li id="cite_note-7"><a href="https://docs.openstack.org/security-guide/tenant-data/data-privacy-concerns.html">https://docs.openstack.org/security-guide/tenant-data/data-privacy-concerns.html</a>
+<blockquote><p>Xen explicitly assigns dedicated memory regions to instances and
+scrubs data upon the destruction of instances (or domains in Xen
+parlance). KVM depends more greatly on Linux page management; A complex
+set of rules related to KVM paging is defined in the KVM documentation.
+It is important to note that use of the Xen memory balloon feature is
+likely to result in information disclosure. We strongly recommended to
+avoid use of this feature.</p></blockquote></li>
+<li id="cite_note-8">* <a href="https://github.com/grml/grml-debootstrap">https://github.com/grml/grml-debootstrap</a>
+* <a href="https://packages.debian.org/search?keywords=grml-debootstrap">https://packages.debian.org/search?keywords=grml-debootstrap</a>
+* grml-debootstrap feature request: <a href="https://github.com/grml/grml-debootstrap/issues/131">encrypted VM
+images support</a> * <a href="http://www.coredump.us/index.php?n=Main.DebianEncryptedDebootstrap">Debian
+Encrypted Debootstrap</a></li>
+<li id="cite_note-9">Kicksecure build script is a user
+<code>build-steps.d/*_create-raw-image</code> of
+<code>grml-debootstrap</code>.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

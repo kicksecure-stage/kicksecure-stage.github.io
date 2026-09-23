@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Split GPG</title>
+<meta name="description" content="General enhancements that would be useful for Qubes Split GPG. Unspecific to Kicksecure.">
+<meta property="og:description" content="General enhancements that would be useful for Qubes Split GPG. Unspecific to Kicksecure.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Split_GPG.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Split_GPG.html">
+<meta property="og:title" content="Qubes Split GPG Preview before Signing Enhancement Proposal">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>Split GPG</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Questions">Questions</a></li><li class="toc-l2"><a href="#Notification_Enhancement">Notification Enhancement</a></li><li class="toc-l2"><a href="#show_input_to_be_processed_by_Split_GPG_Server">show input to be
+processed by Split GPG Server</a></li><li class="toc-l2"><a href="#Show_processed_output_of_GPG_Server_VM_before_relaying_back">Show
+processed output of GPG Server VM before relaying back</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>General enhancements that would be useful for Qubes Split GPG. <a href="../Unspecific.html">Unspecific to Kicksecure</a>.</p>
+<div class="post-intro-p">
+</div>
+<h2 id="Questions">Questions</h2>
+<ul>
+<li>Could /usr/bin/qubes-gpg-client-wrapper used from the gpg client VM
+be used to delete the keys in the gpg server VM?</li>
+</ul>
+<h2 id="Notification_Enhancement">Notification Enhancement</h2>
+<p>The current notification...</p>
+<pre><code>Keyring access from domain:
+work-mail</code></pre>
+<p>is not that secure.</p>
+<ul>
+<li>Gets unnoticed when being away. (A compromised VM could wait for
+that.)</li>
+<li>Mass requests to sign or decrypt could not be stopped early
+enough.</li>
+<li>Popup not using the <a href="https://github.com/QubesOS/qubes-issues/issues/889">Centralized
+Tray Notification</a> (not yet implemented) - so popups are easily
+missed when being away for a short time.</li>
+<li>Reading one mail in Thunderbird results in 3 popups flashing up.
+Users are accustomed to that popup spam. The malicious request could be
+sneaked in unnoticed into that.</li>
+</ul>
+<h2 id="show_input_to_be_processed_by_Split_GPG_Server">show input to be
+processed by Split GPG Server</h2>
+<p>The Split GPG server VM could show and request each and every gpg
+command to be executed.</p>
+<p>Purpose:</p>
+<ul>
+<li>Preventing gpg from being exploited by maliciously crafted input by
+having the user manually have a look if the input looks strange.</li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/5034#issuecomment-1046125592">Warn
+against and give the user a chance to refuse far-past / far-future
+signature times.</a></li>
+</ul>
+<pre><code>Going to run the following command:
+
+/usr/bin/qubes-gpg-client-wrapper --charset utf-8 --display-charset utf-8 --no-emit-version --no-comments --display-charset utf-8 --batch --no-tty --status-fd 2 --max-output 487200 --decrypt --use-agent
+
+Content of stdin is:
+
+```
+-----BEGIN PGP MESSAGE-----
+....
+-----END PGP MESSAGE-----
+```
+
+Okay?
+Yes | No [default]</code></pre>
+<h2 id="Show_processed_output_of_GPG_Server_VM_before_relaying_back">Show
+processed output of GPG Server VM before relaying back</h2>
+<p>The Split GPG server VM could show the output of a request before
+sending it back to the client VM.</p>
+<p>Purpose:</p>
+<ul>
+<li>Have the user check if what has been decrypted looks like expected.
+I.e. seeing an old mail being decrypted that was not requested could
+alert the user, that the gpg client VM has likely been compromised.</li>
+<li>Have the user only sign documents the user really wanted to sign and
+not maliciously altered copy.</li>
+</ul>
+<pre><code>The output of the following command:
+
+ /usr/bin/qubes-gpg-client-wrapper --charset utf-8 --display-charset utf-8 --no-emit-version --no-comments --display-charset utf-8 --batch --no-tty --status-fd 2 --max-output 487200 --decrypt --use-agent
+
+was:
+
+```
+decrypted text goes here
+```
+
+Send back to gpg client VM?
+
+Yes | No [default]</code></pre>
+<h1 id="Ticket">Ticket</h1>
+<p>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/2950">split-gpg
+DispVM preview</a></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

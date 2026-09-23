@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Sequoia-PGP</title>
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Sequoia-PGP.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Sequoia-PGP.html">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Qubes_split-gpg-1_removal">Qubes split-gpg-1 removal</a></li><li class="toc-l2"><a href="#non-existing_gpg-g10-code_gnupg_home_folder">non-existing
+gpg-g10-code gnupg home folder</a></li><li class="toc-l2"><a href="#subkey_has_no_binding_to_main_key">subkey has no binding to main
+key</a></li><li class="toc-l2"><a href="#git_merge">git merge</a></li><li class="toc-l2"><a href="#key_was_not_considered_because_it_is:_missing_the_secret_key">key
+was not considered because it is: missing the secret key</a></li><li class="toc-l2"><a href="#no_output_from_gpg_-K_in_client">no output from
+gpg -K in client</a></li><li class="toc-l2"><a href="#bugs">bugs</a></li><li class="toc-l2"><a href="#Qubes_2">Qubes</a></li><li class="toc-l2"><a href="#unconfirmed_bugs">unconfirmed bugs</a></li><li class="toc-l2"><a href="#E-Mail">E-Mail</a></li><li class="toc-l3"><a href="#Thunderbird">Thunderbird</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>todo</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="Unsupported.html">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="Information">Information</h1>
+<ul>
+<li>machine readable sq already exists: sqop</li>
+</ul>
+<h1 id="Qubes">Qubes</h1>
+<h2 id="Qubes_split-gpg-1_removal">Qubes split-gpg-1 removal</h2>
+<p>If you never used split-gpg-1, just make sure to package
+qubes-gpg-split (split-gpg-1) is not installing by attempting to purge
+it using APT.</p>
+<p><span class="code-select">sudo apt purge qubes-gpg-split</span></p>
+<p>If you used split-gpg-1 before, make sure the following envronment
+variables are no longer set.</p>
+<ul>
+<li><span class="code-select inline-style">QUBES_GPG_DOMAIN</span></li>
+<li><span class="code-select inline-style">QUBES_GPG_AUTOACCEPT</span></li>
+</ul>
+<p>Note, that split-gpg-1 is no longer using
+<code>qubes-gpg-client-wrapper</code> since split-gpg-2 is nowadays
+based on <code>gpg-agent</code>. Therefore if any applications such as
+Thunderbird or any configuration files such as <code>~/.gitconfig</code>
+are still using <code>qubes-gpg-client-wrapper</code>, this setting
+needs to be reverted.</p>
+<h2 id="non-existing_gpg-g10-code_gnupg_home_folder">non-existing
+gpg-g10-code gnupg home folder</h2>
+<p>A completely non-existing <code>~/.gnupg</code> folder is probably
+causing breakage.</p>
+<p>Command.</p>
+<p><span class="code-select">sq sign --signature-notation testvar
+testcontent --signer 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
+--signature-file=/home/sysmaint/derivative-binary/test_sign_file.asc --
+/home/sysmaint/derivative-binary/test_sign_file</span></p>
+<p>Symptom.</p>
+<pre><code>  Error: 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA was not considered because
+         it is: missing the secret key
+         6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48 was not considered because
+         it is: missing the secret key
+because: Found no suitable key on 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA</code></pre>
+<p>Workaround:</p>
+<p><span class="code-select">gpg-g10code --import
+/usr/share/keyrings/derivative.asc</span></p>
+<h2 id="subkey_has_no_binding_to_main_key">subkey has no binding to main
+key</h2>
+<p><span class="code-select">sq cert list
+6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48</span></p>
+<pre><code>No bindings matching &quot;6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48&quot; could be
+authenticated.
+  - Warning: 6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48 appears to be a subkey of
+    916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
+1 binding found.
+Skipped 1 binding, which is unusable.
+
+  Error: No bindings matching the query could be authenticated.
+zsh: exit 1     sq cert list 6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48</code></pre>
+<p>Is this even an issue?</p>
+<h2 id="git_merge">git merge</h2>
+<p><span class="code-select">git merge branch [redacted]</span></p>
+<p>Symptom:</p>
+<pre><code>fatal: Commit [redacted] has an untrusted GPG signature, allegedly by [redacted]</code></pre>
+<p>Cause:</p>
+<p>sq pki link add is insufficient. Import into gpg(sq) trust store is
+required.</p>
+<p>Note: Replace keyfingerprint with the actual key fingerprint.</p>
+<p><span class="code-select">echo "keyfingerprint:6:"</span></p>
+<h2 id="key_was_not_considered_because_it_is:_missing_the_secret_key">key
+was not considered because it is: missing the secret key</h2>
+<p><span class="code-select">sq sign --signature-notation testvar
+testcontent --signer 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA
+--signature-file=/home/user/derivative-binary/test_sign_file.asc --
+/home/user/derivative-binary/test_sign_file</span></p>
+<pre><code>  Error: 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA was not considered because
+         it is: missing the secret key
+         6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48 was not considered because
+         it is: missing the secret key
+because: Found no suitable key on 916B8D99C38EAF5E8ADC7A2A8D66066A2EEACCDA</code></pre>
+<p><code>killall gpg-agent</code> in split-gpg-2 server VM and deletion
+of folder <code>~/.gnupg/qubes-auto-keyring</code> in split-gpg-2 server
+VM fixed this.</p>
+<p><strong>1.</strong> In split-gpg-2 server VM.</p>
+<p><strong>2.</strong> Kill gpg-agent.</p>
+<p><span class="code-select">killall gpg-agent</span></p>
+<p><strong>3.</strong> Delete folder
+<code>~/.gnupg/qubes-auto-keyring</code>.</p>
+<p><span class="code-select">safe-rm -r --
+~/.gnupg/qubes-auto-keyring</span></p>
+<p><strong>4.</strong> Done.</p>
+<h2 id="no_output_from_gpg_-K_in_client">no output from
+<code>gpg -K</code> in client</h2>
+<ul>
+<li>Seems to occur when <code>/usr/bin/gpg</code> is
+<code>gpg-sq</code>, but not when it is <code>gpg-g10code</code></li>
+<li>when running <code>gpg -K</code> in a client, if
+<code>~/.gnupg/qubes-auto-keyring</code> does not exist, it is created
+by something (most likely split-gpg2)</li>
+<li>the contents this directory is populated with differ depending on
+which <code>gpg</code> is in use on the server when the client calls
+<code>gpg -K</code>:</li>
+</ul>
+<pre><code>[user ~]% cd ~/auto-keyring-old # this is a qubes-auto-keyring generated when gpg is gpg-sq
+[user ~/auto-keyring-old]% find
+.
+./pubring.cert.d
+./pubring.cert.d/_sequoia_signature_verification_cache_v1_on_vault.sqlite
+./pubring.cert.d/_sequoia_cert_store_index_v1_on_vault.sqlite
+./private-keys-v1.d
+[user ~/auto-keyring-old]% cd ~/auto-keyring-new # this is a qubes-auto-keyring generated when gpg is gpg-g10code
+[user ~/auto-keyring-new]% find
+.
+./trustdb.gpg
+./pubring.kbx~
+./pubring.kbx
+./private-keys-v1.d
+./private-keys-v1.d/REDACTED1.key
+./private-keys-v1.d/REDACTED2.key</code></pre>
+<ul>
+<li>if "gpg-g10code's version" of qubes-auto-keyring is in place,
+split-gpg2 works (<code>gpg -K</code> functions correctly in clients)
+even when both client and server's gpg is gpg-sq.</li>
+<li>if "gpg-sq's version" of qubes-auto-keyring is in place, split-gpg2
+breaks (<code>gpg -K</code> returns nothing in clients) even when both
+client and server's gpg is gpg-g10code.</li>
+<li>Caused by missing <code>--export-secret-subkeys</code> feature in
+gpg-sq: <a href="https://gitlab.com/sequoia-pgp/sequoia-chameleon-gnupg/-/issues/158">https://gitlab.com/sequoia-pgp/sequoia-chameleon-gnupg/-/issues/158</a></li>
+</ul>
+<h2 id="bugs">bugs</h2>
+<ul>
+<li>one time empty password prompt in split-gpg-2 client VM but then OK.
+Might be a gpg-agent or split-gpg-2 bug. Might not be a sequoia
+bug.</li>
+<li>sequoia-chameleon-gnupg bug report: <a href="https://gitlab.com/sequoia-pgp/sequoia-chameleon-gnupg/-/issues/158">gpg
+--export-secret-subkeys not implemented</a>
+<ul>
+<li>This is the reason why split-gpg2 and gpg-sq cannot to work together
+out of the box.</li>
+</ul></li>
+</ul>
+<h2 id="Qubes_2">Qubes</h2>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/8241">port
+Qubes Split GPG to Sequoia-PGP #8241</a></li>
+</ul>
+<h2 id="unconfirmed_bugs">unconfirmed bugs</h2>
+<ul>
+<li>potentially only: problem with account sysmaint vs account
+user?</li>
+</ul>
+<h2 id="E-Mail">E-Mail</h2>
+<h3 id="Thunderbird">Thunderbird</h3>
+<p><span class="code-select">sudo apt install
+libsequoia-octopus-librnp</span></p>
+<p><a href="https://doc.qubes-os.org/en/latest/user/security-in-qubes/split-gpg-2.html#server-options">https://doc.qubes-os.org/en/latest/user/security-in-qubes/split-gpg-2.html#server-options</a></p>
+<h1 id="Debugging">Debugging</h1>
+<p><span class="code-select">gpg-agent --daemon -vv --debug-level guru
+--log-file ./mylog</span></p>
+<p><span class="code-select">tail -f ./mylog</span></p>
+<p>when things are "working", the agent will output some log lines
+immediately after running gpg -K in a client.</p>
+<p>when things are broken, no logging occurs in response to gpg -K in
+the client.</p>
+<h1 id="Forum_Discussion">Forum Discussion</h1>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/sequoia-pgp-gpg-replacement-openpgp/260">https://forums.kicksecure.com/t/sequoia-pgp-gpg-replacement-openpgp/260</a></li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a> <a href="Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

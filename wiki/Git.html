@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Git</title>
+<meta name="description" content="Put folder under Git Version Control / git symlinks">
+<meta property="og:description" content="Put folder under Git Version Control / git symlinks">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Git.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Git.html">
+<meta property="og:title" content="git - Distributed Version Control System">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Git-logo.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Browser_Tests.html" title="Browser Tests"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Browser
+Tests</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Server_Security_Guide.html" title="Server Security Guide"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Server
+Security Guide</span></a><span class="info"><span class="prev">Previous
+page: Browser Tests</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Server Security
+Guide</span></span></span>git - Distributed Version Control System</p>
+</div>
+<p><img src="../media/Git-logo.svg" width="200" alt="Git logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Put folder under Git Version Control / git symlinks</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="Unsupported.html">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="Put_folder_under_Git_Version_Control">Put folder under Git
+Version Control</h1>
+<p><a href="Operating_System_Software_and_Updates.html">Operating System Software and Updates</a></p>
+<p><span class="code-select">sudo apt update</span></p>
+<p>Install <code>git</code>.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+git</span></p>
+<p>Unless you want to use git for pushing changes to remotes which you
+probably won't in a testing VM you can use the following git config
+without using any real names or pseudonyms. (These are the git suggested
+defaults. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>)</p>
+<p><span class="code-select">git config --global user.email
+"you@example.com"</span></p>
+<p><span class="code-select">git config --global user.name "Your
+Name"</span></p>
+<p>Initialize git in current folder or <code>cd</code> to any folder you
+want to put under git version control. Can even be done for
+<code>/home/user</code> folder which is very useful.</p>
+<p><span class="code-select">git init</span></p>
+<p>Add all files to be added for next commit.</p>
+<p><span class="code-select">git add -A</span></p>
+<p>Actually commit to git.</p>
+<p><span class="code-select">git commit -a -m .</span></p>
+<p>Check git status of that folder.</p>
+<p><span class="code-select">git status</span></p>
+<p>No changes registered yet to the folder since just now committed all
+to git.</p>
+<pre><code>On branch master
+nothing to commit, working tree clean</code></pre>
+<p>Create a test file or do some activity such as starting a browser or
+e-mail client.</p>
+<p><span class="code-select">touch test-file</span></p>
+<p>Check again git status of that folder.</p>
+<p><span class="code-select">git status</span></p>
+<p>Now git will show what changed.</p>
+<pre><code>On branch master
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+
+    test-file
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</code></pre>
+<h1 id="git_symlinks">git symlinks</h1>
+<p>git configuration file
+<span class="code-select inline-style">~/.gitconfig</span> :</p>
+<p><span class="code-select">[core] symlinks = false</span></p>
+<p><code>symlinks = false</code> is more secure:</p>
+<ul>
+<li><a href="https://nvd.nist.gov/vuln/detail/cve-2021-21300">https://nvd.nist.gov/vuln/detail/cve-2021-21300</a></li>
+<li><a href="https://nvd.nist.gov/vuln/detail/cve-2024-32002">https://nvd.nist.gov/vuln/detail/cve-2024-32002</a></li>
+</ul>
+<p>Use:</p>
+<ul>
+<li>Developers: Are more likely to use <code>symlinks = false</code> in
+<code>~/.gitconfig</code>.</li>
+<li>Users that build from source code: Are more likely to not use any
+<code>~/.gitconfig</code> file, therefore using git's default
+<code>symlinks = true</code>.</li>
+</ul>
+<p>When not using <code>symlinks = false</code>:</p>
+<ul>
+<li><code>find "." -type l -not -iwholename '*.git*'</code> will not
+detect these files as symlinks.</li>
+<li>These are detected as file without newline at the of file. Example:
+<ul>
+<li><span class="code-select inline-style">file
+qubes/qubes-template-whonix/whonix-workstation</span></li>
+</ul></li>
+</ul>
+<pre><code>qubes/qubes-template-whonix/whonix-workstation: ASCII text, with no line terminators</code></pre>
+<p>When using <code>symlinks = false</code>:</p>
+<ul>
+<li><code>find "." -type l -not -iwholename '*.git*'</code> will detect
+these files as symlinks.</li>
+<li>These are detected as symlink. Example:
+<ul>
+<li><span class="code-select inline-style">file
+qubes/qubes-template-whonix/whonix-workstation</span></li>
+</ul></li>
+</ul>
+<pre><code>qubes/qubes-template-whonix/whonix-workstation: symbolic link to whonix-gateway</code></pre>
+<p>Potential issues:</p>
+<ul>
+<li>A text file versus a symbolic link can cause different build results
+depending on git settings, leading to bugs and/or package
+reproducibility issues.</li>
+<li>Git will translate symlink replacement text files back into symlinks
+when committing and pushing, meaning if you attempt to change a symlink
+to a real file, people who pull the repo will get a dangling symlink
+pointing to a very strange filename rather than getting a normal file
+with contents.</li>
+</ul>
+<h1 id="Git_Hosting_Services">Git Hosting Services</h1>
+<p>Not a comprehensive comparison. Select notes only.</p>
+<h2 id="GitHub">GitHub</h2>
+<ul>
+<li><a href="https://github.com/orgs/community/discussions/23515">GitHub
+lacks support for git push --signed</a></li>
+<li>GitHub lacks support for git with SHA256</li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><pre><code> git commit -a -m . *** Please tell me who you are. Run git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; to set your account&#39;s default identity. Omit --global to set the identity only in this repository. fatal: empty ident name (for &lt;(null)&gt;) not allowed </code></pre></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Browser_Tests.html" title="Browser Tests"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Browser
+Tests</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Server_Security_Guide.html" title="Server Security Guide"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Server
+Security Guide</span></a><span class="info"><span class="prev">Previous
+page: Browser Tests</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Server Security
+Guide</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a> <a href="Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

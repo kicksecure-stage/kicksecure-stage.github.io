@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>SSH</title>
+<meta name="description" content="SSH Hardening Tips; Recommended Client and Server Settings for better Security">
+<meta property="og:description" content="SSH Hardening Tips; Recommended Client and Server Settings for better Security">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/SSH.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/SSH.html">
+<meta property="og:title" content="Secure Shell (SSH)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Sshlogo.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Key_Generation">Key Generation</a></li><li class="toc-l2"><a href="#Key_Installation">Key Installation</a></li><li class="toc-l2"><a href="#Server_Login">Server Login</a></li><li class="toc-l2"><a href="#Client_and_Server_Configuration_File_Settings">Client and Server
+Configuration File Settings</a></li><li class="toc-l3"><a href="#Client_Configuration_File">Client Configuration File</a></li><li class="toc-l3"><a href="#Server_Configuration_File">Server Configuration File</a></li><li class="toc-l3"><a href="#Notes">Notes</a></li><li class="toc-l2"><a href="#Firewall_Settings_and_Rules">Firewall Settings and Rules</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="File_Sharing.html" title="File Sharing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">File
+Sharing</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Browser.html" title="Browser"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Browser</span></a><span class="info"><span class="prev">Previous
+page: File Sharing</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Browser</span></span></span>Secure Shell (SSH)</p>
+</div>
+<p><img src="../media/Sshlogo.png.webp" alt="SSH Logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>SSH Hardening Tips; Recommended Client and Server Settings for better
+Security</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Secure Shell (SSH) is a core tool in a sysadmin's arsenal and
+provides a secure and encrypted connection and method of communication
+between a client user and a server. It is mainly used to remotely
+control a machine. In the Linux landscape, the package OpenSSH is one of
+the most popular and complete choices to enable communication via SSH.
+Newcomers to SSH should first consult the <a href="https://wiki.debian.org/SSH">Debian SSH wiki</a> to learn the
+basics.</p>
+<p>The Secure Shell server, <code>openssh-server</code>, is not
+installed on any version of Kicksecure by default.</p>
+<p><strong>Figure:</strong> <em>Example SSH Login</em>
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><img src="../media/Sshlogin.png.webp" alt="Sshlogin.png" /></p>
+<h1 id="General_Hardening_Tips">General Hardening Tips</h1>
+<table>
+<caption><em>SSH Hardening Recommendations</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Recommendation</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Mobile Shell Roaming and Echo</p></td>
+<td><p><a href="https://packages.debian.org/trixie/mosh">mosh</a> might
+be a useful addition. (Requires UDP.)</p></td>
+</tr>
+<tr class="even">
+<td><p>SSH Breaks</p></td>
+<td><ul>
+<li><u>Scope:</u> Any references to SSH breaks in the Snowden archives
+applied to some outdated ciphers.</li>
+<li><u>Status:</u> This has since been addressed by hardened OpenSSH
+settings and upstream disabling vulnerable algorithms.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>SSH Keys</p></td>
+<td><p><u>Key strength:</u> To generate stronger SSH keys, see <a href="#Key_Generation">Key Generation</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>SSH Ports</p></td>
+<td><p><u>Noise reduction:</u> Configuring SSH servers to listen on
+non-default ports reduces noise (automated hacking attempts) and may
+also increase security from less skilled attackers.</p></td>
+</tr>
+<tr class="odd">
+<td><p>SSH Servers</p></td>
+<td><ul>
+<li><u>Preferred transport:</u> Prefer SSH servers available through a
+<a href="Onion_Services.html">Tor Onion Service</a> for
+stronger encryption and authentication.</li>
+<li><u>Optional feature:</u> Consider using <a href="Onion_Services.html#Step_3:_Configure_Onion_Services_Authentication">Onion Services Authentication</a> but also note <a href="#Onion_Services#Onion_Services_Reliability_Issues">Onion Services Reliability Issues</a>.</li>
+<li><u>NAT traversal:</u> Tor also provides <a href="https://en.wikipedia.org/wiki/Hole_punching_%28networking%29">NAT
+hole-punching</a> so it is unnecessary to register with a DNS service or
+open up the LAN to outside access.</li>
+<li><u>Non-hidden servers:</u> If the server is known to the public
+(non-hidden), single Tor hops can be used for the server, see: <a href="Non_Anonymous_Onion_Encryption_and_NAT_Traversal.html">Non Anonymous Onion Encryption and NAT
+Traversal</a>.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Two-factor Authentication</p></td>
+<td><p><u>Availability:</u> SSH can be combined with <a href="Two-factor_authentication_2FA.html">Two-factor
+Authentication (2FA)</a>, but this and its threat model is <a href="Unsupported.html">undocumented</a> at
+present.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Miscellaneous</p></td>
+<td><p><u>Further reading:</u> For additional tips, refer to the
+Kicksecure forum discussion: <a href="https://forums.whonix.org/t/locking-down-your-ssh-server-and-client/7896">Locking
+down your SSH client</a>.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Secure_SSH_Client_and_Server_Settings">Secure SSH Client and
+Server Settings</h1>
+<p>There is a client package and a server package,
+<code>openssh-client</code> and <code>openssh-server</code>. Covered
+topics include:</p>
+<ol>
+<li>Key generation for authentication/sign-in purposes.</li>
+<li>Suggested secure settings for both the client and server
+configurations.</li>
+<li>A sample set of iptables rules to allow communication between client
+and server.</li>
+</ol>
+<h2 id="Key_Generation">Key Generation</h2>
+<p>Before you can connect to a server (or host) through SSH using public
+key authentication, a keypair is required. This consists of a public
+key, which you share with the server, and a private key which is used to
+verify that you are actually signing in. A passphrase (strongly
+recommended) can be added to your key which will be asked each time you
+sign into a server.</p>
+<p>Once the server has your public key, it is placed into an
+<code>authorized_keys</code> file. The private key is not shared with
+anyone and should be kept in a safe place. It typically resides at
+<code>/home/user/.ssh/id_ed25519</code> on the client's machine with
+root permissions (0600). The private key is how the server authenticates
+your username.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Generate the SSH keypair.</p>
+<p>Use a tool called <code>ssh-keygen</code>. On the command line,
+type.</p>
+<p><span class="code-select">ssh-keygen -o -a 75 -t ed25519</span></p>
+<ul>
+<li><u><code>-o</code>:</u> Produces a key that is compatible with
+OpenSSH instead of the older style <code>.pem</code>.</li>
+<li><code>-a</code> refers to the number of rounds of KDF (key
+derivation function). This strengthens the key against a brute force
+attack to break the passphrase if the (private) key were to be stolen. A
+value of 75 to 100 is more than adequate. Remember that the more rounds
+that are specified, the longer it takes to authenticate (sign in). This
+depends on your CPU, your workload at the time of sign in, the amount of
+cores, and available memory among other factors.</li>
+<li><code>-t</code> specifies what type of key to generate. The choices
+are: <code>rsa</code>, <code>ecdsa</code> and <code>ed25519</code>. RSA
+and ECDSA are older keys, and OpenSSH recommends <code>ed25519</code> as
+the best choice.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Store the SSH keypair.</p>
+<p>Upon generation of your keypair, OpenSSH will ask if the keys should
+be stored at: <code>/home/user/.ssh</code>. Reply <code>yes</code>.
+Permissions will be automatically set in Debian. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>The keypair generation procedure is now complete. You have
+successfully generated a keypair.</p>
+</div>
+<h2 id="Key_Installation">Key Installation</h2>
+<p>Copy the key to the server you want to sign into.</p>
+<p>Notes:</p>
+<ul>
+<li><u>Once:</u> This only needs to be done once per server. The
+<code>ssh-copy-id</code> command works for this task.</li>
+<li><u>IP:</u> Replace <code>127.0.0.1</code> with the actual IP address
+of the server.</li>
+<li><u>User account name:</u> The example user name below is
+<code>root</code>, which is the default first time login user name for
+many server providers.</li>
+<li><u>Credentials:</u> If this is a first time login and/or
+password-based login, enter the SSH login password. This password should
+be provided by the server provider. No password might be provided if the
+server provider already pre-installed an SSH key.</li>
+</ul>
+<p><span class="code-select">ssh-copy-id -i ~/.ssh/id_ed25519.pub
+root@127.0.0.1</span></p>
+<p>The <code>ssh-copy-id</code> utility will check for the correct
+permissions before it allows the key to be transferred.</p>
+<p>In the following example the SSH server fingerprint is
+<code>zBAIUzWnW+Y9cS+5cND/XWw0XFIhtSnxCEIbNUcCd8c</code>.</p>
+<pre><code>/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &quot;/home/user/.ssh/id_ed25519.pub&quot;
+The authenticity of host &#39;127.0.0.1 (127.0.0.1)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:zBAIUzWnW+Y9cS+5cND/XWw0XFIhtSnxCEIbNUcCd8c.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?</code></pre>
+<p>The SSH server fingerprint should be provided by the server
+provider.</p>
+<p>Key installation is now complete.</p>
+<h2 id="Server_Login">Server Login</h2>
+<p>Once the SSH public key was copied to the server, the user can log in
+any time.</p>
+<p>Log in to the server.</p>
+<p>Notes:</p>
+<ul>
+<li><u>IP:</u> Replace <code>127.0.0.1</code> with the actual IP address
+of the server.</li>
+<li><u>User name:</u> Replace user name <code>root</code> in case using
+a different account name.</li>
+</ul>
+<p><span class="code-select">ssh root@127.0.0.1</span></p>
+<p>A password prompt for the key will be shown if a passphrase has been
+previously set.</p>
+<p>If the SSH login was successful, the shell prompt will be different
+from the usual Kicksecure shell prompt <code>user@host</code>. For
+example <code>root@server</code>.</p>
+<p><strong>Figure:</strong> <em>Example SSH Login</em>
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<p><img src="../media/Sshlogin.png.webp" alt="Sshlogin.png" /></p>
+<h2 id="Client_and_Server_Configuration_File_Settings">Client and Server
+Configuration File Settings</h2>
+<p>The next step is to set up secure settings for the client and server
+configuration files. Examples will be given for both client and server.
+The relevant files are: <code>/etc/ssh/ssh_config</code> and
+<code>/etc/ssh/sshd_config</code>.</p>
+<h3 id="Client_Configuration_File">Client Configuration File</h3>
+<p>View the default configuration file for informational purposes
+only.</p>
+<p><span class="code-select">featherpad
+/etc/ssh/ssh_config.d/30_security-misc.conf</span></p>
+<p>See also:</p>
+<ul>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared">Kicksecure/security-misc</a></span></li>
+<li><a href="https://manpages.debian.org/ssh_config">https://manpages.debian.org/ssh_config</a></li>
+</ul>
+<h4 id="Rationale_on_recommended_encryption_algorithms">Rationale on
+recommended encryption algorithms</h4>
+<p>The above client configuration sets a number of cryptography-related
+algorithms as preferred over others and disables several others. The
+rationale for these choices is described below. Algorithms are sorted by
+order of preference.</p>
+<ul>
+<li><strong>Ciphers</strong>
+<ul>
+<li><u>Description:</u> Symmetric encryption ciphers used to secure data
+in real time as it is passed between the SSH client and server.</li>
+<li><u>Algorithms:</u>
+<ul>
+<li><code>chacha20-poly1305@openssh.com</code>: Has a higher security
+margin than any other algorithm provided in Debian
+Bookworm.<sup class="reference"><a href="#cite_note-6">[6]</a></sup> <sup class="reference"><a href="#cite_note-7">[7]</a></sup> This mode provides
+authenticated encryption, which prevents malleability
+attacks.<sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+<li><code>aes256-gcm@openssh.com</code>: An AES mode that provides
+authenticated encryption.<sup class="reference"><a href="#cite_note-9">[9]</a></sup> This algorithm is ranked
+below <code>chacha20-poly1305@openssh.com</code> because of potential
+safety concerns with nonce handling and poorly designed
+implementations.<sup class="reference"><a href="#cite_note-10">[10]</a></sup> <sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
+<li><code>aes256-ctr</code>: Does not provide authenticated encryption
+and should be combined with an encrypt-then-MAC algorithm (as described
+in the MACs section below). <sup class="reference"><a href="#cite_note-12">[12]</a></sup> This encryption method
+is likely safe even when using a MAC algorithm that verifies integrity
+after decryption, due to SSH's implementation of MAC verification.
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup> Still, verification after decryption is generally
+dangerous, so this method is ranked lower than the others.</li>
+<li>Other algorithms are not recommended; all cipher block chaining
+(CBC) algorithms in OpenSSH have been disabled by default since OpenSSH
+7.6. <sup class="reference"><a href="#cite_note-14">[14]</a></sup> Variants of AES with 128 bits of security are
+believed to be quantum-safe but may not be, depending on the speed at
+which quantum computers develop. <sup class="reference"><a href="#cite_note-15">[15]</a></sup> There is little
+reason to use 192-bit AES keys when 256-bit keys are available.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>MACs</strong>
+<ul>
+<li><u>Description:</u> Message Authentication Codes used to ensure the
+integrity of data passed between the client and server.</li>
+<li><u>Algorithms:</u>
+<ul>
+<li><code>umac-128-etm@openssh.com</code>: UMAC has strong, proven
+security guarantees. UMAC is essentially only as breakable as the cipher
+or hash it uses. <sup class="reference"><a href="#cite_note-16">[16]</a></sup> OpenSSH's UMAC implementation uses
+AES with 128-bit keys, <sup class="reference"><a href="#cite_note-17">[17]</a></sup> which is post-quantum secure
+in this context since the keys are only used to generate authentication
+codes for SSH packets. Once the SSH session ends, the keys lose all
+value. Even a quantum computer capable of a practical attack against
+128-bit AES keys would likely not operate fast enough to pose any threat
+here.</li>
+<li><code>hmac-sha2-512-etm@openssh.com</code>: HMAC's security is
+uncertain. There are no public known attacks yet, but it could
+happen.<sup class="reference"><a href="#cite_note-18">[18]</a></sup> Therefore, this is not as good as UMAC but
+still decent. This is the "least bad" choice after UMAC.</li>
+<li><code>hmac-sha2-256-etm@openssh.com</code>: Same as the previous
+algorithm but with a shorter tag length.</li>
+<li>Other algorithms are not recommended; MAC tag lengths shorter than
+128 bits are sometimes considered insecure. <sup class="reference"><a href="#cite_note-19">[19]</a></sup> SHA1-
+and md5-based algorithms are potentially insecure due to known
+vulnerabilities in their hash functions. SHA2 without HMAC is
+potentially dangerous due to length extension attacks.
+<sup class="reference"><a href="#cite_note-20">[20]</a></sup> Generating the MAC first, then encrypting, is
+generally a bad idea, as mentioned in the <code>aes256-ctr</code>
+rationale above.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>KexAlgorithms</strong>
+<ul>
+<li><u>Description:</u> Encryption algorithms used for exchanging the
+symmetric encryption keys that will secure the connection.</li>
+<li><u>Algorithms:</u>
+<ul>
+<li><code>sntrup761x25519-sha512</code>: Believed to be at least
+equivalent in security to Curve25519, which is the best
+non-quantum-secure algorithm provided. <sup class="reference"><a href="#cite_note-21">[21]</a></sup> This
+algorithm combines Curve25519 with NTRU Prime, which is currently
+believed to be post-quantum secure. <sup class="reference"><a href="#cite_note-22">[22]</a></sup></li>
+<li><code>mlkem768x25519-sha256</code>: Proven to be at least equivalent
+to Curve25519 in security.<sup class="reference"><a href="#cite_note-23">[23]</a></sup> Ranked below NTRU Prime
+because it is possible, or even likely, that ML-KEM is intentionally
+weakened. Cryptographer <a href="https://en.wikipedia.org/wiki/Daniel_J._Bernstein">Daniel J.
+Bernstein</a> has raised serious concerns about ML-KEM (a.k.a. Kyber)
+and the trustworthiness of NIST in standardizing it. <sup class="reference"><a href="#cite_note-24">[24]</a></sup>
+<sup class="reference"><a href="#cite_note-25">[25]</a></sup> It is therefore recommended to assume ML-KEM is not
+post-quantum secure and offers no additional protection over Curve25519.
+<ul>
+<li>Note: In the recommended configuration above,
+<code>mlkem768x25519-sha256</code> is not included because it is not
+supported in Debian 12 and, thus, not supported in Kicksecure 17. It
+will be added when Debian 13 is released and Kicksecure is ported to
+it.</li>
+</ul></li>
+<li><code>curve25519-sha256</code>: Not post-quantum-secure. Widely used
+and believed to be secure against classical computers.</li>
+<li>Other algorithms are not recommended; nistp-based algorithms are
+likely intentionally broken <sup class="reference"><a href="#cite_note-26">[26]</a></sup> and are difficult to
+implement correctly. <sup class="reference"><a href="#cite_note-27">[27]</a></sup> Diffie-Hellman algorithms are
+rarely used, computationally expensive, and offer no security advantages
+over Curve25519. <sup class="reference"><a href="#cite_note-28">[28]</a></sup></li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>HostKeyAlgorithms</strong>
+<ul>
+<li><u>Description:</u> Signature algorithms used for verifying the SSH
+server's identity.</li>
+<li><u>Algorithms:</u>
+<ul>
+<li><code>sk-ssh-ed25519@openssh.com</code>: Closely related to
+Curve25519. <sup class="reference"><a href="#cite_note-29">[29]</a></sup> The <code>sk</code> variant is designed
+specifically for use with FIDO/U2F tokens, which may be useful in some
+setups. <sup class="reference"><a href="#cite_note-30">[30]</a></sup></li>
+<li><code>ssh-ed25519</code>: Same as above, but a standalone key with
+no hardware token involved.</li>
+<li>Both <code>sk-ssh-ed25519@openssh.com</code> and
+<code>ssh-ed25519</code> have corresponding certificate authority based
+modes that may be useful in some scenarios, namely
+<code>sk-ssh-ed25519-cert-v01@openssh.com</code> and
+<code>ssh-ed25519-cert-v01@openssh.com</code>. <sup class="reference"><a href="#cite_note-31">[31]</a></sup> These
+modes are not enabled by default, but should be safe to enable if you
+need them.</li>
+<li>Other algorithms are not recommended; nistp-based algorithms are
+likely intentionally broken. RSA can be dangerous due to difficulties in
+correct implementation. <sup class="reference"><a href="#cite_note-32">[32]</a></sup> DSS is intentionally
+disabled by OpenSSH by default. <sup class="reference"><a href="#cite_note-33">[33]</a></sup></li>
+<li>There appear to be no post-quantum-secure signature algorithms
+supported by OpenSSH at this time. In a post-quantum world, anyone with
+a sufficiently powerful quantum computer could forge a host key and
+perform a MITM attack on the SSH connection. <sup class="reference"><a href="#cite_note-34">[34]</a></sup> There
+is currently no way to address this with OpenSSH client configuration.
+Some experiments have been done with adding post-quantum-secure
+signatures to OpenSSH. <sup class="reference"><a href="#cite_note-35">[35]</a></sup></li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>PubkeyAcceptedAlgorithms</strong>
+<ul>
+<li><u>Description:</u> Signature algorithms used for the client to
+authenticate itself to the server.</li>
+<li><u>Algorithms:</u> Identical to those available for
+HostKeyAlgorithms; thus, the advice given for HostKeyAlgorithms applies
+here as well.</li>
+</ul></li>
+</ul>
+<h3 id="Server_Configuration_File">Server Configuration File</h3>
+<p>See also <a href="https://manpages.debian.org/sshd_config"><code>sshd</code>
+configuration file man page</a>.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<u>Warnings</u>:</p>
+<ul>
+<li><u>Risk:</u> Changing the <code>sshd</code> configuration can
+prevent future successful SSH connections to your servers.</li>
+<li><u>Suggested approach:</u> It is probably best to only set this up
+for new servers or if you do not mind re-installing the server should
+you lock yourself out.</li>
+<li><u>Lower-risk option:</u> If a server console interface (ability to
+run repair commands from the server host web administrator interface) is
+available, it is far less risky to make major changes to the SSH
+configuration.</li>
+<li><u>Backup:</u> Do not proceed without a backup of the server and
+knowledge of how to restore the server should anything go wrong.</li>
+</ul>
+</div>
+<div class="info-box ">
+<p><u>Prerequisite knowledge</u>:</p>
+<ul>
+<li><u>Terminal:</u> How to open a terminal (emulator) such as
+qterminal.</li>
+<li><u>Multiple sessions:</u> How to open two terminal emulators or
+multiple terminal emulator tabs at the same time.</li>
+<li><u>Text editing:</u> Using command-line text editors such as
+<code>nano</code>.</li>
+</ul>
+</div>
+<div class="info-box ">
+<p><u>Instructions</u>:</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Open at least two SSH connections to the server in two different
+terminal tabs.</p>
+<p>One is used as a backup should the SSH connection be accidentally
+closed in the middle of the setup.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+View the fingerprint of the server's ed25519 public key.</p>
+<p>Fine hosting providers will also show the server fingerprint in the
+server web interface.</p>
+<p><span class="code-select">ssh-keygen -lf
+/etc/ssh/ssh_host_ed25519_key.pub</span></p>
+<p>Example output:</p>
+<pre><code>256 SHA256:1Ri62BbzONwKbRau92UcyA1K4vu+mctfeddDTUu04ao root@nc-ph-1401-50 (ED25519)</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Restart the <code>sshd</code> daemon.</p>
+<p><span class="code-select">sudo systemctl restart sshd</span></p>
+<p>Existing SSH connections should not be interrupted by Debian
+default.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Open a new terminal tab and see if you can still SSH to the server.</p>
+<p>If yes, proceed.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Notes.</p>
+<p><em>Note:</em> When using the configuration file below, the following
+warning might appear. The IP address and SHA256 hash will be
+different.</p>
+<pre><code>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ED25519 key sent by the remote host is
+SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649.
+Please contact your system administrator.
+Add correct host key in /home/user/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/user/.ssh/known_hosts:35
+  remove with:
+  ssh-keygen -f &quot;/home/user/.ssh/known_hosts&quot; -R &quot;xxx.xxx.xxx.xxx&quot;
+ED25519 host key for xxx.xxx.xxx.xxx has changed and you have requested strict checking.
+Host key verification failed.</code></pre>
+<p>It will look similar to the following.</p>
+<pre><code>256 SHA256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649 root@node (ED25519)</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Notice.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+<strong>Warning:</strong></p>
+<p>The following configuration file no longer allows root or any other
+user to log in with a password. Make sure that you can do maintenance
+tasks physically, via another user, or configure a privileged user to
+have another authentication method such as public key before finishing
+this setup.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+View the default configuration file for informational purposes only.</p>
+<ul>
+<li><span class="code-select inline-style">featherpad
+/etc/ssh/sshd_config.d/30_security-misc.conf</span></li>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><code>github-link-widget-no-url-given</code></span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Create the SSH group and add your SSH user (in this example, the user
+<code>user</code>) to the SSH group.</p>
+<p><span class="code-select">sudo groupadd -f ssh sudo usermod -aG ssh
+user</span></p>
+<p>If you want to allow <code>root</code> login, also add
+<code>root</code> to the <code>ssh</code> group and <a href="SSH.html#Key_Installation">copy the client's public
+key to <code>root</code>'s authorized key file</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+Open file <code>/etc/ssh/sshd_config.d/50_user.conf</code> in an editor
+with administrative ("<a href="Root.html"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/ssh/sshd_config.d/50_user.conf</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="Qubes.html">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/ssh/sshd_config.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="Qubes.html#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="Unspecific.html">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/ssh/sshd_config.d/50_user.conf</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Whonix first time users warning" /></span>
+<strong>Warning:</strong></p>
+<p>The following configuration file no longer allows non-members of the
+<code>ssh</code> group to log in. Make sure that at least one user in
+the <code>ssh</code> group has rights to edit this configuration and
+restart the systemd service in case of any failure.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+The file will be empty. Paste the following content:</p>
+<p><span class="code-select">## Only members of this group are allowed
+to attempt login. AllowGroups ssh</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+Restart the <code>sshd</code> daemon. All existing SSH connections will
+remain open.</p>
+<p><span class="code-select">sudo systemctl restart sshd</span></p>
+<p>Keep the SSH connection open.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">12</i>
+Open another terminal tab and try to SSH to the server.</p>
+<ul>
+<li><u>Success:</u> If it works, the process is complete.</li>
+<li><u>Troubleshooting:</u> If it does not work, use your still open
+terminal to check for configuration errors before trying again.</li>
+</ul>
+</div>
+<h3 id="Notes">Notes</h3>
+<p>These are the completed SSH configuration files. Please note that the
+entries preceded by a <code>#</code> are not necessary for functional
+use; they are included only as examples of what is possible in SSH. If
+you do not have a specific use for any of the commented-out options in
+either configuration file, do not use them at all.</p>
+<p>The Ciphers, MACs, and Kex algorithms are all the strongest available
+at the time of writing with OpenSSH 9.2p1 on Debian Bookworm. The
+entries in the configuration files above are the most important and will
+establish a functional and well-guarded setup. Use ed25519 keys only.
+RSA and ECDSA are outdated. Use the <code>ssh-keygen</code> command to
+generate the keys.</p>
+<p>The <code>VisualHostKey yes</code> entry in the
+<code>/etc/ssh/ssh_config.d/30_security-misc.conf</code> file ensures
+that when you log in, OpenSSH shows you an ASCII-generated picture of
+what the key looks like. In addition to all other verifications, this is
+one last line of defense to alert you to a changed or incorrect key.</p>
+<p>Generally, newer OpenSSH versions will choose the strongest cipher on
+their own when negotiating a connection, but the configuration files
+establish the order in which they are parsed. Both sides need to have
+the same or compatible OpenSSH versions and <code>Ciphers</code>,
+<code>MACs</code>, <code>KexAlgorithms</code>,
+<code>HostKeyAlgorithms</code>, and
+<code>PubkeyAcceptedAlgorithms</code> options.</p>
+<h2 id="Firewall_Settings_and_Rules">Firewall Settings and Rules</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/cornues.png.webp" width="40" alt="Testers only!" /></span>
+Warning: This is for <u><strong>testers-only</strong></u>!</p>
+</div>
+<p>It is necessary to make specific firewall rules for your intended SSH
+activity. For example, if you wanted to connect to a server at
+<code>123.45.678.910</code> and both your configuration and the server's
+configuration specify port <code>4675</code> to communicate over:</p>
+<p><span class="code-select">sudo iptables -A OUTPUT -p tcp -o
+[interface-name] -s [your client ssh ip] -d [ssh server ip] --dport 4675
+--j ACCEPT</span></p>
+<p>Then to let them respond:</p>
+<p><span class="code-select">sudo iptables -A INPUT -p tcp -i
+[interface-name] -s [ssh server ip] -d [your client ip] --dport 4675 --j
+ACCEPT</span></p>
+<p>This assumes a default-deny policy for INPUT and OUTPUT. If you have
+a default-allow for OUTPUT, then the following rule must be added as the
+last one in the OUTPUT chain:</p>
+<p><span class="code-select">sudo iptables -A OUTPUT --j DROP</span></p>
+<p>This ensures the outgoing rules you have are the only ones that allow
+traffic. Iptables parses in order, so when it does not see a rule
+matching a packet not on your list, it checks each one in the chain
+until it finds a match with the last rule and drops the packet. Also,
+SSH only uses the TCP protocol, so no UDP rules are explicitly
+needed.</p>
+<p>This should complete the SSH setup. Some people also recommend
+re-generating the moduli file that comes in <code>/etc/ssh</code>. If
+you use the settings above, look at the kex algorithms. Since no
+Diffie-Hellman group exchange kex algorithms are used to exchange keys,
+it is unnecessary to regenerate the moduli. The chosen kex algo is
+curve25519.</p>
+<h1 id="SSH_Login_Comparison_Table">SSH Login Comparison Table</h1>
+<p><strong>Note</strong>: <code>/etc/shadow</code> password symbol
+evaluation is done left to right. If a password is locked or disabled
+and a plain-text or encrypted password is set, the password can't be
+used for password-based logins. Please consult <a href="User.html#Meanings_of_Special_Characters_in_the_Password_Field_of_.2Fetc.2Fshadow_File">the User page</a> for more information.</p>
+<p><strong>Disclaimer</strong>: This information is provided as-is
+without any guarantees or warranties of any kind, including but not
+limited to correctness, completeness, or fitness for a particular
+purpose. Users are responsible for testing and verifying their specific
+configurations to ensure security and functionality. Our <a href="Terms_of_Service.html">Terms of Service</a> apply.</p>
+<p>Quote from the manual <u>sshd_config.5</u>: <em>Note that each
+authentication method listed should also be explicitly enabled in the
+configuration.</em></p>
+<table>
+<caption><em>SSH Login Related Options per Authentication</em></caption>
+<thead>
+<tr class="header">
+<th><p><span class="nowrap"><code>AuthenticationMethod</code></span>
+Option</p></th>
+<th><p>Option required for authentication method to be used</p></th>
+<th><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><code>none</code></p></td>
+<td><p><code>PasswordAuthentication yes</code> and
+<code>PermitEmptyPasswords yes</code></p></td>
+<td><p>Allows login to an account with an empty password
+string.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>password</code></p></td>
+<td><p><code>PasswordAuthentication yes</code></p></td>
+<td><p>Allows password authentication.</p></td>
+</tr>
+<tr class="odd">
+<td><p><code>publickey</code></p></td>
+<td><p><code>PubkeyAuthentication yes</code></p></td>
+<td><p>Allows public key authentication.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>hostbased</code></p></td>
+<td><p><code>HostbasedAuthentication yes</code> and
+<code>UseDNS yes</code></p></td>
+<td><p>Allows client domain name (hostname) authentication.</p></td>
+</tr>
+<tr class="odd">
+<td><p><code>gssapi-with-mic</code></p></td>
+<td><p><code>GSSAPIAuthentication yes</code> and optionally
+<code>KerberosAuthentication yes</code></p></td>
+<td><p>Allows Generic Security Service Application Programming Interface
+authentication.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>keyboard-interactive</code></p></td>
+<td><p><code>KbdInteractiveAuthentication yes</code></p></td>
+<td><p>Allows keyboard-interactive authentication.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: The following table is very complex. There is
+a huge amount of ways to configure SSH logins. The user should verify
+their particular setup.</p>
+<table>
+<caption>SSH Login Comparison Table - Effects of Password State and PAM
+on User Login</caption>
+<thead>
+<tr class="header">
+<th><p><span class="nowrap">Password</span> State</p></th>
+<th><p><span class="nowrap"><code>Authentication</code></span><wbr /><code>Method</code>
+<wbr />Options</p></th>
+<th><p><span class="nowrap"><code>UsePAM</code></span>
+<wbr />Option</p></th>
+<th><p>Login Outcome</p></th>
+<th><p>Explanation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Password set</p></td>
+<td><p><code>any</code></p></td>
+<td><p>Irrelevant</p></td>
+<td><p>Yes</p></td>
+<td><p>SSHD or PAM checks the shadow file and an unlocked password
+allows any type of login.</p></td>
+</tr>
+<tr class="even">
+<td><p>Empty</p></td>
+<td><p><code>none</code></p></td>
+<td><p>Irrelevant</p></td>
+<td><p>Yes</p></td>
+<td><p>SSHD or PAM checks the shadow file and an empty password allows
+<code>none</code> type login.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Disabled</p></td>
+<td><p><code>password</code></p></td>
+<td><p>Irrelevant</p></td>
+<td><p>No</p></td>
+<td><p>SSHD or PAM checks the shadow file and a disabled password
+prohibits password-based login.</p></td>
+</tr>
+<tr class="even">
+<td><p>Disabled</p></td>
+<td><p><strong>Except</strong> with <code>password</code></p></td>
+<td><p>Irrelevant</p></td>
+<td><p>Yes</p></td>
+<td><p>SSHD or PAM checks the shadow file and ignores disabled password
+as it is non password-based login.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Locked</p></td>
+<td><p><code>password</code></p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>PAM checks the shadow file and locked password prohibits
+password-based login.</p></td>
+</tr>
+<tr class="even">
+<td><p>Locked</p></td>
+<td><p><strong>Except</strong> with <code>password</code></p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>PAM checks the shadow file and ignores locked password as it is
+non password-based login.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Locked</p></td>
+<td><p><code>any</code></p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>SSHD checks the shadow file and a locked password prohibits any
+type of login. <sup class="reference"><a href="#cite_note-36">[36]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Forum_Discussions">Forum Discussions</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/switching-to-tinyssh/23216">https://forums.whonix.org/t/switching-to-tinyssh/23216</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Remote_Administration.html">Remote
+Administration</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/">https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/</a></li>
+<li id="cite_note-2"><a href="https://security.stackexchange.com/questions/112802/why-openssh-deprecated-dsa-keys">https://security.stackexchange.com/questions/112802/why-openssh-deprecated-dsa-keys</a></li>
+<li id="cite_note-3"><a href="https://stribika.github.io/2015/01/04/secure-secure-shell.html">https://stribika.github.io/2015/01/04/secure-secure-shell.html</a></li>
+<li id="cite_note-4">There have been reports of wrong permissions on certain other
+distributions. For reference, the correct permissions are as follows: *
+<u>Public key:</u> <code>0644</code> * <u>Private key:</u>
+<code>0600</code> (root) Having overly permissive permissions will
+prevent logins and cause unwanted errors.</li>
+<li id="cite_note-5"><a href="https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/">https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/</a></li>
+<li id="cite_note-6"><a href="https://crypto.stackexchange.com/a/101056">https://crypto.stackexchange.com/a/101056</a></li>
+<li id="cite_note-7"><a href="https://eprint.iacr.org/2019/1492.pdf">https://eprint.iacr.org/2019/1492.pdf</a></li>
+<li id="cite_note-8"><a href="https://andrea.corbellini.name/2023/03/09/authenticated-encryption/">https://andrea.corbellini.name/2023/03/09/authenticated-encryption/</a></li>
+<li id="cite_note-9"><a href="https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr">https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr</a></li>
+<li id="cite_note-10"><a href="https://crypto.stackexchange.com/questions/42982/safety-of-random-nonce-with-aes-gcm">https://crypto.stackexchange.com/questions/42982/safety-of-random-nonce-with-aes-gcm</a></li>
+<li id="cite_note-11"><a href="https://eprint.iacr.org/2016/475.pdf">https://eprint.iacr.org/2016/475.pdf</a></li>
+<li id="cite_note-12"><a href="https://manpages.debian.org/bookworm/openssh-client/ssh_config.5.en.html#MACs">https://manpages.debian.org/bookworm/openssh-client/ssh_config.5.en.html#MACs</a></li>
+<li id="cite_note-13"><a href="https://crypto.stackexchange.com/a/44028">https://crypto.stackexchange.com/a/44028</a></li>
+<li id="cite_note-14"><a href="https://www.openssh.com/txt/release-7.6">https://www.openssh.com/txt/release-7.6</a></li>
+<li id="cite_note-15"><a href="https://crypto.stackexchange.com/a/102672/133564">https://crypto.stackexchange.com/a/102672/133564</a></li>
+<li id="cite_note-16"><a href="https://datatracker.ietf.org/doc/html/rfc4418#section-6.1">https://datatracker.ietf.org/doc/html/rfc4418#section-6.1</a></li>
+<li id="cite_note-17"><a href="https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104">https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104</a></li>
+<li id="cite_note-18"><a href="https://crypto.stackexchange.com/a/67350/133564">https://crypto.stackexchange.com/a/67350/133564</a></li>
+<li id="cite_note-19"><a href="https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/">https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/</a></li>
+<li id="cite_note-20"><a href="https://crypto.stackexchange.com/a/50881/133564">https://crypto.stackexchange.com/a/50881/133564</a>,
+search answer for "length extension"</li>
+<li id="cite_note-21"><a href="https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html">https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html</a></li>
+<li id="cite_note-22"><a href="https://eprint.iacr.org/2016/461">https://eprint.iacr.org/2016/461</a></li>
+<li id="cite_note-23"><a href="https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations">https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations</a></li>
+<li id="cite_note-24"><a href="https://blog.cr.yp.to/20231003-countcorrectly.html">https://blog.cr.yp.to/20231003-countcorrectly.html</a></li>
+<li id="cite_note-25"><a href="https://blog.cr.yp.to/20231125-kyber.html">https://blog.cr.yp.to/20231125-kyber.html</a></li>
+<li id="cite_note-26"><a href="https://credelius.com/credelius/?p=97">https://credelius.com/credelius/?p=97</a></li>
+<li id="cite_note-27"><a href="https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf">https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf</a></li>
+<li id="cite_note-28"><a href="https://www.openssh.com/txt/release-10.0">https://www.openssh.com/txt/release-10.0</a></li>
+<li id="cite_note-29"><a href="https://crypto.stackexchange.com/a/43058/133564">https://crypto.stackexchange.com/a/43058/133564</a></li>
+<li id="cite_note-30"><a href="https://www.openssh.com/txt/release-8.2">https://www.openssh.com/txt/release-8.2</a></li>
+<li id="cite_note-31"><a href="https://superuser.com/a/1225476/1734781">https://superuser.com/a/1225476/1734781</a></li>
+<li id="cite_note-32"><a href="https://blog.trailofbits.com/2019/07/08/fuck-rsa/">https://blog.trailofbits.com/2019/07/08/fuck-rsa/</a></li>
+<li id="cite_note-33"><a href="https://www.openssh.com/legacy.html">https://www.openssh.com/legacy.html</a>,
+search for "dsa"</li>
+<li id="cite_note-34"><a href="https://crypto.stackexchange.com/a/56197/133564">https://crypto.stackexchange.com/a/56197/133564</a></li>
+<li id="cite_note-35"><a href="https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html">https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html</a></li>
+<li id="cite_note-36">sshd journal log:
+<pre><code> sshd[7740]: User user not allowed because account is locked </code></pre></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="File_Sharing.html" title="File Sharing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">File
+Sharing</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Browser.html" title="Browser"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Browser</span></a><span class="info"><span class="prev">Previous
+page: File Sharing</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Browser</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

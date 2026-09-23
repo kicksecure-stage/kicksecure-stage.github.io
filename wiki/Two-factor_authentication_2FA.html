@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Two-factor authentication 2FA</title>
+<meta name="description" content="How novice and advanced users can benefit from Two-factor Authentication (2FA). Avoiding inaccessible online accounts/logins. Time-based One-time Password (TOTP). &quot;Google Authenticator.&quot; Universal Second Factor (U2F) security/physical keys.">
+<meta property="og:description" content="How novice and advanced users can benefit from Two-factor Authentication (2FA). Avoiding inaccessible online accounts/logins. Time-based One-time Password (TOTP). &quot;Google Authenticator.&quot; Universal Second Factor (U2F) security/physical keys.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Two-factor_authentication_2FA.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Two-factor_authentication_2FA.html">
+<meta property="og:title" content="Two-factor Authentication (2FA)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/2FA.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Definition">Definition</a></li><li class="toc-l2"><a href="#Digital_Identity">Digital Identity</a></li><li class="toc-l2"><a href="#Implementations">Implementations</a></li><li class="toc-l2"><a href="#Backups">Backups</a></li><li class="toc-l2"><a href="#Authenticator_Software_Choices">Authenticator Software
+Choices</a></li><li class="toc-l2"><a href="#Other_Factors">Other Factors</a></li><li class="toc-l2"><a href="#Threat_Model">Threat Model</a></li><li class="toc-l2"><a href="#Security_Issues">Security Issues</a></li><li class="toc-l2"><a href="#Anonymity_Issues">Anonymity Issues</a></li><li class="toc-l2"><a href="#Recommended">Recommended</a></li><li class="toc-l3"><a href="#Smartcard">Smartcard</a></li><li class="toc-l2"><a href="#Drop">Drop</a></li><li class="toc-l2"><a href="#See_also">See also</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/2FA.jpg.webp" alt="2FA.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>How novice and advanced users can benefit from Two-factor
+Authentication (2FA). Avoiding inaccessible online accounts/logins.
+Time-based One-time Password (TOTP). "Google Authenticator." Universal
+Second Factor (U2F) security/physical keys.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+You are your email address! If an email address is hacked, the attacker
+can potentially take over most of your digital identity. This can lead
+to impersonation on social media and forums, the depletion of
+banking/credit/shopping accounts, access to cloud storage services or
+password managers, and more.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Ambox_notice.png" /></span>
+2FA is beneficial even for advanced users that have the capability to
+easily detect phishing attempts. The reason is email addresses used for
+(financial) service sign-up can be hacked due to factors outside of an
+individual's control, such as database leaks, malicious insiders and so
+on. In that case 2FA will still afford protection to accounts.</p>
+</div>
+<h2 id="Definition">Definition</h2>
+<p>Even users who are knowledgeable about <a href="Social_Engineering.html">(spear) phishing</a> can benefit from two-factor
+authentication (2FA). 2FA and similar terms are encompassed under the
+broader multi-factor authentication (MFA) definition: <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+<blockquote><p>Multi-factor authentication ... is an electronic authentication
+method in which a user is granted access to a website or application
+only after successfully presenting two or more pieces of evidence (or
+factors) to an authentication mechanism: knowledge (something only the
+user knows), possession (something only the user has), and inherence
+(something only the user is). MFA protects user data--which may include
+personal identification or financial assets--from being accessed by an
+unauthorised third party that may have been able to discover, for
+example, a single password.</p></blockquote></p>
+<p>2FA can be used to strengthen the security of online accounts,
+smartphones, web services, access to physical locations and other
+implementations. By requiring two (or more) separate and distinct forms
+of information/identification before secure access is granted to
+something, this minimizes the threat posed by malicious actors. 2FA
+relies upon a combination of two of the following:
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<ul>
+<li>something you know -- like a password</li>
+<li>something you have -- like a code sent to a smartphone or smartphone
+authenticator application</li>
+<li>something you are -- such as biometric markers (fingerprints, face
+or retina scans)</li>
+</ul>
+<p>A familiar example of 2FA is the withdrawal of money from an
+Automatic Teller Machine (ATM). To withdraw cash it is necessary to
+present a valid credit or debit card (something you have), and to enter
+a Personal Identification Number (PIN; something you know) for a
+successful transaction. Although this increases overall security, this
+procedure is vulnerable to attacks such as <a href="https://www.fbi.gov/scams-and-safety/common-scams-and-crimes/skimming">ATM
+skimming</a>. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>2FA is not foolproof because hackers can potentially access these
+authentication factors via malware, account recovery procedures,
+phishing attacks, <a href="https://en.wikipedia.org/wiki/Man-in-the-browser">browser
+vulnerabilities</a> and <a href="Warning.html#Man-in-the-middle_Attacks">Man-in-the-middle Attacks</a>. It is also possible to
+intercept text messages that are sent as part of a 2FA procedure. This
+is why MFA is more secure than 2FA -- more than two factors are required
+before account access is granted.</p>
+<h2 id="Digital_Identity">Digital Identity</h2>
+<p>Consider what would happen if:</p>
+<ul>
+<li>you immediately lost access to your email address</li>
+<li>a malicious third party had exclusive access to your email address
+while you did not</li>
+</ul>
+<p>These hypothetical scenarios reinforce that a digital identity is
+centered around the inviolability (security) of personal email
+addresses. For many purposes, it's a trust anchor. Malicious actors who
+control your email address also have major control over most of your
+digital life. As noted in the <a href="Basic_Security_Guide_Introduction.html#Hacked_Email_Account">Essential Security Guide Introduction</a> chapter:
+<blockquote><p>Just one breach of an online email service permits the theft of
+valuable personal data, account/contact harvesting, re-sale of retail
+accounts, spam and much more. An email account is a particularly weak
+link, since once under the attacker's control they can reset the
+password, along with the passwords of many linked services and
+accounts.</p></blockquote></p>
+<p>Feasible consequences of an email breach include: <sup class="reference"><a href="#cite_note-5">[5]</a></sup>
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<ul>
+<li><u>Employment</u>: forwarding of work documents and work email;
+access to Fedex, UPS, Salesforce or related accounts; employer/colleague
+details; a hack of the victim's employer; and sending a termination
+letter to an employer, employees, landlord, mobile carrier, banks
+etc.</li>
+<li><u>Financial</u>: access to bank accounts; reset of accounts for
+malicious transactions; financial accounts/loans made in the victim's
+name; email account ransom; personal credit score harm; changed billing
+arrangements; cyberheist lures; and blackmail/extortion opportunities
+against the owner of the hacked account.</li>
+<li><u>Harvesting</u>: all email and chat contacts; access to file
+hosting accounts; Google Docs, MS Drive, Dropbox and other accounts;
+software license keys; social security number and other information for
+identity theft; and password recovery requests to all social media and
+other accounts. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+<li><u>Privacy</u>: access to personal name and history; personal
+messages, calendar, photos, Google/Skype chats; call records (plus
+mobile account); your location (plus mobile/i-Tunes); names of friends
+and family members; the threat of real-world stalking; and potentially
+political views, travel and favorite places.</li>
+<li><u>Spam</u>: commercial email; phishing; malware proliferation;
+stranded abroad, email signature and Facebook/Twitter scams; and other
+malicious emails/messages requesting funds/cryptocurrency transfers to
+help "solve" non-existent scenarios.</li>
+<li><u>Reputation</u>: reputational harm due to uploading of indecent
+communications, photos, videos to social media/other websites; sending
+of inappropriate e-mails; and catfishing romantic partners.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+<li><u>Retail Resale</u>: Facebook, Twitter, Tumbler, Macys, Amazon,
+Walmart, i-Tunes, Skype, Bestbuy, Spotify, Hulu+, Netflix, Origin,
+Steam, Crossfire and other accounts.</li>
+</ul>
+<p>The multiple, serious consequences of an email breach emphasize the
+importance of properly configuring 2FA for both accounts and password
+managers to minimize the potential damage. It is also recommended
+to:</p>
+<ul>
+<li>use strong and unique <a href="Passwords.html#Generating_Unbreakable_Passwords">passwords</a> for all accounts</li>
+<li>avoid the use of email accounts as a login for other accounts</li>
+<li>limit information shared over email</li>
+<li>avoid typing your email password on public WiFi networks</li>
+</ul>
+<h1 id="Common_Misconceptions">Common Misconceptions</h1>
+<table>
+<caption><em>Common 2FA Misconceptions</em> <sup class="reference"><a href="#cite_note-9">[9]</a></sup>
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup> <sup class="reference"><a href="#cite_note-11">[11]</a></sup> <sup class="reference"><a href="#cite_note-12">[12]</a></sup>
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup> <sup class="reference"><a href="#cite_note-14">[14]</a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Misconception</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>2FA requires Google</p></td>
+<td><p>Google authenticator is the most popular 2FA implementation, but
+not the only one -- Google software is not necessary to take advantage
+of 2FA. Many services link to and recommend Google authenticator, but
+any Time-based One-time Password (TOTP) implementation will work, see:
+<a href="#Software_Choices">Software
+Choices</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>2FA is a quick fix to protect against future breaches</p></td>
+<td><p>Sites cannot simply "turn on" 2FA; deployment requires tokens to
+be issued or cryptographic keys embedded in other devices. If 2FA is
+deployed, many users will not have the means to log in, or if it is
+voluntary, some will not bother enabling this security feature.</p></td>
+</tr>
+<tr class="odd">
+<td><p>2FA is invulnerable to most threats</p></td>
+<td><p>2FA does improve security but it is imperfect. For example:</p>
+<ul>
+<li>2FA technologies may prompt users to approve various transactions;
+inattentive users might approve an attacker's transactions without
+realizing.</li>
+<li>Third-party authentication tokens rely upon the security of the
+issuer (who can be breached).</li>
+<li>2FA relying on text messaging (SMS) depends upon the security of the
+mobile provider; malware on a phone can intercept SMS messages and send
+them to an attacker.</li>
+<li>Malware can still steal session tokens when 2FA is enabled, though
+depending on the service, attackers may not be able to achieve as much
+with session tokens when 2FA is enabled because sensitive actions will
+require reauthentication.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>2FA always requires the use of a second device</p></td>
+<td><p>Single device 2FA is possible, for example keying information
+with a smartphone application that prompts the user for something they
+know. This means a second device is not needed to receive one-time
+passwords.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Most 2FA solutions are similar</p></td>
+<td><p>This is incorrect. 2FA solutions can rely on hardware tokens that
+produce one-time passwords, emails, SMS messages, mobile applications
+with cryptographic secrets (like Google Authenticator, Defender Soft
+Token etc.), keying information stored in a user's browser, physical
+security keys (like a Nitrokey) and so on.</p></td>
+</tr>
+<tr class="even">
+<td><p>2FA is unnecessary; strong and unique passwords are
+sufficient</p></td>
+<td><p>As noted in the introduction, this is demonstrably false. For
+example, phishing attacks, <a href="https://en.wikipedia.org/wiki/Man-in-the-browser">browser
+vulnerabilities</a> and <a href="Warning.html#Man-in-the-middle_Attacks">Man-in-the-middle Attacks</a> can lead to the recovery
+of passwords. 2FA is recommended for all accounts -- even your password
+manager -- for an extra layer of security. This way hackers need to
+overcome two barriers instead of one to access an account.</p></td>
+</tr>
+<tr class="odd">
+<td><p>All 2FA is equally strong</p></td>
+<td><p>This is incorrect. For example, SMS and mobile authenticator
+applications are vulnerable to SIM swapping, mobile malware, phishing
+scams, and <a href="Warning.html#Man-in-the-middle_Attacks">Man-in-the-middle Attacks</a>. On the other hand,
+Google researchers found that no users relying exclusively on physical
+security keys were victims of targeted phishing campaigns (since
+physical key access is required to log in). <sup class="reference"><a href="#cite_note-15">[15]</a></sup>
+<sup class="reference"><a href="#cite_note-16">[16]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>2FA is complicated and time-consuming</p></td>
+<td><p>The right 2FA solution for a user's security needs can be simple
+to use, and does not always involve using one-time passwords. For
+example, a physical security key may only require one touch or tap of
+the key to log in.</p></td>
+</tr>
+<tr class="odd">
+<td><p>2FA requires an Internet connection</p></td>
+<td><p>This is incorrect. For example the TOTP authentication mechanism
+does not require an Internet connection.</p></td>
+</tr>
+<tr class="even">
+<td><p>TOTP and HMAC-based One-Time Passwords (HOTP) are
+identical</p></td>
+<td><p>TOTP and HOTP are distinct:</p>
+<ul>
+<li>TOTP codes are time-limited and generally remain active for 30 to 60
+seconds. They become invalid if not used within that timeframe. Examples
+are Authy, Google Authenticator and others.</li>
+<li>HOTP codes are event-based; codes remain active until a new code is
+requested. One example is the Nitrokey implementation.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="2FA_Configuration_and_Options">2FA Configuration and Options</h1>
+<p>Before configuring 2FA for online accounts, it is worth considering
+the most common methods in use by websites, the relative strengths and
+weaknesses of each implementation, and various configuration
+options.</p>
+<p>Depending on the website, more than one 2FA method may be available.
+2FA may also be referred to as "login verification" (Twitter), "login
+approvals" (Facebook), "SafePass" (Bank of America), "2-step
+verification" (Google and others). Most popular websites provide 2FA --
+the Electronic Frontier Foundation (EFF) provides detailed guides for
+the following services: <sup class="reference"><a href="#cite_note-17">[17]</a></sup></p>
+<div>
+<ul>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-amazon">Amazon</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-bank-america">Bank
+of America</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-dropbox">Dropbox</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-facebook">Facebook</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-gmail-and-google">Gmail
+and Google</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-linkedin">LinkedIn</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-outlookcom-and-microsoft">Outlook.com
+and Microsoft</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-paypal">PayPal</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-slack">Slack</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-twitter">Twitter</a></li>
+<li><a href="https://www.eff.org/deeplinks/2016/12/how-enable-two-factor-authentication-yahoo-mail">Yahoo
+Mail</a></li>
+</ul>
+</div>
+<p>For a comprehensive list of services and websites that support 2FA,
+utilize <a href="https://2fa.directory/int/">2FA Directory</a>.</p>
+<h2 id="Implementations">Implementations</h2>
+<p>2FA implementations can take several forms, including:
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup></p>
+<ul>
+<li>a one-time verification code sent via SMS</li>
+<li>a TOTP generated by dedicated applications like <a href="https://safety.google/authentication/">Google Authenticator</a>,
+<a href="https://authy.com/">Authy</a> and <a href="https://freeotp.github.io/">FreeOTP</a></li>
+<li>downloadable, printable, hardcopy backup codes</li>
+<li>hardware tokens such as a <a href="https://www.nitrokey.com/">Nitrokey</a></li>
+</ul>
+<p>As outlined in the introduction, all these methods are verifying
+something you have (a smartphone, printed out codes, a piece of
+hardware) with something you know (your password). Each method has
+strengths and weakness as outlined in the table below. In general, while
+SMS verification is the most common 2FA method, it is not recommended
+because SMS messages can be intercepted in transit by malicious actors.
+Conversely, hardware tokens like Nitrokey are the most secure method,
+but are not widely supported and could be lost. Authenticator
+applications are a <em>reasonably</em> secure middle ground, so long as
+you possess a smartphone.</p>
+<table>
+<caption><em>2FA Implementation Pros and Cons</em> <sup class="reference"><a href="#cite_note-18">[18]</a></sup>
+<sup class="reference"><a href="#cite_note-19">[19]</a></sup> <sup class="reference"><a href="#cite_note-20">[20]</a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>2FA Implementation</strong></p></th>
+<th><p><strong>Pros and Cons</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td scope="row"><p>FIDO U2F /
+physical keys (recommended) <sup class="reference"><a href="#cite_note-21">[21]</a></sup></p></td>
+<td><p>Pros:</p>
+<ul>
+<li>Both the physical key and password are required for logins --
+accounts have strong protection against phishing attacks.</li>
+<li>Easy to use once set up -- after the device is registered with a
+website, subsequent logins only require the device to be connected and
+tapped.</li>
+<li>No codes need to be entered.</li>
+<li>A U2F device does not respond to sites it has not been registered
+to.</li>
+<li>The same device can be used on multiple sites, with a different
+identity; there is no single unique device identity for tracking.</li>
+<li>Research shows physical keys provide the strongest defense against
+automated bots, bulk phishing and targeted phishing -- it is virtually
+"phishing-proof".</li>
+<li>Most sites supporting U2F also support TOTP and backup codes.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>A physical key must be purchased. <sup class="reference"><a href="#cite_note-22">[22]</a></sup></li>
+<li>The key must be carried at all times.</li>
+<li>Devices without a USB port may prevent logins.</li>
+<li>Browser support can be limited -- the W3C is working on
+standardizing the U2F protocol.</li>
+<li>Only a handful of U2F devices work with smartphones over <a href="https://techterms.com/definition/nfc">Near Field Communication
+(NFC)</a> and Bluetooth.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td scope="row"><p>Authenticator
+application / TOTP 2FA (recommended) <sup class="reference"><a href="#cite_note-23">[23]</a></sup></p></td>
+<td><p>Pros:</p>
+<ul>
+<li>Easy to use and set up -- sites show <a href="https://techterms.com/definition/qr_code">QR codes</a> containing
+the secret key that can be scanned into the application.
+<sup class="reference"><a href="#cite_note-24">[24]</a></sup></li>
+<li>Codes can be scanned into multiple smartphones.</li>
+<li>Codes can be saved in a safe place or printed out as a backup.</li>
+<li>It is possible to use even without Internet access.</li>
+<li>Attackers who perform phone redirections cannot access 2FA
+codes.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>A smartphone is required.</li>
+<li>Account access can be lost if the phone dies or is stolen (unless a
+backup was saved/printed out).</li>
+<li>This is inconvenient if logging into multiple, different computers.
+<sup class="reference"><a href="#cite_note-25">[25]</a></sup></li>
+<li>This implementation is vulnerable to smartphone malware.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td scope="row"><p>Push-based
+2FA (recommended) <sup class="reference"><a href="#cite_note-26">[26]</a></sup></p></td>
+<td><p>Pros:</p>
+<ul>
+<li>Prompts are sent to devices during a login -- it is easy to approve
+or deny the request and identify the estimated location for the login
+attempt.</li>
+<li>IP addresses for originating logins provides stronger phishing
+protection.</li>
+<li>It is more convenient to acknowledge a prompt, rather than type in a
+code.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>This implementation is not standardized -- it is not possible to
+choose from alternative authenticator applications.</li>
+<li>All push-based credentials cannot be consolidated into a single
+application.</li>
+<li>A working data connection is required on the phone.
+<sup class="reference"><a href="#cite_note-27">[27]</a></sup></li>
+<li>This implementation is vulnerable to smartphone malware.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td scope="row"><p>SMS-based
+text messages and voice-based 2FA (unrecommended)
+<sup class="reference"><a href="#cite_note-28">[28]</a></sup></p></td>
+<td><p>Pros:</p>
+<ul>
+<li>It is easy to set up.</li>
+<li>It can be used with a "non-smart" phone.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Additional information (a phone number) is provided to a
+website/platform -- this makes anonymous use difficult and risks future
+potential breaches.</li>
+<li>Some websites use phone numbers for targeted advertising, conversion
+tracking and password resets. <sup class="reference"><a href="#cite_note-29">[29]</a></sup></li>
+<li>Text messages are insecure: interception, redirection or forwarding
+of codes to other devices is possible. <sup class="reference"><a href="#cite_note-30">[30]</a></sup></li>
+<li>Voice calls can be intercepted.</li>
+<li>Extra costs may be incurred by connecting to telephone networks to
+receive messages.</li>
+<li>Logins are impossible if the phone is not charged or a mobile
+network is unavailable. <sup class="reference"><a href="#cite_note-31">[31]</a></sup></li>
+<li>If the phone is lost, account recovery can be difficult or
+impossible.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td scope="row"><p>Biometric
+IDs (unrecommended)</p></td>
+<td><p>Pros:</p>
+<ul>
+<li>Your own body is used as a physical token, such as your face,
+retina, fingerprint or voice (always available).
+<sup class="reference"><a href="#cite_note-32">[32]</a></sup></li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>Biometric IDs cannot ever be changed if compromised.</li>
+<li>Physical equipment like scanners and cameras are required.</li>
+<li>Volunteering of biometric data is a privacy intrusion and risk.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td scope="row"><p>Email-based
+2FA (unrecommended)</p></td>
+<td><p>Pros:</p>
+<ul>
+<li>This is convenient because an automated message with a code/link is
+sent to a registered email address when there is a login attempt.</li>
+<li>This method is easy to implement, intuitive, and works with
+computers and phones.</li>
+</ul>
+<p>Cons:</p>
+<ul>
+<li>An Internet connection is required.</li>
+<li>This method is insecure:
+<ul>
+<li>Many people use identical passwords across accounts/devices.</li>
+<li>Email accounts are vulnerable to <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force
+attacks</a>.</li>
+</ul></li>
+<li>Emails can end up in junk or spam folders.</li>
+<li>Hackers often have passwords for both online accounts and email
+passwords.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Backups">Backups</h2>
+<p>Users tend to not backup 2FA backup codes since (popular) services do
+not enforce this procedure. <sup class="reference"><a href="#cite_note-33">[33]</a></sup> After configuring 2FA,
+it is strongly recommended to plan for the worst case scenario and have
+multiple 2FA backup codes. Otherwise account access will be lost if a
+smartphone is lost/stolen, or if a single copy of 2FA backup codes is
+misplaced.</p>
+<p>Recommendations: <sup class="reference"><a href="#cite_note-34">[34]</a></sup> <sup class="reference"><a href="#cite_note-35">[35]</a></sup>
+<sup class="reference"><a href="#cite_note-36">[36]</a></sup></p>
+<ul>
+<li>Always set up at least two devices which can generate 2FA one-time
+passwords.
+<ul>
+<li>For example, open the 2FA page of the relevant website. Next scan
+the QR code with the authenticator application on the first phone, then
+scan the same code with the authenticator application on the second
+phone.</li>
+</ul></li>
+<li>Always backup, print or write down 2FA backup codes in two different
+places -- these cannot be hacked or compromised without somebody
+breaking into your home. <sup class="reference"><a href="#cite_note-37">[37]</a></sup></li>
+<li>Additional copies of 2FA backup codes can be stored in other
+locations:
+<ul>
+<li>In an encrypted file on your computer (including snapshots of QR
+codes).</li>
+<li>In cloud storage if the option is available. <sup class="reference"><a href="#cite_note-38">[38]</a></sup>
+This is less secure but more convenient -- if a smartphone is lost all
+codes can be easily restored without re-scanning all the sites
+again.</li>
+</ul></li>
+<li>If services do not provide 2FA code backup options (like Apple), one
+workaround is to add a second, trusted phone number for the accounts,
+such as a spouse's phone, work phone etc.</li>
+</ul>
+<p>Note: a common misconception is Google 2FA backup login codes cannot
+restore 2FA for services other than Google. This is incorrect, these
+codes allow logins into a Google account after having lost access to the
+2FA device.</p>
+<h2 id="Authenticator_Software_Choices">Authenticator Software
+Choices</h2>
+<p>Various factors should be considered before choosing an authenticator
+application, including: <sup class="reference"><a href="#cite_note-39">[39]</a></sup></p>
+<div>
+<ul>
+<li><u>Price</u>: prefer those which are free <sup class="reference"><a href="#cite_note-40">[40]</a></sup></li>
+<li><u>Offline access</u>: better applications do not require an
+Internet connection to generate codes <sup class="reference"><a href="#cite_note-41">[41]</a></sup></li>
+<li><u>Open source</u>: prefer open source code authenticators
+<sup class="reference"><a href="#cite_note-42">[42]</a></sup></li>
+<li><u>Password protection</u>: since authenticator applications protect
+security, preferably it can be locked with a PIN, passcode or
+similar</li>
+<li><u>Biometric lock</u>: depending on your circumstances this might be
+suitable - it is then unnecessary to remember a password</li>
+<li><u>Backup/restore functions</u>: good software should allow for
+secure backups of security codes and easy restoration</li>
+<li><u>Autofill and autologin</u>: for convenience, some applications
+can automatically enter TOTP codes and log in to accounts</li>
+<li><u>Import entries</u>: some authenticators allow the importing of
+previous entries in another product</li>
+<li><u>Export entries</u>: this is useful if switching to another
+authenticator</li>
+<li><u>User interface</u>: this should be simple for setup, use and
+access</li>
+<li><u>Other security options</u>: the ability to change TOTP intervals
+and code length is useful</li>
+<li><u>Desktop application</u>: some software has this option - a mobile
+phone is not necessary for codes</li>
+<li><u>Multi-device sync</u>: syncing to laptops, mobiles, PCs etc. is a
+useful functionality</li>
+<li><u>Password manager</u>: some authenticators allow login credentials
+to also be stored for convenience</li>
+</ul>
+</div>
+<p>While all of these features are useful, the strongest preference
+should be given to free and open source products. Therefore, while
+Google Authenticator is the most popular product on the market, it is
+non-freedom software and does not have a backup function; it is
+unrecommended for these reasons.</p>
+<p><a href="Keepassxc.html">KeePassXC</a> can be considered
+as a replacement for Google Authenticator on desktop computers such as
+Windows, Qubes OS (recommended), Linux (recommended) or macOS. It is
+also functional in an offline virtual machine (VM). Other possible
+options are outlined in the table below, although this is not a complete
+list; proper research should be conducted beforehand.</p>
+<table>
+<caption><em>Authenticator Products Comparison</em> <sup class="reference"><a href="#cite_note-43">[43]</a></sup>
+<sup class="reference"><a href="#cite_note-44">[44]</a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Software</strong></p></th>
+<th><p><strong>Pros</strong></p></th>
+<th><p><strong>Cons</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="https://authy.com/">Authy</a></p></td>
+<td><ul>
+<li>free</li>
+<li>includes encrypted backups</li>
+<li>supports crypto-wallets</li>
+<li>easy to use / simple interface</li>
+<li>syncs across multiple devices</li>
+<li>can be used on mobile and desktop</li>
+<li>works without an Internet connection</li>
+<li>supports multiple services and password managers</li>
+<li>PIN or fingerprint locks are also available</li>
+</ul></td>
+<td><ul>
+<li>not open source</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en&amp;gl=US">Google
+Authenticator</a></p></td>
+<td><ul>
+<li>free</li>
+<li>works with most services</li>
+<li>simple import / export functions</li>
+<li>easy to use</li>
+<li>works without an Internet connection</li>
+<li>feature for checking recent account activity</li>
+<li>available on iOS, Android and Blackberry</li>
+</ul></td>
+<td><ul>
+<li>not open source</li>
+<li>no syncing between devices</li>
+<li>no backup feature</li>
+<li>no PIN / password lock feature</li>
+<li>lacks various other features</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://www.lastpass.com/solutions/authentication">LastPass</a></p></td>
+<td><ul>
+<li>free</li>
+<li>encrypted backup support</li>
+<li>push notification verification</li>
+<li>supports TOTP and push-based notifications for various services</li>
+<li>supports backups</li>
+</ul></td>
+<td><ul>
+<li>not open source</li>
+<li>missing some application features</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://play.google.com/store/apps/details?id=com.duosecurity.duomobile&amp;hl=en_IN&amp;gl=US">Duo
+Mobile</a></p></td>
+<td><ul>
+<li>security checkup feature</li>
+<li>supports numerous third-party resources <sup class="reference"><a href="#cite_note-45">[45]</a></sup></li>
+<li>encrypted backups</li>
+<li>push notifications</li>
+</ul></td>
+<td><ul>
+<li>not open source</li>
+<li>no offline feature is available</li>
+<li>limited utility user interface</li>
+<li>security keys cannot be manually entered</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis&amp;hl=en_IN&amp;gl=US">Aegis</a></p></td>
+<td><ul>
+<li>free</li>
+<li>open source</li>
+<li>no Internet connection required</li>
+<li>security features including PIN, password and fingerprint lock</li>
+<li>tap to reveal function <sup class="reference"><a href="#cite_note-46">[46]</a></sup></li>
+<li>supports HOTP and TOTP methods</li>
+<li>allows imports from other popular authenticator applications</li>
+<li>a simple, easy-to-use interface</li>
+<li>auto-backup and export options</li>
+<li>possible to alter the code length and time</li>
+</ul></td>
+<td><ul>
+<li>no sync features are available</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp&amp;hl=en_IN&amp;gl=US">FreeOTP</a></p></td>
+<td><ul>
+<li>free</li>
+<li>open source</li>
+<li>simple user interface</li>
+<li>supports TOTP and HOTP</li>
+<li>possible to select the length of the TOTP code and how long it
+remains active</li>
+</ul></td>
+<td><ul>
+<li>no security features like PIN, passcode etc. to unlock secure
+codes</li>
+<li>outdated application - no updates since 2016</li>
+<li>backups, multi-device sync and other simple functions are
+unavailable</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://www.microsoft.com/en-us/account/authenticator">Microsoft
+Authenticator</a></p></td>
+<td><ul>
+<li>free</li>
+<li>available for Android, iOS and Windows 10 mobiles</li>
+<li>available as a desktop application</li>
+<li>supports passwordless authentication with Microsoft
+applications</li>
+<li>has an in-built password manager</li>
+<li>supports certificate-based authentication</li>
+<li>supports cloud backups / other backup and restore options</li>
+<li>has a PIN / biometric lock feature</li>
+<li>supports every TOTP service</li>
+<li>sends security notifications if your account is signed in from a new
+location / device, or if the password is changed</li>
+<li>possible to review recent account activity</li>
+<li>multi-device sync feature</li>
+</ul></td>
+<td><ul>
+<li>not open source</li>
+<li>no direct export option</li>
+<li>some features require Internet access</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Other_Factors">Other Factors</h2>
+<p>As noted in the previous section comparing common authenticator
+software, TOTP is the most commonly supported protocol; only a handful
+of free and open source alternatives support HOTP as well. As a
+reminder, prefer free and open source applications, even though Google
+dominates the market. <sup class="reference"><a href="#cite_note-47">[47]</a></sup></p>
+<p>With respect to U2F hardware options that authenticate by using
+unique hardware tokens, <a href="https://www.nitrokey.com/">Nitrokey</a>
+is considered the best option. Nitrokey supports HOTP, TOTP and U2F. It
+also supports multiple connection options (USB-C, USB-A and Lightning)
+and can be used with most online services. It is virtually
+phishing-proof because the tokens are directly bound to the destination
+website/service. <sup class="reference"><a href="#cite_note-48">[48]</a></sup> Other options like <a href="https://www.kensington.com">Kensington VeriMark USB</a> and <a href="https://store.google.com/product/titan_security_key">Google Titan
+Security Key</a> are unrecommended because they rely upon Windows
+devices and have limited functionality compared to Nitrokey, such as
+only supporting U2F and not other protocols; far fewer services support
+U2F compared to TOTP.</p>
+<p>For reasons of practicality, most users will prefer to utilize
+software authenticators relying upon TOTP when accessing real-life,
+non-anonymous accounts. For instance, bank accounts can be better
+secured via TOTP generation on multiple, non-anonymous devices such as
+Android and iPhone devices.</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="Dev/yubikey.html">YubiKey</a></li>
+<li><a href="https://en.wikipedia.org/wiki/WYSIWYS"><em><strong>W</strong>hat
+<strong>Y</strong>ou <strong>S</strong>ee <strong>I</strong>s
+<strong>W</strong>hat <strong>Y</strong>ou <strong>S</strong>ign</em>
+(<code>WYSIWYS</code>)</a>.</li>
+</ul>
+<h1 id="Warnings">Warnings</h1>
+<h2 id="Threat_Model">Threat Model</h2>
+<table>
+<caption><em>2FA Threat Model</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>2FA Protection Level</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Full protection</p></td>
+<td><p>2FA is effective when:</p>
+<ul>
+<li>A user email address is compromised due to either the email provider
+being hacked or a rogue employee. In this case the attacker could
+potentially impersonate the user, or use the password recovery option of
+external services such as other email services, financial services,
+(social media) accounts, and so on. However, the attacker would not have
+the necessary 2FA one-time passwords.</li>
+<li>Users fail victim to <a href="Social_Engineering.html">(spear) phishing</a>, for example when a login password
+(and maybe even the 2FA code) is sent by email to an attacker. By the
+time the attacker receives the message, the 2FA code will be either
+missing (if not sent by the user) or if lucky, may have already
+expired.</li>
+<li>Account logins are only protected by weak passwords, because 2FA
+acts to make login security stronger.</li>
+<li><a href="https://en.wikipedia.org/wiki/Shoulder_surfing_%28computer_security%29">Shoulder
+surfing</a> leads to disclosure of the password; the password in
+isolation does not allow logins.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Partial protection</p></td>
+<td><p>2FA <em>might</em> work when:</p>
+<ul>
+<li>Password databases of third party services -- such as banks and
+cryptocurrency exchanges -- are compromised (because the 2FA database is
+not compromised by the attacker). In these cases there is still a
+probability of losing funds, but the risk is lower.</li>
+<li>An email provider is compromised -- such as a server compromise by
+an attacker or a rogue employee -- leads to unauthorized access to an
+email address, which is often enough to reset passwords. Depending on
+the third party service policies, changing 2FA credentials might not be
+easy. In these cases, an account compromise of the third party service
+might be preventable.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Ineffective protection</p></td>
+<td><p>2FA is ineffective if:</p>
+<ul>
+<li>The user's device is already infected by <a href="Malware_and_Firmware_Trojans.html">malware</a>. In
+that case a trojan horse can simply take over the login session without
+the user's knowledge.</li>
+<li>Users are tricked into giving up OTP tokens via an <a href="https://krebsonsecurity.com/2021/09/the-rise-of-one-time-password-interception-bots/">OTP
+Interception Service</a> <sup class="reference"><a href="#cite_note-49">[49]</a></sup> or <a href="https://www.schneier.com/blog/archives/2005/03/the_failure_of.html">MITM</a>
+<sup class="reference"><a href="#cite_note-50">[50]</a></sup>.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Security_Issues">Security Issues</h2>
+<p>In general, 2FA increases the difficulty of being hacked and it is
+considered the best practice for keeping accounts and systems secure.
+Users with higher security needs can employ MFA -- three or more levels
+of authentication -- to further decrease the chances of a successful
+attack. As noted in the <a href="#Implementations">Implementations</a> section, it is safest to rely on
+FIDO U2F / physical keys or if that is unavailable, authenticator
+applications / TOTP 2FA or push-based 2FA. All other methods are
+unrecommended.</p>
+<p>It is worth reiterating that SMS-based 2FA should be avoided due to
+the risk of <a href="Mobile_Phone_Security.html#SIM_Swapping_Attack">SIM Swap Scams</a> and <a href="https://www.vice.com/en/article/y3g8wb/hacker-got-my-texts-16-dollars-sakari-netnumber">malicious
+SMS re-routing</a> as mentioned on the <a href="Mobile_Phone_Security.html">Mobile Phone Security</a> wiki page. Although SMS and
+automated phone calls with one-time codes remain a popular 2FA method,
+there are many examples where hackers tricked mobile phone carriers into
+transferring somebody else's phone to their own; they then have access
+to authentication for that phone number. <sup class="reference"><a href="#cite_note-20">[20]</a></sup> Another
+related risk is the rise of automated bots that call users and request
+MFA codes or one-time passwords to "prevent fraud" on various accounts.
+<sup class="reference"><a href="#cite_note-51">[51]</a></sup></p>
+<p>For example, in 2019 the Twitter CEO had his account hacked while
+using a 2FA method. Around the same time, over 23 million YouTube users
+utilizing 2FA were hacked because a reverse proxy toolkit was built to
+intercept 2FA SMS codes. Similarly, the Binance cryptocurrency exchange
+had their 2FA system compromised and lost tens of millions in the
+process. These hacks reinforce the risk of SIM-swaps for 2FA; hackers
+use various methods to change a victim's phone number so that subsequent
+messages or phone calls are redirected to a new phone. All in all, SMS
+and phone call-based 2FA systems have too many weaknesses to warrant its
+recommendation. <sup class="reference"><a href="#cite_note-20">[20]</a></sup></p>
+<p>Historically, other 2FA breaches have resulted from malware
+compromises. For example in 2020 an authenticator application in Android
+was discovered to be malware, stealing 2FA codes in the process.
+TrickBot malware is another example where one-time codes utilized by
+banking applications (sent via SMS/push notifications) have been
+intercepted. Finally, social engineering situations can emerge whereby
+hackers contact targets and pose as the bank or other service,
+requesting the security code that was just sent to "confirm their
+identity." <sup class="reference"><a href="#cite_note-20">[20]</a></sup></p>
+<h2 id="Anonymity_Issues">Anonymity Issues</h2>
+<p>Users risk possible de-anonymization if using the following
+applications on a non-torified device:</p>
+<ul>
+<li><a href="https://authy.com/">Authy</a> requires an Internet
+connection.</li>
+<li><a href="https://vip.symantec.com/">Symantec VIP</a> requires an
+Internet connection.</li>
+<li><a href="https://safety.google/authentication/">Google
+Authenticator</a> did not use the Internet at the time of writing, but
+this might change with an (automatic) update.</li>
+</ul>
+<p>If anonymity is required, it is strongly recommended to only run 2FA
+software in non-networked or torified machines.</p>
+<h1 id="Practical_2FA_Example">Practical 2FA Example</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+A 2FA setup for Discourse and KeePassXC (an open-source password
+manager) is shown in the following example. 2FA implementations are
+possible for a wide range of other web services, SSH logins and
+more.</p>
+</div>
+<div class="info-box ">
+<p><strong>1.</strong> Navigate to Discourse preferences.</p>
+<p><img src="../media/2FA-discourse-prefernces.png.webp" width="400" alt="2FA-discourse-prefernces.png" /></p>
+<p><strong>2.</strong> <code>Click on Security</code> ->
+<code>Manage Two-Factor Authentication</code></p>
+<p><img src="../media/2FA-discourse-security.png.webp" width="400" alt="2FA-discourse-security.png" /></p>
+<p><strong>3.</strong> <code>Enter your password</code> ->
+<code>Click Continue</code></p>
+<p><img src="../media/2FA-discourse-enterpassword.png.webp" width="400" alt="2FA-discourse-enterpassword.png" /></p>
+<p><strong>4.</strong> Click on <code>Add Authenticator</code></p>
+<p><img src="../media/2FA-discourse-addauth.png.webp" width="400" alt="2FA-discourse-addauth.png" /></p>
+<p><strong>5.</strong> <code>Select Enter manually</code> ->
+<code>Take a copy of the QR code</code></p>
+<p><img src="../media/2FA-discourse-showcode.png.webp" width="400" alt="2FA-discourse-showcode.png" /></p>
+<p><strong>6.</strong> <code>Open KeePassXC</code> ->
+<code>Right-click on the Discourse account</code> ->
+<code>Select Time-based one-time password</code> ->
+<code>Set up TOTP...</code></p>
+<p><img src="../media/2FA-keepassxc.png.webp" width="400" alt="2FA-keepassxc.png" /></p>
+<p><strong>7.</strong>
+<code>Add the QR code in the empty Key field</code> ->
+<code>Click OK</code></p>
+<p><img src="../media/2FA-keepassxc-addkey.png.webp" width="400" alt="2FA-keepassxc-addkey.png" /></p>
+<p><strong>8.</strong> Select <code>Copy TOTP</code>; new keys are
+regenerated every 30 seconds.</p>
+<p><img src="../media/2FA-keepassxc-copykey.png.webp" width="400" alt="2FA-keepassxc-copykey.png" /></p>
+<p><strong>9.</strong>
+<code>Add your username to My Authenticator</code> ->
+<code>Add the generated TOTP to Code</code> ->
+<code>Click Enable</code></p>
+<p><img src="../media/2FA-discourse-addkey.png.webp" width="400" alt="2FA-discourse-addkey.png" /></p>
+</div>
+<p>Readers are welcome to add further practical examples of 2FA to this
+section.</p>
+<h1 id="Debian_Packages">Debian Packages</h1>
+<h2 id="Recommended">Recommended</h2>
+<ul>
+<li><a href="https://packages.debian.org/trixie/libpam-google-authenticator">libpam-google-authenticator</a>:
+The Google Authenticator project has implementations of one-time
+passcode generators for several mobile platforms, as well as a PAM. By
+default, the configuration is interactive, but there are command-line
+options that allow non-interactive usage (except not overwriting the
+file <code>~/.google_authenticator</code>, which requires interactive
+confirmation to avoid it, but the <code>-f</code> option can be used to
+force it). Writing to this file makes sense as a PAM module but doesn't
+make sense if you just want to use the software to generate new
+(H|T)OTP. Creates a QR code by default (can be disabled), which makes
+sense when the second authenticator is a smartphone. It allows
+configuring plenty of options, such as rate-limiting, refresh interval,
+number of emergency codes, label, issuer, etc. <sup class="reference"><a href="#cite_note-52">[52]</a></sup></li>
+<li><a href="https://packages.debian.org/trixie/libpam-oath">libpam-oath</a>:
+Open AuTHentication (OATH) Toolkit libpam_oath PAM module. The
+documentation is compressed by default; after decompressing
+<code>/usr/share/doc/libpam-oath/README.gz</code>, it was possible to
+better understand it. This library seems fine for use with PAM, but to
+use it requires the non-suggested package <a href="https://packages.debian.org/trixie/oathtool">oathtool</a>, which
+has a lot of options. However, there is a major downside: the key must
+be generated via other means and provided to the program (stdin or
+parameter) instead of being generated by the program. Because of this,
+it is not recommended for non-expert users. <sup class="reference"><a href="#cite_note-53">[53]</a></sup></li>
+<li><a href="https://packages.debian.org/trixie/libpam-otpw">libpam-otpw</a>:
+OTPW for PAM authentication. This is only for PAM; the CLI tool is <a href="https://packages.debian.org/trixie/otpw-bin">otpw-gen</a>.
+Development was done before 2007 and 2017. The major downside is the
+protocol, which is OTP, so the secret is something the user has to
+remember. <sup class="reference"><a href="#cite_note-54">[54]</a></sup></li>
+<li><a href="https://packages.debian.org/bookworm-backports/otpclient">otpclient</a>
+is a simple GTK+ software to generate TOTP and HOTP. It also has a <a href="https://packages.debian.org/bookworm-backports/otpclient">otpclient-cli</a>
+version. Bonus points for having a GUI. It can read the configuration
+from a webcam, QR code from file or clipboard, or be entered manually.
+Although it calls itself a generator of OTPs (it does that), it can be
+somewhat confusing as it doesn't generate the secret itself, but is only
+able to import said secret to the client to show (generate) the one-time
+passcodes.</li>
+<li><a href="https://packages.debian.org/trixie/otp">otp</a> is a
+generator for One-Time Pads or passwords. It is very simple and has some
+options, but by itself, requires a specific use case for it.</li>
+</ul>
+<h3 id="Smartcard">Smartcard</h3>
+<ul>
+<li><a href="https://packages.debian.org/trixie/libpam-p11">libpam-p11</a>: A
+PAM module for using PKCS#11 smart cards. If you need CA, CRL, or OCSP,
+use <a href="https://packages.debian.org/trixie/libpam-pkcs11">libpam-pkcs11</a>.
+Active development.</li>
+<li><a href="https://packages.debian.org/trixie/libpam-poldi">libpam-poldi</a>:
+A PAM module allowing authentication using an OpenPGP smartcard. Because
+the protocol is OpenPGP, it is compatible with many smartcards on the
+market. Produced by the same team from GnuPG. It <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=811095">does not
+play nice with a running scdaemon</a>; there are workarounds, and the
+report is old, so it might be fixed already. <sup class="reference"><a href="#cite_note-55">[55]</a></sup></li>
+<li><a href="https://packages.debian.org/trixie/libpam-yubico">libpam-yubico</a>:
+Two-factor password and YubiKey OTP PAM module. The protocol is HOTP;
+this is common for non-networked smartcards.</li>
+<li><a href="https://packages.debian.org/trixie/libpam-fprintd">libpam-fprintd</a>:
+A PAM module for fingerprint authentication through fprintd. Fingerprint
+readers normally reside on the host and have no utility on a virtual
+machine.</li>
+</ul>
+<h2 id="Drop">Drop</h2>
+<ul>
+<li><a href="https://packages.debian.org/trixie/libpam-barada">libpam-barada</a>:
+Pluggable authentication module (PAM) to provide two-factor
+authentication based on HMAC-Based One-Time Password (HOTP). Last code
+update was before <a href="https://metadata.ftp-master.debian.org/changelogs//main/b/barada-pam/stable_changelog">2010</a>;
+after the initial package release, there were only packaging fixes. No
+outstanding open bugs, just a few bug reports from more than a decade
+ago (2014), so development has stopped. Requires superuser privileges
+just to create the code, as it saves information in
+<code>/etc/barada.d/</code> and not in <code>$HOME</code>. Use case
+seems to be tightly coupled with PAM, as HOTP needs something to
+increase the counter. Does not generate a QR code by default.
+Documentation is scarce, no manual page (docs can be found in
+<code>/usr/share/doc/libpam-barada/README.debian</code>). There are no
+configuration options besides the minimum necessary: user name and PIN
+number. <code>barada-add</code> does not show emergency codes. Generates
+the secret in hexadecimal; most clients would prefer it in Base32, but
+it can be converted using other tools.</li>
+<li><a href="https://packages.debian.org/trixie/libpam-blue">libpam-blue</a>:
+PAM module for local authentication with Bluetooth devices. This module
+is not present in stable (bookworm) anymore.</li>
+</ul>
+<h2 id="See_also">See also</h2>
+<ul>
+<li><a href="https://wiki.debian.org/SecurityManagement/fingerprint%20authentication">Debian
+wiki: Fingerprint authentication</a></li>
+<li><a href="https://www.qubes-os.org/doc/ctap-proxy/">FIDO2 or CTAP in
+Qubes</a>.</li>
+<li>YubiKey:
+<ul>
+<li><a href="https://www.qubes-os.org/doc/yubikey/">Qubes wiki:
+YubiKey</a></li>
+<li>The <a href="https://github.com/QubesOS/qubes-app-yubikey">Qubes'
+YubiKey package</a> for configuring YubiKey login support could be
+ported to Debian.</li>
+</ul></li>
+</ul>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="About.html">Kicksecure</a>
+is an <a href="About.html#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html">Password
+security in
+PAM</a><img src="../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+<li><a href="Mobile_Phone_Security.html">Mobile Phone
+Security</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/Multi-factor_authentication">https://en.wikipedia.org/wiki/Multi-factor_authentication</a></li>
+<li id="cite_note-2"><a href="https://www.investopedia.com/terms/t/twofactor-authentication-2fa.asp">https://www.investopedia.com/terms/t/twofactor-authentication-2fa.asp</a></li>
+<li id="cite_note-3">In this attack: <blockquote><ul>
+<li id="cite_note-4">ATM skimmer devices usually fit over the original card reader. *
+Some ATM skimmers are inserted in the card reader, placed in the
+terminal, or situated along exposed cables. * Pinhole cameras installed
+on ATMs record a customer entering their PIN. Pinhole camera placement
+varies widely. * In some cases, keypad overlays are used instead of
+pinhole cameras to records PINs. Keypad overlays record a customer's
+keystrokes. * Skimming devices store data to be downloaded or wirelessly
+transferred later.</li>
+</ul></blockquote></li>
+<li id="cite_note-5"><a href="https://pixelprivacy.com/resources/two-factor-authentication/">https://pixelprivacy.com/resources/two-factor-authentication/</a></li>
+<li id="cite_note-6"><a href="https://www.rd.com/list/what-hackers-can-do-with-email-address/">https://www.rd.com/list/what-hackers-can-do-with-email-address/</a></li>
+<li id="cite_note-7"><a href="https://krebsonsecurity.com/2013/06/the-value-of-a-hacked-email-account/">https://krebsonsecurity.com/2013/06/the-value-of-a-hacked-email-account/</a></li>
+<li id="cite_note-8">Password recovery may not even be necessary because many Internet
+users tend to use the same passwords for multiple accounts.</li>
+<li id="cite_note-9">A catfish is someone masquerading as somebody else to create false
+identities, often to pursue deceptive online romances.</li>
+<li id="cite_note-10"><a href="https://www.wired.com/insights/2013/04/five-myths-of-two-factor-authentication-and-the-reality/">https://www.wired.com/insights/2013/04/five-myths-of-two-factor-authentication-and-the-reality/</a></li>
+<li id="cite_note-11"><a href="https://web.archive.org/web/20201108134652/https://thecybersecurityplace.com/6-myths-about-two-factor-authentication/">https://web.archive.org/web/20201108134652/https://thecybersecurityplace.com/6-myths-about-two-factor-authentication/</a></li>
+<li id="cite_note-12"><a href="https://www.stuff.co.nz/business/opinion-analysis/300221352/3-common-misconceptions-about-twofactor-authentication">https://www.stuff.co.nz/business/opinion-analysis/300221352/3-common-misconceptions-about-twofactor-authentication</a></li>
+<li id="cite_note-13"><a href="https://www.yubico.com/blog/internet-security-myth-busters-debunking-3-common-misconceptions-about-two-factor-authentication/">https://www.yubico.com/blog/internet-security-myth-busters-debunking-3-common-misconceptions-about-two-factor-authentication/</a></li>
+<li id="cite_note-14">See also: <a href="https://www.wwpass.com/pdf/docs/2FAsCostlyMisnomersAndMisconceptions.pdf">2FA's
+costly misnomers and misconceptions</a>.</li>
+<li id="cite_note-15"><a href="https://kripeshadwani.com/best-2fa-apps/">https://kripeshadwani.com/best-2fa-apps/</a></li>
+<li id="cite_note-16"><a href="https://security.googleblog.com/2019/05/new-research-how-effective-is-basic.html">https://security.googleblog.com/2019/05/new-research-how-effective-is-basic.html</a></li>
+<li id="cite_note-17">Device-based challenges like SMS codes, security keys and on-device
+prompts were generally more effective against automated bots, bulk
+phishing attacks, and targeted phishing attacks. Less useful were
+knowledge-based challenges like a secondary email address, phone number,
+or last sign-in location.</li>
+<li id="cite_note-18"><a href="https://www.eff.org/deeplinks/2016/12/12-days-2fa-how-enable-two-factor-authentication-your-online-accounts">https://www.eff.org/deeplinks/2016/12/12-days-2fa-how-enable-two-factor-authentication-your-online-accounts</a></li>
+<li id="cite_note-19"><a href="https://www.accessnow.org/cms/assets/uploads/2017/09/Choose-the-Best-MFA-for-you.png">https://www.accessnow.org/cms/assets/uploads/2017/09/Choose-the-Best-MFA-for-you.png</a></li>
+<li id="cite_note-20"><a href="https://www.eff.org/deeplinks/2017/09/guide-common-types-two-factor-authentication-web">https://www.eff.org/deeplinks/2017/09/guide-common-types-two-factor-authentication-web</a></li>
+<li id="cite_note-21"><a href="https://brainstation.io/cybersecurity/two-factor-auth">https://brainstation.io/cybersecurity/two-factor-auth</a></li>
+<li id="cite_note-22">Universal Second Factor (U2F) uses small USB, NFC or Bluetooth
+devices aka "security keys".</li>
+<li id="cite_note-23">Although they are relatively cheap and prices start from around
+10-20 dollars.</li>
+<li id="cite_note-24">These are third party applications for smartphones that generate a
+new one-time password every 60 seconds. The implementation is part of
+the Open Authentication (OATH) architecture.</li>
+<li id="cite_note-25">"Quick response" (QR) codes are a barcode with a matrix of dots. QR
+scanners or smartphone cameras can scan the barcode, and device software
+converts the dots into numbers or a string of characters. This can then
+be used for various activities, like opening a URL in a web
+browser.</li>
+<li id="cite_note-26">Since it requires unlocking the phone, opening the application, and
+typing the code in each time.</li>
+<li id="cite_note-27">Such as Duo Push and Apple's Trusted Devices implementation.</li>
+<li id="cite_note-28">In comparison, authenticator applications do not require a working
+connection.</li>
+<li id="cite_note-29">Account logins require both a password and the text
+message/automated phone call code to sign in.</li>
+<li id="cite_note-30">Attackers who take over phone numbers are able to access accounts
+without knowing the password.</li>
+<li id="cite_note-31">SIM cards can also be copied, or attackers can potentially trick
+phone companies into assigning a phone number to a different SIM card
+(so they can receive 2FA codes). The SS7 telephony protocol has flaws
+that also allow this attack.</li>
+<li id="cite_note-32">For instance, this is a problem for international travelers.</li>
+<li id="cite_note-33">For example, iPhones have facial scanning technology and most modern
+phones allow for fingerprint scans for easy and quick access.</li>
+<li id="cite_note-34">Like bitcoin wallets enforce retyping the wallet mnemonic seed.</li>
+<li id="cite_note-35"><a href="https://www.howtogeek.com/358723/psa-make-sure-you-have-a-backup-for-two-factor-authentication/">https://www.howtogeek.com/358723/psa-make-sure-you-have-a-backup-for-two-factor-authentication/</a></li>
+<li id="cite_note-36"><a href="https://www.guidingtech.com/backup-2fa-codes/">https://www.guidingtech.com/backup-2fa-codes/</a></li>
+<li id="cite_note-37"><a href="https://www.protectimus.com/blog/google-authenticator-backup/">https://www.protectimus.com/blog/google-authenticator-backup/</a></li>
+<li id="cite_note-38">For instance, the Google Authenticator application has a "Back up
+codes" option for this purpose.</li>
+<li id="cite_note-39">For example, the LastPass password manager and <a href="https://authy.com/features/backup/">Authy</a> websites offer this
+service.</li>
+<li id="cite_note-40"><a href="https://kripeshadwani.com/best-2fa-apps/">https://kripeshadwani.com/best-2fa-apps/</a></li>
+<li id="cite_note-41">Since 2FA is a relatively simple process, it is unnecessary to pay
+for a product.</li>
+<li id="cite_note-42">This is useful when signing into an account and there is no Internet
+access for your mobile.</li>
+<li id="cite_note-43">This assists researchers and developers to find bugs/issues in the
+code.</li>
+<li id="cite_note-44"><a href="https://www.cloudwards.net/best-2fa-apps/">https://www.cloudwards.net/best-2fa-apps/</a></li>
+<li id="cite_note-45"><a href="https://kripeshadwani.com/best-2fa-apps/">https://kripeshadwani.com/best-2fa-apps/</a></li>
+<li id="cite_note-46">Like Facebook, Instagram, Dropbox, 1Password, Amazon etc.</li>
+<li id="cite_note-47">This allows the selection of a time interval (between 5-60 seconds)
+after which the TOTPs are hidden again.</li>
+<li id="cite_note-48">Many make the mistake of using Google Authenticator and the TOTP
+term interchangeably.</li>
+<li id="cite_note-49"><a href="https://www.cloudwards.net/best-2fa-apps/">https://www.cloudwards.net/best-2fa-apps/</a></li>
+<li id="cite_note-50"><blockquote><p>OTP Agency customers would enter a target's phone number and name,
+and then the service would initiate an automated phone call that alerts
+that person about unauthorized activity on their account. The call would
+prompt the target to enter an OTP token generated by their phone's
+mobile app ("for authentication purposes"), and that code would then get
+relayed back to the bad guy customers' panel at the OTP Agency
+website.</p></blockquote></li>
+<li id="cite_note-51"><a href="https://citizenlab.ca/2015/08/iran_two_factor_phishing/">https://citizenlab.ca/2015/08/iran_two_factor_phishing/</a></li>
+<li id="cite_note-52"><a href="https://www.vice.com/en/article/y3vz5k/booming-underground-market-bots-2fa-otp-paypal-amazon-bank-apple-venmo">The
+Booming Underground Market for Bots That Steal Your 2FA Codes</a>:
+<blockquote><p>But this call was actually from a hacker. The fraudster used a type
+of bot that drastically streamlines the process for hackers to trick
+victims into giving up their multi-factor authentication codes or
+one-time passwords (OTPs) for all sorts of services, letting them log in
+or authorize cash transfers. Various bots target Apple Pay, PayPal,
+Amazon, Coinbase, and a wide range of specific banks. Whereas fooling
+victims into handing over a login or verification code previously would
+often involve the hacker directly conversely with the victim, perhaps
+pretending to be the victim's bank in a phone call, these increasingly
+traded bots dramatically lower the barrier of entry for bypassing
+multi-factor authentication.</p></blockquote></li>
+<li id="cite_note-53">This supports both the HOTP and TOTP algorithms.</li>
+<li id="cite_note-54">The OATH Toolkit has shared libraries, command-line tools, and a PAM
+module to enable easy building of one-time password authentication
+systems.</li>
+<li id="cite_note-55">OTPW is a one-time password system which protects against the
+password list being stolen and last-digit attacks.</li>
+<li id="cite_note-56">This PAM module allows logins, screenlock, and service validation
+using a GnuPG smartcard.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

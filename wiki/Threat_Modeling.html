@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Threat Modeling</title>
+<meta name="description" content="Computer threat modeling is a process that helps identify potential security risks to a computer system, network, or application. By analyzing these risks, organizations can develop effective strategies to prevent, detect, and respond to security incidents.">
+<meta property="og:description" content="Computer threat modeling is a process that helps identify potential security risks to a computer system, network, or application. By analyzing these risks, organizations can develop effective strategies to prevent, detect, and respond to security incidents.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Threat_Modeling.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Threat_Modeling.html">
+<meta property="og:title" content="Computer Security Threat Modeling">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Threat_Model.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Definition">Definition</a></li><li class="toc-l2"><a href="#Threat_Model_Examples">Threat Model Examples</a></li><li class="toc-l2"><a href="#Threat_Model_Guides">Threat Model Guides</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Threat_Model.jpg.webp" alt="Threat_Model.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Computer threat modeling is like a security risk assessment for your
+computer or network. It helps you identify potential threats and
+vulnerabilities, so you can develop effective strategies to protect your
+system and data. By analyzing different attack scenarios, you can stay
+one step ahead of cybercriminals and keep your digital assets safe.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Threat_Modeling">Threat Modeling</h1>
+<h2 id="Definition">Definition</h2>
+<p>Various wiki chapters reference the concept of threat modeling.
+Statements like "Conduct a personal threat assessment before proceeding"
+often appear before instructions that install additional software or
+change specific system configurations. Despite this warning, many users
+are unfamiliar with the concept or unsure how to conduct a proper
+assessment in their circumstances. In simple terms, threat modeling
+refers to: <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <blockquote><p>A threat model is a list of the most probable threats to your
+security/privacy endeavors. Since it's impossible to protect yourself
+against every attack(er), you should focus on the most probable threats.
+In computer security, a threat is a potential event that could undermine
+your efforts to stay private and secure.</p>
+<p>By focusing on the threats that matter to you, this narrows down your
+thinking about the protection you need, so you can choose the tools that
+are right for the job.</p></blockquote></p>
+<p><blockquote><p>Threat modeling is a form of risk assessment that models aspects of
+the attack and defense sides of a particular logical entity, such as a
+piece of data, an application, a host, a system, or an environment. The
+fundamental principle underlying threat modeling is that there are
+always limited resources for security and it is necessary to determine
+how to use those limited resources effectively.</p></blockquote></p>
+<h2 id="Threat_Model_Examples">Threat Model Examples</h2>
+<p>Devising a threat model requires a <em>realistic</em> assessment of
+probable threats (adversaries) and the available mitigations that are
+feasible to apply. Adversaries will have varying motivations, skill and
+resources at their disposal. The Electronic Frontier Foundation (EFF)
+has noted proper security planning necessitates answering five key
+questions to determine what should be protected, from whom, and the
+potential consequences of a breach: <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<ol>
+<li>What do I want to protect?</li>
+<li>Who do I want to protect it from?</li>
+<li>How bad are the consequences if I fail?</li>
+<li>How likely is it that I will need to protect it?</li>
+<li>How much trouble am I willing to go through to try to prevent
+potential consequences?</li>
+</ol>
+<p>To better understand these concepts, consider these questions in
+further detail below.</p>
+<table>
+<caption><em>Threat Modeling Concepts</em> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Concept</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>What I want to protect</p></td>
+<td><p>In terms of computing and digital security, this refers to
+protecting "assets" which is a type of information like browsing
+history, files, messages, emails, personal contacts and so on. To
+determine your assets, take note of what data is stored and where, who
+potentially has access to it, and what protections are in place to
+prevent unwanted access.</p></td>
+</tr>
+<tr class="even">
+<td><p>Who I am protecting it from</p></td>
+<td><p>Consider who might target you or your information; this is your
+"adversary". Potential adversaries include: family, friends or
+ex-partners; employers; business competition; researchers; government
+entities; malicious hackers; advertisers; corporations; and the
+IC.</p></td>
+</tr>
+<tr class="odd">
+<td><p>How likely protection is required</p></td>
+<td><p>A proper risk assessment is required. To determine the
+probability of threats being actualized, consider the capabilities of
+adversaries and their motivation, for example: <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<ul>
+<li>Family, friends and ex-partners are likely to be unskilled and
+unmotivated threats.</li>
+<li>Advertisers and employers are generally unskilled and motivated
+threats.</li>
+<li>Some corporations are skilled, but unmotivated threats (such as a
+mobile device provider).</li>
+<li>Security researchers, other corporations (like Google and Facebook),
+competent hackers and law enforcement are skilled and motivated threats.
+They also have access to limited global resources.</li>
+<li>The IC are highly skilled, highly motivated and have significant
+global resources.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Impact of an adversary breach</p></td>
+<td><p>Skilled adversaries have multiple opportunities to access,
+exfiltrate, delete or corrupt data, but the motives and tactics will
+differ depending on the specific adversary. For example, advertisers
+will remain focused on highly detailed profiling, government may focus
+on reading private communications of journalists, the IC may seek to
+establish full monitoring of systems associated with political activists
+and so on. Consider how harmful a successful breach by an adversary
+would be -- what they can do with private data -- and the probability of
+this occurring; the likelihood obviously increases with more skilled
+adversaries. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Effort exerted on improved security</p></td>
+<td><p>Security is a process and not an end product. Every individual
+has different priorities, threats, resources, and capabilities. This
+means the "right" strategy is a balance of personal time, convenience,
+privacy and cost. Threat models and mitigation strategies will be very
+different for:</p>
+<ul>
+<li>A journalist willing to disclose whistleblower secrets, since this
+requires protection from government entities.</li>
+<li>A member of the public who is simply seeking to thwart profiling by
+online advertisers/global technology companies.</li>
+<li>Managers protecting themselves against potential hackers employed by
+competitors for the purpose of corporate espionage.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Threat_Model_Guides">Threat Model Guides</h2>
+<p><a href="https://tldp.org/HOWTO/Security-HOWTO/x82.html">https://tldp.org/HOWTO/Security-HOWTO/x82.html</a></p>
+<p>To better protect yourself against surveillance by adversaries, it is
+recommended to consult the following EFF "Security Scenarios". Detailed
+advice is provided for various user groups regarding appropriate
+resources, tools and tips to mitigate potential threats:
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<div>
+<ul>
+<li><a href="https://ssd.eff.org/module/your-security-plan">Your
+Security Plan</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/lgbtq-youth">LGBTQ
+Youth</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/academic-researcher">Academic
+researcher</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/human-rights-defender">Human
+rights defender</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/journalism-student">Journalism
+student</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/activist-or-protester">Activist or
+protestor</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/journalist-move">Journalist
+on the move</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/online-security-veteran">Online
+security veteran</a></li>
+<li><a href="https://ssd.eff.org/en/playlist/want-security-starter-pack">Want a
+security starter pack?</a></li>
+</ul>
+</div>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Mental_Model.html">Mental Model</a></li>
+</ul>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.privacyguides.org/basics/threat-modeling/">https://www.privacyguides.org/basics/threat-modeling/</a></li>
+<li id="cite_note-2"><a href="https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf">https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf</a></li>
+<li id="cite_note-3"><a href="https://ssd.eff.org/en/playlist/academic-researcher">https://ssd.eff.org/en/playlist/academic-researcher</a></li>
+<li id="cite_note-4">This is admittedly a subjective process which is different for every
+individual. Even though some risks are low, they may be unacceptable to
+specific people. On the other hand, some people disregard probable
+threats, because the consequences are assessed as inconsequential.</li>
+<li id="cite_note-5">For example, mobile phone providers can access all phone records,
+unencrypted communications are vulnerable to hackers on Wi-Fi networks,
+and government agencies can likely backdoor any Internet-connected
+device.</li>
+<li id="cite_note-6"><a href="https://ssd.eff.org/en/module-categories/security-scenarios">https://ssd.eff.org/en/module-categories/security-scenarios</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

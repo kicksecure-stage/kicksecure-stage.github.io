@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>SSL</title>
+<meta name="description" content="The Broken Certificate Authority System">
+<meta property="og:description" content="The Broken Certificate Authority System">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/SSL.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/SSL.html">
+<meta property="og:title" content="Transport Layer Security (TLS)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/TLS1432.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Server_Security_Guide.html" title="Server Security Guide"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Server
+Security
+Guide</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Configuration_Files.html" title="Configuration Files"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Configuration
+Files</span></a><span class="info"><span class="prev">Previous page:
+Server Security Guide</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Configuration
+Files</span></span></span>Transport Layer Security (TLS)</p>
+</div>
+<p><img src="../media/TLS1432.jpg.webp" alt="TLS1432.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The Broken Certificate Authority System</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Transport Layer Security (TLS) is a cryptographic protocol designed
+to provide secure communications over a computer network. TLS has
+replaced its deprecated predecessor, Secure Sockets Layer (SSL), and is
+intended to enforce privacy and data integrity between two or more
+communicating computer applications. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> TLS is utilized
+for a host of online activities, such as web browsing, email, instant
+messaging, and VOIP applications. It ensures the client (like a web
+browser) is securely communicating with a server (such as
+kicksecure.com), meaning the connection is private, authenticated, and
+reliable. For a detailed overview of the TLS design, refer to <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">this
+Wikipedia entry</a>.</p>
+<p>Use of TLS encryption is only as good as its keys.</p>
+<p>Some TLS issues are not directly TLS issues, but rather issues with
+the certificate authorities that are trusted by default by operating
+systems, web browsers, and other applications.</p>
+<p>(Self-signed) SSL certificates using Certificate Pinning are
+unaffected by issues with certificate authorities.</p>
+<h1 id="Compromised_Certificate_Authorities">Compromised Certificate
+Authorities</h1>
+<p>Little trust should be placed in the public TLS certificate authority
+(CA) system, since it relies on a third party correctly establishing the
+authenticity of certificates. The Snowden leaks confirmed that CAs were
+a weak point targeted by the IC, allowing for <a href="Warning.html#Man-in-the-middle_Attacks">Man-in-the-middle attacks</a> if the CAs were either
+compromised or cooperative.</p>
+<p>If/once a single CA is subverted, the security of the entire system
+is lost, and potentially all entities relying on the trust of the
+compromised CA are affected. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>Examples of CA security breaches include (ordered roughly by severity
+of the breach):</p>
+<ul>
+<li><a href="https://arstechnica.com/information-technology/2011/09/comodo-hacker-i-hacked-diginotar-too-other-cas-breached/">Ars
+Technica: <u>DigiNotar</u> issues rogue HTTPS certificate "for *.*.com
+and *.*.org, which would allow someone in possession of the certificates
+to perform man-in-the-middle attacks for almost any site with a .com or
+.org domain".</a> <sup class="reference"><a href="#cite_note-3">[3]</a></sup>,</li>
+<li><a href="https://www.comodo.com/Comodo-Fraud-Incident-2011-03-23.html"><u>Comodo</u>
+issued rogue HTTPS certificate for Google, Yahoo, Skype, Firefox
+Add-Ons, and live.com</a> <sup class="reference"><a href="#cite_note-4">[4]</a></sup>,</li>
+<li><a href="https://arstechnica.com/information-technology/2015/09/symantec-employees-fired-for-issuing-rogue-https-certificate-for-google/">Ars
+Technica: "<u>Symantec</u> employees fired for issuing rogue HTTPS
+certificate for Google"</a>,</li>
+<li><a href="https://arstechnica.com/information-technology/2017/01/already-on-probation-symantec-issues-more-illegit-https-certificates/">Ars
+Technica: <u>Symantec</u> again</a>,</li>
+<li><a href="https://www.wired.com/threatlevel/2013/01/google-fraudulent-certificate/">Wired:
+<u>Turktrust</u> issued rogue HTTPS certificate for Google</a></li>
+<li><a href="https://sslmate.com/resources/certificate_authority_failures">the
+list goes on and on</a></li>
+</ul>
+<h1 id="Untrustworthy_Certificate_Authorities">Untrustworthy Certificate
+Authorities</h1>
+<p>Quote wikipedia:</p>
+<p><blockquote><p>As of 24 August 2020, 147 root certificates, representing 52
+organizations, are trusted in the Mozilla Firefox web browser, 168 root
+certificates, representing 60 organizations, are trusted by macOS, and
+255 root certificates, representing 101 organizations, are trusted by
+Microsoft Windows.</p></blockquote></p>
+<p>Rhetorical questions:</p>
+<ul>
+<li>Why were these organizations given the power to sign certificates
+for any domain on the internet?</li>
+<li>How were they vetted?</li>
+</ul>
+<p>Research exercise for the reader:</p>
+<ul>
+<li>Have previously maliciously acting certificate authorities been
+removed from operating systems' and web browsers' default list of
+trusted certificates?</li>
+</ul>
+<p>This video <a href="https://www.youtube.com/watch?v=09fNjMur1Gs">Let's Encrypt with
+Dane by Geoff Huston, APNIC</a> summarizes it well.</p>
+<h1 id="Censorship">Censorship</h1>
+<p><a href="https://community.letsencrypt.org/t/dnr-online-ru-certificate-was-revoked/48809">https://community.letsencrypt.org/t/dnr-online-ru-certificate-was-revoked/48809</a></p>
+<h1 id="Domain_Verification_Insecurity">Domain Verification
+Insecurity</h1>
+<p>Many TLS certificates are, during their initial certification,
+verified over an insecure channel. For example, <a href="https://letsencrypt.org">Let's Encrypt</a> is a very popular
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup> certificate authority that provides free TLS
+certificates. Let's Encrypt often uses the <a href="https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment">ACME</a>
+protocol HTTP-01 challenge to verify domain owners are really owners of
+the domain and authorized to request TLS certificates for their domain
+name. Most websites initially signing up for a free Let's Encrypt TLS
+certificate are verified by Let's Encrypt connecting to these websites
+over the insecure, unencrypted HTTP port 80. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> Other
+TLS certificate authorities also use the ACME protocol. The ACME HTTP-01
+challenge is vulnerable to man-in-the-middle attacks. <sup class="reference"><a href="#cite_note-7">[7]</a></sup>
+As a result, the initial root anchor is insecure.</p>
+<p><a href="https://letsencrypt.org/2020/02/19/multi-perspective-validation.html">https://letsencrypt.org/2020/02/19/multi-perspective-validation.html</a></p>
+<h1 id="HTTP_Public_Key_Pinning">HTTP Public Key Pinning</h1>
+<p>To fix these issues, <a href="https://en.wikipedia.org/wiki/HTTP_Public_Key_Pinning">HTTP Public
+Key Pinning (HPKP)</a> was invented but unfortunately deprecated later
+because, quote:</p>
+<p><blockquote><p>Due to HPKP mechanism complexity and possibility of accidental
+misuse, browsers deprecated and removed HPKP support in favor of <a href="https://en.wikipedia.org/wiki/Certificate_Transparency">Certificate
+Transparency</a> and its <code>Expect-CT</code> header.</p></blockquote> <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<h1 id="Certificate_Transparency">Certificate Transparency</h1>
+<p>While Certificate Transparency might allow for faster detection, it
+does not prevent maliciously issued certificates such as through a
+malicious or hacked certificate authority.</p>
+<h1 id="Key_Pinning">Key Pinning</h1>
+<p>HTTP Public Key Pinning (HPKP) was deprecated but Google is still
+using key pinning.</p>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7469">https://datatracker.ietf.org/doc/html/rfc7469</a></li>
+<li><a href="https://www.infoq.com/news/2023/08/android-chrome-key-pinning/">https://www.infoq.com/news/2023/08/android-chrome-key-pinning/</a></li>
+<li><a href="https://security.googleblog.com/2023/08/making-chrome-more-secure-by-bringing.html">https://security.googleblog.com/2023/08/making-chrome-more-secure-by-bringing.html</a></li>
+</ul>
+<h1 id="Hardcoded_Key_Pinning">Hardcoded Key Pinning</h1>
+<p>The browser Chromium and Chrome still pin public key hashes for
+Google properties. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> However, this functionality isn't
+available to most websites.</p>
+<h1 id="DANE">DANE</h1>
+<p><a href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>
+(DNS-based Authentication of Named Entities) would be a huge improvement
+because it does not depend on any certificate authorities but only on
+the website's domain registrar. Unfortunately, no (mainstream) web
+browser has implemented DANE and it seems unlikely that DANE will be
+implemented.</p>
+<ul>
+<li>Web Browsers:
+<ul>
+<li>Firefox:
+<ul>
+<li>Mozilla created a Firefox feature for <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=672600">Use
+DNSSEC/DANE chain stapled *into TLS handshake in certificate chain
+validation</a>, started working on it but later the ticket <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=672600#c64">was
+closed as <code>wontfix</code></a>.</li>
+<li>There was a <a href="https://web.archive.org/web/20230329214932/https://addons.mozilla.org/en-US/firefox/addon/dnssec-dane-validator/">DNSSEC/DANE
+Validator Firefox add-on</a>, but the developers <a href="https://www.dnssec-validator.cz/2018-10-16-end-of-support.html">decided
+to stop development and support</a> after struggling and failing to
+implement the DNSSEC/TLSA Validator extension for Firefox Quantum (57+).
+This is worth further research.</li>
+</ul></li>
+<li>Chromium based:
+<ul>
+<li>Chromium and Chrome had DNSSEC support (which is a prerequisite for
+DANE TLSA), but it was <a href="https://www.imperialviolet.org/2011/06/16/dnssecchrome.html">removed</a>.</li>
+<li><a href="https://chrome.google.com/webstore/detail/dnssec-checker/amebjlfjmmeflkjhcealhbekaljgnekg">DNSSEC
+Checker</a> chrome(ium) add-on but does it check DANE?</li>
+</ul></li>
+</ul></li>
+<li>E-mail servers:
+<ul>
+<li>Ironically <sup class="reference"><a href="#cite_note-10">[10]</a></sup> often have better DANE support (for
+example <code>postfix</code>).</li>
+</ul></li>
+<li>E-mail clients:
+<ul>
+<li>Unfortunately, the author is not aware of any e-mail clients making
+use of DANE.</li>
+<li>Alternative e-mail user to e-mail server encryption: E-mail servers
+have the ability to implement user to e-mail server encryption through
+providing an <code>onion</code> service. That is because e-mail fetching
+protocols (POP, IMAP) as well as mail submission protocols (SMTP) can be
+tunneled through <code>onion</code>. Web-mail obviously also works great
+over <code>onion</code>. That is because the e-mail fetching server
+(such as for example <code>dovecot</code>) or e-mail submission server
+(for example <code>dovecot</code>) "do not care" how connections arrive
+at their listening ports. Transporting e-mails from users to e-mail
+servers is one thing and doable with reasonable effort. Sending e-mails
+to <code>recipient@example.onion</code> format addresses however is a
+different topic.</li>
+</ul></li>
+<li><code>certbot</code> implemented <code>--reuse-key</code>
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup> which helps to simplify the process by which website
+owners can add DANE to their website or e-mail server.</li>
+</ul>
+<h1 id="TLS_Attacks">TLS Attacks</h1>
+<p>A significant number of attacks have been demonstrated against the
+SSL/TLS protocol in the recent past, including: <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<ul>
+<li><u><a href="https://blog.qualys.com/product-tech/2013/09/10/is-beast-still-a-threat">BEAST
+attack</a></u>: violation of same origin policy constraints.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/OpenSSL#CCS_injection_vulnerability">ChangeCipherSpec
+injection attack</a></u>: a specially crafted handshake forces the use
+of weak keyring material, allowing decryption and modification of
+traffic in transit.</li>
+<li><u><a href="https://www.mitls.org/pages/attacks/VHC">Cross protocol
+attacks</a></u>: servers are attacked by exploiting their support of
+obsolete, insecure SSL protocols to leverage attacks on connections
+using up-to-date protocols.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Heartbleed">Heartbleed</a></u>:
+private keys are stolen from servers, allowing anyone to read the memory
+of protected systems.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#POODLE_attack">POODLE
+attack</a></u>: padding attacks which reveal the contents of encrypted
+messages.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Downgrade_attack">Protocol
+downgrade</a></u>: web servers are tricked into negotiating connections
+with earlier versions of TLS that are insecure.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#RC4_attacks">RC4
+attack</a></u>: recovery of plain text relying on the RC4 cipher
+suite.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Renegotiation_attack">Renegotiation
+attack</a></u>: plaintext injection attacks via the hijacking of the
+https connection.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#CRIME_attack">TLS
+Compression (CRIME attack)</a></u>: session hijacking of web sessions
+via recovery of secret authentication cookies.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Truncation_attack">Truncation
+attack</a></u>: victim logout requests are blocked so the user remains
+logged into a web service.</li>
+<li><u><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Unholy_PAC_attack">Unholy
+PAC attack</a></u>: URLs are exposed when a user attempts to reach a
+TLS-enabled web link.</li>
+<li><u><a href="https://www.robotattack.org/">The ROBOT Attack</a></u>:
+the return of a 19-year-old vulnerability that allows performing RSA
+decryption and signing operations with the private key of a TLS
+server.</li>
+</ul>
+<h1 id="Mitigation">Mitigation</h1>
+<p>TODO: expand</p>
+<p>A non-comprehensive list of mitigation techniques to reduce TLS-based
+risks:</p>
+<ul>
+<li>CAA policy</li>
+<li><u>Certificate Transparency Log Monitor</u>:
+<ul>
+<li>self-hosted such as <a href="https://github.com/SSLMate/certspotter">Cert Spotter</a></li>
+<li>third-party hosted such as by <a href="https://sslmate.com/certspotter/">sslmate</a>, <a href="https://blog.cloudflare.com/introducing-certificate-transparency-monitoring/">cloudflare</a>,
+<a href="https://developers.facebook.com/tools/ct/search/">facebook</a></li>
+</ul></li>
+<li><u>onion:</u> Tor onion services (<code>.onion</code>) which are
+encrypted Tor to Tor ("end-to-end encryption") can be used as an
+alternative to TLS. Unfortunately both client and server require to run
+Tor. See also <a href="Non_Anonymous_Onion_Encryption_and_NAT_Traversal.html">Non Anonymous Onion Encryption and NAT
+Traversal</a>.</li>
+</ul>
+<h1 id="Power_Abuse">Power Abuse</h1>
+<ul>
+<li><a href="https://scotthelme.co.uk/the-power-to-revoke-lies-with-the-ca/">https://scotthelme.co.uk/the-power-to-revoke-lies-with-the-ca/</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<p><a href="https://smallstep.com/blog/everything-pki/#trustworthiness">https://smallstep.com/blog/everything-pki/#trustworthiness</a></p>
+<p><a href="https://hexatomium.github.io/2020/10/17/001.html">https://hexatomium.github.io/2020/10/17/001.html</a></p>
+<p><a href="https://scotthelme.co.uk/revocation-checking-is-pointless/">https://scotthelme.co.uk/revocation-checking-is-pointless/</a></p>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">https://en.wikipedia.org/wiki/Transport_Layer_Security</a></li>
+<li id="cite_note-2"><a href="https://en.wikipedia.org/wiki/Certificate_authority#CA_compromise">https://en.wikipedia.org/wiki/Certificate_authority#CA_compromise</a></li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/DigiNotar"><u>DigiNotar</u>
+issues rogue HTTPS certificate for Google</a></li>
+<li id="cite_note-4"><a href="https://web.archive.org/web/20160604141017/http://www.scmagazine.com/two-more-comodo-resellers-owned-in-ssl-hack/article/199620/"><u>Comodo</u></a></li>
+<li id="cite_note-5">Quote <a href="https://letsencrypt.org">Let's Encrypt</a> homepage:
+<blockquote><p>A nonprofit Certificate Authority providing TLS certificates to 260
+million websites.</p></blockquote></li>
+<li id="cite_note-6"><a href="https://letsencrypt.org/docs/challenge-types/#http-01-challenge">https://letsencrypt.org/docs/challenge-types/#http-01-challenge</a></li>
+<li id="cite_note-7"><a href="https://security.stackexchange.com/questions/229050/is-the-acme-http-01-challenge-secure-against-mitms">https://security.stackexchange.com/questions/229050/is-the-acme-http-01-challenge-secure-against-mitms</a></li>
+<li id="cite_note-8">* <a href="https://www.theregister.com/2017/10/30/google_hpkp/">https://www.theregister.com/2017/10/30/google_hpkp/</a>
+* <a href="https://www.zdnet.com/article/google-chrome-is-backing-away-from-public-key-pinning-and-heres-why/">https://www.zdnet.com/article/google-chrome-is-backing-away-from-public-key-pinning-and-heres-why/</a></li>
+<li id="cite_note-9">* <a href="https://www.chromium.org/Home/chromium-security/education/tls#TOC-Certificate-Pinning">https://www.chromium.org/Home/chromium-security/education/tls#TOC-Certificate-Pinning</a>
+* <a href="https://www.imperialviolet.org/2011/05/04/pinning.html">https://www.imperialviolet.org/2011/05/04/pinning.html</a>
+* <a href="https://security.googleblog.com/2011/08/update-on-attempted-man-in-middle.html">https://security.googleblog.com/2011/08/update-on-attempted-man-in-middle.html</a></li>
+<li id="cite_note-10">One would expect web browsers with more users, supposedly more
+developers and more funding to be able to implement such an important
+security feature faster.</li>
+<li id="cite_note-11"><a href="https://github.com/certbot/certbot/pull/5901">https://github.com/certbot/certbot/pull/5901</a></li>
+<li id="cite_note-12"><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security#Attacks_against_TLS/SSL">https://en.wikipedia.org/wiki/Transport_Layer_Security#Attacks_against_TLS/SSL</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Server_Security_Guide.html" title="Server Security Guide"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Server
+Security
+Guide</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Configuration_Files.html" title="Configuration Files"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Configuration
+Files</span></a><span class="info"><span class="prev">Previous page:
+Server Security Guide</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Configuration
+Files</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a> <a href="Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

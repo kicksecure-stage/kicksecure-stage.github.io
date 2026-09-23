@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Chroot</title>
+<meta name="description" content="You can install Kicksecure on top of your existing Debian (based) Linux installation inside a chroot (change root).">
+<meta property="og:description" content="You can install Kicksecure on top of your existing Debian (based) Linux installation inside a chroot (change root).">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Chroot.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Chroot.html">
+<meta property="og:title" content="Install Kicksecure inside a folder (chroot)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Download-chroot.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Qubes_Notes">Qubes Notes</a></li><li class="toc-l2"><a href="#Install_Required_Tools">Install Required Tools</a></li><li class="toc-l2"><a href="#Add_Signing_Key">Add Signing Key</a></li><li class="toc-l2"><a href="#Set_Variables">Set Variables</a></li><li class="toc-l2"><a href="#Set_Variables_2">Set Variables</a></li><li class="toc-l2"><a href="#APT_Sources_List">APT Sources List</a></li><li class="toc-l2"><a href="#APT_Cache">APT Cache</a></li><li class="toc-l2"><a href="#Run_mmdebstrap">Run mmdebstrap</a></li><li class="toc-l2"><a href="#Chroot_Post_Processing">Chroot Post Processing</a></li><li class="toc-l2"><a href="#Host_Cleanup">Host Cleanup</a></li><li class="toc-l3"><a href="#Simple_Classic_Chroot_Method">Simple Classic Chroot Method</a></li><li class="toc-l2"><a href="#systemd-nspawn_Method">systemd-nspawn Method</a></li><li class="toc-l3"><a href="#Install_systemd-nspawn">Install systemd-nspawn</a></li><li class="toc-l3"><a href="#systemd-nspawn_Simple_Chroot">systemd-nspawn Simple Chroot</a></li><li class="toc-l3"><a href="#systemd-nspawn_Boot_Chroot_CLI_Only">systemd-nspawn Boot Chroot
+CLI Only</a></li><li class="toc-l3"><a href="#systemd-nspawn_Boot_Chroot_with_GUI_Support">systemd-nspawn Boot
+Chroot with GUI Support</a></li><li class="toc-l3"><a href="#Exit_systemd-nspawn_Chroot">Exit systemd-nspawn Chroot</a></li><li class="toc-l3"><a href="#Limitations_of_systemd-nspawn_based_Chroot">Limitations of
+systemd-nspawn based Chroot</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Download-chroot.jpg.webp" alt="Download-chroot.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>You can install <a href="About.html">Kicksecure</a> on
+top of your existing Debian (based) Linux installation inside a <a href="Chroot.html">chroot</a>.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><strong>Understanding the Basics of Creating and Using a Chroot
+Environment</strong></p>
+<p>Creating and using a chroot is like building a small, isolated Linux
+system within your main system. It's a powerful tool for various
+purposes, from development to testing. While the concept might seem
+overwhelming at first, it boils down to a few key commands and a basic
+understanding of Linux file systems.</p>
+<p>In the world of Linux, mastering the creation and use of a chroot
+(change root) environment is a valuable skill. This process involves two
+fundamental steps: creating the chroot and then operating within it.</p>
+<p>Before we can discuss the chroot (change root), we first need to
+define what the root directory is. In Linux, the root directory path is
+symbolized by only a single <code>/</code> (forward slash). See also
+<span class="code-select inline-style">ls /</span> . It contains other
+directories you might already know, such as <code>/etc</code>,
+<code>/usr</code>, <code>/lib</code>, <code>/var</code>, and so
+forth.</p>
+<p><strong>Creating the Chroot Environment</strong></p>
+<p>The chroot environment is essentially a miniature version of a Linux
+system within your existing system.</p>
+<p>To create this environment, you can use tools like
+<em>debootstrap</em> or <em>mmdebstrap</em>. These tools download a
+Linux distribution (like Debian or others from different repositories
+such as Kicksecure) and establish a root file system in a designated
+folder on your hard drive. For instance, you might create a chroot
+folder named <code>~/kicksecure-lxqt-chroot</code>. That folder would
+then contain the same essential directories, <code>/etc</code>,
+<code>/usr</code>, and so forth. Here's an example of how that folder
+structure would look like.</p>
+<ul>
+<li><code>~/kicksecure-lxqt-chroot/etc</code></li>
+<li><code>~/kicksecure-lxqt-chroot/usr</code></li>
+<li><code>~/kicksecure-lxqt-chroot/lib</code></li>
+<li>etc.</li>
+</ul>
+<p>This folder structure gets created by the chroot creation tool.
+There's no need for the user to fully understand the folder structure or
+process. The process is straightforward, typically requiring just a
+single command line instruction.</p>
+<p><strong>Using the Chroot Environment</strong></p>
+<p>Once the chroot folder has been set up, you can start working inside
+it using commands like <em>chroot</em> or <em>systemd-nspawn</em>.</p>
+<p>An example of entering this environment would be:
+<code>sudo chroot ~/kicksecure-lxqt-chroot zsh</code>. This command
+changes the root from the main <code>/</code> to
+<code>~/kicksecure-lxqt-chroot</code> and starts the Z shell (zsh) in
+this new context. But don't worry. This does not change the root for
+your real Linux installation. It only changes the root for the terminal
+emulator which you are currently using. The rest of your system remains
+unaffected by this.</p>
+<p>You could also use other shells such as <code>bash</code> or
+applications as needed.</p>
+<p>It's worth noting that more advanced setups might involve emulators
+like QEMU for a fully emulated operating system, but this would require
+additional steps like installing a kernel in the chroot.</p>
+<h1 id="chroot_Creation">chroot Creation</h1>
+<h2 id="Qubes_Notes">Qubes Notes</h2>
+<p>Only users of Qubes need to consider these notes in this chapter.</p>
+<p>Users that don't use Qubes or don't know what Qubes is should skip
+this chapter.</p>
+<p>TODO: elaborate</p>
+<ul>
+<li>nosuid / nodev can cause issues?</li>
+<li>default private image size (/home folder) is too small for
+Kicksecure LXQt</li>
+</ul>
+<h2 id="Install_Required_Tools">Install Required Tools</h2>
+<p><sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<div class="info-box ">
+<p>Install package(s)
+<code>mmdebstrap apt-transport-https apt-transport-tor tor curl</code>
+following these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the
+<code>mmdebstrap apt-transport-https apt-transport-tor tor curl</code>
+package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+mmdebstrap apt-transport-https apt-transport-tor tor curl</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>mmdebstrap apt-transport-https apt-transport-tor tor curl</code>
+is complete.</p>
+</div>
+<h2 id="Add_Signing_Key">Add Signing Key</h2>
+<div class="info-box ">
+<p>It is required to add the signing key on the host because
+<code>mmdebstrap</code> will need it.</p>
+<p>(Users of Kicksecure and Whonix could skip this step since the
+signing key is there by default.)</p>
+<p>The key could be removed at the end. (Except Kicksecure and Whonix
+should not do this unless they upgrade from source code.)</p>
+<p>Complete the following steps to add the <a href="Signing_Key.html">Kicksecure Signing Key</a> to the system's APT
+keyring.</p>
+<p>Open a terminal.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Package <code>curl</code> needs to be installed.</p>
+<div class="info-box ">
+<p>Install package(s) <code>curl</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>curl</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+curl</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>curl</code> is
+complete.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Download <a href="Signing_Key.html">Kicksecure Signing
+Key</a>. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>Choose your operating system.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Debian.png.webp" width="30" alt="Debian.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="A_:_Debian">
+<p>A : Debian</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using <strong>Debian</strong></u>,
+run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Debian">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Debian)">TLS (Debian)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo curl --tlsv1.3 --output
+/usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Debian)">onion (Debian)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo curl --proxy socks5h://127.0.0.1:9050
+--output /usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Qubes-logo-blue.png.webp" width="30" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="B_:_Qubes_App_Qube">
+<p>B : Qubes App Qube</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using a <em>Qubes</em>
+<strong>Debian</strong> App Qube</u>, run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Qubes-App-Qube">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Qubes-App-Qube)">TLS (Qubes-App-Qube)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo curl --tlsv1.3 --output
+/usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Qubes-App-Qube)">onion (Qubes-App-Qube)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo curl --proxy socks5h://127.0.0.1:9050
+--output /usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Qubes-logo-blue.png.webp" width="30" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="B_:_Qubes_Template">
+<p>B : Qubes Template</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using a <em>Qubes</em>
+<strong>Debian</strong> Template</u>, run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Qubes-Template">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Qubes-Template)">TLS (Qubes-Template)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo http_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> https_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> curl --tlsv1.3
+--output /usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Qubes-Template)">onion (Qubes-Template)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo http_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> https_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> curl --output
+/usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Signing key verification.</p>
+<p><u>Optional.</u> Recommended for <a href="Advanced_Users.html">Advanced Users</a> only. If you have a good
+understanding of <a href="Verifying_Software_Signatures.html">Verifying Software Signatures</a> you can <a href="Signing_Key.html"><u>check</u> the Kicksecure Signing
+Key</a> for additional security.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+<p>The procedure of adding the Kicksecure signing key is now
+complete.</p>
+</div>
+<h2 id="Set_Variables">Set Variables</h2>
+<p>File <code>/etc/hostname</code> must exist. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p><span class="code-select">sudo touch /etc/hostname</span></p>
+<h2 id="Set_Variables_2">Set Variables</h2>
+<p>Note: You could also replace <code>kicksecure-vm-gui-lxqt</code> with
+<code>kicksecure-vm-server</code>.</p>
+<p><span class="code-select">package=kicksecure-vm-gui-lxqt repo=trixie
+path_to_chroot=~/kicksecure-lxqt-chroot
+path_to_temp_sources=~/temp-sources.sources</span></p>
+<h2 id="APT_Sources_List">APT Sources List</h2>
+<p>Create temporary APT sources list for <code>mmdebstrap</code>.</p>
+<p><span class="code-select">echo " Types: deb URIs: <a href="https://deb.debian.org/debian-security">https://deb.debian.org/debian-security</a>
+Suites: trixie-security Components: main contrib non-free Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg</p>
+<p>Types: deb URIs: <a href="https://deb.debian.org/debian">https://deb.debian.org/debian</a>
+Suites: trixie Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/debian-archive-keyring.gpg</p>
+<p>Types: deb URIs: <a href="https://deb.kicksecure.com">https://deb.kicksecure.com</a> Suites:
+$repo Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/derivative.asc " &gt;
+"$path_to_temp_sources"</span></p>
+<h2 id="APT_Cache">APT Cache</h2>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p><u>Optional.</u> If you are interested, please press Expand on the
+right side.</p>
+<div class="mw-collapsible-content">
+<p>This shouldn't be done unless you are behind a firewall since
+apt-cacher-ng will by default listen on all network interfaces.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+apt-cacher-ng is known to be buggy and unreliable. Furthermore, it is
+not known if these instructions will work now that Kicksecure uses
+deb822-style apt sources almost everywhere. Proceed at your own
+risk.</p>
+</div>
+<div class="info-box ">
+<p>Install package(s) <code>apt-cacher-ng</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>apt-cacher-ng</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+apt-cacher-ng</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>apt-cacher-ng</code> is
+complete.</p>
+</div>
+<p>Set <code>apt_cacher_ng_maybe</code> variable. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><span class="code-select">http_proxy=<a href="http://127.0.0.1:3142">http://127.0.0.1:3142</a></span></p>
+<p>Create apt-cacher-ng https compatible sources.list file.</p>
+<p><span class="code-select">echo " deb <a href="http://HTTPS///deb.debian.org/debian-security/">http://HTTPS///deb.debian.org/debian-security/</a>
+trixie-security main contrib non-free deb <a href="http://HTTPS///deb.debian.org/debian">http://HTTPS///deb.debian.org/debian</a>
+trixie main contrib non-free deb
+[signed-by=/usr/share/keyrings/derivative.asc] <a href="http://HTTPS///deb.kicksecure.com">http://HTTPS///deb.kicksecure.com</a>
+$repo main contrib non-free " &gt; "$path_to_temp_sources"</span></p>
+</div>
+</div>
+<h2 id="Run_mmdebstrap">Run mmdebstrap</h2>
+<p>Run <code>mmdebstrap</code>. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<p><span class="code-select">sudo \</p>
+<p><code>  $apt_cacher_ng_maybe \</code><br />
+<code>  SECURITY_MISC_INSTALL=force \</code><br />
+<code>  DERIVATIVE_APT_REPOSITORY_OPTS=stable \</code><br />
+<code>  mmdebstrap \</code><br />
+<code>     --verbose \</code><br />
+<code>     --variant=required \</code><br />
+<code>     --include $package \</code><br />
+<code>     $repo \</code><br />
+<code>     "$path_to_chroot" \</code><br />
+<code>     "$path_to_temp_sources"</code></span><code> </code></p>
+<h2 id="Chroot_Post_Processing">Chroot Post Processing</h2>
+<p>Delete the chroot's temporary <code>/etc/apt/sources.list</code>.
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p><span class="code-select">sudo rm
+"$path_to_chroot/etc/apt/sources.list"</span></p>
+<p><span class="code-select">sudo rm
+"$path_to_chroot/etc/apt/sources.list.d/0000temp-sources.*"</span></p>
+<h2 id="Host_Cleanup">Host Cleanup</h2>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p><u>Optional.</u> You can delete the signing key from the host.</p>
+<p>If you are interested, please press Expand on the right side.</p>
+<div class="mw-collapsible-content">
+<p>This is only useful for users not using Kicksecure as their host
+operating system.</p>
+<p>Users of Kicksecure must skip this.</p>
+<p><span class="code-select">sudo rm
+/etc/apt/trusted.gpg.d/derivative.gpg</span></p>
+</div>
+</div>
+<h1 id="Usage">Usage</h1>
+<h3 id="Simple_Classic_Chroot_Method">Simple Classic Chroot Method</h3>
+<p><span class="code-select">sudo chroot ~/kicksecure-lxqt-chroot
+zsh</span></p>
+<h2 id="systemd-nspawn_Method">systemd-nspawn Method</h2>
+<h3 id="Install_systemd-nspawn">Install systemd-nspawn</h3>
+<p><span class="code-select">sudo apt install
+systemd-container</span></p>
+<h3 id="systemd-nspawn_Simple_Chroot">systemd-nspawn Simple Chroot</h3>
+<p><span class="code-select">sudo systemd-nspawn -D
+~/kicksecure-lxqt-chroot</span></p>
+<h3 id="systemd-nspawn_Boot_Chroot_CLI_Only">systemd-nspawn Boot Chroot
+CLI Only</h3>
+<p><span class="code-select">sudo systemd-nspawn -D
+~/kicksecure-lxqt-chroot /sbin/init</span></p>
+<h4 id="Troubleshooting">Troubleshooting</h4>
+<h5 id="sudo">sudo</h5>
+<p><span class="code-select">sudo su</span></p>
+<p>If seeing this error when using "sudo su".</p>
+<pre><code>sudo: effective uid is not 0, is /usr/bin/sudo on a file system with the &#39;nosuid&#39; option set or an NFS file system without root privileges?</code></pre>
+<ul>
+<li>Qubes users:
+<ul>
+<li>If using mounting home with nosuid.</li>
+</ul></li>
+</ul>
+<p><span class="code-select">sudo mount -o remount,suid
+/rw/home</span></p>
+<h5 id="networking">networking</h5>
+<p>systemd-networkd must be enabled on both, the host and inside the
+VM.</p>
+<p><span class="code-select">sudo systemctl enable
+systemd-networkd</span></p>
+<p><span class="code-select">sudo systemctl start
+systemd-networkd</span></p>
+<h3 id="systemd-nspawn_Boot_Chroot_with_GUI_Support">systemd-nspawn Boot
+Chroot with GUI Support</h3>
+<p>This is unfinished. <a href="Unspecific.html">Unspecific
+to Kicksecure</a>. Could be resolved as per <a href="Self_Support_First_Policy.html">Self Support First
+Policy</a>.</p>
+<p><span class="code-select">xhost +local:</span></p>
+<p><span class="code-select">sudo systemd-nspawn
+--setenv=DISPLAY=$DISPLAY -D ~/kicksecure-lxqt-chroot
+/sbin/init</span></p>
+<h3 id="Exit_systemd-nspawn_Chroot">Exit systemd-nspawn Chroot</h3>
+<p>To leave the chroot, press and keep holding key <code>CTRL</code> and
+press key <code>5</code> quickly 3 times within 1 second.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<h3 id="Limitations_of_systemd-nspawn_based_Chroot">Limitations of
+systemd-nspawn based Chroot</h3>
+<p>Despite these limitations, <code>systemd-nspawn</code> should
+probably be preferred over classic <code>chroot</code>. Depends on what
+you are trying to accomplish.</p>
+<ul>
+<li><a href="Sdwdate.html">sdwdate</a> (and <a href="Boot_Clock_Randomization.html">Boot Clock
+Randomization</a>) cannot work inside <code>systemd-nspawn</code>.</li>
+<li>Tor will fail to start inside <code>systemd-nspawn</code>
+<code>chroot</code> if Tor is already running on the host in default
+config (local listen port <code>9050</code>). But that shouldn't matter.
+The <code>systemd-nspawn</code> <code>chroot</code> will use the host's
+Tor in this case. <code>systemd-nspawn</code> has also option to run
+private networking but these have not been researched for Kicksecure
+yet.</li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">* <code>apt-transport-https</code> is required for some older Debian
+based Linux distributions that have not integrated https support into
+APT yet. If not available in your distribution, it can be safely
+ignored. * <code>apt-transport-tor</code> is required because
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/anon-apt-sources-list/blob/master/etc/apt/sources.list.d/debian.sources">Kicksecure/anon-apt-sources-list</a></span>
+is using <code>tor+https</code>. Otherwise we would see the following
+error.
+<pre><code> I: cleaning package lists and apt cache... Reading package lists... E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease E: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease E: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease E: Some index files failed to download. They have been ignored, or old ones used instead. E: apt --option Dir::Etc::SourceList=/dev/null update -oAPT::Status-Fd=&lt;$fd&gt; -oDpkg::Use-Pty=false failed </code></pre>
+<p>* <code>tor</code> is required so <code>apt-transport-tor</code> can
+use Tor. Otherwise we would see the following error.</p>
+<pre><code> I: cleaning package lists and apt cache... Err:1 tor+https://deb.debian.org/debian-security buster/updates InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Err:2 tor+https://deb.debian.org/debian buster InRelease Unable to connect to 127.0.0.1:9050: Err:3 tor+https://deb.kicksecure.com buster-developers InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Reading package lists... W: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease Unable to connect to 127.0.0.1:9050: W: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Some index files failed to download. They have been ignored, or old ones used instead. </code></pre>
+<p>* Actually package <code>apt-transport-tor</code> recommends package
+<code>tor</code> but listing it here anyhow for those using APT with
+parameter <code>--no-install-recommends</code>. *
+<code>apt-transport-https</code> is suggested below to download the
+signing key.</p></li>
+<li id="cite_note-2">See <a href="Secure_Downloads.html">Secure Downloads</a>
+to understand why <code>curl</code> and the parameters
+<code>--tlsv1.3</code> are used instead of <code>wget</code>.<br />
+<br />
+Placing an additional signing key into folder
+<code>/usr/share/keyrings</code> by itself alone has no impact on
+security as this folder is not automatically used by Debian's APT by
+default. Only when an APT sources list configuration file points to
+folder <code>/usr/share/keyrings</code> using the <code>signed-by</code>
+keyword the signing key will be actually used. Therefore deleting keys
+in <code>/usr/share/keyrings</code> is optional if intending to disable
+an APT repository. See also <a href="Dev/APT.html">APT
+Signing Key Folders</a>.</li>
+<li id="cite_note-3">Fixed in <code>mmdebstrap</code> <code>0.5.0</code>. Quote <a href="https://gitlab.mister-muffin.de/josch/mmdebstrap/src/branch/main/CHANGELOG.md">changelog</a>:
+<blockquote><p>do not copy /etc/resolv.conf or /etc/hostname if the host system
+doesn't have them</p></blockquote> Therefore no longer required in Debian
+<code>bullseye</code>.</li>
+<li id="cite_note-4">No longer working.
+<span class="code-select">apt_cacher_ng_maybe="--aptopt='Acquire::http {
+Proxy \"<a href="http://127.0.0.1:3142\%22">http://127.0.0.1:3142\"</a>;; }'
+--aptopt='Acquire::https { Proxy \"<a href="http://127.0.0.1:3142\%22">http://127.0.0.1:3142\"</a>;; }'
+--aptopt='Acquire::tor { Proxy \"<a href="http://127.0.0.1:3142\%22">http://127.0.0.1:3142\"</a>;;
+}'"</span></li>
+<li id="cite_note-5">* <code>debootstrap</code> cannot be used since it is a
+single-mirror Debian chroot creation tool. I.e. it cannot use multiple
+APT repositories at the same time. And Kicksecure APT repository does
+not ship any packages available from packages.debian.org. Therefore
+using <code>mmdebstrap</code> which is a multi-mirror Debian chroot
+creation. ** If you cannot use <code>mmdebstrap</code> either (cross
+platform builds?), you could first create a Debian chroot using
+<code>debootstrap</code> (or anything) and then install a Kicksecure
+meta package manually inside the chroot. * Whonix: add
+<code>anon_shared_inst_tb=open</code></li>
+<li id="cite_note-6">During chroot build process the following files were already
+created. * <code>/etc/apt/sources.list.d/debian.sources</code> *
+<code>/etc/apt/sources.list.d/derivative.sources</code></li>
+<li id="cite_note-7"><a href="https://unix.stackexchange.com/questions/577065/connected-to-container-mycontainer-press-three-times-within-1s-to-exit-sessi">https://unix.stackexchange.com/questions/577065/connected-to-container-mycontainer-press-three-times-within-1s-to-exit-sessi</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

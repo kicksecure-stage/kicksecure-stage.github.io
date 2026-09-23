@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Orca</title>
+<meta name="description" content="Using the Orca Screen Reader in Kicksecure Virtual Machines">
+<meta property="og:description" content="Using the Orca Screen Reader in Kicksecure Virtual Machines">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Orca.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Orca.html">
+<meta property="og:title" content="Orca Screen Reader">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Orcascreenreader131233.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Prerequisites">Prerequisites</a></li><li class="toc-l2"><a href="#Bridges_Functionality">Bridges Functionality</a></li><li class="toc-l2"><a href="#Initial_Setup">Initial Setup</a></li><li class="toc-l2"><a href="#Autostart_Orca">Autostart Orca</a></li><li class="toc-l2"><a href="#Complete_setup-dist">Complete setup-dist</a></li><li class="toc-l2"><a href="#Packages">Packages</a></li><li class="toc-l2"><a href="#Issues">Issues</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Software.html" title="Software"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Software</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Chmod-calc.html" title="chmod-calc"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">chmod-calc</span></a><span class="info"><span class="prev">Previous
+page: Software</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+chmod-calc</span></span></span>Orca Screen Reader</p>
+</div>
+<p><img src="../media/Orcascreenreader131233.png.webp" alt="Orcascreenreader131233.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Using the Orca Screen Reader in Kicksecure Virtual Machines</p>
+<div class="post-intro-p">
+</div>
+<p><u><strong>Note:</strong></u> These instructions have not been tested
+in a long time and are likely at least partially broken.</p>
+<h1 id="Introduction">Introduction</h1>
+<p><a href="https://github.com/GNOME/orca">Orca</a> is:</p>
+<p><blockquote><p>...a free, open source, flexible, and extensible screen reader that
+provides access to the graphical desktop via user-customizable
+combinations of speech and/or braille.</p>
+<p>Orca works with applications and toolkits that support the assistive
+technology service provider interface (AT-SPI), which is the primary
+assistive technology infrastructure for the Solaris and Linux operating
+environments.</p></blockquote></p>
+<p>This documentation has been written by a sighted developer without
+input from a blind person for testing purposes. Therefore, some written
+advice might be incorrect, such as instructions concerning the use of
+<code>sudo</code> vs <code>dsudo</code>. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h1 id="Installation">Installation</h1>
+<div class="info-box ">
+<p>Install package(s) <code>orca</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>orca</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+orca</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>orca</code> is
+complete.</p>
+</div>
+<h1 id="Orca_Configuration">Orca Configuration</h1>
+<h2 id="Prerequisites">Prerequisites</h2>
+<p>Orca (or any other) screen reader must already be functional on the
+host operating system. This is unrelated to Kicksecure and outside the
+scope of this documentation. The user should be familiar and comfortable
+with the host screen reader.</p>
+<p>It is also recommended to learn VirtualBox basics independently of
+Kicksecure; that is, using VirtualBox with any other operating system.
+Otherwise, blind users utilizing VirtualBox and Kicksecure for the first
+time might face serious challenges.</p>
+<p>These instructions have not tested whether the VirtualBox host user
+interface is accessible; this functionality is out of scope.</p>
+<h2 id="Bridges_Functionality">Bridges Functionality</h2>
+<p>Orca was only recently integrated into Kicksecure, so support for
+using Orca in combination with Tor <a href="Bridges.html">Bridges</a> is not perfect yet -- please post a feature
+request if that is desirable. Bridge users should refer to the footnote
+for a workaround. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h2 id="Initial_Setup">Initial Setup</h2>
+<div class="info-box ">
+<p><strong>1.</strong> Agree to Kicksecure legal terms.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<u><strong>Acknowledge that you have read, understood and agreed to our
+<a href="Terms_of_Service.html"><span>Terms of
+Service</span></a> and <a href="Copyright.html"><span>License
+Agreement</span></a>.</strong></u></p>
+</div>
+<p><strong>2.</strong> Start Kicksecure using the VirtualBox host user
+interface normally.</p>
+<p>Depending on system performance, it can take up to three minutes or
+more until Kicksecure starts. On fast machines, it boots much quicker.
+On a reasonably fast developer machine, booting either Kicksecure or
+Kicksecure took approximately 30 seconds.</p>
+<p>One issue is that there is no audio feedback when the boot process
+finishes. This is an optimization because Kicksecure was originally
+designed with privacy in mind. Most Kicksecure users would not want to
+reveal they are using the platform via an audio notification which might
+be noisy depending on host audio settings.</p>
+<p><strong>3.</strong> Wait for the boot process to finish.</p>
+<p><strong>4.</strong> Start the LXQt application finder.</p>
+<p>Press the following key combination:</p>
+<p><code>Alt</code> + <code>F2</code></p>
+<p><strong>5.</strong> Use the <code>easo</code> utility.</p>
+<p><u>Note:</u> TODO: <code>easo</code> is broken.</p>
+<p><code>easo</code> is spelled <code>e</code>, <code>a</code>,
+<code>s</code>, <code>o</code>. This is an easy-to-type abbreviation for
+easyorca. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>Make sure you have read, understood and agreed to <a href="https://github.com/kicksecure/kicksecure-base-files/blob/master/usr/share/kicksecure/KICKSECURE_BINARY_LICENSE_AGREEMENT">Kicksecure
+binary license agreement</a> and <a href="https://raw.githubusercontent.com/kicksecure/kicksecure-base-files/master/usr/share/kicksecure/KICKSECURE_DISCLAIMER">Kicksecure
+disclaimer</a> before continuing.</p>
+<p>Running the <code>easo</code> utility <sup class="reference"><a href="#cite_note-4">[4]</a></sup> has several
+effects.</p>
+<div class="info-box ">
+<ol>
+<li>Sets volume inside the virtual machine to 50%.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+<li>Starts the Orca screen reader.</li>
+<li>Legally accepts <a href="https://github.com/kicksecure/kicksecure-base-files/blob/master/usr/share/kicksecure/KICKSECURE_BINARY_LICENSE_AGREEMENT">Kicksecure
+binary license agreement</a>.</li>
+<li>Legally accepts <a href="https://raw.githubusercontent.com/kicksecure/kicksecure-base-files/master/usr/share/kicksecure/KICKSECURE_DISCLAIMER">Kicksecure
+disclaimer</a>.</li>
+<li>Disables autostart of <code>setup-wizard-dist</code> GUI.</li>
+<li>Enables Orca autostart. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
+<li>Enables the <code>orca-kill-at-shutdown.service</code> systemd
+service. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+<li>Starts Tor connections which result in Tor connecting to the Tor
+public network. <sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+</ol>
+</div>
+<p>Type on the keyboard:</p>
+<p><span class="code-select">easo</span></p>
+<p>And press the <code>Enter</code> key.</p>
+<p><strong>6.</strong> Wait 10 seconds.</p>
+<p>This allows Orca startup and the initial Orca setup to finish.</p>
+<p><strong>7.</strong> Wait for the notification.</p>
+<p>There should be an audio notification from Orca stating "screenreader
+on", the initial setup of Orca is complete.</p>
+<p>At this time there is no need to re-run the <code>easo</code> utility
+after reboot. Orca will automatically start after the next reboot,
+followed by an audio notification: "screenreader on".</p>
+<p><strong>8.</strong> <em>Optional:</em> run systemcheck.</p>
+<p>Running <code>systemcheck</code> is recommended. See: <a href="Systemcheck.html">systemcheck</a>.</p>
+</div>
+<h1 id="Functionality">Functionality</h1>
+<p>The Orca screen reader has been tested as functional in the following
+applications (non-exhaustive list):</p>
+<ul>
+<li>LXQt start menu</li>
+<li>qterminal</li>
+<li>LXQt application finder</li>
+<li>Most common browsers like Firefox, Tor Browser, etc.</li>
+</ul>
+<p>There are several limitations at present:</p>
+<ul>
+<li><code>setup-wizard-dist</code> (GUI) does not work. Use
+<code>setup-dist</code> CLI on the command line instead.
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
+<li><a href="Anon_Connection_Wizard.html">Anon Connection
+Wizard</a> does not work. This is generally not an issue for public Tor
+network users, but those requiring bridges can configure them on the
+command line as documented on the <a href="Bridges.html">Bridges</a> page.</li>
+<li><code>systemcheck</code> GUI (previously called
+<code>systemcheck</code>) does not work. Use <code>systemcheck</code>
+CLI on the command line instead. <sup class="reference"><a href="#cite_note-10">[10]</a></sup> See also: <a href="Systemcheck.html">systemcheck</a>.</li>
+<li>Repository Dist Wizard (GUI) does not work. If needed, use
+<code>repository-dist</code> (CLI) instead as documented <a href="Project-APT-Repository.html#Command_Line_Interface">here</a>.</li>
+</ul>
+<h1 id="Advanced">Advanced</h1>
+<h2 id="Autostart_Orca">Autostart Orca</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This chapter is usually not required because these steps are already
+automated by <code>easo</code>.</p>
+</div>
+<div class="info-box ">
+<p><strong>1.</strong> Start LXQt application finder.</p>
+<p>TODO: update</p>
+<p>Press this key combination:</p>
+<p><code>Alt</code> + <code>F2</code></p>
+<p><strong>2.</strong> Launch a terminal.</p>
+<p>Type:</p>
+<p><span class="code-select">qterminal</span></p>
+<p>And press <code>Enter</code>.</p>
+<p><strong>3.</strong> Enable Orca autostart.</p>
+<p>Type:</p>
+<p><span class="code-select">dsudo orca-enable-autostart</span></p>
+<p>And press <code>Enter</code>. <sup class="reference"><a href="#cite_note-11">[11]</a></sup>
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<p><strong>4.</strong> Done.</p>
+<p>After reboot, Orca should automatically start. Once the boot process
+finishes and Orca starts, there will be an audio notification.</p>
+</div>
+<h2 id="Complete_setup-dist">Complete setup-dist</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This chapter is usually not required because these steps are already
+automated by <code>easo</code>.</p>
+</div>
+<p><code>setup-dist-noninteractive</code> is a tool to non-interactively
+use <code>setup-dist</code>. Menu option <code>1</code> enables Tor,
+which results in accessing the public Tor network unless the user
+previously manually configured <a href="Bridges.html">Bridges</a>.</p>
+<p>If required, run this command on both Kicksecure and Kicksecure
+only.</p>
+<p><span class="code-select">dsudo setup-dist-noninteractive
+1</span></p>
+<h2 id="Packages">Packages</h2>
+<p>The following package dependencies are installed:</p>
+<ul>
+<li><code>libatk-adaptor libgail-common</code> - required for LXQt
+settings menu screen reader support</li>
+<li><code>non-qubes-audio</code> - required for adding audio support to
+Kicksecure</li>
+<li><code>gstreamer1.0-plugins-good</code> - <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931687">missing
+dependency in Debian buster</a></li>
+<li><code>xbrlapi</code> - <code>Recommends:</code> by
+<code>orca</code></li>
+<li><code>python3-gst-1.0</code> - <code>Recommends:</code> by
+<code>orca</code></li>
+<li><code>speech-dispatcher-espeak-ng</code> - required for
+<code>spd-say test</code></li>
+<li><code>sound-icons</code> - this package might be optional</li>
+</ul>
+<h2 id="Issues">Issues</h2>
+<p>As of April 2021, the following issues remain unresolved:</p>
+<ul>
+<li><a href="https://gitlab.gnome.org/GNOME/orca/-/issues/188">run orca
+as systemd user service / shutdown takes a long time with orca
+enabled</a>. <sup class="reference"><a href="#cite_note-13">[13]</a></sup> Worked around using
+<code>orca-kill-at-shutdown.service</code> systemd service.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+<li><a href="https://gitlab.gnome.org/GNOME/orca/-/issues/191">--debug
+(or new option) write to console (stdout (and/or stderr))</a></li>
+</ul>
+<p>The following issues have been resolved:</p>
+<ul>
+<li>Issues on Kicksecure host: <a href="https://gitlab.gnome.org/GNOME/orca/-/issues/176">orca not
+starting - TIMEOUT: something has hung. Aborting.</a></li>
+<li><a href="https://gitlab.gnome.org/GNOME/orca/-/issues/189">orca
+--replace should not kill script which is starting it</a></li>
+<li><a href="https://gitlab.gnome.org/GNOME/orca/-/issues/190">ctrl + c
+does not terminate orca - AttributeError: module 'signal' has no
+attribute 'strsignal'</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><code>dsudo</code> allows commands to be run as root without
+entering a password, so long as the default password has not been
+changed.</li>
+<li id="cite_note-2">First disable the host internet connection and follow these steps:
+<code>Setup bridges</code> ->
+<code>Reconnect host internet connection</code> ->
+<code>Ensure host internet connection is functional</code> ->
+<code>Restart Tor or reboot Kicksecure if not connected yet</code>.</li>
+<li id="cite_note-3">It could not be named easyorca for technical reasons; avoiding the
+letter y inside <code>easo</code> circumvents issues relating to English
+versus German keyboard layouts. See: <a href="https://gitlab.gnome.org/GNOME/orca/-/issues/189">orca --replace
+should not kill script which is starting it</a>.</li>
+<li id="cite_note-4">*
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/setup-dist/blob/master/usr/bin/easo">Kicksecure/setup-dist</a></span>
+*
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/setup-dist/blob/master/usr/sbin/easyorca-root">Kicksecure/setup-dist</a></span></li>
+<li id="cite_note-5">By running command <code>amixer set Master 50%</code>.
+<code>50%</code> was arbitrarily chosen and is hopefully not too quiet
+or noisy. It can be adjusted using the host operating system or physical
+speaker volume control.</li>
+<li id="cite_note-6"><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/sbin/orca-enable-autostart">Kicksecure/usability-misc</a></span></li>
+<li id="cite_note-7"><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/lib/systemd/system/orca-kill-at-shutdown.service">Kicksecure/usability-misc</a></span></li>
+<li id="cite_note-8">Using <code>setup-dist</code> (<code>-noninteractive</code>)
+<code>1</code>.
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/setup-dist/blob/master/usr/sbin/setup-dist-noninteractive">Kicksecure/setup-dist</a></span></li>
+<li id="cite_note-9">Run <code>sudo setup-dist</code> in a terminal.</li>
+<li id="cite_note-10">Run <code>systemcheck</code> in a terminal.</li>
+<li id="cite_note-11">This command uses <code>dsudo</code> instead of <code>sudo</code>
+because commands can be run as root without entering a password, so long
+as the default password has not been changed. For blind users, this is
+likely far simpler than using <code>sudo</code> and typing the password,
+especially during initial setup. See: <a href="Root.html#dsudo_-_default_password_sudo">dsudo</a> for
+further information.</li>
+<li id="cite_note-12"><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/sbin/orca-enable-autostart">Kicksecure/usability-misc</a></span></li>
+<li id="cite_note-13"><a href="https://gitlab.gnome.org/GNOME/orca/-/issues/188#note_1027211">https://gitlab.gnome.org/GNOME/orca/-/issues/188#note_1027211</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Software.html" title="Software"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Software</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Chmod-calc.html" title="chmod-calc"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">chmod-calc</span></a><span class="info"><span class="prev">Previous
+page: Software</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+chmod-calc</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

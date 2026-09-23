@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Secure Boot</title>
+<meta name="description" content="Information on Secure Boot and DKMS Signing Key (MOK Key) Enrollment to ensure kernel modules can be loaded on systems with Secure Boot enabled.">
+<meta property="og:description" content="Information on Secure Boot and DKMS Signing Key (MOK Key) Enrollment to ensure kernel modules can be loaded on systems with Secure Boot enabled.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Secure_Boot.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Secure_Boot.html">
+<meta property="og:title" content="Secure Boot">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Secureboot12312.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">module
+verification failed: signature and/or required key missing - tainting
+kernel</a></li><li class="toc-l2"><a href="#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">systemd-modules-load
+- Failed to insert module module name - Key was rejected by service</a></li><li class="toc-l2"><a href="#Disable_Secure_Boot">Disable Secure Boot</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_using_update-secureboot-policy">Disable
+Secure Boot using update-secureboot-policy</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
+BIOS/UEFI</a></li><li class="toc-l2"><a href="#Enable_Secure_Boot">Enable Secure Boot</a></li><li class="toc-l2"><a href="#EFI_variables_are_not_supported_on_this_system">EFI variables
+are not supported on this system</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Firmware_Security_and_Updates.html">Firmware
+Security and Updates</a></li>
+<li><a href="Boot_firmware.html">Boot Firmware</a></li>
+<li><a href="Secure_Boot.html">Secure Boot</a></li>
+<li><a href="Dev/Secure_Boot.html">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="Verified_Boot.html">Verified Boot</a></li>
+<li><a href="Measured_boot.html">Measured Boot</a></li>
+<li><a href="Sovereign_Boot.html">Sovereign Boot</a></li>
+<li><a href="Out-of-band_Management_Technology.html">Out-of-band Management Technology</a></li>
+<li><a href="Open_Source_Hardware.html">Open Source
+Hardware</a></li>
+<li><a href="Dev/confidential_computing.html">Confidential
+Computing (dev)</a></li>
+<li><a href="Dev/bootstrappable_builds.html">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="Dev/Stateless.html">stateless (dev)</a></li>
+<li><a href="Dev/immutable.html">immutable (dev)</a></li>
+</ul>
+</div>
+<p><img src="../media/Secureboot12312.png.webp" width="50" alt="Secureboot12312.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Information on Secure Boot and DKMS Signing Key (MOK Key) Enrollment
+to ensure kernel modules can be loaded on systems with Secure Boot
+enabled.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Secure Boot is a feature designed to help protect your computer by
+allowing only trusted software to run during startup. It ensures that
+the system boots with software that hasn't been tampered with. However,
+in practice, Secure Boot has been criticized for acting as an
+anti-competitive tool by Microsoft, as it can prevent users from easily
+switching from Windows to alternative operating systems such as Linux.
+In practice, until a full <a href="Verified_Boot.html">Verified Boot</a> (and perhaps <a href="Sovereign_Boot.html">Sovereign Boot</a>) gets implemented by a Freedom
+Software Linux desktop distribution, the security advantage is marginal.
+Technical details can be found on <a href="Dev/Secure_Boot.html">Secure Boot (developers)</a>. <a href="Miscellaneous_Threats_to_User_Freedom.html">User
+freedom restrictions</a> are documented in chapter "<a href="Miscellaneous_Threats_to_User_Freedom.html#restricted_boot">restricted boot</a>".</p>
+<h1 id="Kicksecure_Secure_Boot_Compatibility">Kicksecure Secure Boot
+Compatibility</h1>
+<p>Platform specific.</p>
+<ul>
+<li>Kicksecure: Kicksecure is compatible with computer hardware provider
+default (Microsoft) provided keys. Disabling Secure Boot is optional.
+However, if the user keeps Secure Boot enabled, DKMS key enrollment is
+recommended, which is documented below.</li>
+<li>Kicksecure for Qubes: See <a href="Secure_Boot.html#Qubes_Specific">Qubes Specific</a>.</li>
+</ul>
+<h1 id="Rationale_for_DKMS_Signing_Key_Enrollment">Rationale for DKMS
+Signing Key Enrollment</h1>
+<p>Without a DKMS Signing Key Enrollment, the following functionality
+will be broken:</p>
+<ul>
+<li><a href="https://www.kicksecure.com/?#explain-tirdad">tirdad - CPU
+Information Leak Protection (TCP ISN)</a> is implemented through a
+custom <a href="Kernel_module.html">kernel module</a>.</li>
+<li>VirtualBox host operating system software.</li>
+<li>Any other kernel modules not acquired from
+<code>packages.debian.org</code> (signed by Debian).</li>
+</ul>
+<p>This is because, when Secure Boot is enabled, custom (non-mainline in
+Linux) kernel modules are rejected by the Linux kernel.</p>
+<h1 id="Symptoms">Symptoms</h1>
+<h2 id="module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">module
+verification failed: signature and/or required key missing - tainting
+kernel</h2>
+<p>This message appears in Linux systems when you load a kernel module
+that is either unsigned or signed with a key the running kernel doesn't
+recognize. It usually looks like this:</p>
+<pre><code>tirdad: module verification failed: signature and/or required key missing - tainting kernel</code></pre>
+<p><strong>Recommended user action:</strong></p>
+<p>Choose <u>either</u> option A <u>or</u> B.</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>No action:</u> No user action is necessarily required. <u>Or</u></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>Secure Boot compliance:</u> Enable Secure Boot and <a href="Secure_Boot.html#Secure_Boot_DKMS_Signing_Key_Enrollment">Secure Boot DKMS Signing Key Enrollment</a>.</li>
+</ul>
+<p><strong>What is happening:</strong></p>
+<p>The kernel loads the module normally and then <em>taints</em> itself,
+marking the state as potentially unsafe. This is mainly for diagnostic
+and support purposes and may matter in enterprise contexts where running
+a tainted kernel (unsigned kernel modules) is prohibited.</p>
+<p>Note that the package that shipped the kernel module was probably
+signed, but the module as a whole isn't signed with a separate key. This
+is not an issue for Open Source modules that are compiled using DKMS at
+build time such as <code>tirdad</code>.</p>
+<p><strong>Effects of this message:</strong></p>
+<ul>
+<li><u>Only a warning:</u> Not an error. Most of the time, the module
+still loads and works as intended. The message is a warning indicating
+your security policy was bypassed.</li>
+<li><u>Tainted Kernel:</u> The kernel logs the event, and the running
+kernel is marked as "tainted." Some modules (especially modules not
+coming together with the Linux kernel) cause this tainting even if they
+work normally.</li>
+</ul>
+<p><strong>Relation to Secure Boot:</strong></p>
+<p>This message can only happen if Secure Boot is disabled. If Secure
+Boot were enabled, the kernel module load would be rejected.</p>
+<h2 id="systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">systemd-modules-load
+- Failed to insert module module name - Key was rejected by service</h2>
+<p>This message appears when a kernel module fails to load because its
+signature could not be verified under Secure Boot policies.
+Examples:</p>
+<pre><code>systemd-modules-load[PID]: Failed to insert module &#39;[module name]&#39;: Key was rejected by service</code></pre>
+<pre><code>systemd-modules-load[795]: Failed to insert module &#39;tirdad&#39;: Key was rejected by service</code></pre>
+<p><strong>Recommended user action:</strong></p>
+<p>Choose <u>either</u> option A <u>or</u> B.</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>Secure Boot non-compliance:</u> <a href="Secure_Boot.html#Disable_Secure_Boot">Disable Secure
+Boot</a>; <u>or</u></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>Secure Boot compliance:</u> <a href="Secure_Boot.html#Secure_Boot_DKMS_Signing_Key_Enrollment">Secure Boot DKMS Signing Key Enrollment</a></li>
+</ul>
+<p><strong>What is happening:</strong></p>
+<p>With Secure Boot enabled, the kernel enforces strict module signing
+policies. The module in question is likely unsigned, signed with an
+untrusted key, or otherwise incompatible with the Secure Boot trust
+chain. As a result, the kernel refuses to load it.</p>
+<p><strong>Effects of this message:</strong></p>
+<ul>
+<li><u>Module not loaded:</u> The affected module will not function,
+potentially disabling related functionality (e.g., device drivers or
+security modules).</li>
+<li><u>Security:</u> The recommended kernel module <code>tirdad</code>
+will fail to load. Also other potentially wanted kernel modules not
+included with the Linux kernel will fail to load.</li>
+</ul>
+<p><strong>Relation to Secure Boot:</strong></p>
+<p>This message only occurs when Secure Boot is enabled. Secure Boot
+ensures that only signed and trusted kernel modules are allowed to run.
+If a module's key is not enrolled, the kernel will reject it.</p>
+<h1 id="Secure_Boot_DKMS_Signing_Key_Enrollment">Secure Boot DKMS
+Signing Key Enrollment</h1>
+<ul>
+<li><u>context:</u> <a href="Secure_Boot.html#Introduction">Secure Boot, Introduction</a></li>
+<li><u>purpose:</u> <a href="Secure_Boot.html#Rationale_for_DKMS_Signing_Key_Enrollment">Rationale for DKMS Signing Key Enrollment</a></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+To import the MOK certificate, make sure <code>mokutil</code> is
+installed.</p>
+<p>It is installed by default in Kicksecure.</p>
+<div class="info-box ">
+<p>Install package(s) <code>mokutil</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>mokutil</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+mokutil</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>mokutil</code> is
+complete.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Check if Secure Boot is enabled:</p>
+<p><span class="code-select">sudo mokutil --sb-state</span></p>
+<p>Expected output (Secure Boot is enabled):</p>
+<pre><code>SecureBoot enabled</code></pre>
+<p>Expected output (Secure Boot is disabled):</p>
+<pre><code>SecureBoot disabled</code></pre>
+<p><strong>What this means:</strong></p>
+<ul>
+<li>Secure Boot <u>enabled</u> means the system will only load trusted
+kernel modules. You will likely need to enroll the DKMS signing key for
+additional kernel modules.</li>
+<li>Secure Boot <u>disabled</u> means no key enrollment is needed, and
+you can skip the remaining steps in this chapter.</li>
+</ul>
+<p><strong>Recommended user action:</strong></p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+If Secure Boot is disabled:
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+If you want to enable it, see <a href="Secure_Boot.html#Enable_Secure_Boot">Enable Secure Boot</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+If you do not want to enable it, you are done. No further steps from
+this chapter are required.</li>
+</ul></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+If Secure Boot is enabled:
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Proceed with the steps below.</li>
+</ul></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+If <code>user-sysmaint-split</code> is installed, boot into <a href="Sysmaint.html"><code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code></a>.
+Otherwise, open the <code>Start Menu</code> -> <code>System Tools</code>
+-> <code>System Maintenance Panel</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Click the <code>Enroll Secure Boot MOK</code> button.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+When asked "Set up and start enrolling a MOK now?", type
+<code>yes</code> and press Enter.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Password entry.</p>
+<p>You'll be prompted to create a password. Enter it twice.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Reboot the computer.</p>
+<p><span class="code-select">sudo reboot</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+MOK Manager EFI interface.</p>
+<p>At boot, you'll see the MOK Manager EFI interface:</p>
+<p><img src="../media/mok-key-1.png.webp" alt="SHIM UEFI key management" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+Press any key to enter it, then select "Enroll MOK":</p>
+<p><img src="../media/mok-key-2.png.webp" alt="Perform MOK management" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+Then select "Continue":</p>
+<p><img src="../media/mok-key-3.png.webp" alt="Enroll MOK" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+Confirm with "Yes" when prompted:</p>
+<p><img src="../media/mok-key-4.png.webp" alt="Enroll the key(s)?" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">12</i>
+After this, enter the password you set up in step 6:</p>
+<p><img src="../media/mok-key-5.png.webp" alt="Enroll the key(s)?" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">13</i>
+At this point, you are done. Select "Reboot" and the computer will
+reboot, trusting the key for your modules:</p>
+<p><img src="../media/mok-key-6.png.webp" alt="Perform MOK management" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">14</i>
+After reboot, you can inspect the MOK certificates with the following
+command:</p>
+<p><span class="code-select">sudo mokutil --list-enrolled | grep
+DKMS</span></p>
+<p>Expected output:</p>
+<pre><code>        Subject: CN=DKMS module signing key</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">15</i>
+To check the signature on a built DKMS module that is installed on a
+system:</p>
+<p><span class="code-select">sudo modinfo dkms_test | grep
+^signer</span></p>
+<pre><code>signer:         DKMS module signing key</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">16</i>
+Done.</p>
+<p>The module can now be loaded without issues.</p>
+<p>Credits: Based on <a href="https://github.com/dell/dkms?tab=readme-ov-file#secure-boot">Dell
+dkms Secure Boot documentation</a></p>
+<h1 id="Enable_or_Disable_Secure_Boot">Enable or Disable Secure
+Boot</h1>
+<h2 id="Disable_Secure_Boot">Disable Secure Boot</h2>
+<p>Choose an option.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Disable_Secure_Boot_using_update-secureboot-policy">Disable
+Secure Boot using update-secureboot-policy</h3>
+</div>
+<div class="tcc-content">
+<p>Secure Boot can be disabled using
+<code>update-secureboot-policy</code>.</p>
+<p>This tool is available only for Debian-based distributions, such as
+Kicksecure and Whonix. For other Linux distributions, see the
+alternative option.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<strong>Sysmaint Notice</strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Sysmaint notice" /></span></p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>If using <code>user-sysmaint-split</code>:</u> The user must boot
+into the sysmaint session. For details and instructions on how to do so,
+see <a href="Sysmaint.html">user-sysmaint-split</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>If using <a href="Unrestricted_admin_mode.html">unrestricted admin mode</a>:</u> This sysmaint notice
+does not apply. Continue with the steps below.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Choose one of these methods:</p>
+<ul>
+<li><strong>A)</strong> Terminal-based graphical user interface:
+<span class="code-select">sudo update-secureboot-policy</span></li>
+<li><strong>B)</strong> Command-line interface:
+<span class="code-select">sudo update-secureboot-policy
+--disable</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Reboot your system.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
+BIOS/UEFI</h3>
+</div>
+<div class="tcc-content">
+<p>Alternatively, Secure Boot can be disabled using the firmware setup
+(BIOS/UEFI).</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Restart your computer and enter the BIOS/UEFI settings.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Locate the Secure Boot option and disable it.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Save changes and exit.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="Enable_Secure_Boot">Enable Secure Boot</h2>
+<p>If the user wishes to use Secure Boot, it must be enabled using the
+firmware setup (BIOS/UEFI).</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Restart your computer and enter the BIOS/UEFI settings.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Locate the Secure Boot option and enable it.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Save changes and exit.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Enable Secure Boot using <code>update-secureboot-policy</code>.</p>
+<p>This may or may not be needed. Most likely not needed, unless Secure
+Boot has been previously disabled using
+<code>update-secureboot-policy</code>. As per the instructions
+below.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+<strong>Sysmaint Notice</strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Sysmaint notice" /></span></p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>If using <code>user-sysmaint-split</code>:</u> The user must boot
+into the sysmaint session. For details and instructions on how to do so,
+see <a href="Sysmaint.html">user-sysmaint-split</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>If using <a href="Unrestricted_admin_mode.html">unrestricted admin mode</a>:</u> This sysmaint notice
+does not apply. Continue with the steps below.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Choose one of these methods:</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+Terminal-based graphical user interface: <span class="code-select">sudo
+update-secureboot-policy</span></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+Command-line interface: <span class="code-select">sudo
+update-secureboot-policy --enable</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Reboot your system.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Done.</p>
+<h1 id="Errors">Errors</h1>
+<h2 id="EFI_variables_are_not_supported_on_this_system">EFI variables
+are not supported on this system</h2>
+<p>If you see the following error message:</p>
+<pre><code>EFI variables are not supported on this system</code></pre>
+<p>In this case, EFI is not enabled, which by extension means that
+Secure Boot is not enabled either. Therefore, it is unnecessary for the
+DKMS MOK key to be imported. No further user action is required.</p>
+<h1 id="Qubes_Specific">Qubes Specific</h1>
+<ul>
+<li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/5241">enable Linux
+kernel gpg verification in grub and/or enable EFI Secure Boot for Qubes
+/ Xen guests</a></li>
+</ul>
+<h1 id="Development">Development</h1>
+<ul>
+<li><a href="https://github.com/dell/dkms/issues/429">automate running
+"<code>sudo mokutil --import /var/lib/dkms/mok.pub</code>"</a></li>
+</ul>
+<h1 id="Other_Projects_on_Secure_Boot">Other Projects on Secure
+Boot</h1>
+<ul>
+<li><a href="https://www.qubes-os.org/faq/#is-secure-boot-supported">Qubes OS
+FAQ: Is Secure Boot supported?</a></li>
+</ul>
+<h1 id="Tools">Tools</h1>
+<p>Coming up in the next version.</p>
+<p>/usr/bin/secure-boot-enabled-check</p>
+<p>/usr/sbin/shim-signed-mok-setup</p>
+<p>/usr/sbin/shim-enroll-mok</p>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="Firmware_Security_and_Updates.html">Firmware
+Security and Updates</a></li>
+<li><a href="Boot_firmware.html">Boot Firmware</a></li>
+<li><a href="Secure_Boot.html">Secure Boot</a></li>
+<li><a href="Dev/Secure_Boot.html">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="Verified_Boot.html">Verified Boot</a></li>
+<li><a href="Measured_boot.html">Measured Boot</a></li>
+<li><a href="Sovereign_Boot.html">Sovereign Boot</a></li>
+<li><a href="Out-of-band_Management_Technology.html">Out-of-band Management Technology</a></li>
+<li><a href="Open_Source_Hardware.html">Open Source
+Hardware</a></li>
+<li><a href="Dev/confidential_computing.html">Confidential
+Computing (dev)</a></li>
+<li><a href="Dev/bootstrappable_builds.html">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="Dev/Stateless.html">stateless (dev)</a></li>
+<li><a href="Dev/immutable.html">immutable (dev)</a></li>
+</ul>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

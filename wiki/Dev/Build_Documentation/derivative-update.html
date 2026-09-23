@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Build Documentation/derivative-update</title>
+<meta name="description" content="derivative-update, a secure Git repository updater for derivative-maker. Supports signed tag, branch, and commit updates with digital software signature verification, submodule synchronization, and automatic rollback on errors.">
+<meta property="og:description" content="derivative-update, a secure Git repository updater for derivative-maker. Supports signed tag, branch, and commit updates with digital software signature verification, submodule synchronization, and automatic rollback on errors.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Build_Documentation/derivative-update.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Build_Documentation/derivative-update.html">
+<meta property="og:title" content="derivative-update - Source Code Updater">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../pygments.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../About.html">Home</a></li><li><a href="../../Download.html">Download</a></li><li><a href="../../Documentation.html">Docs</a></li><li><a href="../../FAQ.html">FAQ</a></li><li><a href="../../Support.html">Help</a></li><li><a href="../../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../Documentation.html">Home</a> / <span>Dev</span> / <span>Build Documentation</span> / <span>derivative-update</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Derivative-Maker.html">Derivative-Maker
+Image Builder</a></li>
+<li><a href="../Build_Documentation.html">Build Kicksecure
+from Source Code Overview</a></li>
+<li><a href="images.html">Build
+Kicksecure Images from Source</a></li>
+<li><a href="derivative-update.html">Source Code Updater
+(<code>derivative-update</code>)</a></li>
+<li><a href="Upgrading_Derivative_Deb_Packages_from_Source_Code.html">Upgrading Kicksecure from Source</a></li>
+<li><a href="../../Build_Configuration.html">Build
+Configuration</a></li>
+<li><a href="../Expected_Build_Warnings.html">Expected
+Build Warnings</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><code>derivative-update</code> is a secure command-line tool for
+updating a derivative-maker Git repository and its submodules. It
+supports updating to specific signed commits, branches, or tags with
+verification, submodule synchronization, and rollback protection in case
+of errors. This tool ensures a consistent, trusted codebase.</p>
+<div class="post-intro-p">
+</div>
+<p><strong>Purpose:</strong></p>
+<p><code>derivative-update</code> safely updates a derivative-maker Git
+repository (and its submodules) to a specific signed commit, branch, or
+tag, while verifying integrity and rolling back on errors.</p>
+<p><strong>Key functions:</strong></p>
+<ul>
+<li><u>Checks environment:</u> Ensures it is not run as root and that
+the repository is clean unless explicitly allowed to have uncommitted
+changes.</li>
+<li><u>Performs safety checks:</u> Runs Git sanity test to verify
+repository state and digital software signatures.</li>
+<li><u>Fetches updates:</u> Retrieves latest changes from remote
+repository and submodules.</li>
+<li><u>Handles tag updates:</u> Verifies and checks out the tag, then
+updates submodules.</li>
+<li><u>Handles branch updates:</u> Checks out the branch, fast-forwards
+to upstream, verifies commit, and updates submodules.</li>
+<li><u>Submodule synchronization:</u> Ensures submodule URLs match
+<code>.gitmodules</code> and updates them to recorded commits.</li>
+<li><u>Error recovery:</u> If verification or updates fail, resets
+repository to a known good commit.</li>
+<li><u>Final checks:</u> Ensures no unexpected uncommitted changes
+remain and runs <code>git describe</code> for informational
+purposes.</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<p><code>derivative-update</code> can be found in the root of
+<code>derivative-maker</code> source code folder.</p>
+<p>Example. To update to the latest signed git tag.</p>
+<p><span class="code-select">./derivative-update --tag latest</span></p>
+<p><strong>Options:</strong></p>
+<ul>
+<li><u>Parses update options:</u> Supports:
+<ul>
+<li>--tag  -> Move to a specific signed tag</li>
+<li>--tag latest -> Move to the latest signed tag</li>
+<li>--ref  -> Move to a specific commit or branch</li>
+<li>--update-only -> Only update submodules</li>
+</ul></li>
+</ul>
+<p><strong>Summary:</strong></p>
+<p><code>derivative-update</code> safely updates code and submodules to
+the requested state with verification and rollback protection.</p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service.html">Terms of Service</a></li><li><a href="../../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy.html">Privacy Policy</a>, <a href="../../Cookie_Policy.html">Cookie Policy</a>, <a href="../../Terms_of_Service.html">Terms of Service</a>, and <a href="../../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

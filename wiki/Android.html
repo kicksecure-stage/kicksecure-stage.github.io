@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Android</title>
+<meta name="description" content="Android Insecurity, How Android Hinders Malware And Backdoor Analysis, How Android Prevents Full Device Backups, Limitations of Internal Storage Access on Non-Rooted Android Devices, Vulnerability to Target Malicious Upgrades, why stock Android makes malware/backdoor investigation and full backups hard, and how account/infrastructure compromise could enable targeted remote app installs">
+<meta property="og:description" content="Android Insecurity, How Android Hinders Malware And Backdoor Analysis, How Android Prevents Full Device Backups, Limitations of Internal Storage Access on Non-Rooted Android Devices, Vulnerability to Target Malicious Upgrades, why stock Android makes malware/backdoor investigation and full backups hard, and how account/infrastructure compromise could enable targeted remote app installs">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Android.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Android.html">
+<meta property="og:title" content="Android Insecurity">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Android_Insecurity.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Traditional_Linux">Traditional Linux</a></li><li class="toc-l2"><a href="#Stock_Android_Devices">Stock Android Devices</a></li><li class="toc-l2"><a href="#Traditional_Linux_versus_Android">Traditional Linux versus
+Android</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Mobile_Operating_System_Comparison.html" title="Mobile Operating System Comparison"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Mobile
+Operating System
+Comparison</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="IOS.html" title="IOS"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">IOS</span></a><span class="info"><span class="prev">Previous
+page: Mobile Operating System Comparison</span><span class="index">Index
+page: Advanced Documentation</span><span class="next">Next page:
+IOS</span></span></span>Android Insecurity</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Mobile_Phone_Security.html">Mobile Phone
+Security</a></li>
+<li><a href="Mobile_Operating_System_Comparison.html">Mobile
+Operating System Comparison</a></li>
+<li><a href="Android.html">Android Insecurity</a></li>
+<li><a href="IOS.html">iOS (Apple iPhone)
+Insecurity</a></li>
+</ul>
+</div>
+<p><img src="../media/Android_Insecurity.png.webp" alt="Android_Insecurity.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Many Android phones are designed to block full, independent
+inspection of the whole device unless you first gain special privileges
+(for example, root access or an unlocked bootloader). This is insecure
+because it creates a single point of trust and users cannot
+independently audit what is installed or what updates are delivered. The
+sections below explain the practical limitations and why they matter,
+with technical references for readers who need them.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>On stock Android, the owner is often forced to trust Google and the
+device vendor for app delivery and system updates, because the device
+cannot be fully checked from the outside while it remains locked down.
+If that control is abused (for example through compromise, coercion, or
+a malicious insider), targeted malicious installs or updates may be
+difficult to detect, verify, or prove.</p>
+<p>This also matters for ordinary malware investigations. If a phone is
+infected, you often cannot do a thorough "deep scan" from a clean,
+separate computer without first unlocking or modifying the device. That
+step can change the evidence, and a well-designed backdoor could notice
+the investigation and erase itself or hide all traces.</p>
+<h1 id="Perspective">Perspective</h1>
+<p>This page uses 'security' from the perspective of end-users, device
+owner's, security and privacy enthusiasts: the ability to control,
+inspect, and independently verify the device. It does not focus on DRM
+or platform control goals.</p>
+<h1 id="Independent_Verification_Limits_on_Stock_Android">Independent
+Verification Limits on Stock Android</h1>
+<p><span class="manually-placed-anchor mpa-visible" id="What_is_the_problem?">What
+is the problem?</span></p>
+<p>On most stock Android phones, it is difficult to independently verify
+what is happening on the whole device. If you suspect malware, a hidden
+backdoor, or tampering, you often cannot check the system from a clean,
+trusted environment without first modifying the phone. This means you
+may have to fully trust the vendor-controlled software and services that
+deliver apps and updates, even though those could be abused in a
+targeted way.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="Why_does_Android_work_that_way?">Why
+does Android work that way?</span></p>
+<p>Android is commonly shipped as a locked-down general-purpose computer
+where vendors purposely withhold administrative capabilities ("root
+rights") from users (<a href="Miscellaneous_Threats_to_User_Freedom.html#Administrative_Rights">administrative rights refusal</a>) and use locked
+bootloaders (<a href="Miscellaneous_Threats_to_User_Freedom.html#restricted_boot">restricted boot</a>).</p>
+<p>Many protections and checks are implemented under vendor control,
+which limits what the owner can change, inspect, or replace. As a
+result, the device owner is often prevented from independently
+inspecting the whole system and creating complete device backups without
+first breaking or bypassing these restrictions.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="What_does_this_prevent_you_from_doing?">What
+does this prevent you from doing?</span></p>
+<p>These restrictions mainly affect three practical goals: inspecting
+the device deeply for malware/backdoors, proving the result to a
+skeptical third party, and creating complete device backups suitable for
+independent verification.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="How_Android_Hinders_Malware_Analysis">How
+Android Hinders Malware Analysis</span>
+<span class="manually-placed-anchor " id="How_Android_Blocks_Effective_Malware_Analysis"></span></p>
+<p>Terminology: In this page, <u>stock Android</u> means a typical phone
+as sold, with a locked bootloader and without root access. <u>Root</u>
+means administrator access. A <u>clean, trusted environment</u> means a
+separate computer or booted system you control, rather than relying on
+the phone's currently running <u>o</u>perating <u>s</u>ystem (OS).</p>
+<p><a href="Malware_and_Firmware_Trojans.html">Malware</a>: On most stock
+(non-rooted) Android phones, you cannot practically inspect the whole
+device from a clean, trusted environment. Many system areas, logs, and
+other apps' files are intentionally blocked. This makes it harder to
+confirm whether suspicious behavior is caused by malware or by normal
+system components, and harder to convincingly rule out targeted
+tampering.</p>
+<p>For this reason, stock Android is usually not <a href="Deep_scan_ready.html">Deep Scan Ready</a>; it is <a href="Deep_scan_ready.html#Deep_Scan_Restricted">Deep Scan
+Restricted</a>. This is primarily due to <a href="Android.html#Limitations_of_Internal_Storage_Access_on_Non-Rooted_Android_Devices">Limitations of Internal Storage Access on Non-Rooted
+Android Devices</a>.</p>
+<p>A simpler, alternative write-up: <a href="Backdoor.html#The_Perfect_Malicious_Backdoor">The
+Perfect Malicious Backdoor</a></p>
+<p><span class="manually-placed-anchor mpa-visible" id="How_Android_Hinders_Backdoor_Analysis">How
+Android Hinders Backdoor Analysis</span>
+<span class="manually-placed-anchor " id="How_Android_Blocks_Effective_Backdoor_Analysis"></span></p>
+<p><a href="Backdoor.html">Backdoors</a> (<a href="Backdoor.html#Malicious_Backdoor">Malicious
+Backdoors</a>): For the same reasons as malware analysis, it can be
+difficult to prove whether a hidden backdoor exists. If you cannot fully
+inspect system files, logs, and low-level components without modifying
+the device first, you are forced to rely on what the running OS chooses
+to show you, which is exactly the situation a well-hidden backdoor would
+want.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="How_Android_Prevents_Full_Device_Backups">How
+Android Prevents Full Device Backups</span></p>
+<p>Full Device Backup Prevention: On stock (non-rooted) devices, "full
+backup" usually means a partial backup controlled by the OS and
+individual apps. A complete device backup for independent verification
+(for example, a full offline image of relevant partitions) generally
+requires privileges that stock devices intentionally restrict. This is
+also due to <a href="Android.html#Limitations_of_Internal_Storage_Access_on_Non-Rooted_Android_Devices">Limitations of Internal Storage Access on Non-Rooted
+Android Devices</a>.</p>
+<h1 id="Vulnerability_to_Target_Malicious_Upgrades">Vulnerability to
+Target Malicious Upgrades</h1>
+<p>Most Google Android phones are exposed to the risk of targeted
+malicious app installs, upgrades and system upgrades, because key parts
+of the app and update delivery process are controlled by centralized
+providers.</p>
+<p>Most Android phones have a feature which allows logging in on the
+Google Play web/desktop version using the same e-mail address that is
+used on the phone, usually the same Gmail address. When clicking
+"Install" for an app using the Google Play web/desktop version, the user
+will be prompted (in case of having registered multiple devices) to
+choose which device the app should be installed on. After pressing
+"Install," the app will be installed on the phone. This
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HljSquJ7yCo">
+<img src="../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HljSquJ7yCo">video</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=HljSquJ7yCo"><img src="../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=HljSquJ7yCo"><img src="../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=HljSquJ7yCo"><img src="../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>
+demonstrates this. This is a documented feature, but it also shows that
+Google Play can initiate an app installation to a specific linked
+device.</p>
+<p>The concern is not that random outsiders can do this without access.
+The concern is that control of the delivery system itself is powerful.
+If Google Play is compromised or if a privileged insider is
+malicious/coerced, this capability could be abused to push a malicious
+version (a backdoored version) of an app to a specific target. Likewise,
+phone vendors control firmware and system updates, so targeted malicious
+system upgrades are also possible if that control is abused.</p>
+<p>Even if network traffic is routed through Tor, logging into a Google
+account still identifies the account to Google. Tor can hide your IP
+address, but it does not remove the fact that you are using a specific
+Google account.</p>
+<h1 id="Limitations_of_Internal_Storage_Access_on_Non-Rooted_Android_Devices">Limitations
+of Internal Storage Access on Non-Rooted Android Devices</h1>
+<p>On most Android phones, accessing the internal storage for purposes
+such as data recovery or malware/rootkit analysis is not reasonably
+easy.</p>
+<p>In short, if you suspect a compromise, do not rely on the phone
+itself to "check itself". Ideally, you would inspect the data from a
+separate, known-clean computer. These are the <a href="Malware_and_Firmware_Trojans.html#Basics_of_Malware_Analysis_and_Backdoor_Hunting">Basics of Malware Analysis and Backdoor
+Hunting</a>.</p>
+<p>This is largely due to how phones are built and how Android
+permissions work. Internal storage is usually a soldered chip (hard to
+remove), and Android normally blocks access to many system and other app
+files unless the device is rooted/unlocked.</p>
+<p>Using another device to read the storage is generally not practical
+for everyday verification, and it is often unsuitable in forensic
+contexts. If the phone is damaged or unbootable, the storage is also
+unlikely to work reliably in a different device. Even when specialized
+extraction is possible (for example, chip-level work), it requires
+equipment and expertise most users do not have.</p>
+<p>These limitations are compounded if the device uses full disk
+encryption, as explained in <a href="Android.html#Limitations_on_Encryption_Key_Backups">Limitations on Encryption Key Backups</a>.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://android.stackexchange.com/questions/176276/replace-internal-memory/176277">replace
+internal memory</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Mobile_device_forensics#Forensic_desoldering">forensic
+desoldering</a></li>
+</ul>
+<p>So for most users, this is not reasonably easy on stock (non-rooted)
+devices.</p>
+<p>Quote from <a href="https://android.stackexchange.com/questions/28296/how-to-fully-backup-non-rooted-devices">How
+to fully backup non-rooted devices?</a>:</p>
+<p><blockquote><p>For 4.0+ devices there is a solution called "adb backup".</p>
+<p>Note: This only works for apps that do not disallow backup! Apps that
+disallow backup are simply ignored when creating a backup using this
+way.</p></blockquote></p>
+<p>Information from <a href="https://stackoverflow.com/questions/29442630/copy-full-disk-image-from-android-to-computer">Copy
+full disk image from Android to computer</a> does not work for
+non-rooted / non-rootable devices.</p>
+<h1 id="Attestation_and_the_Circular_Trust_Problem">Attestation and the
+Circular Trust Problem</h1>
+<p>Android relies heavily on <a href="Miscellaneous_Threats_to_User_Freedom.html#Device_Attestation_such_as_SafetyNet">Device Attestation (SafetyNet)</a>:</p>
+<table>
+<caption><em>Device attestation: what is proven to apps</em></caption>
+<thead>
+<tr class="header">
+<th><p>Attestation claim</p></th>
+<th><p>Meaning (simplified)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>Running vendor-approved software</strong></p></td>
+<td><p>The device reports it is running an OS/build approved by the
+vendor (and often Google).</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Unmodified</strong></p></td>
+<td><p>The device reports it has not been altered (for example, no
+bootloader unlock or system modifications).</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Locked down</strong></p></td>
+<td><p>The device reports security-relevant settings remain enforced
+(locked boot chain, expected integrity state).</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This creates a circular trust dependency:</p>
+<table>
+<caption><em>Circular trust dependency: inspection versus
+attestation</em></caption>
+<thead>
+<tr class="header">
+<th><p>Goal</p></th>
+<th><p>What is typically required</p></th>
+<th><p>Consequence</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>Inspect the system deeply</strong></p></td>
+<td><p>Modify the device (for example, unlock bootloader, gain root, use
+special builds)</p></td>
+<td><p>Device may fail attestation and be treated as untrusted by
+apps</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Remain trusted by apps</strong></p></td>
+<td><p>Keep the device unmodified and locked down</p></td>
+<td><p>Limits access to the disk, memory, logs, and low-level components
+needed for independent verification</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>From the platform's point of view, this is a security feature. From a
+high-threat perspective, it is a verification dead-end.</p>
+<p><span class="manually-placed-anchor mpa-visible" id="Evidence_and_technical_appendix">Evidence
+and technical appendix</span> The following sections provide deeper
+technical evidence, extended quotations, and platform comparisons for
+readers who need a higher assurance level or who want to audit the
+claims above.</p>
+<h1 id="Android_Hinders_Detection_of_Low-level_Rootkits">Android Hinders
+Detection of Low-level Rootkits</h1>
+<p>Low-level rootkits can hide by manipulating the OS itself, which
+means security tools running on the same phone may be unable to reliably
+detect them. Trusted detection can require obtaining a trusted snapshot
+of memory from outside the monitored OS. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Note: <u>Underline</u> added.</p>
+<p><blockquote><p>Abstract -- Smartphones and tablets have become prime targets for
+malware, due to the valuable private and corporate information they
+hold. While <u>Anti-Virus (AV) program</u> may successfully detect
+malicious applications (apps), <u>they remain ineffective against
+low-level rootkits</u> that evade detection mechanisms by masking their
+own presence.<span class="blockquote-context"><a href="https://arxiv.org/pdf/1512.04116">JoKER: Trusted Detection of
+Kernel Rootkits in Android Devices via JTAG Interface</a></span></p></blockquote></p>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>For more evidence and technical background, please press "Learn More"
+on the right side.</p>
+<div class="mw-collapsible-content">
+<p>The JoKER paper explains why on-device detection is difficult when
+the monitored OS may be compromised:</p>
+<p><blockquote><p>Furthermore, any detection mechanism run on the same physical device
+as the monitored OS can be compromised via application, kernel or
+boot-loader vulnerabilities.</p></blockquote></p>
+<p><blockquote><p>Consequentially, trusted detection of kernel rootkits in mobile
+devices is a challenging task in practice.</p></blockquote></p>
+<p>The paper also provides background on what kernel rootkits are and
+why they are difficult to detect from inside the OS:</p>
+<p><blockquote><p>A. Kernel Rootkits<br />
+Mobile and desktop malware can operate in user space or kernel space.
+The user space malware can modify and inject code only into the memory
+areas allocated to apps and user processes. The kernel space malware can
+manipulate objects that reside in the entire memory area of the OS.
+Although sophisticated Mandatory Access Control (MAC) mechanisms such as
+SElinux [4] are integrated into current versions of Android, malware
+developers still manage to run their code in the kernel [5] [6] [3].
+Rootkits are kernel space malware that use illicitly granted exclusive
+permissions to hide the malware's existence from detection systems, by
+manipulating the kernel's internal data structures [7]. A malicious code
+that has penetrated into the memory of the kernel can neutralize any
+security tool running in the OS. For instance, if an process sends a
+request to the kernel asking for the list of files in a specific
+directory there is no guarantee for the integrity of the returned list.
+Consequently, in order to detect presence rootkits, a trusted snapshot
+of the kernel memory has to be obtained [8]</p></blockquote></p>
+</div>
+</div>
+<p>The JoKER paper then proposes obtaining a trusted snapshot using JTAG
+(a hardware debugging interface), rather than relying on the potentially
+compromised OS.</p>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Proposed solution (JoKER) and how it works (JTAG details)</p>
+<div class="mw-collapsible-content">
+<p><blockquote><p>Proposed System<br />
+In this paper we present JoKER (JTAG observe Kernel), a system that
+utilizes the JTAG hardware interface of the mobile device in order to
+obtain trusted snapshot of the device memory for detection of kernel
+rootkits.</p></blockquote></p>
+<p>The paper continues to describe features useful for rootkit
+analysis:</p>
+<p><blockquote><p>Our detection system uses <u>two important debugging features</u> of
+JTAG:</p></blockquote></p>
+<p><blockquote><p>1. The ability to halt the system instantly by sending special
+instruction to the main processor.</p></blockquote></p>
+<p><blockquote><p>2. The ability to access the content of the device's volatile memory
+(RAM) while it is being halted. The overall system does not run on the
+mobile device and therefore can securely read the kernel's memory areas
+in a trusted manner.</p></blockquote></p>
+<p><blockquote><p>Once the kernel memory is extracted, it is passed through an array of
+programmed scripts. Each script reconstructs specific data-structures in
+the kernel and analyzes them for traces of suspicious modifications.</p></blockquote></p>
+<p><blockquote><p>However, memory acquisition capabilities (from outside offers the
+advantage of trusted memory inspection.</p></blockquote></p>
+<p>Additional background reading:</p>
+<ul>
+<li><a href="https://web.archive.org/web/20210922134853/https://www.cs.tufts.edu/comp/116/archive/fall2013/azakaria.pdf">Tufts
+University (archived): JTAG-related material</a></li>
+<li><a href="https://scholar.afit.edu/cgi/viewcontent.cgi?article=2086&amp;context=etd">AFIT
+Scholar: related thesis</a></li>
+</ul>
+</div>
+</div>
+<p>For most users and most phones, JTAG-based memory acquisition is not
+practical.</p>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Why JTAG is usually impractical for typical end users</p>
+<div class="mw-collapsible-content">
+<p>Some phones have JTAG (a hardware debugging interface), but it is
+usually not exposed or usable for typical end users. Access tends to be
+device specific and often requires specialized equipment and skills.</p>
+<p>No quantifiable data has been researched/found yet on how many are
+versus are not.</p>
+<p>This is very device specific.</p>
+<p>Phone vendors often treat JTAG as a security risk, so it is commonly
+disabled or locked down on production devices. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p><blockquote><p>Turn Off JTAG by Default<br />
+To minimize security risks, JTAG capabilities should be disabled by
+default in production systems or end-user devices. This precautionary
+measure reduces the potential attack surface by ensuring that the JTAG
+interface cannot be exploited unless specifically enabled for essential
+testing or debugging purposes. For instance, manufacturers can implement
+a system where JTAG is only activated temporarily during authorized
+maintenance activities, thereby protecting devices from unauthorized
+access.<span class="blockquote-context">ACL Digital: <a href="https://www.acldigital.com/blogs/jtag-technology-security-guide">Protect
+and Validate Essential JTAG Practices for Electronics</a></span></p></blockquote></p>
+<p>However, JTAG can also be used for security analysis.</p>
+<p><blockquote><p>Could JTAG be used for security analysis?<br />
+Yes, JTAG can be utilized for security analysis purposes. By accessing a
+device's internal state via its JTAG interface, security researchers can
+scrutinize firmware, identify potential vulnerabilities, and assess the
+effectiveness of security measures. This analysis may involve examining
+memory contents, identifying unauthorized access points, and assessing
+the resilience of cryptographic implementations. JTAG provides valuable
+insights into a device's security posture, aiding in the development of
+robust defenses against potential threats and
+exploits.<span class="blockquote-context"><a href="https://www.lenovo.com/us/en/glossary/what-is-jtag">Lenovo: What
+is JTAG?</a></span></p></blockquote></p>
+<p>The research paper acknowledges the awkwardness of requiring JTAG
+access.</p>
+<p><blockquote><p>C. Method Limitation<br />
+Using the JTAG interface requires physic the JTAG port which is placed
+on the same board. Compared to software-based method may appear rather
+awkward.</p></blockquote></p>
+<p>Using JTAG requires physical access to a JTAG port on the device's
+circuit board, which is why it can be awkward compared to software
+methods.</p>
+</div>
+</div>
+<p>On many Android devices, deep investigation (including searching for
+sophisticated rootkits) often requires root access. If the bootloader
+cannot be unlocked, researchers may need to rely on vulnerabilities
+("exploits") to temporarily gain those privileges.</p>
+<p><blockquote><p>Android [...]<br />
+security mechanisms such as application sandboxing, encryption, and
+file-based access controls pose challenges to forensic data
+acquisition<span class="blockquote-context">International Journal of
+Forensic Science: <a href="https://rfppl.co.in/subscription/upload_pdf/vinay-chauhan-sir-1745219615.pdf">Forensic
+Techniques for Android Devices Using Logical Extraction and Temporary
+Root Methods</a>, Vinay Chauhan, Neeraj Kumar, et al. Forensic
+Techniques for Android Devices Using Logical Extraction and Temporary
+Root Methods. Int Jr of Forensic Sci. 2025; 8(1): 51-55.</span></p></blockquote></p>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Forensic approach example: temporary root methods (details)</p>
+<div class="mw-collapsible-content">
+<p><blockquote><p>Temporary Root Techniques:<br />
+Temporary root methods leverage vulnerabilities in the Android operating
+system to gain temporary elevated privileges. These techniques enable
+comprehensive data access, including system-level and deleted files,
+without taking permanent modification on the device. Methods such as
+ZergRush, Setuid, GingerBreak, and AdbRestore frequently used in this
+approach. Temporary root is ideal for advanced forensic investigations
+requiring deeper insights.</p></blockquote></p>
+</div>
+</div>
+<p>For comparison, on non-Android platforms such as Linux for desktop or
+servers provide suitable options:</p>
+<ul>
+<li>Anti-malware kernel modules: Such as <a href="https://github.com/thalium/rkchk">rkchk - Rust Linux Kernel Module
+designed for LKM rootkit detection</a> <sup class="reference"><a href="#cite_note-3">[3]</a></sup> or <a href="https://lkrg.org/">LKRG - Linux Kernel Runtime Guard</a>.</li>
+<li>Boot from external media and perform an integrity check: Tools such
+as <a href="https://www.elstel.org/debcheckroot/">debcheckroot</a>. (For
+a more detailed description, also <a href="Verified_Boot.html#Hash_Check_all_Files_at_Boot">Hash
+Check all Files at Boot</a>.)</li>
+</ul>
+<h1 id="Malware_Analysis_Capabilities:_Traditional_Linux_vs._Android">Malware
+Analysis Capabilities: Traditional Linux vs. Android</h1>
+<p><span class="manually-placed-anchor " id="Technical_Malware_Analysis:_Traditional_Linux_vs._Android"></span></p>
+<h2 id="Traditional_Linux">Traditional Linux</h2>
+<p>On traditional Linux systems (desktops and servers):</p>
+<table>
+<caption><em>Traditional Linux: Capabilities that enable independent
+verification</em></caption>
+<thead>
+<tr class="header">
+<th><p>Capability</p></th>
+<th><p>What this enables</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>Replace the operating system</strong></p></td>
+<td><p>Install a known-good OS or reinstall from trusted media if
+compromise is suspected</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Boot from external media</strong></p></td>
+<td><p>Start a clean, trusted environment (for example, live media)
+without using the potentially compromised system disk</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Inspect disks and memory from a trusted
+environment</strong></p></td>
+<td><p>Analyze filesystems and capture memory while minimizing reliance
+on the suspected OS</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Instrument or replace the kernel</strong></p></td>
+<td><p>Load debugging or integrity tooling, or use a different kernel
+build for analysis</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Run security tools outside the potentially compromised
+system</strong></p></td>
+<td><p>Perform inspection and verification from an external host or
+trusted boot environment</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This allows independent verification even if the original OS
+installation is suspected to be malicious or compromised.</p>
+<h2 id="Stock_Android_Devices">Stock Android Devices</h2>
+<p>On most stock Android devices:</p>
+<table>
+<caption><em>Stock Android: Limitations that hinder independent
+verification</em></caption>
+<thead>
+<tr class="header">
+<th><p>Constraint</p></th>
+<th><p>Practical impact</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>The operating system cannot be freely
+replaced</strong></p></td>
+<td><p>If the installed OS is suspected to be compromised, replacing it
+with a known-good OS is usually not supported or not practical.</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Booting an external, fully trusted OS is not
+supported</strong></p></td>
+<td><p>You generally cannot boot a clean forensic or verification
+environment that bypasses the installed system.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Full disk and memory access is blocked without special
+privileges</strong></p></td>
+<td><p>Raw disk imaging, comprehensive file inspection, and live RAM
+capture are typically unavailable on stock devices.</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Gaining those privileges usually breaks verified boot /
+attestation</strong></p></td>
+<td><p>Unlocking or modifying the device often causes it to no longer be
+considered "trusted" by attestation mechanisms. (See also <a href="Miscellaneous_Threats_to_User_Freedom.html#Device_Attestation_such_as_SafetyNet">Device Attestation such as SafetyNet</a>.)</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Gaining those privileges can disable or degrade security
+features</strong></p></td>
+<td><p>Some security properties rely on the device remaining locked down
+and unmodified.</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Gaining those privileges can cause many apps to stop
+functioning</strong></p></td>
+<td><p>Banking, work, and DRM applications may refuse to run if the
+device is modified or fails attestation checks.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>As a result, the tools needed to verify the system require breaking
+the system's trust guarantees first.</p>
+<h2 id="Traditional_Linux_versus_Android">Traditional Linux versus
+Android</h2>
+<p>On stock Android, many techniques needed to independently check the
+whole device for hidden malware or backdoors are unavailable.</p>
+<table>
+<caption><em>Comparison of Malware Analysis Possibilities on Traditional
+Linux versus Android</em></caption>
+<thead>
+<tr class="header">
+<th><p>Aspect</p></th>
+<th><p><strong>Traditional Linux</strong></p></th>
+<th><p><strong>Android</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>System Access (Researcher-Controlled)</strong></p></td>
+<td><p>✅ Full root access common in testbeds and forensic
+imaging</p></td>
+<td><p>❌ Root typically restricted; requires OEM unlock (often
+unavailable) or exploit to gain privileged (root) access</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>User-controlled Root</strong></p></td>
+<td><p>✅ Commonly available in lab/test environments and on
+self-managed systems</p></td>
+<td><p>❌ Not available on stock devices; typically requires bootloader
+unlock, custom builds, or an exploit</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Raw Disk Imaging</strong></p></td>
+<td><p>✅ Easy via <code>dd</code> and standard forensic imaging
+workflows (including booting from external media)</p></td>
+<td><p>❌ Not feasible on stock devices; generally requires root, an
+unlocked bootloader, or specialized vendor/forensic access</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Live Memory Acquisition</strong></p></td>
+<td><p>✅ Readily possible via tools like <code>gcore</code>,
+<code>procfs</code>, <code>volatility</code>, <code>LiME</code></p></td>
+<td><p>❌ Not feasible without root; no official RAM acquisition
+APIs</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Kernel Analysis</strong></p></td>
+<td><p>✅ Kernel modules can be inserted, traced, or extracted; symbols
+often available</p></td>
+<td><p>❌ Not on stock devices (without root / special builds / vendor
+support).</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Kernel Integrity Verification</strong></p></td>
+<td><p>✅ Possible using external boot media and host-controlled
+integrity tooling</p></td>
+<td><p>❌ Not on stock devices in a user-controlled way; verification is
+typically limited and vendor-controlled</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Independent OS Attestation</strong></p></td>
+<td><p>✅ Possible by booting a trusted environment and performing
+independent integrity checks</p></td>
+<td><p>❌ Limited on stock devices; attestation and integrity guarantees
+are typically vendor-controlled</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Binary Reverse Engineering</strong></p></td>
+<td><p>✅ Straightforward access to malware files, system binaries,
+logs</p></td>
+<td><p>⚠️ Possible, but often limited to app-level APKs unless rooted or
+firmware access is available</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Hook &amp; Injection Analysis</strong></p></td>
+<td><p>✅ LD_PRELOAD, ptrace, syscall interposition techniques easily
+traced</p></td>
+<td><p>⚠️ Requires rooting; SELinux and sandboxing block injection
+methods by default</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Dynamic Instrumentation</strong></p></td>
+<td><p>✅ Tools like <code>strace</code>, <code>ltrace</code>,
+<code>gdb</code> available and effective</p></td>
+<td><p>⚠️ Requires root or debugging permissions</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Filesystem Analysis</strong></p></td>
+<td><p>✅ Full access to logs, temp files, malware droppers,
+rootkits</p></td>
+<td><p>⚠️ App sandbox limits access to other app data; root or forensic
+image required for full view</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Network Monitoring &amp; C2 Analysis</strong></p></td>
+<td><p>✅ Tools like <code>tcpdump</code>, <code>Wireshark</code>,
+<code>iptables</code> usable without restriction</p></td>
+<td><p>⚠️ Requires root or VPN-based monitoring</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>External Monitoring</strong></p></td>
+<td><p>✅ Broad options, including out-of-band approaches and
+host-controlled capture/analysis</p></td>
+<td><p>❌ Limited on stock devices; out-of-band monitoring is generally
+not available without elevated access or specialized tooling</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>External Monitoring</strong></p></td>
+<td><p>✅ Broad options, including out-of-band approaches and
+host-controlled capture/analysis</p></td>
+<td><p>❌ Limited on stock devices; out-of-band monitoring is generally
+not available without elevated access or specialized tooling</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Log-based forensics</strong></p></td>
+<td><p>✅ Yes.</p></td>
+<td><p>⚠️ Limited. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Limitations_on_Encryption_Key_Backups">Limitations on Encryption
+Key Backups</h1>
+<p>It is not reasonably easy to make a backup of encryption keys.</p>
+<p>The main disk-encryption key is typically protected by hardware
+security (for example, a secure chip/TEE). <a href="https://source.android.com/security/encryption/full-disk#storing_the_encrypted_key">Android
+documentation describes it as being stored in hardware.</a> That makes
+it much harder to copy or back up than ordinary files.</p>
+<p>Note: "masterkey" here does not mean "backdoor". This is normal for
+most Linux desktop distributions offering full disk encryption. The
+masterkey is stored somewhere. When entering the password at boot with
+Linux desktop full disk encryption enabled, what gets decrypted is not
+actually the disk but the masterkey. This is then used to decrypt the
+disk, which is also called luks header. The advantage of the masterkey
+is that changing the disk encryption password is possible without having
+to re-encrypt the whole disk. (<code>cryptsetup-reencrypt</code>).</p>
+<p>It may be possible on some devices if the phone still boots and you
+can gain root, but for most users it is not straightforward.</p>
+<h1 id="Objections">Objections</h1>
+<p><span class="manually-placed-anchor mpa-visible" id="Mobile_Verification_Toolkit_(MVT)_Project">Mobile
+Verification Toolkit (MVT) Project</span></p>
+<p><blockquote><p><a href="https://docs.mvt.re/en/latest/"><u>M</u>obile
+<u>V</u>erification <u>T</u>oolkit (MVT)</a> is a powerful consensual
+forensic tool designed to help analyze mobile devices for signs of
+spyware.</p></blockquote></p>
+<p>A potential objection is that MVT provides evidence to the contrary,
+suggesting that malware can be detected even on Android.</p>
+<p>However, there is no contradiction. MVT can help identify known signs
+of compromise using the data the device exposes, but stock mobile OS
+designs limit that observability. The following verbatim quotes from MVT
+and Amnesty International reinforce that Android and iOS provide limited
+diagnostic traces. As a result, investigators often have to cope by
+working with partial data and known <u>I</u>ndicators <u>o</u>f
+<u>C</u>ompromise (IoCs), and a lack of findings is not definitive proof
+that a device was not compromised.</p>
+<p>Note: <u>Underline</u> added. <b>Bold</b> added.</p>
+<p><blockquote><p>Methodology for Android forensic</p>
+<p><u>Unfortunately Android devices provide much less observability than
+their iOS cousins. <b>Android stores very little diagnostic information
+useful to triage potential compromises</b>, and because of this
+mvt-android capabilities are limited as well.</u></p>
+<p>However, not all is lost.<span class="blockquote-context"><a href="https://mvt.re">Mobile Verification Toolkit</a>: <a href="https://docs.mvt.re/en/latest/android/methodology/">Methodology
+for Android forensic</a></span></p></blockquote></p>
+<p><blockquote><p>10. Mobile devices, security and auditability</p>
+<p>Much of the targeting outlined in this report involves Pegasus
+attacks targeting iOS devices. It is important to note that this does
+not necessarily reflect the relative security of iOS devices compared to
+Android devices, or other operating systems and phone manufacturers.</p>
+<p><u>In Amnesty International's experience there are significantly more
+forensic traces accessible to investigators on Apple iOS devices than on
+stock Android devices</u>, therefore our methodology is focused on the
+former. As a result, most recent cases of confirmed Pegasus infections
+have involved iPhones.</p>
+<p>This and all previous investigations demonstrate how attacks against
+mobile devices are a significant threat to civil society globally. The
+difficulty to not only prevent, but posthumously detect attacks is the
+result of an unsustainable asymmetry between the capabilities readily
+available to attackers and the inadequate protections that individuals
+at risk enjoy.</p>
+<p><u>While iOS devices provide at least some useful diagnostics,
+historical records are scarce and easily tampered with. Other devices
+provide little to <b>no help conducting consensual forensics
+analysis.</b></u> Although much can be done to improve the security
+posture of mobile devices and mitigate the risks of attacks such as
+those documented in this report, even more could be achieved by
+improving the ability for device owners and technical experts to perform
+regular checks of the system's integrity.</p>
+<p>Therefore, <u>Amnesty International strongly encourages device
+vendors to explore options to make their devices more auditable, without
+of course sacrificing any security and privacy protections already in
+place.</u> Platform developers and phone manufacturers should regularly
+engage in conversations with civil society to better understand the
+challenges faced by HRDs, who are often under-represented in
+cybersecurity debates.<span class="blockquote-context"><a href="https://www.amnesty.org/">Amnesty International</a>'s <a href="https://securitylab.amnesty.org/tools-and-guides/">security
+labs</a>: <a href="https://www.amnesty.org/en/latest/research/2021/07/forensic-methodology-report-how-to-catch-nso-groups-pegasus/">Forensic
+Methodology Report: How to catch NSO Group's Pegasus</a></span></p></blockquote></p>
+<h1 id="Resources">Resources</h1>
+<p><blockquote><p>Bootloader lock. A locked bootloader prevents the loading and
+execution of any code other than that signed by the device manufacturer.
+In order to flash (or boot into) a custom image such as a custom
+recovery with the ability to access and image the data partition, one
+must first unlock the bootloader. This, in turn, would immediately
+destroy the cryptographic keys used to encrypt the data partition, and
+wipe the data, making official bootloader unlock a bad strategy for the
+purpose of physical acquisition.<span class="blockquote-context"><a href="https://blog.elcomsoft.com/2017/10/ios-vs-android-physical-data-extraction-and-data-protection-compared/">Elcomsoft:
+iOS vs. Android physical data extraction and data protection
+compared</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://www.forensicfocus.com/articles/imaging-locked-motorola-devices-via-bootloader-exploit/">Forensic
+Focus: Imaging locked Motorola devices via bootloader exploit</a></li>
+</ul>
+<h1 id="Additional_Android_Security_Issues">Additional Android Security
+Issues</h1>
+<p>This wiki page is not standalone. It should be read together with the
+following wiki pages:</p>
+<div class="mininav">
+<ul>
+<li><a href="Mobile_Phone_Security.html">Mobile Phone
+Security</a></li>
+<li><a href="Mobile_Operating_System_Comparison.html">Mobile
+Operating System Comparison</a></li>
+<li><a href="Android.html">Android Insecurity</a></li>
+<li><a href="IOS.html">iOS (Apple iPhone)
+Insecurity</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://arxiv.org/pdf/1512.04116">JoKER: Trusted Detection
+of Kernel Rootkits in Android Devices via JTAG Interface</a>, Mordechai
+Guri, Yuri Poliak, Department of Information Systems Engineering,
+Ben-Gurion University, Beer-Sheva, Israel</li>
+<li id="cite_note-2">* <a href="https://patents.google.com/patent/US9633185B2/en">Device
+having secure JTAG and debugging method for the same</a> * <a href="https://www.acldigital.com/blogs/jtag-technology-security-guide">ACL
+Digital: JTAG technology security guide</a> * <a href="https://www.startupdefense.io/cyberattacks/jtag-injection">Startup
+Defense: JTAG injection</a> * <a href="https://cellebrite.com/en/glossary/jtag-extraction-mobile-device-forensics/">Cellebrite
+glossary: JTAG extraction</a></li>
+<li id="cite_note-3"><a href="https://blog.thalium.re/posts/linux-kernel-rust-module-for-rootkit-detection/">rkchk
+blog post: Linux kernel Rust module for rootkit detection</a></li>
+<li id="cite_note-4"><blockquote><p>Managing expectations: When reviewing a device, you may find no
+traces of known threats. While this is a positive signal, it doesn't
+definitively mean the device hasn't been compromised. Even after
+thorough manual analysis, various factors may limit the effectiveness of
+log-based forensics. If there are strong suspicions of compromise (for
+example, a threat notification from a platform), it is advisable to
+consider combining log-based methods with other forensic techniques
+mentioned earlier.<span class="blockquote-context"><a href="https://forensics.socialtic.org/en/index.html">Documentation
+repository on consensual digital forensics for the defense of Human
+Rights</a>: <a href="https://forensics.socialtic.org/en/explainers/03-explainer-log-forensics-android/index.html">Explainer:
+Introduction to log-based forensics on Android devices</a></span></p></blockquote></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Mobile_Operating_System_Comparison.html" title="Mobile Operating System Comparison"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Mobile
+Operating System
+Comparison</span></a><a class="index internal" href="Advanced_Documentation.html" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="IOS.html" title="IOS"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">IOS</span></a><span class="info"><span class="prev">Previous
+page: Mobile Operating System Comparison</span><span class="index">Index
+page: Advanced Documentation</span><span class="next">Next page:
+IOS</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

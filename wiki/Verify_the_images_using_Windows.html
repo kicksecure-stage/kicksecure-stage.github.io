@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Verify the images using Windows</title>
+<meta name="description" content="Instructions for OpenPGP Verification of Kicksecure Images using Windows">
+<meta property="og:description" content="Instructions for OpenPGP Verification of Kicksecure Images using Windows">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Verify_the_images_using_Windows.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Verify_the_images_using_Windows.html">
+<meta property="og:title" content="Verify Kicksecure Virtual Machine Images in Windows">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Verify_images_on_windows.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Download_and_Verify_Gpg4win">Download and Verify Gpg4win</a></li><li class="toc-l2"><a href="#Download_the_Kicksecure_Signing_Key">Download the Kicksecure
+Signing Key</a></li><li class="toc-l2"><a href="#Verify_the_Kicksecure_Images">Verify the Kicksecure Images</a></li><li class="toc-l2"><a href="#Encountering_GPG_Errors">Encountering GPG Errors</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Verify_images_on_windows.png.webp" width="200" alt="Verify_images_on_windows.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Instructions for OpenPGP Verification of Kicksecure Images using
+Windows</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><img src="../media/Windows_logo_-_2012.svg.png.webp" alt="Windows_logo_-_2012.svg.png" /></p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="Advanced_Users.html">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></span></li>
+</ul>
+<p><a href="https://gnupg.org/">GnuPG</a> is a complete and free
+implementation of <a href="OpenPGP.html">OpenPGP</a> that
+allows users to encrypt and sign data and communications. <a href="https://www.gpg4win.org/">Gpg4win</a> is a graphical front end for
+GnuPG that is used for file and email encryption in Windows. The
+verification process for the Kicksecure images begins with securely
+downloading and verifying the <code>gpg4win</code> package. Once
+completed GPG can be used from the command-line to verify the Kicksecure
+images.</p>
+<p>The following guide provides steps to:</p>
+<ol>
+<li>Install SignTool.</li>
+<li>Download and verify GPG4win.</li>
+<li>Download the Kicksecure signing key.</li>
+<li>Verify the Kicksecure images.</li>
+</ol>
+<h1 id="Verify_Kicksecure_Images_in_Windows_using_Gpg4win">Verify
+Kicksecure Images in Windows using Gpg4win</h1>
+<h2 id="Download_and_Verify_Gpg4win">Download and Verify Gpg4win</h2>
+<div class="info-box ">
+<p><strong>1.</strong> <em>Prerequisite: SignTool</em></p>
+<p>Before proceeding, ensure you have <code>SignTool</code> installed.
+It's used to verify the authenticity of the <code>gpg4win</code>
+package. For installation instructions, refer to <a href="Authenticode.html#Install_SignTool">Authenticode -
+Windows Digital Software Signatures chapter Install SignTool</a>.</p>
+<p><strong>2.</strong> <em>Download the <code>gpg4win</code>
+Package:</em></p>
+<ul>
+<li>Visit <a href="https://files.gpg4win.org">https://files.gpg4win.org</a>.</li>
+<li>Find and download the most recent version of <code>gpg4win</code>
+and its corresponding signature. (As of August 2020, the latest version
+was <code>gpg4win-3.1.12.exe</code>).</li>
+<li><strong>Tip</strong>: To simplify the SignTool verification,
+download the <code>gpg4win</code> package directly to the Downloads
+directory.</li>
+</ul>
+<p><strong>3.</strong> <em>Verify the Package using SignTool:</em></p>
+<p>Open the command prompt from the Windows Start Menu:</p>
+<p><span class="code-select">cmd.exe</span></p>
+<p>Change to the Downloads directory:</p>
+<p><span class="code-select">cd
+C:\Users\&lt;your_user_name&gt;\Downloads</span></p>
+<p>Run SignTool to verify the <code>gpg4win</code> package:</p>
+<p><span class="code-select">signtool verify /pa
+gpg4win-3-1.12.exe</span></p>
+<p>Upon successful verification, the following output will appear:</p>
+<p><strong>Figure:</strong> <em>Successful Verification</em></p>
+<p><img src="../media/signtool_verify_gpg4win_success.png.webp" alt="signtool_verify_gpg4win_success.png" /></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> Should the verification fail, delete the
+downloaded <code>gpg4win</code> package. Afterwards, re-download and
+verify again.</p>
+</div>
+<p><strong>4.</strong> <em>Completion:</em></p>
+<p>You've successfully verified the Gpg4win package.</p>
+</div>
+<h2 id="Download_the_Kicksecure_Signing_Key">Download the Kicksecure
+Signing Key</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This entry is strongly related to the <a href="Trust.html">Placing Trust in Kicksecure</a> page.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This entry is for Download the Kicksecure Signing Key on the Windows
+platform. Includes Windows specifics such as file paths. This chapter
+might be out of date. In case of questions, see the <a href="Signing_Key.html">Kicksecure Signing Key</a> page
+first which takes presedence.</p>
+</div>
+<p>Since all Kicksecure releases are signed with the same key, it is
+unnecessary to verify the key every time a new release is announced.
+Trust in the key might gradually increase over time, but cryptographic
+signatures must still be verified every time a new release is
+downloaded.</p>
+<p><u>Note</u>: With the exception of step 1 all commands should be run
+from <code>C:\Users\&lt;user_name\Downloads</code></p>
+<div class="info-box ">
+<p><strong>1.</strong> If not already completed, have GnuPG initialize
+your user data folder.</p>
+<p><span class="code-select">gpg --fingerprint</span></p>
+<p><strong>2.</strong> Download <a href="Patrick_Schleizer.html">Patrick Schleizer</a>'s (adrelanos') <a href="OpenPGP.html">OpenPGP</a> key. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><a rel="noreferrer" data-no-instant="" href="../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure OpenPGP Key</span></span></a></p>
+<p>Store the key as
+<code>C:\Users\</code><code>\Downloads\derivative.asc</code></p>
+<p><strong>3.</strong> Change to the
+<code>C:\Users\</code><code>\Downloads\</code> directory.</p>
+<p><span class="code-select">cd
+C:\Users\&lt;user_name&gt;\Downloads\</span></p>
+<p><strong>4.</strong> Check fingerprints/owners without importing
+anything.</p>
+<p><span class="code-select">gpg --keyid-format long --with-fingerprint
+derivative.asc</span></p>
+<p><strong>5.</strong> Verify the output.</p>
+<p>The most important check is confirming the key fingerprint
+<u>exactly</u> matches the output below. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<pre><code>      Key fingerprint = 916B 8D99 C38E AF5E 8ADC  7A2A 8D66 066A 2EEA CCDA</code></pre>
+<p>The message
+<code>gpg: key 8D66066A2EEACCDA: 104 signatures not checked due to missing keys</code>
+is related to the <a href="OpenPGP.html#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a>. Advanced users can learn
+more about this <a href="Main/Project_Signing_Key.html#OpenPGP_Web_of_Trust">here</a>.</p>
+<p><strong>6.</strong> Import the key.</p>
+<p><span class="code-select">gpg --import derivative.asc</span></p>
+<p>The output should include the key was imported.</p>
+<pre><code>gpg: Total number processed: 1
+gpg:               imported: 1</code></pre>
+<p><em>If the Kicksecure signing key was already imported in the
+past</em>, the output should include the key is unchanged.</p>
+<pre><code>gpg: Total number processed: 1
+gpg:              unchanged: 1</code></pre>
+<p>If the following message appears at the end of the output.</p>
+<pre><code>gpg: no ultimately trusted keys found</code></pre>
+<p>This extra message does not relate to the Kicksecure signing key
+itself, but instead usually means the user has not created an OpenPGP
+key yet, which is of no importance when verifying virtual machine
+images.</p>
+<p>Analyze the other messages as usual.</p>
+</div>
+<h2 id="Verify_the_Kicksecure_Images">Verify the Kicksecure Images</h2>
+<div class="info-box ">
+<p><strong>1.</strong> If <i>not</i> already completed, download the
+Kicksecure <code>iso</code> (or <code>ova</code> for VirtualBox) image
+and the corresponding OpenGPG signature which will be used to verify the
+image.</p>
+<p>Either, download the</p>
+<ul>
+<li><strong>A)</strong> ISO image and signature from <a href="ISO.html">ISO download page</a>. <u>Or,</u></li>
+<li><strong>B)</strong> VirtualBox VM image and signature from <a href="VirtualBox.html">VirtualBox download page</a>.</li>
+</ul>
+<p>Both,</p>
+<ul>
+<li><strong>1)</strong> image, <u>and</u></li>
+<li><strong>2)</strong> signature</li>
+</ul>
+<p>should be downloaded into the same directory.</p>
+<p><strong>2.</strong> Start the cryptographic verification; this
+process can take several minutes.</p>
+<p>At the Windows command prompt, change to the directory with the
+Kicksecure <code>iso</code> (or <code>ova</code>) and corresponding
+signature file.</p>
+<p><span class="code-select">cd
+C:\Users\&lt;user_name&gt;\&lt;directory_name&gt;</span></p>
+<p><strong>3.</strong> Verify the Kicksecure <code>iso</code> (or
+<code>ova</code>) image.</p>
+<ul>
+<li>iso: <span class="code-select">gpg --verify-options show-notations
+--verify Kicksecure*.*.asc Kicksecure*.iso</span></li>
+<li>ova: <span class="code-select">gpg --verify-options show-notations
+--verify Kicksecure*.*.asc Kicksecure*.ova</span></li>
+</ul>
+<p>If the Virtual Machine image is correct the output will tell you that
+the signature is good.</p>
+<p><span class="code-select">gpg: Signature made Mon 19 Jan 2015
+11:45:41 PM CET using RSA key ID 77BB3C48 gpg: Good signature from
+"Patrick Schleizer &lt;adrelanos@whonix.org&gt;" [unknown] gpg:
+Signature notation:
+issuer-fpr@notations.openpgp.fifthhorseman.net=6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48
+gpg: Signature notation: file@name=Kicksecure-18.2.1.9.ova gpg: WARNING:
+This key is not certified with a trusted signature! gpg: There is no
+indication that the signature belongs to the owner. Primary key
+fingerprint: 916B 8D99 C38E AF5E 8ADC 7A2A 8D66 066A 2EEA CCDA</p>
+<p><code>    Subkey fingerprint: 6E97 9B28 A6F3 7C43 BE30  AFA1 CB8D 50BB 77BB 3C48</code></span><code> </code></p>
+<p>This might be followed by a warning saying:</p>
+<pre><code>gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.</code></pre>
+<p>This message does not alter the validity of the signature related to
+the downloaded key. Rather, this warning refers to the level of trust
+placed in the Kicksecure signing key and the <a href="OpenPGP.html#The_OpenPGP_Web_of_Trust">web of
+trust</a>. To remove this warning, the Kicksecure signing key must be
+personally signed with your own key.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember to check the GPG signature timestamp. For instance, if you
+previously saw a signature from 2023 and now see one from 2022, this
+could indicate a potential rollback (downgrade) or indefinite freeze
+attack.<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+</div>
+<p>The first line includes the signature creation timestamp.
+Example.</p>
+<pre><code>gpg: Signature made Mon 19 Jan 2015 11:45:41 PM CET using RSA key ID 77BB3C48</code></pre>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember: OpenPGP signatures sign the contents of files, <em>not</em>
+the file names themselves. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+</div>
+<p>To help users confirm that the file name has not been tampered with,
+beginning with Kicksecure version 9.6 and above the
+<em><span>file@name</span></em> OpenPGP
+notation includes the file name.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Do not continue if verification fails! This risks using infected or
+erroneous files! The whole point of verification is to confirm file
+integrity. This page is strongly related to the pages <a href="Trust.html">Placing Trust in Kicksecure</a> and <a href="Verifying_Software_Signatures.html">Verifying Software
+Signatures</a>.</p>
+</div>
+<p><strong>4.</strong> When Kicksecure verification is complete,
+continue with the <a href="VirtualBox.html">VirtualBox</a>
+installation.</p>
+</div>
+<h1 id="Troubleshooting">Troubleshooting</h1>
+<h2 id="Encountering_GPG_Errors">Encountering GPG Errors</h2>
+<p>When a GPG error is encountered, first try a web search for the
+relevant error. The <a href="https://security.stackexchange.com">security stackexchange
+website</a> can also help to resolve GPG problems. Describe the problem
+thoroughly, but be sure it is GPG-related and not specific to
+Kicksecure.</p>
+<p>More help resources are available on the <a href="Support.html">Support</a> page.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><span class="code-select">curl --tlsv1.3 --proto =https --max-time
+180 --output derivative.asc <a href="https://www.whonix.org/derivative.asc">https://www.whonix.org/derivative.asc</a></span></li>
+<li id="cite_note-2">Minor changes in the output such as new uids (email addresses) or
+newer expiration dates are inconsequential.</li>
+<li id="cite_note-3">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a></li>
+<li id="cite_note-4"><a href="https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html">https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

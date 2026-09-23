@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Firewall Refactoring</title>
+<meta name="description" content="How to refactor the firewall script while ensuring no unintended nftables changes occur.">
+<meta property="og:description" content="How to refactor the firewall script while ensuring no unintended nftables changes occur.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Firewall_Refactoring.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Firewall_Refactoring.html">
+<meta property="og:title" content="Dev/Firewall Refactoring">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>Firewall Refactoring</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>How to refactor the firewall script while ensuring no unintended
+nftables changes occur.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Ensuring_nftables_Rules_Remain_Unchanged">Ensuring nftables
+Rules Remain Unchanged</h1>
+<p><strong>1.</strong> Store the current nftables rules in the file
+<code>nftables-old</code>.</p>
+<p><span class="code-select">sudo nft --stateless list ruleset &gt;
+nftables-old</span></p>
+<p><strong>2.</strong> Do activities, wait, etc.</p>
+<p><strong>3.</strong> Store the current nftables rules in the file
+<code>nftables-new</code>.</p>
+<p><span class="code-select">sudo nft --stateless list ruleset &gt;
+nftables-new</span></p>
+<p><strong>4.</strong> Compare <code>nftables-old</code> and
+<code>nftables-new</code>.</p>
+<p>Use a console diff viewer:</p>
+<p><span class="code-select">diff nftables-old nftables-new</span></p>
+<p>Or use a graphical diff viewer:</p>
+<p><span class="code-select">meld nftables-old nftables-new</span></p>
+<h1 id="Ensuring_nftables_Rules_Remain_Unchanged_During_Firewall_Refactoring">Ensuring
+nftables Rules Remain Unchanged During Firewall Refactoring</h1>
+<p><strong>1.</strong> Store the current nftables rules in the file
+<code>nftables-old</code>.</p>
+<p><span class="code-select">sudo nft --stateless list ruleset &gt;
+nftables-old</span></p>
+<p><strong>2.</strong> Refactor the Kicksecure firewall code.</p>
+<p><strong>3.</strong> Reload Kicksecure Firewall.</p>
+<div class="info-box ">
+<p><u>If you are using <a href="../Qubes.html">Kicksecure
+inside Qubes</a></u>, complete the following steps.</p>
+<p><code>Qubes App Launcher (blue/grey "Q")</code> ->
+<code>Kicksecure ProxyVM (commonly named kicksecure)</code> ->
+<code>Reload Kicksecure Firewall</code></p>
+<p><u>If you are using a graphical Kicksecure</u>, complete the
+following steps.</p>
+<p><code>Start Menu</code> -> <code>Applications</code> ->
+<code>System</code> -> <code>Reload Kicksecure Firewall</code></p>
+<p><u>If you are using a terminal-only Kicksecure</u>, run.
+<span class="code-select">sudo kicksecure_firewall</span></p>
+</div>
+<p><strong>4.</strong> Store the current nftables rules in the file
+<code>nftables-new</code>.</p>
+<p><span class="code-select">sudo nft --stateless list ruleset &gt;
+nftables-new</span></p>
+<p><strong>5.</strong> Compare <code>nftables-old</code> and
+<code>nftables-new</code>.</p>
+<p>Use a console diff viewer:</p>
+<p><span class="code-select">diff nftables-old nftables-new</span></p>
+<p>Or use a graphical diff viewer:</p>
+<p><span class="code-select">meld nftables-old nftables-new</span></p>
+<h1 id="systemcheck_nftables_Test">systemcheck nftables Test</h1>
+<p>This feature does not exist yet.</p>
+<ul>
+<li>"<em>systemcheck (which is somewhat a replacement for the lack of a
+test suite) could indeed be useful to check if the loaded nftables rules
+match a hardcoded nftables dump. Yes, with additional firewall add-ons,
+that would be challenging. These firewall add-ons could ship a dump that
+also gets verified (e.g., an <code>nftables-dumps.d</code> folder
+checked by systemcheck). However, managing multiple firewall add-ons
+with dumping might stretch what the Kicksecure project can realistically
+implement.</em>" (From <a href="https://forums.whonix.org/t/bolt-on-for-whonix-firewall-best-place-to-put-files/2222">(Forum)
+Bolt on for whonix_firewall - best place to put files?</a>)
+<ul>
+<li>systemcheck could use this nftables diff functionality to warn users
+about non-standard or unexpected rules. Similar to unwanted package
+detection, it could prompt users to run a command such as
+<code>nftables-save-whonix</code> to establish a new baseline.
+systemcheck would then pass unless further unexpected changes occurred,
+at which point it would issue another warning.</li>
+</ul></li>
+</ul>
+<h1 id="Splitting_the_Kicksecure_Firewall_Script_for_Better_Readability">Splitting
+the Kicksecure Firewall Script for Better Readability</h1>
+<p><em>From Patrick:</em><br />
+"I have been considering whether the firewall script should be split.
+Many sections are used by multiple packages, including the firewall and
+vpn-firewall. In the future, a corridor-gateway might also be
+introduced.</p>
+<p>Sections that could be refactored into helper scripts:</p>
+<ul>
+<li><code>error_handler</code></li>
+<li>Source config folder</li>
+<li>IPv4 DEFAULTS</li>
+<li>IPv4 PREPARATIONS</li>
+<li>IPv4 DROP INVALID INCOMING PACKETS</li>
+<li>IPv4 FORWARD</li>
+<li>IPv6</li>
+<li>Additional minor components (<code>nftables_cmd</code>)</li>
+</ul>
+<p>These sections could be converted into shell functions and moved to
+helper scripts.</p>
+<p>The risk of altering firewall rules during refactoring is minimal
+because changes can be verified.</p>
+<p>However, the primary goal is to make the firewall scripts easier to
+read, not harder to audit. I am unsure whether keeping everything in one
+file or splitting it up would be simpler at this stage."</p>
+<ul>
+<li>Early files in the firewall configuration folder could contain Bash
+scripting in the form:</li>
+</ul>
+<pre><code>function ScriptFuncPreloadElement1() { script lines, e.g. $nftables_cmd &#39;&#39;blah&#39;&#39; }</code></pre>
+<ul>
+<li><ul>
+<li>Optionally followed by inline execution within the same file:</li>
+</ul></li>
+</ul>
+<pre><code>ScriptFuncPreloadElement1
+# (Within the same file == calling main().)</code></pre>
+<ul>
+<li><ul>
+<li>This approach separates code definition from execution.</li>
+</ul></li>
+<li>"<em>Another question with firewall code injection and pre/post
+hooks is when they should be dispatched. This depends on what
+functionality you want to implement.</em>"</li>
+<li>Example:</li>
+</ul>
+<pre><code>if [ &quot;$(type -t firewall_input_hook_end)&quot; = &quot;function&quot; ]; then
+   firewall_input_hook_end
+fi</code></pre>
+<ul>
+<li><ul>
+<li>However, this would only allow a single call per hook. Users would
+need to chain all calls within <code>whonix_firewall.d</code>. Perhaps
+using array variables instead, with code such as:</li>
+</ul></li>
+</ul>
+<pre><code>firewall_input_hook_end[${#firewall_input_hook_end[@]}]=ScriptFuncPreloadElement1</code></pre>
+<ul>
+<li><ul>
+<li><em>Users would need to manage the array order
+appropriately.</em></li>
+</ul></li>
+<li><ul>
+<li>Hooks within the firewall would then iterate through the array at
+the appropriate execution point.</li>
+</ul></li>
+</ul>
+<hr />
+<p><strong><u>Reference</u>: <a href="https://forums.whonix.org/t/whonix-torrents-and-being-a-good-tor-citizen/1766">(Forum)
+torrents, and being a good Tor citizen</a></strong><br />
+<u><em>Solution, part b</em></u> demonstrates an example set of nftables
+rules that could be injected within the firewall. (<em>Proof of concept
+only.</em>)</p>
+<hr />
+<p><strong><u>Reference</u>: <a href="https://forums.whonix.org/t/favourite-whonix-bash-script-boilerplate-template/2235/2">(Forum)
+Favorite (Whonix?) Bash script boilerplate template?</a></strong><br />
+* (Begins) a consolidation of a standard scripting framework.</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

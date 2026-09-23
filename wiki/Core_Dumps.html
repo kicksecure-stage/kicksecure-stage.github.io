@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Core Dumps</title>
+<meta name="description" content="Security and Privacy Risks Posed by Core Dumps">
+<meta property="og:description" content="Security and Privacy Risks Posed by Core Dumps">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Core_Dumps.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Core_Dumps.html">
+<meta property="og:title" content="Core Dumps">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Coredumps.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Coredumps.png.webp" width="200" alt="Coredumps.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Security and Privacy Risks Posed by Core Dumps</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>All operating systems have a "core dump" functionality which poses
+potential security and privacy risks. According to Wikipedia:
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>In computing, a core dump (in Unix parlance), memory dump, or system
+dump consists of the recorded state of the working memory of a computer
+program at a specific time, generally when the program has crashed or
+otherwise terminated abnormally. In practice, other key pieces of
+program state are usually dumped at the same time, including the
+processor registers, which may include the program counter and stack
+pointer, memory management information, and other processor and
+operating system flags and information. Core dumps are often used to
+assist in diagnosing and debugging errors in computer programs.</p></blockquote></p>
+<p>The primary function of core dumps is to provide the user or
+programmer with specialized information to determine the root cause of a
+system crash, in order to perform debugging. These files are viewable as
+text or image formats, and can be analyzed with special tools. In
+Windows, both kernel-mode dumps and user-mode dumps are available. The
+former contains information on either the full memory or large sections
+of it, while the latter is limited to single processes.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h1 id="Security_and_Privacy_Risks">Security and Privacy Risks</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Most of today's operating systems, libraries, languages, and so on leave
+sensitive data they handle -- passwords, financial and other information
+-- scattered throughout memory, and it often leaks to disk. Information
+may be left there for an indeterminate period and this increases the
+risk of a system compromise. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+</div>
+<p>Core dumps can potentially contain sensitive information like:
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<ul>
+<li>Any activities undertaken in a session.</li>
+<li>All existing contents in RAM at the time of a crash:
+<ul>
+<li>Disk encryption keys and passwords.</li>
+<li>Details of open documents.</li>
+<li>Other passwords.</li>
+<li>Detailed system information that can assist targeted attacks.</li>
+</ul></li>
+</ul>
+<p>Clearly, how long copies of data survive and where they end up are
+critical factors. There is no guarantee that RAM is wiped or overwritten
+during this process. This is not just a theoretical concern, as exploits
+in the wild have been observed which force privileged applications to
+perform core dumps, disclosing the contents of shadow password files and
+other information in the process. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>While this information is stored locally on GNU/Linux distributions,
+this is not the case on proprietary platforms. Windows and macOS
+generally ship this memory information to the operating systems vendor.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-5">[5]</a></sup> <sup class="reference"><a href="#cite_note-6">[6]</a></sup>
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup> <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<h1 id="Disabling_Core_Dumps">Disabling Core Dumps</h1>
+<p>Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure">Kicksecure</h2>
+</div>
+<div class="tcc-content">
+<p>Core Dumps are disabled by default in Kicksecure.</p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Logo-linux-500x500.png.webp" width="25" alt="Logo-linux-500x500.png" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Using_other_Linux_based_operating_systems">Using other Linux
+based operating systems</h2>
+</div>
+<div class="tcc-content">
+<p>For greater security, advanced users should consider configuring the
+host operating systems to disable core dumps. If possible, preventing
+access to process memory is also advisable, along with secure storage of
+the file system. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> <sup class="reference"><a href="#cite_note-10">[10]</a></sup> GNU/Linux users
+can further research the disabling of core dump features <a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/">here</a>
+and <a href="https://wiki.archlinux.org/title/Core_dump">here</a>.
+Debian users should refer to the manpages concerning <a href="https://manpages.debian.org/stable/systemd-coredump/coredump.conf.5.en.html">core
+dump storage configuration files</a>. In general, Linux normally
+requires: <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<ul>
+<li>Setting a <code>ulimit</code> value via a configuration file;
+or</li>
+<li>Configuring <code>ulimit</code> via a profile (custom) file; or</li>
+<li>Setting nil storage in the systemd coredump configuration file.</li>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/304">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/306">Kicksecure/security-misc</a></span></li>
+</ul>
+<p>It is also recommended to <a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#disable-setuid-processes-dumping-their-memory">disable
+setuid processes from dumping their memory</a>, since processes with
+elevated permissions might otherwise still perform core dumps.
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup> For greater safety, <a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#testing-your-configuration">test
+the configuration</a> works correctly.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Enabling_Core_Dumps">Enabling Core Dumps</h1>
+<p>To enable core dumps in Kicksecure follow the following steps.</p>
+<p>The <a href="Debug-misc.html">debug-misc</a> package is
+the simplest solution to enable core dumps. For better security, this
+package should only be installed on specific machines that require
+debugging. Unfortunately, security and debugging are conflicting
+optimization goals.</p>
+<div class="info-box ">
+<p>Install package(s) <code>debug-misc</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>debug-misc</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+debug-misc</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>debug-misc</code> is
+complete.</p>
+</div>
+<p>TODO: only enable core dumps without debug-misc</p>
+<p><a href="https://rspamd.com/doc/faq.html#how-to-figure-out-why-rspamd-process-crashed">https://rspamd.com/doc/faq.html#how-to-figure-out-why-rspamd-process-crashed</a></p>
+<p><span class="code-select">ulimit -c</span></p>
+<p><span class="code-select">ulimit -c unlimited</span></p>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/Core_dump">https://en.wikipedia.org/wiki/Core_dump</a></li>
+<li id="cite_note-2"><a href="https://cs.stanford.edu/people/jchow/papers/lifetime-sigops04.pdf">https://cs.stanford.edu/people/jchow/papers/lifetime-sigops04.pdf</a></li>
+<li id="cite_note-3"><a href="https://wiki.archlinux.org/title/Core_dump">https://wiki.archlinux.org/title/Core_dump</a></li>
+<li id="cite_note-4"><a href="https://security.stackexchange.com/questions/131552/risks-of-encryption-keys-contained-in-a-memory-dump-after-a-crash">https://security.stackexchange.com/questions/131552/risks-of-encryption-keys-contained-in-a-memory-dump-after-a-crash</a></li>
+<li id="cite_note-5"><a href="https://docs.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps?redirectedfrom=MSDN">https://docs.microsoft.com/en-us/windows/win32/wer/collecting-user-mode-dumps?redirectedfrom=MSDN</a></li>
+<li id="cite_note-6"><a href="https://en.wikipedia.org/wiki/Crash_Reporter">https://en.wikipedia.org/wiki/Crash_Reporter</a></li>
+<li id="cite_note-7"><a href="https://www.networkworld.com/article/2164903/windows-how-to-solve-windows-8-crashes-in-less-than-a-minute.html">https://www.networkworld.com/article/2164903/windows-how-to-solve-windows-8-crashes-in-less-than-a-minute.html</a></li>
+<li id="cite_note-8">Notably, GNU/Linux platforms like Debian usually have core dump
+functionality turned on via systemd's default settings.</li>
+<li id="cite_note-9"><a href="https://docs.tibco.com/pub/rendezvous/8.3.1_january_2011/html/tib_rv_administration/rv_adm.6.072.htm">https://docs.tibco.com/pub/rendezvous/8.3.1_january_2011/html/tib_rv_administration/rv_adm.6.072.htm</a>
+(<a href="https://archive.ph/OeJvZ">archive.ph</a>)</li>
+<li id="cite_note-10"><a href="https://stackoverflow.com/questions/17068818/how-to-deal-with-passwords-securely-within-your-application">https://stackoverflow.com/questions/17068818/how-to-deal-with-passwords-securely-within-your-application</a></li>
+<li id="cite_note-11"><a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#disable-core-dumps">https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#disable-core-dumps</a></li>
+<li id="cite_note-12">Processes with greater access might also have more sensitive data
+elements in memory.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

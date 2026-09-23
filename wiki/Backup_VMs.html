@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Backup VMs</title>
+<meta name="description" content="Overview of Ways to Backup your Kicksecure Virtual Machines">
+<meta property="og:description" content="Overview of Ways to Backup your Kicksecure Virtual Machines">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Backup_VMs.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Backup_VMs.html">
+<meta property="og:title" content="Backup Kicksecure VMs">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Isolated-316392640.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#VirtualBox">VirtualBox</a></li><li class="toc-l2"><a href="#VirtualBox_2">VirtualBox</a></li><li class="toc-l2"><a href="#VirtualBox_3">VirtualBox</a></li><li class="toc-l3"><a href="#VirtualBox_VMs_Folder_versus_VirtualBox_Settings_Folder">VirtualBox
+VMs Folder versus VirtualBox Settings Folder</a></li><li class="toc-l3"><a href="#~/VirtualBox_VMs_Folder">~/VirtualBox VMs Folder</a></li><li class="toc-l3"><a href="#Using_VirtualBox&#x27;s_VM_Cloning_Feature_for_Backups_is_not_Simple">Using
+VirtualBox&#x27;s VM Cloning Feature for Backups is not Simple</a></li><li class="toc-l3"><a href="#Backup_VirtualBox_Settings_Files">Backup VirtualBox Settings
+Files</a></li><li class="toc-l3"><a href="#Advanced_Users_using_git">Advanced Users using git</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Isolated-316392640.jpg.webp" alt="Isolated-316392640.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Overview of Ways to Backup your Kicksecure Virtual Machines</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Overview_-_Ways_to_Backup_Kicksecure_VMs">Overview - Ways to
+Backup Kicksecure VMs</h1>
+<p>There is not a great and simple way to make backups yet. Best you can
+do is either:</p>
+<ul>
+<li><strong>A)</strong> <u>VM export</u>: (Easiest, recommended.) Use
+the <a href="#VM_Export">export feature</a> of the
+virtualizer such as VirtualBox.</li>
+<li><strong>B)</strong> <u>Shared folder</u>: (Moderate difficulty.)
+Copy individual folders to a <a href="#Shared_Folder">shared folder</a>.</li>
+<li><strong>C)</strong> <u>Manual copy</u>: (Difficult, discouraged.)
+Create a copy of your VM settings folder as well as your virtual hard
+drive files. There is some important knowledge you have to be aware of,
+this is documented below.</li>
+</ul>
+<h1 id="General_Important_Recommendation">General Important
+Recommendation</h1>
+<p>Creating backups is only the first step. You should do a test run if
+you are actually to restore your backup. Otherwise you may experience a
+nasty surprise that some files are missing for a successful and complete
+restoration.</p>
+<h1 id="VM_Export">VM Export</h1>
+<h2 id="VirtualBox">VirtualBox</h2>
+<p>Using the VM export feature of VirtualBox will create standalone
+<code>.ova</code> files which the user can easily import on any other
+computer that can run VirtualBox.</p>
+<p>Exporting a VirtualBox VM means creating a copy of the VM's virtual
+hard drive, configuration files, into a single file that can be
+transferred to another physical machine (computer) or storage device.
+VirtualBox uses the Open Virtual Appliance (OVA) file format.</p>
+<p>Once the file is created, the user can import it into VirtualBox on
+another physical machine and the VM will be set up with the same
+configuration as the original VM. This can be useful for migrating VMs
+between physical machines or for sharing VMs with others.</p>
+<p>Exporting a VirtualBox VM is <a href="Unspecific.html">unspecific to Kicksecure</a>. Instructions:</p>
+<p><strong>1.</strong> Open VirtualBox and select the VM you want to
+export from the list of available virtual machines.</p>
+<p><strong>2.</strong> Click on the "File" menu and select "Export
+Appliance" from the dropdown menu.</p>
+<p><strong>3.</strong> In the Export Appliance window, select the VM you
+want to export and choose a name and location for the exported
+package.</p>
+<p><strong>4.</strong> If asked, use the OVA file format.</p>
+<p><strong>5.</strong> Do not make any changes to the VM settings.</p>
+<p><strong>6.</strong> Click "Export" to start the export process.</p>
+<p><strong>7.</strong> Wait for the export process to finish. This may
+take some time depending on the size of the VM and disk speed.</p>
+<p><strong>8.</strong> Once the export is complete, you can move the
+exported package to another computer or storage device.</p>
+<p><strong>9.</strong> Done.</p>
+<p><strong>10.</strong> To import the exported VM you can use the "File"
+menu and select "Import Appliance" from the dropdown menu. Then, choose
+the exported package and follow the prompts to import the VM.</p>
+<h1 id="Shared_Folder">Shared Folder</h1>
+<p>A shared folder is a folder that can be accessed by both, the host
+operating systems as well as the <u>v</u>irtual <u>m</u>achine (VM).
+Changes made to the folder from one either the host operating system or
+the VM are visible to the other. It is a convenient way to share files
+from the host to the VM and/or vice versa.</p>
+<h2 id="VirtualBox_2">VirtualBox</h2>
+<p>In VirtualBox, users can set up a shared folder by creating a folder
+on the host operating system (the operating system on the physical
+machine) and then configuring VirtualBox to share that folder with the
+guest operating system (the operating system running inside VirtualBox).
+This allows for easy file sharing and transfer between the host and
+guest operating systems.</p>
+<p>See <a href="VirtualBox/Guest_Additions.html#Shared_Folder">VirtualBox Guest Additions and Shared Folders chapter
+Shared Folder</a>.</p>
+<h1 id="Manual_Copy_of_VMs">Manual Copy of VMs</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Manually copying VMs is discouraged because it is difficult and
+requires a lot important knowledge. For more information, please press
+on expand on the right.</p>
+<div class="mw-collapsible-content">
+<h2 id="VirtualBox_3">VirtualBox</h2>
+<h3 id="VirtualBox_VMs_Folder_versus_VirtualBox_Settings_Folder">VirtualBox
+VMs Folder versus VirtualBox Settings Folder</h3>
+<ul>
+<li>VirtualBox VMs folder: <code>~/VirtualBox VMs</code></li>
+<li>VirtualBox settings folder:
+<code>~/</code><strong><code>.</code></strong><code>VirtualBox</code></li>
+</ul>
+<h3 id="~/VirtualBox_VMs_Folder">~/VirtualBox VMs Folder</h3>
+<p>If you want to copy your VirtualBox's to another harddrive, only
+creating a backup of your <code>~/VirtualBox VMs</code> folder won't
+suffice. You have to remember to have a backup of your VirtualBox
+settings folder
+(<code>~/</code><strong><code>.</code></strong><code>VirtualBox</code>)
+as well, because manually re-creating that folder is difficult and
+undocumented by VirtualBox's documentation.</p>
+<h3 id="Using_VirtualBox's_VM_Cloning_Feature_for_Backups_is_not_Simple">Using
+VirtualBox's VM Cloning Feature for Backups is not Simple</h3>
+<p>The clone feature of VirtualBox is not very user friendly for backups
+for the same reason as above. It works, for cloning VMs, but it is not
+very useful for easy backups, because general VM settings are still
+stored in your home folder
+(<code>~/</code><strong><code>.</code></strong><code>VirtualBox</code>)
+and these are difficult to restore as mentioned above. So if you use the
+clone feature and backup your VMs on a different harddrive, you have to
+remember to have a backup of your VirtualBox settings folder
+(<code>~/</code><strong><code>.</code></strong><code>VirtualBox</code>)
+as well.</p>
+<h3 id="Backup_VirtualBox_Settings_Files">Backup VirtualBox Settings
+Files</h3>
+<p>Turn off VirtualBox before attempting to backup the VirtualBox's
+settings folder
+(<code>~/</code><strong><code>.</code></strong><code>VirtualBox</code>).</p>
+<p>When you change VM settings, add/remove VMs, add/remove virtual hdds,
+add/remove snapshots you should create a new backup.</p>
+<h3 id="Advanced_Users_using_git">Advanced Users using git</h3>
+<p>Adding your VirtualBox settings folder to a <a href="https://en.wikipedia.org/wiki/Revision_control">revision control
+system</a> such as <a href="https://en.wikipedia.org/wiki/Git_(software)">git</a> is a good
+addition to backups of VirtualBox's settings folder. Should VirtualBox
+damage your settings file and its backup file (happens sometimes), you
+can try a recent backup from an earlier git revision.</p>
+</div>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

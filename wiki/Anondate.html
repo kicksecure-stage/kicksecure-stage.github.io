@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Anondate</title>
+<meta name="description" content="extracting time from Tor consensus">
+<meta property="og:description" content="extracting time from Tor consensus">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Anondate.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Anondate.html">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>extracting time from Tor consensus</p>
+<div class="post-intro-p">
+</div>
+<h1 id="anondate-get">anondate-get</h1>
+<p>Diagnostic utility. <code>anondate-</code><u><code>get</code></u>. A
+higher level and easier to use tool than the lower level
+<code>anondate</code>.</p>
+<p>Usage of <code>anondate-get</code> should be safe. It does not use
+networking. It does not change the time. It only looks at locally
+available information.</p>
+<p><span class="code-select">sudo anondate-get</span></p>
+<p>Sample output.</p>
+<pre><code>/usr/sbin/anondate-get: INFO: 100% Tor bootstrap, ok.
+/usr/sbin/anondate-get: INFO: tor_circuit_established_check.py, ok.
+/usr/sbin/anondate-get: INFO: Tor circuit already established, ok.
+/usr/sbin/anondate-get: INFO: current time in valid in range, ok.
+/usr/sbin/anondate-get: INFO: Tor certificate lifetime valid, ok.
+/usr/sbin/anondate-get: END: Exiting with exit_code &#39;3&#39; indicating &#39;Could not determine any time using Tor from consensus or certificate life time.&#39;.</code></pre>
+<h1 id="anondate-set">anondate-set</h1>
+<p>Security impact has yet to be documented.</p>
+<p><code>anondate-</code><u><code>set</code></u>.</p>
+<p><span class="code-select">sudo anondate-set</span></p>
+<pre><code>/usr/sbin/anondate-set: INFO: Status file &#39;/run/anondate/tor_certificate_lifetime_set&#39; does not yet exist.
+/usr/sbin/anondate-set: INFO: running anondate-get...
+/usr/sbin/anondate-get: INFO: 100% Tor bootstrap, ok.
+/usr/sbin/anondate-get: INFO: tor_circuit_established_check.py, ok.
+/usr/sbin/anondate-get: INFO: Tor circuit already established, ok.
+/usr/sbin/anondate-get: INFO: current time in valid in range, ok.
+/usr/sbin/anondate-get: INFO: Tor certificate lifetime valid, ok.
+/usr/sbin/anondate-get: END: Exiting with exit_code &#39;3&#39; indicating &#39;Could not determine any time using Tor from consensus or certificate life time.&#39;.
+/usr/sbin/anondate-set: END: Exiting with exit_code &#39;3&#39; indicating &#39;Setting time using anondate either not possible or not required.&#39;.</code></pre>
+<h1 id="anondate">anondate</h1>
+<h5 id="Introduction">Introduction</h5>
+<ul>
+<li>TODO: documentation on anondate is outdated</li>
+<li>The anondate interface description as per the latest git
+master:</li>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/sbin/anondate">Kicksecure/helper-scripts</a></span></li>
+<li>See also: <a href="#Tor_Consensus_Method">#Tor
+Consensus Method</a></li>
+<li>Needs access to either:
+<ul>
+<li><code>/var/run/tor/log</code> (default only in Kicksecure). [Tor
+Project upstream feature request: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/16821">additional
+/var/run/tor/log default log</a>] This is preferable because it contains
+only Tor's log since the last boot, which is more relevant and easier
+for <code>anondate</code> to parse.</li>
+<li>Or access to <code>/var/log/tor/log</code>. This is configurable
+through the environment variable <code>TOR_LOG</code>
+(<code>export TOR_LOG=/var/log/tor/log</code>). (Alternatively, we could
+change the default in the code.)</li>
+</ul></li>
+</ul>
+<h5 id="Consensus_Related_Options">Consensus Related Options</h5>
+<ul>
+<li><code>--verified-only</code></li>
+<li><code>--prefer-verified</code></li>
+<li><code>--unverified-only</code></li>
+</ul>
+<h5 id="Special_Exit_Codes">Special Exit Codes</h5>
+<ul>
+<li>exit <code>3</code>: <code>$TOR_LOG</code> not readable.</li>
+<li>exit <code>4</code>: <code>$consensus</code> not readable.</li>
+</ul>
+<h5 id="Simple_Status_Checking">Simple Status Checking</h5>
+<h6 id="anondate_--has-consensus">anondate --has-consensus</h6>
+<p>Useful for checking whether requesting any of the <a href="#Date_Ranges_Output">#Date Ranges Output</a>
+values is worthwhile.</p>
+<ul>
+<li>yes:
+<ul>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p><br />
+Could be replaced by Tor ControlPort / python-stem?</p>
+<ul>
+<li>verified-only: Yes. (<code>consensus/valid-after</code>)</li>
+<li>unverified: No.</li>
+</ul>
+<h6 id="anondate_--current-time-in-valid-range">anondate
+--current-time-in-valid-range</h6>
+<p>Useful as a sanity test before setting the time for the first time
+and before updating it with a newly fetched timestamp.</p>
+<ul>
+<li>yes:
+<ul>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p><br />
+Could be replaced by Tor ControlPort / python-stem?</p>
+<ul>
+<li>verified-only: Yes. (See below.)</li>
+<li>unverified: No. Tor Project upstream feature request: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/16845">make
+unverified consensus ISOTime accessible through Tor's
+ControlPort</a></li>
+</ul>
+<h5 id="Date_Ranges_Output">Date Ranges Output</h5>
+<h6 id="anondate_--show-valid-after">anondate --show-valid-after</h6>
+<ul>
+<li>yes:
+<ul>
+<li>output: <code>2015-08-15 22:00:00</code></li>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p><br />
+Could be replaced by Tor ControlPort / python-stem?</p>
+<ul>
+<li>verified-only: Yes. <code>consensus/valid-after</code></li>
+<li>unverified: No. Tor Project upstream feature request: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/16845">make
+unverified consensus ISOTime accessible through Tor's
+ControlPort</a></li>
+</ul>
+<h6 id="anondate_--show-valid-until">anondate --show-valid-until</h6>
+<ul>
+<li>yes:
+<ul>
+<li>output: <code>2015-08-16 01:00:00</code></li>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p><br />
+Could be replaced by Tor ControlPort / python-stem?</p>
+<ul>
+<li>verified-only: Yes. <code>consensus/valid-until</code></li>
+<li>unverified: No. Tor Project upstream feature request: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/16845">make
+unverified consensus ISOTime accessible through Tor's
+ControlPort</a></li>
+</ul>
+<h6 id="anondate_--show-middle-range">anondate --show-middle-range</h6>
+<ul>
+<li>yes:
+<ul>
+<li>output: <code>2015-08-15 23:30:00</code></li>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p><br />
+(A scripted calculation of the above.)</p>
+<h5 id="Certificate_Validity">Certificate Validity</h5>
+<p>When the clock is several months or years fast or slow, Tor cannot
+even download the Tor consensus. Tor, however, should always provide a
+certificate lifetime. For a security discussion, see also <a href="Dev/TimeSync.html#Tor_Certificate_Lifetime">Tor
+Certificate Lifetime</a>.</p>
+<h6 id="anondate_--tor-cert-lifetime-valid">anondate
+--tor-cert-lifetime-valid</h6>
+<pre><code>Sep 03 10:32:59.000 [warn] Certificate already expired. Either their clock is set wrong, or your clock is wrong.
+Sep 03 10:32:59.000 [warn] (certificate lifetime runs from Aug 16 00:00:00 2014 GMT through Jul 29 23:59:59 2015 GMT. Your time is Sep 03 10:32:59 2015 UTC.)</code></pre>
+<ul>
+<li>yes:
+<ul>
+<li>output:
+<code>Sep 03 10:34:00.000 [warn] Certificate already expired. Either their clock is set wrong, or your clock is wrong.</code></li>
+<li>exit <code>0</code></li>
+</ul></li>
+<li>no:
+<ul>
+<li>exit <code>1</code></li>
+</ul></li>
+</ul>
+<p>Could this be replaced by Tor ControlPort / python-stem? No. Tor
+Project upstream feature request: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/16822">make
+certificate lifetime accessible through Tor's ControlPort</a></p>
+<h6 id="anondate_--tor-cert-valid-after">anondate
+--tor-cert-valid-after</h6>
+<p>Similar to the above, but provides less output.</p>
+<ul>
+<li>output: <code>Jun 16 00:00:00 2014 GMT</code></li>
+<li>Exit codes unreliable.</li>
+<li>Don't use without invoking the above first.</li>
+<li>(Could be fixed in the code if worthwhile.)</li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

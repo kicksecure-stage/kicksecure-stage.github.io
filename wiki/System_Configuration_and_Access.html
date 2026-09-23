@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>System Configuration and Access</title>
+<meta name="description" content="System Configuration and Access">
+<meta property="og:description" content="System Configuration and Access">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/System_Configuration_and_Access.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/System_Configuration_and_Access.html">
+<meta property="og:title" content="System Configuration and Access">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Systemconfiguration.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access.html">System
+Configuration and Access</a></li>
+<li><a href="Protection_Against_Physical_Attacks.html">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization.html">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security.html">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<p><img src="../media/Systemconfiguration.png.webp" alt="Systemconfiguration.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Best Security Practices for System Configuration and Access.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Avoid_Shared_Hosts">Avoid Shared Hosts</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<strong>Tip:</strong> Kicksecure should preferably be used only on
+computers without shared access.</p>
+</div>
+<p>It is unwise to allow others to use your computer, even if they are
+trustworthy individuals. If they are not equally knowledgeable in
+computer security, then one mistake could potentially lead to compromise
+of the entire system. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Needless to say, Kicksecure should not be hosted in the <a href="https://en.wikipedia.org/wiki/Cloud_computing">cloud</a>, on a
+foreign server that is not controlled by the user, on a <a href="https://en.wikipedia.org/wiki/Virtual_private_server">virtual
+private server (VPS)</a>, or other remote hosting options. The risks
+include: <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<ul>
+<li>Data on these systems is readily accessible to their owners.</li>
+<li>Data can be accidentally or deliberately altered / deleted.</li>
+<li>Legal ownership of data is disputed.</li>
+<li>Shared technological vulnerabilities include insecure interfaces and
+application program interfaces (APIs), data loss / leakage and hardware
+failure.</li>
+<li>Proven vulnerability to large scale attacks like <a href="https://en.wikipedia.org/wiki/Hyperjacking">"hyperjacking"</a>,
+along with exposure to traditional threats like network eavesdropping,
+invasion, denial of service attacks, side-channel attacks and so
+on.</li>
+</ul>
+<h1 id="Use_a_Dedicated_Host_Operating_System_and_Computer">Use a
+Dedicated Host Operating System and Computer</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Both Kicksecure and <a href="Qubes.html">Kicksecure-Qubes</a> users should avoid <a href="https://github.com/Qubes-Community/Contents/blob/master/docs/configuration/multiboot.md#multibooting-qubes">dual
+/ multi-boot configurations</a>. The other <u>o</u>perating
+<u>s</u>ystem (OS) such as for example Microsoft Windows could modify
+the unprotected <em>/boot</em> partition or firmware to maliciously
+compromise Qubes or the host OS, and also potentially spy on user
+activities.</p>
+</div>
+<p><a href="About.html">Kicksecure</a> users are
+recommended to use one dedicated host operating system (OS) just for
+hosting Kicksecure VM (in case Kicksecure is hosted on a VM). Otherwise,
+if the host OS which is used daily is compromised, Kicksecure cannot
+provide any additional protection. This is because the host is part of
+the system's <a href="https://web.archive.org/web/20210724143029/https://blog.finjan.com/trusted-computing-base/"><u>t</u>rusted
+<u>c</u>omputing <u>b</u>ase (TCB)</a>:</p>
+<p><blockquote><p>For a computer system, the trusted computing base or TCB comprises
+the set of all hardware, software, and firmware components that are
+critical to establishing and maintaining its security. Typically, the
+TCB consists of an OS with all its in-built security controls,
+individual system hardware, network hardware and software, defined
+security procedures and protocols, and the actual physical location of
+the system itself.</p>
+<p>...</p>
+<p>Maintaining the confidentiality and integrity of data on a system is
+a prime responsibility of the TCB. The trusted computing base is also
+charged with enforcing the system's security policy, and is the only
+component of a system that operates at such a high level of trust. This
+means that if any part of the TCB is subverted or contains flaws, the
+overall security policy of a system may be compromised.</p></blockquote></p>
+<p>See <a href="Malware_and_Firmware_Trojans.html">Malware</a> and <a href="Backdoor.html#Firmware_Trojan">Firmware Trojans</a> to learn more about the impacts of
+a compromised TCB.</p>
+<p>For even greater security, the dedicated host OS can be used on a
+computer solely bought for Kicksecure activities. Ideally this computer
+will have never been used for anything else before, negating the risk of
+a prior hardware compromise.</p>
+<h1 id="Kicksecure_on_External_Media">Kicksecure on External Media</h1>
+<p>See: <a href="USB_Installation.html">Kicksecure on USB or
+other External Media</a>.</p>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access.html">System
+Configuration and Access</a></li>
+<li><a href="Protection_Against_Physical_Attacks.html">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization.html">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption.html">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security.html">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">If necessary, this risk is partially mitigated by creating untrusted
+domains in <a href="Qubes.html">Kicksecure for Qubes</a> for
+other users.</li>
+<li id="cite_note-2"><a href="https://en.wikipedia.org/wiki/Cloud_computing#Security_and_privacy">https://en.wikipedia.org/wiki/Cloud_computing#Security_and_privacy</a></li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Cloud_security">https://en.wikipedia.org/wiki/Cloud_security</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

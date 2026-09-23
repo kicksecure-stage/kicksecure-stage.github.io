@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Systemcheck</title>
+<meta name="description" content="System Integrity Test. Connectivity Test. Update Check. And More.">
+<meta property="og:description" content="System Integrity Test. Connectivity Test. Update Check. And More.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Systemcheck.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Systemcheck.html">
+<meta property="og:title" content="systemcheck - Security Check Application">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Systemchecknotification.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#How-to:_Manually_Run_systemcheck">How-to: Manually Run
+systemcheck</a></li><li class="toc-l2"><a href="#Sample_systemcheck_Output">Sample systemcheck Output</a></li><li class="toc-l2"><a href="#Tor_Bootstrap">Tor Bootstrap</a></li><li class="toc-l2"><a href="#updatecheck_for_accounts_other_than_user">updatecheck for
+accounts other than user</a></li><li class="toc-l2"><a href="#Login_Security_Check_-_Meaning_of_Colors">Login Security Check -
+Meaning of Colors</a></li><li class="toc-l2"><a href="#Build_Version">Build Version</a></li><li class="toc-l2"><a href="#Check_Version">Check Version</a></li><li class="toc-l2"><a href="#Technical_Details">Technical Details</a></li><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Features">Features</a></li><li class="toc-l2"><a href="#Disable_Warrant_Canary_Check">Disable Warrant Canary Check</a></li><li class="toc-l2"><a href="#autostart_systemcheck">autostart systemcheck</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Boot_firmware.html" title="Boot firmware"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Boot
+firmware</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Basic_Security_Guide_Introduction.html" title="Basic Security Guide Introduction"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Basic
+Security Guide
+Introduction</span></a><span class="info"><span class="prev">Previous
+page: Boot firmware</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Basic Security Guide
+Introduction</span></span></span>systemcheck - Security Check
+Application</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>System Integrity Test. Connectivity Test. Update Check. And More.</p>
+<div class="post-intro-p">
+</div>
+<p><img src="../media/Systemchecknotification.png.webp" alt="systemcheck completion" />
+<img src="../media/Systemcheckgui.png.webp" alt="systemcheck progress meter" />
+<img src="../media/Systemcheckcli.png.webp" alt="systemcheck in Terminal" /></p>
+<h1 id="Introduction">Introduction</h1>
+<ul>
+<li><u>Purpose of systemcheck:</u>
+<em><span>systemcheck</span></em>
+checks numerous, important system variables to assess system
+status.</li>
+<li><u>Usage methods:</u> It can be run in a <u>c</u>ommand <u>l</u>ine
+<u>i</u>nterface (CLI) environment (such as in a terminal emulator like
+<code>qterminal</code>) or via the <u>g</u>raphical <u>u</u>ser
+<u>i</u>nterface (GUI) option, which features a progress meter and
+summary notification popup.</li>
+<li><u>Non-intrusive design:</u> systemcheck is designed to be read-only
+and does not intentionally change the system state.</li>
+<li><u>Optional component:</u> Kicksecure remains functional without
+running systemcheck, as it is purely for status checking.</li>
+<li><u>Silent operation by default:</u> Many checks produce no output
+unless warnings or errors occur. For detailed success and skip messages,
+use the <code>--verbose</code> option.</li>
+<li><u>Community benefit:</u> systemcheck keeps the entire Kicksecure
+community informed about critical updates or guidance, especially for
+users who do not frequently launch the browser or visit the Kicksecure
+website.</li>
+</ul>
+<h1 id="Running_systemcheck">Running systemcheck</h1>
+<p>systemcheck verifies that the Kicksecure system is up-to-date and
+that everything is in proper working order.</p>
+<p>Follow the steps below to manually run systemcheck and check the
+system status.</p>
+<h2 id="How-to:_Manually_Run_systemcheck">How-to: Manually Run
+systemcheck</h2>
+<div class="info-box ">
+<p><u>If you are using <a href="Qubes.html">Kicksecure for
+Qubes</a></u>, complete the following steps. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><code>Qubes App Launcher (blue/grey "Q")</code> ->
+<code>click the VM you want to check</code> ->
+<code>System Check</code></p>
+<p><u>If you are using a graphical environment</u>, complete the
+following steps.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Start <code>systemcheck</code>.</p>
+<p><code>Start Menu</code> -> <code>System</code> ->
+<code>systemcheck</code></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Done.</p>
+<p><code>systemcheck</code> has been started from the Start Menu.</p>
+<p><u>If you are using a terminal environment</u>, complete the
+following step.</p>
+<p>Standard run.</p>
+<p><span class="code-select">systemcheck</span></p>
+<p>Verbose run (for <a href="Advanced_Users.html">Advanced
+Users</a> only).</p>
+<p><span class="code-select">systemcheck --verbose</span></p>
+</div>
+<p>Depending on system specifications, systemcheck can take up to a few
+minutes to complete. If everything is working as intended, the output
+should highlight each <span> INFO </span> heading
+in green (not red). A successful systemcheck process will have output
+similar to below.</p>
+<h2 id="Sample_systemcheck_Output">Sample systemcheck Output</h2>
+<pre><code>[INFO] [systemcheck] Kicksecure | Kicksecure kicksecure-18 TemplateBased AppVM | Sun 25 Apr 2021 07:56:41 AM UTC
+[INFO] [systemcheck] Connected to Tor.
+[INFO] [systemcheck] Kicksecure APT Repository: Enabled.
+When the Kicksecure team releases BUSTER-PROPOSED-UPDATES updates,
+they will be AUTOMATICALLY installed (when you run apt full-upgrade)
+along with updated packages from the Debian team. Please
+read https://www.kicksecure.com/wiki/Trust to understand the risk.
+If you want to change this, use:
+&lt;code&gt;sudo repository-dist&lt;/code&gt;
+[INFO] [systemcheck] Debian Package Update Check: Checking for software updates via apt... ( Documentation: https://www.kicksecure.com/wiki/Update )
+[INFO] [systemcheck] Debian Package Update Check Result: No updates found via apt.
+[INFO] [systemcheck] Please donate!
+See: https://www.kicksecure.com/wiki/Donate</code></pre>
+<h2 id="Tor_Bootstrap">Tor Bootstrap</h2>
+<p>Tor bootstrap refers to the process of attempting to connect to the
+Tor network (successfully or unsuccessfully). Familiar output related to
+this process includes: "Tor connecting xx percent...", "Tor not
+connected", "Tor connected" and so on. Bootstrapping does not refer to
+related concepts, such as whether connections are "secure", "not
+secure", "anonymous" or "not anonymous".</p>
+<h1 id="System_Checks">System Checks</h1>
+<p>systemcheck runs a long list of checks, but it intentionally hides
+most "all good" messages to avoid overwhelming users. Errors and
+warnings are always displayed, while detailed success messages require
+<code>--verbose</code>. Any operating system updates, downloads or other
+network activity are Tor stream-isolated by default.</p>
+<table>
+<caption><em>System Checks run by
+<code>systemcheck</code></em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Check</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Canary</p></td>
+<td><p>An automated Kicksecure warrant canary check is available with
+the <code>--verbose</code> parameter, see: <a href="#Warrant_Canary_Check">Warrant Canary
+Check</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Clock Source</p></td>
+<td><p>Check if the clock source is KVMClock and warn if that is the
+case. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Entropy Test</p></td>
+<td><p>An entropy availability check confirms
+<span>/proc/sys/kernel/random/entropy_avail</span>
+contains no less than 112 bits.</p></td>
+</tr>
+<tr class="even">
+<td><p>Hostname</p></td>
+<td><p>Check if:</p>
+<ul>
+<li><span>hostname --fqdn</span>
+outputs
+<span>host.localdomain</span>.</li>
+<li><span>hostname </span> outputs
+<span>host</span>.</li>
+<li><span>hostname --ip-address
+</span> outputs
+<span>127.0.0.1</span>.</li>
+<li><span>hostname --domain </span>
+outputs <span>localdomain</span>.</li>
+</ul>
+<p>(Whonix only.)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Connectivity Tests</p></td>
+<td><p>When using <code>--ip-test</code> (previously called, same as
+<code>--leak-tests</code>):</p>
+<ol>
+<li>Download <a href="https://check.torproject.org">https://check.torproject.org</a>
+with curl through an extra <code>SocksPort</code>.</li>
+<li>Download <a href="https://check.torproject.org">https://check.torproject.org</a>
+with curl through regular connection.</li>
+</ol>
+<p>Checks if <code>check.torproject.org</code> reports the IP to be a
+Tor IP address.</p></td>
+</tr>
+<tr class="even">
+<td><p>Log Inspection</p></td>
+<td><p>When using the <code>--verbose</code> option, check if
+<span>~/.msgcollector/msgdispatcher-error.log</span>
+exists and report this if confirmed.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Meta-package Check</p></td>
+<td><p>Check if the relevant meta-packages <sup class="reference"><a href="#cite_note-3">[3]</a></sup> are
+installed. Also see: <a href="Debian_Packages.html">Kicksecure Debian Packages</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Network Connection</p></td>
+<td><p><s>Check that setup-dist has properly configured
+networking.</s></p></td>
+</tr>
+<tr class="odd">
+<td><p>Operating System Updates Check</p></td>
+<td><p>"apt-get update" is run. A notification is provided whether the
+system is up-to-date or requires updating.</p></td>
+</tr>
+<tr class="even">
+<td><p>Package Manager</p></td>
+<td><p>Check if a package manager is currently running and wait until
+the process is finished. <sup class="reference"><a href="#cite_note-4">[4]</a></sup> This prevents connection
+failures during concurrent upgrades.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Tor</p></td>
+<td><p>Check:</p>
+<ul>
+<li>If Tor has been enabled by checking whether
+<span>DisableNetwork 1</span> has been
+commented out from
+<span>/usr/local/etc/torrc.d/50_user.conf</span>.</li>
+<li>The validity of Tor configuration files.</li>
+<li>Notify about the Tor connection and IP address. <sup class="reference"><a href="#cite_note-5">[5]</a></sup>
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
+</ul>
+<p>(Whonix only.)</p></td>
+</tr>
+<tr class="even">
+<td><p>Services (systemd)</p></td>
+<td><p>Looks for systemd units that are not healthy and reports details
+on problems.</p>
+<ul>
+<li>System units: checks for units in state <code>failed</code>,
+<code>activating</code>, or <code>deactivating</code> using
+<code>leaprun read-systemctl-logs-failed-units</code> (pretty output:
+<code>leaprun read-systemctl-logs-failed-units-pretty</code>).</li>
+<li>User units: checks the per-user systemd instance using
+<code>systemctl --user --no-legend --no-pager --no-block --state=failed,activating,deactivating list-units</code>.</li>
+</ul>
+<p>Shows the full command output and provides manual reproduction steps
+when an issue is detected. Mostly quiet on success unless using
+<code>--verbose</code>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>pkexec Self-Test</p></td>
+<td><p>Run a PolicyKit self-test
+(<code>pkexec /usr/libexec/systemcheck/pkexec-test</code>) to verify
+authorization is implemented as designed. Produces output only on
+failure.</p></td>
+</tr>
+<tr class="even">
+<td><p>Privilege Escalation Framework</p></td>
+<td><p>Verify that privilege escalation is implemented as designed
+(privleap, sudo, pkexec, etc.)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Repository Notification</p></td>
+<td><p>Notifies whether <a href="Project-APT-Repository.html">Derivative APT Repository</a> is enabled or
+not.</p></td>
+</tr>
+<tr class="even">
+<td><p>Stream Isolation</p></td>
+<td><p>When using <code>--ip-test</code> (previously called, same as
+<code>--leak-tests</code>):</p>
+<ol>
+<li>Download <a href="https://check.torproject.org">https://check.torproject.org</a>
+with curl through an extra <code>SocksPort</code>.</li>
+<li>Download <a href="https://check.torproject.org">https://check.torproject.org</a>
+with curl through regular connection.</li>
+</ol>
+<p>A stream isolation test checks that the IP addresses from (1) and (2)
+differ.</p>
+<p>(Whonix only)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Tor Bootstrap</p></td>
+<td><p>Shows Tor bootstrap status messages (for example: "Tor connecting
+xx percent...", "Tor not connected", "Tor connected"). Also see: <a href="#Tor_Bootstrap">Tor Bootstrap</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Miscellaneous</p></td>
+<td><ul>
+<li>control port filter proxy running (Whonix only)</li>
+<li>remarkable kernel messages</li>
+<li>timedatectl check</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Virtualization Platform</p></td>
+<td><p>Check Kicksecure is being run on one of the supported virtualizer
+platforms, including <a href="VirtualBox.html">VirtualBox</a>, <a href="KVM.html">KVM</a>
+or <a href="Qubes.html">Qubes</a>. (Whonix only.)</p></td>
+</tr>
+<tr class="even">
+<td><p>su access check</p></td>
+<td><p>Checks if su is locked down so only root can use su.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Full Disk Encryption (crypt-check)</p></td>
+<td><p>Check if the root partition is encrypted (LUKS header detection).
+Prints an info message on success or failure. Also see: <a href="Systemcheck.html#Physical_Security_Check">Physical
+Security Check</a>. (When running on real hardware only.)</p></td>
+</tr>
+<tr class="even">
+<td><p>GRUB Security</p></td>
+<td><p>GRUB bootloader password set or not.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Unwanted Packages Check</p></td>
+<td><p>Check for packages listed as unwanted (see configuration
+directive <code>systemcheck_unwanted_package</code>) and warn if any are
+installed. Also see: <a href="Systemcheck.html#Unwanted_Packages_Check">Unwanted Packages Check</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Physical Security Check</p></td>
+<td><p>See <a href="Systemcheck.html#Physical_Security_Check">Physical Security Check</a>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Environment Variables</p></td>
+<td><p>Verifies expected flag environment variables are present to
+distinguish the environment.</p>
+<ul>
+<li>On Whonix, checks <code>WHONIX=1</code>.</li>
+<li>On Kicksecure, checks <code>KICKSECURE=1</code>.</li>
+</ul>
+<p>Warns if missing.</p></td>
+</tr>
+<tr class="even">
+<td><p>Network Interface Checks</p></td>
+<td><p>Verifies at least one external network interface is up, using
+different mechanisms depending on platform.</p>
+<ul>
+<li>Kicksecure: uses a helper script (for example
+<code>check-network-access</code>) to detect global IP
+connectivity.</li>
+<li>Whonix: uses <code>leaprun</code> link tests on <code>eth0</code>
+(and also <code>eth1</code> on gateway).</li>
+</ul>
+<p>In Qubes TemplateVMs, networking is assumed inactive and the result
+may be reported as unknown.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Tor <code>SocksPort</code> Reachability</p></td>
+<td><p>todo: document</p></td>
+</tr>
+<tr class="even">
+<td><p>Spectre and Meltdown Vulnerability Check</p></td>
+<td><p>Optionally runs <code>spectre-meltdown-checker</code> (when
+explicitly enabled). Uses a timeout and warns if the checker indicates
+potential vulnerability.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Time and Timezone Checks</p></td>
+<td><p>Confirms the system timezone and time handling are sane. (Whonix
+only)</p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor mpa-visible" id="Journal_Inspection_and_Diagnostics_Logs">Journal
+Inspection and Diagnostics Logs</span></p></td>
+<td><p>Checks the systemd journal for unusual entries and reports
+them.</p>
+<ul>
+<li>Critical kernel log messages: uses
+<code>leaprun log-checker-check_critical_logs</code> and treats matches
+such as "Bad RAM detected" or "self-detected stall on CPU" as severe and
+likely to cause follow-up issues.</li>
+<li>Service and diagnostics log messages: uses
+<code>leaprun log-checker-check_service_logs</code> and reports findings
+(output is more visible when using <code>--verbose</code>).</li>
+</ul>
+<p>Includes manual investigation hints and may show additional
+platform-specific advice (for example VirtualBox related
+notes).</p></td>
+</tr>
+<tr class="odd">
+<td><p>Debian End-of-Life Status</p></td>
+<td><p>Checks whether the underlying Debian release is end-of-life and
+warns if the platform is no longer supported.</p></td>
+</tr>
+<tr class="even">
+<td><p>User and sysmaint Account Separation</p></td>
+<td><p>Checks whether user maintenance separation (for example
+<code>user-sysmaint-split</code>) is in effect and whether account
+separation expectations are met, warning if misconfigured.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Login Restrictions</p></td>
+<td><p>Checks login security posture such as password presence and
+autologin status for local Linux accounts as part of physical security
+related checks, warning when insecure settings are detected.</p></td>
+</tr>
+<tr class="even">
+<td><p>Secure Boot Status</p></td>
+<td><p>Checks Secure Boot status and reports unexpected states depending
+on platform and expectations.</p></td>
+</tr>
+<tr class="odd">
+<td><p>"tirdad" Module Check</p></td>
+<td><p>Checks for the presence of the <code>tirdad</code> module and
+warns on unexpected findings.</p></td>
+</tr>
+<tr class="even">
+<td><p>APT Repository Consistency</p></td>
+<td><p>todo: document</p></td>
+</tr>
+<tr class="odd">
+<td><p>IP Forwarding Disabled</p></td>
+<td><p>Confirmation that IP forwarding is disabled, warning if routing
+behavior is detected when it should not occur by default.
+(Whonix-Gateway only.)</p></td>
+</tr>
+<tr class="even">
+<td><p>Output Behavior and Verbose Mode</p></td>
+<td><p>Many checks are intentionally quiet on success to reduce noise.
+Warnings and errors are always displayed. Success, skip and
+informational output becomes much more visible when using
+<code>--verbose</code>.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Update_Notifications_by_updatecheck">Update Notifications by
+updatecheck</h1>
+<p><strong>Figure:</strong> <em>updatecheck notification (passive
+popup)</em></p>
+<p><img src="../media/updatecheck.png.webp" width="400" alt="updatecheck.png" /></p>
+<p>Platform specific.</p>
+<ul>
+<li><u>Kicksecure:</u> Applicable. See below.</li>
+<li><u>Kicksecure for Qubes:</u> Not applicable, because Qubes has its
+own updater, which is documented on the <a href="Operating_System_Software_and_Updates.html">Operating
+System Software and Updates</a> wiki page.</li>
+</ul>
+<p>Runs approximately every 6 hours.</p>
+<p>Features:</p>
+<ul>
+<li><u>Passive popup:</u> Shows a notification without requiring
+immediate interaction.</li>
+<li><u>Deferred update check:</u> Waits for a good time to run the
+update check.
+<ul>
+<li><u>Boot delay:</u> Waits 2 minutes after boot before checking for
+updates, to give the user a chance to run APT before the package
+database gets locked. updatecheck runs APT, which locks the package
+database as it updates it.</li>
+<li><u>Tor bootstrap wait:</u> Runs
+<span class="code-select inline-style">leaprun
+onion-time-pre-script</span> up to 5 times until it succeeds. Waits 2
+minutes between each call if it fails. This is to ensure Tor bootstrap
+has been completed.</li>
+<li><u>Time synchronization wait:</u> Waits up to 6 minutes for sdwdate
+to complete time synchronization.</li>
+<li><u>APT lock wait:</u> Waits up to 20 minutes for the package
+database to be unlocked, which means no other APT process (run by the
+user) is currently locking it.</li>
+</ul></li>
+<li><u>Stale notification cleanup:</u> Stale notifications are cleared.
+If there was an issue upgrading but not when updatecheck runs again, the
+stale, no longer applicable notification will be cleared to avoid
+confusion.</li>
+</ul>
+<p><u>Note:</u> No administrative ("<a href="Root.html"><code>root</code></a>") rights required. Do <u>not</u>
+use <u>sudo</u>!</p>
+<p>Check logs.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+View the logs.</p>
+<p><span class="code-select">journalctl --boot --user -u
+updatecheck.service</span></p>
+<p>Check status.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Check the service status.</p>
+<p><span class="code-select">systemctl --boot --user status
+updatecheck.service</span></p>
+<p>Disable.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Disable the service.</p>
+<p><span class="code-select">systemctl --user mask
+updatecheck.service</span></p>
+<p>Re-enable.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Re-enable the service.</p>
+<p><span class="code-select">systemctl --user unmask
+updatecheck.service</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Done.</p>
+<p>Information for developers: See wiki page <a href="Dev/Automatic_Updates.html">Dev/Automatic Updates</a>
+chapter <a href="Dev/Automatic_Updates.html#updatecheck">updatecheck</a>.</p>
+<h2 id="updatecheck_for_accounts_other_than_user">updatecheck for
+accounts other than user</h2>
+<p>updatecheck starts automatically when a normal user logs in
+graphically into a normal desktop. This is triggered by the file
+<code>/etc/xdg/autostart/updatecheck.desktop</code>. This is only
+expected to happen if the system is booted in
+<code>PERSISTENT mode - USER session</code> or
+<code>LIVE mode - USER session</code>. This means all normal user
+accounts will automatically have updatecheck working for them.</p>
+<p>When <code>user-sysmaint-split</code> is installed, the
+<code>sysmaint</code> user account will only be able to log into a
+sysmaint graphical session, and only when the system is booted into a
+<code>SYSMAINT session</code>. The sysmaint graphical session is not a
+normal desktop, and it does not automatically run all of the services
+configured in <code>/etc/xdg/autostart</code>. This means updatecheck
+will not run in a sysmaint session.</p>
+<h1 id="Physical_Security_Check">Physical Security Check</h1>
+<div class="intro-like">
+<p>Several checks related to <a href="Protection_Against_Physical_Attacks.html">Protection
+Against Physical Attacks</a>.</p>
+</div>
+<p><strong>Figure:</strong> <em>systemcheck - Physical Security
+Check</em></p>
+<p><img src="../media/physical-security-check.png.webp" width="600" alt="physical-security-check.png" /></p>
+<p>Checks <u>included</u>:</p>
+<ul>
+<li><u><a href="Login.html">Login</a> security check:</u>
+<ul>
+<li><u>Password status:</u> Checks if all Linux user accounts have a
+password set or if it is absent.</li>
+<li><u>Autologin status:</u> Checks if all Linux user accounts have an
+autologin set or if it is absent.</li>
+</ul></li>
+<li><u>Full disk encryption:</u> Whether <a href="Full_Disk_Encryption.html"><u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE)</a> is
+enabled or disabled.</li>
+<li><u>Bootloader password:</u> Whether the <a href="Grub.html">GRUB</a> boot menu is protected by a <a href="Protection_Against_Physical_Attacks.html#Bootloader_Password">Bootloader Password</a>.</li>
+</ul>
+<p>Checks <u>not</u> included:</p>
+<ul>
+<li><u>BIOS password:</u> <a href="Protection_Against_Physical_Attacks.html#BIOS_Password">BIOS Password</a> check. Operating systems do not have
+permission to detect if a BIOS password is set or absent.</li>
+</ul>
+<h2 id="Login_Security_Check_-_Meaning_of_Colors">Login Security Check -
+Meaning of Colors</h2>
+<div class="intro-like">
+<p><code>systemcheck</code>'s login security check table displays
+information about the password and autologin status of each standard
+user account on the system. Each entry in this table is color-coded to
+indicate whether the current configuration is secure or not.</p>
+</div>
+<p>The following table explains the color meanings for the Password
+column.</p>
+<table>
+<caption>Password column</caption>
+<thead>
+<tr class="header">
+<th><p>Color</p></th>
+<th><p>Password Status</p></th>
+<th><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Green</p></td>
+<td><p><span class="nowrap">Locked (Present),</span><br />
+<span class="nowrap">Restricted (Present),</span><br />
+<span class="nowrap">Locked (Absent),</span><br />
+<span class="nowrap">Restricted (Absent),</span><br />
+<span class="nowrap">Present</span></p></td>
+<td><p>Likely to be secure. If an account cannot be logged into at a
+login prompt, or requires a password to log in, it is resistant to
+malicious login attempts. Note that if a weak password is assigned to an
+account, it may still be insecure.</p></td>
+</tr>
+<tr class="even">
+<td><p>Yellow</p></td>
+<td><p>Absent, for non-root accounts</p></td>
+<td><p>May be a security risk. Passwordless accounts can be logged into
+without authentication, which makes them dangerous if an attacker can
+access the machine and the account has access to sensitive data. Many
+users do not have physical attackers in their threat model, or have
+other protections that mitigate this (such as full disk encryption), so
+this is not always a problem.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Red</p></td>
+<td><p>Absent, for the root account</p></td>
+<td><p>Always a security risk. The root account should never be
+passwordless, as this may allow unprivileged malicious programs to
+escalate to root without user interaction.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The following table explains the color meanings for the Autologin
+column.</p>
+<table>
+<caption>Autologin column</caption>
+<thead>
+<tr class="header">
+<th><p>Color</p></th>
+<th><p>Autologin Status</p></th>
+<th><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Green</p></td>
+<td><p>Disabled</p></td>
+<td><p>Likely to be secure. If autologin is disabled, an account's
+password (if any) is required to log into it.</p></td>
+</tr>
+<tr class="even">
+<td><p>Yellow</p></td>
+<td><p>Enabled, for non-root accounts</p></td>
+<td><p>May be a security risk. Autologin bypasses the password of the
+autologin-enabled account. The same concerns for passwordless accounts
+apply here.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Red</p></td>
+<td><p>Enabled, for the root account</p></td>
+<td><p>Always a security risk. The user will likely end up using the
+root account for general computing tasks if autologin is enabled for
+root, dramatically increasing the system's attack surface and breaking
+various applications.</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Unwanted_Packages_Check">Unwanted Packages Check</h1>
+<p>Unwanted packages that systemcheck will warn against.</p>
+<p>systemcheck default configuration file
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/blob/master/etc/systemcheck.d/30_default.conf">Kicksecure/systemcheck</a></span>
+contains several configuration directives
+<code>systemcheck_unwanted_package</code>.</p>
+<p>At the time of writing, these are packages associated with privacy
+issues or deprecated packages.</p>
+<h1 id="Version_Numbers">Version Numbers</h1>
+<p><span class="manually-placed-anchor " id="Whonix_Build_Version"></span>
+<span class="manually-placed-anchor " id="Kicksecure_Build_Version"></span></p>
+<h2 id="Build_Version">Build Version</h2>
+<ul>
+<li><i class="fa-solid fa-lock cs-blue"></i><span><u>Build version never
+changes:</u> The Kicksecure build version - the version number of the
+Kicksecure build - is immutable, similar to a date of birth. It does not
+change and is not supposed to.</span></li>
+<li><i class="fa-solid fa-clock cs-blue"></i><span><u>Version embedded
+at build time:</u> When the image is created, the current Kicksecure
+version number is embedded in it. This allows <code>systemcheck</code>
+to determine which build script version was used.</span></li>
+<li><i class="fa-solid fa-screwdriver-wrench cs-blue"></i><span><u>Static
+for diagnostics:</u> The version number remains fixed and is not
+affected by updates. It is mainly relevant to older build script
+versions and is useful for diagnostics. Deprecated builds may be
+announced if upgrading becomes too difficult or costly. In such cases,
+we intend to use systemcheck or dismissable one time popups to inform
+users.</span></li>
+<li><i class="fa-solid fa-ban cs-blue"></i><span><u>Non-upgradable build
+version numbers:</u> Build version cannot be upgraded. This is by
+design.</span></li>
+<li><i class="fa-solid fa-user-check cs-blue"></i><span><u>Generally not
+important for users:</u> Unless instructed otherwise by documentation or
+developers, users typically do not need to worry about the build
+version.</span></li>
+<li><i class="fa-solid fa-arrow-up-right-dots cs-green"></i><span><u>Updates
+remain possible:</u> <a href="Operating_System_Software_and_Updates.html#Standard_Update_Steps">Standard ("everyday") updates</a> can still be
+installed.</span></li>
+<li><i class="fa-solid fa-rocket cs-green"></i><span><u>Release upgrades
+remain possible:</u> Even <a href="Release_Upgrade.html">Release Upgrades</a> are typically possible when
+announced via Kicksecure News. So <a href="Stay_Tuned.html">Follow Announcements</a>.</span></li>
+<li><i class="fa-solid fa-book cs-blue"></i><span><u>See also:</u> <a href="Operating_System_Software_and_Updates.html#Update_vs_Image_Re-Installation">Update vs Image Re-Installation</a>.</span></li>
+</ul>
+<h2 id="Check_Version">Check Version</h2>
+<p>To check the current Kicksecure version, run the following
+command:</p>
+<p><span class="code-select">systemcheck --verbose --function
+show_versions</span></p>
+<p>The output should be similar to the following, depending on the
+platform.</p>
+<p>Non-Qubes:</p>
+<pre><code>[INFO] [systemcheck] Kicksecure build version: 18.2.1.9
+[INFO] [systemcheck] dist-general-cli: 35.8-1
+[INFO] [systemcheck] derivative_major_release_version /etc/kicksecure_version: 18</code></pre>
+<p>Qubes:</p>
+<pre><code>[INFO] [systemcheck] Kicksecure build version: 3:14.1-1
+[INFO] [systemcheck] dist-general-cli: 35.8-1
+[INFO] [systemcheck] derivative_major_release_version /etc/kicksecure_version: 18</code></pre>
+<h2 id="Technical_Details">Technical Details</h2>
+<p>For advanced users only.</p>
+<p>The <a href="https://github.com/Kicksecure/dist-base-files"><code>dist-base-files</code></a>
+package contains the script
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst">Kicksecure/dist-base-files</a></span>,
+which essentially runs:</p>
+<pre><code>echo &quot;$dist_build_version&quot; &gt; &quot;$build_version_file&quot;</code></pre>
+<p>Platform-specific details:</p>
+<ul>
+<li>For non-Qubes, this corresponds to the derivative-maker Git tag
+version used to create the image.</li>
+<li>For Qubes, the following command is executed during the initial
+installation of <code>dist-base-files</code>.</li>
+</ul>
+<p><span class="code-select">zless
+/usr/share/doc/dist-base-files/changelog.Debian.gz | dpkg-parsechangelog
+-l- -SVersion</span></p>
+<h1 id="Warrant_Canary_Check">Warrant Canary Check</h1>
+<h2 id="Introduction_2">Introduction</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Prerequisite knowledge: <a href="Trust.html#canary">Kicksecure warrant canary</a>.</p>
+</div>
+<p>There are several reasons an Automated Warrant Canary Check is
+justified:</p>
+<ul>
+<li>The Kicksecure warrant canary has limited utility if it is forgotten
+over time and not regularly verified.</li>
+<li>It is unlikely the Kicksecure warrant canary is routinely verified
+by the community.</li>
+<li>If a community member discovers the Kicksecure warrant canary
+verification has failed, there is no effective way to notify all
+Kicksecure users.</li>
+</ul>
+<h2 id="Features">Features</h2>
+<table>
+<caption><em>Automated Warrant Canary Check Features</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Feature</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Function</p></td>
+<td><p>Functions similarly to an update check but determines if the
+Kicksecure warrant canary is still valid.</p></td>
+</tr>
+<tr class="even">
+<td><p>Security</p></td>
+<td><ul>
+<li>Downloads over Tor from <code>.onion</code> link <a href="http://download.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/developer-meta-files/canary/canary.txt.embed.sig"><code>canary.txt.embed.sig</code></a>.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+<li>The downloader
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/canary-download">Kicksecure/systemcheck</a></span>
+is written in the memory-safe Python language
+(<code>python3-requests</code>) and runs under a dedicated and limited
+Linux user account <code>canary</code>.</li>
+<li><code>canary.txt.embed.sig</code> is verified using
+<code>signify-openbsd</code>. <sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
+<li>Has an
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/etc/apparmor.d/usr.libexec.systemcheck.canary">Kicksecure/systemcheck</a></span>.</li>
+<li>Has
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/lib/systemd/system/canary.service">Kicksecure/systemcheck</a></span>.</li>
+<li>Similar to <a href="Sdwdate.html">sdwdate</a>, it
+fetches time from onion time sources.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Implementation details</p></td>
+<td><ul>
+<li>Minimal
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/canary-daemon">Kicksecure/systemcheck</a></span>
+(with <code>systemd-notify</code>).</li>
+<li>The
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/canary">Kicksecure/systemcheck</a></span>
+wrapper includes logic on when to run <code>canary-download.py</code>.
+<ul>
+<li>This only runs on Whonix-Gateway to reduce server load. (Whonix
+only.)</li>
+</ul></li>
+<li>Comprises a systemcheck module
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/check_warrant_canary.bsh">Kicksecure/systemcheck</a></span>.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Verbose parameter</p></td>
+<td><p>During the initial deployment phase of this new feature,
+systemcheck will only show canary status information when using the
+<code>--verbose</code> parameter. The reason is that there might be
+non-security-related potential bugs to address:</p>
+<ul>
+<li>The server file location might change.</li>
+<li>The server file might become unreadable due to Linux file access
+permissions.</li>
+<li>Onion connectivity issues could emerge.</li>
+<li>Server caching issues could serve a stale warrant copy.</li>
+<li>General warrant canary improvements.</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Troubleshooting</p></td>
+<td><p>In case of issues, manually verify the Kicksecure warrant canary.
+Also see: <a href="https://forums.whonix.org/t/whonix-warrant-canary/3208/24">Whonix
+Warrant Canary Forum Discussion</a></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Disable_Warrant_Canary_Check">Disable Warrant Canary Check</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+This disables automated verification of the Kicksecure warrant canary
+when running systemcheck.</p>
+</div>
+<p>This will prevent the daily Kicksecure census.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Open the following file with root rights.</p>
+<p>Open file <code>/etc/systemcheck.d/50_user.conf</code> in an editor
+with administrative ("<a href="Root.html"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/systemcheck.d/50_user.conf</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="Qubes.html">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/systemcheck.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="Qubes.html#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="Unspecific.html">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/systemcheck.d/50_user.conf</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Add the following content.</p>
+<p><span class="code-select">canary=false</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>The automated warrant canary check has been disabled.</p>
+<h2 id="autostart_systemcheck">autostart systemcheck</h2>
+<p>Perform these steps to automatically start <code>systemcheck</code>;
+this step is optional.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Create folder <code>~/.config/autostart</code>.</p>
+<p><span class="code-select">mkdir -p ~/.config/autostart</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Create a symlink from
+<code>/usr/share/applications/systemcheck.desktop</code> to
+<code>~/.config/autostart/systemcheck.desktop</code>.</p>
+<p><span class="code-select">ln -s
+/usr/share/applications/systemcheck.desktop
+~/.config/autostart/systemcheck.desktop</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p><code>systemcheck</code> will now automatically start after boot.</p>
+<h1 id="Arg_Max_Check">Arg Max Check</h1>
+<p>Only useful in case of systemcheck GUI issues.</p>
+<p><span class="code-select">systemcheck --function
+check_arg_max</span></p>
+<p>Expected result:</p>
+<pre><code>[INFO] [systemcheck] ERROR: ARG_MAX exceeded!
+
+debug information:
+output_func was called with too many arguments.
+${FUNCNAME[0]}: output_func
+${FUNCNAME[1]}: output_func_cli
+${FUNCNAME[2]}: check_arg_max
+${FUNCNAME[3]}: systemcheck_run_function
+${FUNCNAME[5]}: systemcheck_main
+${FUNCNAME[6]}: main
+$0: /usr/libexec/systemcheck/systemcheck</code></pre>
+<p>The output message will probably be improved in the future. "ERROR:
+ARG_MAX exceeded!" will be rewritten to "ARG_MAX detected.".</p>
+<h1 id="Related">Related</h1>
+<ul>
+<li><a href="System_Audit.html">System Audit</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Dev/systemcheck.html">Dev/systemcheck</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><code>Qube Manager</code> ->
+<code>right-click the VM you want to check</code> ->
+<code>select "</code><u><code>R</code></u><code>un command in qube"</code><br />
+<br />
+Type each command below, followed by the <code>ENTER</code> key.
+<i class="padded-content-icon pci-text fa-solid cs-blue iconset-h2">1</i>
+Open a terminal. <span class="code-select">qterminal</span>
+<i class="padded-content-icon pci-text fa-solid cs-blue iconset-h2">2</i>
+Run <code>systemcheck</code>.
+<span class="code-select">systemcheck</span>
+<i class="padded-content-icon pci-text fa-solid cs-blue iconset-h2">3</i>
+Done. <code>systemcheck</code> has been started in the selected
+Qube.</li>
+<li id="cite_note-2">This is only expected to affect those following the <a href="KVM.html">KVM</a> instructions.</li>
+<li id="cite_note-3">These capture packages which depend on all other recommended /
+default-installed packages.</li>
+<li id="cite_note-4">Otherwise, the system might become locked or the package manager
+might be left in a broken state. Advice is provided on what to do in
+such circumstances.</li>
+<li id="cite_note-5">Some users may wonder why it is necessary to check the IP address if
+the Kicksecure design ensures that the real IP cannot be leaked.
+Sometimes <code>check.torproject.org</code> reports false positives and
+fails to detect Tor exit nodes, so it is better to provide information
+about that possibility. This also reduces support requests and bad
+press. Users are welcome to investigate a Tor exit node that could not
+be detected, but it can be stated with high confidence that the IP
+address will be associated with a known Tor exit node.</li>
+<li id="cite_note-6">Another reason to perform this check is because some users set up
+dangerous and/or unsupported configurations, such as: * Using
+virtualizers which are entirely unsupported and untested by Kicksecure
+developers. * Installing arbitrary packages on Kicksecure
+(<code>kicksecure-18</code>). This could theoretically create leak
+vectors, and systemcheck is the last layer of defense against such
+issues.</li>
+<li id="cite_note-7"><span class="code-select">systemcheck --function check_su_access
+--verbose</span>
+<pre><code> [INFO] [systemcheck] su access check: Locked down - only account root can use su. See also: https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#su_restrictions </code></pre></li>
+<li id="cite_note-8">For convenience, the clearnet link (unused by systemcheck) can be
+previewed here: <a href="https://download.kicksecure.com/developer-meta-files/canary/canary.txt.embed.sig">https://download.kicksecure.com/developer-meta-files/canary/canary.txt.embed.sig</a></li>
+<li id="cite_note-9"><span class="code-select">sudo -u canary signify-openbsd -V -e -p
+/usr/share/repository-dist/derivative-distribution-signify-key.pub -x
+/var/lib/canary/canary.txt.embed.sig -m
+/var/lib/canary/canary-unembed.txt</span></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Boot_firmware.html" title="Boot firmware"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Boot
+firmware</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Basic_Security_Guide_Introduction.html" title="Basic Security Guide Introduction"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Basic
+Security Guide
+Introduction</span></a><span class="info"><span class="prev">Previous
+page: Boot firmware</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Basic Security Guide
+Introduction</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a> <a href="Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

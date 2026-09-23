@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/discourse</title>
+<meta name="description" content="Discourse, Miscellaneous">
+<meta property="og:description" content="Discourse, Miscellaneous">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/discourse.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/discourse.html">
+<meta property="og:title" content="Documentation for Kicksecure Discourse Devs">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>discourse</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#General_Setup">General Setup</a></li><li class="toc-l2"><a href="#Customization">Customization</a></li><li class="toc-l2"><a href="#Discourse_without_Javascript">Discourse without Javascript</a></li><li class="toc-l2"><a href="#Whonix_discourse_forums">Whonix discourse forums</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../PerformanceTests.html" title="PerformanceTests"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">PerformanceTests</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Documentation_Guidelines.html" title="Dev/Documentation Guidelines"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Documentation
+Guidelines</span></a><span class="info"><span class="prev">Previous
+page: PerformanceTests</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Documentation
+Guidelines</span></span></span>Documentation for Kicksecure Discourse
+Devs</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Wiki_Enhancements.html">Wiki
+Enhancements</a></li>
+<li><a href="wiki_todo.html">Wiki Editor ToDo</a></li>
+<li><a href="wiki.html">Wiki Editor Docs</a></li>
+<li><a href="website.html">Wiki Dev ToDo</a></li>
+<li><a href="mediawiki/Archive.html">Wiki Dev
+(archived)</a></li>
+<li><a href="mediawiki.html">Wiki Dev Docs</a></li>
+<li><a href="wikitest.html">Wiki Test Page</a></li>
+<li><a href="../PerformanceTests.html">Wiki Performance
+Tests</a></li>
+<li><a href="../TestpageForFlyInNotification.html">Fly-In-Banner Test</a></li>
+<li><a href="discourse.html">Discourse Dev Docs</a></li>
+<li><a href="todo.html">Developer ToDo</a></li>
+<li><a href="todo/archived.html">Developer ToDo
+(archived)</a></li>
+<li><a href="../Progress_Reports.html">Progress
+Reports</a></li>
+<li><a href="../Progress_Reports_1.html">(1)</a></li>
+<li><a href="../Progress_Reports_2.html">(2)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>One noteworthy software that is in use apart from the MediaWiki
+software for the Whonix and Kicksecure communities is Discourse. We have
+2 forums <a href="https://forums.whonix.org">https://forums.whonix.org</a> and <a href="https://forums.kicksecure.com">https://forums.kicksecure.com</a> .
+Both have themes installed and custom HTML/CSS</p>
+<div class="post-intro-p">
+</div>
+<h2 id="General_Setup">General Setup</h2>
+<ul>
+<li>Generally the Discourse (software) community doesn't seem too
+active. A lot of code is outdated. This also applies to the themes</li>
+<li>Several themes have bee checked for Whonix and Kicksecure, 2 were
+chosen, installed and activated</li>
+<li>For both themes there is a <strong>dark mode</strong>, but it seems
+to be only available globally
+<ul>
+<li>There is a component for switching to dark mode, but it is reported
+as broken.
+<ul>
+<li>We tested it but it appeared to be broken too <a href="https://meta.discourse.org/t/dark-light-mode-toggle/215585">https://meta.discourse.org/t/dark-light-mode-toggle/215585</a></li>
+<li>If this is VERY important for users we can look into writing a dark
+mode switcher ourselves (probably a longer task)</li>
+</ul></li>
+<li>Kicksecure: Theme "graceful"
+<ul>
+<li>Hyperlinks are very readable - dark mode is available</li>
+<li>Logo placement looks good</li>
+</ul></li>
+<li>Whonix: Theme is "air theme" - dark mode is available</li>
+</ul></li>
+</ul>
+<h2 id="Customization">Customization</h2>
+<ul>
+<li>There are some customizations for Discourse, namely with HTML and
+CSS. Mostly we use the <strong>"header" component</strong> in Admin &gt;
+Customize (for custom HTML and CSS)</li>
+<li>We also customize our themes there
+<ul>
+<li>For example the "Air Theme" in the Whonix forums is customized so
+that the category overview page is readable on mobile</li>
+</ul></li>
+</ul>
+<h2 id="Discourse_without_Javascript">Discourse without Javascript</h2>
+<ol>
+<li>Discourse heavily relies on Javascript. But it works without JS
+too.</li>
+<li>A lot of things in Discourse are done with Javascript including some
+content reorganization
+<ol>
+<li>Without JS they give you a "broad hint": "Powered by Discourse, best
+viewed with JavaScript enabled"</li>
+<li>This discussion also implies it's Javascript first: <a href="https://discourse.pijul.org/t/make-the-forum-usable-without-javascript/186">https://discourse.pijul.org/t/make-the-forum-usable-without-javascript/186</a></li>
+<li>However this doesn't mean it's not usable without JS - it is (which
+you can't say for many web apps)</li>
+</ol></li>
+<li>Unfortunately some themes have problems without Javascript and also
+some components</li>
+<li>So dev <strong>rule number 1</strong>: Always check how the page
+looks and works without Javascript - especially if you're working with
+third party components and themes</li>
+<li>In case of the Whonix forum the "Air Theme" does not work properly
+without Javascript. The background overlapped the foreground
+<ol>
+<li>The solution we applied was to add a noscript tag to the "header"
+component in Admin - sub section body</li>
+<li>In this noscript tag we have a script tag in which we declare that
+the blue background is not displayed without JS</li>
+<li>It is also important that we use the body subsection and NOT the
+footer subsection because the footer subsection is included via
+Javascript while the body section renders directly to the end of the
+body without Javascript</li>
+</ol></li>
+<li>Dev <strong>rule number 2</strong>: Always check which admin
+components to use.</li>
+<li>For example in the <strong>"header" component</strong> in Admin &gt;
+Customize (for custom HTML and CSS)
+<ol>
+<li>In the "body" (sub section tab "body") we have the noscript-tag
+which will be applied only if Javascript is DEACTIVATED.</li>
+<li>This has to be in the body section because for example the footer
+(sub section tab "footer") is NOT rendered without Javascript. But
+"body" is.</li>
+<li>Reversely we have the same content for the footer content AGAIN in
+the footer section, because this will be rendered if Javascript is
+active. And it will be rendered <strong>without "content
+jumping"</strong> because it will be rendered alongside the main
+content</li>
+</ol></li>
+</ol>
+<h1 id="mixed_content">mixed content</h1>
+<p>Did you upload / modify something related to <a href="http://forums.whonix.org/uploads/default/optimized/2X/2/222b7257d0600f2bc69cf77e6bc273aa0074ed4e_2_512x512.png">http://forums.whonix.org/uploads/default/optimized/2X/2/222b7257d0600f2bc69cf77e6bc273aa0074ed4e_2_512x512.png</a>
+?</p>
+<pre><code>Mixed Content: The page at &#39;https://forums.whonix.org/c/news/21&#39; was loaded over HTTPS, but requested an insecure element &#39;http://forums.whonix.org/uploads/default/optimized/2X/2/222b7257d0600f2bc69cf77e6bc273aa0074ed4e_2_512x512.png&#39;. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html</code></pre>
+<p>Mixed content warning fixable?</p>
+<p>But should not be hardcoded to https either to avoid breaking the
+onion.</p>
+<p><strong>DEV</strong></p>
+<ul>
+<li>research with "discourse Mixed Content: The page at"</li>
+<li>Answers suggest: This might be a discourse problem with installation
+and configuration</li>
+<li>The file is not listed in source code and not used in the dom</li>
+<li>It seems to be just pulled by javascript (internal discourse
+framework) but never used</li>
+<li>The problem also appears on every site of the forum not just the
+selected thread</li>
+<li>I tried re-uploading every branding picture but it didn't help</li>
+<li>Suggestion: more research but I skipped for now because it took too
+long</li>
+</ul>
+<h2 id="Whonix_discourse_forums">Whonix discourse forums</h2>
+<p>Many issues.</p>
+<p>non-JS version broken</p>
+<p>other issues on mobile</p>
+<p>todo: revert to upstream default [DONE]</p>
+<p><strong>DEV</strong></p>
+<ul>
+<li>The forum has been reverted to upstream default, but in a way to
+backup the changes (changed were commented out)</li>
+<li>Detailed steps
+<ul>
+<li>Admin &gt; Customize &gt; Themes : Theme default was set to
+"Default" theme and "Air theme" was set to be not available for users
+anymore</li>
+<li>Admin &gt; Customize &gt; Themes &gt; Default &gt; CSS : All
+settings were commented out</li>
+<li>Admin &gt; Customize &gt; Themes &gt; components &gt; header : All
+settings were commented out</li>
+</ul></li>
+</ul>
+<h1 id="Upstream_Bug_Reports">Upstream Bug Reports</h1>
+<ul>
+<li><a href="https://meta.discourse.org/t/noscript-users-unable-to-view-custom-footer-in-theme-customization/274696">NoScript
+Users Unable to View Custom Footer in Theme Customization</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../PerformanceTests.html" title="PerformanceTests"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">PerformanceTests</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Documentation_Guidelines.html" title="Dev/Documentation Guidelines"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Documentation
+Guidelines</span></a><span class="info"><span class="prev">Previous
+page: PerformanceTests</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Documentation
+Guidelines</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

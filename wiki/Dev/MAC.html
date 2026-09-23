@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/MAC</title>
+<meta name="description" content="Development notes for adding MAC address anonymization to Kicksecure.">
+<meta property="og:description" content="Development notes for adding MAC address anonymization to Kicksecure.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/MAC.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/MAC.html">
+<meta property="og:title" content="MAC Address - Development Notes">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>MAC</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../MAC_Address.html">MAC Address</a></li>
+<li><a href="MAC.html">MAC address (developers)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Development notes for adding MAC address anonymization to
+Kicksecure.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Reliable MAC hiding is difficult beyond practicality.</p>
+<p>MAC spoofing is just bolted-on, low priority. The Linux kernel,
+NetworkManager, systemd, udev, Debian, Kicksecure, Whonix, Qubes, any
+other Linux distribution or anyone else does not dedicate their life for
+the purpose of MAC hiding.</p>
+<p>There's the <a href="../MAC_Address.html#Auto-connect_Risk">Auto-connect Risk</a> when new devices are
+connected.</p>
+<p>We might also need to put MAC hiding into a bigger context by zooming
+out 1 level. What is the purpose of MAC hiding?</p>
+<p>By default, when using computers, there are some persistent
+identifiers that can be detected by the internet access point such as a
+WiFi router / hotspot. A MAC address is one such persistent
+identifier.</p>
+<p>A user that intents to hide their MAC address wishes to hide these
+persistent identifiers.</p>
+<p>How about other persistent identifiers? The wiki mentions <a href="../MAC_Address.html#Other_Location_Tracking_Risks">Other
+Location Tracking Risks</a>.</p>
+<h1 id="Leak-proof_MAC_Randomization_-_Technical_Implementation_Challenges">Leak-proof
+MAC Randomization - Technical Implementation Challenges</h1>
+<p>Leak-proof MAC randomization - ensuring that the real MAC address is
+never leaked - is very difficult to implement. Implementations using
+tools such as <code>NetworkManager</code>, <code>udev</code>, and/or the
+init system (such as <code>systemd</code>) might, in theory, leak the
+original MAC address. This is because these are complex code bases with
+intricate system interactions, where MAC randomization was not
+originally supported but later bolted on as an afterthought. Supporting
+MAC randomization at a different level, such as by the kernel, might be
+a more reliable approach to MAC randomization.</p>
+<p>Related bug reports and discussions:</p>
+<ul>
+<li>NetworkManager bug report: <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/1710">CRITICAL
+- True MAC address leaked during NM startup, despite rand/cloned being
+configured</a></li>
+<li><a href="https://forums.whonix.org/t/mac-randomization-is-flawed-proposed-new-solution/21366/8">https://forums.whonix.org/t/mac-randomization-is-flawed-proposed-new-solution/21366/8</a></li>
+<li><a href="https://forum.qubes-os.org/t/mac-randomization-is-flawed-proposed-new-solution/32150">https://forum.qubes-os.org/t/mac-randomization-is-flawed-proposed-new-solution/32150</a></li>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/11293#note_253628">https://gitlab.tails.boum.org/tails/tails/-/issues/11293#note_253628</a></li>
+<li>Tails ticket: <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17128">Investigate
+whether internal network adapters consistently use their previously
+spoofed MAC address after resuming from suspend</a></li>
+<li>Tails bug report <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17115">MAC
+spoofing can fail and disable a network adapter when waking up from
+suspend</a></li>
+</ul>
+<p>Related general security ecosystem-wide issues:</p>
+<ul>
+<li><a href="About_Computer_Insecurity.html">About
+Computer (In)Security</a></li>
+</ul>
+<h1 id="Other_Issues">Other Issues</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/mac-address-randomization-not-as-random-as-you-think/3791">https://forums.whonix.org/t/mac-address-randomization-not-as-random-as-you-think/3791</a></li>
+<li><a href="https://forums.whonix.org/t/your-mac-address-randomization-attempts-are-futile/2719">https://forums.whonix.org/t/your-mac-address-randomization-attempts-are-futile/2719</a></li>
+<li><a href="https://forums.whonix.org/t/mac-randomization-is-flawed-proposed-new-solution/21366">https://forums.whonix.org/t/mac-randomization-is-flawed-proposed-new-solution/21366</a></li>
+</ul>
+<h1 id="Use_Case_Overview">Use Case Overview</h1>
+<p>Attempting to design a user interface for a MAC changer that fulfills
+all requirements mentioned in <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5421">this
+issue</a>.</p>
+<p>To better understand the problem and ensure clarity in discussions,
+it may be helpful to create an overview. Therefore, a table summarizing
+various use cases is provided below.</p>
+<p>There are numerous different threat models and goals. This complexity
+might make it too difficult for the average user. Supporting all use
+cases would result in a massive user interface, just for deciding which
+MAC address to use.</p>
+<p>A public computer could be, for example, a library computer.</p>
+<p>Public network_C could be a free WiFi hotspot in a mall.</p>
+<p>Public network_A, public network_B, public network_D, and public
+network_E could be different coffee shops with free WiFi.</p>
+<table>
+<thead>
+<tr class="header">
+<th><p>Number</p></th>
+<th><p>Place</p></th>
+<th><p>Past Usage</p></th>
+<th><p>Threat Model</p></th>
+<th><p>New Recommendation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>1</p></td>
+<td><p>Home computer</p></td>
+<td><p>Real MAC</p></td>
+<td><p>None</p></td>
+<td><p>Macchiato MAC random</p></td>
+</tr>
+<tr class="even">
+<td><p>2</p></td>
+<td><p>Public computer</p></td>
+<td><p>Real MAC</p></td>
+<td><p>Changing MAC draws admin attention and/or breaks network
+access</p></td>
+<td><p>Real MAC</p></td>
+</tr>
+<tr class="odd">
+<td><p>3</p></td>
+<td><p>Public network_A</p></td>
+<td><p>Real MAC</p></td>
+<td><p>Admin monitors for consistent MAC addresses</p></td>
+<td><p>Real MAC</p></td>
+</tr>
+<tr class="even">
+<td><p>4</p></td>
+<td><p>Public network_B</p></td>
+<td><p>Macchanger random MAC_B</p></td>
+<td><p>Admin checks for consistent MAC addresses but does not monitor
+Tor usage or vendor IDs</p></td>
+<td><p>Macchanger random MAC_B</p></td>
+</tr>
+<tr class="odd">
+<td><p>5</p></td>
+<td><p>Public network_C</p></td>
+<td><p>Never used</p></td>
+<td><p>High user volume; admin logs MAC addresses and detects uncommon
+vendor IDs</p></td>
+<td><p>Random Macchiato MAC</p></td>
+</tr>
+<tr class="even">
+<td><p>6</p></td>
+<td><p>Public network_D</p></td>
+<td><p>Never used</p></td>
+<td><p>Admin logs MAC addresses, detects uncommon vendor IDs, and looks
+for consistency</p></td>
+<td><p>Macchiato MAC_D</p></td>
+</tr>
+<tr class="odd">
+<td><p>7</p></td>
+<td><p>Public network_E</p></td>
+<td><p>Never used</p></td>
+<td><p>Admin logs MAC addresses, detects uncommon vendor IDs, and looks
+for consistency</p></td>
+<td><p>Macchiato MAC_E</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Legend:</strong></p>
+<ul>
+<li><strong>Consistent MAC:</strong> Always the same once chosen,
+instead of generating a new one each time.</li>
+<li><strong><a href="https://github.com/EtiennePerot/macchiato">Macchiato</a></strong></li>
+<li><strong>Macchiato MAC random:</strong> Uses a popular vendor ID, but
+the latter part changes randomly each time.</li>
+<li><strong>Macchiato MAC_D (or E):</strong> Uses a popular vendor ID;
+the latter part is randomly generated upon first use but remains
+consistent when selecting Macchiato MAC_D or MAC_E in the future.</li>
+</ul>
+<h1 id="Or_in_Words...">Or in Words...</h1>
+<ol>
+<li>"I am using my home computer. Give me a Macchiato MAC random. I
+don't really need it, but it makes me feel better. Just in case."</li>
+<li>"I am using a public computer. Don't change the MAC. Otherwise, this
+might attract unwanted admin attention or make the network
+inaccessible."</li>
+<li>"I am using public network_A. I have always used my real MAC in the
+past. The admin knows all users and gets suspicious if someone changes
+their MAC. Stick to my real MAC."</li>
+<li>"I am in public network_B again. I previously used Macchanger to get
+a random MAC_B. The admin checks for consistency but does not recognize
+that the vendor ID is non-existent. Stick to my old random MAC_B."</li>
+<li>"I am using public network_C for the first time. Many users connect
+here, and I believe the admin logs all MAC addresses. I also suspect the
+admin is aware of uncommon vendor IDs and GNU Macchanger. Since this is
+a popular network, the admin won't remember me specifically. Assign me a
+random MAC from a popular vendor ID (Macchiato)."</li>
+<li>"I am using public network_D for the first time. I suspect the admin
+logs MAC addresses and recognizes uncommon ones. The admin also gets
+suspicious if someone changes their MAC frequently. Assign me a random
+MAC from a popular vendor ID, name it MAC_D, and ensure I use the same
+one whenever I revisit this network."</li>
+<li>"Yes, network_E is very similar to network_D. I suspect the admin
+logs MAC addresses and detects uncommon ones. The admin also gets
+suspicious if someone changes their MAC frequently. Assign me a random
+MAC from a popular vendor ID, name it MAC_E, and ensure I use the same
+one whenever I revisit this network. Don't confuse it with other
+MACs."</li>
+</ol>
+<h1 id="Thoughts">Thoughts</h1>
+<p>Supporting use cases 6 and 7 would either require persistence or
+require the user to remember or write down the MAC address, which is
+difficult.</p>
+<p>An ideal solution should not require persistence.</p>
+<p>A possible approach is for the user to enter a keyword, and using
+that keyword would consistently generate the same Macchiato MAC_D or
+Macchiato MAC_E.</p>
+<h1 id="Newer">Newer</h1>
+<p>Thesis:</p>
+<p><blockquote><p>Like with Tor and anonymity in general, you cannot hide the fact that
+you are trying to hide.</p></blockquote></p>
+<p>See also:</p>
+<ul>
+<li><a href="../Fingerprint.html">Fingerprint</a></li>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+<li><a href="https://forums.whonix.org/t/idea-proposal-of-cover-traffic-a-fake-workstation/146">https://forums.whonix.org/t/idea-proposal-of-cover-traffic-a-fake-workstation/146</a></li>
+</ul>
+<p>From <a href="https://tails.boum.org/contribute/design/MAC_address/">this Tails
+design page</a>:</p>
+<p><blockquote><ul>
+<li><strong>AdvCapSniff</strong></li>
+<li><strong>AdvCapRecords</strong></li>
+<li><strong>AdvCapOwners</strong></li>
+</ul></blockquote></p>
+<p><blockquote><ul>
+<li><strong>AdvGoalTracking</strong></li>
+<li><strong>AdvGoalProfiling</strong></li>
+<li><strong>AdvCapOwners</strong></li>
+<li><strong>AdvGoalIdTails</strong></li>
+<li><strong>AdvGoalIdMacSpoof</strong></li>
+</ul></blockquote></p>
+<p><blockquote><ul>
+<li><strong>AvoidTracking</strong></li>
+<li><strong>AvoidIdTails</strong></li>
+<li><strong>AvoidIdMacSpoof</strong></li>
+<li><strong>AvoidConnectionProbs</strong></li>
+</ul></blockquote></p>
+<h1 id="Suspicious_MAC_Addresses">Suspicious MAC Addresses</h1>
+<p>When MAC spoofing design has been considered by Tails, an argument
+has been made about some types of random MAC addresses might raise
+suspicion. To explain this, one needs to know a bit about the format of
+a MAC address.</p>
+<p><blockquote><p>The first three bytes of a MAC address determine the Organizationally
+Unique Identifier (OUI) which in practice determines the chipset's
+manufacturer</p></blockquote></p>
+<p><blockquote><p>Adversary goals [...] Identify MAC spoofing individuals. We assume
+that our adversary has bought into the "nothing to hide" argument, which
+makes such suspicious behaviour valuable information.
+[AdvGoalIdMacSpoof] [...] Not raising alarms on the network, i.e.
+prevent AdvGoalIdMacSpoof, but also avoid alarming the local
+administrators (imagine a situation where security guards are sent to
+investigate an "alien computer" at your workplace, or similar).
+[AvoidIdMacSpoof] [...] Great care should be taken when picking the OUI
+to avoid these categories. The whole point is to randomly pick an OUI
+that the adversary expects to see. In particular the OUI should be one
+used for common, consumer oriented
+hardware.<span class="blockquote-context"><a href="https://tails.boum.org/contribute/design/MAC_address/">this Tails
+design page</a></span></p></blockquote></p>
+<p>So in summary, the argument has been brought forward, that if the OUI
+is non-existing (as in not assigned to any chipset manufacturer), this
+might raise suspicion. However, it is important to consider the context
+of that consideration. This has been considered many years before Apple
+iOS and Android started some form of MAC randomization.</p>
+<p>Is MAC randomization less suspicious nowadays that Apple and Android
+started with some form of MAC addresses randomization by default? This
+might depend on how exactly these popular phone producers randomize MAC
+addresses.</p>
+<p>For instance, Samsung randomizes MAC address by default per WiFi but
+keeps using same MAC per WiFi.</p>
+<p><blockquote><p>The Android framework uses two types of MAC randomization: <a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior#persistent">persistent
+randomization</a> and <a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior#non-persistent">non-persistent
+randomization</a>.<span class="blockquote-context"><a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior">Android:
+MAC randomization behavior</a></span></p></blockquote></p>
+<h1 id="Leak_Testing">Leak Testing</h1>
+<p>TODO:</p>
+<p>Can MAC address leak testing be done:</p>
+<ul>
+<li>non-Qubes: on the host operating system</li>
+<li>Qubes: inside sys-net</li>
+</ul>
+<p>Or,</p>
+<ul>
+<li>is using an outside device required?</li>
+</ul>
+<p>TODO: Log/report (hashed?) MAC addresses? Note in a log if the real
+MAC address or a spoofed MAC address has been used.</p>
+<h1 id="hostname">hostname</h1>
+<p>Hostname leaks...</p>
+<ul>
+<li>NetworkManager feature request: <a href="https://gitlab.freedesktop.org/NetworkManager/NetworkManager/-/issues/584">No
+way to set dhcp-send-hostname globally</a></li>
+<li>NetworkManager pull request: <a href="https://github.com/QubesOS/qubes-issues/issues/7701">device:
+Support configuring dhcp-send-hostname globally</a></li>
+<li>Quote Qubes feature request <a href="https://github.com/QubesOS/qubes-issues/issues/7701">Hostname leak
+prevention</a></li>
+</ul>
+<p><blockquote><p>The reason the hostname is not being sent on debian-11 is because
+/etc/hostname (the static hostname) file is missing (it needs to be
+present when NetworkManager service is started).</p></blockquote></p>
+<p>In conclusion, if using DHCP, it's best if file
+<code>/etc/hostname</code> does not exist.</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../MAC_Address.html">MAC Address</a></li>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+<li><a href="https://tails.boum.org/contribute/design/MAC_address/">Tails MAC
+Address Design</a></li>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5421">MAC
+Changer Issue</a></li>
+<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/macchanger/">Tails
+MAC Changer Wiki</a></li>
+<li>Worth reading! Thanks to Tails!</li>
+<li><a href="https://perot.me/mac-spoofing-what-why-how-and-something-about-coffee">https://perot.me/mac-spoofing-what-why-how-and-something-about-coffee</a></li>
+</ul>
+<h1 id="Forum_Discussions">Forum Discussions</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/mac-address-anonymization/24">https://forums.whonix.org/t/mac-address-anonymization/24</a></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/184">Kicksecure/security-misc</a></span></li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a> <a href="../Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

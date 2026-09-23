@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/yubikey</title>
+<meta name="description" content="YubiKey Development Notes and Threat Model">
+<meta property="og:description" content="YubiKey Development Notes and Threat Model">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/yubikey.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/yubikey.html">
+<meta property="og:title" content="Dev/yubikey">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>yubikey</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="grsecurity.html" title="Dev/grsecurity"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/grsecurity</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Astra_Linux.html" title="Dev/Astra Linux"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Astra
+Linux</span></a><span class="info"><span class="prev">Previous page:
+Dev/grsecurity</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Astra
+Linux</span></span></span>Dev/yubikey</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>YubiKey Development Notes and Threat Model</p>
+<div class="post-intro-p">
+</div>
+<h1 id="authentication_to_arbitrary_web_sites">authentication to
+arbitrary web sites</h1>
+<p>YubiKey authentication to arbitrary web sites, i.e. to websites that
+don't explicitly support YubiKey (U2F or similar) by themselves,
+archived. Some notes:</p>
+<ul>
+<li>YubiKey <a href="https://packages.debian.org/search?keywords=yubikey-personalization-gui">https://packages.debian.org/search?keywords=yubikey-personalization-gui</a>
+<ul>
+<li>backups are sorted in case a yubykey breaks or gets lost</li>
+<li>because the same HMAC-SHA1 secret can be written to all
+YubiKeys</li>
+<li>used "configuration slot 2", which somehow works with short touch of
+the YubiKey button as well</li>
+<li>"configuration slot 1" can be used for something else</li>
+</ul></li>
+</ul>
+<ul>
+<li>keepassxc installation hints: <a href="../Keepassxc.html">Keepassxc</a>
+<ul>
+<li>enable keepassxc browser integration</li>
+<li>set keepassxc to close its database when closed (minimized to
+tray)</li>
+<li>set keepassxc to always save the database on changes</li>
+<li><a href="https://github.com/smorks/keepasshttp-connector">https://github.com/smorks/keepasshttp-connector</a>
+<ul>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/keepasshttp-connector/">https://addons.mozilla.org/en-US/firefox/addon/keepasshttp-connector/</a></li>
+<li><a href="https://chrome.google.com/webstore/detail/keepasshttp-connector/dafgdjggglmmknipkhngniifhplpcldb">https://chrome.google.com/webstore/detail/keepasshttp-connector/dafgdjggglmmknipkhngniifhplpcldb</a></li>
+</ul></li>
+<li><s>result: Firefox's password manager uses keepassxc as backend. And
+keepassxc's database gets unlocked by password plus YubiKey. (It's
+and/or. Would also be possible only password or only YubiKey.)</s>
+<ul>
+<li>Firefox 54 with new add-on API (Web Extensions) broke it - <a href="https://github.com/smorks/keepasshttp-connector/issues/46#issuecomment-346847247">https://github.com/smorks/keepasshttp-connector/issues/46#issuecomment-346847247</a></li>
+</ul></li>
+<li>(Or keyfiles, but keyfiles make no sense since when using
+YubiKeys.)</li>
+<li>(Qubes and Qubes USBVM compatible.)</li>
+</ul></li>
+</ul>
+<ul>
+<li>All implemented using Free, Open Source and Freedom Software.</li>
+</ul>
+<p>In total there are 3 factor authentication to arbitrary websites
+etc.:</p>
+<ul>
+<li>first factor: password (to unlock keepassxc database) ("something
+you know")</li>
+<li>second factor: YubiKey with key press (to unlock keepassxc database)
+(HMAC-SHA1) ("something you have")</li>
+<li>third factor: google authentication / AndOTP (HTOP one time
+passwords) ("something you have")</li>
+</ul>
+<p>(Currently there is no factor "something you are", but I wouldn't
+know how to implement it for arbitrary websites. Above authentication
+setup should be complex [read breakage, difficult, lockout oneself] and
+secure enough. Rather than trying to hack these three factors, <a href="../Malware_and_Firmware_Trojans.html">malware</a> would
+rather just hijack the web login session.)</p>
+<h1 id="YubiKey_Info">YubiKey Info</h1>
+<ul>
+<li>Configured yubikey configuration slot 1 with static password and
+configured yubkkey configuration slot 2 with challenge response.
+(google) U2F still working. Pretty awesome.</li>
+</ul>
+<ul>
+<li>Could even enter my BIOS password using yubikey using a static
+yubikey password.</li>
+</ul>
+<ul>
+<li>Static password works even for full disk encryption password entry.
+Either as a single factor or to increase the lenght of the password. It
+acts as a USB keyboard. Even works with Qubes. (<a href="../Two-factor_authentication_2FA.html">2FA</a> vs
+BadUSB.)</li>
+</ul>
+<ul>
+<li>Yubikey U2F (FIDO Universal 2nd Factor): no backup possible. (But
+U2F supporting services might support alternative login methods or
+multiple U2F (yubikey) keys.) Not an issue, since we won't be using
+yubikey for U2F.</li>
+</ul>
+<ul>
+<li>Yubikey static passwords / HMAC-SHA1 challenge response: (paper)
+backup easily possible.</li>
+</ul>
+<ul>
+<li>It might have a bug resetting keyboard layout to en-US but it's not
+a big deal.</li>
+</ul>
+<ul>
+<li>Yubikeys supports storing OpenPGP (GnuPG / gpg) keys, OpenSSH keys,
+but I wouldn't trust it. Another yubikey model had a PIN bypass bug. (
+<a href="https://developers.yubico.com/ykneo-openpgp/SecurityAdvisory%202015-04-14.html">https://developers.yubico.com/ykneo-openpgp/SecurityAdvisory%202015-04-14.html</a>
+)</li>
+</ul>
+<h1 id="Static_Password_vs_Challenge_Response">Static Password vs
+Challenge Response</h1>
+<p>protection goal:</p>
+<ul>
+<li>deny unauthorized decryption of notebook full disk encryption when
+notebook is powered off, gets stolen and user password has been
+sniffed</li>
+</ul>
+<p>adversary capabilities:</p>
+<ul>
+<li>[A] temporarily grab the YubiKey for a moment, temporarily attach
+the YubiKey to a prepared smartphone or similar, press YubiKey button,
+thereby steal the static password ("very easy")</li>
+<li>[B] temporarily grab the YubiKey for a moment, extract challenge
+response secret key from smart chip through side channel or exploit
+("harder")</li>
+<li>[C] bruteforce or sniff (camera / side channel) user entered
+password</li>
+<li>[D] unauthorized access to notebook (theft)</li>
+</ul>
+<p>We assume the adversary has succeeded with [C] plus [D].</p>
+<p>boot full disk encryption authentication methods:</p>
+<ul>
+<li>YubiKey static password : fails against adversary capability
+[A]</li>
+<li>YubiKey static password : fails against adversary capability
+[B]</li>
+<li>YubiKey challenge response: safe against adversary capability
+[A]</li>
+<li>YubiKey challenge response: fails against adversary capability
+[B]</li>
+</ul>
+<p>Both authentication methods (Static Password; Challenge Response) are
+easy to program into YubiKey, allow easy legitimate clones to other
+YubiKeys as backup. Paper backups are also possible.</p>
+<p>In other words, YubiKey static password authentication fails when an
+adversary can get their hands on it for a moment. YubiKey challenge
+response is superior here since it is harder to extract the HMAC secret
+from the YubiKey.</p>
+<p>However, YubiKey challenge response authentication is much more
+complex. Speak: the chance of having an implementation which is so
+secure that the owners themselfes get locked out. More time consuming to
+develop, research, and setup for Qubes OS.</p>
+<p>Qubes OS YubiKey luks challenge response authentication:</p>
+<p><a href="https://github.com/the2nd/ykluks">https://github.com/the2nd/ykluks</a></p>
+<table>
+<caption>Static Password vs Challenge Response</caption>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p>Static Password</p></td>
+<td><p>Challenge Response</p></td>
+</tr>
+<tr class="even">
+<td><p>BIOS password entry</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Boot Password Entry for Full Disk Encryption on Debian</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Boot Password Entry for Full Disk Encryption on Qubes OS</p></td>
+<td><p>Yes</p></td>
+<td><p>difficult</p></td>
+</tr>
+<tr class="odd">
+<td><p>Login</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>lightdm</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>xscreensaver</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Keepassxc.html">keepassxc</a></p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>paper backups</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>ssh</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Conclusion">Conclusion</h1>
+<p>2FA (commonly referred to as "Google Authenticator") works against
+simple phishing, i.e. the user sending their password by email to a
+scammer. Or in case the server's password database gets hacked but the
+2FA database not.</p>
+<p>Against local compromise by <a href="../Malware_and_Firmware_Trojans.html">malware</a> nothing helps as the attacker can simply
+take over the login session. In this case, the usefulness of 2FA is
+limited.</p>
+<p>A YubiKey can help strengthen passwords for login, screensavers,
+BIOS, full disk encryption and others. For example, a stolen, powered
+off, full disk encrypted notebook might remain securely encrypted even
+though its password was leaked on camera as long as the adversary does
+not get its hand on the YubiKey too.</p>
+<h1 id="Table">Table</h1>
+<table>
+<caption>yubikey</caption>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p>Protection</p></td>
+</tr>
+<tr class="even">
+<td><p>Simple Password phishing <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>redirection to phishing website <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>server password database hacked</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>local compromise <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Probably, untested, very doable in theory.</li>
+<li id="cite_note-2">User replying to fraudulent password request by e-mail.</li>
+<li id="cite_note-3">With the password alone, no fraudulent login is possible.</li>
+<li id="cite_note-4">Such as DNS spoofing or man-in-the-middle attacks.</li>
+<li id="cite_note-5">The user has to spot the browser SSL warning.</li>
+<li id="cite_note-6">When the server password database was hacked, but the 2FA database
+not, malicious logins are prevented.</li>
+<li id="cite_note-7">By <a href="../Malware_and_Firmware_Trojans.html">malware</a></li>
+<li id="cite_note-8">No protection against session hijacking.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="grsecurity.html" title="Dev/grsecurity"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/grsecurity</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Astra_Linux.html" title="Dev/Astra Linux"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Astra
+Linux</span></a><span class="info"><span class="prev">Previous page:
+Dev/grsecurity</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Astra
+Linux</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

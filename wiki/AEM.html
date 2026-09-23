@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>AEM</title>
+<meta name="description" content="Evil Maid Attack, Notes on Anti Evil Maid (AEM); adversary capabilities, AEM alternatives, security issues.">
+<meta property="og:description" content="Evil Maid Attack, Notes on Anti Evil Maid (AEM); adversary capabilities, AEM alternatives, security issues.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/AEM.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/AEM.html">
+<meta property="og:title" content="Evil Maid Attack">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Evilaem123123.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Detection">Detection</a></li><li class="toc-l2"><a href="#Anti_Evil_Maid">Anti Evil Maid</a></li><li class="toc-l2"><a href="#Anti_Evil_Maid_Alternatives">Anti Evil Maid Alternatives</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Core_Dumps.html" title="Core Dumps"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Core
+Dumps</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Firmware_Security_and_Updates.html" title="Firmware Security and Updates"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Firmware
+Security and
+Updates</span></a><span class="info"><span class="prev">Previous page:
+Core Dumps</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Firmware Security and
+Updates</span></span></span>Evil Maid Attack</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Evil Maid Attack, Notes on Anti Evil Maid (AEM); adversary
+capabilities, AEM alternatives, security issues.</p>
+<div class="post-intro-p">
+</div>
+<p><img src="../media/Evilaem123123.jpg.webp" alt="Evilaem123123.jpg" /></p>
+<h1 id="Introduction">Introduction</h1>
+<p>An evil maid attack is: <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <blockquote><p>...an attack on an unattended device, in which an attacker with
+physical access alters it in some undetectable way so that they can
+later access the device, or the data on it.</p>
+<p>The name refers to the scenario where a maid could subvert a device
+left unattended in a hotel room - but the concept itself also applies to
+situations such as a device being intercepted while in transit, or taken
+away temporarily by airport or law enforcement personnel.</p></blockquote></p>
+<p>There are two main attack methods. The 'classic' evil maid attack
+involves a device being left unattended and then being tampered with by
+the attacker. If the system is not password-protected or does not
+require authentication, it is simply turned on and information is
+accessed. If the device is password-protected -- as is the case with <a href="Full_Disk_Encryption.html">Full Disk Encryption</a> --
+the device firmware is compromised so a false password prompt later
+appears. When the victim inputs the password, it is sent to the attacker
+and the compromised firmware removes itself. Afterwards, the attacker
+returns to the unattended device in order to steal data.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>The second method is known as a network evil maid. In this case the
+victim's device is replaced with an identical device. If the original
+device only has a bootloader password, then a attacker substitutes a
+device with an identical bootloader password input screen. If the device
+has a lock screen, the attacker must also recreate the background lock
+screen picture to mimic the original device. After the victim inputs
+their password on the false device, the password is sent to the attacker
+who then accesses data on the original device. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>In 2009, security researcher Joanna Rutkowska (who coined the term
+"evil maid attack") demonstrated a technique against a TrueCrypt
+encrypted system using a small bootable USB stick image, In short the
+process has two steps <sup class="reference"><a href="#cite_note-4">[4]</a></sup>:</p>
+<ol>
+<li>After accessing the shutdown computer, the attacker boots it from a
+separate volume. A hacked bootloader is written to the system, then shut
+down.</li>
+<li>Later on the owner boots the computer and enters their encryption
+key. Once the disk is unlocked, the malicious bootloader can capture the
+key and send it over the internet, store it in a secret location and so
+on. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+</ol>
+<p>see <a href="https://theinvisiblethings.blogspot.com/2009/10/evil-maid-goes-after-truecrypt.html">here</a>
+for further details and a discussion about possible solutions.</p>
+<p>Vulnerable interfaces include: <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<ul>
+<li><u>Legacy BIOS</u>: This architecture is vulnerable because the
+configuration is unprotected, updates and ROMs are unsigned, and secure
+boot is unsupported. Attackers can compromise the firmware by booting
+from an external drive, allowing keystrokes to be sent to remote
+attackers.</li>
+<li><u>Unified Extensible Firmware Interface (UEFI)</u>: UEFI can
+mitigate evil maid attacks because a secure boot, authenticated
+framework is available, along with availability of Trusted Platform
+Module (TPM) initialization security. However, these features may be
+unused by platform manufacturers or the end-user, allowing
+exploitation.</li>
+<li><u>Full disk encryption systems</u>: Full disk encryption systems
+like LUKS in Debian are vulnerable because they are unable to
+authenticate themselves to the user. The disk contents of powered off
+and encrypted systems can be modified by attackers so the system's
+bootloader codes can steal passwords.</li>
+<li><u>Thunderbolt</u>: Many Intel Thunderbolt ports are vulnerable to
+DMA attacks that allow full access and the bypassing of all security
+features.</li>
+<li><u>Any unattended devices</u>: As noted earlier, network evil maids
+can replace the device with an identical model that is configured to
+steal the password and send it to a remote attacker.</li>
+</ul>
+<h1 id="Mitigation">Mitigation</h1>
+<p>In general it is inadvisable to provide potential adversaries with
+physical access to a device since they could remove the disk, reflash
+the BIOS and exfiltrate the TPM. Obviously the safest way to protect
+against evil maid attacks is to always have the device(s) in your
+possession. If this is not possible, then placing the device in a safe
+or lockbox might be feasible. Also consider possible scenarios where the
+device can be temporarily removed for inspection, like during airport
+security screening or by law enforcement personnel. Simpler measures
+that provide some protection include keeping firmware up-to-date and
+always shutting down unattended devices.</p>
+<h2 id="Detection">Detection</h2>
+<p>Various methods can be used to detect whether an unattended device
+has been potentially exposed or handled by nearby persons, including:
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<ul>
+<li>proximity alarms</li>
+<li>motion detectors</li>
+<li>wireless cameras</li>
+<li><a href="https://guardianproject.github.io/haven/">Haven Android
+application</a> <sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+<li>use of tamper-evident technology or low-cost solutions to detect
+tampering <sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
+</ul>
+<p>If tampering is suspected, the device can be checked for possible
+malware. Unfortunately this is a difficult exercise and it may just be
+safer to discard the potentially compromised hardware.</p>
+<h2 id="Anti_Evil_Maid">Anti Evil Maid</h2>
+<p>To protect against compromise, it is recommended to utilize hardware
+with a TPM interface and to configure Anti Evil Maid (AEM) software. AEM
+authenticates the device to the user since it will only unlock if the
+correct password is entered and it determines no unauthorized code has
+been executed on the device. <sup class="reference"><a href="#cite_note-10">[10]</a></sup> This can avoid
+compromise as users are notified if any files in the <code>/boot</code>
+partition are modified; verification occurs before the password is
+entered. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<p>It should be noted that AEM security is imperfect because it relies
+upon a closed source TPM. Further, in Intel's case SINIT binary modules
+are downloaded so that Intel Trusted Execution Technology (Intel TXT)
+can perform a measured and verified launch of an OS kernel.
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup> Although digitally signed, the download step is done
+without verification and the processor must then correctly verify it and
+perform initial steps like correct measurements of BIOS/firmware and
+system settings such as ACPI tables.</p>
+<p>AEM has several other limitations: <sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<ul>
+<li>it authenticates the machine to the user (not the user to the
+machine)</li>
+<li>any BIOS changes require a reseal</li>
+<li>full trust is placed in the CPU and BIOS</li>
+<li>compatible with legacy boot only (incompatible with (U)EFI
+boot)</li>
+<li>a TPM owner password must be set</li>
+<li>incompatible with USB 3.0</li>
+</ul>
+<p>Note that AEM has (time-based) one-time password support (OTP, TOTP;
+"google authenticator") (<a href="Two-factor_authentication_2FA.html">2FA</a>) which is a more secure configuration. It is
+also possible to use a USB device as the AEM device, but this has
+strengths and weaknesses: <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
+<ul>
+<li>evil maid attacks are easier because BIOS settings do not need
+changing</li>
+<li>AEM on USB can be used as a keyfile (second factor), which provides
+a stronger yubikey</li>
+<li>in Qubes, hiding the USB from <code>dom0</code> is a more secure
+configuration; for example it avoids <a href="https://acodez.in/badusb-attack/">BadUSB attacks</a></li>
+</ul>
+<p>Despite these limitations, Kicksecure for Qubes users who have a
+compatible TPM are recommended to install <a href="https://www.qubes-os.org/doc/anti-evil-maid/">AEM</a> in
+<code>dom0</code>. Also refer to the <a href="https://github.com/QubesOS/qubes-antievilmaid">qubes-antievilmaid
+README</a> for further security notes and information on system
+requirements.</p>
+<h2 id="Anti_Evil_Maid_Alternatives">Anti Evil Maid Alternatives</h2>
+<p>If AEM is unavailable, then weaker alternatives include:</p>
+<ul>
+<li>Utilizing a BIOS password since an attack requires removal of the
+disk. Note this protection can potentially be circumvented by a
+master/maintenance BIOS password that might exist.</li>
+<li>The <code>/boot</code> partition can also be placed on a USB;
+adversaries must then attack either the BIOS or USB-persistent
+modifications.</li>
+<li>A cryptographic hash can be calculated for the entire disk so an
+integrity hash can be recalculated at a later time. <sup class="reference"><a href="#cite_note-15">[15]</a></sup>
+<sup class="reference"><a href="#cite_note-16">[16]</a></sup> An attacker would need to attack the BIOS in this
+case to avoid detection.</li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://blog.invisiblethings.org/2011/09/07/anti-evil-maid.html">Invisible
+Things Blog: Anti Evil Maid</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/Evil_Maid_attack">https://en.wikipedia.org/wiki/Evil_Maid_attack</a></li>
+<li id="cite_note-2"><a href="https://en.wikipedia.org/wiki/Evil_Maid_attack#Methods_of_attack">https://en.wikipedia.org/wiki/Evil_Maid_attack#Methods_of_attack</a></li>
+<li id="cite_note-3">Information can also be stolen via Direct Memory Access (DMA)
+attacks using hardware devices that connect directly to the physical
+address space.</li>
+<li id="cite_note-4"><a href="https://www.schneier.com/blog/archives/2009/10/evil_maid_attac.html">https://www.schneier.com/blog/archives/2009/10/evil_maid_attac.html</a></li>
+<li id="cite_note-5">An advanced adversary is likely to return again and remove any
+evidence of the hack.</li>
+<li id="cite_note-6"><a href="https://en.wikipedia.org/wiki/Evil_Maid_attack#Vulnerable_interfaces">https://en.wikipedia.org/wiki/Evil_Maid_attack#Vulnerable_interfaces</a></li>
+<li id="cite_note-7"><a href="https://en.wikipedia.org/wiki/Evil_maid_attack#Detection">https://en.wikipedia.org/wiki/Evil_maid_attack#Detection</a></li>
+<li id="cite_note-8"><blockquote><p>It is an Android application that leverages on-device sensors to
+provide monitoring and protection of physical areas. Haven turns any
+Android phone into a motion, sound, vibration and light detector,
+watching for unexpected guests and unwanted intruders.</p></blockquote> Event monitoring is transmitted to the user's
+smartphone.</li>
+<li id="cite_note-9">Such as the use of glitter over screw holes.</li>
+<li id="cite_note-10">Root of trust systems like Intel's TXT technology are used for this
+purpose.</li>
+<li id="cite_note-11"><a href="https://github.com/unman/notes/blob/master/openBSD_as_netvm">https://github.com/unman/notes/blob/master/openBSD_as_netvm</a></li>
+<li id="cite_note-12"><a href="https://reposcope.com/package/intel-SINIT">https://reposcope.com/package/intel-SINIT</a></li>
+<li id="cite_note-13">Picture support may also have been deprecated.</li>
+<li id="cite_note-14"><a href="https://www.qubes-os.org/doc/anti-evil-maid/">Installing
+and Using Anti Evil Maid (AEM) with Qubes OS</a>: <blockquote><p>Qubes security guidelines dictate that USB devices should never be
+attached directly to dom0, since this can result in the entire system
+being compromised. However, in its default configuration, installing and
+using AEM requires attaching a USB drive (i.e., mass storage device)
+directly to dom0. (The other option is to install AEM to an internal
+disk. However, this carries significant security implications, as
+explained here.) This presents us with a classic security trade-off:
+each Qubes user must make a choice between protecting dom0 from a
+potentially malicious USB drive, on the one hand, and protecting the
+system from Evil Maid attacks, on the other hand.</p></blockquote></li>
+<li id="cite_note-15">This can detect if data has changed, but cannot protect against
+intentional tampering.</li>
+<li id="cite_note-16"><a href="https://ctf101.org/forensics/what-is-disk-imaging/">https://ctf101.org/forensics/what-is-disk-imaging/</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Core_Dumps.html" title="Core Dumps"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Core
+Dumps</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Firmware_Security_and_Updates.html" title="Firmware Security and Updates"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Firmware
+Security and
+Updates</span></a><span class="info"><span class="prev">Previous page:
+Core Dumps</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Firmware Security and
+Updates</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

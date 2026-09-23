@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>OpenPGP</title>
+<meta name="description" content="OpenPGP, gpg, Related Tools, Links, Advanced Topics, The OpenPGP Web of Trust, Bootstrapping OpenPGP keys from the web">
+<meta property="og:description" content="OpenPGP, gpg, Related Tools, Links, Advanced Topics, The OpenPGP Web of Trust, Bootstrapping OpenPGP keys from the web">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/OpenPGP.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/OpenPGP.html">
+<meta property="og:title" content="OpenPGP">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/GnuPG-Logo.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Sequoia-PGP_automation">Sequoia-PGP automation</a></li><li class="toc-l3"><a href="#sqop_parsing">sqop parsing</a></li><li class="toc-l3"><a href="#sqop_vs_sq_for_automations">sqop vs sq for automations</a></li><li class="toc-l2"><a href="#In_English_Language">In English Language</a></li><li class="toc-l2"><a href="#In_German_Language">In German Language</a></li><li class="toc-l2"><a href="#Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</a></li><li class="toc-l2"><a href="#Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</a></li><li class="toc-l2"><a href="#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a></li><li class="toc-l2"><a href="#Bootstrapping_OpenPGP_Keys_from_the_Internet">Bootstrapping
+OpenPGP Keys from the Internet</a></li><li class="toc-l2"><a href="#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key
+Encryption vs OpenPGP Hardware Protection</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="PQCrypto.html" title="PQCrypto"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">PQCrypto</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Software.html" title="Software"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Software</span></a><span class="info"><span class="prev">Previous
+page: PQCrypto</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Software</span></span></span>OpenPGP</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></li>
+<li><a href="OpenPGP.html">OpenPGP</a></li>
+<li><a href="Air_Gapped_OpenPGP_Key.html">Air Gapped OpenPGP
+Key</a></li>
+<li><a href="Signify.html">Signify</a></li>
+<li><a href="PQCrypto.html#Codecrypt">Codecrypt</a></li>
+<li><a href="Authenticode.html">Authenticode</a></li>
+<li><a href="Digital_Signature_Policy.html">Kicksecure
+Digital Signature Policy</a></li>
+</ul>
+</div>
+<p><img src="../media/GnuPG-Logo.svg" width="100" alt="GnuPG logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>OpenPGP, gpg, Related Tools, Links, Advanced Topics, The OpenPGP Web
+of Trust, Bootstrapping OpenPGP keys from the web</p>
+<div class="post-intro-p">
+</div>
+<figure>
+<img src="hauke_laging_gepruefter_artikel.en.png" title="Hauke Laging&#x27;s clearsigned version of this text can be found here: OpenPGP_Certified.  The certification image (hauke_laging_gepruefter_artikel.en.png) is copyrighted by Hauke Laging.|thumb" width="400" />
+<figcaption><a href="https://www.hauke-laging.de/">Hauke Laging</a>'s
+clearsigned version of this text can be found here: <a href="OpenPGP_Certified.html">OpenPGP_Certified</a>.<br />
+<br />
+The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a>
+image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a>)
+is copyrighted by <a href="https://www.hauke-laging.de/">Hauke
+Laging</a>.|thumb</figcaption>
+</figure>
+<h1 id="Introduction">Introduction</h1>
+<p>OpenPGP is: <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+<blockquote><p>... a non-proprietary protocol for encrypting email communication
+using public key cryptography. It is based on the original PGP (Pretty
+Good Privacy) software. The OpenPGP protocol defines standard formats
+for encrypted messages, signatures, and certificates for exchanging
+public keys.</p></blockquote></p>
+<p><blockquote><p>OpenPGP is the most widely used email encryption standard. ...
+OpenPGP was originally derived from the PGP software, created by <a href="https://philzimmermann.com/EN/background/index.html">Phil
+Zimmermann</a>.</p></blockquote></p>
+<p>The primary purpose of OpenPGP relates to end-to-end encrypted email
+communication, but it is also utilized for encrypted messaging, password
+managers and other use cases. OpenPGP provides support for all major
+operating systems like Windows, macOS, GNU/Linux, Android and iOS. The
+openPGP standard was proposed to the Internet Engineering Task Force
+(IETF) and accepted as a standard in 1997. The standard has been
+continuously improved since that time and there is no suggestion
+intelligence agencies can break it. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>OpenPGP has an impressive resume and a host of applications,
+developer libraries and miscellaneous tools have implemented the OpenPGP
+standard either directly or with additional software. Applicable domains
+include:</p>
+<ul>
+<li><u><a href="https://www.openpgp.org/software/">Email
+encryption</a></u>: for various platforms, browser plugins, webmail
+providers with browser plugins, and webmail providers with in-browser
+cryptography</li>
+<li><u><a href="https://www.openpgp.org/software/server/">Server
+software</a></u>: webmail clients, keyservers, mailing list software and
+password managers</li>
+<li><u><a href="https://www.openpgp.org/software/developer/">Developer
+libraries</a></u>: various OpenPGP libraries, libraries supporting
+OpenPGP smartcards, and developer tools</li>
+<li><u><a href="https://www.openpgp.org/software/misc/">Miscellaneous
+tools</a></u>: web-based tools and other applications</li>
+</ul>
+<p><strong>Figure:</strong> <em>How PGP Works</em>
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><img src="../media/HowPGPworks.png.webp" alt="HowPGPworks.png" /></p>
+<p>To learn more about this topic, refer to the following resources:</p>
+<ul>
+<li><a href="https://www.openpgp.org/">OpenPGP website</a></li>
+<li><a href="https://github.com/openpgp">OpenPGP on GitHub</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">Pretty
+Good Privacy on Wikipedia</a></li>
+<li><a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></li>
+</ul>
+<p>To search for keys by email address, Key ID or Fingerprint, visit the
+<a href="https://keys.openpgp.org/"><code>keys.openpgpg.org</code>
+server</a> (<a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/">.onion</a>).
+This publicly available service ("keyserver") enables the uploading,
+discovery, distribution and management of OpenPGP-compatible keys.</p>
+<h1 id="Common_Misconceptions">Common Misconceptions</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember to check the GPG signature timestamp. For instance, if you
+previously saw a signature from 2023 and now see one from 2022, this
+could indicate a potential rollback (downgrade) or indefinite freeze
+attack.<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember: OpenPGP signatures sign the contents of files, <em>not</em>
+the file names themselves. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+</div>
+<h1 id="Key_Servers">Key Servers</h1>
+<div class="info-box ">
+<p><strong>1.</strong> Test gpg.</p>
+<p>For example, run.</p>
+<p><span class="code-select">gpg --keyserver keys.openpgp.org --recv
+A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89</span></p>
+<p><strong>2.</strong> <u>Note</u>: The use of <code>--recv</code> or
+<code>--recv-key</code> is deprecated.</p>
+<p>Instead, it is recommended to <a href="Secure_Downloads.html">securely download</a> the key from a source that is
+logically connected to the owner, if possible, outside the keyserver
+model.</p>
+<p><strong>3.</strong> If a keyserver is required, utilize the onion
+address for <code>keys.openpgp.org</code>.</p>
+<p>At the time of writing, the following onion address is consistently
+functional: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a></p>
+<p><strong>4.</strong> Learn more about gpg configuration basics for use
+with <code>keys.openpgp.org</code>.</p>
+<p>Instructions are available <a href="https://keys.openpgp.org/about/usage">here</a> <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/about/usage">(.onion)</a>.</p>
+<p>Also see:</p>
+<ul>
+<li><a href="https://forums.whonix.org/t/gpg-recv-keys-fails-no-longer-use-keyservers-for-anything/5607">gpg
+--recv-keys fails / no longer use keyservers for anything</a></li>
+<li><a href="https://forums.whonix.org/t/new-fixed-keyserver-keys-openpgp-org/11761">new,
+fixed keyserver - keys.openpgp.org</a></li>
+</ul>
+</div>
+<h1 id="Related_Tools">Related Tools</h1>
+<p>Encrypt, decrypt, sign, and verify text using <a href="Software.html#OpenPGP_.28GnuPG_Frontend.29"> OpenPGP
+(GnuPG Frontend)</a>.</p>
+<h1 id="Issues_with_PGP">Issues with PGP</h1>
+<p>PGP has very bad usability and cryptography. Common PGP clients such
+as GnuPG are also not very secure. Thus, it is recommended against by
+many cryptography experts.</p>
+<ul>
+<li><a href="https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/">What's
+the matter with PGP?</a></li>
+<li><a href="https://latacora.micro.blog/2019/07/16/the-pgp-problem.html">The
+PGP Problem</a></li>
+<li><a href="https://words.filippo.io/giving-up-on-long-term-pgp/">I'm
+giving up on PGP</a></li>
+<li><a href="https://moxie.org/2015/02/24/gpg-and-me.html">GPG And
+Me</a></li>
+<li><a href="https://secushare.org/PGP">15 reasons not to start using
+PGP</a></li>
+<li><a href="https://buttondown.email/cryptography-dispatches/archive/505a859e-964d-4d15-9ad8-7ad0f45e1345">Cryptography
+Dispatches: Replace PGP With an HTTPS Form</a></li>
+<li><a href="https://www.openbsd.org/papers/bsdcan-signify.html">signify:
+Securing OpenBSD From Us To You</a></li>
+</ul>
+<p>Not yet reviewed: <s> Better alternatives are <a href="https://github.com/FiloSottile/age">age</a> for file encryption
+and <a href="https://man.openbsd.org/signify">signify</a> for signing.
+</s></p>
+<h1 id="GnuPG_Usability_Security_Issues">GnuPG Usability Security
+Issues</h1>
+<p>Security issue:</p>
+<p><a href="https://gpg.fail/">https://gpg.fail/</a></p>
+<p>Automation issues:</p>
+<p>Using <code>gpg</code> with scripts and automation is difficult and
+potentially insecure.</p>
+<p>Examples to avoid (generic) (non-exhaustive list):</p>
+<ul>
+<li>Any <code>gpg</code> command that includes shell scripting such as
+<ul>
+<li>a pipe symbol ("<code>|</code>");</li>
+<li><code>|&amp;</code>;</li>
+<li><code>&lt;(</code>;</li>
+<li><code>&amp;</code>; <code>||</code>;</li>
+<li><code>$(...)</code>;</li>
+<li>or any other <code>sh</code> / <code>bash</code> keyword;</li>
+<li>see also <a href="Shell_scripting.html#How_to_detect_if_a_Command_contains_Shell_Scripting">How to detect if a Command contains Shell
+Scripting</a>;</li>
+<li>for in user documentation is to be avoided.</li>
+</ul></li>
+</ul>
+<p>Examples to avoid (specific) (non-exhaustive list):</p>
+<ul>
+<li><code>gpg --keyid-format long --import --import-options show-only --with-fingerprint [...] | grep "Key" | diff &lt;(echo ' Key fingerprint = [...]') -</code></li>
+</ul>
+<p>It is impossible to provide complete, exhaustive lists.</p>
+<p>Upstream, the original developers of GnuPG state:</p>
+<p><blockquote><p>For scripted or other unattended use of gpg make sure to use the
+machine-parseable interface and not the default interface which is
+intended for direct use by humans. The machine-parseable interface
+provides a stable and well documented API independent of the locale or
+future changes of gpg. To enable this interface use the options
+'--with-colons' and '--status-fd'. For certain operations the option
+'--command-fd' may come handy too. See this man page and the file
+'DETAILS' for the specification of the interface. Note that the GnuPG
+"info" pages as well as the PDF version of the GnuPG manual features a
+chapter on unattended use of GnuPG. As an alternative the library GPGME
+can be used as a high-level abstraction on top of that
+interface.<span class="blockquote-context"><a href="https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html">https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html</a></span></p></blockquote></p>
+<p>This might get easier with Sequoia.</p>
+<h1 id="Sequoia">Sequoia</h1>
+<p><img src="../media/Sequoia.svg" width="100" alt="Sequoia logo" /></p>
+<p><a href="https://sequoia-pgp.org/">Sequoia</a> might be a suitable
+replacement for GnuPG.</p>
+<div class="info-box ">
+<p>Install package(s) <code>sq</code> following these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>sq</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+sq</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>sq</code> is
+complete.</p>
+</div>
+<p>forum discussions:</p>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/sequoia-pgp-gpg-replacement-openpgp/260">Sequoia-PGP
+(gpg replacement) - OpenPGP</a></li>
+<li><a href="https://forums.kicksecure.com/t/sequoia-git-sq-git/1638">Sequoia
+git ("<code>sq-git</code>")</a></li>
+</ul>
+<h2 id="Sequoia-PGP_automation">Sequoia-PGP automation</h2>
+<h3 id="sqop_parsing">sqop parsing</h3>
+<p><code>sqop</code> is Sequoia-PGP's implementation of the Stateless
+OpenPGP (SOP) interface.</p>
+<p>The SOP specification says:</p>
+<p><blockquote><p>When sop succeeds, it will return 0 (OK) and emit nothing to Standard
+Error.<span class="blockquote-context"><a href="https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/">Stateless
+OpenPGP Command Line Interface</a>, "Failure Modes"</span></p></blockquote></p>
+<p><blockquote><p>When sop fails, it fails with a non-zero return code, and emits one
+or more warning messages on Standard
+Error.<span class="blockquote-context"><a href="https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/">Stateless
+OpenPGP Command Line Interface</a>, "Failure Modes"</span></p></blockquote></p>
+<p>The same specification also says that, when <code>--debug</code> is
+present, <code>sop</code> may emit implementation-specific debugging
+information to standard error.</p>
+<p>Therefore, callers should treat <code>stdout</code> as the output
+channel to parse, always check the exit status, and treat
+<code>stderr</code> as diagnostic or debug output rather than structured
+data.</p>
+<p>In normal successful operation, that means <code>sqop</code> should
+not emit <code>stderr</code>. On failure, <code>stderr</code> is the
+right place to look for a user-facing error message.</p>
+<h3 id="sqop_vs_sq_for_automations">sqop vs sq for automations</h3>
+<p>For automated used in programs or scripts use <code>sqop</code> not
+<code>sq</code>!</p>
+<p>Do <strong>not</strong> parse <code>sq verify</code>'s human-readable
+output.</p>
+<ol>
+<li>Sequoia explicitly warned that <code>sq</code> output is "not
+machine readable", and recommended JSON output modes to avoid "common
+security-sensitive bugs" from manual parsing.
+<ul>
+<li>Source: <a href="https://sequoia-pgp.org/blog/2021/01/26/202101-sq-release/">Sequoia
+PGP release notes</a></li>
+</ul></li>
+<li><code>sq verify</code> applies authentication rules that depend on
+OpenPGP data, not on a stable machine-readable text format. In
+particular:
+<ul>
+<li>"If the signature includes a Signer User ID subpacket, then only
+that User ID is considered."</li>
+<li>"Note: the User ID need not be self signed."
+<dl>
+<dt></dt>
+<dd>
+So a parser that tries to scrape signer identity from output may be
+confused by signature contents and policy decisions.
+</dd>
+</dl></li>
+<li>Source: <a href="https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html"><code>sq</code>
+manual page</a></li>
+</ul></li>
+<li><code>sq sign</code> supports signature notations, and Sequoia
+documents them as "human readable". Free-text signature metadata is
+therefore a bad input source for a security-sensitive parser.
+<ul>
+<li>Source: <a href="https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq-sign.1.html"><code>sq sign</code>
+manual page</a></li>
+</ul></li>
+</ol>
+<p>Therefore,</p>
+<ul>
+<li>Treat <code>sq verify</code> text as diagnostic text for humans
+only.</li>
+<li>Use only the process exit status for automation, unless Sequoia
+provides a documented stable machine-readable format.</li>
+<li>Do not attempt derive status fields such as <code>keyid</code>,
+<code>userid</code>, <code>fingerprint</code>, or
+<code>primary_fpr</code> by parsing <code>sq verify</code> output.</li>
+</ul>
+<h1 id="PGPainless">PGPainless</h1>
+<p>Another potential replacement for GnuPG.</p>
+<ul>
+<li><a href="https://gh.pgpainless.org/">https://gh.pgpainless.org/</a></li>
+<li><a href="https://packages.debian.org/source/bookworm/all/pgpainless">https://packages.debian.org/source/bookworm/all/pgpainless</a></li>
+</ul>
+<h1 id="Links">Links</h1>
+<h2 id="In_English_Language">In English Language</h2>
+<ul>
+<li><a href="https://emailselfdefense.fsf.org/en/">Email
+Self-Defense</a></li>
+<li><a href="https://userbase.kde.org/Concepts/OpenPGP_For_Beginners">OpenPGP
+For Beginners</a></li>
+<li><a href="https://userbase.kde.org/Concepts/OpenPGP_Getting_Started">OpenPGP
+Getting Started</a></li>
+<li><a href="https://userbase.kde.org/Concepts/OpenPGP_Help_Spread">OpenPGP
+Help Spread</a></li>
+<li><a href="https://www.elstel.org/software/GnuPG-usage.html.en">How to
+use GnuPG securely</a></li>
+<li>See also if there are any <a href="https://www.cryptoparty.in/location">crypto parties</a> in your
+vicinity.</li>
+<li>Try typing "crypto party" followed by the nearest city in a search
+engine of your choice.</li>
+<li><a href="https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md">https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md</a></li>
+</ul>
+<h2 id="In_German_Language">In German Language</h2>
+<ul>
+<li><a href="http://www.openpgp-schulungen.de/fuer/alle/">Informationen
+über OpenPGP</a></li>
+<li><a href="https://www.cryptoparty.in/location#germany">kostenlose
+Schulungsangebote</a></li>
+<li><a href="http://www.openpgp-schulungen.de/fuer/unterstuetzer/">Förderung
+von OpenPGP</a></li>
+<li><a href="https://www.elstel.org/software/GnuPG-usage.html.de">Wie
+man GnuPG sicher verwenden kann</a></li>
+</ul>
+<h1 id="Advanced_Topics">Advanced Topics</h1>
+<h2 id="Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</h2>
+<p>See <a href="Air_Gapped_OpenPGP_Key.html">Air Gapped
+OpenPGP Key</a>.</p>
+<h2 id="Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</h2>
+<p><a href="https://lists.gnupg.org/pipermail/gnupg-users/2013-July/047118.html">Clearsign
+text document with multiple keys?</a></p>
+<h2 id="The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</h2>
+<div class="info-box ">
+<p>If you want to be extra cautious and really authenticate a OpenPGP
+key in a stronger way than what standard HTTPS offers you, you could use
+the OpenPGP Web of Trust.</p>
+<p>One of the inherent problems of standard HTTPS is that the trust we
+usually put on a website is defined by certificate authorities: a
+hierarchical and closed set of companies and governmental institutions
+approved by web browser vendors. This model of trust has long been
+criticized and proved several times to be vulnerable to attacks <a href="Warning.html">as explained on our warning
+page</a>.</p>
+<p>We believe instead that users should be given the final say when
+trusting a website, and that designation of trust should be done on the
+basis of human interaction.</p>
+<p>The OpenPGP <a href="https://en.wikipedia.org/wiki/Web_of_trust">Web
+of Trust</a> is a decentralized trust model based on OpenPGP keys. Let's
+see that with an example.</p>
+<p><em>You're a friend of Alice and really trust her way of managing
+OpenPGP keys. You've validated Alice's key.</em></p>
+<p><em>Furthermore, Alice met Bob in a conference, and signed Bob's
+key.</em></p>
+<p>This scenario creates a trust path from you to Bob's key that could
+allow you to validate it without having to depend on certificate
+authorities.</p>
+<p>This trust model is not perfect either and requires both caution and
+intelligent supervision by users. The technical details of creating,
+managing and trusting OpenPGP keys are outside of the scope of this
+document.</p>
+<p>We also acknowledge that not everybody might be able to create good
+trust path since it based on a network of direct human relationships and
+the knowledge of quite complex tools such as GnuPG.</p>
+</div>
+<ul>
+<li><a href="https://book.sequoia-pgp.org/bckgrnd_wot.html">https://book.sequoia-pgp.org/bckgrnd_wot.html</a></li>
+<li><a href="https://sequoia-pgp.gitlab.io/sequoia-wot/">https://sequoia-pgp.gitlab.io/sequoia-wot/</a></li>
+<li><a href="https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/">https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/</a></li>
+</ul>
+<h2 id="Bootstrapping_OpenPGP_Keys_from_the_Internet">Bootstrapping
+OpenPGP Keys from the Internet</h2>
+<p>Some OpenPGP users are unsure how to stay totally anonymous or what
+steps to take if there is no trusted path to an OpenPGP key.</p>
+<p>Some people just write an unencrypted mail to the recipient and ask
+them to send their public key. The recipient will most likely either
+send their public key or at least its fingerprint.</p>
+<p>This method works against passive attacks since an observer will not
+know what has been discussed in the following encrypted mails. However,
+this method totally fails against active attacks. A <a href="Warning.html#Man-in-the-middle_Attacks">man-in-the-middle</a> could replace the recipient's key
+with their own malicious key. The sender would then use the wrong key,
+the man-in-the-middle would decrypt the message, read it, and re-encrypt
+it with the legitimate key and forward it to the recipient. Neither the
+sender nor recipient would ever discover that their messages were being
+read by an adversary. This is the whole reason why the trust model path
+and key signing is recommended in the first place.</p>
+<p>As an alternative, some people also publish their OpenPGP fingerprint
+or their OpenPGP public key on their personal or other websites. This
+method is more secure if the website is accessible over TLS -- even more
+so when both server and client are using <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a>
+(and <a href="https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions">DNSSEC</a>)
+-- and/or as an <a href="Onion_Services.html#How_Onion_Services_Connections_Work">onion service</a> with a <code>.onion</code> domain. Of
+course, this presupposes the visitor is aware what kind of
+transportation mechanism is provided. In this case, the adversary would
+have to:</p>
+<ul>
+<li>break the TLS or onion encryption where someone wants to obtain the
+key or fingerprint; or</li>
+<li>compromise the server</li>
+</ul>
+<p>Depending on the adversary this may take more resources. It should be
+noted that both the public CA system of TLS and Tor onion services have
+security issues; see <a href="SSL.html">TLS</a> and <a href="Onion_Services.html#Onion_Services_Security">Onion
+Services Security</a> for further information.</p>
+<p>Based on the preceding discussion, it is safest if the same website
+is accessible over both http<strong>s</strong> and <code>.onion</code>.
+This configuration allows the user to visit both sites and then check if
+the OpenPGP fingerprint/key results match.</p>
+<p>To further improve the situation the key holder can spread its
+fingerprint and/or OpenPGP key to other websites. Some key holders
+attach their OpenPGP fingerprint to their email signature (a short
+attachment to any mail) and to public mailing lists they are
+participating in. This behavior makes it difficult for an adversary to
+successfully spoof all these information avenues. Spreading the
+fingerprint and/or key in various domains is only helpful if the person
+searching is either aware of that fact or has undertaken research on
+their own initiative.</p>
+<p><a href="https://api.github.com/users/">https://api.github.com/users/</a>/gpg_keys</p>
+<p>example: <a href="https://api.github.com/users/adrelanos/gpg_keys">https://api.github.com/users/adrelanos/gpg_keys</a></p>
+<p><span class="manually-placed-anchor " id="Hardware_Protection_vs_gpg_key_encryption"></span></p>
+<h2 id="GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key
+Encryption vs OpenPGP Hardware Protection</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This comparison is incomplete.</p>
+</div>
+<table>
+<caption><em>GnuPG Key Encryption vs OpenPGP Hardware Protection
+Comparison</em></caption>
+<tbody>
+<tr class="odd">
+<td><p><strong>Domain</strong></p></td>
+<td><p><strong>GnuPG Encryption of OpenPGP Private Key</strong></p></td>
+<td><p><strong>Hardware Protection</strong> <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>OpenPGP
+private key can be protected by software encryption</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>OpenPGP
+private key can be stored encrypted on storage</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup> <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Software
+or device implementation: 100% Freedom Software</p></td>
+<td><p>Yes</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Can be
+independently reproduced and audited</p></td>
+<td><p>Yes</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-14">[14]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Number
+of people capable of auditing the implementation</p></td>
+<td><p>Small
+<sup class="reference"><a href="#cite_note-15">[15]</a></sup></p></td>
+<td><p>Very
+small <sup class="reference"><a href="#cite_note-16">[16]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>OpenPGP
+private key is protected by hardware, making it very difficult to
+extract the key from the device's storage</p></td>
+<td><p>No</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Wipes
+OpenPGP private key once physical tampering is detected (<a href="https://en.wikipedia.org/wiki/FIPS_140-2#Level_3">FIPS 140-2 Level
+3</a>)</p></td>
+<td><p>No</p></td>
+<td><p>No
+(?) <sup class="reference"><a href="#cite_note-18">[18]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>OpenPGP
+private key access notification</p></td>
+<td><p>No</p></td>
+<td><p>Some,
+yes (?) <sup class="reference"><a href="#cite_note-19">[19]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Secret
+<sup class="reference"><a href="#cite_note-20">[20]</a></sup> can be entered on a secure external device
+<sup class="reference"><a href="#cite_note-21">[21]</a></sup></p></td>
+<td><p>No</p></td>
+<td><p>Some,
+yes <sup class="reference"><a href="#cite_note-22">[22]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>OpenPGP
+private key can no longer be abused once detached from malware infected
+machine</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-23">[23]</a></sup></p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-24">[24]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>User
+difficulty in remembering secret</p></td>
+<td><p>Medium
+<sup class="reference"><a href="#cite_note-25">[25]</a></sup></p></td>
+<td><p>Easy
+<sup class="reference"><a href="#cite_note-26">[26]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Usability</p></td>
+<td><p>Medium
+<sup class="reference"><a href="#cite_note-27">[27]</a></sup></p></td>
+<td><p>Difficult
+<sup class="reference"><a href="#cite_note-28">[28]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>OpenPGP
+private key security once lost (without machine compromise)
+<sup class="reference"><a href="#cite_note-29">[29]</a></sup></p></td>
+<td><p>Protected
+by software encryption <sup class="reference"><a href="#cite_note-30">[30]</a></sup> <sup class="reference"><a href="#cite_note-31">[31]</a></sup></p></td>
+<td><p>Protected
+by hardware <sup class="reference"><a href="#cite_note-32">[32]</a></sup> <sup class="reference"><a href="#cite_note-33">[33]</a></sup> <sup class="reference"><a href="#cite_note-34">[34]</a></sup>
+<sup class="reference"><a href="#cite_note-35">[35]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>OpenPGP
+private key cannot be used by malware <sup class="reference"><a href="#cite_note-36">[36]</a></sup> when key
+attached <sup class="reference"><a href="#cite_note-37">[37]</a></sup> and passphrase stolen <sup class="reference"><a href="#cite_note-38">[38]</a></sup>
+or pin cached</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>OpenPGP
+private key cannot be extracted, deleted or revoked by malware</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-39">[39]</a></sup></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Encryption
+of user's data is still effective once malware infected</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-40">[40]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-41">[41]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Signatures
+cannot be created by malware</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Signature
+counter on hardware device</p></td>
+<td><p>No</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-42">[42]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Signature
+counter on computer display trustworthy if attached on malware infected
+computer</p></td>
+<td><p>Not applicable</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-43">[43]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Signature
+counter trustworthy if attached on malware-free machine
+<sup class="reference"><a href="#cite_note-44">[44]</a></sup></p></td>
+<td><p>Not applicable</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>In conclusion, both options have unique advantages. Unfortunately, it
+is not yet possible to combine both options. <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<h1 id="FAQ">FAQ</h1>
+<p><strong>Why aren't the SKS keyserver wiki steps always
+functional?</strong></p>
+<p>The SKS keyserver network has recently come under attack after a
+critical vulnerability was discovered which allows certificates to be
+spammed using a flaw in the OpenPGP protocol itself. Future releases of
+OpenPGP software will likely mitigate this flaw, but high profile
+contributors to the protocol suggest that data should not be retrieved
+form the network at present if possible. For more details, see <a href="https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f">here</a>.
+<sup class="reference"><a href="#cite_note-45">[45]</a></sup> <sup class="reference"><a href="#cite_note-46">[46]</a></sup></p>
+<hr />
+<p><strong>Is the OpenPGP keyserver part of the SKS pool?</strong></p>
+<p>The <a href="https://keys.openpgp.org/about/faq">OpenPGP keyserver
+FAQ</a> notes: <blockquote><p>No. The federation model of the SKS pool has various problems in
+terms of reliability, abuse-resistance, privacy, and usability. We might
+do something similar to it, but keys.openpgp.org will never be part of
+the SKS pool itself.</p></blockquote></p>
+<hr />
+<p><strong>Why can't I receive a key using the new keyserver
+<code>keys.openpgp.org</code>?</strong></p>
+<p>At the time of writing, the clearnet keyserver will sometimes lead to
+the following error:</p>
+<pre><code>gpg: keyserver receive failed: No keyserver available</code></pre>
+<p>As recommended <a href="#Key_Servers">here</a>,
+either:</p>
+<ul>
+<li>Securely download the key from a source outside the keyserver model;
+or</li>
+<li>If that is not possible, utilize the keyserver v3 onion address
+instead: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></li>
+<li><a href="OpenPGP.html">OpenPGP</a></li>
+<li><a href="Verify_the_images.html">Verify the
+images</a></li>
+<li><a href="Signing_Key.html">Kicksecure Signing
+Key</a></li>
+<li><a href="Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions.html">Software Signature Verification Usability Issues and
+Proposed Solutions</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.openpgp.org/about/">https://www.openpgp.org/about/</a></li>
+<li id="cite_note-2"><a href="https://www.openpgp.org/">https://www.openpgp.org/</a></li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP">https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP</a></li>
+<li id="cite_note-4"><a href="https://en.wikipedia.org/wiki/File:PGP_diagram.svg">https://en.wikipedia.org/wiki/File:PGP_diagram.svg</a></li>
+<li id="cite_note-5">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a></li>
+<li id="cite_note-6"><a href="https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html">https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html</a></li>
+<li id="cite_note-7">Token or smartcard.</li>
+<li id="cite_note-8">If a secure password has been chosen to protect the OpenPGP private
+key.</li>
+<li id="cite_note-9">The OpenPGP private key is stored unencrypted on the storage of the
+smartcard or token.</li>
+<li id="cite_note-10">Stored on HDD, SSD, USB etc.</li>
+<li id="cite_note-11">Stored on the memory chip of the smartcard or token.</li>
+<li id="cite_note-12">Source:<br />
+* gnupg-users mailing list: <a href="https://lists.gnupg.org/pipermail/gnupg-users/2013-December/048576.html">Possible
+to combine smartcard PIN with key password?</a><br />
+* Patrick Schleizer specifically asked Werner Koch about this at c3c1.
+This is neither possible nor a planned or likely future feature.</li>
+<li id="cite_note-13">The specification may be Freedom Software, but currently there are
+no blueprints for smartcards or tokens that meet this definition.</li>
+<li id="cite_note-14">Due to the absence of blueprints and copyright, no other company can
+reproduce/audit security.</li>
+<li id="cite_note-15">Written in C and using cryptography. This is a difficult endeavor
+and beyond most individuals.</li>
+<li id="cite_note-16">Hardware is more difficult than software and this particular type of
+hardware is even harder. Only the manufacturing engineers are capable of
+understanding it. In the case of closed hardware implementations, which
+is the case for most (if not all) tokens and smartcards , open and
+independent audits are impossible.</li>
+<li id="cite_note-17">It is very difficult to read the storage of smartcards and tokens.
+Professional data recovery companies usually decline requests for
+recovery from such storage.</li>
+<li id="cite_note-18">The author is unaware of any OpenPGP tokens or smartcards that claim
+to possess this security feature.</li>
+<li id="cite_note-19">It is understood some external smartcard readers blink a flashlight
+and/or tone when the key is being accessed.</li>
+<li id="cite_note-20">Password versus pin.</li>
+<li id="cite_note-21">On an external device that is usually not infected by malware.</li>
+<li id="cite_note-22">For example spr332 devices.</li>
+<li id="cite_note-23">A skilled adversary will take a copy of both the OpenPGP private key
+and the passphrase, just in case that the user manages to move to a
+malware-free machine.</li>
+<li id="cite_note-24">Since adversaries cannot extract the key to get a copy, once the
+compromise has been undone -- either by chance, by doing a clean
+re-installation which the malware did not survive or because the malware
+is noticed -- future files/mails encrypted to the private key can no
+longer be decrypted by the adversary. No new malicious signatures can be
+made anymore. Revoking previously compromised keys would still be
+advisable, because the adversary may have created a large number of
+signatures for all sorts of texts and/or files.</li>
+<li id="cite_note-25">A long passphrase.</li>
+<li id="cite_note-26">A medium-sized pin.</li>
+<li id="cite_note-27">Arguably, OpenPGP is not that simple. In comparison, OTR has a
+smaller feature set (for example, no signatures for publicly released
+files), but encryption is much more usable. OTR is younger and has more
+users.</li>
+<li id="cite_note-28">Initial setup is harder than GnuPG private key password encryption
+and generally difficult.</li>
+<li id="cite_note-29">Assumptions:<br />
+* no malware on user's computer<br />
+* either the storage (HDD, SSD, USB etc.) holding the OpenPGP private
+key vs token or smartcard has been lost or stolen.</li>
+<li id="cite_note-30">The adversary would require either:<br />
+* a backdoor in GnuPG itself; or<br />
+* a backdoor in the distribution that shipped GnuPG; or<br />
+* found a vulnerability in GnuPG; or<br />
+* found an effective weakness in the encryption algorithm used by
+GnuPG.</li>
+<li id="cite_note-31">No vulnerabilities in GnuPG's private OpenPGP key encryption has
+ever been reported.</li>
+<li id="cite_note-32">Quote <a href="https://en.wikipedia.org/wiki/Smart_card#Security">Wikipedia</a>:
+<blockquote><p>Smart cards can be physically disassembled by using acid, abrasives,
+or some other technique to obtain unrestricted access to the on-board
+microprocessor. Although such techniques involve a fairly high risk of
+permanent damage to the chip, and irrecoverable loss of the secret keys
+therein, they permit much more detailed information (e.g.
+photomicrographs of encryption hardware) to be extracted.</p></blockquote></li>
+<li id="cite_note-33">Other, non-OpenPGP smartcards have been cracked in the past using
+ultra-expensive electron-scanning microscopes. Source: theguardian, <a href="https://www.theguardian.com/technology/2002/mar/13/media.citynews">How
+codebreakers cracked the secrets of the smart card</a></li>
+<li id="cite_note-34"><a href="https://www.cl.cam.ac.uk/~sps32/mcu_lock.html">https://www.cl.cam.ac.uk/~sps32/mcu_lock.html</a></li>
+<li id="cite_note-35">More information is required on how realistic, difficult and
+expensive these attacks are. Additional reader contributions on this
+issue are most welcome.</li>
+<li id="cite_note-36">If the machine in use has been compromised by malware like a trojan
+horse.</li>
+<li id="cite_note-37">On storage (HDD, SSD, USB etc.) vs on token or smartcard.</li>
+<li id="cite_note-38">By keylogger or extracted from memory once cached.</li>
+<li id="cite_note-39">Therefore make sure to have a backup on storage that is never
+attached to that machine.</li>
+<li id="cite_note-40">An adversary who managed to compromise the user's machine can use a
+keylogger to sniff the OpenPGP private key password once it is entered
+next time or extract it from memory if it is still cached. Any of the
+user's encrypted email, files, etc. (that are read from the user's
+devices or that have been extracted from other sources, such as by
+man-in-the-middle attacks or obtained from the user's mail provider and
+so forth) can then be decrypted.</li>
+<li id="cite_note-41">An adversary who managed to compromise the user's machine can wait
+until the user caches its pin next time. Otherwise, same as above. Once
+a machine has been compromised, nothing it shows can be trusted anymore,
+even if the PIN is never cached. If the PIN is cached or not is up to
+the software on the user's machine which can be no longer trusted once
+compromised. The adversary could install their own key caching software
+(gnupg-agent). Instead of the user's request "decrypt mail X", malware
+can also intercept this and make it "decrypt mail Y and X".</li>
+<li id="cite_note-42">Users could attach their smartcard to other computers, perhaps
+non-compromised, perhaps offline machines and check the signature
+counter. For example output, see: <a href="https://spin.atomicobject.com/2014/02/09/gnupg-openpgp-smartcard/">Using
+an OpenPGP Smartcard with GnuPG</a>.</li>
+<li id="cite_note-43">Once malware is running on a machine, nothing the machine displays
+can be trusted. It could be manipulated by the malware.</li>
+<li id="cite_note-44">Assumption: The token or card reader has not been compromised by
+malware running on the user's machine.</li>
+<li id="cite_note-45">New, experimental keyservers have been established which afford
+protection against this attack.</li>
+<li id="cite_note-46">The author notes the potential downsides of this attack:
+<blockquote><ul>
+<li id="cite_note-47">If you fetch a poisoned certificate from the keyserver network, you
+will break your GnuPG installation. * Poisoned certificates cannot be
+deleted from the keyserver network. * The number of deliberately
+poisoned certificates, currently at only a few, will only rise over
+time. * We do not know whether the attackers are intent on poisoning
+other certificates. * We do not even know the scope of the damage.</li>
+</ul></blockquote></li>
+</ol>
+</div>
+<h1 id="License">License</h1>
+<p>The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a>
+image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a>)
+is copyrighted by <a href="https://www.hauke-laging.de/">Hauke
+Laging</a>.</p>
+<p>The rest of this page is under the following license.</p>
+<p><blockquote><p>Kicksecure OpenPGP wiki page Copyright (C) Amnesia
+ Kicksecure OpenPGP wiki page Copyright (C)
+2012 - 2026 ENCRYPTED SUPPORT LLC &lt;adrelanos@whonix.org&gt;</p>
+<p>This program comes with ABSOLUTELY NO WARRANTY; for details see the
+wiki source code. This is free software, and you are welcome to
+redistribute it under certain conditions; see the wiki source code for
+details.</p></blockquote></p>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="PQCrypto.html" title="PQCrypto"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">PQCrypto</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Software.html" title="Software"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Software</span></a><span class="info"><span class="prev">Previous
+page: PQCrypto</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Software</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

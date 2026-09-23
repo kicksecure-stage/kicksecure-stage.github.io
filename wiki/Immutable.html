@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Immutable</title>
+<meta name="description" content="Explains what &quot;immutable&quot; and &quot;stateless&quot; means in Kicksecure, including how different boot modes affect system and file access.">
+<meta property="og:description" content="Explains what &quot;immutable&quot; and &quot;stateless&quot; means in Kicksecure, including how different boot modes affect system and file access.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Immutable.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Immutable.html">
+<meta property="og:title" content="Immutability and Statelessness">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Immutability_in_Kicksecure">Immutability in Kicksecure</a></li><li class="toc-l2"><a href="#Statelessness_in_Kicksecure">Statelessness in Kicksecure</a></li><li class="toc-l2"><a href="#Live_Mode">Live Mode</a></li><li class="toc-l2"><a href="#Persistent_Mode">Persistent Mode</a></li><li class="toc-l2"><a href="#Common_Boot_Mode_Features">Common Boot Mode Features</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Live_Mode.html">Live Mode</a></li>
+<li><a href="ISO_Live_Mode.html">ISO Live Mode</a></li>
+<li><a href="Read-only.html">read-only</a></li>
+<li><a href="Immutable.html">immutable</a></li>
+<li><a href="Write_protection.html">Write
+Protection</a></li>
+<li><a href="Grub-live.html">Grub-live</a></li>
+<li><a href="USB_Installation.html">Kicksecure on
+USB</a></li>
+<li><a href="Persistent_Mode.html">Persistent Mode</a></li>
+</ul>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Preferences_system.png.webp" width="40" alt="Developers only!" /></span>
+<img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" />
+<strong>Warning:</strong> This is for
+<u><strong>developers-only</strong></u>!</p>
+</div>
+<p><u><strong>This wiki page is a work in progress.</strong></u></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>An "immutable" system is one where core parts of the system cannot be
+changed while it is running. A "stateless" system is one where the
+system forgets everything done on it after a reboot. Kicksecure provides
+features similar to immutable and stateless systems, via
+<code>grub-live</code>. This page explains what immutability and
+statelessness means in practice and how you can choose the right mode
+for your needs.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>The term "immutable" generally means that the running system
+fundamentally cannot be altered. Immutability does not simply mean that
+file permissions prevent modification of certain files. An immutable
+system's filesystem is fundamentally unable to be modified by
+traditional means (creation, deletion, and modification of files,
+symlinks, etc.), even by the administrative ("<code>root</code>")
+account.</p>
+<p>In technical terms, this is generally achieved by mount-options
+and/or and filesystem-based restrictions. By mounting the file system as
+<a href="Read-only.html">read-only</a> or by using a
+read-only file system such as ISO or SquashFS. Directories that store
+mutable state (such as <code>/home</code>, but also <code>/root</code>,
+<code>/var</code>, and possibly other paths) are stored.</p>
+<p>The term "stateless" generally means that the system forgets all
+changes made to it when a reboot occurs. Statelessness and immutability
+have some overlap, since stateless systems are usually implemented by
+mounting an ephemeral overlay over the top of an immutable filesystem.
+Unlike merely immutable systems, stateless systems forget changes made
+to mutable state directories such as <code>/home</code>.</p>
+<p>Statelessness is limited to filesystems only. Other forms of state,
+such as UEFI variables, firmware updates, etc. may be preserved even if
+the system is otherwise stateless.</p>
+<p>Neither immutability, statelessness nor live mode should not be
+trusted to prevent privileged malware from making persistent
+modifications to the system. The root filesystem, mounted read-only at
+<code>/live/image</code>, can be trivially remounted read-write by
+software that runs as root unless using <a href="Verified_Boot.html">Verified Boot</a>.</p>
+<p>For further explanation and comparisons with other Linux
+distributions, see <a href="Dev/immutable.html">Dev/immutable</a> and <a href="Dev/Stateless.html">Dev/Stateless</a>.</p>
+<h2 id="Immutability_in_Kicksecure">Immutability in Kicksecure</h2>
+<p>Kicksecure is not an immutable distribution, and does not yet provide
+an immutable boot mode. It does, however, provide a stateless boot mode
+via <code>grub-live</code>. See below for more info.</p>
+<p>In the future, Kicksecure may provide an immutable boot mode as part
+of implementing <a href="Verified_Boot.html">Verified
+Boot</a>.</p>
+<h2 id="Statelessness_in_Kicksecure">Statelessness in Kicksecure</h2>
+<p>Kicksecure currently provides two primary boot modes, <a href="Live_Mode.html">live mode</a> and <a href="Persistent_Mode.html">persistent mode</a>.</p>
+<h2 id="Live_Mode">Live Mode</h2>
+<p>In live mode, all filesystems that are part of the OS installation
+(including <code>/home</code>, <code>/var</code>) are mounted
+read-only.</p>
+<p>All writes are redirected to RAM, which is volatile memory.</p>
+<p>Writable tmpfs overlays are then applied to these filesystems using
+OverlayFS, to allow the directories to be written to even though the
+filesystems themselves cannot be changed.</p>
+<p>Applications can freely read from and write to files on the OS, even
+on the root filesystem, but these changes are immediately wiped upon
+shutdown.</p>
+<h2 id="Persistent_Mode">Persistent Mode</h2>
+<p>In persistent mode, filesystems are mounted read/write and can be
+modified normally.</p>
+<h2 id="Common_Boot_Mode_Features">Common Boot Mode Features</h2>
+<p>In both boot modes, system folders such as <code>/usr</code>,
+<code>/etc</code>, <code>/var</code>, <code>/boot</code>, and
+<code>/root</code> cannot be modified by the <code>user</code> account
+because of file permissions. This is not a consequence of live mode or
+immutability.</p>
+<p>Note that in persistent mode, services that run as root may (and in
+practice will) make changes to the root filesystem;
+<code>updatecheck</code> will update apt software lists,
+<code>systemd-journald</code> will save system logs, etc.</p>
+<p>The <a href="Grub.html">GRUB</a> boot menu allows you to
+choose whether to enable stateless operation or not. Want everything
+read-only? Select live mode. Need saved data to persist? Use persistent
+mode.</p>
+<p>If <code>user-sysmaint-split</code> is installed, file permissions
+and restrictions on the priviledge escalation utilities (such as
+<code>sudo</code> and <code>pkexec</code>) utilities prevent regular
+(non-administrative) users (such as account <code>user</code>) from
+making modifications to most files outside of the <code>/home</code>
+folder. To make permanent changes to system folders like
+<code>/usr</code>, <code>/etc</code>, <code>/var</code>,
+<code>/boot</code>, or <code>/root</code>, boot into persistent mode,
+sysmaint session. For more details, see <a href="Sysmaint.html">Sysmaint</a>.</p>
+<p>If the user-sysmaint split does not suit your needs, consider using
+<a href="Unrestricted_admin_mode.html">Unrestricted Admin
+Mode</a>.</p>
+<h1 id="Simplified_Boot_Modes_Comparison_Table">Simplified Boot Modes
+Comparison Table</h1>
+<table>
+<caption>Simplified Boot Modes Comparison Table</caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p><a href="Persistent_Mode.html">PERSISTENT Mode</a>
+(USER Session)</p></th>
+<th><p><a href="Live_Mode.html">LIVE Mode</a> (USER
+Session)</p></th>
+<th><p><a href="Live_Mode.html">LIVE Mode</a> (SYSMAINT
+Session)</p></th>
+<th><p><a href="Persistent_Mode.html">PERSISTENT Mode</a>
+(SYSMAINT Session)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>What it's for</p></td>
+<td><p>Everyday use with saved personal files and settings.</p></td>
+<td><p>Temporary use. All changes are forgotten after reboot.</p></td>
+<td><p>Temporary system repair or maintenance.</p></td>
+<td><p>Full access for permanent system changes.</p></td>
+</tr>
+<tr class="even">
+<td><p>Can change system files (like <code>/usr</code>,
+<code>/etc</code>)</p></td>
+<td><p>No,
+prohibited by file permissions</p></td>
+<td><p>No,
+prohibited by file permissions and modifications by system services will
+be lost on reboot</p></td>
+<td><p>No,
+modifications will be lost on reboot</p></td>
+<td><p>Yes,
+read-write</p></td>
+</tr>
+<tr class="odd">
+<td><p>Can save files in <code>/home</code> (personal folder)</p></td>
+<td><p>Yes,
+saved after reboot</p></td>
+<td><p>No,
+temporary only</p></td>
+<td><p>No,
+temporary only</p></td>
+<td><p>Yes,
+saved after reboot</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Advanced users, developers can also have a look at the more complex
+<a href="Dev/user-sysmaint-split.html#Boot_Modes_Comparison_Table">Boot Modes Comparison Table</a>.</p>
+<h1 id="Future">Future</h1>
+<p>New mount options.</p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

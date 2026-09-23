@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>VirtualBox/Troubleshooting</title>
+<meta name="description" content="VT-x is disabled in the BIOS. / VERR_VMX_MSR_VMXON_DISABLED / VERR_SSM_FIELD_NOT_CONSECUTIVE / supR3HardenedWinReSpawn / Enable VT-x in BIOS / Aborted Status / Guru Meditation">
+<meta property="og:description" content="VT-x is disabled in the BIOS. / VERR_VMX_MSR_VMXON_DISABLED / VERR_SSM_FIELD_NOT_CONSECUTIVE / supR3HardenedWinReSpawn / Enable VT-x in BIOS / Aborted Status / Guru Meditation">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/VirtualBox/Troubleshooting.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/VirtualBox/Troubleshooting.html">
+<meta property="og:title" content="Kicksecure in VirtualBox - Troubleshooting - Does not Start? Slow? Other Issues?">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Vboxtroubleshoot123123.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>VirtualBox</span> / <span>Troubleshooting</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#VERR_SSM_FIELD_NOT_CONSECUTIVE">VERR_SSM_FIELD_NOT_CONSECUTIVE</a></li><li class="toc-l2"><a href="#VT-x_is_disabled_in_BIOS">VT-x is disabled in BIOS</a></li><li class="toc-l2"><a href="#VT-x_/_SVM_Errors">VT-x / SVM Errors</a></li><li class="toc-l2"><a href="#Error_In_supR3HardenedWinReSpawn">Error In
+supR3HardenedWinReSpawn</a></li><li class="toc-l2"><a href="#VMMR0InitVM:_Revision_mismatch">VMMR0InitVM: Revision
+mismatch</a></li><li class="toc-l2"><a href="#E_INVALIDARG_(0x80070057)">E_INVALIDARG (0x80070057)</a></li><li class="toc-l2"><a href="#Screen_Resolution_Bug">Screen Resolution Bug</a></li><li class="toc-l2"><a href="#Black_Screen">Black Screen</a></li><li class="toc-l2"><a href="#Slow_Video_Playback">Slow Video Playback</a></li><li class="toc-l2"><a href="#Host_Crash">Host Crash</a></li><li class="toc-l2"><a href="#Aborted_Status">Aborted Status</a></li><li class="toc-l2"><a href="#Guru_Meditation">Guru Meditation</a></li><li class="toc-l2"><a href="#NS_ERROR_FAILURE">NS_ERROR_FAILURE</a></li><li class="toc-l2"><a href="#Kernel_driver_not_installed">Kernel driver not installed</a></li><li class="toc-l2"><a href="#Windows_only_-_Virtual_Machine_only_starts_after_several_attempts_-_rcpu_preempt_self-detected_stall_on_CPU">Windows
+only - Virtual Machine only starts after several attempts - rcpu_preempt
+self-detected stall on CPU</a></li><li class="toc-l2"><a href="#Windows_only_-_VirtualBox_Green_Turtle">Windows only -
+VirtualBox Green Turtle</a></li><li class="toc-l2"><a href="#Assign_Less_Virtual_CPUs">Assign Less Virtual CPUs</a></li><li class="toc-l2"><a href="#INCONSISTENCY_BETWEEN_GRAIN_TABLE_AND_BACKUP_GRAIN_TABLE">INCONSISTENCY
+BETWEEN GRAIN TABLE AND BACKUP GRAIN TABLE</a></li><li class="toc-l2"><a href="#High_Disk_Usage_Causing_Filesystem_Corruption">High Disk Usage
+Causing Filesystem Corruption</a></li><li class="toc-l2"><a href="#Import_Kicksecure_Image">Import Kicksecure Image</a></li><li class="toc-l2"><a href="#Sound">Sound</a></li><li class="toc-l2"><a href="#Core_Isolation">Core Isolation</a></li><li class="toc-l2"><a href="#VERR_SUP_VP_UNEXPECTED_VALID_PATH_COUNT">VERR_SUP_VP_UNEXPECTED_VALID_PATH_COUNT</a></li><li class="toc-l2"><a href="#VERR_VMX_IN_VMX_ROOT_MODE">VERR_VMX_IN_VMX_ROOT_MODE</a></li><li class="toc-l2"><a href="#VBoxDrvStub_Signature_Issue">VBoxDrvStub Signature Issue</a></li><li class="toc-l2"><a href="#A)_Install_VirtualBox_Guest_Additions_from_the_Debian_fasttrack_repository">A) Install VirtualBox Guest Additions from the Debian fasttrack
+repository</a></li><li class="toc-l2"><a href="#B)_Install_VirtualBox_Guest_Additions_from_the_Debian_sid_repository">B) Install VirtualBox Guest Additions from the Debian sid
+repository</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Other_Versions.html" title="VirtualBox/Other Versions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox/Other
+Versions</span></a><a class="index internal" href="../Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Green_Turtle_Issue.html" title="VirtualBox/Green Turtle Issue"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">VirtualBox/Green
+Turtle Issue</span></a><span class="info"><span class="prev">Previous
+page: VirtualBox/Other Versions</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: VirtualBox/Green
+Turtle Issue</span></span></span>Kicksecure in VirtualBox -
+Troubleshooting - Does not Start? Slow? Other Issues?</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Troubleshooting.html#General_Troubleshooting">General Troubleshooting</a></li>
+<li><a href="../Troubleshooting.html#Connectivity_Troubleshooting">Connectivity Troubleshooting</a></li>
+<li><a href="Troubleshooting.html">VirtualBox
+Troubleshooting</a></li>
+<li><a href="../Recovery.html">Recovery</a></li>
+<li><a href="../Grub.html">GRUB</a></li>
+<li><a href="../Dracut.html">dracut</a></li>
+<li><a href="../Broken_Boot.html">Broken Boot</a></li>
+<li><a href="../Factory_Reset.html">Factory Reset</a></li>
+<li><a href="../Download_Issues.html">Download Issues</a></li>
+</ul>
+</div>
+<p><img src="../../media/Vboxtroubleshoot123123.jpg.webp" alt="Vboxtroubleshoot123123.jpg" /></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-bolt-lightning cs-yellow"></i></span>
+<span class="template-styled-text ">Quickhelp
+(Problem 🠊 Solution )</span></p>
+<ul>
+<li><strong>Slow?</strong> 🠊 Try <a href="#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</li>
+<li><strong>Green turtle on Windows?</strong> 🠊 See <a href="Green_Turtle_Issue.html">VirtualBox Green
+Turtle Issue</a>.</li>
+<li><strong><code>Failed to open a session for the virtual machine</code></strong>
+🠊 <a href="#Failed_to_open_a_session_for_the_virtual_machine">See this.</a></li>
+<li><strong><code>NS_ERROR_FAILURE (0x80004005)</code></strong> 🠊 <a href="#NS_ERROR_FAILURE">See this.</a></li>
+<li><strong><a href="#VT-x_is_disabled_in_BIOS"><code>VERR_VMX_MSR_VMXON_DISABLED</code> /
+<code>VERR_NEM_NOT_AVAILABLE</code></a></strong> 🠊 <a href="#BIOS">Enable <code>VT-x</code> in BIOS settings.</a></li>
+<li><strong>Audio / sound issues?</strong> 🠊 <a href="Troubleshooting.html#Sound">See
+this.</a></li>
+<li><strong><code>E_INVALIDARG (0x80070057)</code></strong> 🠊 <a href="#E_INVALIDARG_(0x80070057)">See this.</a></li>
+<li><strong>Black screen?</strong> 🠊 <a href="#Black_Screen">See this</a>.</li>
+<li><strong>Aborted Status?</strong> 🠊 <a href="#Aborted_Status">See this</a>.</li>
+<li><strong>Guru Meditation?</strong> 🠊 <a href="#Guru_Meditation">See this</a>.</li>
+<li><strong>Other issues?</strong> 🠊 Try <a href="Troubleshooting.html#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</li>
+</ul>
+</div>
+<div class="vspacer ">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>There are many issues which might prevent a normal operation of the
+VirtualBox host virtualization software. This wiki page documents common
+issues and potential solutions.</p>
+<div class="post-intro-p">
+</div>
+<p>Topics on this page are sorted roughly in order of issue prevalence.
+More common issues are on top.</p>
+<h1 id="General_VirtualBox_Troubleshooting_Steps">General VirtualBox
+Troubleshooting Steps</h1>
+<p><img src="../../media/Ambox_notice.png.webp" width="25" alt="Ambox_notice.png" />
+In many situations, the following steps will fix VirtualBox issues.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<a href="../Troubleshooting.html#General_Troubleshooting">General Troubleshooting</a> for issues such as VM
+freezing.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Random VM reboots? Try to <a href="../Panic-on-oops.html">disable <code>panic-on-oops</code></a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+In case of connectivity issues, see <a href="../Troubleshooting.html#Connectivity_Troubleshooting">Connectivity Troubleshooting</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+<img src="../../media/Kicksecure-basic-logo.png.webp" width="25" alt="Kicksecure-basic-logo.png" />
+Use the stable version of <a href="../VirtualBox.html">Kicksecure for VirtualBox</a>
+<code>18.2.1.9</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+<img src="../../media/Computer_n_screen.png.webp" width="25" alt="Computer_n_screen.png" />
+<img src="../../media/Virtualbox_logo.png.webp" width="25" alt="Virtualbox_logo.png" />
+Use the <a href="Recommended_Version.html">recommended</a> VirtualBox <u>host</u> software
+version, which is currently: <a href="Recommended_Version.html#Latest_VirtualBox_Version"><code>latest</code></a></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+<img src="../../media/cli3.png.webp" width="25" alt="cli3.png" />
+<img src="../../media/Virtualbox_logo.png.webp" width="25" alt="Virtualbox_logo.png" />
+To ensure the recommended version of <a href="Guest_Additions.html#VirtualBox_Guest_Additions">VirtualBox guest additions</a> is installed in
+Kicksecure run: <span class="code-select">sudo apt update &amp;&amp;
+sudo apt full-upgrade</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+<img src="../../media/Cd-rom-icon.png.webp" width="25" alt="Cd-rom-icon.png" />
+<img src="../../media/Virtualbox_logo.png.webp" width="25" alt="Virtualbox_logo.png" />
+Do <u>not</u> use <a href="Guest_Additions.html#VirtualBox_Guest_Additions_CD">VirtualBox guest additions from CD</a>.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+<img src="../../media/logo-linux-500x500.png.webp" width="15" alt="logo-linux-500x500.png" />
+<u>Linux users only:</u> <u>Host kernel version:</u> use the recommended
+host Linux kernel version. It should be the same version that Debian
+<code>trixie</code> is using (<a href="https://packages.debian.org/trixie/linux-image-amd64"><code>linux-image-amd64</code></a>).
+Otherwise many <a href="../Kernel.html#Kernel_Issues">kernel
+issues</a> are likely to occur.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+<img src="../../media/logo-linux-500x500.png.webp" width="15" alt="logo-linux-500x500.png" />
+<u>Linux users only:</u> <u>Host operating system:</u> use a recommended
+Linux distribution -- <a href="https://www.debian.org/">Debian</a>
+<code>trixie</code> or Kicksecure <code>18</code> -- as the host
+operating system.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+<img src="../../media/logo-linux-500x500.png.webp" width="15" alt="logo-linux-500x500.png" />
+<u>Linux users only:</u> <u>Linux user groups:</u> Add your current user
+to group <code>vboxusers</code>. <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+<span class="code-select">sudo adduser $(whoami) vboxusers</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+<img src="../../media/Logo-windows-500x500.png.webp" width="15" alt="Logo-windows-500x500.png" />
+<u>Windows users only:</u> <u>Host operating system:</u> Consider
+running Kicksecure from a Linux computer rather than a Windows computer.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">12</i>
+<u>Virtualizer Conflicts:</u> Do you have virtualizers other than
+VirtualBox installed at the same time such as
+<img src="../../media/Vmware.jpeg.webp" width="25" alt="Vmware.jpeg" />
+VMware, Hyper-V or
+<img src="../../media/Kvm-new-logo.png.webp" width="25" alt="Kvm-new-logo.png" />
+KVM? If you never heard of these product names or do not know what that
+means then this is not an issue. But if you have multiple
+virtualizers/hypervisors installed, only one can run at once (in this
+section only VirtualBox), see the footnote for further information.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">13</i>
+<u>Low RAM Issues:</u> Perhaps a <a href="../Troubleshooting.html#Low_RAM_Issues">Low RAM
+issue</a>? <a href="../Troubleshooting.html#Free_up_Additional_Memory_Resources">Free up Additional Memory Resources</a> and try
+Kicksecure CLI RAM Saving Mode as per <a href="../RAM.html">Advice for Systems with Low RAM</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">14</i>
+<u>3D Acceleration Issues:</u> If you enabled <a href="../Tuning.html#Hardware-accelerated_Graphics">Hardware-accelerated Graphics</a>, try turning this
+off, as <a href="https://forums.whonix.org/t/virtualbox-whonix-freezing/17535/9">VirtualBox
+3D acceleration has been reported to cause issues</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">15</i>
+<u>Hardware Issues:</u> Exclude basic <a href="../Troubleshooting.html#Hardware_Issues">hardware
+issues</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">16</i>
+<u>RAM Hardware Issues:</u> Run <code>memtestx86+</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">17</i>
+<a href="#Testing_with_a_Debian_VM">Testing with a
+Debian VM</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">18</i>
+<a href="#VirtualBox_Generic_Bug_Reproduction">VirtualBox Generic Bug Reproduction</a></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">19</i>
+<img src="../../media/Logo-windows-500x500.png.webp" width="15" alt="Logo-windows-500x500.png" />
+<u>Windows <code>10</code> / <code>11</code> users only:</u> <u>Hash Sum
+mismatch:</u> <a href="#Core_Isolation">Disable Core
+Isolation</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">20</i>
+<img src="../../media/Logo-windows-500x500.png.webp" width="15" alt="Logo-windows-500x500.png" />
+<u>Windows <code>10</code> / <code>11</code> users only:</u> <a href="Green_Turtle_Issue.html">Virtual Machine
+only starts after several attempts -
+<code>rcpu_preempt self-detected stall on CPU</code> / Green
+Turtle</a></p>
+</div>
+<h1 id="Linux_Host_Kernel_versus_Tor_Browser_and_other_Crashes">Linux
+Host Kernel versus Tor Browser and other Crashes</h1>
+<p>This issue happens after a Linux host kernel upgrade. Common symptoms
+of this issue are:</p>
+<ul>
+<li>APT showing <code>hashsum mismatch</code>.</li>
+<li><a href="../Kernel.html#Kernel_Issues">other kernel
+issues</a></li>
+<li>Tor Browser crashes.</li>
+</ul>
+<pre><code>ERROR: Tor Browser ended with non-zero (error) exit code!
+
+Tor Browser was started with:
+
+/home/user/.tb/tor-browser/Browser/start-tor-browser --verbose --allow-remote .
+
+Tor Browser exited with code: 139</code></pre>
+<p>This is fixed since VirtualBox version <code>6.1.36</code> and above.
+For installation instructions, see <a href="Recommended_Version.html">recommended
+VirtualBox version</a>.</p>
+<p>Forum discussion: <a href="https://forums.whonix.org/t/tor-browser-crashing-in-whonix-virtualbox-since-upgrade-to-host-linux-kernel-version-5-10-0-15/13767">https://forums.whonix.org/t/tor-browser-crashing-in-whonix-virtualbox-since-upgrade-to-host-linux-kernel-version-5-10-0-15/13767</a></p>
+<h1 id="Failed_to_open_a_session_for_the_virtual_machine">Failed to open
+a session for the virtual machine</h1>
+<p>If you see the following error message:</p>
+<p><blockquote><p>Failed to open a session for the virtual machine Kicksecure-LXQt</p></blockquote></p>
+<p>Click details. If <code>Result Code:</code>
+<code>NS_ERROR_FAILURE (0x80004005)</code> is shown, then this chapter
+applies.</p>
+<p>Should be fixed in VirtualBox version <code>6.1.22</code> and
+above.</p>
+<p>This occurs with all Kicksecure VirtualBox versions up to version
+<code>15.0.1.7.2</code> when using VirtualBox version
+<code>6.1.20</code>. VirtualBox version <code>6.1.20</code>
+solution:</p>
+<ul>
+<li><code>VirtualBox</code> -> <code>Settings</code> ->
+<code>Storage</code> -> <code>Type:</code> <code>AHCI</code> ->
+<code>OK</code> <sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+<li>Other settings remain unchanged.</li>
+</ul>
+<p>This setting is the default in Kicksecure version
+<code>15.0.1.7.3</code> and above.</p>
+<p>Note this setting <u>might</u> cause <a href="#High_Disk_Usage_Causing_Filesystem_Corruption">High Disk Usage Causing Filesystem Corruption</a> on
+some (slower) hardware configurations due to a VirtualBox host software
+bug, <a href="https://www.virtualbox.org/ticket/10031">High I/O causing
+filesystem corruption</a>. This is speculation and unavoidable because
+there is no other solution at present. The <a href="#High_Disk_Usage_Causing_Filesystem_Corruption">High Disk Usage Causing Filesystem Corruption</a>
+chapter has approaches which might fix this issue if it manifests.</p>
+<p>To avoid issues like
+<code>Failed to open a session for the virtual machine</code> in the
+future, use the <a href="Recommended_Version.html">recommended</a> version of the VirtualBox host software
+and <a href="../Stay_Tuned.html">Stay Tuned</a>.</p>
+<p>Forum discussion: <a href="https://forums.whonix.org/t/whonix-virtualbox-failed-to-start-ns-error-failure-0x80004005-the-vm-session-was-aborted/11471">Kicksecure
+VirtualBox - failed to start - NS_ERROR_FAILURE (0x80004005) - The VM
+session was aborted.</a></p>
+<p>VirtualBox upstream bug report: <a href="https://www.virtualbox.org/ticket/20323">VM Machine wont to start
+after upgrade to 6.1.20</a></p>
+<h1 id="VT-x">VT-x</h1>
+<h2 id="VERR_SSM_FIELD_NOT_CONSECUTIVE">VERR_SSM_FIELD_NOT_CONSECUTIVE</h2>
+<p>If the "<em><span>Failed to load
+unit 'PATM' (VERR_SSM_FIELD_NOT_CONSECUTIVE).</span></em>" error
+appears, <code>VT-x</code> must be enabled in BIOS settings, see <a href="#BIOS">instructions</a>.</p>
+<p><span class="manually-placed-anchor " id="VT-x_is_disabled_in_the_BIOS."></span>
+<span class="manually-placed-anchor " id="VT-x"></span></p>
+<h2 id="VT-x_is_disabled_in_BIOS">VT-x is disabled in BIOS</h2>
+<div class="gallery">
+<p><span class="gallery-item"><img src="../../media/VirtualBox_VERR_VMX_MSR_LOCKED_OR_DISABLED.png.webp" alt="&#x27;&#x27;&#x27;Figure:&#x27;&#x27;&#x27; VERR_NEM_NOT_AVAILABLE / VERR_SVM_DISABLED" loading="lazy" /><span class="gallery-caption">'''Figure:'''
+VERR_NEM_NOT_AVAILABLE /
+VERR_SVM_DISABLED</span></span><span class="gallery-item"><img src="../../media/VERR_VMX_MSR_VMXON_DISABLED.png.webp" alt="&#x27;&#x27;&#x27;Figure:&#x27;&#x27;&#x27; &#x27;&#x27;VERR_VMX_MSR_VMXON_DISABLED / VERR_NEM_NOT_AVAILABLE&#x27;&#x27;" loading="lazy" /><span class="gallery-caption">'''Figure:'''
+''VERR_VMX_MSR_VMXON_DISABLED /
+VERR_NEM_NOT_AVAILABLE''</span></span></p>
+</div>
+<p>If the following error message appears.</p>
+<p><blockquote><p>Failed to open a session for the virtual machine Kicksecure-LXQt.</p>
+<p>VT-x is disabled in the BIOS. (VERR_VMX_MSR_VMXON_DISABLED).</p></blockquote></p>
+<p>Or.</p>
+<p><blockquote><p>AMD-V is disabled in the BIOS (or by the host OS).
+(VERR_SVM_DISABLED).</p></blockquote></p>
+<p>Then <a href="#BIOS">enable <code>VT-x</code> in
+BIOS settings</a>.</p>
+<p><span class="manually-placed-anchor " id="BIOS"></span></p>
+<h2 id="VT-x_/_SVM_Errors">VT-x / SVM Errors</h2>
+<p><img src="../../media/Enable-vt-x-in-bios.png.webp" alt="enabling VT-x in BIOS" /></p>
+<p>These errors arise when the host's hardware virtualization extension
+is not available. The reasons are either/and/or:</p>
+<ul>
+<li><strong>A)</strong> Another hypervisor is running on the
+system.</li>
+<li><strong>B)</strong> An anti-virus suite is blocking
+virtualization.</li>
+<li><strong>C)</strong> Virtualization support is not present or not
+enabled in the machine BIOS.</li>
+</ul>
+<p><strong>Solution:</strong></p>
+<p><strong>1.</strong> Enter the BIOS/UEFI setup menu of your machine.
+For general guidance, see: <a href="https://www.wikihow.com/Change-Computer-BIOS-Settings">How to
+Change BIOS Settings</a>.</p>
+<p><strong>2.</strong> Enable hardware virtualization. This may be
+listed under different names depending on your system:</p>
+<ul>
+<li><code>VT-x</code></li>
+<li><code>AMD-V</code></li>
+<li><code>Virtualization</code></li>
+<li><code>SVM mode</code></li>
+<li><code>MIT</code> (sometimes under <code>Advanced Core</code>
+settings)</li>
+</ul>
+<p><strong>3.</strong> Save changes.</p>
+<p><strong>4.</strong> Reboot.</p>
+<p><strong>5.</strong> Done.</p>
+<h1 id="Updating/Upgrading_while_VMs_are_Running">Updating/Upgrading
+while VMs are Running</h1>
+<h2 id="Error_In_supR3HardenedWinReSpawn">Error In
+supR3HardenedWinReSpawn</h2>
+<p><img src="../../media/VirtualBox_supR3HardenedWinReSpawn.png.webp" width="400" alt="VirtualBox_supR3HardenedWinReSpawn.png" /></p>
+<p>Do not update whilst the VMs are running, otherwise <a href="../VirtualBox.html">VirtualBox</a> must be
+reinstalled.</p>
+<h2 id="VMMR0InitVM:_Revision_mismatch">VMMR0InitVM: Revision
+mismatch</h2>
+<pre><code>debian kernel: VMMR0InitVM: Revision mismatch, r3=132055 r0=130347</code></pre>
+<p>This happens when upgrading VirtualBox on the host while existing VMs
+are still running. The solution is to shut down and restart all VMs.</p>
+<h1 id="Disk_Space">Disk Space</h1>
+<h2 id="E_INVALIDARG_(0x80070057)">E_INVALIDARG (0x80070057)</h2>
+<p>This <strong>might</strong> relate to a <strong>low disk space
+issue</strong> -- <a href="../Unspecific.html">unspecific to
+Kicksecure</a> -- <a href="../Please_Use_Search_Engines_And_See_Documentation_First.html">research the issue further with search engines</a>.</p>
+<p>A user reported:</p>
+<p><blockquote><p>During Import, on Application Settings pop up. Setting called
+"Additional Options: __ Import hard drives as VDI". Unselecting this got
+me past this error.</p></blockquote></p>
+<p>This might be the case because if no conversion to VDI is required
+then less disk space might be sufficient.</p>
+<h1 id="Non-functional_Shared_Clipboard_and_Drag_and_Drop">Non-functional
+Shared Clipboard and Drag and Drop</h1>
+<p>If the shared clipboard and drag'n'drop to/from host is
+non-functional, this can relate to the version of guest additions
+installed in Kicksecure and/or the version of VirtualBox running on the
+host. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<ol>
+<li>Apply <a href="#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</li>
+<li><code>VirtualBox</code> -> <code>Settings</code> ->
+<code>General</code> -> <code>Advanced tab</code> ->
+<code>'Check' shared clipboard and drag and drop</code></li>
+</ol>
+<p>It might still not work, see: <a href="../Dev/VirtualBox.html#VirtualBox_Guest_Additions_Bugs">VirtualBox Guest Additions Bugs Reporting</a>.</p>
+<h1 id="Screen_Issues">Screen Issues</h1>
+<h2 id="Screen_Resolution_Bug">Screen Resolution Bug</h2>
+<p><span class="manually-placed-anchor " id="VirtualBox_Screen_Resolution_Bug"></span></p>
+<p><img src="../../media/cli4.png.webp" alt="VirtualBox Screen Resolution Bug" />
+<img src="../../media/cli3.png.webp" alt="Normal presentation" /></p>
+<p>If the display presents like the image on the right-hand side, then
+you are affected by a screen resolution bug which only occurs in
+VirtualBox.</p>
+<p>To correct the resolution, first apply the <a href="Troubleshooting.html#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</p>
+<p>If the issue still persists, try one of the following workarounds to
+correct the resolution.</p>
+<p><strong>VirtualBox Virtual Screen Menu Workaround</strong></p>
+<ol>
+<li>Power off the VM.</li>
+<li>Restart the VM.</li>
+<li>Maximize the VM window after start of the VM as soon as
+possible.</li>
+<li><code>VirtualBox VM Window</code> -> <code>View</code> ->
+<code>Virtual Screen 1</code> ->
+<code>Choose any, resize to another resolution</code></li>
+<li><code>VirtualBox VM Window</code> -> <code>View</code> ->
+<code>Auto-resize Guest Display</code></li>
+</ol>
+<hr />
+<p><strong>Desktop Resolution Settings Workaround</strong></p>
+<p>If the method above did not work, another option is the following.
+Inside the virtual machine:</p>
+<p><code>LXQt Start Menu</code> -> <code>Preferences</code> ->
+<code>Displays</code> -> <code>Size</code> ->
+<code>Choose a higher resolution</code> -> <code>Apply</code></p>
+<hr />
+<p><strong>VirtualBox VMSVGA Graphics Controller Setting
+Workaround</strong></p>
+<p>If it still does not work, a final option is the following.</p>
+<p>Inside the virtual machine <sup class="reference"><a href="#cite_note-7">[7]</a></sup>:</p>
+<p>On the host:</p>
+<ol>
+<li>Power off the VM.</li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>Display</code> ->
+<code>Graphics Controller</code> -> <code>VMSVGA</code> -> <code>OK</code>
+(This is already the case in newer Kicksecure versions.)</li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>Display</code> ->
+<code>Graphics Controller</code> ->
+<code>increase slider for Video Memory to 128</code> -> <code>OK</code>
+(This is already the case in newer Kicksecure versions.)</li>
+<li>Restart the VM.</li>
+<li>Maximize the VM window after start of the VM as soon as
+possible.</li>
+<li>If necessary, try again one of above workarounds.</li>
+</ol>
+<hr />
+<p><strong>VirtualBox Guest Additions Bugs Reporting</strong></p>
+<p>Occasionally screen resolution problems might still persist, see: <a href="../Dev/VirtualBox.html#VirtualBox_Guest_Additions_Bugs">VirtualBox Guest Additions Bugs Reporting</a>.</p>
+<h2 id="Black_Screen">Black Screen</h2>
+<p>If a black screen appears, try the following possible solutions.</p>
+<ol>
+<li>Install the <a href="Recommended_Version.html">recommended</a> version of the VirtualBox host
+software.</li>
+<li>Apply the <a href="#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</li>
+<li>Reboot.</li>
+<li>If the issue persists, try the following workarounds.</li>
+</ol>
+<p>If this solution or any of the workarounds worked for you, please
+report this in <a href="https://forums.kicksecure.com">Kicksecure
+forums</a>.</p>
+<hr />
+<p><strong>Workaround 1: Try Other VirtualBox Virtual Graphics
+Controller Settings</strong></p>
+<ol>
+<li>Power off the VM.</li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>Display</code> ->
+<code>Graphics Controller</code> -> <code>VMSVGA</code> -> <code>OK</code>
+(Or try other settings there.) <sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>Display</code> ->
+<code>Graphics Controller</code> ->
+<code>increase slider for Video Memory to 128</code> -> <code>OK</code>
+(This is already the default in recent releases of Kicksecure.)</li>
+<li>Restart the VM.</li>
+</ol>
+<hr />
+<p><strong>Workaround 2: Boot Once Without Virtual Graphics
+Adapter</strong></p>
+<p>This workaround has been reported as functional on a Windows 10 host
+with both Intel and nVidia GPU capabilities. It is okay to try this
+workaround on any host operating system.</p>
+<ol>
+<li>Power off the VM.</li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>Display</code> ->
+<code>Graphics Controller</code> -> <code>None</code> ->
+<code>OK</code></li>
+<li>Start the VM. Wait 2-3 minutes. <em>(Since the display is disabled,
+you will see nothing happening)</em></li>
+<li>Click the VirtualBox pane's <code>[X]</code> button. VirtualBox will
+offer a dialog with 3 options. If <code>Send Shutdown signal</code> is
+greyed out, cancel the dialog and try this step again every 10-20
+seconds.</li>
+<li>Send Shutdown signal. If it does not shut down immediately, wait a
+short time and try again.</li>
+<li>Once the VM shuts down, restore the Graphics Controller to
+<code>VMSVGA</code>.</li>
+<li>Restart the VM.</li>
+</ol>
+<p><em>If this workaround succeeds, the screen will again be black for
+2-3 minutes, but then <code>chkdsk</code> will run and the VM should
+start normally.</em></p>
+<hr />
+<p><strong>Workaround 3: nomodeset Kernel Parameter</strong></p>
+<p>Try to <a href="../Grub.html#Kernel_Boot_Parameter_Change">boot with the <code>nomodeset</code> kernel
+parameter</a>. If that works, please post a forum report and then <a href="../Grub.html#Permanent_Configuration_Changes">make the
+change permanent</a>. <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<hr />
+<p><strong>Workaround 4: Virtual Console</strong></p>
+<p>If it is possible to switch to a <a href="../Desktop.html#Virtual_Consoles">virtual console</a>, this can help with debugging.</p>
+<h2 id="Slow_Video_Playback">Slow Video Playback</h2>
+<p>Possible solutions:</p>
+<ol>
+<li><u>Untested</u>: Try downloading a video using <a href="https://whonix.org/wiki/yt-dlp">yt-dlp</a> (<a href="http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/wiki/yt-dlp">.onion</a>)
+and then play the video in VLC.</li>
+<li><u>Tested</u>: Consider <a href="../Tuning.html">Tuning</a>, specifically <a href="../Tuning.html#Hardware-accelerated_Graphics">enable
+hardware-accelerated graphics</a>. Note that this configuration worsens
+security.</li>
+<li><u>Untested</u>: Consider <a href="../Tuning.html#Disable_CPU_Mitigations">disabling CPU mitigations</a>. This configuration also
+worsens security.</li>
+</ol>
+<p>It is unknown whether enabling VirtualBox hardware-accelerated
+graphics (3D Acceleration) or disabling CPU mitigations is worse for
+security. Contributors are asked to research this issue (<a href="../Self_Support_First_Policy.html">Self Support First
+Policy</a>) and report what is found in a dedicated forum thread.</p>
+<h1 id="Miscellaneous">Miscellaneous</h1>
+<h2 id="Host_Crash">Host Crash</h2>
+<p>See the <a href="#Aborted_Status">Aborted Status</a>
+instructions below. The same instructions are applicable.</p>
+<h2 id="Aborted_Status">Aborted Status</h2>
+<p>If the virtual machine ever shows an <code>aborted</code> status,
+perform these steps:</p>
+<ol>
+<li>Try to <a href="#Assign_Less_Virtual_CPUs">Assign
+Less Virtual CPUs</a>; this may help to avoid the issue.</li>
+<li>Check for <a href="../Troubleshooting.html#Low_RAM_Issues">Low RAM issues</a>.</li>
+<li>Apply <a href="#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</li>
+<li>Consider reporting a bug against upstream <a href="https://www.virtualbox.org">VirtualBox</a> -- <a href="https://www.virtualbox.org/wiki/Bugtracker">VirtualBox
+bugtracker</a> / <a href="https://forums.virtualbox.org">VirtualBox
+forums</a>. <u>VirtualBox developers</u> require logs to identify the
+problem. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></li>
+</ol>
+<p>Kicksecure provides VM images that operate inside the VM. Whatever
+occurs inside a VM should never lead to a crash (status aborted) of the
+host virtualization software, VirtualBox.</p>
+<p>Recommended steps:</p>
+<ol>
+<li>To capture the VirtualBox log: <code>VirtualBox</code> ->
+<code>right click a VM</code> -> <code>Show Log...</code> ->
+<code>Log</code> -> <code>Save</code> -> <code>OK</code></li>
+<li>Zip the log.</li>
+<li>Report to <u>VirtualBox support</u>.</li>
+<li>Share the VirtualBox support request link in Kicksecure forums.</li>
+</ol>
+<p><span class="manually-placed-anchor " id="Guru_Mediation"></span></p>
+<h2 id="Guru_Meditation">Guru Meditation</h2>
+<p>Kicksecure provides VM images that operate inside the VM. Whatever
+occurs inside a VM should never lead to a Guru Meditation of the host
+virtualization software, VirtualBox.</p>
+<p>Posting a screenshot of the Guru Meditation screen is probably not
+required since these all look very similar. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<p><blockquote><p>VirtualBox Guru Meditation</p>
+<p>A critical error has occurred while running the virtual machine and
+the machine execution has been stopped.</p>
+<p>For help, please see the Community section on <a href="https://www.virtualbox.org">https://www.virtualbox.org</a> or your
+support contract. Please provide the contents of the log file VBox.log
+and the image file VBox.png, which you can find in the
+/home/sk/VirtualBox VMs/Ubuntu 20.04 Server/Logs directory, as well as a
+description of what you were doing when this error happened. Note that
+you can also access the above files by selecting Show Log from the
+Machine menu of the main VirtualBox window.</p>
+<p>Press OK if you want to power off the machine or press Ignore if you
+want to leave it as is for debugging. Please note that debugging
+requires special knowledge and tools, so it is recommended to press OK
+now.</p></blockquote></p>
+<p>This example text does not contain any technical details which could
+help to fix the issue, since VirtualBox Guru Meditation can occur for
+many reasons.</p>
+<p>Recommended steps to resolve VirtualBox Guru Meditation issues:</p>
+<p><strong>1.</strong> Apply <a href="#General_VirtualBox_Troubleshooting_Steps">General VirtualBox Troubleshooting Steps</a>.</p>
+<p>These often help resolving such issues.</p>
+<p><strong>2.</strong> Capture the VirtualBox log</p>
+<p>Without log contents, developers will probably be unable to help.</p>
+<p><code>VirtualBox</code> -> <code>right click a VM</code> ->
+<code>Show Log...</code> -> <code>Log</code> -> <code>Save</code> ->
+<code>OK</code></p>
+<p><strong>3.</strong> Consider inspecting the log yourself.</p>
+<p>Use search engines to try and locate any similar or identical error
+messages. Usually the issue will already have been reported, and a
+solution might be documented in the same place. It is recommended to
+search the official VirtualBox website because most VirtualBox
+developers and experts will utilize this resource. The following search
+term will limit search results to the VirtualBox website (this is a
+feature which most search engines support):
+<code>site:virtualbox.org error message here</code>.
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<p><strong>4.</strong> Consider reporting a bug against upstream <a href="https://www.virtualbox.org">VirtualBox</a>.</p>
+<ul>
+<li>Zip the log.</li>
+<li>Post the log at <a href="https://www.virtualbox.org/wiki/Bugtracker">VirtualBox
+bugtracker</a> or <a href="https://forums.virtualbox.org">VirtualBox
+forums</a>.</li>
+<li><u>VirtualBox developers</u> require logs to investigate the
+problem. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></li>
+</ul>
+<p><strong>5.</strong> Share the VirtualBox support request link in
+Kicksecure forums.</p>
+<p><strong>6.</strong> Done.</p>
+<p>Hopefully help can be provided.</p>
+<h2 id="NS_ERROR_FAILURE">NS_ERROR_FAILURE</h2>
+<pre><code>NS_ERROR_FAILURE (0x80004005)</code></pre>
+<p><a href="https://forums.virtualbox.org/viewtopic.php?f=8&amp;t=87306">Quote
+VirtualBox forum moderator</a></p>
+<p><blockquote><p>NS_ERROR_FAILURE (0x80004005) is a general failure message when
+loading a VM. Subsequent lines in the error dialog will give the exact
+cause of the error. You do NOT have the same error just because you see
+the generic leader. If you don't provide a log or the supplemental error
+description then we can't help you.</p></blockquote></p>
+<p>Sometimes there is a more specific error message included such
+as.</p>
+<p><blockquote><p>VirtualBox can't operate in VMX root mode. Please disable the KVM
+kernel extension, recompile your kernel and reboot
+(VERR_VMX_IN_VMX_ROOT_MODE).</p></blockquote></p>
+<p>In that case,</p>
+<p>While this is not the same error as Guru Meditation, all the same
+information and advice from that chapter applies. Therefore please
+follow chapter <a href="#Guru_Meditation">Guru
+Meditation</a>.</p>
+<h2 id="Kernel_driver_not_installed">Kernel driver not installed</h2>
+<p><img src="../../media/Virtualbox_kernel_driver_not_installed.png.webp" alt="error happening in case Linux kernel headers package (linux-headers-amd64) is missing" /></p>
+<p><img src="../../media/Virtualbox_kernel_driver_not_installed_vboxconfig.png.webp" alt="output of sudo vboxconfig in case Linux kernel headers package (linux-headers-amd64) is missing" /></p>
+<p><code>Kernel driver not installed (rc=-1908)</code></p>
+<p>If this occurs on Linux based host operating systems, then it is
+likely the Linux headers package matching the currently running Linux
+image package is not installed. To attempt to fix the issue:</p>
+<p><strong>1.</strong> Go to the <a href="Recommended_Version.html">Recommended
+VirtualBox Version</a> wiki page.</p>
+<p><strong>2.</strong> Press the expand button for your operating
+system.</p>
+<p>If on Linux, press the Expand button on that wiki page.</p>
+<p>Once expanded, the recommended instructions will explain how to
+install VirtualBox for select Linux distributions as well as generic
+recommendations for other Linux distributions.</p>
+<p><strong>4.</strong> Apply the installation instructions from that
+wiki page.</p>
+<p><strong>5.</strong> Issue resolved?</p>
+<p>This issue is <a href="../Unspecific.html">unspecific to
+Kicksecure</a>. Any VM from any vendor and/or self-created VM will fail
+to start, not just Kicksecure VM. This is because it is a host operating
+system and VirtualBox issue. If the instructions above did not fix the
+issue, then try accessing further support resources including the <a href="#Testing_with_a_Debian_VM">Testing with a Debian
+VM</a> chapter.</p>
+<p><strong>6.</strong> Support requests.</p>
+<p>For support requests, please provide the following debug output. Is
+package <code>linux-headers-amd64</code> installed? To check on Debian
+based operating systems, run:</p>
+<pre><code>dpkg -l | grep linux-headers-amd64</code></pre>
+<p>Is package <code>linux-image-amd64</code> installed? To check,
+run:</p>
+<pre><code>dpkg -l | grep linux-image-amd64</code></pre>
+<h2 id="Windows_only_-_Virtual_Machine_only_starts_after_several_attempts_-_rcpu_preempt_self-detected_stall_on_CPU">Windows
+only - Virtual Machine only starts after several attempts - rcpu_preempt
+self-detected stall on CPU</h2>
+<pre><code>rcpu_preempt self-detected stall on CPU</code></pre>
+<p>See below.</p>
+<h2 id="Windows_only_-_VirtualBox_Green_Turtle">Windows only -
+VirtualBox Green Turtle</h2>
+<p><strong>Symptoms:</strong></p>
+<ul>
+<li>The VirtualBox host software shows a green turtle indicator (always
+visible); and/or</li>
+<li>terminal message:
+<code>rcpu_preempt self-detected stall on CPU</code></li>
+</ul>
+<p>In this case, see <a href="Green_Turtle_Issue.html">VirtualBox Green Turtle Issue</a>.</p>
+<h2 id="Assign_Less_Virtual_CPUs">Assign Less Virtual CPUs</h2>
+<p>Try assigning less virtual CPUs. <sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<p>In Kicksecure <code>15.0.1.3.4</code> and above <code>3</code>
+virtual CPUs is now the default setting; <code>4</code> were previously
+used. As a result, this workaround should no longer be required for most
+users.</p>
+<ol>
+<li>Power off the VM.</li>
+<li><code>VirtualBox</code> -> <code>click a VM</code> ->
+<code>Settings</code> -> <code>System</code> -> <code>Processor</code> ->
+<code>Reduce to 3</code> -> <code>OK</code></li>
+</ol>
+<h2 id="INCONSISTENCY_BETWEEN_GRAIN_TABLE_AND_BACKUP_GRAIN_TABLE">INCONSISTENCY
+BETWEEN GRAIN TABLE AND BACKUP GRAIN TABLE</h2>
+<p>If this error appears, sometimes it helps to:</p>
+<ol>
+<li>Try and convert the <code>vmdk</code> to <code>vdi</code>.</li>
+<li>Remove the old <code>vmdk</code> from the VM.</li>
+<li>Attach the new <code>vdi</code>.</li>
+</ol>
+<h2 id="High_Disk_Usage_Causing_Filesystem_Corruption">High Disk Usage
+Causing Filesystem Corruption</h2>
+<p>This is a VirtualBox host software bug, <a href="https://www.virtualbox.org/ticket/10031">High I/O causing
+filesystem corruption</a>.</p>
+<p>The following settings cannot fix already existing filesystem
+corruption inside the virtual harddrive. However, these settings
+<u>might</u> prevent future filesystem corruption. Therefore the best
+time to experiment with these settings is before starting a virtual
+machine for the first time or at least before issues appear.</p>
+<p>Enabling <code>Host I/O Cache</code> <u>might</u> help as it was <a href="https://www.virtualbox.org/ticket/10031#comment:22">reported by a
+user on the VirtualBox issue tracker</a>.</p>
+<p><code>VirtualBox</code> -> <code>Settings</code> ->
+<code>Storage</code> -> <code>Name:</code> <code>SATA</code> ->
+<code>Type:</code> <code>AHCI</code> -> enable
+<code>Use Host I/O Cache</code> -> <code>OK</code></p>
+<p>Experimenting with other virtual machine hardware settings might also
+help.</p>
+<p><code>VirtualBox</code> -> <code>Settings</code> ->
+<code>Storage</code> -> <code>Name:</code> -> experiment with other
+settings -> <code>OK</code></p>
+<p>Maybe <code>Type:</code> <code>virtio-scsi</code> could help.</p>
+<p>Other settings that might help:</p>
+<ul>
+<li><a href="https://www.virtualbox.org/manual/ch12.html#ts_config-periodic-flush">https://www.virtualbox.org/manual/ch12.html#ts_config-periodic-flush</a></li>
+<li><a href="https://www.virtualbox.org/manual/ch12.html#ts_ide-sata-flush">https://www.virtualbox.org/manual/ch12.html#ts_ide-sata-flush</a></li>
+<li>Quote <a href="https://www.virtualbox.org/ticket/10031#comment:2">https://www.virtualbox.org/ticket/10031#comment:2</a></li>
+</ul>
+<p><blockquote><p>Try to tune host os page flusher behavior to avoid accumulating of
+significant amount of dirty pages in host file system buffers. For
+example, set vm.dirty_background_ratio to 5 or below (this is still
+large size - about 1Gb) or set vm.dirty_background_bytes to something
+smaller like 20971520 to make page flusher more active. Note that this
+may make host file system cache less effective, but it prevents write
+operation stuck during buffer flush.</p></blockquote></p>
+<p>References:</p>
+<ul>
+<li>VirtualBox host software bug, <a href="https://www.virtualbox.org/ticket/10031">High I/O causing
+filesystem corruption</a></li>
+<li>Old issue tracker discussion: <a href="https://web.archive.org/web/20210122015240/https://github.com/Whonix/Whonix/issues/274">VirtualBox
+AHCI</a></li>
+<li><a href="https://www.virtualbox.org/manual/ch05.html#harddiskcontrollers">VirtualBox
+manual: Hard Disk Controllers</a></li>
+</ul>
+<h2 id="Import_Kicksecure_Image">Import Kicksecure Image</h2>
+<p>Using the VirtualBox GUI to import Kicksecure image should work well
+in most cases. If not, follow the steps below.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Check if there is enough free disk space.</p>
+<p><strong>2.</strong> Refer to the Kicksecure installation screenshots
+(<a href="../VirtualBox.html">VirtualBox</a> and click expand
+button) and/or <a href="../Videos.html">Video
+Tutorials</a>.</p>
+<p><strong>3.</strong> Delete any half-imported or otherwise broken
+virtual machine image.</p>
+<p><strong>4.</strong> Use the VBoxManage command line tool and copy the
+output.</p>
+<p><span class="code-select">VBoxManage unregistervm "Kicksecure-LXQt"
+--delete</span></p>
+<p><strong>5.</strong> Navigate to the folder where Kicksecure was
+downloaded and import Kicksecure by using the VBoxManage command line
+tool.</p>
+<p><span class="code-select">VBoxManage import
+Kicksecure-LXQt-18.2.1.9.ova</span></p>
+<p><strong>6.</strong> Clean the output.</p>
+<p>Remove operating system user name or any problematic file paths.</p>
+<p><strong>7.</strong> <a href="../Contact.html">Contact lead
+Kicksecure developer</a> Patrick Schleizer and send the output.</p>
+</div>
+<h2 id="Sound">Sound</h2>
+<p><span class="manually-placed-anchor " id="No_Sound_in_Kicksecure"></span>
+<span class="manually-placed-anchor " id="No_Sound_in_Whonix-Workstation"></span>
+<span class="manually-placed-anchor " id="No_Sound_in_Whonix-Workstation"></span>
+<span class="manually-placed-anchor " id="No_Sound_in_Whonix-Workstation_™"></span>
+<span class="manually-placed-anchor " id="No_Sound_in_Whonix-Workstation_®"></span></p>
+<p>In case of sound issues, the user can try various VirtualBox host
+software audio settings. Go to:</p>
+<ul>
+<li><code>Settings</code> -> <code>Audio</code></li>
+</ul>
+<p>For example, it often helps to switch between AC97 and Intel HD.</p>
+<ul>
+<li><code>Settings</code> -> <code>Audio</code> ->
+<code>Audio Controller</code> -> Select <code>AC97</code>, <u>or</u></li>
+<li><code>Settings</code> -> <code>Audio</code> ->
+<code>Audio Controller</code> -> Select <code>Intel HD</code></li>
+</ul>
+<p>If sound is unavailable in Kicksecure when using VLC or browsing
+Internet sites, try: <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
+<ul>
+<li><code>Settings</code> -> <code>Audio</code> ->
+<code>Host audio driver</code> -> Select <code>Alsa</code> audio
+<sup class="reference"><a href="#cite_note-15">[15]</a></sup></li>
+</ul>
+<p>Related:</p>
+<ul>
+<li>For a number of related bug reports and forum discussions, see also
+<a href="../Dev/audio.html">Dev/audio</a>.</li>
+<li><a href="https://docs.oracle.com/en/virtualization/virtualbox/6.0/user/settings-audio.html">VirtualBox
+Audio Settings Manual</a></li>
+</ul>
+<p><span class="manually-placed-anchor " id="Try_a_non-Whonix_VM"></span></p>
+<h2 id="Core_Isolation">Core Isolation</h2>
+<p>Host operating system specific:</p>
+<ul>
+<li><img src="../../media/logo-linux-500x500.png.webp" width="15" alt="logo-linux-500x500.png" />
+<u>Linux users:</u> No special steps required. This chapter should be
+skipped.</li>
+<li><img src="../../media/Logo-windows-500x500.png.webp" width="15" alt="Logo-windows-500x500.png" />
+<u>Windows <code>10</code> users:</u> This should be fixed in recent
+VirtualBox versions. <sup class="reference"><a href="#cite_note-16">[16]</a></sup> Disabling core isolation should
+no longer be required. In case of issues, the user could try to disable
+core isolation anyhow.</li>
+</ul>
+<p>Core Isolation is also called Windows Hypervisor-enforced Code
+Integrity (HVCI).</p>
+<p><code>Start Menu</code> -> <code>Settings</code> ->
+<code>Update &amp; security</code> -> <code>Windows Security</code> ->
+<code>Device security</code> -> Core isolation details, turn off Memory
+integrity -> reboot the host operating system</p>
+<p>Related: <a href="https://forums.whonix.org/t/hash-sum-mismatch-downloads-all-fail-since-win10-2004-update/9740/2">forum
+discussion on Windows core isolation</a></p>
+<h2 id="VERR_SUP_VP_UNEXPECTED_VALID_PATH_COUNT">VERR_SUP_VP_UNEXPECTED_VALID_PATH_COUNT</h2>
+<ul>
+<li>This issue is <a href="../Unspecific.html">unspecific to
+Kicksecure</a>.
+<ul>
+<li>Kicksecure source code does not contain textual string
+<code>VERR_SUP_VP_UNEXPECTED_VALID_PATH_COUNT</code>. Therefore not
+caused by Kicksecure.</li>
+<li>This is a VirtualBox issue. Not a Kicksecure issue.</li>
+<li>error rate: Reported <a href="https://www.reddit.com/r/Whonix/comments/1cxocg7/unable_to_post_on_forum_sending_msg_to_mods_here/">1
+time against Whonix</a> in 14 years.</li>
+</ul></li>
+<li><a href="../Please_Use_Search_Engines_And_See_Documentation_First.html">Please use search engines first.</a>
+<ul>
+<li>See if these AI based replies are helpful. Use AI with caution only.
+<ul>
+<li><a href="https://www.perplexity.ai/search/VERRSUPVPUNEXPE-8Qy8ZeUnSQyACfwrKPH2JQ">https://www.perplexity.ai/search/VERRSUPVPUNEXPE-8Qy8ZeUnSQyACfwrKPH2JQ</a></li>
+<li><a href="https://chatgpt.com/share/4507b884-500f-488c-8a0d-1e07e00e5ce2">https://chatgpt.com/share/4507b884-500f-488c-8a0d-1e07e00e5ce2</a></li>
+</ul></li>
+</ul></li>
+<li>Try <a href="#Testing_with_a_Debian_VM">Testing
+with a Debian VM</a>.</li>
+<li>Try to resolve as per <a href="../Self_Support_First_Policy.html">Self Support First Policy</a>.</li>
+<li>Please <a href="../Contribute.html#Documentation">contribute by editing this wiki chapter if a solution
+has been found</a>.</li>
+</ul>
+<h2 id="VERR_VMX_IN_VMX_ROOT_MODE">VERR_VMX_IN_VMX_ROOT_MODE</h2>
+<p><blockquote><p>VirtualBox can't operate in VMX root mode. Please disable the KVM
+kernel extension, recompile your kernel and reboot
+(VERR_VMX_IN_VMX_ROOT_MODE).</p></blockquote></p>
+<p>This error occurs because VirtualBox and KVM cannot run
+simultaneously since they both need exclusive access to the CPU's
+virtualization features.</p>
+<ul>
+<li>Potential easy solution: Uninstall KVM.</li>
+<li>Potential more complex solutions: See footnote.
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup></li>
+</ul>
+<ul>
+<li>This issue is <a href="../Unspecific.html">unspecific to
+Kicksecure</a>.
+<ul>
+<li>Kicksecure source code does not contain textual string
+<code>VERR_VMX_IN_VMX_ROOT_MODE</code>. Therefore not caused by
+Kicksecure.</li>
+<li>This is a VirtualBox issue. Not a Kicksecure issue.</li>
+<li>error rate: Reported <a href="https://www.reddit.com/r/Whonix/comments/1i44t0v/whonix_cannot_be_launched_and_used_with_virtualbox/">1
+time against Whonix</a> in 14 years.</li>
+</ul></li>
+<li><a href="../Please_Use_Search_Engines_And_See_Documentation_First.html">Please use search engines first.</a></li>
+<li>Try <a href="#Testing_with_a_Debian_VM">Testing
+with a Debian VM</a>.</li>
+<li>Try to resolve as per <a href="../Self_Support_First_Policy.html">Self Support First Policy</a>.</li>
+<li>Please <a href="../Contribute.html#Documentation">contribute by editing this wiki chapter if a solution
+has been found</a>.</li>
+</ul>
+<h2 id="VBoxDrvStub_Signature_Issue">VBoxDrvStub Signature Issue</h2>
+<pre><code>NtCreateFile(\Device\VBoxDrvStub) failed: -5657 (rcNt=0xe986e9e7)
+VBoxDrvStub error: Signature #1/1: Not signed with the build certificate
+(serial 0a a1 8f 63 f9 6f 11 77 1c bb 0b 43 e4 d6 90 b8, expected 06 0e 2f 8f 9e 1b 8b e5 18 d5 fe 2b 69 cf cc b1): \Device\HarddiskVolume3\Program Files\Oracle\VirtualBox\VirtualBoxVM.exe (rc=-5657)
+
+Make sure the kernel module has been loaded successfully.
+
+Where: supR3HardenedWinReSpawn what: 3
+VERR_SUP_VP_NOT_SIGNED_WITH_BUILD_CERT (-5657)
+The image is required to be signed with the same certificate as the rest of VirtualBox.</code></pre>
+<p>This happened when trying to upgrade VirtualBox to version 7.1.10 on
+Windows 11.</p>
+<ul>
+<li>To solve it, try the following:
+<ul>
+<li>Go to the location where VirtualBox is installed. The default
+location is:
+<ul>
+<li><code>C:\Program Files\Oracle\VirtualBox\drivers\vboxsup</code></li>
+<li>Or, visually:
+<pre><code>C:\ &amp;rarr; Program Files &amp;rarr; Oracle &amp;rarr; VirtualBox &amp;rarr; drivers &amp;rarr; vboxsup</code></pre></li>
+</ul></li>
+<li>Then right-click the file named <code>VBoxSup.inf</code> and select
+<code>Install</code>.</li>
+<li>It should show:
+<code>The operation completed successfully</code>.</li>
+<li>Restart your system and it should work.</li>
+</ul></li>
+</ul>
+<p>Or check this YouTube video:</p>
+<p><a href="https://www.youtube.com/watch?v=my_Jbbn2iPk">NtCreateFile(\Device\VBoxDrvStub)
+failed: 0xc0000034 STATUS_OBJECT_NAME_NOT_FOUND (rc=-101)</a></p>
+<h1 id="Testing_with_a_Debian_VM">Testing with a Debian VM</h1>
+<p><span class="manually-placed-anchor " id="Test_a_non-Kicksecure_VM"></span></p>
+<p>Before diving into issues related to Kicksecure, it's a good idea to
+first ensure that the underlying platform and software are functioning
+correctly.</p>
+<ol>
+<li>Start by testing the VirtualBox host software as if you've never
+encountered Kicksecure. This will give you a baseline.</li>
+<li>As a next step, try using a VM that isn't based on Kicksecure. A
+good candidate would be Debian <code>trixie</code>.</li>
+<li>If you continue to face issues with the Debian VM, it indicates that
+the problem isn't specific to Kicksecure. Such issues that are <a href="../Unspecific.html">unspecific</a> to Kicksecure should
+be tackled according to these guidelines:</li>
+</ol>
+<ul>
+<li><a href="Troubleshooting.html#VirtualBox_Generic_Bug_Reproduction">VirtualBox Generic Bug Reproduction</a></li>
+<li><a href="../Self_Support_First_Policy.html">Self Support
+First Policy</a></li>
+<li><a href="../Reporting_Bugs.html#Generic_Bug_Reproduction">Generic Bug Reproduction</a></li>
+</ul>
+<h1 id="VirtualBox_Generic_Bug_Reproduction">VirtualBox Generic Bug
+Reproduction</h1>
+<p>This entry is based on <a href="../Reporting_Bugs.html#Bug_Report_Recommendations">Bug
+Report Recommendations</a>, specifically <a href="../Reporting_Bugs.html#Generic_Bug_Reproduction">Generic
+Bug Reproduction</a>. The content is similar to the <a href="#Testing_with_a_Debian_VM">Testing with a Debian
+VM</a> chapter above.</p>
+<p>The following is a manual reproduction of the <a href="../Dev/VirtualBox.html#VirtualBox_Integration">Kicksecure
+VirtualBox Integration</a>.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Host operating system choice.</p>
+<p>Use the <a href="https://www.whonix.org/wiki/Host_Operating_System_Selection#Recommended_Linux_Distribution">recommended</a>
+(<a href="http://www.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/wiki/Host_Operating_System_Selection">.onion</a>)
+Linux distribution. Either,</p>
+<ul>
+<li><strong>A)</strong> <a href="https://www.debian.org/">Debian</a>
+<code>13</code> "<code>trixie</code>", <u>or</u></li>
+<li><strong>B)</strong> Debian <code>testing</code>.</li>
+</ul>
+<p>Debian <code>13</code> is preferable.</p>
+<p>See also <a href="../Debian_Tips.html">Debian Tips</a>.</p>
+<p>During installation, preferably choose the same desktop environment
+that Kicksecure is using, which is LXQt at time of writing.</p>
+<p><strong>2.</strong> Install the <a href="Recommended_Version.html">recommended
+version of the VirtualBox host software</a> and follow the instructions
+from that wiki page.</p>
+<p><strong>3.</strong> Install Debian <code>trixie</code> inside a
+VirtualBox VM.</p>
+<p><strong>4.</strong> Install the VirtualBox Guest Additions inside the
+VirtualBox VM.</p>
+<p>Choose either option <strong>A)</strong> <u>or</u>
+<strong>B)</strong>.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading2 widget-headline ">
+<h2 role="heading" aria-level="2" id="A)_Install_VirtualBox_Guest_Additions_from_the_Debian_fasttrack_repository">
+<p>A) Install VirtualBox Guest Additions from the Debian fasttrack
+repository</p>
+</h2>
+</div>
+</div>
+<div class="tcc-content">
+<p><strong>A)</strong> Inside the VirtualBox VM.</p>
+<p>Open a terminal.</p>
+<p><strong>B)</strong> Add the Debian <code>fasttrack</code>
+repository.</p>
+<p>Update the package lists.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><strong>C)</strong> Install the Debian <code>fasttrack</code> signing
+key.</p>
+<p><span class="code-select">sudo apt install
+fasttrack-archive-keyring</span></p>
+<p><strong>D)</strong> Add the Debian <code>fasttrack</code>
+repository.</p>
+<p><span class="code-select">echo 'Types: deb URIs: <a href="https://fasttrack.debian.net/debian/">https://fasttrack.debian.net/debian/</a>
+Suites: trixie-fasttrack Components: main contrib non-free Enabled: yes
+Signed-By: /usr/share/keyrings/fasttrack-archive-keyring.gpg' | sudo tee
+/etc/apt/sources.list.d/fasttrack.sources</span></p>
+<p><strong>E)</strong> Update the package lists again.
+<sup class="reference"><a href="#cite_note-18">[18]</a></sup></p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><strong>F)</strong> Install the VirtualBox Guest Additions.</p>
+<p><span class="code-select">sudo apt install
+virtualbox-guest-x11</span></p>
+<p><strong>G)</strong> Reboot required.</p>
+<p><span class="code-select">sudo reboot</span></p>
+<p><strong>H)</strong> VirtualBox Guest Additions should now be
+installed.</p>
+<p>The procedure of installing the VirtualBox Guest Additions is
+complete.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading2 widget-headline ">
+<h2 role="heading" aria-level="2" id="B)_Install_VirtualBox_Guest_Additions_from_the_Debian_sid_repository">
+<p>B) Install VirtualBox Guest Additions from the Debian sid
+repository</p>
+</h2>
+</div>
+</div>
+<div class="tcc-content">
+<p><strong>NOTE:</strong> This works only when using Debian
+<code>testing</code>.</p>
+<p><strong>A)</strong> Inside the VirtualBox VM.</p>
+<p>Open a terminal.</p>
+<p><strong>B)</strong> Add APT pinning preferences.</p>
+<p>The purpose of this is to install only as few applications from
+Debian <code>unstable</code> as possible.</p>
+<p>1) Open file <code>/etc/apt/preferences.d/40-pinning</code> in an
+editor with administrative ("<a href="../Root.html"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/preferences.d/40-pinning</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes.html">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/preferences.d/40-pinning</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes.html#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific.html">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software.html#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/preferences.d/40-pinning</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>2) Paste the following content.</p>
+<p><span class="code-select">Package: * Pin: release a=testing
+Pin-Priority: 700</p>
+<p>Package: * Pin: release a=unstable Pin-Priority: 650</span></p>
+<p>3) Save and close the file.</p>
+<p><strong>C)</strong> Add the Debian <code>unstable</code>
+repository.</p>
+<p><span class="code-select">echo 'Types: deb URIs: <a href="https://deb.debian.net/debian/">https://deb.debian.net/debian/</a>
+Suites: unstable Components: main contrib non-free Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee
+/etc/apt/sources.list.d/unstable.sources</span></p>
+<p><strong>E)</strong> Update the package lists.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><strong>F)</strong> Install the VirtualBox Guest Additions.</p>
+<p><span class="code-select">sudo apt install
+virtualbox-guest-x11</span></p>
+<p><strong>G)</strong> Reboot required.</p>
+<p><span class="code-select">sudo reboot</span></p>
+<p><strong>H)</strong> VirtualBox Guest Additions should now be
+installed.</p>
+<p>The procedure of installing the VirtualBox Guest Additions is
+complete.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>5.</strong> Attempt to reproduce the original issue.</p>
+<ul>
+<li><strong>A)</strong> If the original issue is reproducible: That
+means the root issue is not caused by Kicksecure. In other words, the
+issue is <a href="../Unspecific.html">unspecific</a> to
+Kicksecure. In that case it is recommended to try and resolve the issue
+as per <a href="../Self_Support_First_Policy.html">Self Support
+First Policy</a>. If a solution was found, please consider editing the
+<a href="../Documentation.html">Kicksecure Documentation</a> as
+a contribution and/or providing a complete answer in the Kicksecure User
+Forums.</li>
+<li><strong>B)</strong> If the original issue is not reproducible:
+Please report this in <a href="https://forums.kicksecure.com">Kicksecure
+forums</a>.</li>
+</ul>
+</div>
+<p>The following deprecated instructions chapter <a href="../Deprecated.html#VirtualBox_Generic_Bug_Reproduction_using_virtualbox-guest-additions-iso">VirtualBox Generic Bug Reproduction using
+virtualbox-guest-additions-iso</a> is probably not required but kept
+here in case it will be needed again in the future.</p>
+<h1 id="Submit_a_Bug_Report">Submit a Bug Report</h1>
+<p>When reporting an issue in the <a href="https://forums.kicksecure.com">Kicksecure forums</a>, please add
+the exact steps which led to the problem. Also include as much relevant
+information as possible; see below.</p>
+<ul>
+<li>Which Kicksecure version was downloaded and from where?</li>
+<li>Do other non-Kicksecure-VMs such as Debian VMs have this issue?</li>
+<li>Did you:
+<ul>
+<li>Only download, import Kicksecure VM and start Kicksecure?; or</li>
+<li>Did you start and use Kicksecure then installed more software and
+perform other activities before the issues emerged?</li>
+</ul></li>
+<li>Have you previously used older versions of Kicksecure that
+worked?</li>
+<li>What is the host operating system and version?</li>
+<li>What is the VirtualBox version?</li>
+<li>How much RAM does the host have?</li>
+<li>In case of black screen issues:
+<ul>
+<li>Can you switch to a <a href="../Desktop.html#Virtual_Consoles">virtual console</a>? This can help with debugging.</li>
+</ul></li>
+</ul>
+<p>Bugs can also be reported against upstream <a href="https://www.virtualbox.org">VirtualBox</a>: <a href="https://www.virtualbox.org/wiki/Bugtracker">VirtualBox
+bugtracker</a> / <a href="https://forums.virtualbox.org">VirtualBox
+forums</a>. Bug reports must be well written and thorough otherwise it
+will not lead to a solution, see: <a href="https://forums.virtualbox.org/viewtopic.php?f=3&amp;t=87130#p416223">bug
+reporting instructions</a>.</p>
+<h1 id="See_Also">See Also</h1>
+<div>
+<ul>
+<li><a href="../Troubleshooting.html">Troubleshooting</a></li>
+<li><a href="../RAM.html">Advice for Systems with Low
+RAM</a></li>
+<li><a href="../Support.html">Support</a></li>
+<li><a href="../Reporting_Bugs.html">Reporting Bugs</a></li>
+<li><a href="Guest_Additions.html">VirtualBox
+Guest Additions and Shared Folders</a></li>
+<li><a href="Guest_Additions.html#VirtualBox_Guest_Additions">VirtualBox Guest Additions</a></li>
+<li><a href="../VirtualBox.html">VirtualBox</a></li>
+<li><a href="../VirtualBox.html">VirtualBox Testers Only Version</a></li>
+<li><a href="Recommended_Version.html">Recommended VirtualBox Version</a></li>
+<li><a href="Other_Versions.html">Install Newer
+Versions of VirtualBox</a></li>
+<li><a href="Appliance_is_not_signed.html">VirtualBox "Appliance is not signed" Error
+Message</a></li>
+<li><a href="Higher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions.html">Higher Screen Resolution without VirtualBox Guest
+Additions</a></li>
+<li><a href="../Virtualization_Platform_Security.html">Virtualization Platform Security</a></li>
+<li><a href="../Dev/VirtualBox.html">Dev/VirtualBox</a>
+<ul>
+<li><a href="../Dev/VirtualBox.html#VirtualBox_Integration">VirtualBox Integration</a></li>
+</ul></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://forums.whonix.org/t/virtualbox-guest-additions/8998/3">Installation
+of VirtualBox guest additions from CD might also cause issues.</a></li>
+<li id="cite_note-2">Optional: See: <a href="https://www.virtualbox.org/manual/ch02.html#install-linux-vboxusers">https://www.virtualbox.org/manual/ch02.html#install-linux-vboxusers</a>
+Also spams <code>~/.config/VirtualBox/VBoxSVC.log</code> log if not
+done.</li>
+<li id="cite_note-3"><a href="https://forums.whonix.org/t/gateway-startup-error-not-syncing-no-working-init-found/9481/13">A
+user reported issues which were gone once switching to Linux</a>.</li>
+<li id="cite_note-4">Two virtualizers generally cannot run at the same time. This is
+virtualizer specific, not a Kicksecure specific limitation. Ensure
+virtual machines are not running in any other virtualizer, and perhaps
+re-install VirtualBox if it is still not functional. Some virtualizers
+(such as Hyper-V) may need to be uninstalled and disabled, see <a href="Green_Turtle_Issue.html#Disable_Hyper-V_via_batch_script">Disable Hyper-V via batch script</a>.<br />
+<br />
+<a href="https://forums.whonix.org/t/starting-xcfe-virtualbox-give-guru-meditation/10378/6">https://forums.whonix.org/t/starting-xcfe-virtualbox-give-guru-meditation/10378/6</a></li>
+<li id="cite_note-5">For reasons, see <a href="../Dev/VirtualBox.html#Storage_Controller_Setting">Storage Controller Setting</a>.</li>
+<li id="cite_note-6">* <a href="https://forums.whonix.org/t/whonix-15-shared-clipboard-and-dragndrop-not-working/7723">https://forums.whonix.org/t/whonix-15-shared-clipboard-and-dragndrop-not-working/7723</a>
+* Upstream bug report: <a href="https://www.virtualbox.org/ticket/19336">Linux guest: shared
+clipboard doesn't work (on fresh VirtualBox-6.1.4-136177) =&gt; fixed in
+6.1.6</a></li>
+<li id="cite_note-7">VirtualBox VMSVGA graphics controller is based on the VMware
+graphics controller.</li>
+<li id="cite_note-8"><span class="code-select">VBoxManage modifyvm Kicksecure-LXQt
+--graphicscontroller vmsvga</span> <span class="code-select">VBoxManage
+modifyvm Kicksecure-LXQt --graphicscontroller vboxvga</span>
+<span class="code-select">VBoxManage modifyvm Kicksecure-LXQt
+--graphicscontroller vboxsvga</span></li>
+<li id="cite_note-9"><a href="https://forums.whonix.org/t/whonix-cli-15-0-0-9-4-gateway-shows-a-black-screen/9174/2">https://forums.whonix.org/t/whonix-cli-15-0-0-9-4-gateway-shows-a-black-screen/9174/2</a></li>
+<li id="cite_note-10"><a href="https://forums.virtualbox.org/viewtopic.php?f=7&amp;t=77663#p361694">Reasons
+of vm to get into "aborted" state</a>: <blockquote><p>Would you mind sharing with us one of those logs so that we can judge
+for ourselves? From a machine that got aborted? ZIP it before using the
+"Upload attachment" at the bottom of your reply form.</p></blockquote></li>
+<li id="cite_note-11"><a href="http://www.fixedbyvonnie.com/wp-content/uploads/2014/09/fixedbyvonnie-virtualbox-guru-meditation.png">http://www.fixedbyvonnie.com/wp-content/uploads/2014/09/fixedbyvonnie-virtualbox-guru-meditation.png</a></li>
+<li id="cite_note-12">Replace <code>error message here</code> with the issue being
+investigated.</li>
+<li id="cite_note-13">VirtualBox ticket: <a href="https://www.virtualbox.org/ticket/19500">VirtualBox should now
+prohibit assigning all physical CPUs to a VM and/or fix VirtualBox CPU
+assignment manual</a>.</li>
+<li id="cite_note-14"><a href="https://forums.whonix.org/t/whonix-workstation-no-sound/12155">Kicksecure
+workstation no sound</a></li>
+<li id="cite_note-15">It may also be necessary to install <code>alsamixergui</code>.</li>
+<li id="cite_note-16">Fixed in VirtualBox version <code>6.1.32</code> (and above). Quote
+<a href="https://www.virtualbox.org/wiki/Changelog">VirtualBox
+changelog</a>: <blockquote><p>VMM: Changed the guest RAM management when using Hyper-V to be more
+compatible with HVCI (bug <a href="https://www.virtualbox.org/ticket/20627">#20627</a> and <a href="https://www.virtualbox.org/ticket/20694">#20694</a>)</p></blockquote></li>
+<li id="cite_note-17">For Intel processors. <span class="code-select">sudo modprobe -r
+kvm_intel</span> For AMD processors. <span class="code-select">sudo
+modprobe -r kvm_amd</span> Always needed. <span class="code-select">sudo
+modprobe -r kvm</span> See also: <a href="https://askubuntu.com/questions/413511/can-virtualbox-and-kvm-run-alongside-each-other">https://askubuntu.com/questions/413511/can-virtualbox-and-kvm-run-alongside-each-other</a></li>
+<li id="cite_note-18">This is to acquire the Debian <code>fasttrack</code> repository
+package sources.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Other_Versions.html" title="VirtualBox/Other Versions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox/Other
+Versions</span></a><a class="index internal" href="../Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Green_Turtle_Issue.html" title="VirtualBox/Green Turtle Issue"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">VirtualBox/Green
+Turtle Issue</span></a><span class="info"><span class="prev">Previous
+page: VirtualBox/Other Versions</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: VirtualBox/Green
+Turtle Issue</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

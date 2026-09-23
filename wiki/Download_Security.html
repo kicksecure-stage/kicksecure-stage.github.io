@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Download Security</title>
+<meta name="description" content="Digital signature verification of any downloaded software (such as Kicksecure) is an important step for system security.">
+<meta property="og:description" content="Digital signature verification of any downloaded software (such as Kicksecure) is an important step for system security.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Download_Security.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Download_Security.html">
+<meta property="og:title" content="Download Security">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Download-security.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#For_Windows_Host_Operating_Systems">For Windows Host Operating
+Systems</a></li><li class="toc-l3"><a href="#balanaEtcher">balanaEtcher</a></li><li class="toc-l3"><a href="#From_Microsoft_Windows_Software_Store">From Microsoft Windows
+Software Store</a></li><li class="toc-l3"><a href="#Rufus">Rufus</a></li><li class="toc-l3"><a href="#ImageUSB">ImageUSB</a></li><li class="toc-l3"><a href="#USBImager">USBImager</a></li><li class="toc-l2"><a href="#For_MacOS_Host_Operating_Systems">For MacOS Host Operating
+Systems</a></li><li class="toc-l2"><a href="#For_Linux_Host_Operating_Systems">For Linux Host Operating
+Systems</a></li><li class="toc-l2"><a href="#Other_Image_Writer_Tools">Other Image Writer Tools</a></li><li class="toc-l3"><a href="#UNetbootin">UNetbootin</a></li><li class="toc-l3"><a href="#SUSE_Image_Writer">SUSE Image Writer</a></li><li class="toc-l2"><a href="#Self-Hosting_vs_Third_Party_Hosting">Self-Hosting vs Third Party
+Hosting</a></li><li class="toc-l2"><a href="#Other_Linux_Distributions">Other Linux Distributions</a></li><li class="toc-l2"><a href="#Culture_Comparison_of_Digital_Software_Verification_in_Major_Operating_Systems">Culture
+Comparison of Digital Software Verification in Major Operating
+Systems</a></li><li class="toc-l2"><a href="#Third-party_Tools_Digital_Software_Signature_Availability">Third-party
+Tools Digital Software Signature Availability</a></li><li class="toc-l2"><a href="#Verification_On-Demand_versus_On-Offer">Verification On-Demand
+versus On-Offer</a></li><li class="toc-l2"><a href="#Responsibility_of_Digital_Software_Signature_Education">Responsibility
+of Digital Software Signature Education</a></li><li class="toc-l2"><a href="#Digital_Software_Signature_Utility_versus_Usability_and_Impact">Digital
+Software Signature Utility versus Usability and Impact</a></li><li class="toc-l2"><a href="#Comparison_with_Linux_Distributions">Comparison with Linux
+Distributions</a></li><li class="toc-l2"><a href="#Benefits_of_Hash_Sum_Verification_of_Third-Party_Tools_in_the_Absence_of_Digital_Software_Signatures">Benefits
+of Hash Sum Verification of Third-Party Tools in the Absence of Digital
+Software Signatures</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Download-security.png.webp" width="200" alt="Download-security.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<p>Kicksecure comes with <a href="https://www.kicksecure.com/#security">many security features</a>.
+<a href="About.html">Kicksecure</a> is Security Hardened by
+default and also provides extensive <a href="Documentation.html">Documentation</a> including a <a href="System_Hardening_Checklist.html">System Hardening
+Checklist</a>. The more you know, the safer you can be.</p>
+<p>This page is targeted at users who wish to improve the security of
+their systems for even greater protection.</p>
+</div>
+<p>Digital signature verification of any downloaded software (such as
+Kicksecure) is an important step for system security. Hence, there is a
+recommendation to <a href="Warning.html#Always_Verify_Signatures">Always Verify Signatures</a>.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>There are various ways to ensure the integrity of software
+downloads:</p>
+<ul>
+<li><strong>A)</strong> <u>TLS:</u> Kicksecure, like most software
+projects nowadays, can be downloaded over TLS (formerly SSL), which
+provides basic authentication. Note that the <a href="SSL.html">TLS</a> certificate authority (CA) system is seriously
+flawed and poses the risk of security breaches; therefore, it should be
+avoided if possible.</li>
+<li><strong>B)</strong> <u>onion:</u> Kicksecure is alternatively also
+available over an onion. The onion is hosted on the same server. While
+using an onion is better, it is challenging for users to learn the
+legitimate onion domain name. Once securely acquired and bookmarked, an
+onion may provide better authentication than TLS.</li>
+<li><strong>C)</strong> <u>Digital software signatures:</u> As
+documented on the <a href="Verify_the_images.html">Verify
+Kicksecure Images</a> page, OpenPGP verification is far safer and is
+strongly recommended as an alternative to plain TLS.</li>
+<li><strong>D)</strong> <u>Build from source code:</u> The most secure
+method (but also more challenging) for obtaining Kicksecure is to build
+it from source code. This method eliminates the need to <a href="Trust.html">trust</a> that developers have actually created <a href="https://www.whonix.org/wiki/Verifiable_Builds">binaries which
+match the source code</a>. For utmost security, the source code can be
+reviewed beforehand. Unfortunately, as with any software project, very
+few people will have the time and skills to do this.</li>
+</ul>
+<p><u>Related:</u></p>
+<ul>
+<li><a href="Secure_Downloads.html">Secure
+Downloads</a></li>
+<li><a href="Trust.html">Placing Trust in
+Kicksecure</a></li>
+</ul>
+<h1 id="ISO_Image_Writer_Tools">ISO Image Writer Tools</h1>
+<h2 id="For_Windows_Host_Operating_Systems">For Windows Host Operating
+Systems</h2>
+<h3 id="balanaEtcher">balanaEtcher</h3>
+<p>balenaEtcher has the best usability. It flashes, validates, has a
+nice target selection screen which gets instantly updated when a new
+device gets connected. It has been reported to be compatible with
+Kicksecure ISO on the Windows and Linux platform. No reports for macOS
+yet.</p>
+<p>There are no extraneous options that easily confuse users. However,
+balenaEtcher comes with issues.</p>
+<p><blockquote><p>For Windows and macOS, we instruct people to use balenaEtcher to copy
+the USB image onto their USB stick. On top of this, we self-host the
+downloads of balenaEtcher on our own infrastructure. The <a href="https://gitlab.tails.boum.org/tails/etcher-binary">https://gitlab.tails.boum.org/tails/etcher-binary</a>
+repository is added as an ikiwiki underlay on our website.</p>
+<p>We self-host a copy of balenaEtcher because:</p>
+<ul>
+<li>It gives us more predictability on what users end up doing. This is
+useful in terms of Help Desk.</li>
+<li>It prevents 3rd parties from learning a bit more about who uses
+Tails. Pointing to GitHub from our website would provide direct
+referrers to GitHub (and maybe Balena too) about who is using
+balenaEtcher to install Tails.</li>
+<li>It prevents GitHub from serving rogue downloads (targeted or not).
+We might still get a rogue download ourselves but:
+<ul>
+<li>We download balenaEtcher several times from different locations to
+prevent targeted attacks.</li>
+<li>We download balenaEtcher in a limited time window, which might save
+our users some supply chain issues. If our users were to download
+balenaEtcher every time, a short-time supply chain attack would
+definitely affect some of them.<span class="blockquote-context"><a href="https://tails.net/contribute/design/installation_instructions/#index6h1">Tails
+installation instructions</a></span></li>
+</ul></li>
+</ul></blockquote></p>
+<p><blockquote><p>Etcher is an Electron app, i.e. essentially a glorified webapp
+wrapped in a window; this is a rather common way to build a
+cross-platform app these days. It's GUI is made of HTML + JS. Some of it
+is shipped in the app itself, some of it is dynamically fetched from
+balena.io at run time. So we clearly can't even try to protect against
+"Balena knows that someone is using Etcher from $IP". I did not check
+whether the web content retrieved at run time can inject arbitrary JS
+which could itself include tracking code.</p>
+<p>The <code>analytics</code> modules fetches its config over plaintext
+HTTP (and is then redirected to HTTPS but that's too late). It uses
+mixpanel.com. I'm not sure I understood the code correctly but at first
+glance it seems that at least errors (and possibly more) will be
+reported there. So basically, an active MitM could have users report to
+an URL chosen by the attacker. "Interesting".</p>
+<p>Some of the outgoing HTTP requests include the Etcher version as a
+parameter. External modules, which I did not inspect, are used to
+perform HTTP requests. The ads seem to be fetched from <a href="https://assets.balena.io/etcher-featured/index.html">https://assets.balena.io/etcher-featured/index.html</a>.
+I did not try to decipher the obfuscated/minified JS found there but at
+the very least, it seems to report to Google Analytics. I'm stopping
+here. tl;dr is: Etcher is definitely not behaving as one would expect a
+privacy-friendly local app would. It's behaving more like any random
+modern website, including all kinds of tracking technologies. Fixing
+this would require major changes so that's unlikely to happen. It's
+non-trivial to check whether the code reports to Balena or random third
+parties (such as Google, Mixpanel) what image is being installed; and
+even if we did this audit work now, our results would be invalidated by
+every new Etcher release. So it seems we have two
+options:<span class="blockquote-context"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/16381">intrigeri,
+Tails developer</a></span></p></blockquote></p>
+<p><blockquote><p>After adding MitM to my packet sniffing I can confirm gameindustry's
+findings that balenaEtcher exfiltrates very sensitive information. For
+instance, the filename of the image will let Balena know that the user
+is flashing Tails, full details: <a href="https://gitlab.tails.boum.org/tails/tails/uploads/2bdaec1725d89ededc786212ee768bd3/exfil.json">exfil.json</a>.
+It also exfiltrates tons of information about the host system to
+sentry.io, an "app monitoring service", definitely making it uniquely
+identifiable. Disabling the telemetry in its configuration indeed does
+stop it from exfiltrating the <code>exfil.json</code> from above, but it
+doesn't do anything about the data sent to sentry.io, which includes the
+image name, so there is no way to configure balenaEtcher to not leak
+that Tails is being flashed. The good UX of balenaEtcher is not worth
+this.<span class="blockquote-context"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/16381">anonym,
+Tails developer</a></span></p></blockquote></p>
+<p>The issue of Telemetry is known by balena, the developer of etcher as
+per github issues <a href="https://github.com/balena-io/etcher/issues/3784">Telemtery should
+be opt-in</a>, <a href="https://github.com/balena-io/etcher/issues/2977">Etcher secretly
+spies on the user without consent.</a> balena however closed the tickets
+and no changes have been made.</p>
+<p>This has resulted in bad press for Tails.</p>
+<p><blockquote><p>Author's note</p>
+<p>What I wonder about, in the context of Tails, an operating system
+focused on privacy and security, is why the providers of the Tails
+Foundation suggest BalenaEtcher as the primary program for creating
+images of the operating system on their own website. It is absolutely
+incomprehensible and not only negligent but also contradicts any
+understanding of security and data privacy.</p>
+<p>The Tails Foundation has been contacted in this regard and has been
+approached for comment.<span class="blockquote-context"><a href="https://www.gameindustry.eu/reviews/balenaetcher/">GameIndustry
+BalenaEtcher Review and Privacy Analysis</a></span></p></blockquote></p>
+<p>See also:</p>
+<ul>
+<li><a href="Troubleshooting.html#Live_ISO_Known_Issues">Troubleshooting#Live ISO Known Issues</a></li>
+<li><a href="https://consumerrights.wiki/Balena">https://consumerrights.wiki/Balena</a></li>
+</ul>
+<p>Forum discussions:</p>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/microsoft-windows-iso-writer-documentation-write-kicksecure-iso-to-usb-balenaetcher-issues/434">https://forums.kicksecure.com/t/microsoft-windows-iso-writer-documentation-write-kicksecure-iso-to-usb-balenaetcher-issues/434</a></li>
+<li><a href="https://forums.kicksecure.com/t/balenaetcher-shares-sensitive-information-to-the-balena-company/1558">https://forums.kicksecure.com/t/balenaetcher-shares-sensitive-information-to-the-balena-company/1558</a></li>
+<li><a href="https://forum.torproject.org/t/nature-of-etcher-portable-is-it-safe-a-current-version-doesn-t-start-right/9233">https://forum.torproject.org/t/nature-of-etcher-portable-is-it-safe-a-current-version-doesn-t-start-right/9233</a></li>
+</ul>
+<p><s>Therefore Kicksecure <a href="ISO.html">ISO</a>
+installation instructions do not use balenaEtcher and instead suggest
+using <a href="https://apps.kde.org/en-gb/isoimagewriter/">KDE ISO Image
+Writer</a>.</s> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h3 id="From_Microsoft_Windows_Software_Store">From Microsoft Windows
+Software Store</h3>
+<p>If there was an ISO to USB image writer available from <a href="https://apps.microsoft.com/">Microsoft Windows Software Store</a>,
+then using that might be more secure. That is because all software from
+the Windows Store comes with digital signatures which are verified prior
+to installation, similar to Linux software package managers such as
+Debian's APT.</p>
+<ul>
+<li>Only compatible with Windows-based ISOs but not Linux
+distributions.</li>
+<li>Complicated interface.</li>
+<li>Bad rating.</li>
+<li>Paid software.</li>
+<li>Proprietary. (This might be OK since Windows itself is
+proprietary.)</li>
+</ul>
+<p>Should you be able to find an ISO to USB writer tool in the Windows
+Store that is compatible with Linux distributions, is free in price, and
+has a simple interface, please contribute by letting us know in the
+forums.</p>
+<p>related:</p>
+<ul>
+<li><a href="Windows_Hosts.html">Windows Hosts</a></li>
+</ul>
+<h3 id="Rufus">Rufus</h3>
+<p><a href="https://apps.microsoft.com/detail/9pc3h3v7q9ch">Rufus is
+available from the Windows Store</a>, but the author of this wiki page
+didn't check if this is the original Rufus. Also, Rufus has been
+disregarded because its graphical user interface is too complicated for
+users to use. There are some other <a href="https://apps.microsoft.com/search?query=bootable+USB">bootable USB
+search results</a>. From what the author has seen, many tools are not
+suitable.</p>
+<p><a href="https://forums.kicksecure.com/t/warning-prob-with-installing-on-verbatim-seaglass-drives-false-alarm/1359/21">https://forums.kicksecure.com/t/warning-prob-with-installing-on-verbatim-seaglass-drives-false-alarm/1359/21</a></p>
+<h3 id="ImageUSB">ImageUSB</h3>
+<p>Freeware. Non-freedom software. Appears straightforward in usage.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-exclamation cs-red"></i></span></p>
+<div class="cs-red-light">
+<p>AVOID
+<a href="Avoid_nonfreedom_software.html" class="nonfreedomlink">non-freedom</a>
+SOFTWARE!</p>
+</div>
+<p><strong>See <a href="Avoid_nonfreedom_software.html">Reasons why non-freedom software should be
+avoided.</a></strong></p>
+<p>Related: <a href="Policy_On_Nonfreedom_Software.html">Kicksecure Policy On Non-Freedom Software</a></p>
+</div>
+<p>It is not advisable to recommend replacing balenaEtcher (Open Source,
+<a href="#balenaEtcher">with known privacy
+concerns</a>) with the closed-source ImageUSB. The latter might have
+similar issues, but these have not been scrutinized and are more
+challenging to assess due to its closed-source nature.</p>
+<h3 id="USBImager">USBImager</h3>
+<ul>
+<li><a href="https://gitlab.com/bztsrc/usbimager">https://gitlab.com/bztsrc/usbimager</a></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1005378">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1005378</a></li>
+</ul>
+<p>Functional. Has usability issues.</p>
+<h2 id="For_MacOS_Host_Operating_Systems">For MacOS Host Operating
+Systems</h2>
+<p>USBImager is suggested because KDE ISO Image Writer is unavailable
+for MacOS. Not maintained by a huge project but also no negative
+information about USBImager could be found.</p>
+<p>related:</p>
+<ul>
+<li><a href="MacOS_Hosts.html">MacOS Hosts</a></li>
+</ul>
+<h2 id="For_Linux_Host_Operating_Systems">For Linux Host Operating
+Systems</h2>
+<p>GNOME Disks is suggested. Usability isn't as good as balenaEtcher or
+KDE ISO Image Writer. GNOME Disks' interface is more complicated to use
+for users. GNOME is also a huge project and no negative information
+about GNOME Disks could be found. GNOME Disks is available from official
+Debian and many other Linux distribution's package sources, which
+simplifies its installation and no manual digital software signatures
+verification is requires since this is usually handled by the
+distribution's package manager.</p>
+<p><a href="https://bugs.debian.org/1054315">At time of writing, KDE ISO
+Image Writer is not in packages.debian.org.</a></p>
+<h2 id="Other_Image_Writer_Tools">Other Image Writer Tools</h2>
+<h3 id="UNetbootin">UNetbootin</h3>
+<p>Available for Windows, Linux, macOS. Looks nice. Was reported
+compatible with Kicksecure.</p>
+<p>At time of writing, last git commit on <a href="https://github.com/unetbootin/unetbootin">unetbootin GitHub</a>
+was 10 months ago, <a href="https://github.com/unetbootin/unetbootin/issues/375">UNetbootin
+last release February 2021</a>.</p>
+<h3 id="SUSE_Image_Writer">SUSE Image Writer</h3>
+<ul>
+<li><a href="https://github.com/openSUSE/imagewriter">https://github.com/openSUSE/imagewriter</a></li>
+<li><a href="https://snapcraft.io/install/isoimagewriter/opensuse">https://snapcraft.io/install/isoimagewriter/opensuse</a></li>
+<li>Only Linux version</li>
+<li>Last commit in 2020 (Somewhat unmaintained.)</li>
+</ul>
+<h2 id="Self-Hosting_vs_Third_Party_Hosting">Self-Hosting vs Third Party
+Hosting</h2>
+<p>Self-hosting of image writer tools on the Kicksecure server
+advantages:</p>
+<ul>
+<li>Better user privacy in theory, in practice, see also <a href="Trust.html#Server_Privacy">Server Privacy</a>.</li>
+</ul>
+<p>Self-hosting of image writer tools on the Kicksecure server
+disadvantages:</p>
+<ul>
+<li>Higher maintenance effort of download, digital software signature
+verification (if available), upload of ISO image writing tool</li>
+<li>Reputational risk in case of issues with the ISO image writing tool
+(such as Telemetry or other <a href="Malware_and_Firmware_Trojans.html">Malware</a>).</li>
+<li>Expand the project's scope, distracting from higher priority
+development tasks.</li>
+</ul>
+<p>Therefore it has been decided not to expand the project's scope to
+include this activity.</p>
+<p>See also <a href="Trust.html#Self-Hosting_vs_Third_Party_Hosting">Self-Hosting vs Third Party Hosting</a>.</p>
+<h2 id="Other_Linux_Distributions">Other Linux Distributions</h2>
+<ul>
+<li><a href="https://en.opensuse.org/SDB:Live_USB_stick">https://en.opensuse.org/SDB:Live_USB_stick</a></li>
+<li><a href="https://en.opensuse.org/SDB:Create_a_Live_USB_stick_using_Windows">https://en.opensuse.org/SDB:Create_a_Live_USB_stick_using_Windows</a></li>
+<li><a href="https://en.opensuse.org/SDB:Create_a_Live_USB_stick_using_macOS">https://en.opensuse.org/SDB:Create_a_Live_USB_stick_using_macOS</a></li>
+</ul>
+<h1 id="Digital_Software_Signature_Verification">Digital Software
+Signature Verification</h1>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="Advanced_Users.html">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></span></li>
+</ul>
+<p>Having read <a href="Verifying_Software_Signatures.html">Verifying Software Signatures</a> is a prerequisite for
+understanding this wiki chapter.</p>
+<h2 id="Culture_Comparison_of_Digital_Software_Verification_in_Major_Operating_Systems">Culture
+Comparison of Digital Software Verification in Major Operating
+Systems</h2>
+<ul>
+<li><u>Windows:</u> Tools for software digital signature verification
+are not installed by default on the Windows platform. They could be
+manually installed, but there is a bootstrap issue. These tools
+themselves would have to be downloaded over HTTPS, i.e., with only a
+very basic form of authentication.
+<ul>
+<li>For Windows, related: <a href="Windows_Hosts.html#Windows_Software_Sources">Windows
+Software Sources</a> and <a href="Authenticode.html">Authenticode</a></li>
+</ul></li>
+<li><u>macOS:</u> macOS comes with Gatekeeper. See also <a href="https://support.apple.com/en-us/HT202491">Apple's official
+documentation on safely opening apps on your Mac</a>.</li>
+<li><u>Linux distributions:</u> In contrast, on the Linux platform, the
+<a href="OpenPGP.html">GnuPG</a> software digital signature
+verification tool is usually installed by default, and many software
+projects provide digital software signatures.</li>
+</ul>
+<h2 id="Third-party_Tools_Digital_Software_Signature_Availability">Third-party
+Tools Digital Software Signature Availability</h2>
+<ul>
+<li><u>ISO Image Writer Tools:</u>
+<ul>
+<li><u>KDE ISO Image Writer:</u> Hashsums are available for KDE ISO
+Image Writer but no digital software signatures. Verification (SHA256)
+for KDE ISO Image Writer is briefly in the Kicksecure <a href="ISO.html">ISO</a> documentation. See chapter <a href="#Benefits_of_Hash_Sum_Verification_of_Third-Party_Tools_in_the_Absence_of_Digital_Software_Signatures">#Benefits of Hash Sum Verification of Third-Party Tools
+in the Absence of Digital Software Signatures</a>.</li>
+<li><u>USBImager:</u> Providing neither hashsums nor digital software
+signatures at the time of writing.</li>
+</ul></li>
+</ul>
+<h2 id="Verification_On-Demand_versus_On-Offer">Verification On-Demand
+versus On-Offer</h2>
+<p>Digital software signature verification using GnuPG (or <a href="Signify.html">Signify</a>) is conceptually something
+that users need to expand, look for, and demand. We can summarize this
+as "digital software signature verification is on-demand." It is not
+something that websites like Kicksecure or other software project
+websites can simply explain to users as "on-offer." Digital software
+signature verification requires that users understand its importance
+before visiting a software project's website.</p>
+<p>If a project's website used to provide digital software signatures
+but then stopped, or if there are unexplained signing key changes
+(where, for example, the new key is not signed by the old key), users
+must recognize that something might be wrong. Users should refrain from
+using the software without successful digital software verification;
+failing to do so would defeat the very purpose of digital software
+verification.</p>
+<p>A user who,</p>
+<ul>
+<li><strong>A)</strong> Sufficiently understands the importance of never
+installing unverified software prior to visiting a software project's
+website: Doesn't need to be told about it and will act accordingly in
+any case.</li>
+<li><strong>B)</strong> Has never heard about it: Is unlikely to have
+the motivation to be redirected to learn and do something highly complex
+(verification) beforehand and rather abandons the download process.</li>
+<li><strong>C)</strong> Copies and pastes verification commands without
+sufficiently understanding the threat model: Doesn't benefit in case of
+TLS being compromised.</li>
+</ul>
+<h2 id="Responsibility_of_Digital_Software_Signature_Education">Responsibility
+of Digital Software Signature Education</h2>
+<p>Therefore, it is not the responsibility of software project websites
+like Kicksecure to educate users about digital software signatures.
+These websites are typically only available over TLS, a basic form of
+authentication. The information provided might be malicious if an
+adversary managed to compromise TLS or the web server.</p>
+<h2 id="Digital_Software_Signature_Utility_versus_Usability_and_Impact">Digital
+Software Signature Utility versus Usability and Impact</h2>
+<p>A problem is that manual digital signature verification by the user
+using GnuPG is so complicated that it requires a complete course on
+theory and practice.</p>
+<p>For instance, if a Windows user has installed a lot of software from
+internet sites--as is commonly done on the Windows operating system--but
+never performed digital software verification, it makes little sense to
+go above and beyond before downloading something like an ISO image
+writer.</p>
+<p>By making installation instructions for any software, such as a Linux
+distribution, overly complicated with a too strong emphasis on digital
+software verification, it can give users who have never heard about it
+the impression that such a procedure is specific to the software they
+are intending to install. This can lead to perceptions of increased
+security risk if skipped, creating a usability issue that may lead users
+to abandon the installation altogether. Such complexity can elicit
+feedback like "I have never seen such complicated installation
+instructions in my life." or "I've never had to verify anything before
+in my life," which is counterproductive.</p>
+<p>As a result, users might continue using proprietary, closed-source,
+less privacy-respecting, and less secure operating systems (such as <a href="Windows_Hosts.html">Windows Hosts</a>) instead of
+freedom software, like Linux distributions such as Kicksecure.</p>
+<h2 id="Comparison_with_Linux_Distributions">Comparison with Linux
+Distributions</h2>
+<p>This conclusion is apparently common among other security,
+privacy-focused, and other Linux distribution maintainers.</p>
+<p>By comparison:</p>
+<ul>
+<li><a href="https://www.qubes-os.org/doc/installation-guide/">Qubes
+installation guide</a> uses Rufus on Windows to write Qubes ISO to USB.
+No mention of digital software verification of Rufus.</li>
+<li><a href="https://wiki.debian.org/DebianInstall">Debian Install
+wiki</a> mentions Rufus also without verification.</li>
+<li><a href="https://elementary.io/docs/installation">elementary OS
+Installation</a> suggests balenaEtcher.</li>
+<li><a href="https://tails.net/install/windows/index.en.html">Tails
+Windows ISO to USB guide</a> uses balenaEtcher but no mention of digital
+software verification.</li>
+</ul>
+<p><blockquote><p>OpenPGP signatures</p>
+<p>Unless the user knows how to verify the signing key through the
+OpenPGP Web of Trust, this technique ultimately relies on a correct
+download of the signing key and signature, and thus on HTTPS.</p>
+<p>[...]</p>
+<p>We provide an OpenPGP signature of our downloads.</p>
+<p>[...]</p>
+<p>OpenPGP verification instructions</p>
+<p>We removed the instructions to verify downloads with OpenPGP
+because:</p>
+<p>Without advanced knowledge of OpenPGP, verifying with OpenPGP
+provides the same level of security as the JavaScript verification on
+the download page, while being much more complicated and
+error-prone.</p>
+<p>None of our personas would have enough knowledge of OpenPGP to use
+the OpenPGP Web of Trust with confidence.</p>
+<p>Providing basic (and never exhaustive) instructions has proven to be
+very time-consuming to our help desk and technical writers. See <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17900">#17900</a>.<span class="blockquote-context"><a href="https://tails.net/contribute/design/download_verification/">Tails
+Design, Download verification</a></span></p></blockquote></p>
+<p><blockquote><p>[...] the huge majority of our users should not even be suggested to
+do an OpenPGP-based verification. We've spent so much time in the past
+trying to make it doable for them, and now I can see why we gave
+up.<span class="blockquote-context"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/11785">intrigeri,
+Tails developer</a></span></p></blockquote></p>
+<h2 id="Benefits_of_Hash_Sum_Verification_of_Third-Party_Tools_in_the_Absence_of_Digital_Software_Signatures">Benefits
+of Hash Sum Verification of Third-Party Tools in the Absence of Digital
+Software Signatures</h2>
+<p>Hash sum verification can provide a basic form of authentication,
+similar in level to HTTPS (TLS). It is primarily useful for integrity
+checks, as the hash sum is provided over the same channel (TLS) as the
+download itself. Consequently, hash sum verification does not offer any
+higher assurance than the download channel itself.</p>
+<p>Even in the absence of digital software signatures for third-party
+tools, hash sum verification still offers benefits if the following
+conditions are met:</p>
+<ul>
+<li>1) TLS is functional and not compromised.</li>
+<li>2) The project website has good integrity and is not
+compromised.</li>
+<li>3) The third-party tool's website had good integrity in the past but
+was compromised by the time the user accesses it.</li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Verifying_Software_Signatures.html">Verifying
+Software Signatures</a></li>
+<li><a href="Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions.html">Software Signature Verification Usability Issues and
+Proposed Solutions</a></li>
+<li><a href="Verify_the_images.html">Verify the
+images</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">The KDE project is huge, has a long, positive history. KDE ISO Image
+Writer does not have a history of privacy intrusions. No negative
+information about KDE ISO Image Writer could be found. It is not used
+due to known issues elaborated in chapter <a href="Troubleshooting.html#KDE_ISO_Image_Writer">KDE ISO
+Image Writer</a>.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

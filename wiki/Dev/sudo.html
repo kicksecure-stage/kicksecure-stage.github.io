@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/sudo</title>
+<meta name="description" content="sudo replacement development considerations - doas / sudoless / privleap">
+<meta property="og:description" content="sudo replacement development considerations - doas / sudoless / privleap">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/sudo.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/sudo.html">
+<meta property="og:title" content="sudo / doas / sudoless / privleap">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>sudo</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#kicksecure/live-config-dist/etc/sudoers.d/live-config-dist">kicksecure/live-config-dist/etc/sudoers.d/live-config-dist</a></li><li class="toc-l2"><a href="#kicksecure/sdwdate/etc/sudoers.d/sdwdate">kicksecure/sdwdate/etc/sudoers.d/sdwdate</a></li><li class="toc-l2"><a href="#kicksecure/sdwdate-gui/etc/sudoers.d/sdwdate-gui">kicksecure/sdwdate-gui/etc/sudoers.d/sdwdate-gui</a></li><li class="toc-l2"><a href="#kicksecure/security-misc/etc/sudoers.d/security-misc">kicksecure/security-misc/etc/sudoers.d/security-misc</a></li><li class="toc-l2"><a href="#kicksecure/setup-dist/etc/sudoers.d/setup-dist">kicksecure/setup-dist/etc/sudoers.d/setup-dist</a></li><li class="toc-l2"><a href="#kicksecure/systemcheck/etc/sudoers.d/systemcheck">kicksecure/systemcheck/etc/sudoers.d/systemcheck</a></li><li class="toc-l2"><a href="#kicksecure/tb-starter/etc/sudoers.d/tb-starter">kicksecure/tb-starter/etc/sudoers.d/tb-starter</a></li><li class="toc-l2"><a href="#kicksecure/tb-updater/etc/sudoers.d/tpo-downloader">kicksecure/tb-updater/etc/sudoers.d/tpo-downloader</a></li><li class="toc-l2"><a href="#kicksecure/usability-misc/etc/sudoers.d/upgrade-passwordless">kicksecure/usability-misc/etc/sudoers.d/upgrade-passwordless</a></li><li class="toc-l2"><a href="#whonix/anon-gw-anonymizer-config/etc/sudoers.d/anonymizer-config-gateway">whonix/anon-gw-anonymizer-config/etc/sudoers.d/anonymizer-config-gateway</a></li><li class="toc-l2"><a href="#/etc/sudoers.d/qt_x11_no_mitshm">/etc/sudoers.d/qt_x11_no_mitshm</a></li><li class="toc-l2"><a href="#/etc/sudoers.d/qubes">/etc/sudoers.d/qubes</a></li><li class="toc-l2"><a href="#/etc/sudoers.d/qubes-input-trigger">/etc/sudoers.d/qubes-input-trigger</a></li><li class="toc-l2"><a href="#/etc/sudoers.d/umask">/etc/sudoers.d/umask</a></li><li class="toc-l2"><a href="#pkexec">pkexec</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Wiki_Enhancements.html">Wiki
+Enhancements</a></li>
+<li><a href="wiki_todo.html">Wiki Editor ToDo</a></li>
+<li><a href="wiki.html">Wiki Editor Docs</a></li>
+<li><a href="website.html">Wiki Dev ToDo</a></li>
+<li><a href="mediawiki/Archive.html">Wiki Dev
+(archived)</a></li>
+<li><a href="mediawiki.html">Wiki Dev Docs</a></li>
+<li><a href="wikitest.html">Wiki Test Page</a></li>
+<li><a href="../PerformanceTests.html">Wiki Performance
+Tests</a></li>
+<li><a href="../TestpageForFlyInNotification.html">Fly-In-Banner Test</a></li>
+<li><a href="discourse.html">Discourse Dev Docs</a></li>
+<li><a href="todo.html">Developer ToDo</a></li>
+<li><a href="todo/archived.html">Developer ToDo
+(archived)</a></li>
+<li><a href="../Progress_Reports.html">Progress
+Reports</a></li>
+<li><a href="../Progress_Reports_1.html">(1)</a></li>
+<li><a href="../Progress_Reports_2.html">(2)</a></li>
+</ul>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>sudo replacement development considerations - doas / sudoless /
+privleap</p>
+<p><u><strong>This has been implemented. Past notes.</strong></u></p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><strong>See also <a href="user-sysmaint-split.html#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No Access to Privilege Escalation Tools for Limited
+Accounts</a>.</strong></p>
+<h1 id="Changes">Changes</h1>
+<ul>
+<li>based on <a href="https://forums.whonix.org/t/replace-sudo-with-doas/17482/18">https://forums.whonix.org/t/replace-sudo-with-doas/17482/18</a></li>
+<li>removed commented out</li>
+<li>removed resolved cases</li>
+</ul>
+<h1 id="goals">goals</h1>
+<ul>
+<li>sudoless</li>
+</ul>
+<h1 id="non-goals">non-goals</h1>
+<ul>
+<li>doas</li>
+</ul>
+<h1 id="List">List</h1>
+<h2 id="kicksecure/live-config-dist/etc/sudoers.d/live-config-dist"><code>kicksecure/live-config-dist/etc/sudoers.d/live-config-dist</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>More commands with <code>nopasswd</code> exceptions.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>start calamares only in sysmaint (form sysmaint-panel) or in
+unrestricted admin mode</li>
+</ul></li>
+<li>Status
+<ul>
+<li>Implemented.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/sdwdate/etc/sudoers.d/sdwdate"><code>kicksecure/sdwdate/etc/sudoers.d/sdwdate</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>This one's a problem. Whereas the previous files provide
+<code>nopasswd</code> exceptions to specific users and groups, this file
+allows *anyone* to run <code>/usr/sbin/sdwdate-clock-jump</code> as
+root. doas lacks the ability to express a universal exception such as
+this, you can only grant exceptions to specific users or groups. The
+only files that actually attempt to use <code>sdwdate-clock-jump</code>
+via sudo are:
+<ul>
+<li><code>kicksecure/sdwdate-gui/usr/lib/python3/dist-packages/sdwdate_gui/sdwdate_gui.py</code></li>
+<li><code>kicksecure/sdwdate-gui/usr/lib/python3/dist-packages/sdwdate_gui/sdwdate_gui_qubes.py</code></li>
+<li><code>kicksecure/sdwdate-gui/etc/qubes-rpc/whonix.GatewayCommand</code></li>
+</ul></li>
+<li>It's likely that all of these can be coped with by using doas's
+configuration by simply determining the users or groups these run as,
+and adding them to the configuration file. Adding the <code>users</code>
+group to the config would also be advisable as Debian's
+<code>adduser</code> tool will automatically add new "standard" user
+accounts to this group. Unfortunately <code>useradd</code> doesn't do
+this, but the end-user can probably resolve this themselves if they so
+choose.
+<ul>
+<li><code>ALL ALL=NOPASSWD: /usr/sbin/sdwdate-clock-jump</code></li>
+</ul></li>
+<li>Translates roughly to:
+<ul>
+<li><code>permit nopass :users cmd /usr/sbin/sdwdate-clock-jump</code></li>
+</ul></li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Use capabilities?</li>
+<li>OR don't allow user to set the clock? Tell users to boot into
+sysmaint session instead?</li>
+<li>With privleap, port to privleap and keep all functionality.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/sdwdate-gui/etc/sudoers.d/sdwdate-gui"><code>kicksecure/sdwdate-gui/etc/sudoers.d/sdwdate-gui</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>User-specific <code>nopasswd</code> exceptions for specific
+commands. Easy to translate.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Same as above.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/security-misc/etc/sudoers.d/security-misc"><code>kicksecure/security-misc/etc/sudoers.d/security-misc</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>One user-specific and one group-specific <code>nopasswd</code>
+exception, easily translatable.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Could be re-implemented using a <code>.done</code> file and systemd
+unit files.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>No longer needs done, the only sudoers config left here is actually
+just umask config stuff.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/setup-dist/etc/sudoers.d/setup-dist"><code>kicksecure/setup-dist/etc/sudoers.d/setup-dist</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Simple group-specific <code>nopasswd</code> exception, easily
+translatable.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>setup-dist does not do much anymore anyhow. The done file could be
+moved to user home location.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/systemcheck/etc/sudoers.d/systemcheck"><code>kicksecure/systemcheck/etc/sudoers.d/systemcheck</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Complex, but looks doable. Many user-specific <code>nopasswd</code>
+exceptions, however some of these are targeted to allow the user to
+execute a command as another user *other than root*. Thankfully doas
+supports this.
+<ul>
+<li><code>user ALL=(sdwdate) NOPASSWD: /usr/libexec/helper-scripts/onion-time-pre-script</code></li>
+</ul></li>
+<li>Translates to:
+<ul>
+<li><code>permit nopass user as sdwdate cmd /usr/libexec/helper-scripts/onion-time-pre-script</code></li>
+</ul></li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Only sysmaint would be able to run systemcheck.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress. Requires changes to setup-dist and setup-wizard-dist to
+properly implement.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/tb-starter/etc/sudoers.d/tb-starter"><code>kicksecure/tb-starter/etc/sudoers.d/tb-starter</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>A user-specific <code>nopasswd</code> exception with some
+environment variable allowances. Can be handled using techniques
+mentioned earlier.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Could be re-implemented using systemd unit files and/or Debian
+maintainer scripts.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/tb-updater/etc/sudoers.d/tpo-downloader"><code>kicksecure/tb-updater/etc/sudoers.d/tpo-downloader</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>More user- and group-specific <code>nopasswd</code> exceptions.
+Easily translatable.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Same as above.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="kicksecure/usability-misc/etc/sudoers.d/upgrade-passwordless"><code>kicksecure/usability-misc/etc/sudoers.d/upgrade-passwordless</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Group-specific <code>nopasswd</code> exception, easily
+translatable.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Only sysmaint should be able to run upgrade-nonroot.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress.</li>
+</ul></li>
+</ul>
+<h2 id="whonix/anon-gw-anonymizer-config/etc/sudoers.d/anonymizer-config-gateway"><code>whonix/anon-gw-anonymizer-config/etc/sudoers.d/anonymizer-config-gateway</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>More user-specific <code>nopasswd</code> exceptions. Easily
+translatable.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Whonix issue only. Not a Kicksecure issue. Whonix-Gateway could
+always boot into unrestricted admin mode?</li>
+<li>We want to support sudoless on Whonix-Gateway, so this probably
+should be dealt with.</li>
+</ul></li>
+<li>Status
+<ul>
+<li>In progress, using privleap-based solution.</li>
+</ul></li>
+</ul>
+<h2 id="/etc/sudoers.d/qt_x11_no_mitshm"><code>/etc/sudoers.d/qt_x11_no_mitshm</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Specifies an environment variable to be preserved that affects all
+utilities on the system that leverage Qt. Depending on how exactly this
+rule is used, this could be trivial to translate, or it could be
+slightly tricky.
+<ul>
+<li><code>Defaults env_keep += "QT_X11_NO_MITSHM"</code></li>
+</ul></li>
+<li>Translates to (roughly):
+<ul>
+<li><code>permit setenv { QT_X11_NO_MITSHM } :sudo</code></li>
+</ul></li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Only user "sysmaint".</li>
+<li>Alternatively, could introduce support for setting environment
+variables universally in all executables run by privleap?</li>
+</ul></li>
+<li>Status
+<ul>
+<li>Needs discussion.</li>
+</ul></li>
+</ul>
+<h2 id="/etc/sudoers.d/qubes"><code>/etc/sudoers.d/qubes</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>This looks like a generic account-wide <code>nopasswd</code>
+exception for the <code>qubes</code> group. There's some SELinux stuff
+going on with it that can't be ported, but since Kicksecure is based on
+Debian, I don't expect this to be a problem (I don't believe SELinux is
+even *used* in Whonix or other Debian-based Qubes).</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Not an issue since also not an issue for doas.</li>
+</ul></li>
+</ul>
+<h2 id="/etc/sudoers.d/qubes-input-trigger"><code>/etc/sudoers.d/qubes-input-trigger</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Contains several <code>NOPASSWD</code> exceptions for starting
+various Qubes input-related services as root. There are four sets of
+nine services each, each set is handled by one line of sudoers config,
+which covers all nine services with the help of a regex match. We don't
+get regex matching in doas, so this would have to be replaced with 36
+lines of doas configuration. Not great, but not horrible.
+<ul>
+<li><code>user ALL=(root) NOPASSWD:/bin/systemctl --no-block start qubes-input-sender-keyboard@event[0-9].service</code></li>
+</ul></li>
+<li>Translates to:
+<ul>
+<li><code>permit nopass user as root cmd /bin/systemctl args --no-block start qubes-input-sender-keyboard@event0.service</code>,
+plus eight more lines with <code>event1.service</code>,
+<code>event2.service</code>, etc.</li>
+</ul></li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Does not actually need handled at all. The services in this file are
+only useful in VMs like sys-usb, since they are designed to send input
+events from one VM to another, usually from sys-usb to dom0. See <a href="https://github.com/QubesOS/qubes-app-linux-input-proxy">https://github.com/QubesOS/qubes-app-linux-input-proxy</a>.</li>
+</ul></li>
+</ul>
+<h2 id="/etc/sudoers.d/umask"><code>/etc/sudoers.d/umask</code></h2>
+<ul>
+<li><u>doas:</u>
+<ul>
+<li>Trouble. This one changes umask settings for sudo commands in
+general. doas handles umask configuration entirely on its own and does
+not allow the end-user to configure it. Thus this cannot be translated.
+Depending on what doas's umask settings are and how vital this
+configuration is, this may or may not be a blocker.</li>
+</ul></li>
+<li><u>sudoless:</u>
+<ul>
+<li>Not a problem, because umask is inherited from privleapd which has a
+"normal" umask, while umask for account <code>user</code> remains locked
+down.</li>
+</ul></li>
+</ul>
+<h2 id="pkexec">pkexec</h2>
+<ul>
+<li><u>sudoless:</u>
+<ul>
+<li>List of affected applications summarized from <a href="https://forums.whonix.org/t/cannot-use-pkexec/8129">https://forums.whonix.org/t/cannot-use-pkexec/8129</a>
+already:
+<ul>
+<li>gdebi -&gt; use sysmaint</li>
+<li>synaptic -&gt; use sysmaint</li>
+<li>partition manager -&gt; use sysmaint</li>
+<li>xfce auto mounter -&gt; TODO</li>
+</ul></li>
+<li>Only sysmaint should be able to use pkexec?</li>
+</ul></li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+</main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

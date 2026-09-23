@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/GNOME</title>
+<meta name="description" content="Kicksecure Development Notes on GNOME">
+<meta property="og:description" content="Kicksecure Development Notes on GNOME">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/GNOME.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/GNOME.html">
+<meta property="og:title" content="Dev/GNOME">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>GNOME</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Astra_Linux.html" title="Dev/Astra Linux"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Astra
+Linux</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="KDE.html" title="Dev/KDE"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/KDE</span></a><span class="info"><span class="prev">Previous
+page: Dev/Astra Linux</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/KDE</span></span></span>Dev/GNOME</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="KDE.html">Dev/KDE</a></li>
+<li><a href="GNOME.html">Dev/GNOME</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><u>Kicksecure Development Notes on GNOME</u></p>
+<p><strong>For user documentation, see <a href="../Other_Desktop_Environments.html">Other Desktop
+Environments</a> instead!</strong></p>
+<p>This page is not intended for users or non-developers.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Security">Security</h1>
+<ul>
+<li><u><strong>GNOME Website Extensions:</strong></u> GNOME allows
+installing extensions via an <code>Install</code> button on its website.
+Example: <a href="https://extensions.gnome.org/extension/1160/dash-to-panel/">Dash
+to Panel extension</a>
+<ul>
+<li><u>Digital signature verification:</u> Does it perform digital
+software signature verification?</li>
+</ul></li>
+<li><u><strong>Security Risks in Default Installation:</strong></u> The
+standard GNOME setup includes numerous features, which may lead to
+security vulnerabilities.
+<ul>
+<li><u>Anchor:</u>
+<span class="manually-placed-anchor " id="1-Click_RCE_on_GNOME_(CVE-2023-43641)_in_file_indexing_service"></span>
+<span class="manually-placed-anchor mpa-visible" id="1-Click_Remote_Code_Execution_(RCE)_on_GNOME_(CVE-2023-43641)_in_file_indexing_service">1-Click
+Remote Code Execution (RCE) on GNOME (CVE-2023-43641) in file indexing
+service</span></li>
+<li><u><strong>File Download Vulnerabilities:</strong></u> Simple file
+downloads have, in the past, led to remote code execution.</li>
+<li><u><strong>Link Click Vulnerabilities:</strong></u> Clicking a link
+on a website has, in the past, led to remote code execution.
+<ul>
+<li><u><strong>Related Blog Post:</strong></u> See the blog post: <a href="https://github.blog/2023-10-09-coordinated-disclosure-1-click-rce-on-gnome-cve-2023-43641/">Coordinated
+disclosure: 1-Click RCE on GNOME (CVE-2023-43641)</a></li>
+<li><u><strong>Demonstration Video:</strong></u> Watch the short video
+here: <a href="https://github.blog/wp-content/uploads/2023/10/CVE-2023-43641-poc.mp4">CVE-2023-43641
+proof-of-concept video</a></li>
+<li><u><strong>News Report:</strong></u> LWN: <a href="https://lwn.net/Articles/947288/">Remote execution in the GNOME
+tracker</a></li>
+</ul></li>
+<li><u><strong>Tracker-Miner Daemon Concerns:</strong></u> GNOME runs
+tracker-miner, a daemon that parses all user-downloaded files, which has
+had such vulnerabilities in the past. Such daemons should not run by
+default.</li>
+<li><u><strong>Compromised Theoretical Security:</strong></u>
+Theoretical security benefits from Wayland can be undermined by poor
+security practices.</li>
+</ul></li>
+<li><u><strong>Social Account Integration:</strong></u> Privacy and
+security concerns exist regarding the integration of social
+accounts.</li>
+</ul>
+<h1 id="Reasons_Against_Using_a_Minimal_Desktop_Environment_Without_Its_Bad_Stuff">Reasons
+Against Using a Minimal Desktop Environment Without Its Bad Stuff</h1>
+<p>While it might be theoretically possible to avoid GNOME's undesirable
+aspects by selectively using only core packages like the window manager
+and systray, this approach is not without notable drawbacks.</p>
+<p>Selectively using GNOME components, such as the window manager and
+systray, while concurrently issuing warnings about other standard GNOME
+functionalities, creates contradictions and practical challenges. This
+methodology seems counterintuitive: utilizing only specific parts of
+GNOME (like the window manager and systray) while needing to add
+warnings and disclaimers against its standard, documented features in
+user documentation and support requests.</p>
+<p>For example, GNOME's recommended method for installing the Clipboard
+Indicator involves visiting <a href="https://extensions.gnome.org/extension/779/clipboard-indicator/">extensions.gnome.org
+Clipboard Indicator</a> and clicking 'Install'. However, this raises a
+question: what is the secure alternative that avoids browser
+interactions and includes digital software verification? As of this
+writing, this remains unclear.</p>
+<p>For instance, consider a user query:</p>
+<p><blockquote><p>Is it safe to install <a href="https://packages.debian.org/gnome-clocks">gnome-clocks</a>?<span class="blockquote-context">Hypothetical
+user support request.</span></p></blockquote></p>
+<p><blockquote><p>No, it is not recommended due to its dependency on <a href="https://packages.debian.org/geoclue-2.0">geoclue-2.0</a>. This
+dependency not only expands the attack surface but also raises <a href="https://gitlab.freedesktop.org/geoclue/geoclue/-/issues/177">privacy
+concerns</a>. Currently, instructions to mitigate these risks remain <a href="../Unsupported.html">undocumented</a>.<span class="blockquote-context">Hypothetical
+reply.</span></p></blockquote></p>
+<p>Such an approach would lead to inconsistency and confusion for users,
+undermining the practicality of using a minimal GNOME setup.</p>
+<p>No comparable issues exist for LXQt. Users have the advantage of
+leveraging both Debian and LXQt documentation, along with resources from
+third parties, to customize and utilize LXQt effectively.</p>
+<p><blockquote><p>NOTE: As of Debian Trixie, the default Gnome version is Gnome 48
+(kernel 6.12.73 as of this edit, 2/23/2026). Many if not all desktop
+extensions for Gnome (for Debian 13) are now listed as part of the
+'main' stable Debian 13 Trixie repository. I checked Gnome extensions
+web page and at extensions dot gnome dot org it is still recommended to
+download through the website. They suggest some browser extension but I
+did not test that. I simply followed the links and proceeded to download
+a gnome extension .zip file the normal way any file would be downloaded
+in the Tor Browser. I scanned the .zip just to see if maybe there was a
+signature embedded (similar to how other files can be signed for
+example) that I could verify manually by pgp, but there was none
+apparent.<span class="blockquote-context"><u>anonymous</u> wiki edit,
+<u>unverified</u></span></p></blockquote></p>
+<h1 id="Usability">Usability</h1>
+<p><strong>Systray Absence:</strong> By default, GNOME does not include
+a systray.</p>
+<p>How can it be added?</p>
+<ul>
+<li>For typical GNOME users, the recommended method is to visit: <a href="https://extensions.gnome.org/extension/615/appindicator-support/">AppIndicator
+Support</a> and click the 'Install' button.</li>
+<li>Command line: For users who want to install from the command line,
+via packages.debian.org or from source code, while performing digital
+software signature verification: Unknown.</li>
+<li>Linux distributions: For distributions using a build script, the
+process remains unclear. (<a href="Derivative-Maker.html#Introduction">Clicking buttons is inappropriate for Linux
+distribution build scripts.</a>) If a solution for the command line
+becomes available, it might also provide insight into this
+scenario.</li>
+</ul>
+<h1 id="Trademark">Trademark</h1>
+<p><a href="https://foundation.gnome.org/logo-and-trademarks/">https://foundation.gnome.org/logo-and-trademarks/</a></p>
+<p><a href="https://wiki.gnome.org/Foundation/SoftwarePolicy">https://wiki.gnome.org/Foundation/SoftwarePolicy</a></p>
+<p><blockquote><p>Software projects which are included in GNOME Circle are not official
+GNOME software. As such, they cannot use the GNOME trademarks to
+identify themselves.</p></blockquote></p>
+<h1 id="Qubes">Qubes</h1>
+<p><strong>Qubes' Stance on GNOME:</strong> Qubes has also decided
+against using GNOME: <a href="https://github.com/QubesOS/qubes-issues/issues/1806#issuecomment-1768557436">https://github.com/QubesOS/qubes-issues/issues/1806#issuecomment-1768557436</a></p>
+<h1 id="Related">Related</h1>
+<ul>
+<li>Discussion on porting to Wayland: <a href="https://forums.whonix.org/t/port-to-wayland/17380">https://forums.whonix.org/t/port-to-wayland/17380</a></li>
+<li>Security Concerns:
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/168">Kicksecure/security-misc</a></span></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Astra_Linux.html" title="Dev/Astra Linux"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Astra
+Linux</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="KDE.html" title="Dev/KDE"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/KDE</span></a><span class="info"><span class="prev">Previous
+page: Dev/Astra Linux</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/KDE</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

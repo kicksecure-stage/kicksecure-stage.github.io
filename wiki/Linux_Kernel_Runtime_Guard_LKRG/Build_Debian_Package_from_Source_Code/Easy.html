@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Linux Kernel Runtime Guard LKRG/Build Debian Package from Source Code/Easy</title>
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/Build_Debian_Package_from_Source_Code/Easy.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/Build_Debian_Package_from_Source_Code/Easy.html">
+<meta property="og:title" content="HowTo: Easy Build LKRG Debian Package without Signature Verification">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/P_lkrg2.png">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../pygments.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../About.html">Home</a></li><li><a href="../../Download.html">Download</a></li><li><a href="../../Documentation.html">Docs</a></li><li><a href="../../FAQ.html">FAQ</a></li><li><a href="../../Support.html">Help</a></li><li><a href="../../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../Documentation.html">Home</a> / <span>Linux Kernel Runtime Guard LKRG</span> / <span>Build Debian Package from Source Code</span> / <span>Easy</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Get_Build_Dependencies">Get Build Dependencies</a></li><li class="toc-l2"><a href="#Change_Directory_to_Build_Folder">Change Directory to Build
+Folder</a></li><li class="toc-l2"><a href="#Get_the_Source_Code">Get the Source Code</a></li><li class="toc-l2"><a href="#Change_Directory_to_Source_Code_Folder">Change Directory to
+Source Code Folder</a></li><li class="toc-l2"><a href="#Choose_Version">Choose Version</a></li><li class="toc-l2"><a href="#Build_the_Package">Build the Package</a></li><li class="toc-l2"><a href="#Build_Result">Build Result</a></li><li class="toc-l2"><a href="#Installation">Installation</a></li><li class="toc-l2"><a href="#Clean_Up">Clean Up</a></li><li class="toc-l2"><a href="#Footnotes">Footnotes</a></li></ul></nav><div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<p><img src="../../../media/P_lkrg2.png.webp" width="126" alt="LKRG logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><strong>Here are <u>easier</u> instructions on how to build the LKRG
+Debian Package from source code <u>without</u> <a href="../../Verifying_Software_Signatures.html">verifying software
+signatures</a>.</strong> Instructions with better security and more
+explanation can be found <a href="../Build_Debian_Package_from_Source_Code.html">here</a>.</p>
+<div class="post-intro-p">
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The build process for any of the
+[Broken-ExtLink--no-url-was-provided] developers is very similar. This
+wiki page explains how to build the package <code>lkrg</code>. By
+replacing the package name
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/lkrg">Kicksecure/lkrg</a></span>
+with the name of any <a href="../../Packages_for_Debian_Hosts.html">other</a> package you might be interested in building,
+that other package would be built. You have two options.</p>
+<ul>
+<li><strong>A)</strong> <u>Instructions on <strong>this</strong>
+page</u> about <strong>how to build</strong> the <code>lkrg</code>
+package from source code <strong>without</strong> <a href="../../Verifying_Software_Signatures.html"><u>verifying
+software signatures</u></a> for simplicity.</li>
+</ul>
+<p><strong><u>OR</u></strong></p>
+<ul>
+<li><strong>B)</strong> <a href="../../Dev/Build_Documentation/lkrg.html">Instructions with verifying software signatures click
+here</a>.</li>
+</ul>
+<div class="post-intro-p">
+</div>
+<h2 id="Get_Build_Dependencies">Get Build Dependencies</h2>
+<p><a href="../../Operating_System_Software_and_Updates.html">Update</a> your package lists.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p>Install from the Debian repository.</p>
+<p><span class="code-select">sudo apt install build-essential devscripts
+git</span></p>
+<h2 id="Change_Directory_to_Build_Folder">Change Directory to Build
+Folder</h2>
+<p>This chapter is recommended for better usability, but is not strictly
+required. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Create folder <code>~/lkrg-build</code>.</p>
+<p><span class="code-select">mkdir -p ~/lkrg-build</span></p>
+<p>Change directory to folder <code>~/lkrg-build</code>.</p>
+<p><span class="code-select">cd ~/lkrg-build</span></p>
+<h2 id="Get_the_Source_Code">Get the Source Code</h2>
+<p>Get the package's source code.</p>
+<p><span class="code-select">git clone &lt;span
+class="github-link-widget"&gt;&lt;img src="../../../github-mark.svg" width="14"
+height="16" alt="GitHub Logo" /&gt;&lt;a href="<a href="https://github.com/Kicksecure/lkrg.git%22%3EKicksecure/lkrg.git%3C/a%3E%3C/span%3E">https://github.com/Kicksecure/lkrg.git"&gt;Kicksecure/lkrg.git&lt;/a&gt;&lt;/span&gt;</a>;</span></p>
+<p>Remember it is <strong>K</strong>icksecure, not
+<strong>k</strong>icksecure! If you are prompted for a username for
+github, it means you have mistyped the web address.</p>
+<h2 id="Change_Directory_to_Source_Code_Folder">Change Directory to
+Source Code Folder</h2>
+<p>Enter the package's source code folder because later on package build
+commands are expected to be run from the root of the source folder.</p>
+<p><span class="code-select">cd lkrg</span></p>
+<h2 id="Choose_Version">Choose Version</h2>
+<p>This is optional if you want to build from the master branch.</p>
+<p>Do not use version <code>0.1</code>; choose a sensible version
+number.</p>
+<p><span class="code-select">git checkout 0.7.1-1</span></p>
+<h2 id="Build_the_Package">Build the Package</h2>
+<p><span class="code-select">dpkg-buildpackage -b</span></p>
+<h2 id="Build_Result">Build Result</h2>
+<p>When a package is built using <code>dpkg-buildpackage</code> the
+resulting packages will be created in the parent folder. That is, in
+this case in the <code>~/lkrg-build</code> folder.</p>
+<p><span class="code-select">ls ../</span></p>
+<p>Should show something like this.</p>
+<p><code>lkrg lkrg0.7.1-1-1_amd64.buildinfo lkrg0.7.1-1-1_amd64.changes</code></p>
+<h2 id="Installation">Installation</h2>
+<p><span class="code-select">sudo dpkg -i
+../lkrg_0.7.1-1-1_amd64.deb</span></p>
+<h2 id="Clean_Up">Clean Up</h2>
+<p>Delete temporary debhelper files in the package source folder as well
+as debhelper artifacts (.deb file etc.) in the parent folder.</p>
+<p>1) Show extraneous temporary debhelper files.</p>
+<p><span class="code-select">git clean -ndff</span></p>
+<p>2) <u>NOTE</u>: Read the above output carefully if you added your own
+files to that folder.</p>
+<p>If that looks good, actually remove.</p>
+<p><span class="code-select">git clean -dff</span></p>
+<p>3) Delete debhelper artifacts (.deb file etc.) in the parent
+folder.</p>
+<p>TODO: document</p>
+<h2 id="Footnotes">Footnotes</h2>
+<div class="references">
+<ol>
+<li id="cite_note-1">When a package is built using <code>dpkg-buildpackage</code> the
+resulting packages will be created in the parent folder. It is better
+for usability if this is not the user's home folder since many other
+files may already reside there. This makes the build result files more
+difficult to find or delete. This is a missing Debian feature. See: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=657401">dpkg-buildpackage:
+support output directory other than ..</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+<h1 id="Credits_and_Source_Code">Credits and Source Code</h1>
+<p>The <a href="https://lkrg.org/">original</a> source software is
+maintained by Adam "pi3" Zabrocki. See also <a href="../../Linux_Kernel_Runtime_Guard_LKRG.html#Authorship">authorship</a></p>
+<p><a href="../Build_Debian_Package_from_Source_Code.html">This website with Debian package build instructions</a>
+and <a href="../../Linux_Kernel_Runtime_Guard_LKRG.html">LKRG
+Debian Package Website</a> is the <a href="https://en.wikipedia.org/wiki/Fork_(software_development)">software
+fork</a> homepage for LKRG, with a focus on easy installation, added
+user documentation, and integration with <a href="../../Whonix.html">Whonix</a>, <a href="../../About.html">Kicksecure</a>, Debian, and other distributions. The
+software fork source code can be found <a href="https://github.com/Whonix/lkrg">here</a>.</p>
+<h1 id="Footnotes_2">Footnotes</h1>
+
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development.html">Development</a> <a href="../../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service.html">Terms of Service</a></li><li><a href="../../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy.html">Privacy Policy</a>, <a href="../../Cookie_Policy.html">Cookie Policy</a>, <a href="../../Terms_of_Service.html">Terms of Service</a>, and <a href="../../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

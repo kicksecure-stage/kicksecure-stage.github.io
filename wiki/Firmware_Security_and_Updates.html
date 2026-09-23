@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Firmware Security and Updates</title>
+<meta name="description" content="Firmware Security and Updating Issues">
+<meta property="og:description" content="Firmware Security and Updating Issues">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Firmware_Security_and_Updates.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Firmware_Security_and_Updates.html">
+<meta property="og:title" content="Firmware Security and Updates">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Firmwareupdate.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Attacks">Attacks</a></li><li class="toc-l2"><a href="#Supply_Chain_Attacks">Supply Chain Attacks</a></li><li class="toc-l2"><a href="#Processor_Microcode_Updates">Processor Microcode Updates</a></li><li class="toc-l3"><a href="#Microcode_Package_Check">Microcode Package Check</a></li><li class="toc-l3"><a href="#Install_Microcode_Package">Install Microcode Package</a></li><li class="toc-l2"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l2"><a href="#Other_Debian_Based_Distributions">Other Debian Based
+Distributions</a></li><li class="toc-l3"><a href="#spectre-meltdown-checker">spectre-meltdown-checker</a></li><li class="toc-l3"><a href="#Forum_Discussion">Forum Discussion</a></li><li class="toc-l2"><a href="#Introduction_3">Introduction</a></li><li class="toc-l3"><a href="#Debian">Debian</a></li><li class="toc-l3"><a href="#Qubes_2">Qubes</a></li><li class="toc-l2"><a href="#Troubleshoot">Troubleshoot</a></li><li class="toc-l3"><a href="#You_are_using_legacy_BIOS">You are using legacy BIOS</a></li><li class="toc-l3"><a href="#Your_UEFI_doesnt_support_this_method_of_update">Your UEFI doesnt
+support this method of update</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Firmware_Security_and_Updates.html">Firmware
+Security and Updates</a></li>
+<li><a href="Boot_firmware.html">Boot Firmware</a></li>
+<li><a href="Secure_Boot.html">Secure Boot</a></li>
+<li><a href="Dev/Secure_Boot.html">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="Verified_Boot.html">Verified Boot</a></li>
+<li><a href="Measured_boot.html">Measured Boot</a></li>
+<li><a href="Sovereign_Boot.html">Sovereign Boot</a></li>
+<li><a href="Out-of-band_Management_Technology.html">Out-of-band Management Technology</a></li>
+<li><a href="Open_Source_Hardware.html">Open Source
+Hardware</a></li>
+<li><a href="Dev/confidential_computing.html">Confidential
+Computing (dev)</a></li>
+<li><a href="Dev/bootstrappable_builds.html">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="Dev/Stateless.html">stateless (dev)</a></li>
+<li><a href="Dev/immutable.html">immutable (dev)</a></li>
+</ul>
+</div>
+<p><img src="../media/Firmwareupdate.jpg.webp" width="200" alt="Firmwareupdate.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Firmware Security and Updating Issues</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This chapter contains general security advice and is unspecific to
+Kicksecure.</p>
+</div>
+<p>Due to the difficulty of this topic and the specificity of hardware
+and host OS firmware, this issue is generally outside the scope of
+Kicksecure documentation. The links provided further below may not be
+the most relevant to the end user, necessitating further individual
+research.</p>
+<h1 id="Firmware_on_Personal_Computers">Firmware on Personal
+Computers</h1>
+<p>Firmware is generally defined as the type of software that provides
+control, monitoring and data manipulation of engineered products.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup> In the case of computers, firmware is held in
+non-volatile memory devices such as <a href="https://en.wikipedia.org/wiki/Read-only_memory">ROM</a>, <a href="https://en.wikipedia.org/wiki/Eprom">EPROM</a> or <a href="https://en.wikipedia.org/wiki/Flash_memory">flash memory</a> and
+is associated with: <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup>
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup> <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<div>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/BIOS">BIOS</a> <a href="https://wiki.gentoo.org/wiki/BIOS_Update">updates</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Binary_blob">Non-free</a>
+drivers or <a href="https://packages.debian.org/stable/firmware-linux-nonfree">firmware</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Microcode">Processor
+microcode</a> <a href="https://wiki.archlinux.org/title/Microcode">updates</a>:
+<ul>
+<li>On Debian systems, depending on the processor it is either the <a href="https://packages.debian.org/stable/intel-microcode">intel-microcode</a>
+or <a href="https://packages.debian.org/stable/amd64-microcode">amd-microcode</a>
+package.</li>
+</ul></li>
+<li>Firmware in storage devices like harddrives, DVD drives, and flash
+storage.</li>
+<li>All computer peripherals like printers, scanners and cameras /
+webcams.</li>
+<li><a href="https://help.ubuntu.com/community/BIOSUpdate">UEFI</a>
+compliant firmware.</li>
+<li><a href="https://en.wikipedia.org/wiki/Firmware#Examples">Routers
+and firewalls</a>.</li>
+<li>Network adapters, IO controllers, power management and graphics
+processing units.</li>
+<li>3-D graphics engines.</li>
+</ul>
+</div>
+<h1 id="Firmware_Updating_and_Security_Problems">Firmware Updating and
+Security Problems</h1>
+<h2 id="Introduction_2">Introduction</h2>
+<p>The major problem with updating firmware is that it cannot be done
+automatically in most cases. Therefore, it is difficult to fix
+functionality or security issues after the hardware has shipped. While
+utility programs are often available to update BIOS, firmware in other
+devices is rarely updated and mechanisms for detecting and updating
+firmware are not standardized. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>If firmware can be upgraded, this is usually possible via a program
+created by the provider. Old firmware should always be saved before
+upgrading. If the process fails or the newer version performs worse, the
+process can be reverted. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> Updating firmware may or may
+not improve security. On the one hand, it may fix vulnerabilities, but
+on the other hand, an update may introduce a new backdoor.</p>
+<p>Unfortunately, most end users must blindly trust the hardware
+producer, so it is probably better to install non-free updates rather
+than risk being vulnerable to known attacks in the wild.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup> Until these re-writable firmware areas are locked
+down or the code is open-sourced and vastly simplified, it is likely to
+remain a rich environment for malicious adversaries. <sup class="reference"><a href="#cite_note-8">[8]</a></sup>
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<p>The reality is that advanced adversaries are routinely hacking the
+firmware of <a href="https://www.wired.com/2013/09/nsa-router-hacking/">Internet
+routers, switches and firewalls</a>, along with <a href="https://www.wired.com/2015/02/nsa-firmware-hacking/">harddrive
+firmware</a>, and <a href="https://wikileaks.org/vault7/#Dark%20Matter">UEFI/EFI and ethernet
+adapters</a>. The number of targets is already in the tens of thousands
+on an annual basis. Subverting firmware in this manner provides a
+stealthy and persistent presence that can eavesdrop on or re-route all
+network data, or access information in invisible storage areas that are
+unencrypted (bypassing disk encryption). Worst of all, firmware sabotage
+is believed to survive software updates or complete operating system
+re-installations. Attacks may also be designed to corrupt firmware so
+machines are prevented from booting, even with an external drive.</p>
+<h2 id="Attacks">Attacks</h2>
+<ul>
+<li><a href="https://web.archive.org/web/20150611225402/http://legbacore.com/Research_files/HowManyMillionBIOSesWouldYouLikeToInfect_Whitepaper_v1.pdf">How
+many million BIOSes would you like to infect?</a></li>
+</ul>
+<p><a href="https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2015/03/20082025/HowManyMillionBIOSWouldYouLikeToInfect_Full2.pdf">https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2015/03/20082025/HowManyMillionBIOSWouldYouLikeToInfect_Full2.pdf</a></p>
+<p><a href="https://www.theregister.com/2015/08/11/memory_hole_roots_intel_processors/">https://www.theregister.com/2015/08/11/memory_hole_roots_intel_processors/</a></p>
+<h2 id="Supply_Chain_Attacks">Supply Chain Attacks</h2>
+<p>Compromising a computing company's infrastructure is an advanced
+attack methodology that has risen to prominence over the last ten years:
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p><blockquote><p>Supply chain attacks can happen when hackers gain access to a
+software company's infrastructure--development environment, build
+servers, update servers, etc.--and are able to inject malware into new
+software releases or security updates.</p></blockquote></p>
+<p>A recent example of malware that successfully targeted computer
+firmware is the late-2018 "Operation ShadowHammer" attack, which
+affected an estimated half a million Windows users utilizing ASUS
+hardware. In this case, the <a href="https://www.shouldiremoveit.com/ASUS-Live-Update-5823-program.aspx">ASUS
+Live Update Utility</a> -- which is responsible for automatically
+updating components like BIOS, UEFI, drivers, and applications -- was
+compromised.</p>
+<p>It was discovered that the backdoored utility actually targeted the
+MAC addresses of a few hundred users, which were actually hard-coded
+into the trojan samples analyzed. The implication is that an advanced
+nation state attacker was willing to infect an untold number of innocent
+users for their targeted operations on a far smaller subset.
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup> This sophisticated supply chain attack involved
+several steps: <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<ul>
+<li>The ASUS server which served the live update tool was
+compromised.</li>
+<li>The malicious file was signed with <em>legitimate</em> ASUS digital
+certificates so the software appeared genuine. <sup class="reference"><a href="#cite_note-13">[13]</a></sup> The
+file was actually a three-year-old binary containing harmful code.</li>
+<li>Users downloaded the malicious, backdoored utility through the ASUS
+update server.</li>
+<li>The trojan utility searched for targets using a set of unique MAC
+addresses. <sup class="reference"><a href="#cite_note-14">[14]</a></sup></li>
+<li>Once located, a command-and-control server under the attacker's
+control installed additional malware on the machine.</li>
+</ul>
+<p>Another relatively recent example concerns backdoors that were built
+into Android mobile firmware in 2017. In this case, Google researchers
+confirmed the advanced backdoors were preinstalled on devices before
+they left manufacturer factories: <sup class="reference"><a href="#cite_note-15">[15]</a></sup>
+<blockquote><p>Triada first came to light in 2016 in articles published by Kaspersky
+<a href="https://www.kaspersky.com/blog/triada-trojan/11481/">here</a>
+and <a href="https://securelist.com/everyone-sees-not-what-they-want-to-see/74997/">here</a>,
+the first of which said the malware was "one of the most advanced mobile
+Trojans" the security firm's analysts had ever encountered. Once
+installed, Triada's chief purpose was to install apps that could be used
+to send spam and display ads. It employed an impressive kit of tools,
+including rooting exploits that bypassed security protections built into
+Android and the means to modify the Android OS' all-powerful Zygote
+process. That meant the malware could directly tamper with every
+installed app. Triada also connected to no fewer than 17 command and
+control servers.</p>
+<p>In July 2017, security firm Dr. Web reported that its researchers had
+found Triada <a href="https://news.drweb.com/show/?i=11390&amp;lng=en">built into the
+firmware of several Android devices</a>, including the Leagoo M5 Plus,
+Leagoo M8, Nomu S10, and Nomu S20. The attackers used the backdoor to
+surreptitiously download and install modules. Because the backdoor was
+embedded into one of the OS libraries and located in the system section,
+it couldn't be deleted using standard methods, the report said.</p></blockquote></p>
+<p>This malicious Android firmware was primarily adware and focused on
+allowing code to be injected into the system user interface to display
+advertisements, the downloading and installation of applications of the
+attackers' choice, and encrypted communications with command and control
+servers. Nevertheless, it further demonstrates the weaknesses that exist
+in the global supply chain for various devices.</p>
+<p>These attacks are concerning because they reveal adversaries are
+prepared to undermine the security underpinning the entire supply chain
+for their purposes, whether it is manufactured/assembled components or
+via breaches of trusted vendor software channels. As most users of
+specific computer/device hardware trust the manufacturing company, this
+is a very difficult problem to address, particularly since it can remain
+undiscovered for a long period.</p>
+<p>In addition, this mode of attack suggests that overall improvements
+in computing security are forcing sophisticated attackers to "raise
+their game," because in general they choose the path of least resistance
+when attempting to infiltrate the systems of targets.
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p>For further reading on this topic, see:</p>
+<ul>
+<li><a href="https://www.wired.com/2013/03/flame-windows-update-copycat/">Flame
+spy tool</a></li>
+<li><a href="https://www.microsoft.com/security/blog/2017/05/04/windows-defender-atp-thwarts-operation-wilysupply-software-supply-chain-cyberattack/">Operation
+WilySupply</a></li>
+<li><a href="Malware_and_Firmware_Trojans.html#Watering_Hole_Attacks">Watering Hole Attacks</a></li>
+<li><a href="https://www.vice.com/en/article/d3y48v/what-is-a-supply-chain-attack">What
+is a Supply Chain Attack?</a></li>
+</ul>
+<h2 id="Processor_Microcode_Updates">Processor Microcode Updates</h2>
+<p>One recent example of a firmware vulnerability is the processor
+microcode update for modern chips to address <a href="https://security-tracker.debian.org/tracker/CVE-2018-3620">speculative</a>
+<a href="https://security-tracker.debian.org/tracker/CVE-2018-3646">execution
+flaws</a>. The <a href="https://www.debian.org/security/2018/dsa-4279">Debian package</a>
+is non-freedom software, therefore only available in the Debian
+"<code>nonfree</code>" repository. Kicksecure recommends to <a href="Avoid_nonfreedom_software.html">avoid nonfreedom
+software</a> but in this case idealism would result in insecurity.</p>
+<p>Platform specific notice:</p>
+<ul>
+<li><strong>A)</strong> <u>Host operating system:</u> Processor
+microcode updates <u>should</u> always be applied <u>on the host
+operating system</u> (for processors by Intel or AMD)
+<sup class="reference"><a href="#cite_note-16">[16]</a></sup>. <sup class="reference"><a href="#cite_note-17">[17]</a></sup></li>
+<li><strong>B)</strong> <u>VMs:</u> It is unnecessary to apply these
+updates in standard Kicksecure and <a href="Qubes.html">Kicksecure inside Qubes</a> guest VMs, as they do not
+have the ability to alter the microcode.</li>
+</ul>
+<h3 id="Microcode_Package_Check">Microcode Package Check</h3>
+<p>In the following checks, the package is not installed if there is no
+output.</p>
+<p>To check whether the microcode package is installed.</p>
+<h4 id="Debian_based">Debian based</h4>
+<p>On the host. Run.</p>
+<p><span class="code-select">dpkg -l | grep microcode</span></p>
+<h4 id="Qubes">Qubes</h4>
+<p>In <code>dom0</code>. Run.</p>
+<p><span class="code-select">dnf list | grep microcode</span></p>
+<p>The Qubes check should confirm the <code>microcode_ctl.x86_64</code>
+package is already installed. <sup class="reference"><a href="#cite_note-18">[18]</a></sup></p>
+<h3 id="Install_Microcode_Package">Install Microcode Package</h3>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure">Kicksecure</h2>
+</div>
+<div class="tcc-content">
+<p>Installed by default in Kicksecure.</p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="Other_Debian_Based_Distributions">Other Debian Based
+Distributions</h2>
+</div>
+<div class="tcc-content">
+<h4 id="Intel">Intel</h4>
+<div class="info-box ">
+<p>Install package(s) <code>intel-microcode</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>intel-microcode</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+intel-microcode</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>intel-microcode</code>
+is complete.</p>
+</div>
+<h4 id="AMD">AMD</h4>
+<div class="info-box ">
+<p>Install package(s) <code>amd64-microcode</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>amd64-microcode</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+amd64-microcode</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>amd64-microcode</code>
+is complete.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3 id="spectre-meltdown-checker">spectre-meltdown-checker</h3>
+<p>It is possible to check if the system is vulnerable to the <a href="https://arstechnica.com/gadgets/2018/01/meltdown-and-spectre-every-modern-processor-has-unfixable-security-flaws/">Spectre</a>
+and <a href="https://meltdownattack.com/">Meltdown</a> attacks, which
+use flaws in modern chip design to bypass system protections.</p>
+<h4 id="Installation">Installation</h4>
+<div class="info-box ">
+<p>Install package(s) <code>spectre-meltdown-checker</code> following
+these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="About.html">Kicksecure</a>: No special
+notice.</li>
+<li><a href="Qubes.html">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>spectre-meltdown-checker</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+spectre-meltdown-checker</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="Qubes.html#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>spectre-meltdown-checker</code> is complete.</p>
+</div>
+<h4 id="Usage">Usage</h4>
+<p><span class="code-select">sudo spectre-meltdown-checker --paranoid ;
+echo $?</span></p>
+<h3 id="Forum_Discussion">Forum Discussion</h3>
+<p>See: <a href="https://forums.whonix.org/t/whonix-vulerable-due-to-missing-processor-microcode-packages/5739">https://forums.whonix.org/t/whonix-vulerable-due-to-missing-processor-microcode-packages/5739</a></p>
+<h1 id="Firmware_Update_Manager_(fwupd)">Firmware Update Manager
+(fwupd)</h1>
+<h2 id="Introduction_3">Introduction</h2>
+<p><a href="https://github.com/fwupd/fwupd">fwupd</a>: Is a system
+daemon to allow session software to update firmware. Mainly using LVFS
+(Linux Vendor Firmware Service) to deliver firmware updates.</p>
+<p><a href="https://fwupd.org/">LVFS</a>: Is a centralized service where
+hardware vendors upload their firmware updates, which are then
+distributed to Linux systems using fwupd.</p>
+<h3 id="Debian">Debian</h3>
+<h4 id="Installation_2">Installation</h4>
+<div class="info-box ">
+<p>Install package(s) <code>fwupd-signed</code>. Follow steps 1 to
+3.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+<a href="Operating_System_Software_and_Updates.html">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Install the <code>fwupd-signed</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="Install_Software.html#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+fwupd-signed</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>fwupd-signed</code> is
+complete.</p>
+</div>
+<h4 id="Usage_2">Usage</h4>
+<h5 id="List_a_summary_of_the_security_status_for_the_firmware_installed">List
+a summary of the security status for the firmware installed</h5>
+<p><span class="code-select">sudo fwupdmgr security</span></p>
+<h5 id="List_available_firmware_updates">List available firmware
+updates</h5>
+<p><span class="code-select">sudo fwupdmgr get-updates</span></p>
+<h5 id="Install_firmware_updates">Install firmware updates</h5>
+<p><span class="code-select">sudo fwupdmgr update</span></p>
+<h3 id="Qubes_2">Qubes</h3>
+<p>Notes:</p>
+<ul>
+<li>The Update-Qube (appvm) for dom0 (which is most likely
+sys-firewall/sys-net) must have fwupd package installed
+<sup class="reference"><a href="#cite_note-19">[19]</a></sup> (it comes installed by default in full/normal
+template).
+<ul>
+<li>To install it on Fedora minimal template:(A system restart is better
+to be performed after installation)</li>
+</ul></li>
+</ul>
+<p><span class="code-select">dnf install
+--setopt=install_weak_deps=False fwupd-qubes-vm</span></p>
+<ul>
+<li>There is no significant difference in usage between debian commands
+and qubes, just add <code>qubes-</code> to <code>fwupdmgr</code>. This
+is <code>--help</code> output:</li>
+</ul>
+<pre><code>[user@dom0 ~]$ sudo qubes-fwupdmgr --help
+======================================================================
+Usage:
+======================================================================
+    Command:            qubes-fwupdmgr [OPTION...][FLAG..]
+    Example:            qubes-fwupdmgr refresh --whonix --url=&lt;url&gt;
+
+Options:
+======================================================================
+    get-devices:            Get all devices that support firmware updates
+    get-updates:            Get the list of updates for connected hardware
+    refresh:            Refresh metadata from remote server
+    update:             Update chosen device to latest firmware version
+    update-heads:           Updates heads firmware to the latest version (EXPERIMENTAL, not fully supported yet)
+    downgrade:          Downgrade chosen device to chosen firmware version
+    clean:              Delete all cached update files
+
+Flags:
+======================================================================
+    --whonix:           Download firmware updates via Tor
+    --device:           Specify device for heads update (default - x230)
+    --url:              Address of the custom metadata remote server
+
+Help:
+======================================================================
+    -h --help:          Show help options
+
+[user@dom0 ~]$</code></pre>
+<ul>
+<li>At the moment of writing there is not yet Qubes detailed
+documentation about this tool <sup class="reference"><a href="#cite_note-20">[20]</a></sup>.</li>
+</ul>
+<p>Example for command usage:</p>
+<p><span class="code-select">sudo qubes-fwupdmgr get-devices</span></p>
+<p><span class="code-select">sudo qubes-fwupdmgr update</span></p>
+<h2 id="Troubleshoot">Troubleshoot</h2>
+<h3 id="You_are_using_legacy_BIOS">You are using legacy BIOS</h3>
+<pre><code>user@host:~$ sudo fwupdmgr security</code></pre>
+<pre><code>WARNING: UEFI firmware can not be updated in legacy BIOS mode
+See https://github.com/fwupd/fwupd/wiki/PluginFlag:legacy-bios for more information.
+HSI unavailable for hypervisor
+user@host:~$</code></pre>
+<h3 id="Your_UEFI_doesnt_support_this_method_of_update">Your UEFI doesnt
+support this method of update</h3>
+<pre><code>[user@dom0 ~]$ sudo qubes-fwupdmgr refresh</code></pre>
+<pre><code>WARNING: UEFI capsule updates not available or enabled in firmware setup
+See https://github.com/fwupd/fwupd/wiki/PluginFlag:capsules-unsupported for more information.
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2230  100  2230    0     0  50444      0 --:--:-- --:--:-- --:--:-- 50681
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 1216k  100 1216k    0     0  20.0M      0 --:--:-- --:--:-- --:--:-- 20.1M
+Validating directories
+WARNING: UEFI capsule updates not available or enabled in firmware setup
+See https://github.com/fwupd/fwupd/wiki/PluginFlag:capsules-unsupported for more information.
+Successfully refreshed metadata manually
+[user@dom0 ~]$</code></pre>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Malware_and_Firmware_Trojans.html#Firmware_Trojans">Firmware Trojans</a></li>
+<li><a href="Open_Source_Hardware.html">Open Source
+Hardware</a></li>
+</ul>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/Firmware">https://en.wikipedia.org/wiki/Firmware</a></li>
+<li id="cite_note-2"><a href="https://en.wikipedia.org/wiki/Firmware#Computers">https://en.wikipedia.org/wiki/Firmware#Computers</a></li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Firmware#Other_examples">https://en.wikipedia.org/wiki/Firmware#Other_examples</a></li>
+<li id="cite_note-4"><a href="https://www.darkreading.com/intel/raising-the-stakes-when-software-attacks-hardware">https://www.darkreading.com/intel/raising-the-stakes-when-software-attacks-hardware</a></li>
+<li id="cite_note-5"><a href="https://www.fsf.org/campaigns/priority-projects/hardware-firmware-drivers">https://www.fsf.org/campaigns/priority-projects/hardware-firmware-drivers</a></li>
+<li id="cite_note-6"><a href="https://en.wikipedia.org/wiki/Firmware#Flashing">https://en.wikipedia.org/wiki/Firmware#Flashing</a></li>
+<li id="cite_note-7">Also see this debian-security mailing list thread: <a href="https://lists.debian.org/debian-security/2013/09/msg00027.html">How
+secure is an installation with no non-free packages?</a></li>
+<li id="cite_note-8"><a href="https://www.darkreading.com/intel/raising-the-stakes-when-software-attacks-hardware">https://www.darkreading.com/intel/raising-the-stakes-when-software-attacks-hardware</a></li>
+<li id="cite_note-9">Mark Shuttleworth, founder of the Ubuntu Linux distribution, has
+described <a href="https://web.archive.org/web/20230323204330/https://www.markshuttleworth.com/archives/1332">proprietary
+firmware as a security risk</a>, stating "firmware on your device is the
+NSA's best friend" and calling firmware "a trojan horse of monumental
+proportions".</li>
+<li id="cite_note-10"><a href="https://www.vice.com/en/article/d3y48v/what-is-a-supply-chain-attack">https://www.vice.com/en/article/d3y48v/what-is-a-supply-chain-attack</a></li>
+<li id="cite_note-11"><a href="https://securelist.com/operation-shadowhammer/89992/">https://securelist.com/operation-shadowhammer/89992/</a></li>
+<li id="cite_note-12"><a href="https://motherboard.vice.com/en_us/article/pan9wn/hackers-hijacked-asus-software-updates-to-install-backdoors-on-thousands-of-computers">https://motherboard.vice.com/en_us/article/pan9wn/hackers-hijacked-asus-software-updates-to-install-backdoors-on-thousands-of-computers</a></li>
+<li id="cite_note-13">Reinforcing the notion that digital certificates are an imperfect
+security mechanism.</li>
+<li id="cite_note-14">MD5 hash values were hard-coded and found to correspond to unique
+MAC addresses for network adapter cards. This indicates the attackers
+knew the MAC addresses of their targets in advance.</li>
+<li id="cite_note-15"><a href="https://arstechnica.com/information-technology/2019/06/google-confirms-2017-supply-chain-attack-that-sneaked-backdoor-on-android-devices/">https://arstechnica.com/information-technology/2019/06/google-confirms-2017-supply-chain-attack-that-sneaked-backdoor-on-android-devices/</a></li>
+<li id="cite_note-16">ARM and POWER found to be as well affected, but less than what found
+in Intel and AMD.</li>
+<li id="cite_note-17">See: <a href="https://forums.whonix.org/t/whonix-vulerable-due-to-missing-processor-microcode-packages/5739">https://forums.whonix.org/t/whonix-vulerable-due-to-missing-processor-microcode-packages/5739</a></li>
+<li id="cite_note-18">This package is installed by default in Qubes to automatically
+protect users against hardware threats.</li>
+<li id="cite_note-19"><a href="https://github.com/QubesOS/qubes-issues/issues/9214#issuecomment-2105430931">https://github.com/QubesOS/qubes-issues/issues/9214#issuecomment-2105430931</a></li>
+<li id="cite_note-20"><a href="https://github.com/QubesOS/qubes-issues/issues/8813">https://github.com/QubesOS/qubes-issues/issues/8813</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

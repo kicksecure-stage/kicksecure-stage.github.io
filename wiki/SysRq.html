@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>SysRq</title>
+<meta name="description" content="HowTo: Use SysRq for System Recovery and to prevent Malware from Sniffing the Root Password. The SysRq function in Linux is equivalent to the well-known Control-Alt-Delete (Ctrl+Alt+Del) function in Windows.">
+<meta property="og:description" content="HowTo: Use SysRq for System Recovery and to prevent Malware from Sniffing the Root Password. The SysRq function in Linux is equivalent to the well-known Control-Alt-Delete (Ctrl+Alt+Del) function in Windows.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/SysRq.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/SysRq.html">
+<meta property="og:title" content="System Recovery using SysRq Key">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Sysrq12312d21.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#System_Recovery">System Recovery</a></li><li class="toc-l2"><a href="#Malware">Malware</a></li><li class="toc-l2"><a href="#Qubes">Qubes</a></li><li class="toc-l2"><a href="#Security_Discussion">Security Discussion</a></li><li class="toc-l2"><a href="#Virtual_Console_Handling">Virtual Console Handling</a></li><li class="toc-l2"><a href="#Attacks_from_Lesser_Adversaries_with_Physical_Access">Attacks
+from Lesser Adversaries with Physical Access</a></li><li class="toc-l2"><a href="#Development_Discussion">Development Discussion</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Disaster_Recovery.html" title="Disaster Recovery"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Disaster
+Recovery</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Broken_Boot.html" title="Broken Boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Broken
+Boot</span></a><span class="info"><span class="prev">Previous page:
+Disaster Recovery</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Broken
+Boot</span></span></span>System Recovery using SysRq Key</p>
+</div>
+<p><img src="../media/Sysrq12312d21.jpg.webp" alt="Sysrq12312d21.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The SysRq function in Linux is equivalent to the well-known
+Control-Alt-Delete
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Del</i></span>
+function in Windows. This page documents how to use SysRq for system
+recovery and to prevent malware from sniffing the root password.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Use_Cases">Use Cases</h1>
+<p>The SysRq (a.k.a <a href="https://www.hashbangcode.com/article/raising-skinny-elephants-utterly-boring">Raising
+Skinny Elephants Is Utterly Boring</a>) or "Security Keys" (<a href="https://en.wikipedia.org/wiki/Secure_attention_key">SAK</a>)
+function in Linux is equivalent to the well-known
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Del</i></span>
+(Control-Alt-Delete) function in Windows, otherwise referred to as the
+"three-finger salute". Debian documentation notes that SysRq
+combinations are useful for bypassing bad situations and gaining usable
+keyboard access without stopping the system. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> In
+effect this provides insurance against system malfunctions due to
+support compiled in the Linux kernel -- pressing SysRq followed by the
+required key for a specific command "rescues" the system.</p>
+<p>SysRq is handled directly by the kernel, not by (a)getty, systemd, or
+Wayland (formerly X11).</p>
+<p><blockquote><p>Call oom_kill, which kills a process to alleviate an OOM
+condition</p></blockquote></p>
+<p>This is more effective than
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">C</i></span>
+or <code>kill -s sigkill</code>. When the whole machine appears frozen,
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">C</i></span>
+often will not have any effect. SysRq has a higher chance of being
+processed by the kernel, except if the kernel itself is locked up.</p>
+<h2 id="System_Recovery">System Recovery</h2>
+<p><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Wikipedia</a>
+notes: <blockquote><p>The magic SysRq key is a key combination understood by the <a href="https://en.wikipedia.org/wiki/Linux_kernel">Linux kernel</a>,
+which allows the user to perform various low-level commands regardless
+of the system's state. It is often used to recover from <a href="https://en.wikipedia.org/wiki/Freeze_(computing)">freezes</a>, or
+to <a href="https://en.wikipedia.org/wiki/Booting">reboot</a> a computer
+without corrupting the <a href="https://en.wikipedia.org/wiki/Filesystem">filesystem</a>. Its
+effect is similar to the computer's hardware <a href="https://en.wikipedia.org/wiki/Reset_button">reset button</a> (or
+power switch) but with many more options and much more control.</p>
+<p>This key combination provides access to powerful features for
+software development and disaster recovery. In this sense, it can be
+considered a form of <a href="https://en.wikipedia.org/wiki/Escape_sequence">escape
+sequence</a>. Principal among the offered commands are means to forcibly
+unmount file systems, kill processes, recover keyboard state, and write
+unwritten data to disk. With respect to these tasks, this feature serves
+as a tool of last resort.</p>
+<p>The magic SysRq key cannot work under certain conditions, such as a
+<a href="https://en.wikipedia.org/wiki/Kernel_panic">kernel panic</a> or
+a hardware failure preventing the kernel from running properly.</p></blockquote></p>
+<p>In the Kicksecure case, magic SysRq keys are useful when the guest is
+unresponsive, especially in cases where VMs are running headless and a
+GUI console is not available for forcing them to shut off on the
+host.</p>
+<h2 id="Malware">Malware</h2>
+<p>SysRq can be used to <a href="Login_spoofing.html">defeat
+login spoofing</a>, i.e. malware masquerading as a login prompt and
+stealing passwords.</p>
+<p><a href="https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html#okay-so-what-can-i-use-them-for">Quote
+from Linux Kernel Documentation</a>:</p>
+<p><blockquote><p>SAK (Secure Access Key) is useful when you want to be sure there is
+no trojan program running at the console which could grab your password
+when you try to login. It will kill all programs on the given console,
+thus letting you make sure that the login prompt you see is actually the
+one from init, not some trojan program.</p></blockquote></p>
+<h1 id="Kicksecure_Default_SysRq_Configuration">Kicksecure Default SysRq
+Configuration</h1>
+<p>SysRq is disabled by default in Kicksecure for security reasons. This
+has been discussed in pull request <a href="https://github.com/Kicksecure/security-misc/pull/150">Disable
+SysRq by default</a>.</p>
+<p>This is implemented in the package <em>security-misc</em> in the file
+<code>/usr/lib/sysctl.d/990-security-misc.conf</code>.</p>
+<h1 id="Enable_SysRq">Enable SysRq</h1>
+<p>Note: SysRq is disabled in Kicksecure by default for security
+reasons, see: <a href="#Kicksecure_Default_SysRq_Configuration">Kicksecure Default SysRq Configuration</a>.</p>
+<p>SysRq can be enabled temporarily or permanently.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<strong>To temporarily enable SysRq, run:</strong></p>
+<p><span class="code-select">echo "1" | sudo tee
+/proc/sys/kernel/sysrq</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<strong>To permanently enable SysRq, run:</strong></p>
+<p><span class="code-select">echo "kernel.sysrq = 1" | sudo tee -a
+/etc/sysctl.d/999_sysrq.conf</span></p>
+<p>After completing the temporary or permanent change, check that SysRq
+has been properly set:</p>
+<p><span class="code-select">cat /proc/sys/kernel/sysrq</span></p>
+<p>Expected output:</p>
+<pre><code>1</code></pre>
+<h1 id="Overview_of_Commands">Overview of Commands</h1>
+<p><blockquote><p>SysRq : HELP : loglevel(0-9) reboot(b) crash(c)
+terminate-all-tasks(e) memory-full-oom-kill(f) kill-all-tasks(i)
+thaw-filesystems(j) sak(k) show-backtrace-all-active-cpus(l)
+show-memory-usage(m) nice-all-RT-tasks(n) poweroff(o) show-registers(p)
+show-all-timers(q) unraw(r) sync(s) show-task-states(t) unmount(u)
+force-fb(V) show-blocked-tasks(w) dump-ftrace-buffer(z)</p></blockquote></p>
+<ul>
+<li><code>loglevel(0-9)</code></li>
+<li><code>reboot(b)</code></li>
+<li><code>crash(c)</code></li>
+<li><code>terminate-all-tasks(e)</code></li>
+<li><code>memory-full-oom-kill(f)</code></li>
+<li><code>kill-all-tasks(i)</code></li>
+<li><code>thaw-filesystems(j)</code></li>
+<li><code>sak(k)</code></li>
+<li><code>show-backtrace-all-active-cpus(l)</code></li>
+<li><code>show-memory-usage(m)</code></li>
+<li><code>nice-all-RT-tasks(n)</code></li>
+<li><code>poweroff(o)</code></li>
+<li><code>show-registers(p)</code></li>
+<li><code>show-all-timers(q)</code></li>
+<li><code>unraw(r)</code></li>
+<li><code>sync(s)</code></li>
+<li><code>show-task-states(t)</code></li>
+<li><code>unmount(u)</code></li>
+<li><code>force-fb(V)</code></li>
+<li><code>show-blocked-tasks(w)</code></li>
+<li><code>dump-ftrace-buffer(z)</code></li>
+</ul>
+<h1 id="Usage">Usage</h1>
+<p>SysRq can also be used by writing to
+<code>/proc/sysrq-trigger</code>.</p>
+<p><span class="code-select">sudo -u root bash</span></p>
+<p><span class="code-select">echo h &gt; /proc/sysrq-trigger</span></p>
+<h2 id="Qubes">Qubes</h2>
+<p>See: <a href="https://github.com/QubesOS/qubes-issues/issues/5492">add Qubes
+host key to allow switching virtual console
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F1</i></span>
+for SysRq for HVM</a>.</p>
+<p><span class="manually-placed-anchor " id="security"></span></p>
+<h1 id="Development">Development</h1>
+<ul>
+<li><a href="https://superuser.com/questions/375816/how-to-check-which-sysrq-functions-are-enabled">How
+to check which SysRq functions are enabled?</a></li>
+<li>sysctl is set to <code>kernel.sysrq=0</code> at time of writing.
+<ul>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/60">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/sysctl.d/990-security-misc.conf%23security-misc-shared">Kicksecure/security-misc</a></span></li>
+</ul></li>
+<li><a href="https://fedoraproject.org/wiki/QA/Sysrq">Fedora wiki:
+QA/Sysrq</a></li>
+</ul>
+<h2 id="Security_Discussion">Security Discussion</h2>
+<p>Several security concerns and unanswered questions about SysRq
+require further investigation.</p>
+<hr />
+<p><strong>Possible privilege escalation</strong></p>
+<p><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/20">SysRq
+security concern raised by madaidan</a>:</p>
+<p><blockquote><p>Being able to run a bunch of commands that would normally require
+root (such as killing every process, remounting all filesystems
+read-only, etc.) as an unprivileged user doesn't look very good. Sounds
+like a possible privilege escalation hole and/or a feature that can
+easily be abused.</p></blockquote></p>
+<p>On the other hand,
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">SysRq</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">K</i></span>
+is also dubbed the Secure Access Key. Therefore, SysRq is not completely
+disabled without further consideration. This raises the following
+questions:</p>
+<ul>
+<li>Can a user only kill their own processes with SysRq, or any
+process?</li>
+<li>What if an unprivileged user kills a very important process that is
+usually only accessible by root?</li>
+</ul>
+<hr />
+<p><strong>Screensavers</strong></p>
+<p><a href="https://www.jwz.org/xscreensaver/faq.html">Quote from
+screensaver FAQ</a>:</p>
+<p><blockquote><p>Backdoor #3:
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">SysRq</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F</i></span></p>
+<p><code>   This is the Linux kernel "OOM-killer" keystroke. It shoots down random long-running programs of its choosing, and so might target and kill xscreensaver, and there's no way for xscreensaver to protect itself from that. You can disable it globally with: sudo 'echo 176 &gt; /proc/sys/kernel/sysrq'</code></p>
+<p><code>   (As of version 5.41, if xscreensaver is setuid, and you are running Linux 2.6.37 or newer, xscreensaver attempts to request that the kernel's out-of-memory assassin not randomly unlock the screen on you, but it's only a request.)</code></p></blockquote></p>
+<p>Related: <a href="https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128">Screen
+Locker (In)Security - Can we disable these at least 4 backdoors?</a></p>
+<hr />
+<p><strong>Keyboard events</strong></p>
+<p>Quote <a href="https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html">Linux
+Magic System Request Key Hacks</a>:</p>
+<p><blockquote><p>Note that the value of <code>/proc/sys/kernel/sysrq</code> influences
+only the invocation via a keyboard.</p></blockquote></p>
+<p><blockquote><p>Invocation of any operation via <code>/proc/sysrq-trigger</code> is
+always allowed (by a user with admin privileges).</p></blockquote></p>
+<p>This raises the question:</p>
+<ul>
+<li>Could a compromised non-root user generate the keyboard event and
+thereby use SysRq? <a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/22">Quote</a>:</li>
+</ul>
+<p><blockquote><p>Things such as xdotool won't work as the SysRq key isn't handled by
+Xorg, and things like /dev/uinput or /proc/sysrq-trigger require root
+access already.</p></blockquote></p>
+<hr />
+<p><strong>Remote SysRq use</strong></p>
+<p>SysRq can be triggered remotely, see: <a href="https://github.com/xairy/unlockdown">unlockdown</a>.</p>
+<h2 id="Virtual_Console_Handling">Virtual Console Handling</h2>
+<p>It is unclear whether control is reserved to users performing
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F1</i></span>,
+see:</p>
+<ul>
+<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/25">Not
+(a)getty.</a></li>
+<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26</a></li>
+<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38</a></li>
+</ul>
+<h2 id="Attacks_from_Lesser_Adversaries_with_Physical_Access">Attacks
+from Lesser Adversaries with Physical Access</h2>
+<p>See: <a href="https://forums.whonix.org/t/should-lesser-adversaries-with-physical-access-be-part-of-the-threat-model-of-whonix-whonix-host-kicksecure/7997">Should
+(lesser) adversaries with physical access be part of the threat model of
+Whonix / Whonix-Host / Kicksecure?</a></p>
+<h2 id="Development_Discussion">Development Discussion</h2>
+<p>Forum development discussion: <a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079">SysRq
+(Magic SysRq key)</a></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Login_spoofing.html">Login Spoofing</a></li>
+<li><a href="https://www.whonix.org/wiki/KVM#Magic_SysRq_Keys">KVM
+SysRq</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Wikipedia:
+Magic SysRq key</a></li>
+</ul>
+<h1 id="Attribution">Attribution</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="About.html">Kicksecure</a>
+is an <a href="About.html#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/restrict-sysrq.en.html">Restricting
+the use of the Magic SysRq
+key</a><img src="../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key">https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Disaster_Recovery.html" title="Disaster Recovery"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Disaster
+Recovery</span></a><a class="index internal" href="Documentation.html" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Broken_Boot.html" title="Broken Boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Broken
+Boot</span></a><span class="info"><span class="prev">Previous page:
+Disaster Recovery</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Broken
+Boot</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

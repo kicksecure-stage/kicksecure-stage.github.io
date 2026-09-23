@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/systemd-resolved</title>
+<meta name="description" content="systemd-resolved: DNS stub resolver and caching service in systemd. Notes on DNSSEC behavior, security considerations, and known issues relevant to Kicksecure.">
+<meta property="og:description" content="systemd-resolved: DNS stub resolver and caching service in systemd. Notes on DNSSEC behavior, security considerations, and known issues relevant to Kicksecure.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/systemd-resolved.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/systemd-resolved.html">
+<meta property="og:title" content="Dev/systemd-resolved">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>systemd-resolved</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Networking.html">Networking</a></li>
+<li><a href="../DNS.html">DNS</a></li>
+<li><a href="../DNS_Security.html">DNS Security</a></li>
+<li><a href="systemd-resolved.html">Dev/systemd-resolved</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><code>systemd-resolved</code> is systemd's DNS stub resolver and
+caching service. This page documents DNSSEC-related behavior, security
+considerations, and selected upstream discussions relevant to
+Kicksecure.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>DNS resolution is security critical. If an attacker can influence DNS
+replies, they may be able to redirect traffic, weaken transport security
+assumptions, or selectively censor access.</p>
+<p>This page documents <code>systemd-resolved</code> behavior and
+upstream discussions relevant to DNSSEC and related security
+expectations.</p>
+<p><a href="https://github.com/systemd/systemd/issues/28086">local
+DNSSEC validation</a>: yes</p>
+<h1 id="systemd-resolved_Insecurity">systemd-resolved Insecurity</h1>
+<div class="intro-like">
+<p>Due to the history described in <a href="systemd-resolved.html#Handling_of_Bug_-_systemd-resolved_DNSSEC_validation_can_be_bypassed_by_MITM">Handling of Bug - systemd-resolved DNSSEC validation
+can be bypassed by MITM</a>, <code>systemd-resolved</code> is considered
+unsuitable for Kicksecure.</p>
+</div>
+<h1 id="systemd-resolved_DNSSEC_Development_Priority">systemd-resolved
+DNSSEC Development Priority</h1>
+<div class="intro-like">
+<p>DNSSEC is a low priority for systemd-resolved developers.</p>
+</div>
+<p><blockquote><p>But yes, DNSSEC issues are not a high priority for us at the moment.
+Other DNS issues are more relevant.<span class="blockquote-context">July
+2023: <a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1634810897">Lennart
+Poettering, systemd developer</a></span></p></blockquote></p>
+<h1 id="Handling_of_Bug_-_systemd-resolved_DNSSEC_validation_can_be_bypassed_by_MITM">Handling
+of Bug - systemd-resolved DNSSEC validation can be bypassed by MITM</h1>
+<h2 id="Summary">Summary</h2>
+<div class="intro-like">
+<p>It took the systemd developers at least 1 year to fix the
+DNSSEC-related security issue <a href="https://github.com/systemd/systemd/issues/25676">resolved DNSSEC
+validation can be bypassed by MITM</a> in
+<code>systemd-resolved</code>.</p>
+</div>
+<ul>
+<li><u>Timeline:</u> Privately reported in October 2022; publicly
+reported in December 2022; fixed upstream in December 2023.</li>
+<li><u>CVE mention and backports:</u> CVE-2023-7008 was mentioned in the
+public issue discussion on December 22, 2023; stable backport updates
+were posted on December 24, 2023.</li>
+<li><u>References:</u> <a href="https://github.com/systemd/systemd/issues/25676">Upstream bug
+report</a> | <a href="https://access.redhat.com/security/cve/cve-2023-7008">CVE page</a>
+| <a href="https://bugzilla.redhat.com/show_bug.cgi?id=2222672">Downstream
+tracking</a></li>
+<li><u>Status:</u> Fixed.</li>
+</ul>
+<p>A closely related (or even duplicate?) security issue <a href="https://github.com/systemd/systemd/issues/15158">systemd-resolved:
+DNSSEC doesn't prevent MITM</a> had been reported already in 2020.</p>
+<h2 id="Details">Details</h2>
+<p>The following are verbatim excerpts from the upstream issue thread
+and related references, presented to document the timeline and
+statements made by participants.</p>
+<p><u>October 2022 to November 2022 (attempted private disclosure, as
+described by the reporter):</u></p>
+<p><blockquote><p>Please note that I have repeatedly tried to report this issue to the
+systemd-security mailing list. I sent a mail with the details and
+reproduction steps to the systemd-security address on Oct 6th, Oct 14th
+and Oct 22nd. I first received a reply on Oct 24th from Lennart
+Poettering, asking for some basic system information, which I provided
+on the same day. Then I received no further reply, so I sent the report
+one more time to systemd-security on Nov 7th. The next day Poettering
+replied to my previous mail, asking for a debug log, but not directly
+acknowledging the issue. I sent debug logs on Nov 10th and haven't heard
+back from anyone since then.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676">https://github.com/systemd/systemd/issues/25676</a></span></p></blockquote></p>
+<p><u>December 8, 2022 (issue opened):</u></p>
+<p><blockquote><p>opened on Dec 8, 2022<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676">https://github.com/systemd/systemd/issues/25676</a></span></p></blockquote></p>
+<p><u>July 12, 2023 (third-party confirmation in-thread):</u></p>
+<p><blockquote><p>Yes, I confirm this is a serious bug. It allows downgrading to
+unsigned responses, which are accepted by resolved just fine. Anyone who
+just strips signatures can forge anything they
+want.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1632289169">https://github.com/systemd/systemd/issues/25676#issuecomment-1632289169</a></span></p></blockquote></p>
+<p><u>July 13, 2023 (upstream maintainer statement about prioritization
+and status):</u></p>
+<p><blockquote><p>The DNSSEC support in resolved is off by default for a reason, and
+it's not complete.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1634810897">Lennart
+Poettering, systemd developer</a></span></p></blockquote></p>
+<p><u>July 13, 2023 (upstream maintainer statement about
+prioritization):</u></p>
+<p><blockquote><p>But yes, DNSSEC issues are not a high priority for us at the moment.
+Other DNS issues are more relevant.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1634810897">Lennart
+Poettering, systemd developer</a></span></p></blockquote></p>
+<p><u>December 1, 2023 (status inquiry in-thread):</u></p>
+<p><blockquote><p>any progress fixing this issue? At least some candidate
+fixes?<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1835842530">https://github.com/systemd/systemd/issues/25676#issuecomment-1835842530</a></span></p></blockquote></p>
+<p><u>December 20, 2023 (fix work referenced in-thread):</u></p>
+<p><blockquote><p>resolved: actually check authenticated flag of SOA
+transaction<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1835842530">https://github.com/systemd/systemd/issues/25676#issuecomment-1835842530</a></span></p></blockquote> <a href="https://github.com/systemd/systemd/pull/30549">systemd pull
+request #30549</a></p>
+<p><u>December 21, 2023 (issue closed as completed):</u></p>
+<p><blockquote><p>closed this as completed in <a href="https://github.com/systemd/systemd/pull/30549">#30549</a> on Dec
+21, 2023<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676">https://github.com/systemd/systemd/issues/25676</a></span></p></blockquote></p>
+<p><u>December 22, 2023 (downstream CVE triage noted in-thread):</u></p>
+<p><blockquote><p>Doing some CVE triage in another downstream distribution, I noticed
+<a href="https://bugzilla.redhat.com/show_bug.cgi?id=2222672">https://bugzilla.redhat.com/show_bug.cgi?id=2222672</a>
+which has CVE-2023-7008 and seem to relate to this
+problem.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1867335597">https://github.com/systemd/systemd/issues/25676#issuecomment-1867335597</a></span></p></blockquote></p>
+<p><u>December 22, 2023 (CVE request attribution, as stated
+in-thread):</u></p>
+<p><blockquote><p>I did, I requested a review by Red Hat security response
+team.<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1867901065">https://github.com/systemd/systemd/issues/25676#issuecomment-1867901065</a></span></p></blockquote></p>
+<p><u>December 22, 2023 (reporter statement about CVE request):</u></p>
+<p><blockquote><p>(I did however not request this
+CVE.)<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1867564181">https://github.com/systemd/systemd/issues/25676#issuecomment-1867564181</a></span></p></blockquote></p>
+<p><u>December 24, 2023 (stable backports listed in-thread):</u></p>
+<p><blockquote><p>Ok the following backported commits with associated stable tags have
+been pushed:<span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1868497102">@bluca,
+Luca Boccassi, systemd developer</a></span></p></blockquote></p>
+<p><blockquote><p>FWIW this issue has been known since 2020: <a href="https://github.com/systemd/systemd/issues/15158">#15158</a><span class="blockquote-context"><a href="https://github.com/systemd/systemd/issues/25676#issuecomment-1633308547">https://github.com/systemd/systemd/issues/25676#issuecomment-1633308547</a></span></p></blockquote></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

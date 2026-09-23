@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Disable TCP and ICMP Timestamps</title>
+<meta name="description" content="Disabling TCP and ICMP Timestamps for Better Security and Privacy">
+<meta property="og:description" content="Disabling TCP and ICMP Timestamps for Better Security and Privacy">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Disable_TCP_and_ICMP_Timestamps.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Disable_TCP_and_ICMP_Timestamps.html">
+<meta property="og:title" content="Disable TCP and ICMP Timestamps">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Timestamps.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l2"><a href="#Qubes">Qubes</a></li><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Kicksecure_2">Kicksecure</a></li><li class="toc-l2"><a href="#Qubes_2">Qubes</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Timestamps.jpg.webp" alt="Timestamps.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Disabling TCP and ICMP Timestamps for Better Security and Privacy</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Disable_TCP_Timestamps">Disable TCP Timestamps</h1>
+<h2 id="Introduction">Introduction</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<a href="https://tools.ietf.org/html/rfc1323">TCP timestamps</a> provide
+protection against <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_timestamps">wrapped
+sequence numbers</a>.</p>
+</div>
+<p>The downside of TCP timestamps is adversaries can remotely calculate
+the system uptime and boot time of the machine and the host's clock down
+to millisecond precision. These calculated uptimes and boot times can
+also help to detect hidden network-enabled operating systems, as well as
+link spoofed IP and MAC addresses together and more. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>To prevent this information leaking to an adversary, it is
+recommended to disable TCP timestamps on any operating systems in use.
+The less information available to attackers, the better the
+security.</p>
+<h2 id="Kicksecure">Kicksecure</h2>
+<p>Disabled in Kicksecure by default. If using Kicksecure as a host
+operating system, there is nothing to do. Otherwise, see rest of this
+page.</p>
+<p><span class="manually-placed-anchor " id="Linux_or_Qubes"></span></p>
+<h2 id="Qubes">Qubes</h2>
+<p>TCP timestamps are disabled by default in Qubes R3.1 and above.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<h1 id="Disable_ICMP_Timestamps">Disable ICMP Timestamps</h1>
+<h2 id="Introduction_2">Introduction</h2>
+<p>The Internet Control Message Protocol (ICMP) is used by network
+devices, including routers, to send operational information and error
+messages such as whether a service is available or if a host/router
+cannot be reached. Unlike TCP and UDP, it is a network level, not
+transport layer protocol. Commonly used network utilities are based on
+ICMP messages, such as <em>traceroute</em> and <em>ping</em>.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>The ICMP protocol includes timestamps for time synchronization, with
+the originating timestamp being set to the time (in milliseconds since
+midnight) since the sender last touched the packet. A timestamp reply is
+also generated, consisting of the originating timestamp (sent by the
+sender) as well as a "receive timestamp", which captures when the
+timestamp was received and a reply sent. ICMP sometimes used to give
+further info and advancing some attacks for e.g check <a href="https://www.bleepingcomputer.com/news/security/bpfdoor-stealthy-linux-malware-bypasses-firewalls-for-remote-access/">BPFdoor</a>.</p>
+<h2 id="Kicksecure_2">Kicksecure</h2>
+<p>Disabled in Kicksecure by default. If using Kicksecure as a host
+operating system, there is nothing to do. Otherwise, see rest of this
+chapter.</p>
+<h2 id="Qubes_2">Qubes</h2>
+<p>ICMP timestamps are disabled by default in Qubes R3.1 and above.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://web.archive.org/web/20180206125839/https://forensicswiki.org/wiki/TCP_timestamps">https://web.archive.org/web/20180206125839/https://forensicswiki.org/wiki/TCP_timestamps</a></li>
+<li id="cite_note-2">Quote <a href="https://factorable.net/weakkeys12.extended.pdf">factorable.net/weakkeys12.extended.pdf</a>
+<blockquote><p>It may also be predictable based on system uptime, which is visible
+to remote attackers via TCP timestamps.</p></blockquote></li>
+<li id="cite_note-3"><a href="https://github.com/QubesOS/qubes-issues/issues/1344">https://github.com/QubesOS/qubes-issues/issues/1344</a></li>
+<li id="cite_note-4"><a href="https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol#Timestamp">https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol#Timestamp</a></li>
+<li id="cite_note-5"><a href="https://github.com/QubesOS/qubes-issues/issues/1346">https://github.com/QubesOS/qubes-issues/issues/1346</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

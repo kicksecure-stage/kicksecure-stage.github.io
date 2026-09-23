@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Other Desktop Environments</title>
+<meta name="description" content="How to use Other Desktop Environments other than LXQt with Kicksecure. Current situation. Risks. Future. (Gnome, KDE, Xfce, MATE, ...)">
+<meta property="og:description" content="How to use Other Desktop Environments other than LXQt with Kicksecure. Current situation. Risks. Future. (Gnome, KDE, Xfce, MATE, ...)">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Other_Desktop_Environments.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Other_Desktop_Environments.html">
+<meta property="og:title" content="Other Desktop Environments">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Organize-27344_640.png">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Other_Operating_Systems.html">Other Operating
+Systems</a></li>
+<li><a href="Other_Desktop_Environments.html">Other Desktop
+Environments</a></li>
+</ul>
+</div>
+<p><img src="../media/Organize-27344_640.png.webp" width="200" alt="Organize-27344_640.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>How to use Other Desktop Environments other than LXQt with
+Kicksecure. Current situation. Risks. Future. (Gnome, KDE, Xfce, MATE,
+...)</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Current_Situation">Current Situation</h1>
+<p>As of version <code>18</code>, the <a href="Download.html">Downloadable</a> Kicksecure versions are available with
+either:</p>
+<ul>
+<li><strong>A)</strong> <u><a href="VirtualBox.html#GUI"><u>g</u>raphical <u>u</u>ser <u>i</u>nterface
+(GUI)</a>:</u> desktop environment (<strong>LXQt</strong>);
+<u>OR</u></li>
+<li><strong>B)</strong> <u><a href="VirtualBox.html#CLI"><u>c</u>ommand <u>l</u>ine <u>i</u>nterface
+(CLI)</a>:</u> text terminal only (no desktop environment).</li>
+</ul>
+<p><s>However, other desktop environments like Gnome, KDE, Xfce, LXDE
+and so on can be manually installed.</s></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+The default login manager in Kicksecure is <code>greetd</code> +
+<code>wlgreet</code>. <code>wlgreet</code> reads a configuration file to
+determine what desktop environment to start, it does not permit
+selecting an alternate desktop environment from the login prompt. Users
+who want to use a non-default desktop may wish to switch to a different
+display manager, such as <code>LightDM</code>.</p>
+</div>
+<h1 id="Risks">Risks</h1>
+<ul>
+<li><u>Unsupported configuration:</u> When installing your own desktop
+environment such as for example GNOME, you're on your own. This is <a href="Unsupported.html">unsupported</a>.</li>
+<li><u>Recommendation for advanced users:</u> Start with Kicksecure CLI,
+the text terminal-only version of Kicksecure, which comes without a
+desktop environment installed by default, and install a desktop
+environment of your choice there. This is much better than starting with
+Kicksecure LXQt and then uninstalling LXQt to install another desktop
+environment.</li>
+<li><u>Additional background services:</u> Other desktop environments
+install additional background services. The Kicksecure project hasn't
+researched the security/privacy implications of having these installed.
+For example:
+<ul>
+<li>GNOME automatically installs <a href="https://web.archive.org/web/20160413150914/https://en.wikipedia.org/wiki/GeoClue">GeoClue</a>.
+(<a href="Systemcheck.html">systemcheck</a> warns if that
+very package is installed, but still...)</li>
+<li>See also <a href="Dev/GNOME.html#Security">Dev/GNOME
+wiki page, chapter Security</a>.</li>
+</ul></li>
+<li><u>Unvetted default applications:</u> Other desktop environments
+also ship a different selection of default applications that have not
+necessarily been checked for security/privacy. Installing your own
+desktop environment may result in software packages being installed that
+are not well hardened or chosen with security in mind.</li>
+<li><u>Potentially broken functionality:</u>
+<ul>
+<li><u>user-sysmaint-split integration issues:</u> This is only
+applicable to users of <a href="Sysmaint.html">user-sysmaint-split</a>. See also <a href="Sysmaint.html#Default_Installation_Status">user-sysmaint-split, Default Installation Status</a>.
+It does not apply to users of <a href="Unrestricted_admin_mode.html">unrestricted admin mode</a>. Only the default desktop
+environment (or rather login managers) is tested with
+user-sysmaint-split by developers. Other desktop environments might have
+glitches. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+<li><u>Open Link Confirmation:</u> <a href="https://github.com/Kicksecure/open-link-confirmation">open-link-confirmation</a>
+may or may not be functional.</li>
+<li><u>File Manager:</u> <a href="https://github.com/Kicksecure/security-misc#file-manager-d-bus-shim">File
+Manager D-Bus shim</a> is <a href="Unsupported.html">untested</a> on unsupported desktop environments.</li>
+<li>Non-exhaustive list.</li>
+</ul></li>
+</ul>
+<h1 id="Future">Future</h1>
+<p>Since Kicksecure is an Open Source / <a href="https://forums.whonix.org/t/lets-call-it-freedom-software-rather-than-free-software-or-open-source/6961">Freedom
+Software</a> project, Kicksecure developers are hoping that other
+developers join the project and maintain other desktop environments.
+That someone could be you?</p>
+<h1 id="Technical_Information">Technical Information</h1>
+<p>Unfortunately using other desktop environments has become much more
+difficult due to port to Wayland in version 18 and <a href="Sysmaint.html">user-sysmaint-split</a>.</p>
+<p><blockquote><p>Switching the Wayland compositor used by Kicksecure isn't supported
+currently. Supporting a Wayland compositor is much more involved than
+supporting a window manager under X11, because the compositor is both
+the window manager *and* the display server. Of all the desktop
+environments in Kicksecure, LXQt was the only one light enough to be
+suitable for Kicksecure and that had mature enough Wayland support, and
+the best-supported compositor for LXQt is labwc, so that's what we went
+with. (For similar reasons, switching the desktop environment entirely
+is also difficult.)<span class="blockquote-context"><a href="https://forums.kicksecure.com/t/3-big-issues-in-kicksecure-18-my-laptop-is-basically-unusable-now/1443/2">Kicksecure
+developer @arraybolt3</a></span></p></blockquote></p>
+<h1 id="Forum_Discussions">Forum Discussions</h1>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/multiple-workspaces-multiple-virtual-desktops-in-kicksecure-18-wayland-labwc/1443">https://forums.kicksecure.com/t/multiple-workspaces-multiple-virtual-desktops-in-kicksecure-18-wayland-labwc/1443</a></li>
+<li><a href="https://forums.kicksecure.com/t/kde-doesnt-work-correctly-with-kicksecure-18/1470">https://forums.kicksecure.com/t/kde-doesnt-work-correctly-with-kicksecure-18/1470</a></li>
+<li><a href="https://forums.kicksecure.com/t/switch-lxqt-compositor-labwc-settings/1403">https://forums.kicksecure.com/t/switch-lxqt-compositor-labwc-settings/1403</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Debian_Packages.html">Kicksecure Debian
+Packages, which ones are safe to remove?</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">* Such as when booting into a sysmaint session, a non-default login
+manager might suggest to login as account <code>user</code> rather than
+as account <code>sysmaint</code>. * Or when booting into a user session,
+a non-default login manager might suggest to login as account
+<code>sysmaint</code> rather than as account <code>user</code>.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Age-api</title>
+<meta name="description" content="Research of operating system age-signaling (age-bracket) interface legal issues, requirements that may apply in some jurisdictions. Covers background, Kicksecure and Whonix privacy/fingerprinting impact, user interface (UI) wording/rationale, alternatives, legal considerations, objections, and related resources.">
+<meta property="og:description" content="Research of operating system age-signaling (age-bracket) interface legal issues, requirements that may apply in some jurisdictions. Covers background, Kicksecure and Whonix privacy/fingerprinting impact, user interface (UI) wording/rationale, alternatives, legal considerations, objections, and related resources.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Age-api.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Age-api.html">
+<meta property="og:title" content="Age Signaling Legal and Interface Considerations for Kicksecure and Whonix">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Age_API_Laws_Overview">Age API Laws Overview</a></li><li class="toc-l2"><a href="#Open_Questions">Open Questions</a></li><li class="toc-l2"><a href="#Security_Impact">Security Impact</a></li><li class="toc-l2"><a href="#Economic,_Education_and_Social_Impact">Economic, Education and
+Social Impact</a></li><li class="toc-l2"><a href="#Absurdities">Absurdities</a></li><li class="toc-l2"><a href="#Discussions">Discussions</a></li><li class="toc-l3"><a href="#Development_Discussion">Development Discussion</a></li><li class="toc-l3"><a href="#User_Discussions">User Discussions</a></li><li class="toc-l2"><a href="#News">News</a></li><li class="toc-l2"><a href="#Organisation_Commentary">Organisation Commentary</a></li><li class="toc-l3"><a href="#EFF">EFF</a></li><li class="toc-l3"><a href="#mcneeslaw">mcneeslaw</a></li><li class="toc-l2"><a href="#Other_Projects">Other Projects</a></li><li class="toc-l3"><a href="#freedesktop">freedesktop</a></li><li class="toc-l3"><a href="#systemd">systemd</a></li><li class="toc-l3"><a href="#MidnightBSD">MidnightBSD</a></li><li class="toc-l3"><a href="#Devuan">Devuan</a></li><li class="toc-l3"><a href="#Ubuntu">Ubuntu</a></li><li class="toc-l3"><a href="#system76">system76</a></li><li class="toc-l3"><a href="#Arch_Linux">Arch Linux</a></li><li class="toc-l3"><a href="#FreeDOS">FreeDOS</a></li><li class="toc-l3"><a href="#Tails_OS">Tails OS</a></li><li class="toc-l3"><a href="#nixOS">nixOS</a></li><li class="toc-l3"><a href="#elementary_os">elementary os</a></li><li class="toc-l3"><a href="#CachyOS">CachyOS</a></li><li class="toc-l3"><a href="#secureblue">secureblue</a></li><li class="toc-l3"><a href="#trisquel">trisquel</a></li><li class="toc-l3"><a href="#Debian">Debian</a></li><li class="toc-l2"><a href="#Status_of_Kicksecure_and_Whonix">Status of Kicksecure and
+Whonix</a></li><li class="toc-l3"><a href="#Kicksecure_for_Qubes">Kicksecure for Qubes</a></li><li class="toc-l2"><a href="#Contingency_Plan">Contingency Plan</a></li><li class="toc-l3"><a href="#Privacy_Friendly_Choice">Privacy Friendly Choice</a></li><li class="toc-l3"><a href="#Fingerprinting_Risk">Fingerprinting Risk</a></li><li class="toc-l3"><a href="#Security_Impact_2">Security Impact</a></li><li class="toc-l2"><a href="#Terms_of_Service_Check">Terms of Service Check</a></li><li class="toc-l2"><a href="#Age_Setup_Decision">Age Setup Decision</a></li><li class="toc-l2"><a href="#Age_Signaling_Prompt">Age Signaling Prompt</a></li><li class="toc-l2"><a href="#User_Interface_Design_Rationale">User Interface Design
+Rationale</a></li><li class="toc-l3"><a href="#Mandatory_Blocking">Mandatory Blocking</a></li><li class="toc-l3"><a href="#Age_of_the_Primary_User_Wording">Age of the Primary User
+Wording</a></li><li class="toc-l3"><a href="#Age_versus_Date_of_Birth">Age versus Date of Birth</a></li><li class="toc-l3"><a href="#Prompt_for_Age_instead_of_Age_Bracket">Prompt for Age instead of
+Age Bracket</a></li><li class="toc-l3"><a href="#No_Default_Choice">No Default Choice</a></li><li class="toc-l2"><a href="#Status_/_timeline">Status / timeline</a></li><li class="toc-l2"><a href="#Applicability_/_scope">Applicability / scope</a></li><li class="toc-l2"><a href="#Jurisdiction_/_enforceability">Jurisdiction / enforceability</a></li><li class="toc-l3"><a href="#Non-U.S._Legal_Entity">Non-U.S. Legal Entity</a></li><li class="toc-l3"><a href="#Jurisdiction_Applicability_and_Enforcement_Comparison_Table">Jurisdiction
+Applicability and Enforcement Comparison Table</a></li><li class="toc-l2"><a href="#Compliance_options_/_alternatives">Compliance options /
+alternatives</a></li><li class="toc-l3"><a href="#Prohibiting_California_residents_in_the_Terms_of_Service_and_Geo-Blocking">Prohibiting
+California residents in the Terms of Service and Geo-Blocking</a></li><li class="toc-l2"><a href="#Implementation_/_technical_limitations">Implementation / technical
+limitations</a></li><li class="toc-l2"><a href="#Ecosystem_/_responsibility_allocation">Ecosystem / responsibility
+allocation</a></li><li class="toc-l2"><a href="#Enforcement_likelihood_/_practical_risk">Enforcement likelihood /
+practical risk</a></li><li class="toc-l2"><a href="#Legal_impact_in_case_malware_is_tampering_with_the_age_API">Legal
+impact in case malware is tampering with the age API</a></li><li class="toc-l2"><a href="#Contribute_by_Taking_on_Legal_Responsibility">Contribute by
+Taking on Legal Responsibility</a></li><li class="toc-l2"><a href="#Outreach">Outreach</a></li><li class="toc-l2"><a href="#Legal_Campaigns">Legal Campaigns</a></li><li class="toc-l2"><a href="#New_York_State_Senate_Bill_S8102A">New York State Senate Bill
+S8102A</a></li><li class="toc-l2"><a href="#Potential_Future_California_Age_Verification_Law_Changes">Potential
+Future California Age Verification Law Changes</a></li><li class="toc-l2"><a href="#commercially_reasonable_age_assurance">commercially reasonable
+age assurance</a></li><li class="toc-l2"><a href="#more">more</a></li><li class="toc-l2"><a href="#Lawsuits">Lawsuits</a></li><li class="toc-l2"><a href="#Related_Court_Rulings">Related Court Rulings</a></li><li class="toc-l2"><a href="#Resources">Resources</a></li><li class="toc-l2"><a href="#Similar">Similar</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Dev/cryptography.html" title="Dev/cryptography"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/cryptography</span></a><a class="index internal" href="Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Dev/Password_Manager.html" title="Dev/Password Manager"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Password
+Manager</span></a><span class="info"><span class="prev">Previous page:
+Dev/cryptography</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Password
+Manager</span></span></span>Age Signaling Legal and Interface
+Considerations for Kicksecure and Whonix</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This page documents potential operating-system age-signaling
+(age-bracket) interface requirements that may apply in some
+jurisdictions, and what they could mean for <a href="About.html">Kicksecure</a> (and
+[Broken-ExtLink--no-url-was-provided]).</p>
+<p>It summarizes background, status, privacy, fingerprinting impact,
+legal considerations, objections, and links to related upstream
+discussions.</p>
+<p>Status: For up-to-date plans by Kicksecure (and Whonix), see <a href="#status">#status</a>.</p>
+<p><u>Forum discussion:</u> <a href="https://forums.whonix.org/t/whonix-adding-age-verification/22969">Whonix
+adding age verification?</a> (<a href="https://forums.whonix.org/t/whonix-adding-age-verification/22969/24">moderation
+comment</a>)</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<h1 id="Disclaimer">Disclaimer</h1>
+<p>This is <u>not</u> legal advice. As per <a href="Terms_of_Service.html">Terms of Service</a> wiki chapter, there is <a href="Terms_of_Service.html#No_Legal_Advice">No Legal
+Advice</a>.</p>
+<p><blockquote><p>The Services are not for use by anyone under the age of
+18.<span class="blockquote-context"><a href="Terms_of_Service.html">Terms of Service</a> chapter <a href="Terms_of_Service.html#Minimum_Age">Minimum
+Age</a></span></p></blockquote></p>
+<h1 id="Introduction">Introduction</h1>
+<p>Some jurisdictions are proposing or enacting rules that require an
+operating system provider to expose an account setup interface that
+collects a birth date, an age, or both, for the purpose of signaling an
+age bracket to applications.</p>
+<h1 id="Background">Background</h1>
+<h2 id="Age_API_Laws_Overview">Age API Laws Overview</h2>
+<div class="intro-like">
+<p>Non-exhaustive list.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<p>Review required!</p>
+<table>
+<caption>Overview of selected age verification laws</caption>
+<thead>
+<tr class="header">
+<th><p>Jurisdiction</p></th>
+<th><p>Status</p></th>
+<th><p>Timeline</p></th>
+<th><p>Sources</p></th>
+<th><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Federal</p></td>
+<td></td>
+<td></td>
+<td><p><a href="https://www.congress.gov/bill/119th-congress/house-bill/8250/all-info">info</a>
+/ <a href="https://www.congress.gov/bill/119th-congress/house-bill/8250/text">text</a></p></td>
+<td><p>operating system provider</p></td>
+</tr>
+<tr class="even">
+<td><p>California</p></td>
+<td><p><strong>Passed</strong></p></td>
+<td><p>Effective January 1, 2026; operative January 1, 2027</p></td>
+<td><p>[<a href="https://www.leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?article=&amp;chapter=&amp;division=3.&amp;lawCode=CIV&amp;part=4.&amp;title=1.81.9">https://www.leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?article=&amp;chapter=&amp;division=3.&amp;lawCode=CIV&amp;part=4.&amp;title=1.81.9</a>.
+Civil Code text], <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1043">Bill
+text</a></p></td>
+<td><p>operating system provider</p></td>
+</tr>
+<tr class="odd">
+<td><p>Colorado</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Passed Senate March 3, 2026; would take effect January 1, 2028 if
+enacted</p></td>
+<td><p><a href="https://leg.colorado.gov/bills/SB26-051">Bill page</a>,
+<a href="https://leg.colorado.gov/bill_files/112795/download">Bill text
+(PDF)</a>, <a href="https://leg.colorado.gov/bill_files/111670/download">Fiscal note
+(PDF)</a></p></td>
+<td><p>operating system provider</p></td>
+</tr>
+<tr class="even">
+<td><p>New York</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Senate amended and recommitted February 25, 2026; Assembly
+pending</p></td>
+<td><p><a href="https://www.nysenate.gov/legislation/bills/2025/S8102/amendment/A">Senate
+Bill S8102A</a>, <a href="https://www.nysenate.gov/legislation/bills/2025/A8893">Assembly
+Bill A8893</a></p></td>
+<td><p>Internet-enabled device manufacturer age assurance and real-time
+API digital signal.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Illinois</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Introduced February 6, 2026; to Senate AI and Social Media
+February 25, 2026; operating-system provisions would apply by January 1,
+2028 if enacted</p></td>
+<td><p><a href="https://www.ilga.gov/Legislation/BillStatus?DocNum=3977&amp;DocTypeID=SB&amp;GAID=18&amp;LegId=167475&amp;Print=1&amp;SessionID=114">Bill
+status (SB 3977)</a>, <a href="https://www.ilga.gov/Legislation/BillStatus/FullText?DocNum=3977&amp;DocTypeID=SB&amp;GAID=18&amp;LegId=167475&amp;SessionID=114">Bill
+text (SB 3977)</a></p></td>
+<td><p>operating system provider</p></td>
+</tr>
+<tr class="even">
+<td><p>Michigan</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Introduced May 6, 2025; referred to committee</p></td>
+<td><p><a href="https://legislature.mi.gov/Bills/Bill?ObjectName=2025-SB-0284">Senate
+Bill 0284 bill page</a>, <a href="https://www.legislature.mi.gov/documents/2025-2026/billintroduced/Senate/pdf/2025-SIB-0284.pdf">Senate
+Bill 0284 bill text (PDF)</a>, <a href="https://www.legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-4429">House
+Bill 4429 bill page</a></p></td>
+<td><p>Device-based "digital age signal" concept; age signal provided
+via an API.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Illinois (Digital Age Assurance Act)</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Referred to House Rules Committee October 15, 2025; would take
+effect January 1, 2027 if enacted</p></td>
+<td><p><a href="https://www.ilga.gov/Legislation/BillStatus?DocNum=4140&amp;DocTypeID=HB&amp;GAID=18&amp;LegId=164192&amp;Print=1&amp;SessionID=114">Bill
+status (HB 4140)</a>, <a href="https://www.ilga.gov/Legislation/BillStatus/FullText?DocNum=4140&amp;DocTypeID=HB&amp;GAID=18&amp;LegId=164192&amp;SessionID=114">Bill
+text (HB 4140)</a></p></td>
+<td><p>operating system provider</p></td>
+</tr>
+<tr class="even">
+<td><p>Utah</p></td>
+<td><p><strong>Passed</strong></p></td>
+<td><p>Signed March 26, 2025; general effective date May 7, 2025; main
+app-store provisions effective May 6, 2026</p></td>
+<td><p><a href="https://le.utah.gov/Session/2025/bills/enrolled/SB0142.pdf">Enrolled
+bill (SB 142)</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Louisiana</p></td>
+<td><p><strong>Passed</strong></p></td>
+<td><p>Effective July 1, 2026</p></td>
+<td><p>HOUSE BILL NO. 570 <a href="https://www.legis.la.gov/Legis/BillInfo.aspx?i=248616">Bill
+history (HB 570)</a>, <a href="https://www.legis.la.gov/legis/ViewDocument.aspx?d=1425304">Act
+text (PDF)</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="even">
+<td><p>Alabama</p></td>
+<td><p><strong>Passed</strong></p></td>
+<td><p>Effective January 1, 2027</p></td>
+<td><p><a href="https://alison.legislature.state.al.us/files/pdf/SearchableInstruments/2026RS/HB161-enr.pdf">Enrolled
+act text (HB 161) (PDF)</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Texas</p></td>
+<td><p><strong>Passed</strong> (enjoined)</p></td>
+<td><p>Effective January 1, 2026; preliminarily enjoined December 23,
+2025</p></td>
+<td><p><a href="https://capitol.texas.gov/tlodocs/89R/billtext/pdf/SB02420F.pdf">Enrolled
+bill text (PDF)</a>, <a href="https://developer.apple.com/news/?id=8jzbigf4">Apple developer
+update</a>, <a href="https://support.google.com/googleplay/android-developer/answer/16569691?hl=en">Google
+Play developer notice</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="even">
+<td><p>Kansas</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Passed Senate February 18, 2026; House committee reported as
+amended March 18, 2026</p></td>
+<td><p><a href="https://kslegislature.gov/li/b2025_26/measures/sb372/">Bill
+page</a> <a href="https://kslegislature.gov/li/b2025_26/measures/sb372/">Bill text -
+As Amended by House Committee</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Maryland</p></td>
+<td><p><strong>Draft</strong></p></td>
+<td><p>Introduced February 11, 2026; House hearing March 10, 2026; would
+take effect October 1, 2026 if enacted</p></td>
+<td><p>Application Store Accountability Act <a href="https://mgaleg.maryland.gov/mgawebsite/Legislation/Details/HB1179?ys=2026RS">Bill
+page</a>, <a href="https://mgaleg.maryland.gov/2026RS/fnotes/bil_0009/hb1179.pdf">Fiscal
+and policy note (PDF)</a> <a href="https://trackbill.com/bill/maryland-house-bill-1179-consumer-protection-application-store-accountability-act/2812146/">Maryland
+HB1179 - bill text</a></p></td>
+<td><p>mobile device</p></td>
+</tr>
+<tr class="even">
+<td><p>Virginia</p></td>
+<td><p><strong>Draft</strong> (continued)</p></td>
+<td><p>Continued to 2027 in Senate committee on February 4, 2026; bill
+would take effect July 1, 2027 if enacted</p></td>
+<td><p>App Store Accountability Act <a href="https://lis.virginia.gov/bill-details/20261/SB237">Bill page and
+summary</a>, <a href="https://lis.virginia.gov/bill-details/20261/SB237/text/SB237">Bill
+text</a></p></td>
+<td><p>mobile <u>o</u>perating <u>s</u>ystem (OS)</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="intro-like">
+<p>Most Linux distributions and most general purpose operating systems
+may be affected. (This is <a href="Unspecific.html">unspecific to Kicksecure</a>.)</p>
+</div>
+<h2 id="Open_Questions">Open Questions</h2>
+<ul>
+<li><span class="manually-placed-anchor mpa-visible" id="server">server</span></li>
+<li>Will server operating systems also have to comply?</li>
+<li>A typical headless server deployment often has:
+<ul>
+<li>no "account setup" in the consumer sense, and</li>
+<li>no "app store" experience aimed at end users (even though it
+installs packages).</li>
+<li>AB 1043 defines "User" as a child who is the primary user of the
+device, which fits consumer devices much more than servers.</li>
+</ul></li>
+</ul>
+<h2 id="Security_Impact">Security Impact</h2>
+<ul>
+<li><u>Possible unintended harm:</u> Age declaration laws might actually
+cause more harm than benefit for some children.
+<ul>
+<li><u>Broad age signal requests:</u> A website could ask for an age
+signal under some pretense.
+<ul>
+<li><u>Forum example:</u> A forum might have a general area and an 18+
+area.</li>
+<li><u>Justification risk:</u> That could be used as a reason to request
+an age signal from all users, not only from users who want to enter the
+18+ area.</li>
+<li><u>User profiling risk:</u> Administrators could then single out the
+age bracket of each user.</li>
+</ul></li>
+<li><u>Project specific impact assessment:</u> This would be a general
+issue and <a href="Unspecific.html">unspecific to
+Kicksecure</a>.</li>
+</ul></li>
+<li><u>Two possible setups:</u> There may be two main ways age
+verification might be implemented.
+<ul>
+<li><u>Date of birth based setup:</u> The operating system knows the
+user's date of birth (DOB).
+<ul>
+<li><u>Automatic updates:</u> This means it can automatically move the
+user into the next age bracket when their birthday arrives.</li>
+<li><u>Likely common approach:</u> This is likely what most operating
+systems would do.</li>
+</ul></li>
+<li><u>Age based setup:</u> The operating system knows only the user's
+age, or only the resulting age bracket.
+<ul>
+<li><u>Manual updates:</u> In that case, the bracket usually does not
+update automatically and may need to be changed manually.</li>
+<li><u>Privacy benefit:</u> This may be more privacy friendly.</li>
+</ul></li>
+</ul></li>
+<li><u>Additional privacy risk:</u> A date of birth based setup may
+create an extra privacy risk.
+<ul>
+<li><u>Daily requests risk:</u> If a website asks for the user's age
+bracket every day, it could notice the exact day when the bracket
+changes to the next one.</li>
+<li><u>Approximate DOB exposure:</u> That could reveal the user's
+approximate date of birth.</li>
+</ul></li>
+</ul>
+<h2 id="Economic,_Education_and_Social_Impact">Economic, Education and
+Social Impact</h2>
+<p>As <a href="Age-api.html#system76">system76</a> pointed
+out.</p>
+<p><blockquote><p>Most System76 employees installed operating systems and created
+accounts on their computer when they were under 18. They did this out of
+curiosity. Many started writing software. Some were already writing
+operating systems. I'm sure the story is similar at most tech companies.
+Limiting a child's ability to explore what they can do with a computer
+limits their future. Removing user limitations to the computer
+(proprietary software, locked-down platforms like Android and iOS) is
+why System76 exists.<span class="blockquote-context"><a href="https://blog.system76.com/post/system76-on-age-verification">System76
+on Age Verification Laws</a></span></p></blockquote></p>
+<h2 id="Absurdities">Absurdities</h2>
+<ul>
+<li><a href="https://github.com/microsoft/MS-DOS">Microsoft is
+distributing MS-DOS 4.0</a>: Do they have to stop distributing MS-DOS or
+comply with this law? This may be applicable to binary builds only, not
+source code?</li>
+<li><a href="https://www.freedos.org/">FreeDOS</a></li>
+<li>Transporting a computer into different jurisdictions might invoke
+different legal requirements.</li>
+</ul>
+<p><span class="manually-placed-anchor mpa-visible" id="end-users_may_be_considered_device_manufacturer_responsible_for_age_API_compliance">end-users
+may be considered device manufacturer responsible for age API
+compliance</span> Theoretically, it might be the case that end-users may
+be considered device manufacturer responsible for age API
+compliance.</p>
+<p>As <a href="Age-api.html#system76">system76</a> pointed
+out.</p>
+<p><blockquote><p>In a bizarre twist, under its current wording, a Linux distribution
+downloaded from the internet could technically make the downloader the
+"device manufacturer". They are the entity responsible for providing a
+freely distributed operating system to the device. In practice, this
+type of language is rarely enforced.<span class="blockquote-context"><a href="https://blog.system76.com/post/system76-on-age-verification">System76
+on Age Verification Laws</a></span></p></blockquote></p>
+<h2 id="Discussions">Discussions</h2>
+<h3 id="Development_Discussion">Development Discussion</h3>
+<ul>
+<li><a href="https://github.com/flatpak/xdg-desktop-portal/pull/1922">https://github.com/flatpak/xdg-desktop-portal/pull/1922</a></li>
+</ul>
+<p><span class="manually-placed-anchor mpa-visible" id="On_the_unfortunate_need_for_an_&quot;age_verification&quot;_API_for_legal_compliance_reasons_in_some_U.S._states">On
+the unfortunate need for an "age verification" API for legal compliance
+reasons in some U.S. states</span></p>
+<ul>
+<li><a href="https://lists.debian.org/debian-devel/2026/03/msg00016.html">debian-devel</a></li>
+<li><a href="https://lists.debian.org/debian-legal/2026/03/msg00000.html">debian-legal</a></li>
+<li><a href="https://mail-archive.com/search?l=devel@lists.fedoraproject.org&amp;q=subject:%22Fw%5C%3A+On+the+unfortunate+need+for+an+%5C%22age+verification%5C%22+API+for+legal+compliance+reasons+in+some+U.S.+states%22&amp;o=newest&amp;f=1">fedora-devel</a>
+<ul>
+<li><a href="https://lists.fedorahosted.org/archives/list/devel@lists.fedoraproject.org/thread/MYM452NNXF3ZJ7HPBYT4HDNTKRK2FWBX/">fedora-devel</a></li>
+</ul></li>
+<li><a href="https://www.mail-archive.com/search?l=ubuntu-devel@lists.ubuntu.com&amp;q=subject:%22On+the+unfortunate+need+for+an+%5C%22age+verification%5C%22+API+for+legal+compliance+reasons+in+some+U.S.+states%22&amp;o=newest&amp;f=1">ubuntu-devel</a></li>
+<li><a href="https://lists.freedesktop.org/archives/xdg/2026-March/014764.html">xdg-devel</a></li>
+</ul>
+<h3 id="User_Discussions">User Discussions</h3>
+<ul>
+<li><a href="https://discussion.fedoraproject.org/t/california-age-verification/181968">https://discussion.fedoraproject.org/t/california-age-verification/181968</a></li>
+<li><a href="https://discussions.unity.com/t/play-age-signals-api-support-is-unity-preparing-for-this/1689525">https://discussions.unity.com/t/play-age-signals-api-support-is-unity-preparing-for-this/1689525</a></li>
+<li><a href="https://forum.manjaro.org/t/california-and-colorado-laws-an-os-age-verification/185960">https://forum.manjaro.org/t/california-and-colorado-laws-an-os-age-verification/185960</a></li>
+<li><a href="https://discuss.privacyguides.net/t/age-verification-for-qubes-os-and-whonix-among-other-linux-distributions/35984">https://discuss.privacyguides.net/t/age-verification-for-qubes-os-and-whonix-among-other-linux-distributions/35984</a></li>
+<li><a href="https://discourse.vanlug.ca/t/age-verification-for-qubes-os-and-whonix-among-other-linux-distributions/148">https://discourse.vanlug.ca/t/age-verification-for-qubes-os-and-whonix-among-other-linux-distributions/148</a></li>
+<li><a href="https://www.reddit.com/r/privacy/comments/1rhd48i/how_exactly_is_linux_going_to_get_age_verified/">https://www.reddit.com/r/privacy/comments/1rhd48i/how_exactly_is_linux_going_to_get_age_verified/</a></li>
+<li><a href="https://www.reddit.com/r/linux/comments/1rpo7je/age_verification_is_coming_to_the_linux_desktop/">https://www.reddit.com/r/linux/comments/1rpo7je/age_verification_is_coming_to_the_linux_desktop/</a></li>
+<li><a href="https://forum.level1techs.com/t/system76-responds-to-laws-requiring-age-verification-at-the-os-level/246809">https://forum.level1techs.com/t/system76-responds-to-laws-requiring-age-verification-at-the-os-level/246809</a></li>
+<li><a href="https://www.reddit.com/r/privacy/comments/1rok2wi/ageless_linux_now_tracking_multiple_state_laws/">https://www.reddit.com/r/privacy/comments/1rok2wi/ageless_linux_now_tracking_multiple_state_laws/</a></li>
+</ul>
+<h2 id="News">News</h2>
+<ul>
+<li><a href="https://itsfoss.com/news/distros-response-age-verification-laws/">https://itsfoss.com/news/distros-response-age-verification-laws/</a></li>
+</ul>
+<h2 id="Organisation_Commentary">Organisation Commentary</h2>
+<h3 id="EFF">EFF</h3>
+<p><blockquote><p>App Store and Device-Level Age
+Verification<span class="blockquote-context">EFF: <a href="https://www.eff.org/deeplinks/2025/12/year-states-chose-surveillance-over-safety-2025-review">The
+Year States Chose Surveillance Over Safety: 2025 in
+Review</a></span></p></blockquote></p>
+<h3 id="mcneeslaw">mcneeslaw</h3>
+<p><a href="https://www.linkedin.com/company/mcneeswallacenurick/">law
+firm</a> blog post: <a href="https://www.mcneeslaw.com/age-verification-laws-app-developers-compliance/">New
+laws in some states require app developers to verify users' ages</a></p>
+<h2 id="Other_Projects">Other Projects</h2>
+<p>Compilation of some major statements and/or (proposed) source code
+changes by some other operating systems / Linux / BSD distributions.</p>
+<h3 id="freedesktop">freedesktop</h3>
+<ul>
+<li><a href="https://www.freedesktop.org/">https://www.freedesktop.org/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Freedesktop.org">https://en.wikipedia.org/wiki/Freedesktop.org</a></li>
+<li><a href="https://lists.freedesktop.org/archives/xdg/2026-March/014764.html">xdg-devel</a></li>
+<li><a href="https://gitlab.freedesktop.org/accountsservice/accountsservice/-/merge_requests/176">https://gitlab.freedesktop.org/accountsservice/accountsservice/-/merge_requests/176</a></li>
+<li><a href="https://github.com/flatpak/xdg-desktop-portal/pull/1922">https://github.com/flatpak/xdg-desktop-portal/pull/1922</a></li>
+</ul>
+<h3 id="systemd">systemd</h3>
+<ul>
+<li><a href="https://github.com/systemd/systemd/issues/40974">https://github.com/systemd/systemd/issues/40974</a></li>
+<li><a href="https://github.com/systemd/systemd/pull/40954">https://github.com/systemd/systemd/pull/40954</a></li>
+</ul>
+<h3 id="MidnightBSD">MidnightBSD</h3>
+<ul>
+<li><a href="https://x.com/midnightbsd/status/2027101491211718765">https://x.com/midnightbsd/status/2027101491211718765</a></li>
+</ul>
+<p><blockquote><p>California residents are not authorized to use MidnightBSD for
+desktop use in the state of California effective January 1, 2027.
+California law <a href="https://legiscan.com/CA/text/AB1043/id/3269704">CA AB1043</a>
+requires a complex age verification system implemented for operating
+systems with no exceptions for small open source
+projects.<span class="blockquote-context"><a href="https://github.com/MidnightBSD/src/commit/7d956a27123f2d77a05313826c29a0329a923254">https://github.com/MidnightBSD/src/commit/7d956a27123f2d77a05313826c29a0329a923254</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://github.com/MidnightBSD/src/blob/4e64ffa192dbd651a07a7f8295e682296c4d6c30/COPYRIGHT#L7">https://github.com/MidnightBSD/src/blob/4e64ffa192dbd651a07a7f8295e682296c4d6c30/COPYRIGHT#L7</a></li>
+<li><a href="https://x.com/midnightbsd/status/2027820452828139625">https://x.com/midnightbsd/status/2027820452828139625</a></li>
+<li><a href="https://x.com/midnightbsd/status/2028195352520626576">https://x.com/midnightbsd/status/2028195352520626576</a>
+<ul>
+<li>might not be drafted by a lawyer</li>
+<li>new plan:
+<ul>
+<li><a href="https://docs.google.com/document/d/1_NKq0bpN1pOrMpHePuilJY7saXqXqhss6LwPTC6nSto/edit?tab=t.0#heading=h.45e7p9clyiqo">https://docs.google.com/document/d/1_NKq0bpN1pOrMpHePuilJY7saXqXqhss6LwPTC6nSto/edit?tab=t.0#heading=h.45e7p9clyiqo</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Blocking California in the terms of service / license might be
+insufficient, see: <a href="Age-api.html#Prohibiting_California_residents_in_the_Terms_of_Service_and_Geo-Blocking">Prohibiting California residents in the Terms of
+Service and Geo-Blocking</a></p>
+<p>Update:</p>
+<ul>
+<li><a href="https://www.phoronix.com/news/MidnightBSD-4.0.4">https://www.phoronix.com/news/MidnightBSD-4.0.4</a></li>
+<li><a href="https://github.com/MidnightBSD/src/commit/02764656fa21e788d8a53fd5ebac4747fc1a244d">https://github.com/MidnightBSD/src/commit/02764656fa21e788d8a53fd5ebac4747fc1a244d</a></li>
+</ul>
+<h3 id="Devuan">Devuan</h3>
+<ul>
+<li><a href="https://x.com/jaromil/status/2034694340249821329">https://x.com/jaromil/status/2034694340249821329</a></li>
+</ul>
+<h3 id="Ubuntu">Ubuntu</h3>
+<ul>
+<li><a href="https://discourse.ubuntu.com/t/ubuntus-response-to-californias-digital-age-assurance-act-ab-1043/77948">https://discourse.ubuntu.com/t/ubuntus-response-to-californias-digital-age-assurance-act-ab-1043/77948</a>
+<ul>
+<li><a href="https://www.phoronix.com/news/Ubuntu-Digital-Age-Assurance">https://www.phoronix.com/news/Ubuntu-Digital-Age-Assurance</a></li>
+</ul></li>
+<li><a href="https://github.com/canonical/ubuntu-desktop-provision/pull/1338">https://github.com/canonical/ubuntu-desktop-provision/pull/1338</a></li>
+<li><a href="https://github.com/canonical/ubuntu-desktop-provision/pull/1339">https://github.com/canonical/ubuntu-desktop-provision/pull/1339</a></li>
+</ul>
+<h3 id="system76">system76</h3>
+<p><blockquote><p>In a bizarre twist, under its current wording, a Linux distribution
+downloaded from the internet could technically make the downloader the
+"device manufacturer". They are the entity responsible for providing a
+freely distributed operating system to the device. In practice, this
+type of language is rarely enforced. Nonetheless, it highlights how laws
+written for centralized platforms like iOS and Android struggle to
+define who is responsible in open computing ecosystems where anyone can
+install or distribute the operating
+system.<span class="blockquote-context"><a href="https://blog.system76.com/post/system76-on-age-verification">System76
+on Age Verification Laws</a></span></p></blockquote></p>
+<p><blockquote><p>Some of these laws impose requirements on System76 and Linux
+distributions in general.</p></blockquote></p>
+<p><blockquote><p>We are accustomed to adding operating system features to comply with
+laws. Accessibility features for ADA, and power efficiency settings for
+Energy Star regulations are two examples. We are a part of this world
+and we believe in the rule of law. We still hope these laws will be
+recognized for the folly they are and removed from the books or found
+unconstitutional.</p></blockquote></p>
+<p><blockquote><p>Should these laws stand, I'd hope to only do the bare minimum
+required to comply with the spirit of the
+law.<span class="blockquote-context"><a href="https://lists.freedesktop.org/archives/xdg/2026-March/014801.html">https://lists.freedesktop.org/archives/xdg/2026-March/014801.html</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://lists.debian.org/debian-devel/2026/03/msg00178.html">https://lists.debian.org/debian-devel/2026/03/msg00178.html</a></li>
+</ul>
+<h3 id="Arch_Linux">Arch Linux</h3>
+<ul>
+<li><a href="https://www.reddit.com/r/archlinux/comments/1rk3qdb/any_response_from_the_arch_devs_about_california/">https://www.reddit.com/r/archlinux/comments/1rk3qdb/any_response_from_the_arch_devs_about_california/</a></li>
+<li><a href="https://github.com/archlinux/archinstall/pull/4290">https://github.com/archlinux/archinstall/pull/4290</a></li>
+<li><a href="https://lists.archlinux.org/archives/list/arch-general@lists.archlinux.org/thread/UCOAUXM5PPRIUOC3CXV74EBIMKRQO6IH/">https://lists.archlinux.org/archives/list/arch-general@lists.archlinux.org/thread/UCOAUXM5PPRIUOC3CXV74EBIMKRQO6IH/</a></li>
+</ul>
+<h3 id="FreeDOS">FreeDOS</h3>
+<ul>
+<li><a href="https://sourceforge.net/p/freedos/mailman/freedos-devel/thread/trinity-ea582184-aa57-47fe-a9ca-1eaf3c3e7066-1772568482107%40trinity-msg-rest-gmx-mailcom-live-66f5884f57-86bbb/">https://sourceforge.net/p/freedos/mailman/freedos-devel/thread/trinity-ea582184-aa57-47fe-a9ca-1eaf3c3e7066-1772568482107%40trinity-msg-rest-gmx-mailcom-live-66f5884f57-86bbb/</a></li>
+</ul>
+<h3 id="Tails_OS">Tails OS</h3>
+<ul>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/work_items/21457">https://gitlab.tails.boum.org/tails/tails/-/work_items/21457</a></li>
+</ul>
+<h3 id="nixOS">nixOS</h3>
+<ul>
+<li><a href="https://discourse.nixos.org/t/compliance-with-u-s-age-verification-laws/75791">https://discourse.nixos.org/t/compliance-with-u-s-age-verification-laws/75791</a></li>
+</ul>
+<h3 id="elementary_os">elementary os</h3>
+<ul>
+<li><a href="https://mastodon.online/@danirabbit/116250765623660340">https://mastodon.online/@danirabbit/116250765623660340</a></li>
+<li><a href="https://www.reddit.com/r/linux/comments/1rybg4z/statements_from_elementary_os_ceo_on_californias/">https://www.reddit.com/r/linux/comments/1rybg4z/statements_from_elementary_os_ceo_on_californias/</a></li>
+</ul>
+<h3 id="CachyOS">CachyOS</h3>
+<ul>
+<li><a href="https://discuss.cachyos.org/t/age-verification-systemd/26316">https://discuss.cachyos.org/t/age-verification-systemd/26316</a></li>
+</ul>
+<h3 id="secureblue">secureblue</h3>
+<ul>
+<li><a href="https://discussion.fedoraproject.org/t/california-age-verification/181968/167">https://discussion.fedoraproject.org/t/california-age-verification/181968/167</a></li>
+<li><a href="https://github.com/secureblue/secureblue/issues/2008">https://github.com/secureblue/secureblue/issues/2008</a></li>
+<li><a href="https://bsky.app/profile/secureblue.dev/post/3mgddiwxxas2y">https://bsky.app/profile/secureblue.dev/post/3mgddiwxxas2y</a></li>
+</ul>
+<h3 id="trisquel">trisquel</h3>
+<p><a href="https://trisquel.info/en/forum/structural-frictions-global-age-verification-mandates-vs-fully-free-os-autonomy">https://trisquel.info/en/forum/structural-frictions-global-age-verification-mandates-vs-fully-free-os-autonomy</a></p>
+<h3 id="Debian">Debian</h3>
+<p><a href="https://lists.debian.org/debian-devel-announce/2026/04/msg00001.html">https://lists.debian.org/debian-devel-announce/2026/04/msg00001.html</a></p>
+<h1 id="Kicksecure">Kicksecure</h1>
+<h2 id="Status_of_Kicksecure_and_Whonix">Status of Kicksecure and
+Whonix</h2>
+<p><span class="manually-placed-anchor " id="status"></span></p>
+<div class="intro-like">
+<p>At the moment, Kicksecure and Whonix do not expect to add an age API.
+This assessment may become more definite later. If future releases or
+upgrades require changes in this area, those changes would be announced
+in advance.</p>
+</div>
+<ul>
+<li><u>Current assessment:</u> Unlikely: Kicksecure and Whonix are
+currently unlikely to implement an age API.
+<ul>
+<li><u>Possible revised assessment:</u> This may later be updated to
+"highly unlikely" or "no changes planned".
+<ul>
+<li><u>Expected timeline:</u> A more certain statement may be available
+at the end of May 2026.</li>
+</ul></li>
+</ul></li>
+<li><u>If plans change:</u> If future releases or upgrades require
+changes in this area, those changes would be announced in advance. <a href="Stay_Tuned.html">Stay Tuned</a>.</li>
+<li><u>Contingency plan:</u> An <a href="Age-api.html#Contingency_Plan">Contingency Plan</a> had been drafted prior to this
+status update.</li>
+<li><u>Long-term future:</u> This is speculative. At the moment, users
+show overwhelming opposition to age verification APIs built into
+operating systems.
+<ul>
+<li><u>Possible first step:</u> Current operating system age
+verification laws may be only the first step.</li>
+<li><u>Possible future laws:</u> Future laws might require applications
+such as web browsers to actually use the operating system's age API.
+Otherwise, there would be little point in the operating system providing
+such an API if browsers do not use it and pass the result on to websites
+that request it.</li>
+<li><u>Possible browser reaction:</u> If the law were to require this,
+browsers might refuse to operate on operating systems that do not
+provide the required age API.</li>
+<li><u>Other possible browser reaction:</u> Browsers might instead fall
+back to the lowest age group, or perform their own age verification.
+<ul>
+<li><u>Possible privacy impact:</u> That could be less secure or worse
+for privacy.</li>
+</ul></li>
+<li><u>Possible user response:</u> In that situation, users might start
+requesting that the operating system at least implement a stub API.
+<ul>
+<li><u>What a stub API means:</u> This would be a minimal API that
+always reports the same age bracket, such as always signaling the lowest
+age bracket for family-friendly operating systems, or always signaling
+the highest age bracket for adult operating systems.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3 id="Kicksecure_for_Qubes">Kicksecure for Qubes</h3>
+<p>Potential effect on <a href="Qubes.html">Kicksecure for
+Qubes</a> and [Broken-ExtLink--no-url-was-provided]. This is unknown at
+this point. No changes might need to be made to any Qubes Templates
+maintained by the developers of Kicksecure and Whonix.</p>
+<p>At this point, it has not yet been discussed with the maintainers of
+<a href="https://www.qubes-os.org">Qubes OS</a> how they plan to react,
+if at all, to the age verification law.</p>
+<p>Since Qubes OS may be the entity distributing Templates, the decision
+of what Templates can and should do will ultimately rest with the Qubes
+maintainers.</p>
+<ul>
+<li>Qubes upstream ticket: <a href="https://github.com/QubesOS/qubes-issues/issues/10744">legally
+mandatory age verification API compliance may be required
+#10744</a></li>
+<li>Qubes forum discussion: <a href="https://forum.qubes-os.org/t/how-much-do-we-gotta-worry-about-this-linux-age-verification-bs/39788">How
+much do we gotta worry about this Linux "age verification" BS?</a></li>
+<li>Older statement by Marek on a <u>different topic</u>: <a href="https://forum.qubes-os.org/t/european-union-and-os-level-backdoors/1025/21">European
+Union And OS level Backdoors (2020)</a></li>
+</ul>
+<h2 id="Contingency_Plan">Contingency Plan</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<div class="intro-like">
+<p>The following is a contingency plan only. It is not a specific
+implementation plan. It is a thought experiment about the following
+question: if <a href="About.html">Kicksecure</a>,
+[Broken-ExtLink--no-url-was-provided] or any other project ever needed
+such a feature, what might a compliant implementation look like, what
+would the fingerprinting impact be, and what would be the most secure
+and privacy-preserving way to implement it? It also includes a <a href="#Interface_Design_Choice_Details"><u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI)
+design draft</a>.</p>
+</div>
+<h3 id="Privacy_Friendly_Choice">Privacy Friendly Choice</h3>
+<ul>
+<li><u>Users may misstate age:</u> One might expect users to lie about
+their real age.</li>
+<li><u>Bracket-preserving entries:</u> From the user's perspective, it
+might make sense, for privacy, to provide an age within their age
+bracket without revealing their real age.</li>
+<li><u>Family friendly example:</u> For a family friendly experience, a
+user might choose an age of 10 even if they are older.</li>
+<li><u>Adult example:</u> Someone of a higher age might choose 18 even
+if they are much older.</li>
+<li><u>No recommended defaults:</u> However, for legal reasons, it may
+be prudent for Kicksecure to abstain from recommending privacy friendly
+defaults.</li>
+</ul>
+<h3 id="Fingerprinting_Risk">Fingerprinting Risk</h3>
+<ul>
+<li><u>Status:</u> <a href="Age-api.html#Contingency_Plan">Contingency Plan</a> only. Not planned for
+implementation at the time of writing. For up-to-date plans by
+Kicksecure (and Whonix), see <a href="#status">#status</a>.</li>
+<li><u>What "fingerprinting" means:</u> Fingerprinting is when an app
+tries to recognize a device by checking for differences between systems.
+A value that is the same for almost everyone does not help with that.
+Related: <a href="System_identity_camouflage.html">system
+identity camouflage</a> and [Broken-ExtLink--no-url-was-provided].</li>
+<li><u>Why the risk is likely low to very low:</u> Most installations
+will likely end up with the same age-bracket value, which reduces
+uniqueness.</li>
+<li><u>No ID verification required by law:</u> The California law may
+not mandate ID verification yet.</li>
+<li><u>Age only:</u> The user is only asked to enter their age. Related:
+<a href="Age-api.html#Prompt_for_Age_instead_of_Age_Bracket">Prompt for Age instead of Age Bracket</a></li>
+<li><u>Use by anyone under 18 is prohibited by ToS:</u></li>
+</ul>
+<p><blockquote><p>The Services are not for use by anyone under the age of
+18.<span class="blockquote-context">Kicksecure <a href="Terms_of_Service.html">Terms of Service</a> (ToS)
+chapter <a href="Terms_of_Service.html#Minimum_Age">Minimum
+Age</a> (since at least 2019)</span></p></blockquote></p>
+<ul>
+<li><u>What happens if a user enters an age under 18:</u> If a user
+enters an age under 18, the setup program <code>setup-wizard-dist</code>
+will prohibit use per ToS.</li>
+<li><u>Expected value stored on disk:</u> On most (if not all)
+Kicksecure systems that upgrade the operating system, there will be a
+file <code>$HOME/.age-api/age-bracket</code> (file path and name not
+finalized at the time of writing) containing <code>4</code>.</li>
+<li><u>What <code>4</code> means:</u> The number <code>4</code> is
+intended to be an internal code for the selected age bracket (meaning
+18+).</li>
+<li><u>What is not stored:</u> The user's date of birth (DOB) or exact
+age is not stored on disk by this mechanism. If a user enters an age or
+DOB, it should only be used to determine the age bracket, and then only
+the bracket code (such as <code>4</code>) is stored.</li>
+<li><u>Why this lowers fingerprinting risk:</u> If most systems contain
+the same value, it does not meaningfully help apps to distinguish one
+user from another. Therefore, the impact on fingerprinting risk is
+likely low.</li>
+<li><u>Forum discussion:</u> <a href="https://forums.whonix.org/t/whonix-adding-age-verification/22969">Whonix
+adding age verification?</a></li>
+</ul>
+<h3 id="Security_Impact_2">Security Impact</h3>
+<div class="intro-like">
+<p>What if <a href="Malware_and_Firmware_Trojans.html">malware</a> tampers with
+local the age-api by malicious editing any age-api related data storage
+files?</p>
+</div>
+<p>If malware can write the age-api storage file, it usually means the
+attacker already has local code execution and enough privileges to
+modify user files (or worse). In many <a href="Threat_Modeling.html">threat models</a>, that is already "game over", so the
+marginal risk from "malware can flip the age bracket" is small.</p>
+<p>This does not increase system compromise; it only changes the
+reported bracket. Tampering can change how apps behave, but does not
+grant new system privileges.</p>
+<p>Related: <a href="Age-api.html#Legal_impact_in_case_malware_is_tampering_with_the_age_API">Legal impact in case malware is tampering with the age
+API</a></p>
+<h1 id="Interface_Design_Choice_Details">Interface Design Choice
+Details</h1>
+<div class="intro-like">
+<p>This section contains multiple design components with different
+goals. Some are alternatives, some are complementary. The project has
+not yet decided which combination will be used or if any will be used at
+all.</p>
+<p><a href="Age-api.html#Contingency_Plan">Contingency
+Plan</a> only. Not planned for implementation at the time of writing.
+For up-to-date plans by Kicksecure (and Whonix), see <a href="#status">#status</a>.</p>
+</div>
+<ul>
+<li><u>Terms of Service check:</u> Policy / eligibility checks. This
+might be insufficient for AB 1043 compliance by itself.</li>
+<li><u>Age setup decision:</u> Decide whether age signaling should be
+enabled now (required in some jurisdictions), skipped (if not required),
+or removed.</li>
+<li><u>Age signaling prompt:</u> The AB 1043 related age prompt and
+local age-bracket storage / signaling mechanism.</li>
+<li><u>User interface design rationale:</u> Why the wording, why no
+defaults, why blocking might be required, etc.</li>
+</ul>
+<h2 id="Terms_of_Service_Check">Terms of Service Check</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<p>Policy / eligibility.</p>
+<p>Prompt.</p>
+<p><blockquote><p>Can you confirm that none of the restrictions below apply to you?</p>
+<p><b>Age requirement</b></p>
+<p>You are at least 18 years old.</p>
+<p><b>Not offered in certain U.S. states</b></p>
+<p>You are not currently located in, do not ordinarily live in, and are
+not acting on behalf of someone located in California or any other
+jurisdiction that has age declaration laws.</p>
+<ul>
+<li>[ Yes, I confirm none of the restrictions apply ]</li>
+<li>[ No, one or more restrictions apply ]</li>
+</ul></blockquote></p>
+<ul>
+<li>If No -> prohibited.</li>
+</ul>
+<pre><code>Because you selected that one or more restrictions apply, you are prohibited from using this software.</code></pre>
+<h2 id="Age_Setup_Decision">Age Setup Decision</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<ul>
+<li>This prompt appears at first boot.</li>
+<li>It is blocking: the user must make a choice to continue.</li>
+</ul>
+<p>There may be legal requirements in some jurisdictions to provide
+age-group signaling for application compliance. In other jurisdictions
+it might not be required. The privacy and data protection impact
+(including any EU GDPR considerations) is currently unclear and may
+depend on jurisdiction and implementation details.</p>
+<p><blockquote><p>Age setup decision</p>
+<p>This system is intended for adults (18+). This system is not
+officially approved for use by minors.</p>
+<p>Some jurisdictions may require age-group signaling so applications
+can comply with local regulations.</p>
+<p>Do you want to enable age-group signaling now?</p>
+<ul>
+<li>[ Yes, set up age-group signaling now ]</li>
+<li>[ No, I am not in an affected jurisdiction and I want to skip this
+for now ]</li>
+<li>[ Uninstall age-api (remove age prompts and API) ]</li>
+</ul>
+<p>Notes:</p>
+<ul>
+<li>Choosing "skip for now" is intended only for users who concluded
+they are not in a jurisdiction where age-group signaling is
+required.</li>
+<li>If the user chooses "skip for now", the age-group signaling can be
+configured later if needed.</li>
+<li>"Uninstall age-api" uses <a href="Debian_Packages.html#dummy-dependency">dummy-dependency</a> to remove age declaration prompts
+and API. It can be re-installed later if needed. This might be unlikely
+to affect most things right now, but it may limit access to some
+applications in the future that request age bracket information.</li>
+</ul>
+<p>For further information, see <a href="Age-api.html">age-api</a>.</p></blockquote></p>
+<p>If the user chooses to enable age-group signaling, enforce stronger
+change control:</p>
+<ul>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+One-time configuration:</u> The age group can be set only once.</li>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Sysmaint required for changes:</u> Changing the age group later requires
+booting into sysmaint session (maintenance mode).</li>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Sysmaint password required:</u> A sysmaint <a href="Login.html">login</a> password is required to make changes.</li>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Password required for administrative actions:</u> Passwordless sudo etc.
+will be disabled by default.</li>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Bootloader password required:</u> A bootloader password is required to
+make changes.</li>
+<li><u><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+BIOS password recommended:</u> A BIOS password is recommended.</li>
+</ul>
+<h2 id="Age_Signaling_Prompt">Age Signaling Prompt</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" alt="draft" /></span>
+<u><b>DRAFT!</b></u></p>
+</div>
+<p><blockquote><p>What is the age (in years) of the primary user of this device?</p>
+<p>[ age input box ]</p>
+<p>Computed age bracket: [ Under 13 | 13 to under 16 | 16 to under 18 |
+18 or older ]</p>
+<p>Note: To support age-bracket signaling for applications (for legal
+compliance in some jurisdictions), this interface asks for an age in
+years rather than an age bracket.</p>
+<p>Privacy: The entered age is used only to compute the bracket and is
+not stored. Only the computed bracket is stored locally in the file
+<code>~/.age-api/age-bracket</code>.</p>
+<p>For further information, see <a href="Age-api.html">age-api</a>.</p></blockquote></p>
+<p>Computed bracket display behavior:</p>
+<ul>
+<li>Not selectable.</li>
+<li>All brackets are always shown. The calculated bracket will be
+highlighted.</li>
+</ul>
+<p><blockquote><p>Computed age bracket: [ Under 13 | 13 to under 16 | 16 to under 18 |
+<strong>18 or older</strong> (calculated) ]</p></blockquote></p>
+<h2 id="User_Interface_Design_Rationale">User Interface Design
+Rationale</h2>
+<h3 id="Mandatory_Blocking">Mandatory Blocking</h3>
+<p>Device/account setup must be <strong>required</strong>. Bold emphasis
+added.</p>
+<p><blockquote><p>1798.501. (a) An operating system provider shall do all of the
+following: (1) Provide an accessible interface at account setup that
+<strong>requires</strong> an account holder to indicate the birth date,
+age, or both, of the user of that device for the purpose of providing a
+signal regarding the user's age bracket to applications available in a
+covered application store.</p></blockquote></p>
+<p>The statute uses the word "requires", so implementations might need
+to be designed so the account holder cannot complete account setup
+without providing age or DoB. Until it is done, the account holder might
+be unable to access the relevant signal functionality.</p>
+<p>That might suggest:</p>
+<ul>
+<li>it cannot be treated as purely optional ("skip forever")</li>
+<li>it cannot silently default without the account holder indicating
+something.</li>
+</ul>
+<p>"Requires" does not explicitly say the user interface must be a modal
+that the user cannot close, or that the only acceptable user interface
+is a hard blocking prompt.</p>
+<p>What might be required:</p>
+<ul>
+<li>a setup step where "Next" is disabled until completed
+(blocking),</li>
+<li>or an account setup flow that can continue but the <u>o</u>perating
+<u>s</u>ystem (OS) does not consider setup complete,</li>
+<li>or repeated prompting that eventually forces completion.</li>
+</ul>
+<h3 id="Age_of_the_Primary_User_Wording">Age of the Primary User
+Wording</h3>
+<p>Why ask the awkward question
+<code>What is the age (in years) of the primary user of this device?</code>
+instead of <code>How old are you?</code> Because the law requires asking
+for the age of the user, not necessarily you.</p>
+<p><blockquote><p>(i) "User" means a child that is the primary user of the device.</p></blockquote></p>
+<h3 id="Age_versus_Date_of_Birth">Age versus Date of Birth</h3>
+<p>Bold added. Underline added.</p>
+<p><blockquote><p>1798.502. (a) With respect to a device for which account setup was
+completed before January 1, 2027, an operating system provider shall,
+before July 1, 2027, provide an accessible interface that allows an
+account holder to indicate the birth date<strong>,</strong> <u>age</u>,
+<strong>or</strong> both, of the user of that device for the purpose of
+providing a signal regarding the user's age bracket to applications
+available in a covered application store.</p></blockquote></p>
+<h3 id="Prompt_for_Age_instead_of_Age_Bracket">Prompt for Age instead of
+Age Bracket</h3>
+<p>Why prompt for the age instead of the age bracket? The law clearly
+asks for date of birth or age and not for an age bracket.</p>
+<p><blockquote><p>1798.502. [...] allows an account holder to indicate the birth
+date<strong>,</strong> <u>age</u>, <strong>or</strong> both, [...]</p></blockquote></p>
+<h3 id="No_Default_Choice">No Default Choice</h3>
+<p>Why not configure "under 13" or "older than 18" by default?</p>
+<p><blockquote><p>1798.502. [...] allows an account holder to indicate the birth
+date<strong>,</strong> <u>age</u>, <strong>or</strong> both, [...]</p></blockquote></p>
+<p>Therefore, a family friendly by default or adult by default setting
+is not permissible.</p>
+<h1 id="Alternatives">Alternatives</h1>
+<p>Jurisdictional avoidance / additional policy gates.</p>
+<p>Moved to <a href="Age-api.html#Terms_of_Service_Design_Draft">Terms of Service Design Draft</a>.</p>
+<p>No other known alternatives at the time of writing.</p>
+<h1 id="Objections">Objections</h1>
+<h2 id="Status_/_timeline">Status / timeline</h2>
+<ul>
+<li><u>This is only a draft:</u> Not a draft. The law has passed and is
+final. It will come into effect in January 2027.</li>
+</ul>
+<h2 id="Applicability_/_scope">Applicability / scope</h2>
+<ul>
+<li><u>Not applicable:</u> Unfortunately it is applicable.
+<blockquote><p>(g) "Operating system provider" means a person or entity that
+develops, licenses, or controls the operating system software on a
+computer, mobile device, or any other general purpose computing
+device.</p></blockquote></li>
+<li><u>Applies to commercial vendors only:</u> There is no passage in
+the law that limits this to commercial vendors.</li>
+<li><u>A VM is not an <u>o</u>perating <u>s</u>ystem (OS):</u> Possibly.
+Risky. This is an unresolved legal question.</li>
+</ul>
+<h2 id="Jurisdiction_/_enforceability">Jurisdiction / enforceability</h2>
+<ul>
+<li><u>Jurisdiction not applicable:</u>
+<ul>
+<li><u>Financial analogy:</u> It's similar to a financial service, like
+a bank account. An EU bank providing financial services to the USA,
+Canada, etc., will not do that unless they are authorized by the banking
+authority of that country (USA, Canada, ...). Banks outside the USA are
+typically very careful when onboarding U.S. customers, either complying
+fully or rejecting U.S. persons. Even non-U.S. persons must sign <a href="https://en.wikipedia.org/wiki/FATCA">FATCA</a> forms, where they
+must confirm that they are not a U.S. person.</li>
+<li><u>Common misunderstanding:</u> It may be a common misunderstanding
+to think "CA" means "California companies".
+<ul>
+<li><u>User scope:</u> AB 1043 is written around users in California,
+not around where the operating system distributor is headquartered. The
+definition of "account holder" is tied to a user "under 18 years of age
+in the state."</li>
+<li><u>What "CA" refers to:</u> "CA what?" Residents? Visitors?
+Distributors? Devices? The statute does not say "OS providers
+incorporated in California." It regulates "operating system providers"
+and "covered application stores" generally.</li>
+</ul></li>
+<li><u>Law "hook":</u> The hook is typically where the affected
+users/devices are (California), and then whether California can exercise
+jurisdiction over the provider.</li>
+</ul></li>
+<li><u>Not enforceable because you are outside of the jurisdiction:</u>
+California can try to apply its laws to out-of-state actors when there
+is a California nexus.
+<ul>
+<li><a href="https://california.public.law/codes/code_of_civil_procedure_section_410.10">California's
+long-arm statute is broad: California courts may be able to exercise
+jurisdiction on any basis consistent with state/federal
+constitutions.</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Piercing_the_corporate_veil">Piercing
+the corporate veil</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Enforcement_of_foreign_judgments">Enforcement
+of foreign judgments</a></li>
+<li><u>See also:</u> Wiki chapter <a href="Trust.html#Legal_Jurisdiction">Legal Jurisdiction</a> mentions examples how U.S.
+authorities enforced laws against non-U.S. persons that never resided in
+the U.S., never visited and never had any company there.</li>
+</ul></li>
+</ul>
+<h3 id="Non-U.S._Legal_Entity">Non-U.S. Legal Entity</h3>
+<div class="intro-like">
+<p>This section explains why being outside the U.S. may reduce some
+risks but may not automatically make AB 1043 irrelevant when users are
+in California.</p>
+</div>
+<ul>
+<li><u>Not a force field:</u> A non-U.S. legal entity may help in some
+legal cases, but it is not a force field. It probably does not guarantee
+protection.</li>
+<li><u>Private plaintiffs may be discouraged:</u> Being incorporated
+outside the U.S. may reduce risk from private plaintiffs because suing
+abroad and collecting abroad can be expensive and uncertain, so many
+private parties may not attempt it; some lawyers may discourage suing
+foreign entities due to added complexity, higher costs, higher fees, and
+a greater risk of an uncertain outcome.</li>
+<li><u>State enforcement may still be a concern:</u> Age verification AB
+1043 enforcement responsibility may be with the California Attorney
+General. A state actor may have stronger enforcement incentives and
+tools, and has far more staff and funding than a private party.</li>
+<li><u>Cross-border legal tools may exist:</u> The state may have tools
+available such as <a href="https://en.wikipedia.org/wiki/Piercing_the_corporate_veil">Piercing
+the corporate veil</a>. In some cases, this can be used to try to reach
+past a company structure to individuals. The state may also use tools
+such as <a href="https://en.wikipedia.org/wiki/Enforcement_of_foreign_judgments">Enforcement
+of foreign judgments</a>. In some cases, this can be used to try to have
+a judgment from one country recognized or enforced in another.</li>
+<li><u>Risk reduction is not non-applicability:</u> Foreign
+incorporation might provide risk reduction but may not result in full
+non-applicability. It may reduce the chance or ease of enforcement, but
+still might not take the project out of scope.</li>
+<li><u>U.S. company status may be unrelated:</u> "But you are not a U.S.
+company" may miss the point. The law does not have to focus on where a
+provider is incorporated. The law does not say it applies only to
+California companies or only to maintainers who are residents of, or
+visiting, California. The key scenario it describes is users in
+California.</li>
+<li><u>Focus may still be on people in California:</u> California
+legislature writes laws to regulate people in California, for example
+users located in California.
+<ul>
+<li><u>No need to mention California companies explicitly:</u> The law
+does not have to say "applicable to California operating system provider
+companies / maintainers resident or visiting California" to still affect
+providers outside California if it is written around California
+users.</li>
+<li><u>No need to mention extraterritoriality explicitly:</u> The law
+does not have to say "extraterritoriality" for it to be argued to apply
+when there is a California connection, such as users in California.</li>
+<li><u>No need to say worldwide explicitly:</u> The law does not have to
+say "applicable world wide" for it to still be argued that out-of-state
+or out-of-country providers are covered when California users are
+involved.</li>
+</ul></li>
+<li><u>Summary:</u> A non-U.S. legal entity may make some lawsuits
+harder or less attractive, but it probably does not, by itself, prevent
+AB 1043 from being relevant if California users are involved.</li>
+</ul>
+<h3 id="Jurisdiction_Applicability_and_Enforcement_Comparison_Table">Jurisdiction
+Applicability and Enforcement Comparison Table</h3>
+<div class="intro-like">
+<p>These tables are written from the perspective of a non-U.S.
+provider.</p>
+</div>
+<p>Step one: Can California obtain a judgment?</p>
+<p>Step two: If the defendant has no reachable assets or presence in the
+U.S., can California enforce that judgment abroad?</p>
+<h4 id="Applicability_Risk">Applicability Risk</h4>
+<div class="intro-like">
+<p>In this table, the column "Fact for this project?" uses
+<code>Yes</code> / <code>No</code> to mean true or false for this
+specific project (not good or bad). The column "Good sign for "not
+applicable"?" indicates whether the fact is a good sign for arguing the
+law does not apply.</p>
+</div>
+<table>
+<caption>Facts that may matter for whether AB 1043 applies</caption>
+<thead>
+<tr class="header">
+<th><p>Fact someone points to</p></th>
+<th><p>Fact for this project?</p></th>
+<th><p>Good sign for "not applicable"?</p></th>
+<th><p>Why this may matter (plain language)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Provider is a non-U.S. legal entity</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>Being incorporated outside the U.S. may reduce some practical
+risks, but it might not make AB 1043 irrelevant if users in California
+can still obtain and use the software; if the provider were a U.S.
+entity, overall exposure might be higher.</p></td>
+</tr>
+<tr class="even">
+<td><p>The operating system provider is <u>not</u> a U.S. person, is not
+a U.S. resident, and never resides in or visits the U.S.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>No personal U.S. ties may lower some practical risks, but it
+might not settle applicability if the law is written around users in
+California; if the provider did reside in, visit, or otherwise have
+strong U.S. ties, enforcement risk might increase.</p></td>
+</tr>
+<tr class="odd">
+<td><p>A user may be in the state of California (resident or
+visitor)</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>This is often the most intuitive "hook": rules like this may be
+written around users who are physically in the state, even if the
+provider is elsewhere; that means the provider may still be in scope
+when California users are involved.</p></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Enforcement_Risk">Enforcement Risk</h4>
+<div class="intro-like">
+<p>In this table, the column "Fact for this project?" uses
+<code>Yes</code> / <code>No</code> to mean true or false for this
+specific project (not good or bad). The column "Good sign for lower
+enforcement risk?" indicates whether the fact may make enforcement or
+collection harder in practice.</p>
+</div>
+<table>
+<caption>Facts that may affect practical enforcement / collection risk
+(even if AB 1043 may apply)</caption>
+<thead>
+<tr class="header">
+<th><p>Fact someone points to</p></th>
+<th><p>Fact for this project?</p></th>
+<th><p>Good sign for lower enforcement risk?</p></th>
+<th><p>Why this may matter (plain language)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Provider is a non-U.S. legal entity</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Enforcing across borders may be more complex and expensive than a
+local case, which may reduce some practical risks; if the provider were
+U.S. based, enforcement might be simpler.</p></td>
+</tr>
+<tr class="even">
+<td><p>The operating system provider is not a U.S. person, is not a U.S.
+resident, and never resides in or visits the U.S.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+<td><p>Avoiding U.S. residence and travel may reduce some personal
+exposure scenarios tied to physical presence; if the provider did travel
+to or reside in the U.S., practical risk might increase.</p></td>
+</tr>
+<tr class="odd">
+<td><p>A user is in the state of California (resident or
+visitor)</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+<td><p>California users may increase the chance of complaints,
+attention, or a perceived California connection; reducing California
+usage might reduce this risk, but it may be difficult to guarantee in
+real-world distribution.</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Compliance_options_/_alternatives">Compliance options /
+alternatives</h2>
+<ul>
+<li><u>You should just ignore this and not comply:</u> <a href="Trust.html#Legal_Compliance">Legal Compliance</a></li>
+<li><u>Should do this/that instead:</u> See <a href="Limitations_on_Free_Speech_on_Website_and_Chat.html#Personal_Liability">Personal Liability</a>.</li>
+<li><u>Should fight this in court:</u> Kicksecure is a small project run
+by a non-U.S. founder, non-U.S. company and is not well positioned to
+challenge this U.S. law in court. See also <a href="Age-api.html#Legal_Campaigns">Legal
+Campaigns</a>.</li>
+</ul>
+<h3 id="Prohibiting_California_residents_in_the_Terms_of_Service_and_Geo-Blocking">Prohibiting
+California residents in the Terms of Service and Geo-Blocking</h3>
+<p><span class="manually-placed-anchor " id="Prohibiting_California_residents_in_the_Terms_of_Service"></span></p>
+<div class="intro-like">
+<p>This section explains, in plain language, why a "no California users"
+Terms of Service clause may reduce risk in some cases, but might not
+guarantee that the project is fully outside California law or
+enforcement attention.</p>
+</div>
+<ul>
+<li><u>Non-freedom software:</u> Discrimination against residents in
+certain territories downgrades Freedom Software to it non-freedom
+software because it violates the <a href="https://www.gnu.org/philosophy/free-sw.html">Free Software four
+essential freedoms</a>, <a href="https://opensource.org/osd">The
+<u>O</u>pen <u>S</u>ource <u>D</u>efinition (OSD)</a> and <a href="https://wiki.debian.org/DebianFreeSoftwareGuidelines"><u>D</u>ebian
+<u>F</u>ree <u>S</u>oftware <u>G</u>uidelines (DFSG)</a> which states:
+<ul>
+<li><blockquote><p>The license must not discriminate against any person or group of
+persons.</p></blockquote></li>
+<li><a href="Avoid_nonfreedom_software.html">Avoid
+non-freedom software</a>.</li>
+<li><u>License proliferation:</u> The resulting <a href="https://en.wikipedia.org/wiki/License_proliferation">license
+proliferation</a> can lead to <a href="https://en.wikipedia.org/wiki/License_compatibility">license
+incompatibility</a>, hence making Open Source collaboration harder.
+Software license should be drafted by lawyers, discussed with the
+broader community and lawyers (in places such as <a href="https://opensource.org/lists">License Review</a>) so these can be
+approved.
+<ul>
+<li><u>License approval:</u>
+<ul>
+<li><a href="https://www.gnu.org/licenses/license-list.html"><u>F</u>ree
+<u>S</u>oftware <u>F</u>oundation (FSF) approved</a></li>
+<li><a href="https://opensource.org/licenses"><u>O</u>pen <u>S</u>ource
+<u>I</u>nitiative (OSI) approved</a></li>
+<li><a href="https://wiki.debian.org/DFSGLicenses/">DFSG
+approved</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><u>Not a full solution:</u> Prohibiting California residents in the
+TOS is probably avoidance, not legal resistance or legal compliance.
+<ul>
+<li><u>Probably cannot contract out of public law:</u> A TOS clause may
+be able to govern a user relationship, but it probably cannot remove
+statutory obligations if the project is otherwise considered in
+scope.</li>
+<li><u>May create a false sense of safety:</u> The text may look
+decisive, but it probably does not prove that California residents are
+actually excluded in practice.</li>
+</ul></li>
+<li><u>A jurisdiction carve-out:</u> This approach probably relies on
+licensing / terms of service language, sometimes paired with geoblocking
+downloads.
+<ul>
+<li><u>Scope probably depends on facts, not labels:</u> A jurisdiction
+disclaimer may be only one factor. Actual distribution, availability,
+outreach, and contacts may still matter.</li>
+<li><u>Other ties may still exist:</u> Hosting, fundraising, support
+channels, contributors, or other operational connections may create
+California related contacts even if the TOS says "no California
+users".</li>
+</ul></li>
+<li><u>Does not implement compliance with law AB 1043:</u> It does not
+provide what AB 1043 describes (an age setup prompt plus an age-bracket
+signal to applications).
+<ul>
+<li><u>Substantive requirements may remain unmet:</u> If the obligation
+is to provide specific functionality, a TOS prohibition probably does
+not provide the required functionality.</li>
+</ul></li>
+<li><u>Easy to implement:</u> It is probably mostly text changes, maybe
+with optional download geoblocking.
+<ul>
+<li><u>TOS acceptance is not guaranteed:</u> Many users may never
+affirmatively accept the TOS from the viewpoint of the state, especially
+when software is downloaded from mirrors, package repositories,
+torrents, or third party redistribution.</li>
+<li><u>Downstream redistribution may bypass your terms:</u> Forks,
+repackagers, and unofficial images may remove, modify, or fail to
+present the TOS while still distributing the software to California
+users.</li>
+<li><u>Geo-blocking, Kicksecure, Whonix specific:</u> It probably cannot
+be implemented without disabling the project's <a href="https://www.kicksecure.com/?#explain-onionwebsite"><code>.onion</code>
+domain</a>.</li>
+<li><u>Geo-blocking is hard to enforce:</u> Enforcement may be weak due
+to mirrors, torrents, and third-party redistribution.</li>
+<li><u>Geo-blocking is bypassable:</u> Even when implemented, users may
+be able to bypass it using VPNs, proxies, Tor exits, remote machines, or
+alternative download sources.</li>
+</ul></li>
+<li><u>May create debate and distraction risk:</u> In forums, issue
+trackers, etc. others might claim that a specific person is in
+California and therefore "not allowed to use" the project, and demand
+bans. This might happen with or without evidence, for example pointing
+to a personal website where someone states they are in California, and
+it could encourage arguments, harassment, or a witch-hunt dynamic.</li>
+<li><u>May reduce exposure:</u> It may reduce ties to California users
+and may reduce "doing business" indicators.
+<ul>
+<li><u>Reduction is not elimination:</u> Reduced exposure may help, but
+it might not remove all plausible California connections or all possible
+covered user scenarios.</li>
+</ul></li>
+<li><u>Existing users:</u> Blocking California may not resolve prompting
+existing users for compliance. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+<li><u>No guarantee of being out of scope:</u> Even if exposure is
+reduced, it might not guarantee being outside the scope of the law.
+<ul>
+<li><u>One California user may reintroduce risk:</u> If even a small
+number of California residents still obtain and use the software, the
+project may still face complaints, inquiries, or enforcement
+attention.</li>
+<li><u>Evidence may accumulate unintentionally:</u> Bug reports, support
+requests, community posts, donations, or other interactions may create a
+record of California use despite the TOS clause.</li>
+</ul></li>
+<li><u>Conclusion:</u> A TOS / Geo-Blocking based California prohibition
+may lower risk in some scenarios, but it might not reliably prevent
+California use or contacts, and therefore may not be a dependable way to
+fully avoid legal exposure by itself.</li>
+</ul>
+<h2 id="Implementation_/_technical_limitations">Implementation / technical
+limitations</h2>
+<ul>
+<li><u>Easy to bypass:</u> Users can trivially bypass an age prompt by
+entering a false age.</li>
+<li><u>Currently may be sufficient:</u> This may still be "good enough"
+for now because the law does not yet require the age prompt to be
+reasonably difficult to bypass.</li>
+<li><u>Future rules might be stricter:</u> In the future, laws might
+require making this reasonably difficult to bypass, which could pressure
+projects into using stricter measures that may be harder on users.
+Similar laws in New York are an example, although they may not require
+as robust of measures as they initially seem to require.</li>
+<li><u>Stricter measures <strong>not</strong> currently mandated:</u>
+Fortunately, the law does not yet mandate measures such as the following
+(which may increase control over the user's device or reduce user
+freedom):
+<ul>
+<li><u>ID verification:</u> Requiring proof of identity (for example,
+uploading or scanning identity documents).</li>
+<li><u>Certified software:</u> Requiring a specific "approved" software
+environment rather than allowing user modified systems.</li>
+<li><u>Device attestation:</u> <a href="Miscellaneous_Threats_to_User_Freedom.html#Device_Attestation_such_as_SafetyNet">Device Attestation such as SafetyNet / Google Play
+Integrity API</a> which can make a device prove it is unmodified or
+"trusted" before an app will run.</li>
+<li><u>Locked bootloaders:</u> <a href="Miscellaneous_Threats_to_User_Freedom.html#restricted_boot">restricted boot</a> which can prevent installing
+alternative operating systems or custom system images.</li>
+<li><u>Root refusal:</u> <a href="Miscellaneous_Threats_to_User_Freedom.html#Administrative_Rights">administrative ("root") rights refusal</a> where apps
+refuse to run if the user has full administrative control over their own
+device.</li>
+<li><u>Cryptographic secure APIs:</u> Tamper resistant (sometimes
+hardware backed) checks intended to make bypassing more difficult.</li>
+<li><u>Other similar mechanisms:</u> Additional technical controls with
+similar effects, etc.</li>
+<li><u>Broader concern:</u> This trend might be part of the <a href="Miscellaneous_Threats_to_User_Freedom.html#War_on_General_Purpose_Computing">War on General Purpose Computing</a>, where general
+purpose devices are increasingly restricted through technical controls,
+policy requirements and user freedom being lost.</li>
+</ul></li>
+<li><u>Implementation is not good enough:</u> Opinionated. A reasonable
+effort has been made. Four related mailing lists have been contacted,
+see <a href="Age-api.html#On_the_unfortunate_need_for_an_&quot;age_verification&quot;_API_for_legal_compliance_reasons_in_some_U.S._states">On the unfortunate need for an "age verification" API
+for legal compliance reasons in some U.S. states</a>. <a href="Age-api.html#Development">Development</a> has been
+done. <blockquote><p>(b) An operating system provider or a covered application store that
+makes a good faith effort to comply with this title, taking into
+consideration available technology and any reasonable technical
+limitations or outages, shall not be liable for an erroneous signal
+indicating a user's age range or any conduct by a developer that
+receives a signal indicating a user's age range.</p></blockquote></li>
+<li><u>You should use the standard API:</u> An age API
+convention/standard does not exist yet. If one were to exist, it would
+be considered.</li>
+</ul>
+<h2 id="Ecosystem_/_responsibility_allocation">Ecosystem / responsibility
+allocation</h2>
+<ul>
+<li><u>The base distribution (Debian) needs to implement this, not
+derivatives such as Kicksecure:</u> It is correct that Debian may also
+need to implement this. However, Kicksecure has no influence on that.
+The topic has been raised at the Debian mailing list <a href="https://lists.debian.org/debian-devel/2026/03/msg00016.html">debian-devel:
+On the unfortunate need for an "age verification" API for legal
+compliance reasons in some U.S. states</a>.</li>
+<li><u>Other distributions potential reactions:</u> Might react in
+various ways:
+<ul>
+<li>not noticing;</li>
+<li>wait and see;</li>
+<li>not taking it seriously;</li>
+<li>waiting to get fined or sued;</li>
+<li>TOS (terms of service) prohibiting California residents</li>
+<li>implementation of age declaration or age verification</li>
+</ul></li>
+</ul>
+<h2 id="Enforcement_likelihood_/_practical_risk">Enforcement likelihood /
+practical risk</h2>
+<ul>
+<li><u>Probably technically illegal but not enforced as long as no adult
+content is shown to children:</u> Possibly. Risky.</li>
+<li><u>Enforcement will take years and it's a bit like being struck by
+lightning (rare):</u> Might be true, but it is risky. No applicable
+empirical basis for that analogy has been found yet by the author.</li>
+</ul>
+<h2 id="Legal_impact_in_case_malware_is_tampering_with_the_age_API">Legal
+impact in case malware is tampering with the age API</h2>
+<p>What would be the legal impact if <a href="Malware_and_Firmware_Trojans.html">malware</a> if downgrading or upgrading the age bracket
+API response?</p>
+<p>While malware is always a security issue for the user, it may not be
+a legal issue for the operating system provider as far as <a href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1043">California
+AB 1043</a> is concerned.</p>
+<p><blockquote><p>(b) An operating system provider or a covered application store that
+makes a good faith effort to comply with this title, taking into
+consideration available technology and any reasonable technical
+limitations or outages, shall not be liable for an erroneous signal
+indicating a user's age range or any conduct by a developer that
+receives a signal indicating a user's age range.</p></blockquote></p>
+<p>Related: <a href="Age-api.html#Security_Impact">Security
+Impact</a></p>
+<h1 id="Activism_/_Campaigns_/_Outreach">Activism / Campaigns /
+Outreach</h1>
+<h2 id="Contribute_by_Taking_on_Legal_Responsibility">Contribute by
+Taking on Legal Responsibility</h2>
+<p>It may be unrealistic to expect developers who are already very busy
+to personally take on the risk of a legal case. So what is the
+alternative for someone who still wants to help this effort?</p>
+<p>One possible alternative would be volunteers who are willing to be
+personally identified. This could include providing their real name,
+address, and any identity verification that may be required. They would
+need to complete all required paperwork, such as forms, registrations,
+contracts, and other legal documents. They would also need to accept
+full personal liability for whichever project(s) they choose to cover.
+In other words, they would personally take on the legal risk and
+possible financial costs if something goes wrong.</p>
+<p>This is based on the as-yet unconfirmed assumption that volunteers
+can legally take on this kind of responsibility at all.</p>
+<p>If such volunteers existed and were willing to challenge age-API in
+court, for example by arguing that "code is speech" or by using any
+other arguments recommended by legal counsel, more projects might be
+willing to refuse compliance by not implementing age-API.</p>
+<h2 id="Outreach">Outreach</h2>
+<ul>
+<li><a href="https://fosstodon.org/@carlrichell/116201429639953387">https://fosstodon.org/@carlrichell/116201429639953387</a></li>
+</ul>
+<h2 id="Legal_Campaigns">Legal Campaigns</h2>
+<p><s>At the time of writing, the author is unaware of any initiatives
+with the goal of challenging this law in court.</s>?</p>
+<p>Recently found:</p>
+<ul>
+<li><a href="https://agelesslinux.org/">https://agelesslinux.org/</a>
+<ul>
+<li><a href="https://agelesslinux.github.io/">https://agelesslinux.github.io/</a></li>
+<li><a href="https://github.com/agelesslinux">https://github.com/agelesslinux</a></li>
+<li><a href="https://github.com/agelesslinux/agelesslinux.org">https://github.com/agelesslinux/agelesslinux.org</a>
+<ul>
+<li><a href="https://github.com/agelesslinux/agelesslinux.org/pull/1">Update
+Kicksecure / Whonix status to reflect current plans</a></li>
+</ul></li>
+<li><a href="https://github.com/agelesslinux/agelesslinux.github.io">https://github.com/agelesslinux/agelesslinux.github.io</a></li>
+<li><a href="https://github.com/agelesslinux/church-of-open-source-software-and-hardware">https://github.com/agelesslinux/church-of-open-source-software-and-hardware</a></li>
+<li><a href="https://goblincorps.com/ageless-linux.html">https://goblincorps.com/ageless-linux.html</a></li>
+<li><a href="https://www.reddit.com/r/privacy/comments/1rkorfy/ageless_linux_a_debianbased_distro_that_is/">https://www.reddit.com/r/privacy/comments/1rkorfy/ageless_linux_a_debianbased_distro_that_is/</a></li>
+</ul></li>
+</ul>
+<p>Offer for help by <a href="https://x.com/prestonjbyrne">https://x.com/prestonjbyrne</a> in
+this tweet <a href="https://x.com/prestonjbyrne/status/2028940016915759579">https://x.com/prestonjbyrne/status/2028940016915759579</a></p>
+<p>Interesting sounding ideas:</p>
+<p><blockquote><p>I doubt the state of California can actually succeed in applying the
+law to Debian, Ubuntu and other free, open-source OS's. A few arguments
+come to mind. Under the Bernstein v. DOJ, source code is protected
+speech. The attempt at "compelled speech" probably won't pass muster.
+There is an arguable constitutional right to anonymous speech probably
+infringed upon by any compusory technical requirement for age
+disclosure. California lacks the jurisdiction to enforce its state laws
+against providers outside its borders. Enforcement is impossible. Under
+the license, any user can legally fork the software to remove the
+age-verification module. And there is always the commerce clause
+argument. The rush to comply could be a waiver of all these arguments.
+~vince<span class="blockquote-context"><a href="https://lists.debian.org/debian-devel/2026/03/msg00029.html">https://lists.debian.org/debian-devel/2026/03/msg00029.html</a></span></p></blockquote></p>
+<p>At the time of writing, no public statements by FSF, GNU, FSFE, OSI
+or EFF existed to the knowledge of the author.</p>
+<h1 id="Future">Future</h1>
+<p>Potentially.</p>
+<h2 id="New_York_State_Senate_Bill_S8102A">New York State Senate Bill
+S8102A</h2>
+<p>Might apply to device manufacturers only? Does not seem so.</p>
+<p>Underline added.</p>
+<p><blockquote><p>6. "COVERED MANUFACTURER" SHALL MEAN A MANUFACTURER OF AN
+INTERNET-EN- ABLED DEVICE, <u>AN OPERATING SYSTEM PROVIDER</u>, OR AN
+APPLICATION STORE.<span class="blockquote-context">The New York State
+Senate: <a href="https://www.nysenate.gov/legislation/bills/2025/S8102/amendment/A">Senate
+Bill S8102A</a> (<a href="https://web.archive.org/web/20260305182153/https://www.nysenate.gov/legislation/bills/2025/S8102/amendment/A">archived</a>)</span></p></blockquote></p>
+<p>Bold added. Underline added.</p>
+<p><blockquote><p><u>To require devices to conduct <strong>commercially reasonable age
+assurance</strong> for users under the age of 18 at the point of device
+activation,</u> unlocking the ability to enforce all other digital
+privacy and safety laws for underage
+users<span class="blockquote-context">The New York State Senate: <a href="https://www.nysenate.gov/legislation/bills/2025/S8102/amendment/A">Senate
+Bill S8102A</a></span></p></blockquote></p>
+<p>Bill PDF</p>
+<ul>
+<li>live: <a href="https://legislation.nysenate.gov/pdf/bills/2025/s8102a">https://legislation.nysenate.gov/pdf/bills/2025/s8102a</a></li>
+<li>archived: <a href="https://web.archive.org/web/20260305091554/https://legislation.nysenate.gov/pdf/bills/2025/s8102a">https://web.archive.org/web/20260305091554/https://legislation.nysenate.gov/pdf/bills/2025/s8102a</a></li>
+</ul>
+<p>Law status at the time of writing: "Introduced" - that is as per
+quote of above website. It has not "Passed Assembly", not "Passed
+Senate". It is not in effect yet. In laymen terms, one could say "it's
+planned / a draft".</p>
+<p><span class="manually-placed-anchor mpa-visible" id="referral_to_other_article_by_draft_amendment">referral
+to other article by draft amendment</span></p>
+<p>Bold added. Underline added.</p>
+<p><blockquote><p>1. "Age assurance" shall mean any method to reasonably determine the
+age category of a user, using methods that reasonably prevent against
+circumvention. Such method may include a method that meets the
+requirements of article <u>forty-five</u> of this chapter,
+<u><strong>or</strong></u> may be a method that is identified pursuant
+to new regulations promulgated by the attorney general consistent with
+section <u>fifteen hundred forty-five</u> of this
+article<span class="blockquote-context"><a href="https://web.archive.org/web/20260305091554/https://legislation.nysenate.gov/pdf/bills/2025/s8102a">https://web.archive.org/web/20260305091554/https://legislation.nysenate.gov/pdf/bills/2025/s8102a</a></span></p></blockquote></p>
+<p>Section <u>fifteen hundred forty-five</u> might refer to <a href="https://www.nysenate.gov/legislation/laws/GBS/1501">The Laws of
+New York Consolidated Laws of New York CHAPTER 20 General Business
+ARTICLE 45 Safe For Kids Act, SECTION <u>1501</u></a>.</p>
+<p><blockquote><p>(a) the covered operator has used commercially reasonable and
+technically feasible methods to determine that the covered user is not a
+covered minor; or</p>
+<p>(b) the covered operator has obtained verifiable parental consent to
+provide an addictive feed to a covered minor.</p></blockquote></p>
+<p><blockquote><p>2. (a) The attorney general shall promulgate regulations identifying
+commercially reasonable and technically feasible methods for covered
+operators to determine if a covered user is a covered minor required
+pursuant to subdivision one of this section, and any exceptions
+thereto.</p></blockquote></p>
+<p><blockquote><p>(c) Such regulations shall also identify the appropriate levels of
+accuracy that would be commercially reasonable and technically feasible
+for covered operators to achieve in determining whether a covered user
+is a covered minor. Such regulations shall set forth multiple
+commercially reasonable and technically feasible methods for a covered
+operator to determine if a covered user is a covered minor, including at
+least one method that either does not rely solely on government issued
+identification or that allows a covered user to maintain anonymity as to
+the covered operator of the addictive social media platform.</p></blockquote></p>
+<p><blockquote><p>5. Information collected for the purpose of obtaining such verifiable
+parental consent shall not be used for any purpose other than obtaining
+verifiable parental consent and shall be deleted immediately after an
+attempt to obtain verifiable parental consent, except where necessary
+for compliance with any applicable provisions of New York state or
+federal law or regulation.</p></blockquote></p>
+<p><blockquote><p>2. (a) The attorney general shall promulgate regulations identifying
+commercially reasonable and technically feasible methods for covered
+operators to determine if a covered user is a covered minor required
+pursuant to subdivision one of this section, and any exceptions
+thereto.</p></blockquote></p>
+<p><blockquote><p>consider the size, financial resources, and technical capabilities of
+the addictive social media platform</p></blockquote></p>
+<p>It's talking about "social media platform". Why might this apply? See
+<a href="Age-api.html#referral_to_other_article_by_draft_amendment">referral to other article by draft amendment</a>.</p>
+<p>ag.ny.gov: <a href="https://ag.ny.gov/resources/individuals/consumer-issues/technology/protecting-children-online">Protecting
+Children Online, Notice of Proposed Rulemaking</a></p>
+<p><blockquote><p>(h) Age Assurance Method. The term Age Assurance Method means any
+type of age estimation, age inference, or age
+verification.<span class="blockquote-context">ag.ny.gov: <a href="https://ag.ny.gov/sites/default/files/regulatory-documents/safe-for-kids-act-nprm.pdf">Stop
+Addictive Feeds Exploitation, (SAFE) for Kids Act, Office of the New
+York State Attorney General Letitia James, Economic Justice Division,
+Notice of Proposed Rulemaking</a></span></p></blockquote></p>
+<p><blockquote><p>8. Age Assurance Method</p>
+<p>The proposed rule defines "age assurance method" as any type of age
+estimation, age inference, or age verification. "Age assurance" is
+typically used as an umbrella term for various types of methods that can
+support a conclusion regarding an individual's age or age status, often
+for the purpose of making an age-related eligibility decision. For
+purposes of compliance with the proposed rule, OAG has identified three
+categories of age assurance that are considered age assurance methods,
+each of which contains one or more methods that can meet the accuracy
+minimum if effectively implemented and executed. The OAG seeks comments
+on the proposed definition of age assurance method</p></blockquote></p>
+<p><blockquote><p>Under the proposed rule, self-declaration is not an age assurance
+method. However, self-declaration as a minor qualifies a covered user as
+a covered minor for purposes of compliance with section 700.4.</p></blockquote></p>
+<p><blockquote><p>An age assurance method would be required for all covered users who
+do not selfdeclare as minors. By proposing to define age assurance
+method through categories of methods rather than specific methods, OAG
+would allow covered operators to determine the method or methods that
+are best suited to the online platform and users. It also would allow
+operators to remain flexible in choosing methods as age assurance
+methods and technology continue to evolve. The accuracy minimum and
+requirements of section 700.4 ensure that the methods operators
+ultimately choose are effective.</p></blockquote></p>
+<h2 id="Potential_Future_California_Age_Verification_Law_Changes">Potential
+Future California Age Verification Law Changes</h2>
+<p><blockquote><p>OFFICE OF THE GOVERNOR</p>
+<p>[...]</p>
+<p>Streaming services and video game developers contend that this bill's
+framework, while well-suited to traditional software applications, does
+not fit their respective products. Many of these companies have existing
+age verification systems in place, addressing complexities such as
+multi-user accounts shared by a family and user profiles utilized across
+multiple devices. As this bill does not take effect until January 1,
+2027, I urge the Legislature to enact legislation in 2026 to address
+these particular concerns.</p>
+<p>[...]<span class="blockquote-context">gov.ca.gov: <a href="https://www.gov.ca.gov/wp-content/uploads/2025/10/AB-1043-Signing-Message.pdf">AB
+1043 signing message</a></span></p></blockquote></p>
+<h1 id="Potential_Arguments">Potential Arguments</h1>
+<h2 id="commercially_reasonable_age_assurance">commercially reasonable
+age assurance</h2>
+<p><blockquote><p>commercially reasonable age assurance</p></blockquote></p>
+<p>It may be commercially unreasonable to implement anything ID-based or
+voice, photo, video selfie-based due to Kicksecure's <a href="Privacy.html">Privacy</a> an <a href="Whonix.html">Whonix</a>'s goals (which are fundamentally
+incompatible with de-anonymizing and fingerprintable verification
+methods) and thus damage the economic viability of the company and its
+resources, potentially leading to bankruptcy. Zero-knowledge proofs are
+<a href="https://brave.com/blog/zkp-age-verification-limits/">likely not
+sufficient to preserve the user's anonymity</a>.</p>
+<p>Forbidding use by anyone under the age of 18 and providing an "age
+locking" mechanism may be the most that is commercially reasonable for a
+smaller business.</p>
+<p>Judging from forum discussions and Reddit discussions, the
+overwhelming majority of people commented very negatively regarding age
+verification API implementation. Many have threatened to switch to
+another Linux distribution should their current Linux distribution
+implement such a feature.</p>
+<h2 id="more">more</h2>
+<p>Potential conflict with:</p>
+<ul>
+<li>licensing such as GPLv3</li>
+<li>other jurisdictions such as EU GDPR</li>
+<li>federal law</li>
+<li>FTC</li>
+<li>NIST</li>
+<li>DoW</li>
+</ul>
+<h1 id="Development">Development</h1>
+<ul>
+<li><a href="https://github.com/Kicksecure/age-api">https://github.com/Kicksecure/age-api</a></li>
+<li><a href="Dev/todo.html#Age_API">development TODO task:
+Age API</a></li>
+</ul>
+<h1 id="Related">Related</h1>
+<h2 id="Lawsuits">Lawsuits</h2>
+<p>May be related to app store age verification rather than operating
+system age signaling:</p>
+<ul>
+<li><a href="https://ccianet.org/library/ccia-v-paxton-wd-tex-sb2420-complaint/">https://ccianet.org/library/ccia-v-paxton-wd-tex-sb2420-complaint/</a></li>
+<li><a href="https://www.texaspolicyresearch.com/texas-app-store-law-faces-first-amendment-lawsuit/">https://www.texaspolicyresearch.com/texas-app-store-law-faces-first-amendment-lawsuit/</a></li>
+</ul>
+<h2 id="Related_Court_Rulings">Related Court Rulings</h2>
+<ul>
+<li><a href="https://cbsaustin.com/resources/pdf/70c794d9-f8d7-489d-b4d0-9409fd2d36fb-189114911210.pdf">https://cbsaustin.com/resources/pdf/70c794d9-f8d7-489d-b4d0-9409fd2d36fb-189114911210.pdf</a>
+<ul>
+<li><a href="https://www.reuters.com/legal/government/judge-blocks-virginia-law-restricting-social-media-children-2026-02-27/">https://www.reuters.com/legal/government/judge-blocks-virginia-law-restricting-social-media-children-2026-02-27/</a></li>
+</ul></li>
+</ul>
+<h2 id="Resources">Resources</h2>
+<ul>
+<li><a href="https://actonline.org/2025/01/14/the-abcs-of-age-verification-in-the-united-states/">https://actonline.org/2025/01/14/the-abcs-of-age-verification-in-the-united-states/</a></li>
+<li><a href="https://www.eff.org/pages/does-tech-even-work">https://www.eff.org/pages/does-tech-even-work</a></li>
+<li><a href="https://news.bloomberglaw.com/legal-exchange-insights-and-commentary/states-use-app-store-controls-to-keep-online-content-from-minors">https://news.bloomberglaw.com/legal-exchange-insights-and-commentary/states-use-app-store-controls-to-keep-online-content-from-minors</a></li>
+<li><a href="https://compliancehub.wiki/californias-tech-surveillance-laws-what-compliance-teams-need-to-know-about-ab-56-sb-243-and-ab-1043/">https://compliancehub.wiki/californias-tech-surveillance-laws-what-compliance-teams-need-to-know-about-ab-56-sb-243-and-ab-1043/</a></li>
+<li><a href="https://developer.apple.com/documentation/declaredagerange/">https://developer.apple.com/documentation/declaredagerange/</a></li>
+</ul>
+<h2 id="Similar">Similar</h2>
+<p><a href="https://metro.co.uk/2026/01/15/teens-outsmarting-australias-social-media-ban-wrinkling-faces-look-older-26306429/">https://metro.co.uk/2026/01/15/teens-outsmarting-australias-social-media-ban-wrinkling-faces-look-older-26306429/</a></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://discussion.fedoraproject.org/t/california-age-verification/181968/92">https://discussion.fedoraproject.org/t/california-age-verification/181968/92</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Dev/cryptography.html" title="Dev/cryptography"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/cryptography</span></a><a class="index internal" href="Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Dev/Password_Manager.html" title="Dev/Password Manager"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Password
+Manager</span></a><span class="info"><span class="prev">Previous page:
+Dev/cryptography</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Password
+Manager</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/user-sysmaint-split</title>
+<meta name="description" content="user-sysmaint-split - Role-Based Boot Modes - USER Session / SYSMAINT Session (system maintenance)">
+<meta property="og:description" content="user-sysmaint-split - Role-Based Boot Modes - USER Session / SYSMAINT Session (system maintenance)">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split.html">
+<meta property="og:title" content="user-sysmaint-split">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Grub-boot-icon.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>user-sysmaint-split</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Limited_Environment">Limited Environment</a></li><li class="toc-l2"><a href="#Implementation">Implementation</a></li><li class="toc-l3"><a href="#Minimal_Services">Minimal Services</a></li><li class="toc-l3"><a href="#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">No
+SUID Security Risk originating from Privilege Escalation Tools</a></li><li class="toc-l3"><a href="#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No
+Access to Privilege Escalation Tools for Limited Accounts</a></li><li class="toc-l3"><a href="#user_group_sudo_membership">user group sudo membership</a></li><li class="toc-l2"><a href="#Qubes_Support">Qubes Support</a></li><li class="toc-l3"><a href="#Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</a></li><li class="toc-l3"><a href="#Qubes_R4.3_and_later">Qubes R4.3 and later</a></li><li class="toc-l3"><a href="#Qubes_Security_Known_Issue">Qubes Security Known Issue</a></li><li class="toc-l2"><a href="#Fast_User_Switching">Fast User Switching</a></li><li class="toc-l2"><a href="#Server_Support">Server Support</a></li><li class="toc-l2"><a href="#Usability">Usability</a></li><li class="toc-l2"><a href="#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">Fast
+User Switching - Anti Login Spoofing - Anti Phishing Code</a></li><li class="toc-l3"><a href="#Mode_First_Ordering">Mode First Ordering</a></li><li class="toc-l3"><a href="#Session_First_Ordering">Session First Ordering</a></li><li class="toc-l2"><a href="#/etc/grub.d">/etc/grub.d</a></li><li class="toc-l2"><a href="#BootEntries">BootEntries</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="VirusForget.html" title="Dev/VirusForget"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirusForget</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="boot.html" title="Dev/boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/boot</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirusForget</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/boot</span></span></span>user-sysmaint-split</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Default_Passwords.html">Default
+Passwords</a></li>
+<li><a href="../Passwords.html">Passwords</a></li>
+<li><a href="../User.html">Account Management</a></li>
+<li><a href="../Login.html">Login</a></li>
+<li><a href="../Login_spoofing.html">Login Spoofing</a></li>
+<li><a href="../Root.html">Safely Use Root Commands</a></li>
+<li><a href="../Sysmaint.html"><code>sysmaint</code>
+Account</a></li>
+<li><a href="../System_Maintenance_Panel.html">System
+Maintenance Panel</a></li>
+<li><a href="../Unrestricted_admin_mode.html">Unrestricted
+Admin Mode</a></li>
+<li><a href="../Protection_Against_Physical_Attacks.html">Protection against Physical Attacks</a></li>
+<li><a href="Strong_Linux_User_Account_Isolation.html">User Account Isolation (developers)</a></li>
+<li><a href="user-sysmaint-split.html"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><a href="../Polkit.html">Polkit (formerly PolicyKit) /
+<code>pkexec</code></a></li>
+<li><a href="../Privleap.html">privleap /
+<code>leaprun</code></a></li>
+</ul>
+</div>
+<p><img src="../../media/Grub-boot-sysmaint-icon.jpg.webp" width="250" alt="Grub-boot-sysmaint-icon.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><code>user-sysmaint-split</code> - Role-Based Boot Modes - USER
+Session / SYSMAINT Session (system maintenance) and their use cases.
+Through <code>user-sysmaint-split</code> as the new default feature in
+Kicksecure we introduce new different boot modes, aimed at improving
+security through role-based boot options.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>This page discusses different boot modes in the Kicksecure operating
+system, aimed at improving security through role-based boot options. It
+describes modes like "USER Session" for daily activities and "SYSMAINT
+Session" for updates, software installation, and full system control.
+The goal is to isolate user activities and reduce security risks by
+restricting what each boot mode can access and modify. The page also
+explains opt-outs for users who prefer <a href="../Unrestricted_admin_mode.html">unrestricted admin mode</a>.</p>
+<p>These boot modes are generic and work for both hosts and VMs. This
+applies to Kicksecure and derivatives of Kicksecure, such as
+Whonix<sup>®</sup>.</p>
+<p><code>user-sysmaint-split</code> strenghtens Security-Driven
+Design:</p>
+<ul>
+<li>Limited user accounts cannot access privilege escalation tools.</li>
+<li><code>sysmaint</code> session isolates system maintenance tasks from
+daily use.</li>
+<li>Transitioning between modes enforces a stricter security model.</li>
+</ul>
+<h1 id="Development_Goals">Development Goals</h1>
+<p><span class="manually-placed-anchor " id="Goals"></span></p>
+<p>These goals guide the user/sysmaint isolation implementation:</p>
+<ul>
+<li><a href="../Login_spoofing.html">Defeat login
+spoofing</a></li>
+<li><a href="../Root.html#Prevent_Malware_from_Sniffing_the_Root_Password">Prevent Malware from Sniffing the Root
+Password</a></li>
+<li><a href="Strong_Linux_User_Account_Isolation.html">Strong Linux User Account Isolation</a></li>
+<li><a href="../Noexec.html">Noexec</a></li>
+<li><a href="../Verified_Boot.html">Verified Boot</a></li>
+</ul>
+<h1 id="Grub_Default_Boot_Menu_Entries">Grub Default Boot Menu
+Entries</h1>
+<p>The default GRUB boot menu entries are:</p>
+<ul>
+<li><code>PERSISTENT Mode | USER Session | daily activities</code></li>
+<li><code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code></li>
+<li><code>LIVE Mode | USER Session | disposable use</code></li>
+<li><code>LIVE Mode | SYSMAINT Session | maintenance testing</code></li>
+</ul>
+<h1 id="Use_Cases_for_the_Different_Boot_Modes">Use Cases for the
+Different Boot Modes</h1>
+<p>Common use cases tailored to the available boot modes:</p>
+<ul>
+<li><code>PERSISTENT Mode | USER Session | daily activities</code>
+<ul>
+<li>Ideal for browsing, email, chat, or running a pre-configured
+server.</li>
+<li>read-only <code>/usr</code>, <code>/etc</code>. (Planned. Currently
+inability to elevate to root means that <code>/usr</code> and
+<code>/etc</code> are still read-write, but normal user accounts can't
+write anything there due to file permissions. Unclear whether these
+directories will be ephemerally writable by root or if they will be true
+read-only, see <a href="../Verified_Boot.html#Challenges_with_Immutable_Filesystems">Challenges with Immutable Filesystems</a> for pros and
+cons of possible approaches.)</li>
+<li>read-write <code>/home</code></li>
+<li>Verified Boot: enabled. (Planned.)</li>
+</ul></li>
+<li><code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>:
+Allows running <code>sudo apt install [package]</code>, editing
+<code>/etc/apt/sources.list.d</code>, and similar tasks. Reboot into
+USER session afterward.
+<ul>
+<li>read-write <code>/usr</code>, <code>/etc</code>,
+<code>/home</code></li>
+<li>Verified Boot: disabled</li>
+</ul></li>
+<li><code>LIVE Mode | USER Session | disposable use</code>: Similar to
+<code>PERSISTENT Mode | USER Session | daily activities</code> but
+<u>without</u> persistence.</li>
+<li><code>LIVE Mode | SYSMAINT Session | maintenance testing</code>:
+Similar to
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+but <u>without</u> persistence.</li>
+</ul>
+<h1 id="Boot_Modes_Comparison_Table">Boot Modes Comparison Table</h1>
+<table>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p><a href="../Persistent_Mode.html"><span class="nowrap"><code>PERSISTENT</code></span><code> Mode</code></a><code> </code><span class="nowrap"><code>USER Session</code></span></p></th>
+<th><p><a href="../Live_Mode.html"><span class="nowrap"><code>LIVE Mode</code></span></a><code> </code><span class="nowrap"><code>USER Session</code></span></p></th>
+<th><p><a href="../Live_Mode.html"><span class="nowrap"><code>LIVE Mode</code></span></a><code> </code><span class="nowrap"><code>SYSMAINT Session</code></span></p></th>
+<th><p><a href="../Persistent_Mode.html"><span class="nowrap"><code>PERSISTENT</code></span><code> Mode</code></a><code> </code><span class="nowrap"><code>SYSMAINT Session</code></span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Description</p></td>
+<td><p>For daily activities such as browsing, email, chat, or running a
+pre-configured server.</p></td>
+<td><p>Similar to
+<code>PERSISTENT Mode | USER Session | daily activities</code> but
+without persistence.</p></td>
+<td><p>Similar to
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+but without persistence.</p></td>
+<td><p>For system maintenance tasks such as running
+<code>sudo apt install [package]</code>, editing
+<code>/etc/apt/sources.list.d</code>, and similar tasks. Reboot into
+USER session afterward.</p></td>
+</tr>
+<tr class="even">
+<td><p>File System Access: <code>/usr</code>, <code>/etc</code></p></td>
+<td><p>No,
+read-only</p></td>
+<td><p>No,
+read-only</p></td>
+<td><p>No,
+read-only with ephemeral overlay</p></td>
+<td><p>Yes,
+read-write</p></td>
+</tr>
+<tr class="odd">
+<td><p>File System Access: <code>/home</code></p></td>
+<td><p>Yes,
+read-write</p></td>
+<td><p>No,
+read-only with ephemeral overlay</p></td>
+<td><p>No,
+read-only with ephemeral overlay</p></td>
+<td><p>Yes,
+read-write</p></td>
+</tr>
+<tr class="even">
+<td><p>Boot with Minimal System Services</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes
+(<code>sysmaint-boot.target</code>)</p></td>
+<td><p>Yes
+(<code>sysmaint-boot.target</code>)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Inhibit (Re-)Start of System Services during Upgrades</p></td>
+<td><p>No</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Verified_Boot.html">Verified Boot</a>
+(<strong><u>planned</u></strong>)</p></td>
+<td><p>Yes,
+Enabled</p></td>
+<td><p>Yes,
+Enabled</p></td>
+<td><p>No,
+Disabled</p></td>
+<td><p>No,
+Disabled</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Integration_with_Verified_Boot">Integration with Verified
+Boot</h1>
+<p>When booting into SYSMAINT Session, <a href="../Verified_Boot.html">verified boot</a> will be disabled for the purpose of
+updates, software installation, and system configuration. During
+shutdown, the checksums required for verified boot will be created.</p>
+<p>When booting into USER Session, verified boot will be enabled for the
+purpose of improved security.</p>
+<p>See also <a href="../Verified_Boot.html#Verified_Boot_for_account_user_but_not_for_account_sysmaint">Verified Boot for account <code>user</code> but not for
+account <code>sysmaint</code></a>.</p>
+<p><strong><u>planned</u></strong>: Role-Based Boot Modes
+(<code>user</code> versus <code>sysmaint</code> session) has been
+implemented already. Verified boot is an additional security feature
+that is planned to be implemented later.</p>
+<h1 id="Opt-Out_to_Get_the_Same_Behavior_as_Old_Kicksecure">Opt-Out to
+Get the Same Behavior as Old Kicksecure</h1>
+<p>Users who wish "the old Kicksecure" "with unrestricted
+<code>sudo</code> for account <code>user</code>" back, who don't want
+the</p>
+<ul>
+<li><code>LIVE Mode | SYSMAINT Session | maintenance testing</code></li>
+<li><code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code></li>
+</ul>
+<p>boot options, could uninstall package
+<code>user-sysmaint-split</code>. It could be easily removed using <a href="../Debian_Packages.html#dummy-dependency"><code>dummy-dependency</code></a>.
+(<code>dummy-dependency</code> is being used to avoid <a href="../Debian_Packages.html">issues with meta package
+removal</a>.)</p>
+<p>This is documented on the <a href="../Unrestricted_admin_mode.html">unrestricted admin mode</a> wiki page.</p>
+<h1 id="Design">Design</h1>
+<h2 id="Limited_Environment">Limited Environment</h2>
+<ul>
+<li><strong>Question:</strong> Why log in to a limited environment
+instead of a full desktop?</li>
+<li><strong>Issues:</strong> A full desktop environment poses issues
+such as:
+<ul>
+<li><strong>Increased attack surface:</strong> Systemd units running
+could provide attack surface (e.g., long-running file
+downloads/uploads).</li>
+<li><strong>Application exposure:</strong> The start menu could offer
+trivial access to high-risk applications such as web browsers, which
+could increase risk.</li>
+</ul></li>
+</ul>
+<h2 id="Implementation">Implementation</h2>
+<ul>
+<li><strong>Systemd target:</strong>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a></span>,
+a systemd target similar to single user mode (kernel parameter
+<code>single</code>).</li>
+<li><strong>Minimal services:</strong> Start only <a href="#Minimal_services">minimal services</a> when
+booting into sysmaint session (<code>sysmaint-boot.target</code>).</li>
+<li><strong>Systemd unit:</strong> <a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.service">sysmaint-boot.service</a>,
+handles system reconfiguration when switching between modes.</li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split">Kicksecure/user-sysmaint-split</a></span></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sysmaint-panel">Kicksecure/sysmaint-panel</a></span></li>
+</ul>
+<h3 id="Minimal_Services">Minimal Services</h3>
+<p>When booting into sysmaint session, only minimal, hand-picked
+services will be started. In other words, far fewer systemd units
+(long-running background processes also called <a href="https://en.wikipedia.org/wiki/Daemon_(computing)">daemons</a>)
+will be started. This is because when booting into sysmaint session,
+only
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a></span>
+will be started. This is similar to systemd target single user mode
+(kernel parameter <code>single</code>).</p>
+<p>Potentially vulnerable daemons (automatically started as systemd
+units) such as the past <a href="GNOME.html#1-Click_RCE_on_GNOME_(CVE-2023-43641)_in_file_indexing_service">1-Click Remote Code Execution (RCE) on GNOME
+(CVE-2023-43641) in file indexing service</a> would not automatically
+start in sysmaint session, hence reducing the attack surface of sysmaint
+session.</p>
+<p>As per systemd/Debian upstream default, as usual, only
+<code>Wants=</code> for services that are actually installed will be
+started. For example, <code>Wants=qubes-rootfs-resize.service</code> is
+irrelevant in non-Qubes because the
+<code>qubes-rootfs-resize.service</code> systemd unit is not
+installed.</p>
+<p>As opposed when booting into user session,
+<code>multi-user.target</code> will be started, where all enabled
+systemd units are started as per systemd/Debian upstream default.</p>
+<h3 id="No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">No
+SUID Security Risk originating from Privilege Escalation Tools</h3>
+<p>Privilege Escalation Tools are SUID applications, which can be a
+security risk for local privilege escalation (such as from account
+<code>user</code> to <code>root</code>).</p>
+<p><blockquote><p>Ideally, there should be no SUID binaries reachable from the user
+account, as otherwise significant extra attack surface inside the VM is
+exposed (dynamic linker, libc startup, portions of Linux kernel
+including ELF loader, etc.)<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695">Quote</a>
+security researcher <a href="https://en.wikipedia.org/wiki/Solar_Designer">Solar
+Designer</a></span></p></blockquote></p>
+<p>SUID related risks are elaborated on the <a href="../SUID_Disabler_and_Permission_Hardener.html">SUID
+Disabler and Permission Hardener</a> wiki page.</p>
+<p>This is implemented through <a href="user-sysmaint-split.html#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No Access to Privilege Escalation Tools for Limited
+Accounts</a>. (Note: Not all SUID-root executables have been restricted
+yet, however several critical ones such as <code>sudo</code> and
+<code>pkexec</code> have been.)</p>
+<h3 id="No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No
+Access to Privilege Escalation Tools for Limited Accounts</h3>
+<p><span class="manually-placed-anchor " id="No_Access_to_Privilege_Escalation_Tools_for_Limited_Users"></span></p>
+<p>There are conceptually two groups of accounts, privileged accounts
+and limited accounts.</p>
+<p>Privileged accounts:</p>
+<ul>
+<li><code>root</code></li>
+<li><code>sysmaint</code></li>
+</ul>
+<p>Limited accounts (examples):</p>
+<ul>
+<li><code>user</code></li>
+<li><code>nginx</code></li>
+<li><code>mysql</code></li>
+<li><code>sdwdate</code></li>
+<li><code>ntp</code></li>
+<li>etc.</li>
+</ul>
+<p>These limited accounts are by default not a member of the groups
+<code>root</code>, <code>sysmaint</code>, or <code>wheel</code>.</p>
+<p>Therefore limited Linux accounts such as account "<code>user</code>"
+no longer have access to any of the following Privilege Escalation Tools
+applications:</p>
+<ul>
+<li><code>sudo</code></li>
+<li><code>su</code></li>
+<li><code>doas</code></li>
+<li><code>pkexec</code></li>
+</ul>
+<p><u>Prerequisite Knowledge:</u></p>
+<ul>
+<li>Linux file system permission basics.</li>
+<li><code>owner</code> (<code>u</code>)</li>
+<li><code>group</code> (<code>g</code>)</li>
+<li><code>others</code> (<code>o</code>) (public)</li>
+<li><code>read</code> (<code>r</code>)</li>
+<li><code>write</code> (<code>w</code>)</li>
+<li><code>execute</code> (<code>x</code>)</li>
+</ul>
+<p><u>Comparison:</u></p>
+<p><strong>Debian:</strong> Privilege Escalation Tools (such as
+<code>sudo</code> and similar programs) are, as per Debian default,
+owned by account <code>root</code> and group <code>root</code>. These
+can be <code>read</code> and <code>execute</code> by <code>owner</code>,
+<code>group</code>, and <code>others</code> (Public).
+(<code>chmod 755</code>) The following <code>chmod-calc</code> command
+illustrates this:</p>
+<p><span class="code-select">chmod-calc /usr/bin/sudo</span></p>
+<pre><code>Permissions for: /usr/bin/sudo
+Type: Regular File
+Owner: root
+Group: root
+Octal Permissions: 755
+File Size: 281624 bytes
+Link Count: 1
+Hidden File: No
+ACLs: none
+Extended Attributes: none
+Capabilities: None
+Immutable (chattr +i): No
+
+Category   Read   Write  Execute
+Owner      Yes    Yes    Yes
+Group      Yes    No     Yes
+Public     Yes    No     Yes
+
+Special Attributes:
+SUID: Set
+SGID: Not Set
+Sticky Bit: Not Set</code></pre>
+<p><strong>user-sysmaint-split:</strong> Privilege Escalation Tools are
+owned by group <code>sysmaint</code>. <code>others</code> (Public)
+(which includes limited account <code>user</code>) no longer have
+<code>read</code> or <code>execute</code> rights. (The technical
+equivalent of: <code>chown root:sysmaint /usr/bin/sudo</code>;
+<code>chmod o-rw /usr/bin/sudo</code>; same for
+<code>/bin/sudo</code>)</p>
+<pre><code>Group: sysmaint
+
+Category   Read   Write  Execute
+Owner      Yes    Yes    Yes
+Group      Yes    No     Yes
+Public     No     No     No</code></pre>
+<p>Applications may no longer internally use passwordless
+<code>sudo</code> exceptions (e.g., <code>/etc/sudoers.d</code>). This
+is further detailed on the <a href="sudo.html">Dev/sudo</a> page.</p>
+<h3 id="user_group_sudo_membership">user group sudo membership</h3>
+<p>Should <code>user-sysmaint-split</code> postinst
+"<code>run_once</code>" <code>sudo delgroup user sudo</code>? No, not
+needed.</p>
+<p>Limited account "<code>user</code>" can safely safely stay a member
+of group <code>sudo</code> by default thanks to <a href="user-sysmaint-split.html#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No Access to Privilege Escalation Tools for Limited
+Accounts</a>. This simplifies testing and the process of users wishing
+to go back to <a href="../Unrestricted_admin_mode.html">unrestricted admin mode</a>.</p>
+<h2 id="Qubes_Support">Qubes Support</h2>
+<p>Package <code>qubes-core-agent-passwordless-root</code> will be no
+longer installed by default in <a href="../Qubes.html">Kicksecure for Qubes</a>.</p>
+<h3 id="Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</h3>
+<p>Exiting Templates: <code>user-sysmaint-split</code> is NOT installed
+by default for Kicksecure, Whonix-Gateway, or Whonix-Workstation.</p>
+<p>New Templates: If <code>user-sysmaint-split</code> is installed into
+a template, both the template and AppVMs based on it will only boot into
+<code>PERSISTENT mode | USER session</code>. Other boot modes are
+inaccessible. For administrative actions, users can use a <a href="../Root.html#Qubes_Root_Console">Qubes Root
+Console</a>.</p>
+<h3 id="Qubes_R4.3_and_later">Qubes R4.3 and later</h3>
+<p><code>user-sysmaint-split</code> is installed by default for
+Kicksecure and Whonix-Workstation. It will NOT be installed on
+Whonix-Gateway by default.</p>
+<p>By default, Qubes Templates with <code>user-sysmaint-split</code>
+installed will boot into
+<code>PERSISTENT mode - SYSMAINT session</code>. Administrative tasks
+can be done freely in this environment. AppVMs based on these templates
+will boot into <code>PERSISTENT mode | USER session</code> by default.
+Users can configure this behavior as they desire by <a href="../Sysmaint.html#Usage">using Qube Manager to change VM
+boot modes.</a> <code>LIVE mode | USER session</code> and
+<code>LIVE mode | SYSMAINT session</code> are both currently
+unsupported, but may be supported later.</p>
+<h3 id="Qubes_Security_Known_Issue">Qubes Security Known Issue</h3>
+<ul>
+<li>Qubes has potential local privilege escalation issue: <a href="https://github.com/QubesOS/qubes-issues/issues/9717">harden
+insecure permissions inside <code>/dev/xen</code> folder / research
+security impact of the Qubes <code>/dev/xen</code> folder permissions
+#9717</a> -- This issue is <a href="../Unspecific.html">unspecific to Kicksecure</a> and is entirely unrelated
+to Kicksecure. It equally applies to App Qubes that are not using
+<code>qubes-core-agent-passwordless-root</code> such as Qubes Debian
+minimal Template.</li>
+</ul>
+<h1 id="Remaining_Issues">Remaining Issues</h1>
+<h2 id="Fast_User_Switching">Fast User Switching</h2>
+<p><a href="../Sysmaint.html">sysmaint - System Maintenance
+User</a> documentation chapter <a href="../Sysmaint.html#Fast_User_Switching">Fast User Switching</a> explains that</p>
+<p><blockquote><p>It is not possible to switch from account <code>user</code> to
+<code>sysmaint</code> using:</p>
+<ul>
+<li>Start Menu -> logout</li>
+<li>Start Menu -> switch user</li>
+</ul></blockquote></p>
+<p>This is a security feature. This mitigates <a href="../Login_spoofing.html">login spoofing</a> attacks and prevents <a href="Strong_Linux_User_Account_Isolation.html#sudo_password_sniffing"><code>sudo</code> password sniffing</a>.</p>
+<p>The best-case potentially realistic scenario for fast user switching
+from account <code>user</code> to <code>sysmaint</code> - in theory -
+would be:</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Learn about <a href="../SysRq.html">SysRq</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Logout with "save session" as <code>user</code>. This means saving the
+session to disk and allowing it to be resumed, but no processes must
+continue to run.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Use
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>
++
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">SysRq</i>
++
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">k</i>
+(Secure Access Key).</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Log in to <code>sysmaint</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Perform system administration.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Log out of <code>sysmaint</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Use
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>
++
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">SysRq</i>
++
+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">k</i>
+(optional, just to establish the habit).</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Resume the <code>user</code> session.</p>
+<p>However, even using SysRq to switch from account <code>user</code> to
+<code>sysmaint</code> or vice versa would be less secure because when
+booting into sysmaint session (<code>sysmaint-boot.target</code>), only
+<a href="user-sysmaint-split.html#Minimal_Services">Minimal Services</a> are started.</p>
+<h2 id="Server_Support">Server Support</h2>
+<p>GRUB boot menus aren't easily accessible on many servers. A solution
+for making these boot modes available on servers is yet to be
+determined. Booting a server into sysmaint session with minimal services
+(such as SSH, but not web servers, etc.) might not be practical due to
+downtimes.</p>
+<p><code>user-sysmaint-split</code> will not be installed by default on
+servers. No meta package will depend on it, and derivative-maker will
+not install it on server builds.</p>
+<p>Future work ideas:</p>
+<ul>
+<li>See the forum discussion: <a href="https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50">https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50</a></li>
+<li>A) User could create a file that requests booting into sysmaint
+session next time.
+<ul>
+<li>This file would have to be writable by an unprivileged user, this
+needs to be done carefully otherwise *any* unprivileged user can DoS the
+system by writing the sysmaint drop file when the administrator doesn't
+expect it, thus resulting in the next reboot causing unexpected
+downtime.</li>
+<li>What users should be able to write the sysmaint boot request file?
+Only <code>user</code>?</li>
+</ul></li>
+<li>B) Sysmaint mode would use a systemd unit drop-in to disable most
+systemd units, except SSH, etc.</li>
+</ul>
+<h2 id="Usability">Usability</h2>
+<ul>
+<li><strong>Terminal application risks:</strong>
+<ul>
+<li>Ability to run applications like Firefox from the terminal emulator
+in sysmaint session.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Documentation access in sysmaint session:</strong>
+<ul>
+<li><strong>Why read documentation in sysmaint session?</strong>
+<ul>
+<li>Necessary for complex system maintenance tasks.</li>
+<li>For online searches or resolving issues.</li>
+<li>Using AI assistants or posting on forums.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Offline documentation:</strong>
+<ul>
+<li><a href="../Offline_Documentation.html">Offline
+documentation</a> is helpful but insufficient since it often links
+extensively to upstream resources.</li>
+<li>Users are encouraged to refer to online documentation whenever
+possible (upstream resources).</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Alternatives:</strong>
+<ul>
+<li><strong>Separate computer:</strong> Ideally, such tasks should be
+performed on a separate computer.</li>
+<li><strong>Virtual machine (VM):</strong> A less ideal but safer option
+is to use a VM for such tasks.
+<ul>
+<li>If Verified Boot and A/B updates are implemented, a sandbox feature
+could be designed to boot the host OS itself in a VM using immutable
+images, enhancing safety.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="Potential_Future_Improvements">Potential Future
+Improvements</h1>
+<h2 id="Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">Fast
+User Switching - Anti Login Spoofing - Anti Phishing Code</h2>
+<ul>
+<li><u>Desktop background as anti-phishing code:</u> The
+<code>sysmaint</code> desktop background could include a
+user-configurable anti-phishing code. Unlike features rarely offered by
+banking websites, this would assist users in distinguishing legitimate
+from spoofed login prompts.</li>
+<li><u>Hard to spoof, easy to verify:</u> A desktop background is
+difficult for malware to guess and easy for users to recognize
+subconsciously. A mismatch, such as an unexpected color or image, would
+immediately signal potential spoofing.</li>
+<li><u>Weakness of word-based verification:</u> Simple custom
+anti-phishing words or codes may appear "close enough" during spoofing,
+making users less likely to notice discrepancies.</li>
+<li><u>Static protection vulnerability:</u> Anti-phishing words or even
+background images are static. A sophisticated adversary could physically
+steal this information and later use it in a remote <a href="../Login_spoofing.html">login spoofing</a> attack.
+<ul>
+<li><u>Alternative using TOTP:</u> The login screen could show a
+two-factor authentication TOTP code for users to verify. However,
+requiring TOTP verification every time could be burdensome, and only a
+subset of users may opt for this higher level of protection.</li>
+</ul></li>
+</ul>
+<h1 id="Rejected_Alternative_Implementations">Rejected Alternative
+Implementations</h1>
+<ul>
+<li><strong>Chroot-based solutions:</strong>
+<ul>
+<li><strong>Complex and messy:</strong> Involves managing two systems
+for upgrades.</li>
+<li><strong>Disk mounts challenges:</strong> Bootloader upgrades,
+encryption, LVM, RAID, and other configurations must be handled
+correctly.</li>
+<li><strong>System updates:</strong> Maintaining two systems for updates
+is difficult.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Single user mode (kernel parameter
+<code>single</code>):</strong>
+<ul>
+<li>Does not allow login to graphical targets.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Policy-rcd solutions:</strong>
+<ul>
+<li>See: <a href="https://packages.debian.org/policy-rcd-declarative-deny-all">policy-rcd-declarative-deny-all</a>.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Start menu restrictions:</strong>
+<ul>
+<li>Hide applications like Firefox when booting into sysmaint
+session.</li>
+<li><strong>Implementation difficulty:</strong> Desktop
+environment-specific changes are required.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Systray indicator:</strong>
+<ul>
+<li>A system tray icon could display a sysmaint symbol to indicate the
+current mode.</li>
+</ul></li>
+</ul>
+<ul>
+<li><strong>Warning popups:</strong>
+<ul>
+<li>When starting Firefox in sysmaint session, a popup could warn users
+to avoid browsing the internet unless absolutely necessary.</li>
+</ul></li>
+</ul>
+<h1 id="Boot_Menu_Names_and_Ordering">Boot Menu Names and Ordering</h1>
+<h3 id="Mode_First_Ordering">Mode First Ordering</h3>
+<p>Initial implementation.</p>
+<pre><code>PERSISTENT Mode | USER Session | For daily activities
+LIVE Mode | USER Session | For disposable use
+PERSISTENT Mode | SYSMAINT Session | For maintenance tasks
+LIVE Mode | SYSMAINT Session | For maintenance testing
+REMOVE sysmaint-user-split | Enable unrestricted admin mode</code></pre>
+<h3 id="Session_First_Ordering">Session First Ordering</h3>
+<p>Potential future implementation based on user feedback.</p>
+<pre><code>USER Session | PERSISTENT Mode | For daily activities
+USER Session | LIVE Mode | For disposable use
+SYSMAINT Session | PERSISTENT Mode | For maintenance tasks
+SYSMAINT Session | LIVE Mode | For maintenance testing
+REMOVE sysmaint-user-split | Enable unrestricted admin mode</code></pre>
+<h2 id="/etc/grub.d">/etc/grub.d</h2>
+<p><span class="code-select">ls -1 /etc/grub.d</span></p>
+<pre><code>00_header
+05_debian_theme
+10_00_linux_dist
+10_10_linux_sysmaint
+10_20_linux_live
+10_30_linux_remove_sysmaint
+10_50_linux_dist_advanced
+10_55_linux_sysmaint_advanced
+10_60_linux_live_advanced
+10_65_linux_remove_sysmaint_advanced
+20_linux_xen
+30_os-prober
+30_uefi-firmware
+35_fwupd
+40_custom
+41_custom
+45_debugging
+README</code></pre>
+<p>Simplified. Relevant files only. Left out "advanced" for
+simplicity.</p>
+<pre><code>10_00_linux_dist
+10_10_linux_sysmaint
+10_20_linux_live
+10_30_linux_remove_sysmaint</code></pre>
+<pre><code>10_00_linux_dist            -&gt; PERSISTENT Mode - User Session
+10_10_linux_sysmaint        -&gt; PERSISTENT Mode - SYSMAINT Session (executes /etc/grub.d/10_00_linux_dist + options)
+10_20_linux_live            -&gt; LIVE Mode - USER Session (executes /etc/grub.d/10_20_linux_live + options)
+                            -&gt; LIVE Mode - SYSMAINT Session (executes /etc/grub.d/10_10_linux_sysmaint + options)</code></pre>
+<h1 id="Boot_Modes_Considered_Too_Unimportant_to_Be_Added_to_GRUB_Default_Boot_Menu">Boot
+Modes Considered Too Unimportant to Be Added to GRUB Default Boot
+Menu</h1>
+<p><strong>DIY Methods to Include Other Entries in the GRUB Boot
+Menu</strong></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+Files in the <code>/etc/grub.d/</code> folder could add entries, but
+they could be non-executable by default. To opt-in, users could run
+<code>sudo chmod +x /etc/grub.d/somenumber_name-of-boot-mode</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+Users wanting custom entries can add them directly to the
+<code>/etc/grub.d/</code> folder or GRUB boot menu.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">C</i>
+Using GRUB boot menu editing (key <code>e</code>) at boot, kernel
+parameters can be adjusted for any combination.</p>
+<h1 id="Wiki">Wiki</h1>
+<h2 id="BootEntries">BootEntries</h2>
+<p><a href="../Template:BootEntries.html">Template:BootEntries</a></p>
+<table>
+<thead>
+<tr class="header">
+<th><p>Code</p></th>
+<th><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><code>{{BootEntries|key=userpers}}</code></p></td>
+<td><p><code>PERSISTENT Mode | USER Session | daily activities</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>{{BootEntries|key=userlive}}</code></p></td>
+<td><p><code>LIVE Mode | USER Session | disposable use</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>{{BootEntries|key=userpersad}}</code></p></td>
+<td><p><code>ADVANCED options for PERSISTENT Mode | USER Session | daily activities</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>{{BootEntries|key=syspers}}</code></p></td>
+<td><p><code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>{{BootEntries|key=syslive}}</code></p></td>
+<td><p><code>LIVE Mode | SYSMAINT Session | maintenance testing</code></p></td>
+</tr>
+<tr class="even">
+<td><p><code>{{BootEntries|key=sysremove}}</code></p></td>
+<td><p><code>REMOVE user-sysmaint-split | enable unrestricted admin mode</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Prior_Versions">Prior Versions</h1>
+<p><a href="https://www.kicksecure.com/w/index.php?title=Dev/user-sysmaint-split&amp;oldid=87353">Older
+concept version still containing "SUPERADMIN" and "SECUREADMIN".</a></p>
+<h1 id="Tickets">Tickets</h1>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/9519">Create
+user admin by default and add user admin to group sudo by
+default</a></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/9512">Selective
+sudo Access Enabling in VMs Without qubes-core-agent-passwordless-root
+via qvm-service</a></li>
+</ul>
+<h1 id="Related">Related</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/disable-newly-all-installed-services-by-default/9381/2">Disable
+newly (all) installed services by default</a></li>
+<li><a href="../Verified_Boot.html">Verified Boot</a></li>
+<li><s>Forum discussion: <a href="https://forums.whonix.org/t/apparmor-for-complete-system-including-init-pid1-systemd-everything-full-system-mac-policy/8339">AppArmor
+for Complete System - Including init, PID1, Systemd, Everything! - Full
+System MAC policy</a></s></li>
+<li><s><a href="https://github.com/Kicksecure/apparmor-profile-everything">AppArmor
+for everything: APT, systemd, init, all systemd units, all applications.
+Mandatory Access Control. Security Hardening.</a></s></li>
+<li><s><a href="https://forums.whonix.org/t/untrusted-root-improve-security-by-restricting-root/7998">Untrusted
+Root - Improve Security by Restricting Root</a></s></li>
+<li><a href="../SUID_Disabler_and_Permission_Hardener.html">SUID Disabler and Permission Hardener</a></li>
+<li><a href="../SUID_Disabler_and_Permission_Hardener.html#Search_for_SUID_SGID">Search for SUID SGID</a></li>
+</ul>
+<h1 id="Attribution">Attribution</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="../About.html">Kicksecure</a>
+is an <a href="../About.html#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html">Providing
+secure user
+access</a><img src="../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="VirusForget.html" title="Dev/VirusForget"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirusForget</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="boot.html" title="Dev/boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/boot</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirusForget</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/boot</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design.html">Design</a> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

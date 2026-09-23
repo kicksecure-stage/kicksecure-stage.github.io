@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Enterprise Security</title>
+<meta name="description" content="Definition of &quot;maximum security&quot; in computing.">
+<meta property="og:description" content="Definition of &quot;maximum security&quot; in computing.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Enterprise_Security.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Enterprise_Security.html">
+<meta property="og:title" content="Enterprise Security">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<p>This group of pages centers around all maintainability aspects of
+Kicksecure.</p>
+<ul>
+<li><a href="Dev/maintainability.html">Maintainability</a></li>
+<li><a href="Dev/Relationship_With_Upstream.html">Relationship With Upstream</a></li>
+<li><a href="Stable_Version_User_Experience.html">Stable
+Version User Experience</a></li>
+<li><a href="Dev/Stable_vs_Rolling_Distributions.html">Stable vs Rolling Distributions</a></li>
+<li><a href="Reasonable_Security.html">Reasonable
+Security</a></li>
+<li><a href="Practical_Security.html">Practical
+Security</a></li>
+<li><a href="Enterprise_Security.html">Enterprise
+Security</a></li>
+<li><a href="Maximum_Security.html">Maximum
+Security</a></li>
+<li><a href="Perfect_Security.html">Perfect
+Security</a></li>
+<li><a href="Privacy.html">Privacy Goals and
+Non-Goals</a></li>
+<li><a href="Project_Policies.html">Project
+Policies</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>A discussion of the definition of "enterprise security" in
+computing.</p>
+<p>While the idea of achieving enterprise security is appealing, it
+comes with a lot of unexpected drawbacks. Namely high costs for
+certifications and little actually tangible security improvements that
+couldn't or wouldn't be achieved otherwise.</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="Unsupported.html">this</a> for
+potential alternatives.</p>
+</div>
+<table>
+<caption><em>Build Integrity &amp; Transparency Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Most <sup class="reference"><a href="#cite_note-1">[1]</a></sup> Enterprise Linux Distributions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Protection from supply chain attacks</p></td>
+<td><p>Mandates digital signature verification at all stages of
+development. This includes source code commits, git tags, the build
+process, and final downloads. Execution or deployment of unsigned code
+is strictly forbidden. The policy helps prevent supply chain attacks by
+ensuring the authenticity and integrity of software throughout its
+development and distribution.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Signed (ISO) images downloads</p></td>
+<td><p>All downloads are cryptographically signed, allowing users to
+verify the authenticity and integrity of releases.</p></td>
+<td><p>Yes</p></td>
+<td><p><sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Signed software packages are verified by the package
+manager</p></td>
+<td></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Documentation encourages users to perform digital software
+signature verification</p></td>
+<td><p><a href="Verifying_Software_Signatures.html">Verifying Software Signatures</a> is consistently
+pointed out in documentation.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Certification</p></td>
+<td><p>Cybersecurity validations and certifications, product
+compliance</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Kernel livepatching</p></td>
+<td><p><a href="https://en.wikipedia.org/wiki/Kpatch">kpatch</a></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Community support</p></td>
+<td></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Enterprise support</p></td>
+<td><p>Onboard new companies, answer questions, resolve issues at scale
+according to a service agreement.</p></td>
+<td><p>No</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Professional 24/7 support</p></td>
+<td><p>Access to support engineers 24x7 for high-severity issues
+according to service agreement.</p></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Extended LTS long-term support (5 years) by vendor</p></td>
+<td></td>
+<td><p>No</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Extended LTS long-term support (5 - 19 years) by vendor</p></td>
+<td></td>
+<td><p>No</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://wiki.almalinux.org/Comparison.html">https://wiki.almalinux.org/Comparison.html</a></li>
+</ul>
+<p><a href="https://www.bleepingcomputer.com/news/security/red-hat-confirms-security-incident-after-hackers-claim-github-breach/">https://www.bleepingcomputer.com/news/security/red-hat-confirms-security-incident-after-hackers-claim-github-breach/</a></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">This is to avoid saying "all". None where this does not apply was
+known to the author at time of writing.</li>
+<li id="cite_note-2"><a href="Digital_Signature_Policy.html">Digital
+Signature Policy</a></li>
+<li id="cite_note-3">Usually does not have a Digital Signature Policy.</li>
+<li id="cite_note-4">Some provide only sha256 checksum files. No file signed by tools
+such as gpg, signify and/or codecrypt.</li>
+<li id="cite_note-5"><a href="Digital_Signature_Policy.html">Digital
+Signature Policy</a></li>
+<li id="cite_note-6"><a href="Dev/certification.html">Dev/certification</a></li>
+<li id="cite_note-7">* <a href="https://access.redhat.com/en/compliance?products=Red+Hat+Enterprise+Linux">https://access.redhat.com/en/compliance?products=Red+Hat+Enterprise+Linux</a></li>
+<li id="cite_note-8"><a href="https://debconf24.debconf.org/talks/91-linux-live-patching-in-debian/">https://debconf24.debconf.org/talks/91-linux-live-patching-in-debian/</a></li>
+<li id="cite_note-9"><a href="Community_Support.html">Community
+Support</a></li>
+<li id="cite_note-10"><a href="https://www.reddit.com/r/redhat">https://www.reddit.com/r/redhat</a></li>
+<li id="cite_note-11">* <a href="https://www.redhat.com/en/services/support">https://www.redhat.com/en/services/support</a>
+* <a href="https://www.reddit.com/r/redhat/comments/1d8b5ww/level_of_support_expected/">https://www.reddit.com/r/redhat/comments/1d8b5ww/level_of_support_expected/</a></li>
+<li id="cite_note-12"><blockquote><p>Maintain system consistency with up to 19 years of
+support.<span class="blockquote-context"><a href="https://www.suse.com/products/long-term-service-pack-support/">SUSE
+Linux Enterprise Long Term Service Pack Support</a></span></p></blockquote></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a> <a href="Category:Design.html">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

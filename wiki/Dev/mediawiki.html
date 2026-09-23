@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/mediawiki</title>
+<meta name="description" content="Layout, Skin, CSS, JavaScript, Links, Header, Footer, CodeSelect, Mobile Frontend, Miscellaneous">
+<meta property="og:description" content="Layout, Skin, CSS, JavaScript, Links, Header, Footer, CodeSelect, Mobile Frontend, Miscellaneous">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/mediawiki.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/mediawiki.html">
+<meta property="og:title" content="Documentation for Kicksecure Wiki Devs">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>mediawiki</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="systemcheck.html" title="Dev/systemcheck"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/systemcheck</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="CSS.html" title="Dev/CSS"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/CSS</span></a><span class="info"><span class="prev">Previous
+page: Dev/systemcheck</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/CSS</span></span></span>Documentation for Kicksecure Wiki Devs</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Wiki_Enhancements.html">Wiki
+Enhancements</a></li>
+<li><a href="wiki_todo.html">Wiki Editor ToDo</a></li>
+<li><a href="wiki.html">Wiki Editor Docs</a></li>
+<li><a href="website.html">Wiki Dev ToDo</a></li>
+<li><a href="mediawiki/Archive.html">Wiki Dev
+(archived)</a></li>
+<li><a href="mediawiki.html">Wiki Dev Docs</a></li>
+<li><a href="wikitest.html">Wiki Test Page</a></li>
+<li><a href="../PerformanceTests.html">Wiki Performance
+Tests</a></li>
+<li><a href="../TestpageForFlyInNotification.html">Fly-In-Banner Test</a></li>
+<li><a href="discourse.html">Discourse Dev Docs</a></li>
+<li><a href="todo.html">Developer ToDo</a></li>
+<li><a href="todo/archived.html">Developer ToDo
+(archived)</a></li>
+<li><a href="../Progress_Reports.html">Progress
+Reports</a></li>
+<li><a href="../Progress_Reports_1.html">(1)</a></li>
+<li><a href="../Progress_Reports_2.html">(2)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Layout, Skin, CSS, JavaScript, Links, Header, Footer, CodeSelect,
+Mobile Frontend, Miscellaneous. This page has a sub page <strong><a href="mediawiki/Archive.html">Archive</a></strong></p>
+<div class="post-intro-p">
+</div>
+<h1 id="Getting_Started_-_MediaWiki_Setup_(meta)">Getting Started -
+MediaWiki Setup (meta)</h1>
+<ul>
+<li>This documentation is meant for developers helping with the
+maintenance and improvement of this wiki. Editors please read <a href="wiki.html">Dev/wiki</a> instead.</li>
+<li>This Wiki is a MediaWiki instance. We use a MediaWiki standard,
+stable installation, which is held up-to-date.
+<ul>
+<li>Why did we choose MediaWiki: <a href="About_Infrastructure.html#MediaWiki">Dev/About_Infrastructure#MediaWiki</a></li>
+</ul></li>
+<li>Icons: We use Font-Awesome, locally hosted <a href="https://www.kicksecure.com/libs/Font-Awesome/">https://www.kicksecure.com/libs/Font-Awesome/</a></li>
+<li>Font: We use Roboto, locally hosted <a href="https://www.kicksecure.com/libs/Roboto/">https://www.kicksecure.com/libs/Roboto/</a></li>
+</ul>
+<h2 id="Extension_CSS_Fork_(RETIRED)">Extension CSS Fork (RETIRED)</h2>
+<p><strong>Extension:CSS and our fork are retired and no longer
+loaded.</strong> In <code>wikiconfig/40-extensions.php</code> the
+<code>wfLoadExtension( 'CSS' )</code> call is commented out along with
+<code>$wgCSSPath</code> and the unsanitised-namespace whitelist, and the
+vendored copy under <code>public/wiki/w/extensions/CSS/</code> has been
+deleted. The <code>{{#css:}}</code> parser function is therefore no
+longer available, and its calls have been removed from all wiki
+pages.</p>
+<p><strong>What the fork used to do (historical):</strong> it provided a
+<code>{{#css:}}</code> parser function with three forms -- (1) link a
+locally hosted file such as a <code>/src-copy/...</code> bundle,
+resolved under <code>$wgCSSPath</code> = <code>/mw-autogen</code>; (2)
+link a raw CSS page from an unsanitised namespace such as
+<code>MediaWiki:</code>; and (3) inline sanitised CSS emitted as a
+<code>&lt;style&gt;</code> tag. The original upstream extension instead
+inlined the file form as a base64 <code>data:</code> link, which we
+considered unreliable; our fork emitted a plain
+<code>&lt;link&gt;</code> / <code>&lt;style&gt;</code> tag.</p>
+<p><strong>What replaces it now:</strong></p>
+<ul>
+<li>The combined bundles -- <code>mw-combined-wikicss.min.css</code>
+(whole wiki) and <code>mw-combined-skincss.min.css</code> (custom-header
+skin) -- are emitted directly as <code>&lt;link&gt;</code> tags from
+<code>private/mw-headscript-content.php</code>, loaded unconditionally
+on every page via Extension:HeadScript, instead of through a per-page
+<code>{{#css:}}</code> call in <a href="../Template:Header.html">Template:Header</a>.</li>
+<li>The opt-in files (<code>Hide_firstHeading.css</code>,
+<code>Hide_all_banners.css</code>) were rewritten to use CSS
+<code>:has()</code> selectors so they self-gate on marker elements
+emitted by <a href="../Template:Title.html">Template:Title</a>
+/ <a href="../Template:Hide_all_banners.html">Template:Hide_all_banners</a>, riding the unconditional
+<code>mw-combined-skincss.min.css</code> bundle instead of being
+injected per page.</li>
+<li>The SiteNotice pre-JavaScript hiding CSS is emitted as a hardcoded
+inline <code>&lt;style&gt;</code> block in
+<code>private/mw-headscript-content.php</code> (see
+<code>wikiconfig/41-sitenotice-id.php</code>), no longer via the
+extension.</li>
+</ul>
+<p>The build categories <code>wikicss</code> (whole wiki) and
+<code>skincss</code> (custom-header skin) are unchanged -- only the
+loading mechanism moved off the extension. See the build documentation
+below for how the <code>mw-combined-*</code> files are produced.</p>
+<p>MediaWiki upstream (historical references for the original
+extension):</p>
+<ul>
+<li>feature request: <a href="https://phabricator.wikimedia.org/T300704">Enable unsanitized CSS
+namespaces</a></li>
+<li>patch / pull request: <a href="https://phabricator.wikimedia.org/T37820">Some CSS stripped by
+MediaWiki parser CSS sanitizer</a>
+<ul>
+<li>feature request: <a href="https://phabricator.wikimedia.org/T329615">MediaWiki-extensions-CSS:
+minify CSS</a></li>
+</ul></li>
+</ul>
+<h2 id="Extension_HeadScript">Extension HeadScript</h2>
+<ul>
+<li>We use the MediaWiki <a href="https://www.mediawiki.org/wiki/Extension:HeadScript">Extension:HeadScript</a>
+to circumvent the usual code inclusion into the
+<code>&lt;head&gt;</code> area. This is only used where MediaWiki
+doesn't offer a realistic option to realize a solution otherwise. See
+LocalSettings.php for the implementation of Headscript</li>
+<li>See the bottom of this chapter for a current snapshot of the content
+that we include via Headscript</li>
+<li><strong>Solved by this</strong>
+<ol>
+<li>Font-Awesome is included that way</li>
+<li>Other libraries are included</li>
+<li>Our general minified css included</li>
+<li>Our general minified JavaScript included</li>
+<li>Our favicon is included</li>
+<li>MediaWiki Common.js dependent and core JS dependent scripts and
+libraries are triggered</li>
+</ol></li>
+<li><strong>Additional info</strong> : In the top comment there are
+multiple relevant variables printed in their current state
+<ul>
+<li><code>server-type</code> indicates if it's production or
+development</li>
+<li><code>Path to scripts</code> : The path where CSS and JS files are
+situated</li>
+<li><code>Wiki page</code> : The actual url page name for the wiki page.
+This variable can be used in the script</li>
+<li><code>debug</code> : This query parameter determines if the minified
+version or the readable version is printed (if
+<code>debug = true</code>)</li>
+<li><code>dontload</code> : This parameter offers to not load our
+auto-generated js or css files. There are 3 options:
+<code>?dontload=js</code> <code>?dontload=css</code> and
+<code>?dontload=jscss</code></li>
+<li><code>$wgResourceLoaderDebug</code> is a setting for
+<code>LocalSettings.php</code> where the whole wiki can go into debug
+mode. Similar to the url parameter debug</li>
+</ul></li>
+</ul>
+<div class="mw-collapsible mw-collapsed toccolours mwc-headline-normal-text-size ">
+<p>Current snapshot of the content that we include via Headscript</p>
+<div class="mw-collapsible-content">
+<p>The current</p>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

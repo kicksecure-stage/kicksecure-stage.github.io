@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Operating System Hardening</title>
+<meta name="description" content="Hardening the Debian operating system, which is the base Kicksecure. It covers topics such as Debian Security Announcements, hardening steps, kernel hardening, and module loading.">
+<meta property="og:description" content="Hardening the Debian operating system, which is the base Kicksecure. It covers topics such as Debian Security Announcements, hardening steps, kernel hardening, and module loading.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Operating_System_Hardening.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Operating_System_Hardening.html">
+<meta property="og:title" content="Operating System Hardening">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Oshardening34234.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../pygments.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="About.html">Home</a></li><li><a href="Download.html">Download</a></li><li><a href="Documentation.html">Docs</a></li><li><a href="FAQ.html">FAQ</a></li><li><a href="Support.html">Help</a></li><li><a href="Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Debian_Security_Announcements">Debian Security
+Announcements</a></li><li class="toc-l2"><a href="#Harden_Debian">Harden Debian</a></li><li class="toc-l2"><a href="#Hardened_Kernels">Hardened Kernels</a></li><li class="toc-l2"><a href="#Module_Loading">Module Loading</a></li><li class="toc-l2"><a href="#Harden_Software_Repositories">Harden Software Repositories</a></li><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Possible_Solutions">Possible Solutions</a></li><li class="toc-l3"><a href="#Always_Up-to-date_Builds">Always Up-to-date Builds</a></li><li class="toc-l3"><a href="#apt-cache">apt-cache</a></li><li class="toc-l3"><a href="#apt-offline">apt-offline</a></li><li class="toc-l3"><a href="#Building_from_Source_Code_using_Current_Sources">Building from
+Source Code using Current Sources</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../media/Oshardening34234.jpg.webp" alt="Oshardening34234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The page is about hardening the Debian operating system, which is the
+base Kicksecure. It covers topics such as Debian Security Announcements,
+hardening steps, kernel hardening, and module loading.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Debian">Debian</h1>
+<h2 id="Debian_Security_Announcements">Debian Security
+Announcements</h2>
+<p>Since Kicksecure is based on Debian, it takes advantage of all the
+hard work done by their security team: <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>Debian takes security very seriously. We handle all security problems
+brought to our attention and ensure that they are corrected within a
+reasonable timeframe. Many advisories are coordinated with other free
+software vendors and are published the same day a vulnerability is made
+public and we also have a Security Audit team that reviews the archive
+looking for new or unfixed security bugs.</p>
+<p>Experience has shown that "security through obscurity" does not work.
+Public disclosure allows for more rapid and better solutions to security
+problems. In that vein, this page addresses Debian's status with respect
+to various known security holes, which could potentially affect
+Debian.</p></blockquote></p>
+<p>Users should consider subscribing to the Debian <a href="https://lists.debian.org/debian-security-announce/">security
+announcement mailing list</a> to stay informed about the latest security
+advisories.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="About.html">Kicksecure</a>
+is an <a href="About.html#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04.en.html#debian-sec-announce">Subscribe
+to the Debian Security Announce mailing
+list</a><img src="../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h2 id="Harden_Debian">Harden Debian</h2>
+<p>Most hardening steps cannot be easily added to Kicksecure by default.
+Any major changes require careful research and significant
+developer/tester effort, otherwise system errors or breakage may occur.
+This is an open topic and Kicksecure developers are amenable to
+suggestions - improving operating system security will always be a
+primary design goal.</p>
+<p>Before attempting additional hardening measures below, be sure to
+fully understand them and apply the steps carefully:</p>
+<ul>
+<li><a href="https://wiki.debian.org/HardeningWalkthrough">Debian
+Hardening Walkthrough</a></li>
+<li><a href="https://www.debian.org/security/">Debian Security
+Information</a></li>
+<li><a href="https://www.debian.org/doc/manuals/securing-debian-manual/index.en.html">Securing
+Debian Manual</a>
+<ul>
+<li><a href="https://www.debian.org/doc/manuals/securing-debian-manual/automatic-harden.en.html">Securing
+Debian Manual Chapter 6 - Automatic hardening of Debian systems</a></li>
+</ul></li>
+</ul>
+<p>Readers are welcome to add any additional hardening resources to this
+list.</p>
+<h2 id="Hardened_Kernels">Hardened Kernels</h2>
+<p>The upstream Kernel Self Protection Project (KSPP) <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+was established in 2015 with the goal of introducing more hardening
+features into mainline Linux. This includes many features found in the
+Grsecurity patchset, which was <a href="https://www.phoronix.com/news/GrSecurity-No-Longer-Free">publicly
+available until early 2017</a>. One advantage of KSPP is that users will
+no longer need to compile and tweak settings to create a secure kernel.
+Instead, many hardening features will become the default over time in
+various distributions. Up-to-date information on available hardening
+features can be viewed <a href="https://github.com/a13xp0p0v/linux-kernel-defence-map">here</a>.</p>
+<p>The Hardened Kernel Project is a collaborative effort between Arch
+and Gentoo developers who handled Grsecurity packaging in their
+respective distributions with the goal of accelerating mainlining of the
+patchset. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>While kernel hardening is important, it only addresses a subset of
+security risks. It cannot protect against backdoors or security issues
+related to design, policy or yet unknown exploit classes.</p>
+<h2 id="Module_Loading">Module Loading</h2>
+<p>Restricting module loading can protect the kernel.</p>
+<p>Chapter "Module Loading" is for advanced users only since it could
+break various things. This is still under development. See Kicksecure
+development discussion: <a href="https://forums.whonix.org/t/allow-loading-signed-kernel-modules-by-default-disallow-kernel-module-loading-by-default/7880">allow
+loading signed kernel modules by default / disallow kernel module
+loading by default</a></p>
+<p><code>/usr/lib/modules-load.d/firewall.conf</code></p>
+<p><span class="code-select">ipt_REJECT ip6t_REJECT</p>
+<p>nft_chain_nat_ipv4 nft_chain_route_ipv4 nft_chain_route_ipv6
+nft_compat nft_counter</p>
+<p>xt_conntrack xt_state xt_tcpudp</span></p>
+<p><code>/usr/lib/modules-load.d/lxqt.conf</code> TODO: check if still
+needed</p>
+<p><span class="code-select">snd_intel8x0</p>
+<ol>
+<li><ol>
+<li>Platform specific?</li>
+<li>is autoloaded by snd_intel8x0</li>
+</ol></li>
+<li>snd</li>
+</ol>
+<p>evdev drm</p>
+<ol>
+<li><ol>
+<li>works without too</li>
+</ol></li>
+<li>binfmt_misc</span></li>
+</ol>
+<p>Kicksecure only: <code>/usr/lib/modules-load.d/kloak.conf</code></p>
+<p><span class="code-select">uinput</span></p>
+<p>VirtualBox only: <code>/usr/lib/modules-load.d/vbox.conf</code></p>
+<p><span class="code-select">vboxguest vboxsf vboxvideo</span></p>
+<p>Disable module loading by creating this file:
+<code>/etc/sysctl.d/module-loading.conf</code></p>
+<p><span class="code-select">kernel.modules_disabled=1</span></p>
+<p>After reboot, test if module loading is really disabled. Try to load
+any module, for example <code>apanel</code>.</p>
+<p><span class="code-select">sudo modprobe apanel</span></p>
+<p>Should show.</p>
+<pre><code>modprobe: ERROR: could not insert &#39;apanel&#39;: Operation not permitted</code></pre>
+<h2 id="Harden_Software_Repositories">Harden Software Repositories</h2>
+<p>Many operating systems provide multiple repositories. Since the
+Kicksecure implementation is based on Debian, these resources provide a
+suitable introduction for interested readers:</p>
+<ul>
+<li><a href="https://www.debian.org/doc/debian-policy/ch-archive.html">Debian
+Policy Manual Chapter 2 - The Debian Archive</a>.</li>
+<li><a href="https://help.ubuntu.com/community/Repositories/">Ubuntu
+Repositories (similar to Debian)</a>.</li>
+</ul>
+<p>In summary, these resources confirm the main repository receives the
+most developer attention and security updates. This suggests a degree of
+hardening might involve editing <em>/etc/apt/sources.list</em> to
+strictly limit software to the main repository, while only installing
+security fixes and no other updates.</p>
+<p>Kicksecure has <u>not</u> implemented this design by default and it
+is an open research question whether this will actually improve
+security.</p>
+<h1 id="Vulnerabilities_at_Install_Time">Vulnerabilities at Install
+Time</h1>
+<h2 id="Introduction">Introduction</h2>
+<p>Various installation media expose users to vulnerabilities,
+including:</p>
+<ul>
+<li><u>Importable <a href="Download.html">VM images</a>:</u>
+Kicksecure and <a href="https://virtualboxes.org/">other
+images</a>.</li>
+<li><u>Installer DVDs:</u> <a href="https://www.debian.org">Debian</a>
+and other major platforms.</li>
+<li><u>Live DVDs:</u> <a href="https://tails.boum.org">Tails</a> and
+similar platforms.</li>
+<li><u>VM Images built with <a href="Dev/Build_Documentation.html">frozen sources</a>:</u> Platforms without current
+sources.</li>
+</ul>
+<p>The threat arises because the latest stable releases sometimes
+contain vulnerable, remotely exploitable applications. These
+applications are very likely to be used over untrusted networks
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup> which are in a position to run <a href="Warning.html#Man-in-the-middle_Attacks">Man-in-the-Middle Attacks</a>.</p>
+<p>One recent example is the January, 2019 APT vulnerability (<a href="https://security-tracker.debian.org/tracker/CVE-2019-3462">CVE-2019-3462</a>)
+which allowed content injection by a MiTM attacker, thereby enabling
+remote code execution on the affected Linux machine. Specifically,
+improper sanitization of parameters in HTTP redirects allowed malicious
+content (altered packages) to be installed via a harmful mirror or
+direct injection into the network traffic. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> For
+another example, see <a href="https://lists.debian.org/debian-security-announce/2014/msg00219.html">CVE-2014-6273</a>
+which affected APT in 2014.</p>
+<p>Readers are welcome to help research this issue further and document
+sane and effective solutions. <sup class="reference"><a href="#cite_note-7">[7]</a></sup> For example, users who
+solely rely on Debian and Kicksecure onion services for updates may have
+had (partial) protection against the 2019 APT bug, but this requires
+investigation.</p>
+<h2 id="Possible_Solutions">Possible Solutions</h2>
+<h3 id="Always_Up-to-date_Builds">Always Up-to-date Builds</h3>
+<p>If Kicksecure regularly released up-to-date builds, this would be an
+optimal solution for end users. However, the maintenance effort --
+building, testing and uploading -- is resource-intensive and not
+currently feasible for the Kicksecure team.</p>
+<p>Greater community support is needed for <a href="Contribute.html#Testing">testing</a> proposed Kicksecure package updates and
+major new releases, alongside an automated test suite for
+Kicksecure.</p>
+<h3 id="apt-cache">apt-cache</h3>
+<p>When using virtual machines, Kicksecure could be configured to use
+the host apt-cache. <a href="Physical_Isolation.html">Physically-isolated</a> Kicksecure could use an
+apt-cache running on a separate machine. <a href="https://packages.debian.org/apt-cacher-ng">apt-cacher-ng</a> is an
+example implementation of such an apt-cache.</p>
+<p>This configuration does not secure <a href="Operating_System_Software_and_Updates.html#Updates">operating system updates</a> by default over Tor, which
+is a big disadvantage. <sup class="reference"><a href="#cite_note-8">[8]</a></sup> It would be first necessary to
+determine how to configure apt-cacher-ng on the host to force downloads
+through Tor.</p>
+<h3 id="apt-offline">apt-offline</h3>
+<p>Another possibility is somehow using <a href="https://packages.debian.org/apt-offline">apt-offline</a> to
+complete the initial updates of Kicksecure.</p>
+<h3 id="Building_from_Source_Code_using_Current_Sources">Building from
+Source Code using Current Sources</h3>
+<p>Not applicable until frozen sources builds / reproducible builds have
+been implemented.</p>
+<p>Self-created Kicksecure builds from source code use current sources,
+thereby solving this problem. Although frozen sources have been
+deprecated for reasons outlined in the <a href="Dev/Build_Documentation.html">Build</a> documentation, using current sources comes
+with its own issues.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.debian.org/security/">https://www.debian.org/security/</a></li>
+<li id="cite_note-2"><a href="https://www.openwall.com/lists/kernel-hardening/">https://www.openwall.com/lists/kernel-hardening/</a></li>
+<li id="cite_note-3"><a href="https://github.com/GrapheneOS/linux-hardened/wiki">https://github.com/GrapheneOS/linux-hardened/wiki</a></li>
+<li id="cite_note-4"><a href="https://github.com/anthraxx/linux-hardened">https://github.com/anthraxx/linux-hardened</a></li>
+<li id="cite_note-5">Such as Tor exit relays.</li>
+<li id="cite_note-6"><a href="https://thehackernews.com/2019/01/linux-apt-http-hacking.html">https://thehackernews.com/2019/01/linux-apt-http-hacking.html</a></li>
+<li id="cite_note-7"><a href="https://forums.whonix.org/t/new-chapter-vulnerabilities-at-install-time-in-advanced-security-guide/538">Forum
+discussion</a>.</li>
+<li id="cite_note-8">This leaks a list of installed packages to ISP-level adversaries and
+update servers. For example, if a user installed a webserver that is
+likely to be used to host a hidden web service, then this information
+would leak.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation.html">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="Terms_of_Service.html">Terms of Service</a></li><li><a href="Privacy_Policy.html">Privacy Policy</a></li><li><a href="Cookie_Policy.html">Cookie Policy</a></li><li><a href="Trademark_Policy.html">Trademark Policy</a></li><li><a href="Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy.html">Privacy Policy</a>, <a href="Cookie_Policy.html">Cookie Policy</a>, <a href="Terms_of_Service.html">Terms of Service</a>, and <a href="E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../search-index.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

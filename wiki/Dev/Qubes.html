@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Qubes</title>
+<meta name="description" content="Kicksecure Qubes OS related development documentation.">
+<meta property="og:description" content="Kicksecure Qubes OS related development documentation.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Qubes.html">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Qubes.html">
+<meta property="og:title" content="Dev/Qubes">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../pygments.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="../Documentation.html">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../About.html">Home</a></li><li><a href="../Download.html">Download</a></li><li><a href="../Documentation.html">Docs</a></li><li><a href="../FAQ.html">FAQ</a></li><li><a href="../Support.html">Help</a></li><li><a href="../Contribute.html">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages.html">Browse</a></div></header>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../Documentation.html">Home</a> / <span>Dev</span> / <span>Qubes</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Building_the_Template">Building the Template</a></li><li class="toc-l3"><a href="#Qubes_Template_Build_Fedora_Version_Number">Qubes Template Build
+Fedora Version Number</a></li><li class="toc-l3"><a href="#Setting_up_qubes-builderv2">Setting up qubes-builderv2</a></li><li class="toc-l2"><a href="#Template_Build">Template Build</a></li><li class="toc-l2"><a href="#Template_Installation">Template Installation</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="VirtualBox.html" title="Dev/VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirtualBox</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Entropy.html" title="Dev/Entropy"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Entropy</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirtualBox</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/Entropy</span></span></span>Dev/Qubes</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Kicksecure Qubes OS related development documentation.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Kicksecure_Template">Kicksecure Template</h1>
+<h2 id="Building_the_Template">Building the Template</h2>
+<p>Kicksecure has a Qubes OS template available that can be built and
+installed using <code>qubes-builderv2</code>. This allows Kicksecure to
+be installed into Qubes OS without the need for distribution
+morphing.</p>
+<h3 id="Qubes_Template_Build_Fedora_Version_Number">Qubes Template Build
+Fedora Version Number</h3>
+<ul>
+<li><strong>Qubes upstream requirement</strong>: Only Fedora can be used
+to build Qubes Templates.</li>
+<li><strong>Multiple versions exist</strong>: There might be various
+Fedora Template versions.</li>
+<li><strong>Current version at time of writing</strong>: The Qubes
+Fedora Template version used at the time of writing this wiki page was:
+<code>42</code></li>
+<li><strong>Check for newer versions</strong>: There might be a newer
+Qubes Fedora Template version by the time you are reading this. Please
+check if there is already a newer Fedora Template version.</li>
+<li><strong>No special requirements for Qubes Kicksecure</strong>: The
+Qubes Kicksecure Template does not have any special Qubes Fedora
+Template version requirements.</li>
+<li><strong>Follow Qubes upstream recommendations</strong>: The same
+Qubes Fedora Template version that Qubes upstream uses and/or recommends
+to build Debian can be used to build the Qubes Kicksecure Template.</li>
+<li><strong>Wiki editors notice</strong>: The version number can be
+updated by editing <a href="../Template:version-fedora-build-qubes-template.html">Template:version-fedora-build-qubes-template</a>.</li>
+</ul>
+<h3 id="Setting_up_qubes-builderv2">Setting up qubes-builderv2</h3>
+<p>It is recommended to use a Fedora-based App Qube for building the
+Kicksecure template. This is because upstream Qubes uses Fedora-based
+App Qubes to build Qubes Templates.</p>
+<p>Determine which Fedora template is used for the
+<code>default-dvm</code> DVM template. For the purposes of this
+document, we will assume it is <code>fedora-42-xfce</code>.</p>
+<h4 id="Installing_dependencies">Installing dependencies</h4>
+<p>1. Launch a terminal in the <code>fedora-42-xfce</code> template.</p>
+<p>2. Install all dependencies for <code>qubes-builderv2</code> into the
+template. The dependencies are listed at:</p>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora.txt">https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora.txt</a></li>
+<li><a href="https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora-qubes-executor.txt">https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora-qubes-executor.txt</a></li>
+</ul>
+<p>All packages from both lists must be installed.</p>
+<p>3. Ensure <code>git</code> is installed by running the following
+command:</p>
+<p><span class="code-select">sudo dnf install git</span></p>
+<p>4. Shut down the template once you have completed installing all
+dependencies.</p>
+<h4 id="Prepare_App_Qube">Prepare App Qube</h4>
+<p><strong>WARNING:</strong> It is not recommended to reuse an existing
+App Qube for running the template build. You will be transferring the
+built template to dom0 and installing it when you are complete. If the
+App Qube used for running the builder is compromised, the template may
+become compromised as well.</p>
+<p><strong>1.</strong> Create a new App Qube for running
+<code>qubes-builderv2</code>.</p>
+<p>You can name this qube anything you want; we will call it
+<code>work-qubesos</code> in this document. Ensure the Template is set
+to <code>fedora-42-xfce</code>.</p>
+<p><strong>2.</strong> Increase <code>qubes-builderv2</code> disk
+space.</p>
+<p>Using Qube Manager, set the private disk space for
+<code>work-qubesos</code> to something reasonably large. 32 GB should
+work.</p>
+<p><strong>3.</strong> Clone the <code>default-dvm</code> Template and
+name it <code>qubes-builder-dvm</code>.</p>
+<p>This DVM Template will be used for fetching and building code.</p>
+<p><strong>4.</strong> Increase <code>qubes-builder-dvm</code> disk
+space.</p>
+<p>Once the Template is cloned, adjust its settings with Qubes Manager
+and increase the private storage space to <em>at least</em> 30 GB (more
+is preferable).</p>
+<p><strong>5.</strong> Once that's done, start a terminal in the
+<code>qubes-builder-dvm</code> <strong>Template</strong>, then set it
+aside for use later.</p>
+<h4 id="dom0_Setup">dom0 Setup</h4>
+<p><strong>1.</strong> Open a dom0 terminal and run:</p>
+<p><span class="code-select">sudo nano
+/etc/qubes/policy.d/50-qubesbuilder.policy</span></p>
+<p><strong>2.</strong> Paste.</p>
+<p>Type the contents of <a href="https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy">https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy</a>
+into this file. (Note: If you have chosen names other than
+<code>work-qubesos</code> or <code>qubes-builder-dvm</code> for your
+qubes, you must adjust this configuration file to specify the correct VM
+names.)</p>
+<p><strong>3.</strong> Save.</p>
+<p>Save your changes with <code>Ctrl+S</code> and exit with
+<code>Ctrl+X</code>.</p>
+<h4 id="qubes-builder-dvm_setup">qubes-builder-dvm setup</h4>
+<p>Inside <code>qubes-builder-dvm</code> Template</p>
+<p><strong>1.</strong> Create folders.</p>
+<p><span class="code-select">sudo mkdir -p /rw/bind-dirs/builder
+/rw/config/qubes-bind-dirs.d</span></p>
+<p><strong>2.</strong> Open bind-dires configuration file.</p>
+<p><span class="code-select">sudo nano
+/rw/config/qubes-bind-dirs.d/builder.conf</span></p>
+<p><strong>3.</strong> Paste.</p>
+<p><span class="code-select">binds+=('/builder')</span></p>
+<p><strong>4.</strong> Save.</p>
+<p><strong>5.</strong> Open rc.local file.</p>
+<p><span class="code-select">sudo nano /rw/config/rc.local</span></p>
+<p><strong>6.</strong> Paste.</p>
+<p><span class="code-select">mount /builder -o
+dev,suid,remount</span></p>
+<p><strong>7.</strong> Save.</p>
+<p><strong>8.</strong> Shut down the Template.</p>
+<h4 id="dom0_Setup_Continued">dom0 Setup Continued</h4>
+<p><strong>1.</strong> In a dom0 terminal, run:</p>
+<p><span class="code-select">qvm-prefs work-qubesos default_dispvm
+qubes-builder-dvm</span></p>
+<p>Once this is done, all configuration should be complete, and you are
+now ready to install and use <code>qubes-builderv2</code>.</p>
+<h4 id="Installing_qubes-builderv2">Installing qubes-builderv2</h4>
+<p>1. Ensure that <code>fedora-42-xfce</code>,
+<code>qubes-builder-dvm</code>, and <code>work-qubesos</code> are all
+shut down. This ensures that all changes made to the templates apply to
+any new AppVMs and DispVMs launched during the build process.</p>
+<p>2. Start <code>work-qubesos</code> and open a terminal in it. Install
+and verify the authenticity of the Qubes Security Pack by following the
+instructions at <a href="https://www.qubes-os.org/security/pack/">https://www.qubes-os.org/security/pack/</a>.
+This is necessary to verify the authenticity of the
+<code>qubes-builderv2</code> source code.</p>
+<p>3. Clone the <code>qubes-builderv2</code> repository using:</p>
+<p><span class="code-select">git clone <a href="https://github.com/QubesOS/qubes-builderv2.git">https://github.com/QubesOS/qubes-builderv2.git</a></span></p>
+<p>4. Enter the cloned repository:</p>
+<p><span class="code-select">cd qubes-builderv2</span></p>
+<p>5. Verify the authenticity of the head commit's tag:</p>
+<p><span class="code-select">git tag -v $(git describe)</span></p>
+<p>The output of this command should indicate that the tag's signature
+is good and should NOT display any warnings. If warnings are displayed,
+you may have installed the Qubes Security Pack improperly (for example,
+by forgetting to install the Qubes Master Signing Key or failing to mark
+it as trusted). If you are told that a tag does not exist, the head
+commit hasn't been tagged by a Qubes OS developer, and you should
+use:</p>
+<p>6. Back up one commit if a tag does not exist:</p>
+<p><span class="code-select">git checkout HEAD^</span></p>
+<p>Then try to verify the repository's authenticity again. If the
+signature comes back bad, the repository is corrupted (or compromised)
+and should be discarded immediately.</p>
+<h2 id="Template_Build">Template Build</h2>
+<p>1. Create a new file named <code>builder.yml</code> under the
+<code>qubes-builderv2</code> directory, and fill it with the following
+contents:</p>
+<pre><code>include:
+  - example-configs/kicksecure.yml
+
+qubes-release: r4.3
+use-qubes-repo:
+  version: 4.3
+  testing: true</code></pre>
+<p>2. To build the template, run:</p>
+<p><span class="code-select">sudo ./qb package fetch prep build
+&amp;&amp; sudo ./qb -t kicksecure-18 template fetch prep
+build</span></p>
+<p>This will download the code needed to build the template and then
+build the template. If all goes well, the built template will be placed
+in folder:</p>
+<p><code>qubes-builderv2/artifacts/templates/rpm</code></p>
+<h2 id="Template_Installation">Template Installation</h2>
+<p>To install the manually built Template.</p>
+<p>1. Copy the template RPM file to dom0:</p>
+<p><u>Note:</u> Substitute the real name of the RPM file (this name
+includes a timestamp and will thus be different for each build).</p>
+<p><span class="code-select">qvm-run --pass-io work-qubesos 'cat
+/home/user/qubes-builderv2/artifacts/templates/rpm/qubes-template-kicksecure...rpm'
+&gt; qubes-template-kicksecure...rpm</span></p>
+<p>2. Install the template with:</p>
+<p><span class="code-select">sudo qvm-template install --nogpgcheck
+./qubes-template-kicksecure...rpm</span></p>
+<p><strong>WARNING: This action can execute arbitrary code as root on
+dom0! Only do this if you fully trust the App Qube used to build this
+template!</strong></p>
+<p>3. You should now see a <code>kicksecure-18</code> template available
+in the application menu, under the "Templates" section.</p>
+<h1 id="Related">Related</h1>
+<p><span class="manually-placed-anchor " id="Root_Privilege_Isolation_and_libxenvchan"></span></p>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/9717">Harden
+insecure permissions inside <code>/dev/xen</code> folder / research
+security impact of the Qubes <code>/dev/xen</code> folder
+permissions</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Qubes.html">Kicksecure for Qubes - User
+Documentation</a></li>
+<li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/9573">build
+Kicksecure Qubes Template #9573</a></li>
+<li>qubes-builder-v2 pull request: <a href="https://github.com/QubesOS/qubes-builderv2/pull/170">Add
+Kicksecure template support #170</a></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="VirtualBox.html" title="Dev/VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirtualBox</span></a><a class="index internal" href="../Design.html" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Entropy.html" title="Dev/Entropy"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Entropy</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirtualBox</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/Entropy</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation.html">Documentation</a> <a href="../Category:Development.html">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service.html">Terms of Service</a></li><li><a href="../Privacy_Policy.html">Privacy Policy</a></li><li><a href="../Cookie_Policy.html">Cookie Policy</a></li><li><a href="../Trademark_Policy.html">Trademark Policy</a></li><li><a href="../Imprint.html">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy.html">Privacy Policy</a>, <a href="../Cookie_Policy.html">Cookie Policy</a>, <a href="../Terms_of_Service.html">Terms of Service</a>, and <a href="../E-Sign_Consent.html">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>
