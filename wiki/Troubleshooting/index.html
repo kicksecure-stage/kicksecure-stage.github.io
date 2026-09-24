@@ -696,18 +696,18 @@ these logs, or S.M.A.R.T. cannot read the data.</li>
 <p>If your hard drive is an SSD (not NVMe), you will see
 <code>/dev/sda</code> reading:</p>
 <p><span class="code-select">lsblk</span></p>
-<pre><code>[sysmaint ~]% lsblk 
+<pre><code>[sysmaint ~]% lsblk
 NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-sda           8:0    0 476.9G  0 disk 
+sda           8:0    0 476.9G  0 disk
 &amp;#x251C;&amp;#x2500;sda1        8:1    0   4G  0 part /boot
 &amp;#x251C;&amp;#x2500;sda2        8:2    0 472.9G  0 part /</code></pre>
 <p>If your hard drive is NVMe you will see <code>nvme0</code>:</p>
-<pre><code>nvme0n1     259:0    0 953.9G  0 disk 
-&amp;#x2514;&amp;#x2500;nvme0n1p1 259:1    0 953.9G  0 part 
-nvme1n1     259:2    0 953.9G  0 disk 
-&amp;#x251C;&amp;#x2500;nvme1n1p1 259:3    0   200M  0 part 
-&amp;#x251C;&amp;#x2500;nvme1n1p2 259:4    0    16M  0 part 
-&amp;#x251C;&amp;#x2500;nvme1n1p3 259:5    0 952.9G  0 part 
+<pre><code>nvme0n1     259:0    0 953.9G  0 disk
+&amp;#x2514;&amp;#x2500;nvme0n1p1 259:1    0 953.9G  0 part
+nvme1n1     259:2    0 953.9G  0 disk
+&amp;#x251C;&amp;#x2500;nvme1n1p1 259:3    0   200M  0 part
+&amp;#x251C;&amp;#x2500;nvme1n1p2 259:4    0    16M  0 part
+&amp;#x251C;&amp;#x2500;nvme1n1p3 259:5    0 952.9G  0 part
 &amp;#x2514;&amp;#x2500;nvme1n1p4 259:6    0   735M  0 part</code></pre>
 <p>So, depending on your hard drive type, you will use the appropriate
 argument with the tool:</p>
@@ -715,18 +715,18 @@ argument with the tool:</p>
 <pre><code>[sysmaint ~]% sudo smartctl -a /dev/nvme0
 smartctl 7.5 2025-04-30 r5714 [x86_64-linux-6.18.5+deb14-amd64] (local build)
 Copyright (C) 2002-25, Bruce Allen, Christian Franke, www.smartmontools.org
-                                                                                                                                                                                                                  
-=== START OF INFORMATION SECTION ===                                                                                                                                                                              
-Model Number:                       SAMSUNG MZVL81T0HELB-00BH1                                                                                                                                                    
-Serial Number:                      S79UNX0XA46408                                                                                                                                                                
-Firmware Version:                   HPS3NKXM                                                                                                                                                                      
-PCI Vendor/Subsystem ID:            0x144d                                                                                                                                                                        
-IEEE OUI Identifier:                0x002538                                                                                                                                                                      
-Total NVM Capacity:                 1,024,209,543,168 [1.02 TB]                                                                                                                                                   
-Unallocated NVM Capacity:           0                                                                                                                                                                             
-Controller ID:                      1                                                                                                                                                                             
-NVMe Version:                       2.0                                                                                                                                                                           
-Number of Namespaces:               1                                                                                                                                                                             
+
+=== START OF INFORMATION SECTION ===
+Model Number:                       SAMSUNG MZVL81T0HELB-00BH1
+Serial Number:                      S79UNX0XA46408
+Firmware Version:                   HPS3NKXM
+PCI Vendor/Subsystem ID:            0x144d
+IEEE OUI Identifier:                0x002538
+Total NVM Capacity:                 1,024,209,543,168 [1.02 TB]
+Unallocated NVM Capacity:           0
+Controller ID:                      1
+NVMe Version:                       2.0
+Number of Namespaces:               1
 Namespace 1 Size/Capacity:          1,024,209,543,168 [1.02 TB]
 Namespace 1 Utilization:            129,641,730,048 [129 GB]
 Namespace 1 Formatted LBA Size:     512
@@ -862,18 +862,18 @@ St Op     Max   Active     Idle   RL RT WL WT  Ent_Lat  Ex_Lat
 Supported LBA Sizes (NSID 0x1)
 Id Fmt  Data  Metadt  Rel_Perf
  0 +     512       0         0
- 1 -    4096       0         0                                                                                                                                                                                    
-                                                                                                                                                                                                                  
-=== START OF SMART DATA SECTION ===                                                                                                                                                                               
-SMART overall-health self-assessment test result: PASSED                                                                                                                                                          
-                                                                                                                                                                                                                  
-SMART/Health Information (NVMe Log 0x02, NSID 0xffffffff)                                                                                                                                                         
-Critical Warning:                   0x00                                                                                                                                                                          
-Temperature:                        38 Celsius                                                                                                                                                                    
-Available Spare:                    100%                                                                                                                                                                          
-Available Spare Threshold:          5%                                                                                                                                                                            
-Percentage Used:                    0%                                                                                                                                                                            
-Data Units Read:                    4,164,393 [2.13 TB]                                                                                                                                                           
+ 1 -    4096       0         0
+
+=== START OF SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+SMART/Health Information (NVMe Log 0x02, NSID 0xffffffff)
+Critical Warning:                   0x00
+Temperature:                        38 Celsius
+Available Spare:                    100%
+Available Spare Threshold:          5%
+Percentage Used:                    0%
+Data Units Read:                    4,164,393 [2.13 TB]
 Data Units Written:                 6,451,885 [3.30 TB]
 Host Read Commands:                 42,873,546
 Host Write Commands:                46,909,935
@@ -948,7 +948,7 @@ Thermal Management T2 Total Time        : 0</code></pre>
 <p>First, let the tool scan and detect the hardware sensors:</p>
 <p><span class="code-select">sudo sensors-detect</span></p>
 <p>Then answer all of the questions with <strong>YES</strong>:</p>
-<pre><code>[sysmaint ~]% sudo sensors-detect      
+<pre><code>[sysmaint ~]% sudo sensors-detect
 # sensors-detect version 3.6.2
 # System: LENOVO 7458WX3 [ThinkPad X200] (laptop)
 # Kernel: 6.12.63+deb13-amd64 x86_64
@@ -1051,7 +1051,7 @@ Do you want to scan it? (yes/NO/selectively): yes
 
 
 Now follows a summary of the probes I have just done.
-Just press ENTER to continue: 
+Just press ENTER to continue:
 
 Driver `coretemp&#39;:
   * Chip `Intel digital thermal sensor&#39; (confidence: 9)
@@ -1078,7 +1078,7 @@ Unloading cpuid... OK</code></pre>
 <p>Then regenerate dracut initramfs:</p>
 <p><span class="code-select">sudo dracut -f</span></p>
 <pre><code>[sysmaint ~]% sudo modprobe coretemp
-[sysmaint ~]% sudo dracut -f        
+[sysmaint ~]% sudo dracut -f
 dracut[I]: Executing: /usr/bin/dracut -f
 dracut[I]: 62bluetooth: Could not find any command of &#39;/usr/lib/bluetooth/bluetoothd /usr/libexec/bluetooth/bluetoothd&#39;!
 dracut[I]: 62bluetooth: Could not find any command of &#39;/usr/lib/bluetooth/bluetoothd /usr/libexec/bluetooth/bluetoothd&#39;!
@@ -1182,25 +1182,25 @@ dracut[I]: *** Creating initramfs image file &#39;/boot/initrd.img-6.12.63+deb13
 dracut[W]: Could not fsfreeze /boot</code></pre>
 <p>run <code>sensors</code>:</p>
 <p><span class="code-select">sensors</span></p>
-<pre><code>[sysmaint ~]% sensors 
+<pre><code>[sysmaint ~]% sensors
 thinkpad-isa-0000
 Adapter: ISA adapter
 fan1:        3405 RPM
 fan2:        3405 RPM
-CPU:          +43.0&amp;deg;C  
-GPU:          +42.0&amp;deg;C  
-temp3:            N/A  
-temp4:        +46.0&amp;deg;C  
-temp5:            N/A  
-temp6:            N/A  
-temp7:            N/A  
-temp8:            N/A  
+CPU:          +43.0&amp;deg;C
+GPU:          +42.0&amp;deg;C
+temp3:            N/A
+temp4:        +46.0&amp;deg;C
+temp5:            N/A
+temp6:            N/A
+temp7:            N/A
+temp8:            N/A
 pwm1:            128%
 
 acpitz-acpi-0
 Adapter: ACPI interface
-temp1:        +43.0&amp;deg;C  
-temp2:        +44.0&amp;deg;C  
+temp1:        +43.0&amp;deg;C
+temp2:        +44.0&amp;deg;C
 
 coretemp-isa-0000
 Adapter: ISA adapter
