@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Linux Kernel Runtime Guard LKRG</title>
+<meta name="description" content="LKRG performs runtime integrity checking of the Linux kernel and detection of security vulnerability exploits against the kernel.">
+<meta property="og:description" content="LKRG performs runtime integrity checking of the Linux kernel and detection of security vulnerability exploits against the kernel.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/">
+<meta property="og:title" content="Linux Kernel Runtime Guard (LKRG) for Debian, Whonix, Qubes, Kicksecure">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/P_lkrg2.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Performance_Impact">Performance Impact</a></li><li class="toc-l2"><a href="#LKRG_Free_vs_LKRG_Pro">LKRG Free vs LKRG Pro</a></li><li class="toc-l2"><a href="#General_LKRG_Configuration_Tips">General LKRG Configuration
+Tips</a></li><li class="toc-l2"><a href="#Kicksecure_specific_LKRG_Configuration_Tips">Kicksecure specific
+LKRG Configuration Tips</a></li><li class="toc-l2"><a href="#linux-image">linux-image</a></li><li class="toc-l2"><a href="#linux-headers">linux-headers</a></li><li class="toc-l2"><a href="#modinfo">modinfo</a></li><li class="toc-l2"><a href="#dkms_status">dkms status</a></li><li class="toc-l2"><a href="#Related_Files">Related Files</a></li><li class="toc-l2"><a href="#Forum_Discussion">Forum Discussion</a></li><li class="toc-l2"><a href="#Upstream_Resources">Upstream Resources</a></li><li class="toc-l2"><a href="#Upstream_Mailing_List_Discussions">Upstream Mailing List
+Discussions</a></li><li class="toc-l2"><a href="#See_Also">See Also</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/P_lkrg2.png.webp" alt="LKRG logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>LKRG performs runtime integrity checking of the Linux kernel and
+detection of security vulnerability exploits against the kernel.</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<h1 id="Deprecation_in_Kicksecure">Deprecation in Kicksecure</h1>
+<p>Reasons:</p>
+<ul>
+<li><strong>Maintenance effort:</strong> <a href="https://github.com/lkrg-org/lkrg/issues/67">upstream not signing
+releases, which requires verification of a signed tarballs, which
+increases maintenance workload</a></li>
+<li><strong>Not stable enough:</strong> Through testing and integration
+development in Kicksecure it has been determined that it will never be
+stable enough to be suitable for installation by default for all
+users.</li>
+<li><strong>Security issues?</strong> <strong>No.</strong> Users can
+keep using LKRG until the next major release (Kicksecure version 18) but
+it will be <a href="../Unsupported/">unsupported</a>.</li>
+<li><strong>Future:</strong> Is there any chance this package will get
+unarchived, maintained again in Kicksecure? Yes. ETA (estimated time of
+arrival): None. No need to ask about it. Should that change, this wiki
+page will be updated and this wiki chapter deleted. When this might
+happen? At a later stage of Kicksecure development (when more essential
+issues such as <a href="../ISO/">ISO</a> availability have
+been sorted out and when more development resources, contributors are
+available.</li>
+<li><strong>Forum discussion:</strong> <a href="https://forums.whonix.org/t/linux-kernel-runtime-guard-lkrg-linux-kernel-runtime-integrity-checking-and-exploit-detection/8477/67">https://forums.whonix.org/t/linux-kernel-runtime-guard-lkrg-linux-kernel-runtime-integrity-checking-and-exploit-detection/8477/67</a></li>
+</ul>
+<h1 id="Introduction">Introduction</h1>
+<p>LKRG is Freedom Software / Open Source. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>The focus of this wiki page is to provide simplified user
+documentation and easy installation of LKRG in Debian, <a href="../About/">Kicksecure</a>, <a href="../Qubes/">Qubes</a>, <a href="../Whonix/">Whonix</a>, and perhaps Debian-based Linux
+distributions. Installable from an APT repository.</p>
+<p>This is a lightweight <a href="https://en.wikipedia.org/wiki/Fork_(software_development)">software
+fork</a> and no changes will be made to the core of LKRG. Links to the
+<a href="https://lkrg.org/">official LKRG homepage</a> and other
+original resources can be found <a href="#Upstream_Resources">here</a>.</p>
+<h1 id="Download">Download</h1>
+<p><img src="../../media/P_lkrg2.png.webp" width="100" alt="LKRG logo" />
+<img src="../../media/Debian.png.webp" width="30" alt="Debian.png" />
+<img src="../../media/Kicksecure-basic-logo.png.webp" width="30" alt="Kicksecure-basic-logo.png" />
+<img src="../../media/Qubes-logo-blue.png.webp" width="30" alt="qubes-logo-blue.png" />
+<img src="../../media/Tux.png.webp" width="30" alt="Tux.png" />
+<strong><a href="../Reasons_for_Freedom_Software/" class="freelink" aria-label="Link to: Reasons for Freedom Software">FREE</a></strong>
+<img src="../../media/210px-Download_Button.svg.png.webp" width="210" alt="Download LKRG" /></p>
+<h1 id="LKRG_Overview">LKRG Overview</h1>
+<p>This is only a very brief introduction, since LKRG technical details
+are not the focus of this page. <a href="https://lkrg.org/">Quote
+official LKRG homepage</a>:</p>
+<p><blockquote><p>LKRG performs runtime integrity checking of the Linux kernel and
+detection of security vulnerability exploits against the kernel.</p></blockquote></p>
+<p><blockquote><p>As controversial as this concept is, LKRG attempts to post-detect and
+hopefully promptly respond to unauthorized modifications to the running
+Linux kernel (integrity checking) or to credentials such as user IDs of
+the running processes (exploit detection). For process credentials, LKRG
+attempts to detect the exploit and take action before the kernel would
+grant access (such as open a file) based on the unauthorized
+credentials.</p></blockquote></p>
+<p><blockquote><p>LKRG defeats many pre-existing exploits of Linux kernel
+vulnerabilities, and will likely defeat many future exploits (including
+of yet unknown vulnerabilities) that do not specifically attempt to
+bypass LKRG. While LKRG is bypassable by design, such bypasses tend to
+require more complicated and/or less reliable exploits.</p></blockquote></p>
+<p>To learn more about LKRG, interested readers can:</p>
+<ul>
+<li>review the <a href="https://lkrg.org/">official LKRG
+homepage</a></li>
+<li>watch the <a href="https://www.youtube.com/watch?v=tOiPM692DOM">LKRG
+Presentation Video</a> or <a href="https://www.openwall.com/presentations/CONFidence2018-LKRG-Under-The-Hood/">LKRG
+Presentation Slides</a></li>
+<li>read the <a href="https://openwall.info/wiki/p_lkrg/Main">LKRG
+Wiki</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2020/06/14/5">LKRG
+rootkit detection</a></li>
+<li>consult other <a href="#Upstream_Resources">Upstream Resources</a></li>
+<li>LKRG is also mentioned in Master's Thesis <a href="http://jultika.oulu.fi/files/nbnfioulu-202004201485.pdf">Effectiveness
+of Linux Rootkit Detection Tools</a></li>
+</ul>
+<h2 id="Performance_Impact">Performance Impact</h2>
+<p>Quote LKRG upstream:</p>
+<p><blockquote><p>No benchmarks have yet been performed, but it appears the performance
+penalty is around <code>2.5%</code> for fully enabled LKRG.</p></blockquote></p>
+<p>Quote <a href="https://www.phoronix.com">Phoronix.com</a>, <a href="https://www.phoronix.com/review/linux-lkrg-performance">Benchmarking
+The Performance Overhead To The Linux Kernel Runtime Guard</a> (<a href="https://www.phoronix.com/review/linux-lkrg-performance/5">page
+5</a>), <a href="https://web.archive.org/web/20220305113214/https://www.michaellarabel.com/">Michael
+Larabel</a> (<code>code</code> added):</p>
+<p><blockquote><p>Out of 90 benchmarks run comparing the performance hit on this Intel
+Core i9 9900KS from LKRG, having LKRG enabled led to around a
+<code>5%</code> hit based on the geometric mean of all tests carried
+out. Granted, some real-world workloads like code compilation speed were
+impacted much more dramatically while test cases not involving I/O or
+other kernel operations tended to see no measurable difference in
+run-time performance.</p></blockquote></p>
+<h2 id="LKRG_Free_vs_LKRG_Pro">LKRG Free vs LKRG Pro</h2>
+<p>Kicksecure developer Patrick Schleizer <a href="https://forums.whonix.org/t/linux-kernel-runtime-guard-lkrg-linux-kernel-runtime-integrity-checking-and-exploit-detection/8477/3">said</a>:</p>
+<p><blockquote><p>Contacted upstream LKRG developers privately. To paraphrase: "We
+don't oppose you packaging it. As long as LKRG exists, there will always
+be a free and libre version. There is no pro version yet. A hypothetical
+future pro version would not change that." In my words: "there won't be
+a grsecurity alike situation where everything gets closed down".</p></blockquote></p>
+<p>Quote <a href="https://openwall.info/wiki/p_lkrg/Main">LKRG
+wiki</a>:</p>
+<p><blockquote><p>We will likely use GPLv2 at least for LKRG free. We might or might
+not use a different license for LKRG Pro, if we ever make it.</p></blockquote></p>
+<p>Users who benefit from LKRG Free are encouraged to support its
+further development. However, at the time of writing they are not
+accepting donations: <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p><blockquote><p>We used to accept donations for LKRG via Patreon, but we currently
+don't. Some of our former supporters are listed in the PATREON file in
+LKRG distribution tarballs.</p></blockquote></p>
+<h1 id="Installation">Installation</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Cornues.png.webp" width="40" alt="Testers only!" /></span>
+Warning: This is for <u><strong>testers-only</strong></u>!</p>
+</div>
+<p><u>Note</u>: Users who require better security can <a href="Build_Debian_Package_from_Source_Code/">Build the Linux Kernel Runtime Guard (LKRG) Debian
+Package from Source Code</a> and verify software signatures before
+installation.</p>
+<table>
+<caption>LKRG</caption>
+<thead>
+<tr class="header">
+<th><p><strong>Logo</strong></p></th>
+<th><p><strong>Host Operating System</strong></p></th>
+<th><p><strong>Installation Instructions</strong></p></th>
+<th><p><strong>Note</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><img src="../../media/Debian.png.webp" width="50" alt="Debian.png" /></p></td>
+<td><p>Debian hosts</p></td>
+<td><p>Follow the instructions below to install from the Kicksecure
+repository. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+<td><p>If intending to run the VirtualBox
+<img src="../../media/Virtualbox_logo.png.webp" width="25" alt="Virtualbox_logo.png" />
+host software (such as for running Kicksecure
+<img src="../../media/Kicksecure-basic-logo.png.webp" width="25" alt="Kicksecure-basic-logo.png" />
+virtual machine (VM)) <a href="#Configuration">additional configuration is required</a>.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor " id="non-qubes-whonix"></span><img src="../../media/Kicksecure-basic-logo.png.webp" width="50" alt="Kicksecure-basic-logo.png" /></p></td>
+<td><p><a href="../About/">Kicksecure</a></p></td>
+<td><p>Follow the installation instructions below.</p></td>
+<td><p>In Kicksecure, skip the following "Add Kicksecure repository"
+step since it is already enabled by default.</p></td>
+</tr>
+<tr class="odd">
+<td><p><span class="manually-placed-anchor " id="qubes"></span><img src="../../media/Qubes-logo-blue.png.webp" width="50" alt="qubes-logo-blue.png" /></p></td>
+<td><p><a href="https://www.qubes-os.org">Qubes OS</a> Debian based
+VMs</p></td>
+<td><p>Follow <a href="Qubes/">these LKRG Qubes instructions</a>.</p></td>
+<td><p>See footnote. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor " id="qubes-debian"></span><img src="../../media/Qubes-logo-blue.png.webp" width="50" alt="qubes-logo-blue.png" />
+<img src="../../media/Kicksecure-basic-logo.png.webp" width="50" alt="Kicksecure-basic-logo.png" /></p></td>
+<td><p><a href="../Qubes/">Kicksecure for
+Qubes</a></p></td>
+<td><p>Follow <a href="Qubes/">these LKRG Kicksecure-Qubes instructions</a>.</p></td>
+<td><p>See footnote. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><span class="manually-placed-anchor " id="linux"></span><img src="../../media/Tux.png.webp" width="50" alt="Tux.png" /></p></td>
+<td><p>Other Linux distributions</p></td>
+<td><p>LKRG is available for most Linux distributions.</p></td>
+<td><p>Follow the installation instructions for non-Debian distributions
+on the <a href="https://lkrg.org/">official LKRG homepage</a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Add Kicksecure repository.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Download the <a href="../Signing_Key/">Signing Key</a> used
+to verify Kicksecure packages.</p>
+<p><span class="code-select">wget <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+<em>Optional:</em> <a href="../Signing_Key/">Verify the
+Signing Key</a> to improve security assurances.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Install the Kicksecure signing key into the system keyring so APT can
+trust the repository.</p>
+<p><span class="code-select">sudo cp derivative.asc
+/usr/share/keyrings/derivative.asc</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Review the available Kicksecure APT repository options.</p>
+<p><em>Optional:</em> See <a href="../Packages_for_Debian_Hosts/">Kicksecure Packages for Debian Hosts and Kicksecure
+Host Enhancements</a> instead of the next step for more secure and
+advanced configurations.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Add the Kicksecure APT repository to the system.</p>
+<p><span class="code-select">echo "Types: deb URIs: <a href="https://deb.kicksecure.com">https://deb.kicksecure.com</a> Suites:
+trixie Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/derivative.asc" | sudo tee
+/etc/apt/sources.list.d/derivative.sources</span></p>
+</div>
+<p>Install LKRG.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Update the package lists.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><strong>2.</strong> Install LKRG. <sup class="reference"><a href="#cite_note-6">[6]</a></sup>
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup> <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p><span class="code-select">sudo apt install lkrg-dkms
+linux-headers-amd64</span></p>
+</div>
+<p>The LKRG installation is complete. <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<p>It is recommended to review optional hardening and other entries
+below, but this is not required.</p>
+<h1 id="Configuration">Configuration</h1>
+<p>It might be possible to further improve the security provided by LKRG
+though LKRG configuration, but this can potentially lead to decreased
+system stability. Note: <a href="../Unspecific/">Unspecific
+to Kicksecure</a>.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong></p>
+<p>These configuration sysctl where up to date at time of writing but
+might be outdated in future LKRG releases. Please refer to <a href="https://github.com/lkrg-org/lkrg/blob/main/README">upstream sysctl
+configuration documentation</a> chapter
+<code>Runtime configuration</code> and <a href="https://github.com/lkrg-org/lkrg/blob/main/scripts/bootup/lkrg.conf">upstream
+configuration file <code>/etc/sysctl.d/30-lkrg-dkms.conf</code></a>.</p>
+</div>
+<h2 id="General_LKRG_Configuration_Tips">General LKRG Configuration
+Tips</h2>
+<p><u>Note</u>: All the possible configuration changes in this section
+are optional.</p>
+<table>
+<caption><em>General LKRG Configuration Tips</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Instructions</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>View Current Runtime Configuration</p></td>
+<td><p>To view the current configuration, run.
+<span class="code-select">sudo sysctl -a | grep lkrg</span></p>
+<p>Refer to <a href="https://github.com/lkrg-org/lkrg/blob/main/README">upstream
+readme</a> chapter <code>Runtime configuration</code>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Temporary Runtime Configuration Changes</p></td>
+<td><p>To temporarily change configuration settings until next reboot,
+run. Note: Replace <code>lkrg.pcfi_validate=1</code> with the actual
+sysctl setting you like to change as per upstream documentation.</p>
+<p><span class="code-select">sudo sysctl -w
+lkrg.pcfi_validate=1</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Persistent Configuration Changes</p></td>
+<td><p>To enable any (LKRG) sysctl persistently after reboot. Open file
+<code>/etc/sysctl.d/50_user.conf</code> in an editor with administrative
+("<a href="../Root/"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/sysctl.d/50_user.conf</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/sysctl.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/sysctl.d/50_user.conf</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Paste (LKRG) sysctl settings such as.</p>
+<p>Note: Replace <code>lkrg.pcfi_validate=1</code> with the actual
+sysctl setting you like to change as per upstream documentation.</p>
+<p><span class="code-select">lkrg.pcfi_validate=1</span></p>
+<p>Save.</p>
+<p>The procedure of persistently changing sysctl settings is
+complete.</p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor " id="VirtualBox"></span>VirtualBox
+host software compatibility</p></td>
+<td><p><span class="code-select">lkrg.pcfi_validate=1</span></p>
+<p>Not required for VirtualBox guest VM. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Kicksecure_specific_LKRG_Configuration_Tips">Kicksecure specific
+LKRG Configuration Tips</h2>
+<table>
+<caption><em>Kicksecure specific LKRG Configuration Tips</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Instructions</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Block Module Loading</p></td>
+<td><p>Users which use <code>lkrg.block_modules</code> in Kicksecure
+would also have to follow Kicksecure instructions on <a href="../Operating_System_Hardening/#Module_Loading">module
+loading</a>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Hardening - UMH Validation and Enforcement</p></td>
+<td><p>Better do not use <code>lkrg.umh_validate=2</code> for now. Might
+break iptables/nftables firewalls. Advanced users could refer to
+upstream documentation on <code>lkrg.umh_validate</code> and
+<code>lkrg.umh_enforce</code>.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Usage">Usage</h1>
+<p>Once LKRG has been installed, little effort is required since it will
+protect the kernel without the user's knowledge and/or interaction.
+However, it is sensible to check that LKRG is running correctly and to
+monitor system logs for any suspicious entries. Check this entry at a
+later date for any additional recommendations.</p>
+<p>To check systemd journal log for kernel messages by LKRG, run.</p>
+<p><span class="code-select">sudo journalctl -b | grep lkrg</span></p>
+<p>To keep watching systemd journal log for new LKRG messages, run.</p>
+<p><span class="code-select">sudo journalctl -b -f | grep
+lkrg</span></p>
+<p>At this stage a graphical user interface (GUI) is not provided that
+can proactively inform users who fail to analyze the systemd journal log
+for relevant LKRG messages. A GUI or popup notification might be
+developed later on -- <a href="../Contribute/">help is most
+welcome</a>.</p>
+<h1 id="Recovery">Recovery</h1>
+<p>Quote upstream readme:</p>
+<p><blockquote><p>To account for the hopefully unlikely but really unfortunate event
+that some incompatibility between the Linux kernel or other components
+of the system and LKRG isn't detected prior to LKRG installation yet
+leads to system crash on bootup, we've included support for the
+"<code>nolkrg</code>" kernel parameter in the systemd unit file for
+LKRG. Thus, if you've followed the above installation procedure for LKRG
+with systemd, you may disable LKRG by specifying "<code>nolkrg</code>"
+on the kernel command-line via your bootloader. The system should then
+boot up without LKRG, and thus without triggering the problem, letting
+you fix it.</p></blockquote></p>
+<p><a href="https://github.com/lkrg-org/lkrg/issues/108#issuecomment-886236610">Quote
+upstream contributor</a>:</p>
+<p><blockquote><p>[...] I would use a different kernel cmd parameter:
+`systemd.unit=emergency.target` -- which drops me to the shell before
+even mounting (as read/write) the root file system, and I can disable
+whatever service I want. [...]</p></blockquote></p>
+<h1 id="Secure_Boot">Secure Boot</h1>
+<p>Not compatible because it is a kernel module.</p>
+<h1 id="Kicksecure_Feature_Default_Status_Information">Kicksecure
+Feature Default Status Information</h1>
+<p>Not installed by default.</p>
+<ul>
+<li>Risk of broken VM boot after LKRG major version upgrade.</li>
+<li>Risk of broken VM if using kernel from backports or porting to the
+next major version of Debian.</li>
+<li>Broken in Qubes?</li>
+</ul>
+<h1 id="Debugging">Debugging</h1>
+<h2 id="linux-image">linux-image</h2>
+<p><span class="code-select">dpkg -l | grep linux-image</span></p>
+<p>Should include:</p>
+<pre><code>ii  linux-image-4.19.0-6-amd64                    4.19.67-2+deb10u2               amd64        Linux 4.19 for 64-bit PCs (signed)
+ii  linux-image-amd64</code></pre>
+<h2 id="linux-headers">linux-headers</h2>
+<p><span class="code-select">dpkg -l | grep linux-head</span></p>
+<p>Should include:</p>
+<pre><code>ii  linux-headers-4.19.0-6-amd64                  4.19.67-2+deb10u2               amd64        Header files for Linux 4.19.0-6-amd64
+ii  linux-headers-4.19.0-6-common                 4.19.67-2+deb10u2               all          Common header files for Linux 4.19.0-6
+ii  linux-headers-amd64</code></pre>
+<h2 id="modinfo">modinfo</h2>
+<p><span class="code-select">sudo modinfo p_lkrg</span></p>
+<pre><code>filename:       /lib/modules/5.10.0-0.bpo.7-amd64/updates/dkms/p_lkrg.ko
+license:        GPL v2
+description:    pi3&#39;s Linux kernel Runtime Guard
+author:         Adam &#39;pi3&#39; Zabrocki (http://pi3.com.pl)
+depends:
+retpoline:      Y
+name:           p_lkrg
+vermagic:       5.10.0-0.bpo.7-amd64 SMP mod_unload modversions
+parm:           log_level:log_level [3 (warn) is default] (uint)
+parm:           heartbeat:heartbeat [0 (don&#39;t print) is default] (uint)
+parm:           block_modules:block_modules [0 (don&#39;t block) is default] (uint)
+parm:           interval:interval [15 seconds is default] (uint)
+parm:           kint_validate:kint_validate [3 (periodically + random events) is default] (uint)
+parm:           kint_enforce:kint_enforce [2 (panic) is default] (uint)
+parm:           msr_validate:msr_validate [0 (disabled) is default] (uint)
+parm:           pint_validate:pint_validate [1 (current) is default] (uint)
+parm:           pint_enforce:pint_enforce [1 (kill task) is default] (uint)
+parm:           umh_validate:umh_validate [1 (allow specific paths) is default] (uint)
+parm:           umh_enforce:umh_enforce [1 (prevent execution) is default] (uint)
+parm:           pcfi_validate:pcfi_validate [2 (fully enabled pCFI) is default] (uint)
+parm:           pcfi_enforce:pcfi_enforce [1 (kill task) is default] (uint)
+parm:           smep_validate:smep_validate [1 (enabled) is default] (uint)
+parm:           smep_enforce:smep_enforce [2 (panic) is default] (uint)
+parm:           smap_validate:smap_validate [1 (enabled) is default] (uint)
+parm:           smap_enforce:smap_enforce [2 (panic) is default] (uint)</code></pre>
+<h2 id="dkms_status">dkms status</h2>
+<p><span class="code-select">sudo dkms status</span></p>
+<p>Should include:</p>
+<pre><code>lkrg, 0.7, 4.19.0-6-amd64, x86_64: installed</code></pre>
+<h2 id="Related_Files">Related Files</h2>
+<ul>
+<li><a href="https://github.com/lkrg-org/lkrg/blob/main/debian/lkrg-dkms.modprobe"><code>/etc/modprobe.d/lkrg-dkms.conf</code></a></li>
+<li><a href="https://github.com/lkrg-org/lkrg/blob/main/debian/lkrg-dkms.modules"><code>/etc/modules-load.d/lkrg-dkms.conf</code></a></li>
+<li><a href="https://github.com/lkrg-org/lkrg/blob/main/scripts/bootup/lkrg.conf"><code>/etc/sysctl.d/30-lkrg-dkms.conf</code></a></li>
+</ul>
+<h1 id="Additional_Resources">Additional Resources</h1>
+<h2 id="Forum_Discussion">Forum Discussion</h2>
+<ul>
+<li><a href="https://forums.whonix.org/t/linux-kernel-runtime-guard-lkrg-linux-kernel-runtime-integrity-checking-and-exploit-detection/8477/1">Linux
+Kernel Runtime Guard (LKRG) - Linux Kernel Runtime Integrity Checking
+and Exploit Detection</a></li>
+</ul>
+<h2 id="Upstream_Resources">Upstream Resources</h2>
+<ul>
+<li><a href="https://lkrg.org/">LKRG Website</a></li>
+<li><a href="https://github.com/lkrg-org/lkrg">LKRG Source Code git
+Repository</a></li>
+<li><a href="https://www.youtube.com/watch?v=tOiPM692DOM">LKRG
+Presentation Video</a></li>
+<li><a href="https://www.openwall.com/presentations/CONFidence2018-LKRG-Under-The-Hood/">Old
+LKRG Presentation Slides CONFidence 2018</a></li>
+<li><a href="https://www.openwall.com/presentations/OSTconf2020-LKRG-In-A-Nutshell/">Updated
+LKRG Presentation Slides OSTconf 2020</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/">LKRG Mailing
+List</a></li>
+<li><a href="https://openwall.info/wiki/p_lkrg/Main">LKRG Wiki</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2020/02/28/1">https://www.openwall.com/lists/lkrg-users/2020/02/28/1</a></li>
+</ul>
+<h2 id="Upstream_Mailing_List_Discussions">Upstream Mailing List
+Discussions</h2>
+<ul>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2019/11/18/3">LKRG
+compilation hardening flags, checksec, hardening-check</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2019/11/13/5">LKRG
+packagers / downstream wishlist</a> (signed git commits, signed git
+tags, version numbers, logo)</li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2019/11/10/2">module
+loading / systemd bug report / suggestion</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2019/11/18/1">LKRG kills
+VirtualBox host VMs</a></li>
+<li><a href="https://github.com/lkrg-org/lkrg/issues/82">VirtualBox host
+software compatibility</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2019/11/18/2">announcement
+of this LKRG Debian package on upstream LKRG mailing list</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2020/01/25/2">LKRG
+module parameters</a></li>
+<li><a href="https://www.openwall.com/lists/lkrg-users/2020/02/01/2">Compiling
+LKRG static into the Kernel / Loading LKRG kernel module as early as
+possible or after other modules?</a></li>
+</ul>
+<h2 id="See_Also">See Also</h2>
+<ul>
+<li><a href="https://github.com/Kicksecure/security-misc">security-misc</a>:
+Inspired by the Kernel Self Protection Project (<a href="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project">KSPP</a>).
+This package implements most if not all recommended Linux kernel
+settings (sysctl) and kernel parameters set by the KSPP.</li>
+<li><a href="../Grub-live/">grub-live</a>: Boot your
+existing, installed Debian Host into Live Mode.</li>
+<li><a href="../Hardened-kernel/">Hardened VM Kernel</a>
+(in development): A hardened kernel configuration optimized for virtual
+machines, see: <a href="https://forums.whonix.org/t/kernel-recompilation-for-better-hardening/7598">development
+discussion</a>.</li>
+<li><a href="../System_Hardening_Checklist/">System
+Hardening Checklist</a></li>
+</ul>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">* <a href="https://github.com/lkrg-org/lkrg">Original LKRG Source
+Code git Repository</a> * <a href="https://github.com/Kicksecure/lkrg">LKRG Debian Package
+Lightweight Fork</a></li>
+<li id="cite_note-2"><a href="https://openwall.info/wiki/p_lkrg/Main#Donation">https://openwall.info/wiki/p_lkrg/Main#Donation</a></li>
+<li id="cite_note-3"><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=944476">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=944476</a></li>
+<li id="cite_note-4">LKRG <u>can</u> be installed inside VirtualBox guest VM without
+configuration changes required.</li>
+<li id="cite_note-5"><a href="https://github.com/QubesOS/qubes-issues/issues/5461">make
+Linux Kernel Runtime Guard (LKRG) easily available in Qubes</a></li>
+<li id="cite_note-6">Only Intel and amd64 are supported at present, see: <a href="https://www.openwall.com/lists/lkrg-users/2018/07/31/3">https://www.openwall.com/lists/lkrg-users/2018/07/31/3</a></li>
+<li id="cite_note-7">No need for package <code>lkrg-systemd</code>. See <a href="https://github.com/openwall/lkrg/issues/108#issuecomment-886230431">upstream
+discussion</a>.</li>
+<li id="cite_note-8">Package <code>lkrg</code> is just a meta package. The only thing it
+would do is adding <code>Depends:</code> <code>lkrg-dkms</code> and
+<code>Recommends:</code> <code>lkrg-systemd</code>. See also:
+<span class="code-select">apt-cache show lkrg</span>
+<span class="code-select">apt-cache show lkrg-dkms</span>
+<span class="code-select">apt-cache show lkrg-systemd</span></li>
+<li id="cite_note-9">Note that LKRG versioning is based on upstream's git master branch
+intention to remain in the "prerelease" stage. <a href="https://www.openwall.com/lists/lkrg-users/2019/11/11/1">Quote Adam
+Zabrocki</a>: <blockquote><p>We're trying to keep master branch stable and let's say in
+"prerelease" stage :)</p></blockquote></li>
+<li id="cite_note-10"><a href="https://github.com/lkrg-org/lkrg/issues/82#issuecomment-886188999">VirtualBox
+host software compatibility</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

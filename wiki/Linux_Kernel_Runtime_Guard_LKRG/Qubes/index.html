@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Linux Kernel Runtime Guard LKRG/Qubes</title>
+<meta name="description" content="HowTo: Install LKRG in Qubes Debian or Kicksecure-Qubes Template">
+<meta property="og:description" content="HowTo: Install LKRG in Qubes Debian or Kicksecure-Qubes Template">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/Qubes/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Linux_Kernel_Runtime_Guard_LKRG/Qubes/">
+<meta property="og:title" content="Linux Kernel Runtime Guard (LKRG) in Qubes OS Debian or Kicksecure for Qubes VMs">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/P_lkrg2.png">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Linux Kernel Runtime Guard LKRG</span> / <span>Qubes</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="thumb-gallery  ">
+<p><img src="../../../media/P_lkrg2.png.webp" width="50" alt="LKRG logo" />
+<img src="../../../media/Logo-debian-500x500.png.webp" width="50" alt="Logo-debian-500x500.png" />
+<img src="../../../media/Kicksecure-basic-logo.png.webp" width="50" alt="Kicksecure-basic-logo.png" />
+<img src="../../../media/Qubes-logo-blue.png.webp" width="50" alt="qubes-logo-blue.png" />
+<strong><a href="../../Reasons_for_Freedom_Software/" class="freelink" aria-label="Link to: Reasons for Freedom Software">FREE</a></strong></p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>HowTo: Install LKRG in Qubes Debian or Kicksecure-Qubes Template</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<p><u><strong>Deprecated for now, see <a href="../#Deprecation_in_Kicksecure">LKRG deprecation in Kicksecure</a>.</strong></u></p>
+<p><u>L</u>inux <u>K</u>ernel <u>R</u>untime <u>G</u>uard (LKRG)
+protects the kernel. It provides security through diversity and has a
+similar effect to running an uncommon operating system (kernel).
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>LKRG renders whole classes of kernel exploits ineffective, while
+making other exploits less reliable and more difficult to write; see <a href="../#Features">features</a> and <a href="../#Security">security</a>. LKRG was developed by a security
+professional with reviews undertaken by other high profile security
+professionals; see <a href="../#Authorship">authorship</a>. For further information, refer to the
+main <a href="../">LKRG</a>
+entry.</p>
+<p>The instructions below explain how to install LKRG in
+<img src="../../../media/Qubes-logo-blue.png.webp" width="15" alt="qubes-logo-blue.png" />
+Qubes Debian-based VMs. Most users will want to apply these instructions
+in the Qubes Debian Template.</p>
+<p><img src="../../../media/Kicksecure-basic-logo.png.webp" width="15" alt="Kicksecure-basic-logo.png" />
+Kicksecure-Qubes is supported as well, but in that case the steps to add
+the signing key and repository should be skipped because they are
+already present in Kicksecure-Qubes.</p>
+<p>For all other platforms
+<img src="../../../media/Logo-linux-500x500.png.webp" width="15" alt="logo-linux-500x500.png" />,
+see <a href="../">LKRG</a>.</p>
+<h1 id="Qubes_VM_Kernel">Qubes VM Kernel</h1>
+<p>Since LKRG is a kernel module, it is required (and advisable) to
+reconfigure the VM to use a Qubes VM kernel. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>Any issues with Qubes VM kernel should not be confused with LKRG.
+Otherwise, LKRG could be falsely suspected of causing unrelated issues,
+which wastes time in successfully completing the configuration.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<a href="../../Advanced_Users/">Advanced users</a> only!</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Follow the Qubes OS <a href="https://www.qubes-os.org/doc/managing-vm-kernels/#installing-kernel-in-debian-vm">Installing
+kernel in Debian VM</a> instructions.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Ensure the Qubes VM kernel is functional before proceeding.</p>
+<p><u>Note:</u> Qubes VM kernel issues should be raised at <a href="https://www.qubes-os.org/support/">Qubes support</a> and not in
+Kicksecure forums. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Reboot dom0 with the Qubes VM kernel. This is because the Qubes VM
+kernel might break unrelated things such as the USB VM.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Once the Qubes VM kernel is functional, proceed with the following
+instructions.</p>
+<h1 id="Add_Repository">Add Repository</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Skip this step in Kicksecure-Qubes.</p>
+</div>
+<p>There are two different options to enable the Kicksecure APT
+repository. Choose one. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading4 widget-headline ">
+<h4 role="heading" aria-level="4" id="Using_extrepo">
+<p>Using extrepo</p>
+</h4>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<code>extrepo</code> setup.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Install package <code>extrepo</code>.</p>
+<p><span class="code-select">sudo apt install extrepo</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Open file <code>/etc/extrepo/config.yaml</code> in an editor with
+administrative ("<a href="../../Root/"><code>root</code></a>")
+rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/extrepo/config.yaml</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/extrepo/config.yaml</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/extrepo/config.yaml</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Paste at the end.</p>
+<p><span class="code-select">- contrib - non-free</span></p>
+<p><sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Enable the stable <code>kicksecure</code> APT repository. (See footnote
+for other options.) <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../../media/Kicksecure-logo-icon.svg" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="A_:_Kicksecure">
+<p>A : Kicksecure</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<div>
+<p><code>Kicksecure</code></p>
+</div>
+<p><span class="code-select">sudo extrepo enable kicksecure</span></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../../media/Qubes-logo-blue.png.webp" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="B_:_Kicksecure_for_Qubes_Template">
+<p>B : Kicksecure for Qubes Template</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<div>
+<p>Kicksecure-Qubes Template (<code>kicksecure-18</code>)</p>
+</div>
+<p><span class="code-select">sudo http_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> https_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> extrepo enable
+kicksecure</span></p>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Advanced options.</p>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>For advanced options such as clearnet over Tor or onion.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p>Please press expand on the right side.</p>
+<div class="mw-collapsible-content">
+<p>Optional.</p>
+<p>Install <code>apt-transport-tor</code> and <code>tor</code>.</p>
+<div class="info-box ">
+<p>Install package(s) <code>apt-transport-tor tor</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>apt-transport-tor tor</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="../../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+apt-transport-tor tor</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>apt-transport-tor tor</code> is complete.</p>
+</div>
+<p>Find out the filename.</p>
+<p><span class="code-select">ls -la
+/etc/apt/sources.list.d/extrepo_*</span></p>
+<p><u>Note:</u> The filename will be different if using a repository
+other than the stable repository such as the testers repository.</p>
+<p>Open file
+<code>/etc/apt/sources.list.d/extrepo_kicksecure.sources</code> in an
+editor with administrative ("<a href="../../Root/"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure_2">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/sources.list.d/extrepo_kicksecure.sources</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes_2">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/sources.list.d/extrepo_kicksecure.sources</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives_2">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/apt/sources.list.d/extrepo_kicksecure.sources</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Choose either option <strong>A)</strong> <u>or</u>
+<strong>B)</strong>.</p>
+<ul>
+<li><strong>A)</strong> <u>Clearnet over Tor Repository:</u> To enable
+clearnet over Tor, <code>tor+</code> needs to be prepended in front of
+<code>https</code>. In other words, look for
+<span class="code-select inline-style">Uris: https</span> and replace it
+with <span class="code-select inline-style">Uris: tor+https</span>
+.</li>
+<li><strong>B)</strong> <u>Onion Repository:</u> To enable onion, look
+for the line starting with <code>Uris:</code>. Delete the whole line. Or
+comment it out by adding a hash ("<code>#</code>") in front of it. Then
+add a new line: <span class="code-select inline-style">Uris:
+tor+http://deb.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion</span></li>
+</ul>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+<p>The Kicksecure APT repository has been enabled.<sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading4 widget-headline ">
+<h4 role="heading" aria-level="4" id="Manually">
+<p>Manually</p>
+</h4>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>Add Signing Key</strong></u></p>
+<p>Complete the following steps to add the <a href="../../Signing_Key/">Kicksecure Signing Key</a> to the system's APT
+keyring.</p>
+<p>Open a terminal.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Package <code>curl</code> needs to be installed.</p>
+<div class="info-box ">
+<p>Install package(s) <code>curl</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>curl</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="../../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+curl</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>curl</code> is
+complete.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Download <a href="../../Signing_Key/">Kicksecure Signing
+Key</a>. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p>Choose your operating system.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Debian.png.webp" width="30" alt="Debian.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="A_:_Debian">
+<p>A : Debian</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using <strong>Debian</strong></u>,
+run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Debian">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Debian)">TLS (Debian)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo curl --tlsv1.3 --output
+/usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Debian)">onion (Debian)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo curl --proxy socks5h://127.0.0.1:9050
+--output /usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Qubes-logo-blue.png.webp" width="30" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="B_:_Qubes_App_Qube">
+<p>B : Qubes App Qube</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using a <em>Qubes</em>
+<strong>Debian</strong> App Qube</u>, run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Qubes-App-Qube">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Qubes-App-Qube)">TLS (Qubes-App-Qube)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo curl --tlsv1.3 --output
+/usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Qubes-App-Qube)">onion (Qubes-App-Qube)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo curl --proxy socks5h://127.0.0.1:9050
+--output /usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Qubes-logo-blue.png.webp" width="30" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading6 widget-headline ">
+<h6 role="heading" aria-level="6" id="B_:_Qubes_Template">
+<p>B : Qubes Template</p>
+</h6>
+</div>
+</div>
+<div class="tcc-content">
+<p><u><strong>If</strong> you are using a <em>Qubes</em>
+<strong>Debian</strong> Template</u>, run.</p>
+<p>Choose TLS or onion.</p>
+<div class="tab-content-controller " data-tcc-linkid="Qubes-Template">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="TLS_(Qubes-Template)">TLS (Qubes-Template)</h6>
+</div>
+<div class="tcc-content">
+<p>TLS.</p>
+<p><span class="code-select">sudo http_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> https_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> curl --tlsv1.3
+--output /usr/share/keyrings/derivative.asc --url <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<h6 id="onion_(Qubes-Template)">onion (Qubes-Template)</h6>
+</div>
+<div class="tcc-content">
+<p><u>Note:</u> Downloading over onion requires an already functional
+system Tor.</p>
+<p><span class="code-select">sudo http_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> https_proxy=<a href="http://127.0.0.1:8082">http://127.0.0.1:8082</a> curl --output
+/usr/share/keyrings/derivative.asc --url <a href="http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc">http://www.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion/keys/derivative.asc</a></span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Signing key verification.</p>
+<p><u>Optional.</u> Recommended for <a href="../../Advanced_Users/">Advanced Users</a> only. If you have a good
+understanding of <a href="../../Verifying_Software_Signatures/">Verifying Software Signatures</a> you can <a href="../../Signing_Key/"><u>check</u> the Kicksecure Signing
+Key</a> for additional security.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+<p>The procedure of adding the Kicksecure signing key is now
+complete.</p>
+<p><u> <strong>Add Repository</strong></u></p>
+<div class="info-box ">
+<p>Add the Kicksecure APT Repository.</p>
+<p>Choose exactly one option: Option <u>A</u>, Option <u>B</u>
+<u><strong>OR</strong></u> Option <u>C</u>.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Iconfinder_tor_386502.png.webp" width="50" alt="Iconfinder_tor_386502.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="A_:_Onion_Rep.">
+<p>A : Onion Rep.</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><strong>Option <u>A</u></strong>: Add the Kicksecure Onion
+repository.</p>
+<p>This option configures APT to access the Kicksecure repository via an
+onion service for maximum network anonymity.</p>
+<p>To add the Kicksecure repository over Onion, first install
+<code>apt-transport-tor</code> and <code>tor</code> from the Debian
+repository.</p>
+<p><span class="code-select" data-language="bash">sudo apt install
+apt-transport-tor tor</span></p>
+<p>Add the <a href="../../Project-APT-Repository/">Kicksecure
+APT repository</a> for the default Kicksecure setup using Debian
+<em><span>stable</span></em>. At the
+time of writing, this was <code>trixie</code>.</p>
+<p><span class="code-select" data-language="bash">echo "Types: deb URIs:
+tor+http://deb.w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion
+Suites: trixie Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/derivative.asc" | sudo tee
+/etc/apt/sources.list.d/derivative.sources</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Deep-web-1106648640.jpg.webp" width="50" alt="Deep-web-1106648640.jpg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="B_:_Clearnet_Rep._via_Tor">
+<p>B : Clearnet Rep. via Tor</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><strong>Option <u>B</u></strong>: Add the Kicksecure clearnet
+repository via Tor.</p>
+<p>This option accesses the clearnet repository but routes all traffic
+through Tor.</p>
+<p>To add the Kicksecure repository over torified clearnet, install
+<code>apt-transport-tor</code> from the Debian repository.</p>
+<p><span class="code-select" data-language="bash">sudo apt install
+apt-transport-tor</span></p>
+<p>Add the Kicksecure APT repository for the default Kicksecure setup
+using Debian stable. At the time of writing, this was
+<code>trixie</code>.</p>
+<p><span class="code-select" data-language="bash">echo "Types: deb URIs:
+tor+https://deb.kicksecure.com Suites: trixie Components: main contrib
+non-free Enabled: yes Signed-By: /usr/share/keyrings/derivative.asc" |
+sudo tee /etc/apt/sources.list.d/derivative.sources</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../../media/Icon-lock.png.webp" width="50" alt="Icon-lock.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="C_:_Clearnet_Rep.">
+<p>C : Clearnet Rep.</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><strong>Option <u>C</u></strong>: Add the Kicksecure clearnet
+repository over clearnet.</p>
+<p>This option uses a direct clearnet connection without Tor.</p>
+<p><u>Note:</u> When later using the <a href="../../Project-APT-Repository/">Kicksecure repository tool</a>, this configuration will
+be upgraded to "Clearnet Rep. via Tor", unless noted otherwise.
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<p>To add the Kicksecure repository over clearnet, add the Kicksecure
+APT repository for the default Kicksecure setup using Debian stable. At
+the time of writing, this was <code>trixie</code>.</p>
+<p><span class="code-select" data-language="bash">echo "Types: deb URIs:
+<a href="https://deb.kicksecure.com">https://deb.kicksecure.com</a>
+Suites: trixie Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/derivative.asc" | sudo tee
+/etc/apt/sources.list.d/derivative.sources</span></p>
+</div>
+</div>
+<p>The procedure for adding the Kicksecure APT repository is now
+complete.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Install_LKRG">Install LKRG</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Cornues.png.webp" width="40" alt="Testers only!" /></span>
+Warning: This is for <u><strong>testers-only</strong></u>!</p>
+</div>
+<div class="info-box ">
+<p>Install LKRG.</p>
+<div class="info-box ">
+<p>Install package(s) <code>lkrg-dkms linux-headers-amd64</code>
+following these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>lkrg-dkms linux-headers-amd64</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="../../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+lkrg-dkms linux-headers-amd64</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>lkrg-dkms linux-headers-amd64</code> is complete.</p>
+</div>
+</div>
+<p>The LKRG installation procedure is complete. Interested users can
+learn more, consider additional hardening and so on; see <a href="../">here</a> for
+further information.</p>
+<h1 id="Credits_and_Source_Code">Credits and Source Code</h1>
+<p>The <a href="https://lkrg.org/">original</a> source software is
+maintained by Adam "pi3" Zabrocki. See also: <a href="../#Authorship">LKRG
+authorship</a>.</p>
+<p><a href="./">This
+website with Qubes instructions</a> and <a href="../">LKRG Debian
+Package Website</a> is the <a href="https://en.wikipedia.org/wiki/Fork_(software_development)">software
+fork</a> homepage for LKRG, with a focus on easy installation, added
+user documentation, and integration with <a href="../../About/">Kicksecure</a>, Debian, <a href="../../Whonix/">Whonix</a> and other distributions. The software fork
+source code can be found <a href="https://github.com/Kicksecure/lkrg">here</a>.</p>
+<h1 id="References">References</h1>
+<p>Qubes ticket: <a href="https://github.com/QubesOS/qubes-issues/issues/5461">make Linux
+Kernel Runtime Guard (LKRG) easily avaialble in Qubes</a></p>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://lkrg.org/">https://lkrg.org/</a></li>
+<li id="cite_note-2"><a href="https://github.com/QubesOS/qubes-issues/issues/5456">cannot
+compile LKRG (Linux Kernel Runtime Guard) with Qubes dom0 kernel /
+broken gcc plugins structleak_plugin.so latent_entropy_plugin.so</a>
+This probably occurs due to this recently closed issue which has only
+filtered through to Qubes OS master branches, but not the stable
+branches: <a href="https://github.com/QubesOS/qubes-issues/issues/2844">kernel-devel
+package have broken gcc plugin</a>. The dom0 kernel compilation bug
+might be fixed after upgrades. It is unclear if it would then be
+advisable to use dom0 kernel.</li>
+<li id="cite_note-3"><a href="https://forums.whonix.org/t/what-to-post-in-this-qubes-whonix-forum-and-what-not/2275">Whonix
+forums: What to post in this Qubes-Whonix forum and what not</a> Qubes
+feature requests and bug reports: * <a href="https://github.com/QubesOS/qubes-issues/issues/5212">Simplify and
+promote using in-vm kernel #5212</a> * <a href="https://github.com/QubesOS/qubes-issues/issues/9570">Use in-vm
+kernel for Whonix (and possibly Kicksecure) #9570</a> * <a href="https://github.com/QubesOS/qubes-issues/issues/9759">Fix booting
+on 4k storage also for templates using in-vm kernel #9759</a></li>
+<li id="cite_note-4">As experienced firsthand by Kicksecure developer Patrick Schleizer
+in the past with Qubes R4.2.</li>
+<li id="cite_note-5"><code>extrepo</code> vs manual: * <strong>Usability:</strong> **
+There are some detail usability differences. Using onion connection
+might be easier with manual method until Kicksecure gets ported to
+Debian <code>13</code> / <code>trixie</code> because
+<code>extrepo</code> might get onion support then. ** Apart from that,
+<code>extrepo</code>'s usability seems generally better. *
+<strong>Security:</strong> ** A detailed comparative research of both
+methods is unavailable. ** If usability is considered a security
+feature, then <code>extrepo</code> might be considered more secure. This
+is because users do not have to learn as much about <a href="../../Verifying_Software_Signatures/">Verifying Software
+Signatures</a>, <a href="../../OpenPGP/">OpenPGP</a>, its many
+<a href="../../Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions/">Software Signature Verification Usability Issues</a>.
+Debian which is already trusted by the user providing a trust path to
+the Kicksecure signing key. Manual key fingerprint verification not
+required. ** The <code>extrepo</code> project is a huge amount of work
+adding all the signing keys for many different projects. The code for
+securely downloading a signing key in the Python is not among the most
+difficult programming tasks to get correct. Compared with
+<code>curl</code> (written in C), it might be more secure. *
+<strong>Keeping support for manual method:</strong> ** Removal of the
+manual method is not planned. Since already written, the maintenance
+effort for that very part of documentation is low. In case
+<code>extrepo</code> signing key is outdated, get deprecated, it's easy
+to switch back to manual method.</li>
+<li id="cite_note-6">The following comments in that file...
+<pre><code> # - contrib # - non-free </code></pre>
+<p>...could be deleted, but that is completely optional.</p></li>
+<li id="cite_note-7"><code>stable-proposed-updates</code> repository:
+<span class="code-select">sudo extrepo enable kicksecure_proposed</span>
+<code>testers</code> repository: <span class="code-select">sudo extrepo
+enable kicksecure_testers</span> <code>developers</code> repository:
+<span class="code-select">sudo extrepo enable
+kicksecure_developers</span></li>
+<li id="cite_note-8">extrepo feature request: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1037254">extrepo
+apt-transport-tor and onion support</a></li>
+<li id="cite_note-9">forum discussion: <a href="https://forums.whonix.org/t/extrepo-safely-adding-repos/8539">extrepo
+- safely adding repos</a></li>
+<li id="cite_note-10">See <a href="../../Secure_Downloads/">Secure Downloads</a>
+to understand why <code>curl</code> and the parameters
+<code>--tlsv1.3</code> are used instead of <code>wget</code>.<br />
+<br />
+Placing an additional signing key into folder
+<code>/usr/share/keyrings</code> by itself alone has no impact on
+security as this folder is not automatically used by Debian's APT by
+default. Only when an APT sources list configuration file points to
+folder <code>/usr/share/keyrings</code> using the <code>signed-by</code>
+keyword the signing key will be actually used. Therefore deleting keys
+in <code>/usr/share/keyrings</code> is optional if intending to disable
+an APT repository. See also <a href="../../Dev/APT/">APT
+Signing Key Folders</a>.</li>
+<li id="cite_note-11">Unless using <code>repository-dist --transport plain-tls</code>. See
+also <code>man repository-dist</code>.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

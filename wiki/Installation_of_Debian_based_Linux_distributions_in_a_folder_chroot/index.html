@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Installation of Debian based Linux distributions in a folder chroot</title>
+<meta name="description" content="How to create a chroot (change root) in a secure way using mmdebstrap and systemd-nspawn.">
+<meta property="og:description" content="How to create a chroot (change root) in a secure way using mmdebstrap and systemd-nspawn.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Installation_of_Debian_based_Linux_distributions_in_a_folder_chroot/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Installation_of_Debian_based_Linux_distributions_in_a_folder_chroot/">
+<meta property="og:title" content="Install Debian (based) Linux Distributions in a Folder (chroot)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Debianinafolder234234.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Security">Security</a></li><li class="toc-l2"><a href="#Exit_systemd-nspawn">Exit systemd-nspawn</a></li><li class="toc-l2"><a href="#See_Also">See Also</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Debianinafolder234234.png.webp" width="250" alt="Debianinafolder234234.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>How to create a chroot (change root) in a secure way using mmdebstrap
+and systemd-nspawn.</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported/">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="Chroot_Use_Cases">Chroot Use Cases</h1>
+<ul>
+<li>See this <a href="https://en.wikipedia.org/wiki/Chroot#Uses">list of
+chroot use cases in wikipedia</a>.</li>
+</ul>
+<h1 id="Chroot_Security">Chroot Security</h1>
+<p><a href="https://access.redhat.com/blogs/766093/posts/1975883">chroot
+is not a security feature</a>.</p>
+<h1 id="Examples">Examples</h1>
+<ul>
+<li><a href="../Chroot/">Kicksecure in a chroot</a></li>
+<li><a href="../GNUnet/">GNUnet in a chroot</a></li>
+</ul>
+<h1 id="systemd-nspawn">systemd-nspawn</h1>
+<h2 id="Introduction">Introduction</h2>
+<p>Quote <a href="https://0pointer.de/blog/projects/changing-roots">Changing
+Roots</a>:</p>
+<ul>
+<li><blockquote><p>systemd-nspawn tool which acts as chroot(1) on steroids</p></blockquote></li>
+<li><blockquote><p>it makes use of file system and PID namespaces to boot a simple
+lightweight container on a file system tree.</p></blockquote></li>
+<li><blockquote><p>It can be used almost like chroot(1), except that the isolation from
+the host OS is much more complete, a lot more secure and even easier to
+use</p></blockquote></li>
+<li><blockquote><p>systemd-nspawn is capable of booting a complete systemd or sysvinit
+OS in container with a single command.</p></blockquote></li>
+<li>Booting of the container can take less than 3 seconds.</li>
+</ul>
+<h2 id="Security">Security</h2>
+<p>Can <code>systemd-nspawn</code> be made a secure jail? The following
+quote might be outdated and/or not reflect a "hardened container". Quote
+<a href="https://0pointer.de/blog/projects/changing-roots">systemd lead
+developer</a>:</p>
+<p><blockquote><p>Note however that this protects the host OS only from accidental
+changes of its parameters. A process in the container can manually
+remount the file systems read-writeable and then change whatever it
+wants to change.</p></blockquote></p>
+<p>What are these issues? Related to running root vs non-root inside the
+container? Can these security holes nowadays be closed?</p>
+<p>Since we are inside a VM already, can containers be used for better
+security?</p>
+<p>Quote <a href="https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html">systemd-nspawn
+man page</a>:</p>
+<p><blockquote><p>--drop-capability=</p>
+<p><code>&#160;&#160;&#160;Specify&#160;one&#160;or&#160;more&#160;additional&#160;capabilities&#160;to&#160;drop&#160;for&#160;the&#160;container.&#160;This&#160;allows&#160;running&#160;the&#160;container&#160;with&#160;fewer&#160;capabilities&#160;than&#160;the&#160;default&#160;(see&#160;above).</code></p></blockquote></p>
+<p>Quote <a href="https://wiki.archlinux.org/index.php/systemd-nspawn#Creating_private_users_(unprivileged_containers)">https://wiki.archlinux.org/index.php/systemd-nspawn#Creating_private_users_(unprivileged_containers)</a></p>
+<p><blockquote><p>systemd-nspawn supports unprivileged containers,</p></blockquote></p>
+<p>Great!</p>
+<p><blockquote><p>, though the containers need to be booted as root.</p></blockquote></p>
+<p>That could be an OK limitation?</p>
+<p>See also:</p>
+<ul>
+<li><a href="https://unix.stackexchange.com/questions/145739/what-makes-systemd-nspawn-still-unsuitable-for-secure-container-setups">https://unix.stackexchange.com/questions/145739/what-makes-systemd-nspawn-still-unsuitable-for-secure-container-setups</a></li>
+<li><a href="https://opensource.com/business/14/7/docker-security-selinux">https://opensource.com/business/14/7/docker-security-selinux</a></li>
+<li><a href="https://people.kernel.org/brauner/runtimes-and-the-curse-of-the-privileged-container">https://people.kernel.org/brauner/runtimes-and-the-curse-of-the-privileged-container</a></li>
+</ul>
+<h2 id="Exit_systemd-nspawn">Exit systemd-nspawn</h2>
+<p>To leave the chroot, press and keep holding key <code>CTRL</code> and
+press key <code>5</code> quickly 3 times within 1 second.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h2 id="See_Also">See Also</h2>
+<ul>
+<li><a href="https://wiki.archlinux.org/index.php/systemd-nspawn">https://wiki.archlinux.org/index.php/systemd-nspawn</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html">https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html</a></li>
+</ul>
+<h1 id="LXC">LXC</h1>
+<p><a href="https://wiki.archlinux.org/index.php/Linux_Containers#Enable_support_to_run_unprivileged_containers_(optional)">https://wiki.archlinux.org/index.php/Linux_Containers#Enable_support_to_run_unprivileged_containers_(optional)</a></p>
+<h1 id="mmdebstrap">mmdebstrap</h1>
+<p><code>mmdebstrap</code> is a tool that can be used to securely create
+chroots.</p>
+<p>Using <code>debootstrap</code> is insecure at times such as if APT is
+vulnerable and the fixed package only available from security.debian.org
+APT repository not the regular Debian repository because it can use only
+1 APT repository at a time. And security.debian.org does not include all
+packages created to create a chroot.</p>
+<p>A secure alternative is <code>mmdebstrap</code>. <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+See also <a href="https://manpages.debian.org/trixie/mmdebstrap/mmdebstrap.1.en.html#DEBOOTSTRAP">other
+advantages of <code>mmdebstrap</code></a>.</p>
+<h1 id="TODO">TODO</h1>
+<ul>
+<li><a href="https://www.elstel.org/xchroot/">xchroot</a>: chroot for
+users with Xorg/X11 forwarding and automatic mounting + aufs/unionfs
+read only root support.
+<ul>
+<li>Needs cautious review. Same author as <a href="https://www.elstel.org/debcheckroot/">debcheckroot</a> which does
+not do gpg signature verification of downloaded package metadata because
+<a href="https://lists.debian.org/debian-security/2019/11/msg00022.html">thinks</a>
+that's useless.</li>
+<li>Does not appear to support Wayland.</li>
+</ul></li>
+<li>Gentoo wiki has instructions for launching Wayland applications from
+a chroot: <a href="https://wiki.gentoo.org/wiki/Chroot#Wayland">https://wiki.gentoo.org/wiki/Chroot#Wayland</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://unix.stackexchange.com/questions/577065/connected-to-container-mycontainer-press-three-times-within-1s-to-exit-sessi">https://unix.stackexchange.com/questions/577065/connected-to-container-mycontainer-press-three-times-within-1s-to-exit-sessi</a></li>
+<li id="cite_note-2">alternative is multistrap (might be outdated, author has no
+experience with it)</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

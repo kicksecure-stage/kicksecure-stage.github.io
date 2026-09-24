@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Server Security Guide</title>
+<meta name="description" content="Server Security Guide for Kicksecure, Linux, and Kicksecure Hardening">
+<meta property="og:description" content="Server Security Guide for Kicksecure, Linux, and Kicksecure Hardening">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Server_Security_Guide/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Server_Security_Guide/">
+<meta property="og:title" content="Server Security Guide">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Securityguide123132.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#DMARC_Strict_Alignment">DMARC Strict Alignment</a></li><li class="toc-l2"><a href="#Tools">Tools</a></li><li class="toc-l2"><a href="#DKIM_Header_Injection_Attack">DKIM Header Injection Attack</a></li><li class="toc-l2"><a href="#DKIM_Replay_Attack">DKIM Replay Attack</a></li><li class="toc-l2"><a href="#DKIM_Required">DKIM Required</a></li><li class="toc-l2"><a href="#e-mail_self_hosting_is_hard">e-mail self hosting is hard</a></li><li class="toc-l2"><a href="#SPF">SPF</a></li><li class="toc-l2"><a href="#Headers">Headers</a></li><li class="toc-l2"><a href="#Checking_DKIM_Signatures_on_the_Command_Line">Checking DKIM
+Signatures on the Command Line</a></li><li class="toc-l2"><a href="#Abuse_Notifications">Abuse Notifications</a></li><li class="toc-l2"><a href="#Standard_E-Mail_Addresses">Standard E-Mail Addresses</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Website_Tests/">Website and Server
+Tests</a></li>
+<li><a href="../Browser_Tests/">Browser Tests</a></li>
+<li><a href="./">Server Security
+Guide</a></li>
+<li><a href="../Privacy_Policy_Technical_Details/">Privacy
+Policy Technical Details</a></li>
+<li><a href="../Dev/About_Infrastructure/">Dev/About
+Infrastructure</a></li>
+</ul>
+</div>
+<p><img src="../../media/Securityguide123132.jpg.webp" alt="Securityguide123132.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Server Security Guide for Kicksecure, Linux, and Kicksecure
+Hardening</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported/">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="User_Account_Password_Security">User Account Password
+Security</h1>
+<p>An adversary might connect a keyboard to a server and attempt to <a href="../Login/">login</a> into a virtual console. See also
+<a href="../Desktop/#Virtual_Consoles">Virtual Consoles
+Usage Documentation</a> and <a href="../Protection_Against_Physical_Attacks/#Virtual_Consoles">Protection against Physical Attacks, Virtual
+Consoles</a>.</p>
+<p>The user should set a password for account <code>user</code>. If
+using <a href="../Sysmaint/">user-sysmaint-split</a>, the
+user should also set a password for account <code>sysmaint</code>.</p>
+<p>If logging in passwordless over <a href="../SSH/">SSH</a> using public key authentication, the user might
+be tempted to <a href="../User/#Locking_a_Password">Locking
+a Password</a>. However, then <a href="../Recovery/">recovery</a> using a virtual console over a KVM switch
+(such as PiKVM) will be no longer possible.</p>
+<h1 id="Confidential_Computing">Confidential Computing</h1>
+<p><blockquote><p>Confidential computing is an advanced security technology that
+protects data while it's in use, complementing existing protections for
+data at rest and in transit. The goal is to isolate sensitive data from
+unauthorized access, even from the cloud provider or system
+administrators.<span class="blockquote-context"><a href="../Dev/confidential_computing/">Confidential
+Computing (developers)</a></span></p></blockquote></p>
+<p>To the best of the author's knowledge, reasonably secure confidential
+computing is not currently achievable with Freedom Software. Technical
+details are available on the wiki pages <a href="../Dev/confidential_computing/">Confidential
+Computing (developers)</a> and <a href="../Verified_Boot/">Verified Boot</a>.</p>
+<h1 id="E-Mail_Delivery">E-Mail Delivery</h1>
+<h2 id="DMARC_Strict_Alignment">DMARC Strict Alignment</h2>
+<p>Consider using DMARC strict alignment:</p>
+<ul>
+<li><code>aspf=s;</code></li>
+<li><code>adkim=s</code></li>
+<li>relaxed alignment <code>aspf=r;</code> / <code>adkim=r</code> might
+lead to spammers sending e-mails impersonating the domain name and DMARC
+passing anyhow.</li>
+<li><a href="https://web.archive.org/web/20221013074445/https://www.zerobounce.net/faqs/services.html">Illustrative
+examples on DMARC Strict Alignment</a></li>
+</ul>
+<h2 id="Tools">Tools</h2>
+<ul>
+<li><a href="https://www.dmarcanalyzer.com/dmarc/dmarc-record-check/">https://www.dmarcanalyzer.com/dmarc/dmarc-record-check/</a></li>
+<li><a href="https://report-uri.com/account/reports/dmarc/">https://report-uri.com/account/reports/dmarc/</a></li>
+<li><a href="https://www.mailhardener.com/dashboard/dmarc-reports">https://www.mailhardener.com/dashboard/dmarc-reports</a></li>
+<li><a href="https://www.mailhardener.com/tools/dkim-validator">https://www.mailhardener.com/tools/dkim-validator</a></li>
+<li><a href="https://tools.socketlabs.com/">https://tools.socketlabs.com/</a></li>
+<li><a href="https://www.appmaildev.com/en/dkimfile">SPF/DKIM/DMARC/DomainKey/RBL
+Online Test</a></li>
+<li><a href="https://github.com/6point6/dmarc_checker">https://github.com/6point6/dmarc_checker</a></li>
+<li><a href="https://www.suped.com/tools/email-tester">https://www.suped.com/tools/email-tester</a></li>
+</ul>
+<h2 id="DKIM_Header_Injection_Attack">DKIM Header Injection Attack</h2>
+<p>Introduction:</p>
+<ul>
+<li><a href="https://prog.world/dkim-replay-attack-on-gmail/">https://prog.world/dkim-replay-attack-on-gmail/</a></li>
+<li><a href="https://utcc.utoronto.ca/~cks/space/blog/spam/DKIMSpamReplayAttack">https://utcc.utoronto.ca/~cks/space/blog/spam/DKIMSpamReplayAttack</a></li>
+<li><a href="https://wordtothewise.com/2014/05/dkim-injected-headers/">https://wordtothewise.com/2014/05/dkim-injected-headers/</a></li>
+<li><a href="https://www.zdnet.com/article/dkim-useless-or-just-disappointing/">https://www.zdnet.com/article/dkim-useless-or-just-disappointing/</a></li>
+</ul>
+<p>Mitigation:</p>
+<ul>
+<li><a href="https://halon.io/blog/the-dkim-replay-attack-and-how-to-mitigate">https://halon.io/blog/the-dkim-replay-attack-and-how-to-mitigate</a></li>
+<li><a href="https://noxxi.de/research/breaking-dkim-on-purpose-and-by-chance.html">https://noxxi.de/research/breaking-dkim-on-purpose-and-by-chance.html</a></li>
+<li><a href="https://proton.me/blog/dkim-replay-attack-breakdown">https://proton.me/blog/dkim-replay-attack-breakdown</a></li>
+<li><a href="https://security.stackexchange.com/questions/265408/how-many-times-need-e-mail-headers-be-signed-with-dkim-to-mitigate-dkim-header-i">https://security.stackexchange.com/questions/265408/how-many-times-need-e-mail-headers-be-signed-with-dkim-to-mitigate-dkim-header-i</a></li>
+<li><a href="https://github.com/rspamd/rspamd/issues/2136">https://github.com/rspamd/rspamd/issues/2136</a></li>
+</ul>
+<p>Future:</p>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/draft-kucherawy-dkim-anti-replay/">https://datatracker.ietf.org/doc/draft-kucherawy-dkim-anti-replay/</a></li>
+</ul>
+<h2 id="DKIM_Replay_Attack">DKIM Replay Attack</h2>
+<ul>
+<li><a href="https://wordtothewise.com/2014/05/dkim-replay-attacks/">https://wordtothewise.com/2014/05/dkim-replay-attacks/</a></li>
+<li><a href="https://tools.wordtothewise.com/rfc/6376#section-8.6">https://tools.wordtothewise.com/rfc/6376#section-8.6</a></li>
+<li><a href="https://www.socketlabs.com/blog/dkim-replay-attacks-preventive-measures-to-protect-email-deliverability/">https://www.socketlabs.com/blog/dkim-replay-attacks-preventive-measures-to-protect-email-deliverability/</a></li>
+</ul>
+<p>Could a DKIM replay attack be resolved by enforcing In theory, yes.
+In practice, unsupported by DMARC. See <a href="https://serverfault.com/questions/812367/dmarc-alignment-enforce-messages-pass-both-spf-and-dkim">DMARC
+Alignment: Enforce messages pass BOTH SPF and DKIM</a>. And unlikely to
+be ever implemented since this would break the e-mail forwarding use
+case.</p>
+<h2 id="DKIM_Required">DKIM Required</h2>
+<p>Is SPF + DMARC sufficient or would this lead to ending up in the spam
+folder?</p>
+<ul>
+<li>DMARC will <code>pass</code> (success, not a failure) when either
+SPF or DMARC has <code>pass</code>.
+<ul>
+<li>Such as <code>pass</code> (as in DMARC reports) however does only
+indicate that DMARC was <code>pass</code>. The e-mail could still end up
+being rejected for being spam or end up in the spam folder.</li>
+</ul></li>
+<li>Quote <a href="https://emfluence.com/blog/how-dkim-affects-email-deliverability">https://emfluence.com/blog/how-dkim-affects-email-deliverability</a>:
+<blockquote><p>Yahoo! requires DKIM to sign up for their Feedback Loop (where they
+keep track of spam complaints). That means anyone who doesn't have DKIM
+set up isn't capturing spam complaints at Yahoo!, and because of that,
+those email addresses aren't being suppressed automatically. That could
+put you on the road to being blocked or blacklisted by Yahoo!</p></blockquote></li>
+<li><a href="https://dmarcly.com/blog/can-i-set-up-dmarc-without-dkim">https://dmarcly.com/blog/can-i-set-up-dmarc-without-dkim</a>
+doesn't mention spam.</li>
+<li>Quote <a href="https://support.google.com/a/answer/174124?hl=en">https://support.google.com/a/answer/174124?hl=en</a>:
+<blockquote><p>Without DKIM, messages sent from your organization or domain are more
+likely to be marked as spam by receiving mail servers.</p></blockquote></li>
+</ul>
+<h2 id="e-mail_self_hosting_is_hard">e-mail self hosting is hard</h2>
+<p><blockquote><p>So the fact that something like email is decentralized is cool in the
+sense that I host my own email. I have since 1996. I wouldn't really
+wish it upon anybody but I still do
+it.<span class="blockquote-context"><a href="https://en.wikipedia.org/wiki/Moxie_Marlinspike">Moxie
+Marlinspike</a>, founder of <a href="../Signal/">Signal</a>
+messenger,
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DdM-XTRyC9c">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DdM-XTRyC9c">36C3
+- The ecosystem is
+moving</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DdM-XTRyC9c"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=DdM-XTRyC9c"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=DdM-XTRyC9c"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></span></p></blockquote></p>
+<ul>
+<li><a href="https://www.reddit.com/r/selfhosted/comments/xoi5im/google_smtp_low_domain_reputation/">https://www.reddit.com/r/selfhosted/comments/xoi5im/google_smtp_low_domain_reputation/</a></li>
+<li>and google postmaster tools don't help <a href="https://www.tablix.org/~avian/blog/archives/2019/04/google_is_eating_our_mail/">https://www.tablix.org/~avian/blog/archives/2019/04/google_is_eating_our_mail/</a></li>
+<li><a href="https://superuser.com/questions/1718259/google-bounce-email-with-error-550-5-7-1-our-system-has-detected-that-this-messa">https://superuser.com/questions/1718259/google-bounce-email-with-error-550-5-7-1-our-system-has-detected-that-this-messa</a></li>
+<li><a href="https://support.google.com/mail/thread/13395379/domain-reputation-got-bad-and-not-restoring-for-1-5-months-all-messages-bounced-back-with-550-5-7">https://support.google.com/mail/thread/13395379/domain-reputation-got-bad-and-not-restoring-for-1-5-months-all-messages-bounced-back-with-550-5-7</a></li>
+</ul>
+<p>rain dance required:</p>
+<ul>
+<li><a href="https://www.mailmonitor.com/repair-a-bad-domain-reputation-with-gmail/">https://www.mailmonitor.com/repair-a-bad-domain-reputation-with-gmail/</a></li>
+</ul>
+<p>Opinions:</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=31072652">https://news.ycombinator.com/item?id=31072652</a></li>
+</ul>
+<h2 id="SPF">SPF</h2>
+<p>SPF mostly ignored:</p>
+<ul>
+<li>"SPF is terrible, but was necessary"
+<ul>
+<li><a href="https://security.stackexchange.com/questions/115981/why-do-email-that-didnt-pass-spf-checks-go-to-my-mailbox">https://security.stackexchange.com/questions/115981/why-do-email-that-didnt-pass-spf-checks-go-to-my-mailbox</a></li>
+</ul></li>
+</ul>
+<h2 id="Headers">Headers</h2>
+<p>View e-mail headers:</p>
+<ul>
+<li>For example in Thunderbird: select an e-mail -&gt; <code>View</code>
+-&gt; <code>Message Source</code></li>
+</ul>
+<p>There are two different "From" fields in an e-mail.</p>
+<ul>
+<li>A) 'MAIL FROM' <a href="https://en.wikipedia.org/wiki/Bounce_address">https://en.wikipedia.org/wiki/Bounce_address</a></li>
+<li>B) 'From' header <a href="https://en.wikipedia.org/wiki/Email#Message_header">https://en.wikipedia.org/wiki/Email#Message_header</a></li>
+</ul>
+<p>Very good explanation here: <a href="https://www.xeams.com/difference-envelope-header.htm">https://www.xeams.com/difference-envelope-header.htm</a></p>
+<h2 id="Checking_DKIM_Signatures_on_the_Command_Line">Checking DKIM
+Signatures on the Command Line</h2>
+<p>Might be mostly only useful for learning and testing purposes.</p>
+<p>Install <code>dkimverify</code>.</p>
+<div class="info-box ">
+<p>Install package(s) <code>python3-dkim</code> following these
+instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>python3-dkim</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+python3-dkim</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s) <code>python3-dkim</code> is
+complete.</p>
+</div>
+<p><span class="code-select">dkimverify &lt; e-mail.eml</span></p>
+<h2 id="Abuse_Notifications">Abuse Notifications</h2>
+<ul>
+<li>consider signing up for <a href="https://www.abuse.net/addnew.phtml">https://www.abuse.net/addnew.phtml</a></li>
+</ul>
+<h2 id="Standard_E-Mail_Addresses">Standard E-Mail Addresses</h2>
+<ul>
+<li>a number of <a href="https://webmasters.stackexchange.com/questions/2030/should-i-set-up-standard-email-accounts-what-are-they">standard
+e-mail addresses</a> should redirect to the inbox of the server
+administrator</li>
+</ul>
+<h1 id="Miscellaneous_Server_Tests">Miscellaneous Server Tests</h1>
+<ul>
+<li>See also <a href="../Website_Tests/">Website and Server
+Tests</a>.</li>
+<li><a href="https://www.ssllabs.com/">https://www.ssllabs.com/</a></li>
+<li><a href="https://www.hardenize.com/">https://www.hardenize.com/</a></li>
+<li><a href="https://www.sshaudit.com/">https://www.sshaudit.com/</a></li>
+<li><a href="https://hstspreload.org/">https://hstspreload.org/</a></li>
+<li><a href="https://securityheaders.com/">https://securityheaders.com/</a></li>
+<li><a href="https://clickjacker.io">https://clickjacker.io</a></li>
+<li><a href="https://www.validbot.com/">https://www.validbot.com/</a></li>
+<li><a href="https://realfavicongenerator.net/">https://realfavicongenerator.net/</a></li>
+<li><a href="https://sitecheck.sucuri.net/">https://sitecheck.sucuri.net/</a></li>
+<li><a href="https://hostedscan.com/">https://hostedscan.com/</a></li>
+<li><a href="https://talosintelligence.com/">https://talosintelligence.com/</a></li>
+<li><a href="https://www.debugbear.com/resource-hint-validator">https://www.debugbear.com/resource-hint-validator</a></li>
+<li><a href="https://www.debugbear.com/test/website-speed">https://www.debugbear.com/test/website-speed</a></li>
+<li><a href="https://developers.google.com/search/docs/appearance/structured-data">https://developers.google.com/search/docs/appearance/structured-data</a></li>
+<li><a href="https://pagespeed.web.dev/">https://pagespeed.web.dev/</a></li>
+<li><a href="https://www.giftofspeed.com/gzip-test/">https://www.giftofspeed.com/gzip-test/</a></li>
+<li><a href="https://gtmetrix.com/">https://gtmetrix.com/</a></li>
+<li><a href="https://www.webpagetest.org/">https://www.webpagetest.org/</a></li>
+<li><a href="https://technicalseo.com/tools/robots-txt/">https://technicalseo.com/tools/robots-txt/</a></li>
+<li><a href="https://www.cloudflare.com/ssl/encrypted-sni/">https://www.cloudflare.com/ssl/encrypted-sni/</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://help.ubuntu.com/lts/serverguide/console-security.html">https://help.ubuntu.com/lts/serverguide/console-security.html</a></li>
+<li><a href="../Website_Tests/">Website Tests</a></li>
+<li><a href="../Browser_Tests/">Browser Tests</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

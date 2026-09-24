@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Verifying Software Signatures</title>
+<meta name="description" content="Discover how digital signatures enhance security. Learn about verifying software signatures, understanding their limitations, conceptual challenges, and real-world attacks.">
+<meta property="og:description" content="Discover how digital signatures enhance security. Learn about verifying software signatures, understanding their limitations, conceptual challenges, and real-world attacks.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Verifying_Software_Signatures/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Verifying_Software_Signatures/">
+<meta property="og:title" content="Verifying Software Signatures">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Verifying_Software_Signatures.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Checking_Digital_Fingerprints_of_Signing_Keys">Checking Digital
+Fingerprints of Signing Keys</a></li><li class="toc-l2"><a href="#Checking_Digital_Fingerprints_of_Signed_Software">Checking
+Digital Fingerprints of Signed Software</a></li><li class="toc-l2"><a href="#What_Digital_Signatures_Prove">What Digital Signatures
+Prove</a></li><li class="toc-l2"><a href="#System_Security_Level">System Security Level</a></li><li class="toc-l2"><a href="#Conceptual_Challenges_in_Digital_Signatures_Verification">Conceptual
+Challenges in Digital Signatures Verification</a></li><li class="toc-l3"><a href="#Threat_Model_Assumptions">Threat Model Assumptions</a></li><li class="toc-l3"><a href="#Potential_Adversary_Attacks">Potential Adversary Attacks</a></li><li class="toc-l3"><a href="#Appendix">Appendix</a></li><li class="toc-l2"><a href="#Information_Security_Level">Information Security Level</a></li><li class="toc-l2"><a href="#Cryptocurrency_Theft_via_Compromised_Binaries">Cryptocurrency
+Theft via Compromised Binaries</a></li><li class="toc-l2"><a href="#Counterfeit_Tor_Browser_Attack">Counterfeit Tor Browser
+Attack</a></li><li class="toc-l2"><a href="#hacked_github.com">hacked github.com</a></li><li class="toc-l2"><a href="#Lists_of_Attacks_in_the_Wild">Lists of Attacks in the Wild</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">Verifying
+Software Signatures</a></li>
+<li><a href="../OpenPGP/">OpenPGP</a></li>
+<li><a href="../Air_Gapped_OpenPGP_Key/">Air Gapped OpenPGP
+Key</a></li>
+<li><a href="../Signify/">Signify</a></li>
+<li><a href="../PQCrypto/#Codecrypt">Codecrypt</a></li>
+<li><a href="../Authenticode/">Authenticode</a></li>
+<li><a href="../Digital_Signature_Policy/">Kicksecure
+Digital Signature Policy</a></li>
+</ul>
+</div>
+<p><img src="../../media/Verifying_Software_Signatures.png.webp" width="200" alt="Verifying_Software_Signatures.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Digital signatures are a key component of online security, providing
+a way to verify the authenticity and integrity of software. But what
+does that really mean, and why should you care? This guide is here to
+answer those questions. We'll walk you through the process of software
+signature verification, help you understand the strengths and
+limitations of digital signatures, and navigate you through the
+potential pitfalls. Whether you're a seasoned tech professional or just
+starting to dip your toes into the world of digital security, this guide
+has something for you.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><strong>Digital signatures are a digital tool to ensure the
+authenticity of software and the absence of any third party
+modifications. These digital signatures and the habit of always
+verifying these signatures is critical to enhance system
+security</strong>.</p>
+<p>It's crucial to avoid installing unsigned software and instead
+following these best practices:</p>
+<ul>
+<li>Always opt for verifiable software that allows for <a href="../Warning/#Always_Verify_Signatures">confirmation of
+signing keys and signatures</a>. This ensures the software you're
+installing is authentic and hasn't been tampered with.</li>
+<li>Utilize mechanisms like <a href="../Operating_System_Software_and_Updates/#Updates">apt upgrades</a> that simplify and automate the
+verification process. This makes it easier to maintain system security
+without requiring extensive technical knowledge.</li>
+</ul>
+<h1 id="Risks_of_Not_Verifying_Digital_Signatures">Risks of Not
+Verifying Digital Signatures</h1>
+<p>Neglecting to verify digital signatures can expose users to a variety
+of risks. While the <a href="#Attacks_in_the_Wild">"Attacks in the Wild"</a> section provides specific
+instances of these risks, it's important to understand the general
+implications of not adhering to this security practice:</p>
+<ul>
+<li><strong>Compromised Software:</strong> Without verification, you may
+unknowingly install compromised software. This could include malware,
+spyware, or other malicious code that can harm your system, steal
+sensitive information, or perform unwanted actions.</li>
+<li><strong>Loss of Data Integrity:</strong> Digital signatures ensure
+the integrity of the software, confirming that it hasn't been tampered
+with since it was signed. Without verification, there's no guarantee
+that the software you received is the same as the software that was
+originally distributed.</li>
+<li><strong>Identity Spoofing:</strong> Digital signatures authenticate
+the identity of the software provider. Without verification, you may
+fall victim to identity spoofing, where an attacker poses as a
+legitimate software provider to distribute malicious software.</li>
+<li><strong>System Vulnerabilities:</strong> Unverified and potentially
+compromised software can introduce vulnerabilities into your system,
+making it a target for further attacks.</li>
+<li><strong>Loss of Trust:</strong> On a broader scale, failing to
+verify digital signatures can erode trust in software distribution
+channels. If users can't be sure that the software they're receiving is
+genuine and untampered, they may be less likely to use these channels in
+the future.</li>
+<li><strong>Related:</strong> <a href="../Basic_Security_Guide_Introduction/#Motivation">Essential Security Guide Introduction chapter
+Motivation</a>.</li>
+</ul>
+<p>In summary, verifying digital signatures is a crucial step in
+maintaining the security, integrity, and trustworthiness of software and
+should not be overlooked.</p>
+<h1 id="Unfixable_Documentation_Usability_Issue">Unfixable Documentation
+Usability Issue</h1>
+<p><blockquote><p>Could you provider easier digital signature verification
+documentation please?<span class="blockquote-context">Common user
+support request. (Paraphrased.)</span></p></blockquote></p>
+<ul>
+<li><u>Inherently difficult topic:</u> Non-technical users often
+struggle with these concepts. This is complicated stuff, and as early as
+1999 the <a href="https://people.eecs.berkeley.edu/~tygar/papers/Why_Johnny_Cant_Encrypt/USENIX.pdf">Why
+Johnny Can't Encrypt: A Usability Evaluation of PGP 5.0</a> paper was
+published.</li>
+<li><u>Simple documentation impossible:</u> There seems to be literally
+no way to make the documentation on that topic uncomplicated.</li>
+<li><u>Documentation has limits:</u> There are some things which are so
+complicated they cannot be learned through documentation alone. Read a
+book and become a heart surgeon? No way. Become "at least" a general
+practitioner? Also no way. Learning by doing, sitting together in the
+office of a general practitioner for years: can doctor skills be learned
+through on-the-job training, listening, observing, and imitating? Also
+no way. In many countries it requires about 12 years of study. Now,
+maybe that could be compressed, or some bright minds could learn it
+faster, but it still cannot be compressed to 1 year. In any case, there
+is no way to "write simple documentation".</li>
+<li><u>More realistic comparison:</u> Now that's a bit far-fetched.
+Learning the digital software verification of OpenPGP signatures
+probably won't take years of study. A guesstimate would be that it takes
+several hours or days and may require a teacher. (<a href="../Teacher/">Find a Teacher</a>) There may be OpenPGP courses and <a href="https://en.wikipedia.org/wiki/CryptoParty">cryptoparties</a> (at
+least these used to exist). This illustrates that there is no way to
+have simple documentation for this complex topic.</li>
+<li><u>Further discussion:</u> <a href="https://forums.whonix.org/t/expkeysig-error-gpg-key-whonix/22721/19">Whonix
+forum discussion: expkeysig error gpg key whonix</a></li>
+</ul>
+<h1 id="Verification_Commands_Cannot_Replace_Key_Verification">Verification
+Commands Cannot Replace Key Verification</h1>
+<p><blockquote><p>Why not just provide the verification commands or a script to copy
+and paste?<span class="blockquote-context">Common user support request.
+(Paraphrased.)</span></p></blockquote></p>
+<ul>
+<li><u>Copy and paste is not enough:</u> If asking over https/onion
+(such as in forums or by e-mail) is required, then copying and pasting
+these commands is not helpful because the answer is complicated.</li>
+<li><u>Same problem during OS installation:</u> The same challenges
+exist when initially installing Debian (non-Qubes), Fedora, Ubuntu,
+Qubes, etc.</li>
+<li><u>Verification must be independent:</u> In other words, to gain the
+security benefits of key verification, it is necessary to know how to
+perform key verification without relying on TLS/onion, such as by asking
+forums, AI, etc.</li>
+<li><u>Commands do not add trust:</u> Commands could be provided that
+someone could copy and paste without their own technical understanding,
+or a script could even be provided. But using these commands is no more
+secure than copying the signing key without verification, and a script
+would actually be even less secure.</li>
+<li><u>If it must be asked, it is likely insecure:</u> In other words,
+if it is necessary to ask how to do it, it is likely not possible to do
+it securely.</li>
+<li><u>Similar conclusion by Tails:</u> The Tails project reached a
+similar conclusion. See <a href="./#Appendix">Appendix</a>.</li>
+</ul>
+<h1 id="Verification_Procedure">Verification Procedure</h1>
+<p>In this chapter we will explain the verification procedure. Please
+read the warnings below too. This is sort of a cheat sheet of overall
+warnings regarding the verification process that you should
+internalize.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Important: Do not proceed if verification fails! This could risk using
+infected or erroneous files. The purpose of verification is to ensure
+file integrity.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember to check the GPG signature timestamp. For instance, if you
+previously saw a signature from 2023 and now see one from 2022, this
+could indicate a potential rollback (downgrade) or indefinite freeze
+attack.<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember: OpenPGP signatures sign the contents of files, <em>not</em>
+the file names themselves. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+</div>
+<h2 id="Checking_Digital_Fingerprints_of_Signing_Keys">Checking Digital
+Fingerprints of Signing Keys</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> Only install software <u>after</u> verifying
+the key's fingerprint and ensuring good signatures for
+files/repositories.</p>
+</div>
+<p>The first critical step in verifying software legitimacy is
+confirming the authenticity of the signing key, which requires
+inspecting the key fingerprint. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> Always perform this
+operation before importing keys or placing trust in OpenPGP output when
+verifying files or repositories.</p>
+<p>Our standard advice is to carefully obtain copies of the <a href="../Trust/#OpenPGP">OpenPGP fingerprint</a> from
+multiple secure websites and to use <a href="../OpenPGP/#The_OpenPGP_Web_of_Trust">other
+authentication systems</a> to check for a match. <sup class="reference"><a href="#cite_note-4">[4]</a></sup> In
+this context, "other authentication systems" refers to:
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<ul>
+<li>Utilize <a href="../OpenPGP/#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a>.</li>
+<li>Verify the key against different keyservers.</li>
+<li>Use various search engines to search for the fingerprint.</li>
+<li>Employ various VPNs and proxy servers.</li>
+<li>Access different Wi-Fi networks (work, school, internet cafe,
+etc.).</li>
+<li>Request people to post the fingerprint in various forums and chat
+rooms.</li>
+<li>Check against PDFs and photographs where the fingerprint appears
+(e.g., slides from a talk or on a T-shirt).</li>
+<li>Repeat all of the above from different computers and devices.</li>
+<li>See also <a href="../OpenPGP/#Bootstrapping_OpenPGP_keys_from_the_web">Bootstrapping OpenPGP keys from the web</a>.</li>
+</ul>
+<h2 id="Checking_Digital_Fingerprints_of_Signed_Software">Checking
+Digital Fingerprints of Signed Software</h2>
+<p>Before you can safely verify file signatures with the signing key,
+ensure the following prerequisites are met:</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+The correct signing key pair has been downloaded.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+The signing key's fingerprints have been checked against multiple
+sources.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+The key pair has been imported. For example:</p>
+<pre><code>user@host:~/Downloads$ gpg --import KEY
+gpg: key 61B7B526D98F0353: 24 signatures not checked due to missing keys
+gpg: key 61B7B526D98F0353: public key &quot;Mozilla Software Releases &lt;release@mozilla.com&gt;&quot; imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+gpg: no ultimately trusted keys found</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+The software package intended for installation has been downloaded.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+The accompanying signature file for the software package
+(<code>.asc</code> files are GPG signatures) has been downloaded.</p>
+<p>For example, to check the file signature for Firefox v97.0.1,
+downloaded directly from the Mozilla Firefox website, run the following
+command in a terminal:</p>
+<p><span class="code-select">gpg --verify firefox-97.0.1.tar.bz2.asc
+firefox-97.0.1.tar.bz2</span></p>
+<p>The OpenPGP output should show a "good signature", with the primary
+key fingerprint matching the one you verified earlier. For example:</p>
+<pre><code>gpg: Signature made Wed 16 Feb 2022 06:52:12 PM GMT
+gpg:                using RSA key 4360FE2109C49763186F8E21EBE41E90F6F12F6D
+gpg: Good signature from &quot;Mozilla Software Releases &lt;release@mozilla.com&gt;&quot; [unknown]
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 14F2 6682 D091 6CDD 81E3  7B6D 61B7 B526 D98F 0353
+     Subkey fingerprint: 4360 FE21 09C4 9763 186F  8E21 EBE4 1E90 F6F1 2F6D</code></pre>
+<p>You can now safely install the software. If the output states "bad
+signature", then remove the files and digital signatures and download
+them again.</p>
+<h1 id="Common_Misconceptions">Common Misconceptions</h1>
+<h2 id="What_Digital_Signatures_Prove">What Digital Signatures
+Prove</h2>
+<p>It's important to understand that using digital signatures to verify
+the trustworthiness of software isn't infallible. Digital signatures
+increase the likelihood that no backdoor was introduced by a third party
+during transit, but they don't guarantee the software is entirely
+"backdoor-free". Below is a summary of what digital signatures can and
+can't prove.</p>
+<table>
+<caption><em>Digital Signatures Properties</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Property</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Digital Signatures Prove</p></td>
+<td><ul>
+<li>A signature was made by someone with access to the private key.</li>
+<li>The file contents haven't been tampered with, preserving
+integrity.</li>
+<li><i>May</i> indicate the given file is authentic.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Digital Signatures do not Prove</p></td>
+<td><ul>
+<li>Any other property, for example, that the file isn't malicious.
+Nothing prevents a person from signing a malicious program. Digital
+signature or not, for example in the case of
+<ul>
+<li>intentional breakage, supply chain attacks: <a href="https://www.bleepingcomputer.com/news/security/dev-corrupts-npm-libs-colors-and-faker-breaking-thousands-of-apps/">Dev
+corrupts NPM libs 'colors' and 'faker' breaking thousands of
+apps</a></li>
+<li><a href="../Malware_and_Firmware_Trojans/#Backdoors">backdoors</a>: <a href="https://www.synopsys.com/blogs/software-security/malicious-dependency-supply-chain/">bitcoin
+copay wallet "direct" backdoor</a>
+"<em><span>If more than 100 BTC, steal
+it. Otherwise, don't bother.</span></em>" <sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
+<li>a digital signature would <u>not</u> have helped.</li>
+</ul></li>
+<li>That the persons signing the file are inherently trustworthy, for
+example: Debian, Kicksecure developers and so on -- but trust must be
+eventually placed in someone. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Verifying all files downloaded from trusted vendors eliminates
+threats from server compromises, dishonest staff at hosting companies or
+ISPs, Wi-Fi attacks, and so on. This is because tampered files will
+produce bad digital signatures, <u>provided the public keys used for
+signature verification are the authentic, original ones (see
+below).</u></p>
+<h2 id="System_Security_Level">System Security Level</h2>
+<p>System security can be categorized into one of three levels, from
+strongest to weakest:</p>
+<ul>
+<li><code>Always use software signatures verification</code>: Software
+signatures are consistently verified using <a href="../OpenPGP/">OpenPGP</a>, <a href="../PQCrypto/#Codecrypt">codecrypt</a>, <a href="../Install_Software/">APT</a>, or similar mechanisms.</li>
+<li><code>Always use TLS</code>: Files are always <a href="../Secure_Downloads/">securely downloaded</a> over <a href="../SSL/">TLS</a>.</li>
+<li><code>Plaintext</code>.</li>
+</ul>
+<p>If you've ever installed or started software without successfully
+verifying its signatures, your system's security level drops from the
+OpenPGP standard to either TLS or plaintext.</p>
+<p>Without implementing a <a href="../Disaster_Recovery/">Disaster Recovery Procedure</a>, it's impossible to
+elevate the security level of a machine or VM (for example, from TLS to
+the OpenPGP standard).</p>
+<p>If you agree with the Kicksecure view that <a href="../SSL/">Transport Layer Security (TLS)</a> provides weak
+protection, then you must verify software signatures consistently and
+without exception.</p>
+<h2 id="Conceptual_Challenges_in_Digital_Signatures_Verification">Conceptual
+Challenges in Digital Signatures Verification</h2>
+<p>Verification of software digital signatures presents many educational
+challenges. Often, implicit assumptions are made in the relevant
+literature, which are seldom spelled out. Without proper education, it's
+unrealistic to expect the majority of users to successfully verify
+software signatures and simultaneously notice attacks by advanced
+adversaries.</p>
+<p>When digitally signed software is available, most websites simply
+state that the signing key should be downloaded to verify software
+signature(s). This approach has limited usefulness and kicksecure.com is
+not alone in this regard -- the same is true for any software that
+provides software signatures.</p>
+<p>The responsibility of verifying software signatures falls entirely on
+users, and cannot be offered by vendors who make software and associated
+signatures available for download. This is because the threat model of
+software signature verification is closely linked with the <a href="#System_Security_Level">system security
+level</a>; this section attempts to make this explicit.</p>
+<h3 id="Threat_Model_Assumptions">Threat Model Assumptions</h3>
+<p>In this threat model, signing keys and software signatures are
+considered to provide a higher security level. Conversely, everything
+the user can see on a website (including instructions) is on a lower
+security level because <a href="../Dev/OpenPGP_Signed_Website/">(OpenPGP) signed websites</a> do not yet exist.
+Moreover, <a href="../SSL/">TLS</a> provides a lower
+security level than verification of digital software signatures.</p>
+<p>Consider an example of signed software available on a random website
+secured by TLS (in this case, TLS vs non-TLS doesn't matter). Due to the
+software's file size and economic constraints, it's impossible to host
+the software downloads on the same server. Instead, downloads are
+offered on a mirror network operated by third parties. In such a
+scenario, it could be argued that mirrors are less trusted than the main
+project website. If the main website offered a signing key, but a
+malicious file was shipped by a third-party mirror, then this could be
+detected if software signature verification was utilized by the
+user.</p>
+<p>In other cases, the software downloads, signing key, and software
+signatures are all provided by the same server over <a href="../SSL/">TLS</a>; this is the situation for Kicksecure and other
+projects. <sup class="reference"><a href="#cite_note-8">[8]</a></sup> While this may appear more secure than the
+first example, no project can guarantee that its server will never be
+compromised; see <a href="../Trust/#Distrusting_Infrastructure">Distrusting Infrastructure</a> for further details.</p>
+<p>The preceding discussion makes it clear that it's unwise to blindly
+trust whatever a project website says about software signature
+verification. Relevant threat model questions include:</p>
+<ul>
+<li>What if the website I am currently viewing is already
+compromised?</li>
+<li>What if a malicious third party has already modified instructions
+concerning how to verify signatures or which signing key should be
+used?</li>
+</ul>
+<p>Also, after compromising a project web server, advanced adversaries
+are capable of showing fake website contents to specifically targeted
+users.</p>
+<h3 id="Potential_Adversary_Attacks">Potential Adversary Attacks</h3>
+<p>Competent adversaries are capable of various attacks, including
+malicious modifications of a project website. Consider the following
+vectors:</p>
+<ul>
+<li>Removal of any mention of software signature verification and
+replacement of software downloads with malicious counterparts.
+<ul>
+<li>Users unfamiliar with software verification would fail to notice
+this, leading to compromise.</li>
+<li>Users who already understand the threat model of digital software
+verification and enforce the security level "always use software
+signatures verification" would ask for software signatures and remain
+safe.</li>
+</ul></li>
+<li>Insertion of false information such as "From now on, software
+signatures are no longer required. This process is now automated,
+because ...".
+<ul>
+<li>Gullible users would believe this statement and be compromised.</li>
+<li>Diligent users would search for a digitally signed message by the
+vendor confirming this change. If it was not found, they would report
+the issue and remain safe.</li>
+</ul></li>
+<li>Replacing the genuine signing key and software signatures with a
+signing key and software signatures created by the adversary.
+<ul>
+<li>Users who did not previously receive the signing key and who did not
+do further research on the plausibility of having received the correct
+signing key would fail to notice this and be compromised.</li>
+<li>Diligent users would follow the recommendations in earlier chapters
+on this page and therefore stay safe.</li>
+</ul></li>
+</ul>
+<p>To counter these threats, user intelligence and due diligence is
+necessary as a sanity check.</p>
+<p>Due to the complexity of this issue and very low user awareness, it
+is unlikely the majority of users are enforcing the "always use software
+signatures verification" security level. To date, the author of this
+section has not seen the security level concept explicitly described
+elsewhere, probably because the relevant information is not widely
+known. Unfortunately, the existing tools used for manual verification of
+software signatures have poor usability and <a href="../Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions/">better technical solutions</a> that are required do not
+exist.</p>
+<h3 id="Appendix">Appendix</h3>
+<p><strong>Bold</strong> added.</p>
+<p><blockquote><p>OpenPGP signatures<br />
+<br />
+<b>Unless the user knows how to verify the signing key through the
+OpenPGP Web of Trust,</b> this technique ultimately relies on a correct
+download of the signing key and signature, and thus on
+HTTPS.<span class="blockquote-context">Tails: <a href="https://tails.net/contribute/design/download_verification/">Design:
+Download verification</a></span></p></blockquote></p>
+<p><blockquote><p>OpenPGP verification instructions<br />
+<b>We removed the instructions to verify downloads with OpenPGP
+because:</b></p>
+<p>Without advanced knowledge of OpenPGP, verifying with OpenPGP
+provides the same level of security as the JavaScript verification on
+the download page, while being much more complicated and
+error-prone.</p>
+<p>None of our <a href="https://tails.net/contribute/personas/">personas</a> would have
+enough knowledge of OpenPGP to use the OpenPGP Web of Trust with
+confidence.</p>
+<p>Providing basic (and never exhaustive) instructions has proven to be
+very time consuming to our help desk and technical writers. See <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17900">#17900</a>.</p>
+<p>We still explain how to verify our signing key using the OpenPGP Web
+of Trust in the installation <a href="https://tails.net/install/expert/index.en.html">instructions from
+Debian, Ubuntu, or Mint using the command line</a> and GnuPG because
+Debian derivatives come with trusted OpenPGP keys that can be used to
+create a path to our signing key.</p></blockquote></p>
+<p>Injected <code>[are doing]</code> as this is a likely interpretation
+to improve readability.</p>
+<p><blockquote><p>People doing the OpenPGP verification without really knowing what
+they [are doing] is still very heavy on Help Desk and pretty heavy on
+Technical Writing. Still, our download page cannot be a complete course
+on OpenPGP and Web-of-Trust verification. We should take a step back and
+reflect on the broader strategy:</p>
+<ul>
+<li>Shall we remove these instructions entirely?</li>
+<li>Shall we move them to a different place?</li>
+<li>Shall we find better ways of telling people that they are on their
+own?</li>
+</ul>
+<p>This is on our 2020-2022
+roadmap.<span class="blockquote-context">Tails: Development ticket: <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17900">Remove
+our OpenPGP verification instructions</a></span></p></blockquote></p>
+<h2 id="Information_Security_Level">Information Security Level</h2>
+<p>The information security level (similar to the <a href="#System_Security_Level">system security
+level</a>) can be categorized into one of three levels. From the
+strongest to the weakest, these are:</p>
+<ul>
+<li><code>Signatures Verification</code>: Signatures are verified with
+<a href="../OpenPGP/">OpenPGP</a>, <a href="../Signify/">signify</a>, <a href="../PQCrypto/#Codecrypt">codecrypt</a>, <a href="../Authenticode/">Authenticode</a>, or similar mechanisms.</li>
+<li><code>TLS</code>: Information was received over <a href="../SSL/">TLS</a>.</li>
+<li><code>Plaintext</code>.</li>
+</ul>
+<p>Other properties and categories are also conceivable, such as:</p>
+<ul>
+<li>Third-party server not involved or cannot tamper with information
+due to security by design.</li>
+<li>Offline signing key.</li>
+</ul>
+<h1 id="Attacks_in_the_Wild">Attacks in the Wild</h1>
+<h2 id="Cryptocurrency_Theft_via_Compromised_Binaries">Cryptocurrency
+Theft via Compromised Binaries</h2>
+<p>Towards the end of 2019, a malware attack threatened the security of
+Monero cryptocurrency users, leading to significant unauthorized fund
+transfers. Binaries for the Monero cryptocurrency (CLI) wallets were
+compromised by a malicious party and uploaded to a popular third party
+software download provider. Checking the signature as provided by the
+Monero team and realizing that the file was not authentic would have
+saved a lot of users from having their funds stolen.</p>
+<ul>
+<li><a href="https://www.reddit.com/r/Monero/comments/dyfozs/security_warning_cli_binaries_available_on/">Security
+Warning: CLI binaries available on getmonero.org may have been
+compromised at some point during the last 24h.</a></li>
+<li><a href="https://web.archive.org/web/20220511004124/https://lists.getmonero.org/hyperkitty/list/monero-announce@lists.getmonero.org/thread/DXJ223SBTCWKP7EDHVS7X73VP6WWX4S4/">Warning:
+The binaries of the CLI wallet were compromised for a short
+time</a></li>
+<li><a href="https://github.com/monero-project/monero/issues/6151#issuecomment-555694443">Wrong
+hashes (from getmonero.org)</a></li>
+<li><a href="https://bartblaze.blogspot.com/2019/11/monero-project-compromised.html">Monero
+download site and binaries compromised</a></li>
+</ul>
+<h2 id="Counterfeit_Tor_Browser_Attack">Counterfeit Tor Browser
+Attack</h2>
+<p>The following instance exemplifies the potential risks of installing
+unsigned software. A recent cyber-attack utilized a <a href="https://en.wikipedia.org/wiki/Trojan_horse_(computing)">"trojanized"
+Tor Browser</a> to spy on users and steal Bitcoin. The orchestrated
+attack involved several key components:<sup class="reference"><a href="#cite_note-9">[9]</a></sup>
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p>This case emphasizes the potential dangers of installing unsigned
+software, resulting in loss of anonymity and financial theft in this
+instance. Had the victims only installed signed Tor Browser software
+from trusted sources <u>after</u>: verifying the correct key pair,
+confirming the key's fingerprints, and checking the consistency of the
+signature file for the software package, they could have sidestepped
+this scam entirely.</p>
+<ul>
+<li>Advertisements for the counterfeit Tor Browser were disseminated in
+Russian forums dedicated to topics such as privacy, circumvention of
+censorship, darknet markets, and cryptocurrencies.
+<ul>
+<li>Messages included promises to bypass Russian censorship bodies and
+to overcome CAPTCHAs.</li>
+<li>Users were directed to bogus domains for downloading the Tor Browser
+(<code>tor-browser.org</code> and <code>torproect.org</code>), rather
+than the official website: <code>torproject.org</code>.</li>
+</ul></li>
+<li>After accessing the fraudulent websites, users were falsely alerted
+that their Tor Browser was outdated. Users who fell for this ruse were
+redirected to another website offering an installer.</li>
+<li>The malicious version of the Tor Browser that was downloaded was
+outdated (version 7.5) compared to the real current release (version 9.0
+at the time of the attack). Additionally, it had disabled the digital
+signature check for installed Tor Browser add-ons
+(<code>xpinstall.signatures.required</code> was set to
+<code>false</code>). The updater tool was also renamed to prevent
+victims from updating to a genuine version of the Tor Browser.</li>
+<li>While the browser used the Tor proxy, effectively anonymizing the
+user's IP address, user activities could still be monitored. This was
+due to a unique user-agent (a text-based identifier) being set, which
+revealed the software and operating system, thereby providing a unique
+browser fingerprint enabling network observers to track activities.</li>
+<li>The attackers had bundled the HTTPS Everywhere extension with a
+modified <code>manifest.json</code> file. This allowed the web extension
+to gain broader permissions and to introduce content scripts into
+various web pages. Consequently, a <a href="https://www.trendmicro.com/vinfo/us/security/definition/command-and-control-server">Command
+and Control server</a> could load further scripts when users browsed
+certain Darknet markets and a popular Russian money transfer service
+(QIWI), substituting cryptocurrency wallet addresses to those controlled
+by the criminals, thereby facilitating theft.</li>
+<li>It is also speculated that the settings for the NoScript extension
+were altered to enable JavaScript when browsing.</li>
+</ul>
+<h2 id="hacked_github.com">hacked github.com</h2>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2012</i>
+<strong>Unauthorized GitHub repository write access.</strong></p>
+<p>GitHub disclosed a public key security vulnerability and mitigation
+following reports of unauthorized repository write access.
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2014</i>
+<strong>Reported GitHub compromise (Homakov).</strong></p>
+<p>A follow-up write-up described another GitHub hack scenario and
+related discussion. <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2022</i>
+<strong>Stolen OAuth tokens abused to access private
+repositories.</strong></p>
+<p>Mike Hanley, Chief Security Officer at GitHub, wrote in a blog post
+that compromised OAuth user tokens from Heroku and Travis-CI-maintained
+OAuth applications were stolen and abused to download private
+repositories belonging to dozens of victim organizations that were using
+these apps. <sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<h2 id="Lists_of_Attacks_in_the_Wild">Lists of Attacks in the Wild</h2>
+<ul>
+<li><a href="https://github.com/cncf/tag-security/tree/main/community/catalog/compromises">Catalog
+of Supply Chain Compromises</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Trust/">Placing Trust in
+Kicksecure</a></li>
+<li><a href="../OpenPGP/">OpenPGP</a></li>
+<li><a href="../Signify/">signify</a></li>
+<li><a href="../Verify_the_images/">Verify the
+images</a></li>
+<li><a href="../Download_Security/">Download
+Security</a></li>
+<li><a href="../Signing_Key/">Kicksecure Signing
+Key</a></li>
+<li><a href="../Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions/">Software Signature Verification Usability Issues and
+Proposed Solutions</a></li>
+<li>discussion: <a href="https://github.com/flatpak/flatpak/issues/5657"><code>flatpak remote-add --from=</code><span><code>https://</code></span><code>....flatpakrepo</code>
+relies on TLS CAs to bootstrap trust path</a></li>
+</ul>
+<h1 id="Attribution">Attribution</h1>
+<p>Gratitude is expressed to <a href="https://www.qubes-os.org">Qubes
+OS</a> (<a href="https://groups.google.com/g/qubes-devel/c/zALZnu9pTuU">Permission</a>).
+The <a href="#What_Digital_Signatures_Prove">What
+Digital Signatures Prove</a> chapter contains content from the <a href="https://www.qubes-os.org/security/verifying-signatures/#what-digital-signatures-can-and-cannot-prove">Qubes
+OS: What do the Digital Signatures Prove and What They DO NOT Prove</a>
+page.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a></li>
+<li id="cite_note-2"><a href="https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html">https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html</a></li>
+<li id="cite_note-3">For instance, <u>anyone could generate an OpenPGP key pair and
+pretend to be the "Kicksecure Project"</u>, but only <a href="../Signing_Key/">Patrick Schleizer's key pair</a> is
+legitimate.</li>
+<li id="cite_note-4">Website checks are only as secure as the imperfect TLS system, which
+is based on certificate authorities that have been compromised
+frequently in recent years.</li>
+<li id="cite_note-5"><a href="https://www.qubes-os.org/security/verifying-signatures/">https://www.qubes-os.org/security/verifying-signatures/</a></li>
+<li id="cite_note-6">* <a href="https://github.com/dominictarr/event-stream/issues/116">https://github.com/dominictarr/event-stream/issues/116</a>
+* <a href="https://github.com/dominictarr/event-stream/issues/116#issuecomment-441759047">https://github.com/dominictarr/event-stream/issues/116#issuecomment-441759047</a></li>
+<li id="cite_note-7">Digital signatures are still useful in this case, because it is
+possible to limit trust to a few select people/organizations such as
+Kicksecure developers.</li>
+<li id="cite_note-8">Kicksecure also offers all three components over <a href="../Forcing_.onion_on_Project/">.onion</a>; see also
+<a href="../Download_Security/">Download Security</a>.</li>
+<li id="cite_note-9"><a href="https://www.eff.org/deeplinks/2019/10/phony-https-everywhere-extension-used-fake-tor-browser">https://www.eff.org/deeplinks/2019/10/phony-https-everywhere-extension-used-fake-tor-browser</a></li>
+<li id="cite_note-10"><a href="https://www.eset.com/us/about/newsroom/press-releases/eset-discovers-a-campaign-stealing-bitcoins-from-darknet-users/">https://www.eset.com/us/about/newsroom/press-releases/eset-discovers-a-campaign-stealing-bitcoins-from-darknet-users/</a></li>
+<li id="cite_note-11"><a href="https://github.blog/2012-03-04-public-key-security-vulnerability-and-mitigation/">https://github.blog/2012-03-04-public-key-security-vulnerability-and-mitigation/</a>
+<a href="https://homakov.blogspot.com/2012/03/how-to.html">https://homakov.blogspot.com/2012/03/how-to.html</a>
+<a href="https://www.extremetech.com/computing/120981-github-hacked-millions-of-projects-at-risk-of-being-modified-or-deleted">https://www.extremetech.com/computing/120981-github-hacked-millions-of-projects-at-risk-of-being-modified-or-deleted</a>
+<a href="https://github.com/rails/rails/commit/b83965785db1eec019edf1fc272b1aa393e6dc57">https://github.com/rails/rails/commit/b83965785db1eec019edf1fc272b1aa393e6dc57</a></li>
+<li id="cite_note-12"><a href="https://homakov.blogspot.com/2014/02/how-i-hacked-github-again.html">https://homakov.blogspot.com/2014/02/how-i-hacked-github-again.html</a>
+<a href="https://www.reddit.com/r/netsec/comments/1xa5xh/comment/cf9qjcl/">https://www.reddit.com/r/netsec/comments/1xa5xh/comment/cf9qjcl/</a></li>
+<li id="cite_note-13"><a href="https://github.blog/2022-04-15-security-alert-stolen-oauth-user-tokens/">https://github.blog/2022-04-15-security-alert-stolen-oauth-user-tokens/</a>
+<a href="https://www.developer-tech.com/news/2022/apr/19/github-notifies-victims-of-oauth-token-theft/">https://www.developer-tech.com/news/2022/apr/19/github-notifies-victims-of-oauth-token-theft/</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Stateless</title>
+<meta name="description" content="Factory Reset, Stateless Systems, Reproducible Systems, Verifiable Systems, Anti-Hysteresis, Clear Linux, NixOS, Fedora Silverblue">
+<meta property="og:description" content="Factory Reset, Stateless Systems, Reproducible Systems, Verifiable Systems, Anti-Hysteresis, Clear Linux, NixOS, Fedora Silverblue">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Stateless/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Stateless/">
+<meta property="og:title" content="Dev/Stateless / Anti-Hysteresis">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Stateless</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../../Verified_Boot/" title="Verified Boot"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Verified
+Boot</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../bootstrappable_builds/" title="Dev/bootstrappable builds"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/bootstrappable
+builds</span></a><span class="info"><span class="prev">Previous page:
+Verified Boot</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/bootstrappable
+builds</span></span></span>Dev/Stateless / Anti-Hysteresis</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="../../Boot_firmware/">Boot Firmware</a></li>
+<li><a href="../../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../../Measured_boot/">Measured Boot</a></li>
+<li><a href="../../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="../../Open_Source_Hardware/">Open Source
+Hardware</a></li>
+<li><a href="../confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="./">stateless (dev)</a></li>
+<li><a href="../immutable/">immutable (dev)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Factory Reset, Stateless Systems, Reproducible Systems, Verifiable
+Systems, Clear Linux, NixOS, Fedora Silverblue</p>
+<div class="post-intro-p">
+</div>
+<p>A problem with Debian and Debian based Linux distributions is that
+these are not stateless.</p>
+<p>Files shipped by the distribution and files created by the user are
+mixed up in the same folders <code>/etc</code> and <code>/var</code>.
+Wiping <code>/etc</code> and <code>/var</code> on Debian will break the
+system and render it unbootable.</p>
+<p>Resulting issues:</p>
+<ul>
+<li>It is difficult (impossible?) to factory reset, i.e. to reset a
+machine to the same state as everyone else using the same version.</li>
+<li>It is difficult (impossible?) to choose to have a boot without any
+user modifications.</li>
+<li>It is difficult (impossible?) to generate an overview of all user
+created configuration changes.</li>
+<li>It is difficult (impossible?) to generate an overview of derivative
+distribtion created configuration changes.</li>
+<li><a href="https://forums.whonix.org/t/downgrade-all-packages-to-specific-date/8910">It
+is difficult (impossible?) to safely / fully downgrade / rollback
+upgrades.</a></li>
+<li>It is more dangerous to perform standard everyday upgrades.</li>
+<li>Even more dangerous to perform release upgrades.</li>
+<li><a href="https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/">"Immutable"
+&#8594; reprovisionable, anti-hysteresis</a></li>
+<li>immutable root file system doesn't fully fix it due to files like
+.bashrc</li>
+<li>unclear if ever image based. Advantages and disadvantages.
+<ul>
+<li>Disadvantages:
+<ul>
+<li>big sysadmin effort for distribution</li>
+<li>huge bills for image downloads traffic</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Work towards stateless:</p>
+<ul>
+<li><a href="https://clearlinux.github.io/clear-linux-documentation/guides/clear/stateless.html">https://clearlinux.github.io/clear-linux-documentation/guides/clear/stateless.html</a></li>
+<li><a href="https://0pointer.net/blog/projects/stateless.html">https://0pointer.net/blog/projects/stateless.html</a></li>
+<li><a href="https://0pointer.net/blog/fitting-everything-together.html">https://0pointer.net/blog/fitting-everything-together.html</a></li>
+<li>search term: <code>site:nixos.org stateless -discourse</code></li>
+<li><a href="https://silverblue.fedoraproject.org/">https://silverblue.fedoraproject.org/</a></li>
+<li><a href="https://fedoramagazine.org/what-is-silverblue/">https://fedoramagazine.org/what-is-silverblue/</a></li>
+<li><a href="https://web.archive.org/web/20171228021836/https://people.redhat.com/notting/summit/summit-nottingham.pdf">https://web.archive.org/web/20171228021836/https://people.redhat.com/notting/summit/summit-nottingham.pdf</a></li>
+<li><a href="https://www.fedoraproject.org/wiki/StatelessLinux">https://www.fedoraproject.org/wiki/StatelessLinux</a></li>
+<li><a href="https://discussion.fedoraproject.org/t/is-fedora-silverblue-stateless/12513">https://discussion.fedoraproject.org/t/is-fedora-silverblue-stateless/12513</a></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../../Verified_Boot/" title="Verified Boot"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Verified
+Boot</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../bootstrappable_builds/" title="Dev/bootstrappable builds"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/bootstrappable
+builds</span></a><span class="info"><span class="prev">Previous page:
+Verified Boot</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/bootstrappable
+builds</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Read-only</title>
+<meta name="description" content="When using live mode, no changes are made to the disk. For added security, consider setting your disk to read-only mode, if possible.">
+<meta property="og:description" content="When using live mode, no changes are made to the disk. For added security, consider setting your disk to read-only mode, if possible.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Read-only/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Read-only/">
+<meta property="og:title" content="Read-Only: Setting Hard Drives to Read-Only">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Whonixlive.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#VirtualBox">VirtualBox</a></li><li class="toc-l2"><a href="#KVM">KVM</a></li><li class="toc-l2"><a href="#Qubes">Qubes</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Anti-Forensics_Precautions/" title="Anti-Forensics Precautions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Anti-Forensics
+Precautions</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Write_protection/" title="Write protection"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Write
+protection</span></a><span class="info"><span class="prev">Previous
+page: Anti-Forensics Precautions</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Write
+protection</span></span></span>Read-Only: Setting Hard Drives to
+Read-Only</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Live_Mode/">Live Mode</a></li>
+<li><a href="../ISO_Live_Mode/">ISO Live Mode</a></li>
+<li><a href="./">read-only</a></li>
+<li><a href="../Immutable/">immutable</a></li>
+<li><a href="../Write_protection/">Write
+Protection</a></li>
+<li><a href="../Grub-live/">Grub-live</a></li>
+<li><a href="../USB_Installation/">Kicksecure on
+USB</a></li>
+<li><a href="../Persistent_Mode/">Persistent Mode</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">read-only</a></li>
+<li><a href="../VM_Live_Mode/ro-mode-init/">VM Live Mode:
+Alternative ro-mode-init Configuration</a></li>
+<li><a href="../Anti-Forensics_Precautions/">VM Live Mode:
+Anti-forensics Precautions</a></li>
+</ul>
+</div>
+<p><img src="../../media/Whonixlive.jpg.webp" width="250" alt="whonixlive.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Depending on the user's use case. Choose one.</p>
+<ul>
+<li><strong>A)</strong> ISO users installing Kicksecure: Using the <a href="../ISO/">ISO</a> just to install Kicksecure? This
+does not matter. The user can ignore any live mode related warnings.
+These are not applicable.</li>
+<li><strong>B)</strong> Interested in live mode? See below.</li>
+</ul>
+<p>When using <a href="../Live_Mode/">live mode</a> (<a href="../Grub-live/">grub-live</a> or <a href="../ISO_Live_Mode/">ISO Live Mode</a>), no changes are
+made to the disk. The disk is mounted read-only / <a href="../Immutable/">immutable</a>.</p>
+<p>For added security, consider setting your hard disk to read-only
+mode, <u>if possible</u>.</p>
+<p>Sometimes it is possible to optionally set the hard drives to
+read-only, enabling a type of write protection. This increases the
+security of live mode because otherwise malware running as root could
+theoretically mount the image read-write and gain persistence in this
+way.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>The emphasis is on <u>if possible</u>.</p>
+<p>This is platform-specific.</p>
+<p>Unfortunately, read-only mode is not easily available on all
+platforms.</p>
+<p>Write protection can refer to very different security proprieties.
+See <a href="../Verified_Boot/#Write_Protection">Write
+Protection</a>.</p>
+<h1 id="VMs">VMs</h1>
+<h2 id="VirtualBox">VirtualBox</h2>
+<p>Step-by-step guide on implementing the Immutable Disk Method for
+Virtual Machine (VM) Live Mode in VirtualBox, focusing on secure,
+read-only VM configurations.</p>
+<p>This option is the official method for setting VMs to read-only in
+VirtualBox. It will only work with the <code>grub-live</code> package,
+which is installed by default. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<div class="info-box ">
+<p><strong>1.</strong> Make the <a href="../VirtualBox/">VirtualBox</a> disk immutable / read-only.</p>
+<p>This step is crucial. Otherwise, contents might be recoverable from
+the host drive. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>Follow these steps:</p>
+<div class="info-box ">
+<ol>
+<li>Power off the VM.</li>
+<li>In the VirtualBox main window, navigate to: <code>File</code> &#8594;
+<code>Tools</code> &#8594; <code>Virtual Media Manager</code>.</li>
+</ol>
+<p><img src="../../media/Vbox-livemode1.png.webp" width="500" alt="vbox-livemode1.png" /></p>
+<ol>
+<li>Select the disk to write-protect and release it.</li>
+<li>Then on <code>Type</code> &#8594; <code>set it to Immutable</code>.</li>
+</ol>
+<p><img src="../../media/Vbox-livemode2.png.webp" width="800" alt="vbox-livemode2.png" /></p>
+<ol>
+<li>In the VirtualBox main window, navigate to the settings of the
+VM.</li>
+<li>Under storage, select the top controller and add the existing hard
+disk there.</li>
+</ol>
+</div>
+<p><strong>2.</strong> Launch live-mode.</p>
+<p>Follow the documentation on the <a href="../Live_Mode/">Live Mode</a> wiki page.</p>
+<p><strong>3.</strong> Done.</p>
+<p>The process of enabling read-only mode has been completed.</p>
+</div>
+<h2 id="KVM">KVM</h2>
+<div class="info-box ">
+<p><strong>1.</strong> Set the VM disks to read-only.</p>
+<p>Follow these steps:</p>
+<ul>
+<li>Power off the machine.</li>
+<li>Set the hard disk to read-only in the virt-manager GUI before
+booting into live mode.</li>
+</ul>
+<p><strong>2.</strong> Launch live-mode.</p>
+<p>Follow the documentation on the <a href="../Live_Mode/">Live Mode</a> wiki page.</p>
+<p><strong>3.</strong> <em>Optional:</em> Revert the read-only
+change.</p>
+<p>To boot into normal mode again, revert the change from step 1 and
+choose the normal boot option in the GRUB menu.</p>
+<p><strong>4.</strong> Done.</p>
+<p>The process of enabling read-only mode has been completed.</p>
+</div>
+<h2 id="Qubes">Qubes</h2>
+<p><code>grub-live</code> is currently <a href="../Unsupported/">unsupported</a> on <a href="../Qubes/">Qubes</a>. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> This issue is <a href="../Unspecific/">unspecific to Kicksecure</a>. Qubes
+issue: <a href="https://github.com/QubesOS/qubes-issues/issues/4982">implement
+live boot by porting grub-live to Qubes - amnesia / non-persistent boot
+/ anti-forensics</a></p>
+<p>In Qubes, Disposables are a suitable alternative.</p>
+<h1 id="Host_Operating_System">Host Operating System</h1>
+<p>This would require a hard drive that comes with a physical read-only
+switch.</p>
+<p>This is <a href="../Unsupported/">undocumented</a> and
+<a href="../Unspecific/">unspecific to Kicksecure</a>.</p>
+<h1 id="Comparison_with_Tails">Comparison with Tails</h1>
+<p><a href="../Grub-live/#Comparison_between_grub-live_and_Tails">Comparison between grub-live and Tails</a></p>
+<h1 id="Alternative_Configurations">Alternative Configurations</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Platform specific notice.</p>
+<ul>
+<li><a href="../KVM/">KVM</a>: Skip this section if the <a href="#KVM">KVM Live-mode</a></li>
+<li><a href="../VirtualBox/">VirtualBox</a>: Skip this
+section if <a href="#VirtualBox">VirtualBox
+Live-mode</a> configuration steps above have already been
+completed.</li>
+</ul>
+</div>
+<p>VirtualBox and KVM: <a href="../VM_Live_Mode/ro-mode-init/">VM Live Mode: Alternative ro-mode-init
+Configuration</a></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">This option will not work with the <code>ro-mode-init</code>
+package.</li>
+<li id="cite_note-2">VirtualBox implements hard disk write protection differently. If an
+immutable virtual machine is booted, VirtualBox will always create a
+snapshot where data is written. After shutting down and booting the VM
+again (a soft reboot is inadequate), the old snapshot will be deleted
+and a new one created. Consequently, data will not persist in the VM,
+even if Live-mode is not selected. However, since the data is written to
+the hard disk of the host (instead of memory), it is easily recoverable.
+Therefore, selecting Live-mode is essential for safety. A snapshot file
+is still created, but it will not store any altered content from the
+VM.</li>
+<li id="cite_note-3">Nothing came out from <a href="https://forums.whonix.org/t/whonix-live-mode-amnesia-amnesic-non-persistent-anti-forensics/3894/31">forum
+discussion</a>.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Anti-Forensics_Precautions/" title="Anti-Forensics Precautions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Anti-Forensics
+Precautions</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Write_protection/" title="Write protection"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Write
+protection</span></a><span class="info"><span class="prev">Previous
+page: Anti-Forensics Precautions</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Write
+protection</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

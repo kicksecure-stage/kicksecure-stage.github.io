@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Login</title>
+<meta name="description" content="Instructions and information about configuring Kicksecure login security.">
+<meta property="og:description" content="Instructions and information about configuring Kicksecure login security.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Login/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Login/">
+<meta property="og:title" content="Login Security">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Gui_login.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Automatic_Autologin_Configuration">Automatic Autologin
+Configuration</a></li><li class="toc-l2"><a href="#Manual_Autologin_Configuration">Manual Autologin
+Configuration</a></li><li class="toc-l2"><a href="#Login_Instructions_for_Virtual_Console">Login Instructions for
+Virtual Console</a></li><li class="toc-l2"><a href="#Notes">Notes</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../User/" title="User"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">User</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Timezone/" title="Timezone"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Timezone</span></a><span class="info"><span class="prev">Previous
+page: User</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Timezone</span></span></span>Login Security</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Default_Passwords/">Default
+Passwords</a></li>
+<li><a href="../Passwords/">Passwords</a></li>
+<li><a href="../User/">Account Management</a></li>
+<li><a href="./">Login</a></li>
+<li><a href="../Login_spoofing/">Login Spoofing</a></li>
+<li><a href="../Root/">Safely Use Root Commands</a></li>
+<li><a href="../Sysmaint/"><code>sysmaint</code>
+Account</a></li>
+<li><a href="../System_Maintenance_Panel/">System
+Maintenance Panel</a></li>
+<li><a href="../Unrestricted_admin_mode/">Unrestricted
+Admin Mode</a></li>
+<li><a href="../Protection_Against_Physical_Attacks/">Protection against Physical Attacks</a></li>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/">User Account Isolation (developers)</a></li>
+<li><a href="../Dev/user-sysmaint-split/"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><a href="../Polkit/">Polkit (formerly PolicyKit) /
+<code>pkexec</code></a></li>
+<li><a href="../Privleap/">privleap /
+<code>leaprun</code></a></li>
+</ul>
+</div>
+<p><img src="../../media/Gui_login.png.webp" alt="Graphical Login Screen" />
+<img src="../../media/Virtual_console.png.webp" alt="Virtual Console" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This page provides detailed information about the Kicksecure login
+screen, how to configure it, and how to log in securely.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Login_Security_Concepts">Login Security Concepts</h1>
+<p>By default, Kicksecure provides a user account, <code>user</code>,
+with <u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI) autologin
+enabled if applicable, and no password set. When using a system with a
+GUI, Kicksecure will boot directly into a graphical desktop when powered
+on. For many users and situations, this configuration is not a security
+hazard because:</p>
+<ul>
+<li><strong>Single-user machines:</strong> Desktop and laptop systems
+are generally single-user machines and do not need to authenticate
+multiple human users. Users of a single-user machine are expected to
+keep their machine physically secure from in-person attackers.</li>
+<li><strong>Multi-user configuration:</strong> For machines that aren't
+single-user, the system administrator will generally be the first person
+to use the machine after installation and will have the opportunity to
+configure the system's user accounts to meet the needs of all
+users.</li>
+<li><strong>Weak login screen protection:</strong> The login screen is
+usually only a weak security barrier. If <a href="../Full_Disk_Encryption/"><u>F</u>ull <u>D</u>isk <u>E</u>ncryption (FDE)</a> is
+not used, a malicious individual can gain access to the machine's data
+by simply booting a live ISO or stealing the system's storage drive.
+Even if FDE is used, a sophisticated attacker with sufficient time can
+likely bypass the login screen if they gain physical access to the
+device while it is powered on.</li>
+<li><strong>FDE makes login screen redundant:</strong> If using the
+Kicksecure ISO to install Kicksecure onto a machine, FDE is enabled by
+default. This requires the user to authenticate before the system will
+boot, thus making the login screen redundant in most single-user
+scenarios. Authentication is done during <a href="../Grub/#initramfs_.28initramfs-tools_or_dracut.29_Based_Encryption_Password_Prompt">initramfs (initramfs-tools or dracut) Based Encryption
+Password Prompt</a>.</li>
+<li><strong>Virtual machines and host security:</strong> If using
+Kicksecure in a Virtual Machine, the VM's login security is not as
+important as the host system's login security. There are numerous ways
+to modify a virtual machine's state from the host system, allowing an
+attacker with access to an unlocked host machine to bypass a virtual
+machine's login screen. Virtual machine users are expected to keep their
+host system physically secure from in-person attackers.</li>
+</ul>
+<p>However, there are situations in which it is valuable to require
+password authentication for administrative actions or for login
+purposes. Users should be aware of their <a href="../Threat_Modeling/">threat model</a> and adjust login settings accordingly.
+Users interested in this topic should read the <a href="../Default_Passwords/">Default Passwords</a> and <a href="../Protection_Against_Physical_Attacks/">Protection
+against Physical Attacks</a> wiki pages.</p>
+<h1 id="Configuring_GUI_Autologin">Configuring GUI Autologin</h1>
+<p>Platform specific.</p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: Applicable.
+See below.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: Users can
+skip this section, except for HVM Qube. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+</ul>
+<p>Host <u>o</u>perating <u>s</u>ystem (OS) versus <u>v</u>irtual
+<u>m</u>achine (VM).</p>
+<ul>
+<li><strong>Host operating system:</strong>
+<ul>
+<li><strong>Simple login screen:</strong> Disabling autologin can be
+useful if the user wants to enable a login screen.</li>
+<li><strong>No full disk encryption:</strong> Note, the login screen is
+<u>not</u> providing <a href="../Full_Disk_Encryption/">Full Disk Encryption (FDE)</a>. The purpose of the
+login screen is elaborated in chapter <a href="../Protection_Against_Physical_Attacks/#Login_Screen">Login Screen</a>.</li>
+</ul></li>
+<li><strong>VMs:</strong> It is not very useful to disable autologin to
+enable a login screen inside VMs. It's much more secure to have a login
+screen on the host operating system.</li>
+</ul>
+<h2 id="Automatic_Autologin_Configuration">Automatic Autologin
+Configuration</h2>
+<p>To view which user accounts on the system have autologin enabled, run
+<a href="../Systemcheck/">systemcheck</a>. This will show
+you a <a href="../Systemcheck/#Physical_Security_Check">Physical Security Check</a> table, indicating which
+users on the system are not password protected and/or have autologin
+enabled.</p>
+<p>Only one normal user account can have autologin enabled at once. The
+reason for this is fairly obvious - if two users had autologin enabled
+at the same time, which user would be automatically logged into? For
+this reason, if you enable autologin for one user account when autologin
+is already enabled for a different user account, autologin will be
+disabled for that different user account. The only exception to this
+rule is if <a href="../Sysmaint/">user-sysmaint-split</a>
+is installed. In this case, the <code>sysmaint</code> user account can
+have autologin enabled or disabled independently of the other user
+accounts. This is because the <code>sysmaint</code> account is only
+accessible when the system is booted in PERSISTENT mode - SYSMAINT
+session.</p>
+<p>To enable or disable autologin on a user account, you can use the
+<code>autologinchange</code> utility.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<strong>Sysmaint Notice</strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Sysmaint notice" /></span></p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>If using <code>user-sysmaint-split</code>:</u> The user must boot
+into the sysmaint session. For details and instructions on how to do so,
+see <a href="../Sysmaint/">user-sysmaint-split</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>If using <a href="../Unrestricted_admin_mode/">unrestricted admin mode</a>:</u> This sysmaint notice
+does not apply. Continue with the steps below.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Launch <code>autologinchange</code>.</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>System Maintenance Panel:</u> You can do this by clicking the
+<code>Manage GUI Autologin</code> button in the <a href="../System_Maintenance_Panel/">System Maintenance
+Panel</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>Terminal:</u> You can also run the tool by running the following
+command in a terminal:
+<ul>
+<li><span class="code-select inline-style">sudo
+autologinchange</span></li>
+</ul></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+<code>autologinchange</code> will display a list of user accounts on the
+system. Identify the user you want to enable or disable autologin
+for.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Type the user account's name and press
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Enter</i></span>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+You will be told whether autologin is currently enabled or disabled for
+the current user account. To toggle autologin on the selected account,
+press
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">y</i></span>,
+then press
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Enter</i></span>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Done.</p>
+<p>Autologin has now been toggled on the specified user account.</p>
+<h2 id="Manual_Autologin_Configuration">Manual Autologin
+Configuration</h2>
+<p>It is strongly recommended that you do <em>not</em> attempt to
+manually configure autologin when using Kicksecure 18 and higher. This
+procedure is <a href="../Unsupported/">Unsupported</a>. For
+details about why, see the footnote.<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h1 id="Configuring_Passwords">Configuring Passwords</h1>
+<div class="intro-like">
+<p>The user can set or change the password for Linux user accounts in
+Kicksecure, if this is useful for the user's threat model based on this
+<a href="../Default_Passwords/">default passwords
+information</a>.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Kicksecure default password info box" /></span>
+<strong>Platform specific.</strong></p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: Applicable.
+See below.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: Not
+applicable. Users can skip this section. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+</ul>
+</div>
+<div class="info-box ">
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<strong>Default password notice.</strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Kicksecure default admin password is: No password required. (Passwordless login.)" /></span></p>
+<ul>
+<li><strong>Default username:</strong>
+<span class="code-select">user</span></li>
+<li><strong>Default password:</strong> No password required.
+(Passwordless login.) <sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+<strong><a href="../Post_Install_Advice/#Change_Keyboard_Layout">Change Keyboard Layout</a> if necessary.</strong></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+<strong>Review <a href="../Post_Install_Advice/#Test_Keyboard_Layout">Test Keyboard Layout</a> before proceeding
+further.</strong></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+<strong>Sysmaint Notice</strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Sysmaint notice" /></span></p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<u>If using <code>user-sysmaint-split</code>:</u> The user must boot
+into the sysmaint session. For details and instructions on how to do so,
+see <a href="../Sysmaint/">user-sysmaint-split</a>.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<u>If using <a href="../Unrestricted_admin_mode/">unrestricted admin mode</a>:</u> This sysmaint notice
+does not apply. Continue with the steps below.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+<strong><code>sudo</code> password notice.</strong></p>
+<p>There is no separate <code>sudo</code> password. <code>sudo</code>
+uses the same password as the user account that is invoking
+<code>sudo</code>. <sup class="reference"><a href="#cite_note-5">[5]</a></sup> For example:</p>
+<ul>
+<li><strong>user-sysmaint-split:</strong> Changing the password for
+account <code>sysmaint</code> will also change the <code>sudo</code>
+password for account <code>sysmaint</code>.</li>
+<li><strong>unrestricted admin mode:</strong> Changing the password for
+account <code>user</code> will also change the <code>sudo</code>
+password, provided the account <code>user</code> is authorized to use
+<code>sudo</code>.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+<strong>Start <code>pwchange</code>.</strong></p>
+<p>Open a terminal (such as QTerminal Emulator) or start
+<code>pwchange</code> using the System Maintenance Panel.</p>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<strong>user-sysmaint-split:</strong>
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+<u>Using the System Maintenance Panel:</u> You can change user passwords
+using the <code>Manage Passwords</code> button in the <a href="../System_Maintenance_Panel/">System Maintenance
+Panel</a>. The <code>Manage Passwords</code> button will simply start
+the <code>pwchange</code> utility.</li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<u>Terminal:</u> Alternatively, you can also change user passwords from
+a terminal. A terminal can be started using the System Maintenance
+Panel.</li>
+</ul></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+<strong><a href="../Unrestricted_admin_mode/">Unrestricted
+admin mode</a>:</strong> Use any method to start any terminal. For
+example: <code>Start menu</code> &#8594; <code>Applications</code> &#8594;
+<code>System</code> &#8594; <code>Terminal</code></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+<strong>Test command.</strong></p>
+<p>Run a test command with <a href="../Root/">administrative ("<code>root</code>") rights</a> by
+using <code>sudo</code>.</p>
+<p>This is only a simple test to confirm that the user can currently
+escalate to administrative rights. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> Type the following
+command in the terminal and press .</p>
+<p><span class="code-select">sudo whoami</span></p>
+<p>Expected output.</p>
+<pre><code>root</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+<strong>Change a Linux user account password.</strong>
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<p><span class="code-select">sudo pwchange</span></p>
+<p><code>pwchange</code> will display a prompt.</p>
+<pre><code>What user&#39;s password do you want to change?</code></pre>
+<p>Type the account name such as <code>user</code> or
+<code>sysmaint</code> and then press .</p>
+<p>Follow the instructions by <code>pwchange</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+<strong>Root password.</strong></p>
+<p>No changes required. Optional. For details, see <a href="../Root/#Root_Account">root account in
+Kicksecure</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+<strong>Done.</strong></p>
+<p>The procedure of changing passwords is complete.</p>
+</div>
+<p>Another option is to <a href="../Recovery/#Recovery_Mode">boot into recovery mode</a> and change passwords
+there.</p>
+<h1 id="Graphical_Login_Screen">Graphical Login Screen</h1>
+<p>For <u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI).</p>
+<p>Platform specific.</p>
+<ul>
+<li><a href="../Non-Qubes-Kicksecure/">Kicksecure</a>:
+Applicable. See below.</li>
+<li><a href="../Qubes/">Kicksecure for Qubes</a>: Mostly,
+not applicable except if using a Qubes HVM. This is up to the host
+operating system, Qubes, not Kicksecure.</li>
+</ul>
+<p>A login screen can be provided by a login manager. For example,
+<code>greetd</code> + <code>wlgreet</code> is the login manager used by
+default in Kicksecure.</p>
+<p><strong>Figure:</strong> <em><code>greetd</code> +
+<code>wlgreet</code> login manager</em></p>
+<p><img src="../../media/Gui_login.png.webp" width="600" alt="Gui_login.png" /></p>
+<h1 id="Console_Login_Screen">Console Login Screen</h1>
+<p>For <u>c</u>ommand <u>l</u>ine <u>i</u>nterface (CLI).</p>
+<p>What is a virtual console? See <a href="../Desktop/#Virtual_Consoles">Virtual Console</a>.</p>
+<h2 id="Login_Instructions_for_Virtual_Console">Login Instructions for
+Virtual Console</h2>
+<p>Platform specific.</p>
+<ul>
+<li><a href="../Non-Qubes-Kicksecure/">Kicksecure</a>:
+Applicable. See below.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: Mostly, not
+applicable except if using a Qubes HVM. This is up to the host operating
+system, Qubes, not Kicksecure.</li>
+</ul>
+<p><strong>Figure:</strong> <em>virtual console login screen</em></p>
+<p><img src="../../media/Virtual_console.png.webp" width="600" alt="virtual_console.png" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<u>Type the <em>username</em>.</u></p>
+<p>The default username is: <code>user</code>. Press
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Enter</i></span>
+after typing the username.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+<u>Type the <em>password</em>.</u></p>
+<p>If a password has been set, type it and press
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Enter</i></span>.</p>
+<p><u>Note:</u> No feedback (such as asterisks "<code>*</code>") will be
+shown when typing the password.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>Login on the virtual console login screen has been completed.</p>
+<h2 id="Notes">Notes</h2>
+<ul>
+<li>The default root account is locked for security reasons. For more
+information, visit the <a href="../Root/">root account
+documentation</a>.</li>
+<li>If you are using a virtual machine, ignore any
+<code>host login:</code> prompts. Do not enter your host computer
+username or password.</li>
+</ul>
+<h1 id="Troubleshooting">Troubleshooting</h1>
+<ul>
+<li><strong>Forgot Username or Password</strong>: If you have forgotten
+your username or password, please refer to the <a href="../Recovery/">Recovery</a> page for steps on recovering your
+account.</li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Protection_Against_Physical_Attacks/#Login_Screen">Login Screen</a></li>
+<li>Learn more about default passwords, when it is useful to set a
+password, see <a href="../Default_Passwords/">Default
+Passwords</a>.</li>
+<li><a href="https://github.com/Kicksecure/kicksecure-base-files/blob/master/etc/issue.kicksecure"><code>/etc/issue</code>
+file</a></li>
+<li>Learn more about securing your Kicksecure installation by visiting
+our <a href="../System_Hardening_Checklist/">System
+Hardening Checklist</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Except for desktop HVM Qube, virtual machines in Qubes OS do not use
+a traditional GUI login mechanism, and thus do not have a concept of GUI
+autologin.</li>
+<li id="cite_note-2">This is because Kicksecure uses <code>greetd</code> +
+<code>wlgreet</code> to provide a display manager. <code>greetd</code>
+supports being configured for automatic login, but it only supports a
+single configuration file, whereas Kicksecure requires a drop-in
+configuration directory. Kicksecure works around this by using drop-in
+configuration directories that <code>greetd</code> and
+<code>wlgreet</code> do not understand by default. It then uses a
+special tool (<a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/build-config-file"><code>build-config-file</code></a>)
+to build the config directories into the single config files needed by
+<code>greetd</code> and <code>wlgreet</code>.<br />
+<br />
+This means that Kicksecure assumes that it has total control over the
+config files for <code>greetd</code> and <code>wlgreet</code>. Normal
+manual configuration is likely to be overwritten, and manual
+configuration would be entirely specific to Kicksecure. The manual
+configuration mechanism is also subject to change. The supported way of
+configuring autologin in Kicksecure is the <code>autologinchange</code>
+tool documented <a href="./#Automatic_Autologin_Configuration">above</a>, so manual autologin configuration is not
+supported.</li>
+<li id="cite_note-3">By default, Qubes does not require a password for superuser access.
+See also: <a href="https://www.qubes-os.org/doc/vm-sudo/">https://www.qubes-os.org/doc/vm-sudo/</a></li>
+<li id="cite_note-4"><a href="../Dev/Strong_Linux_User_Account_Isolation/#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password">Rationale for Change from Default Password changeme to
+Empty Default Password</a></li>
+<li id="cite_note-5">This is the usual Debian / <code>sudo</code> default and <a href="../Unspecific/">Unspecific to Kicksecure</a>.</li>
+<li id="cite_note-6">This is to avoid falsely suspecting <code>pwchange</code> as the
+cause of issues, while in fact the issue lies with <code>sudo</code>
+authentication.</li>
+<li id="cite_note-7">* Using <a href="https://github.com/Kicksecure/usability-misc/blob/master/man/pwchange.8.ronn"><code>pwchange</code></a>.
+* <a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/sbin/pwchange"><code>/usr/sbin/pwchange</code></a>
+source code. * Alternatively, Debian standard command:
+<span class="code-select">sudo passwd user</span> While using
+<code>passwd</code> and typing the password, it will <u>not</u> appear
+on the screen, nor will the asterisk sign (<code>*</code>) be visible.
+This is normal behavior and does not mean your keyboard isn't working.
+It is necessary to type blindly and trust the procedure.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../User/" title="User"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">User</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Timezone/" title="Timezone"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Timezone</span></a><span class="info"><span class="prev">Previous
+page: User</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Timezone</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

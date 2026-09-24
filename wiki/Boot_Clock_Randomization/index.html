@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Boot Clock Randomization</title>
+<meta name="description" content="Randomizes clock when systems boots. Randomizes clock at boot time. Moves clock a few seconds and nanoseconds to past or future to prevent time based fingerprinting / linkablity.">
+<meta property="og:description" content="Randomizes clock when systems boots. Randomizes clock at boot time. Moves clock a few seconds and nanoseconds to past or future to prevent time based fingerprinting / linkablity.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Boot_Clock_Randomization/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Boot_Clock_Randomization/">
+<meta property="og:title" content="Boot Clock Randomization">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Randomizationclock321423.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Kicksecure_USER_Session">Kicksecure USER Session</a></li><li class="toc-l3"><a href="#Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</a></li><li class="toc-l3"><a href="#Kicksecure-Qubes">Kicksecure-Qubes</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Network_Time_Synchronization/">Network Time
+Synchronization</a></li>
+<li><a href="../Timezone/">Timezone</a></li>
+<li><a href="../Sdwdate/">sdwdate</a></li>
+<li><a href="../Sdwdate-gui/">sdwdate-gui</a></li>
+<li><a href="./">Boot Clock
+Randomization</a></li>
+<li><a href="../Time_Attacks/">Time Attacks</a></li>
+<li><a href="../Dev/sdwdate/">Dev/sdwdate</a></li>
+</ul>
+</div>
+<p><img src="../../media/Randomizationclock321423.jpg.webp" alt="Randomizationclock321423.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Randomizes clock when systems boots.</p>
+<p>Randomizes clock at boot time. Moves clock a few seconds and
+nanoseconds to past or future to prevent time based fingerprinting /
+linkablity.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>The <a href="../Dev/TimeSync/">TimeSync</a> page
+notes:</p>
+<p><blockquote><p>Using Boot Clock Randomization, i.e. after boot, the clock is set
+randomly between 0 and 180 seconds into the past or future. This is
+useful to enforce the design goal, that the host clock and VM clock
+should always slightly differ. It is also useful to obfuscate the clock
+when sdwdate itself is running, because naturally at this time, sdwdate
+hasn't finished. sdwdate runs after booting.</p></blockquote></p>
+<p>By randomly moving the system clock a few seconds (and nanoseconds)
+in the past or future during boot, this enforces the design goal of a
+slightly different host clock and any VMs clock, even before secure
+timesync has succeeded. This prevents time-based fingerprinting and
+linkability issues, thereby improving security and privacy.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>For technical discussion on the Boot Clock Randomization design, see
+<a href="https://forums.whonix.org/t/boot-clock-randomization-bootclockrandomization/2200">here</a>.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h1 id="Log_Inspection">Log Inspection</h1>
+<p><span class="code-select">sudo journalctl -b --no-pager -u
+bootclockrandomization</span></p>
+<h1 id="Disable">Disable</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Disabling Boot Clock Randomization is discouraged because it is not
+usually required. However, it may be useful for offline (vault) VMs.</p>
+</div>
+<p><strong>1.</strong> Platform specific notice.</p>
+<ul>
+<li>Qubes: Use a StandaloneVM or a separate Template.</li>
+<li>Non-Qubes: No extra steps are required.</li>
+</ul>
+<p><strong>2.</strong> Open a terminal.</p>
+<p>Platform specific. Select your platform.</p>
+<div class="tab-content-controller " data-tcc-linkid="non-qubes-versus-qubes">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="Kicksecure_USER_Session">Kicksecure USER Session</h3>
+</div>
+<div class="tcc-content">
+<p><u>If you are using a graphical Kicksecure with
+<strong>LXQt</strong></u>, complete the following steps.</p>
+<p><code>Start menu</code> &#8594; <code>System Tools</code> &#8594;
+<code>QTerminal</code></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</h3>
+</div>
+<div class="tcc-content">
+<p>In the System Maintenance Panel, under the <code>Misc</code> section,
+click <code>Open Terminal</code>.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-icon.png.webp" width="25" alt="Qubes-logo-icon.png" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="Kicksecure-Qubes">Kicksecure-Qubes</h3>
+</div>
+<div class="tcc-content">
+<p><u>If you are using <a href="../Qubes/">Kicksecure-Qubes</a></u>, complete the following
+steps.</p>
+<p><code>Qubes App Launcher (blue/grey "Q")</code> &#8594;
+<code>Kicksecure App Qube (commonly named </code><em><code>kicksecure</code></em><code>)</code>
+&#8594; <code>QTerminal</code></p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>3.</strong> Disable Boot Clock Randomization.</p>
+<p>Run the following command.</p>
+<p><span class="code-select">sudo systemctl mask
+bootclockrandomization</span></p>
+<p>Boot Clock Randomization will no longer be applied after reboot.</p>
+<p><strong>4.</strong> Optional. Consider disabling <a href="../Sdwdate/">sdwdate</a>.</p>
+<p>The user might also be interested in disabling <a href="../Sdwdate/#Disable_Autostart">Disable sdwdate
+Autostart</a>.</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Dev/TimeSync/">TimeSync: Kicksecure Time
+Synchronization Mechanism</a></li>
+<li><a href="../Sdwdate/">sdwdate</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/bootclockrandomization">Kicksecure/bootclockrandomization</a></span></li>
+<li id="cite_note-2">Notably, one recent change is the 0-5 second time window is no
+longer excluded in the process, as it was found to aid
+fingerprinting.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

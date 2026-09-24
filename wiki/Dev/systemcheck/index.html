@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/systemcheck</title>
+<meta name="description" content="Kicksecure Security Check Application Development Notes">
+<meta property="og:description" content="Kicksecure Security Check Application Development Notes">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/systemcheck/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/systemcheck/">
+<meta property="og:title" content="Dev/systemcheck">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>systemcheck</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#SSL_Certificate_Pinning">SSL Certificate Pinning</a></li><li class="toc-l3"><a href="#Introduction">Introduction</a></li><li class="toc-l3"><a href="#Defaults_Discussion">Defaults Discussion</a></li><li class="toc-l2"><a href="#systemcheck_Information_Sources">systemcheck Information
+Sources</a></li><li class="toc-l2"><a href="#systemcheck_Operation">systemcheck Operation</a></li><li class="toc-l2"><a href="#Additional_Functions">Additional Functions</a></li><li class="toc-l2"><a href="#Other_Silent_Mode_Settings">Other Silent Mode Settings</a></li><li class="toc-l2"><a href="#Use_Cases">Use Cases</a></li><li class="toc-l3"><a href="#Automated_Tests">Automated Tests</a></li><li class="toc-l3"><a href="#Auto-start_Following_Boot">Auto-start Following Boot</a></li><li class="toc-l3"><a href="#Manual_User_Start">Manual User Start</a></li><li class="toc-l2"><a href="#Planned_Features">Planned Features</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../openSUSE/" title="Dev/openSUSE"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/openSUSE</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../mediawiki/" title="Dev/mediawiki"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/mediawiki</span></a><span class="info"><span class="prev">Previous
+page: Dev/openSUSE</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/mediawiki</span></span></span>Dev/systemcheck</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Kicksecure Security Check Application Development Notes. See also
+user documentation for <a href="../../Systemcheck/">systemcheck</a>.</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<p>This page would require some updates.</p>
+<h1 id="Technical_Information">Technical Information</h1>
+<ul>
+<li><u>Nothing is compiled:</u> systemcheck is implemented as scripts
+rather than compiled binaries.</li>
+<li><u>Source code inspection:</u> It can be easily inspected in the
+source code.</li>
+<li><u>Inspiration:</u> systemcheck was inspired by browser based check
+websites.</li>
+<li><u>Why it exists:</u> Browser based check websites are useful for
+very specialized checks, but Kicksecure is a complete operating
+system.</li>
+<li><u>File locations:</u> The script is stored in
+<span>/usr/bin/systemcheck</span> and
+<span>/usr/libexec/systemcheck/</span>.</li>
+<li><u>Optional component:</u> Kicksecure is functional without
+systemcheck.</li>
+</ul>
+<h1 id="Security">Security</h1>
+<p>When using <code>systemcheck</code> with the parameter
+<code>--leak-tests</code>, curl will verify the SSL certificate for
+downloads from <code>check.torproject.org</code> --
+<code>SocksPort</code> Test, <code>TransPort</code> Test -- and abort if
+the certificate is not valid. The <a href="https://packages.debian.org/source/stable/ca-certificates">ca-certificates
+Debian package</a> is installed on Kicksecure.</p>
+<p>When manually running this test, the attack surface for this script
+includes at least curl, apt, gpg, grep, sed, bash, uwt (on systems that
+use uwt only), torsocks (on systems that use torsocks only), zenity, and
+pgrep. Kicksecure developers have assessed that the benefits of this
+check outweigh the potential risks.</p>
+<h2 id="SSL_Certificate_Pinning">SSL Certificate Pinning</h2>
+<h3 id="Introduction">Introduction</h3>
+<p>By default, Kicksecure has not yet implemented direct SSL certificate
+pinning for <code>check.torproject.org</code> using curl.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup> The intent is to eventually provide users with an
+optional torproject.org certificate pinning option for the SocksPort
+Test, TransPort Test. To manually configure this setting, see below.</p>
+<h3 id="Defaults_Discussion">Defaults Discussion</h3>
+<p>Interested readers can learn more about why this feature is not
+enabled by default <a href="../SSL_Certificate_Pinning/#Defaults_Discussion">here</a>.</p>
+<h1 id="Source_Code_Introduction">Source Code Introduction</h1>
+<h2 id="systemcheck_Information_Sources">systemcheck Information
+Sources</h2>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/bin/systemcheck">Kicksecure/systemcheck</a></span>
+<em><span>sources</span></em>:</p>
+<ol>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/msgcollector/tree/master/usr/libexec/msgcollector/error_handler">Kicksecure/msgcollector</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/tor_enabled_check">Kicksecure/helper-scripts</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/pkg_manager_running_check">Kicksecure/helper-scripts</a></span></li>
+<li>Followed by all files in
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck">Kicksecure/systemcheck</a></span>
+in lexical order.</li>
+</ol>
+<h2 id="systemcheck_Operation">systemcheck Operation</h2>
+<p>After gathering the above information, systemcheck runs functions in
+<em><span>systemcheck_main</span></em>
+while passing command line arguments.</p>
+<p>Function
+<em><span>systemcheck_main</span></em>
+then calls:</p>
+<ol>
+<li>Function
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/parse_cmd.bsh">Kicksecure/systemcheck</a></span>
+while passing command line arguments.</li>
+<li>Function
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L82">Kicksecure/systemcheck</a></span>.</li>
+<li>Then uses function
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L17">Kicksecure/systemcheck</a></span>
+to run all other functions. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+</ol>
+<h2 id="Additional_Functions">Additional Functions</h2>
+<p>The
+<em><span>/usr/libexec/systemcheck/</span></em>
+folder is not a real .d style plugin drop-in folder. The shell function
+for separate [Kicksecure, unit] checks can be placed in separate files
+for better readability. The provided functions are then supposed to be
+run from
+<em><span>/usr/bin/systemcheck</span></em>
+function
+<em><span>systemcheck_main</span></em>.</p>
+<p>As a simple example, inspect the file
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/check_entropy.bsh">Kicksecure/systemcheck</a></span>
+which contains function
+<em><span>check_entropy</span></em>.
+Users can gather as much information as they like for analysis via this
+function.</p>
+<pre><code>entropy_file=&quot;/proc/sys/kernel/random/entropy_avail&quot;
+entropy_size=&quot;$(cat &quot;$entropy_file&quot;)&quot;
+if [ &quot;${entropy_size}&quot; -lt &quot;112&quot; ]; then</code></pre>
+<p>Now it is possible to use, copy and paste, or create a common
+boilerplate for making discoveries visible.</p>
+<pre><code>local MSG=&quot;&lt;p&gt;Entropy Available Check Result: low. &lt;code&gt;$entropy_file&lt;/code&gt;: &lt;code&gt;$entropy_size&lt;/code&gt; Please report this issue!&lt;/p&gt;&quot;
+$output ${output_opts[@]} --messagex --typex &quot;warning&quot; --message &quot;$MSG&quot;
+$output ${output_opts[@]} --messagecli --typecli &quot;warning&quot; --message &quot;$MSG&quot;</code></pre>
+<p>To limit the notifications to those running systemcheck with the
+<code>--verbose</code> option, add.</p>
+<pre><code> if [ &quot;$verbose&quot; = &quot;1&quot; ]; then</code></pre>
+<p>Other useful variables include:</p>
+<div>
+<ul>
+<li>$TEMP_DIR</li>
+<li>$VM "Kicksecure" or "Kicksecure"</li>
+<li>$vm_lower_case_short "gateway" or "workstation"</li>
+<li>$GATEWAY_IP</li>
+<li>$derivative_codename /etc/apt/sources.list.d/derivative.list
+codename</li>
+<li>$derivative_codename_uppercase</li>
+<li>$DAEMON = 1 run in daemon mode</li>
+<li>$AUTOSTARTED = 1 run after boot</li>
+<li>$manualrun = 1 manually run</li>
+<li>$ARCH "$(uname --machine)"</li>
+<li>$derivative-maker_version</li>
+<li>$derivative_deb_package_version</li>
+</ul>
+</div>
+<p>For further examples, please inspect the behavior of other functions
+in the folder
+<em><span>/usr/libexec/systemcheck/</span></em></p>
+<h1 id="Silent_Mode">Silent Mode</h1>
+<table>
+<caption><em>systemcheck Default Operation</em> (outdated!)</caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Kicksecure</strong></p></th>
+<th><p><strong>Kicksecure</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Runs after boot (autostart mode)</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Runs regularly during Kicksecure operation (daemon mode)</p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p></td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><em>systemcheck Notification Matrix</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Circumstance</strong></p></th>
+<th><p><strong>Notification</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Tor bootstrapping completes promptly <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+<td><p>"Connected to Tor" passive popup only</p></td>
+</tr>
+<tr class="even">
+<td><p>Tor bootstrapping is incomplete</p></td>
+<td><p>"Connecting to Tor" passive popup and successful "Connected to
+Tor" passive popup when finished, or an active error popup with advice
+when it fails</p></td>
+</tr>
+<tr class="odd">
+<td><p>Grave issue <sup class="reference"><a href="#cite_note-8">[8]</a></sup> <sup class="reference"><a href="#cite_note-9">[9]</a></sup> found</p></td>
+<td><p>Active error popup with advice</p></td>
+</tr>
+<tr class="even">
+<td><p>No grave issue found</p></td>
+<td><p>No GUI output</p></td>
+</tr>
+<tr class="odd">
+<td><p>Manual run of systemcheck</p></td>
+<td><p>Then <code>silent</code> is set to <code>0</code>, resulting in a
+progress bar and run of all tests <sup class="reference"><a href="#cite_note-10">[10]</a></sup> and active popup
+with results when complete</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Other_Silent_Mode_Settings">Other Silent Mode Settings</h2>
+<p>systemcheck was specifically made more silent to suit the Qubes AppVM
+design:</p>
+<ul>
+<li>When autostarted (after boot): <code>silent=3</code></li>
+<li>Daemon mode (planned iteration during run):
+<code>silent=3</code></li>
+<li>Silent only applies to autostart and daemon mode. When it is
+manually run, all messages are shown. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
+</ul>
+<table>
+<caption><em>Silent Level Overview</em></caption>
+<thead>
+<tr class="header">
+<th><p>| <strong>Silent Level</strong></p></th>
+<th><p>| <strong>Action</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Silent &lt;= 0</p></td>
+<td><ul>
+<li>Show SocksPort and TransPort "Test Result: Connected to Tor. IP"
+messages</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Silent &gt;= 1</p></td>
+<td><ul>
+<li>No "systemcheck was recently run, no need to run it again, you could
+still manually start it" message</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Silent &lt;= 2</p></td>
+<td><ul>
+<li>Complete a SocksPort and TransPort test, but only report errors
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Silent &gt;= 2</p></td>
+<td><ul>
+<li>No "Tor Bootstrap Result: Connected to Tor." message unless
+bootstrapping was slow and a progress bar was shown</li>
+<li>Perform test stream isolation, but only report errors</li>
+<li>No Kicksecure News result if there is no news and the Debian and
+build version are up-to-date</li>
+<li>Absent "No updates found via apt" message</li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p>Silent &gt;= 3</p></td>
+<td><ul>
+<li>No Tor SocksPort / TransPort test is conducted</li>
+<li>No stream isolation test at all</li>
+<li>No Kicksecure News check at all</li>
+<li>No apt update check at all</li>
+<li>Skip notification if Kicksecure repository is enabled</li>
+<li>No progress bar for the usual tests, except a progress bar if Tor
+has not bootstrapped yet</li>
+<li>Skip the test for a concurrently running package manager</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Silent &gt;= 4</p></td>
+<td><ul>
+<li>Skip the test for whether Kicksecure repository is enabled/disabled.
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Development">Development</h1>
+<h2 id="Use_Cases">Use Cases</h2>
+<p>systemcheck has specific use cases when it should be run either
+manually or automatically.</p>
+<h3 id="Automated_Tests">Automated Tests</h3>
+<p>Run after automatic boot by an automated test suite.</p>
+<h3 id="Auto-start_Following_Boot">Auto-start Following Boot</h3>
+<ol>
+<li>To provide connectivity progress information (Tor bootstrap check),
+with the familiar "in progress...", "done" (or failed) messages.</li>
+<li>As a general sanity check, for instance: the gateway is a ProxyVM
+and not an AppVM, IP forwarding is disabled, the clock is sane, and much
+more.</li>
+</ol>
+<h3 id="Manual_User_Start">Manual User Start</h3>
+<ol>
+<li>Connection functionality test.</li>
+<li>Connection leak test.</li>
+<li>General sanity check.</li>
+<li>General system security and anonymity check.</li>
+<li>As an information gathering tool, for example reporting the
+Kicksecure Debian package and build version (build version requires the
+<code>--verbose</code> option).</li>
+<li>VPN / tunnel functionality test.</li>
+<li>To educate users that stream isolation is broken when adding a
+VPN.</li>
+</ol>
+<h2 id="Planned_Features">Planned Features</h2>
+<p>When an error occurs, provide: <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
+<ul>
+<li>A short error message.</li>
+<li>A separate help button which opens advice relating to the
+problem.</li>
+<li>A separate technical details dropdown button which contains
+debugging information.</li>
+</ul>
+<h1 id="Related">Related</h1>
+<ul>
+<li><a href="../../System_Audit/">System Audit</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://phabricator.whonix.org/T80">https://phabricator.whonix.org/T80</a></li>
+<li id="cite_note-2">The order differs for Kicksecure (<code>kicksecure</code>) and
+Kicksecure (<code>kicksecure</code>). For detailed information
+concerning differences, see
+<em><span>/usr/bin/systemcheck</span></em>.
+The purpose of function
+<em><span>systemcheck_run_function</span></em>
+is to allow users to add function names to configuration variable
+<em><span>systemcheck_skip_functions</span></em>,
+which permits the skipping of certain functions. Also see: <a href="../../Systemcheck_Hardening/">systemcheck
+Hardening</a>.</li>
+<li id="cite_note-3">It is necessary to provide feedback if Tor bootstrapping is slow or
+there are other grave problems.</li>
+<li id="cite_note-4">This is designed to reduce the number and duplication of popups,
+like when Tor bootstrapping has not yet finished.</li>
+<li id="cite_note-5">Otherwise this could lead to a disruptive error popup while the user
+is doing something entirely different. One example is if the user has
+not used Kicksecure (<code>kicksecure</code>) / Tor for a while and Tor
+is no longer connected, this would be reported. If it is only a
+transient error, users are better off. If it is a permanent error that
+will be visible later, the user will hopefully run systemcheck
+manually.</li>
+<li id="cite_note-6">For example, if five AppVMs were in operation that would cause five
+error popups.</li>
+<li id="cite_note-7">Tor is connected when whonixcheck runs function
+<em><span>check_tor_bootstrap</span></em></li>
+<li id="cite_note-8">For example, if unwanted packages are installed.</li>
+<li id="cite_note-9">Also see: <a href="#System_Checks">System
+Checks</a>.</li>
+<li id="cite_note-10">Verbose output still requires the <code>--verbose</code>
+option.</li>
+<li id="cite_note-11">The same as Kicksecure 11.</li>
+<li id="cite_note-12">Relating to no connectivity, Tor not being detected and false
+positives.</li>
+<li id="cite_note-13">In other words, do not notify about a disabled Kicksecure
+repository.</li>
+<li id="cite_note-14">Issues resolved in Kicksecure 14 include: * Non-zero exit codes when
+at least one warning or error was detected [for automated test suite];
+and * Check for failed systemd units (except perhaps apparmor) for
+automated test suite.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../openSUSE/" title="Dev/openSUSE"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/openSUSE</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../mediawiki/" title="Dev/mediawiki"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/mediawiki</span></a><span class="info"><span class="prev">Previous
+page: Dev/openSUSE</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/mediawiki</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

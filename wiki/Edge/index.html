@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Edge</title>
+<meta name="description" content="Edge App - Crypto Currency Wallet - Security Model">
+<meta property="og:description" content="Edge App - Crypto Currency Wallet - Security Model">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Edge/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Edge/">
+<meta property="og:title" content="Edge Security Model">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Summary">Summary</a></li><li class="toc-l2"><a href="#Basic_Operation">Basic Operation</a></li><li class="toc-l2"><a href="#Compromised_Server_Risk">Compromised Server Risk</a></li><li class="toc-l2"><a href="#Server_Offline_Risk">Server Offline Risk</a></li><li class="toc-l2"><a href="#Backup-less_Two-factor_Authentication_(2FA)">Backup-less
+Two-factor Authentication (2FA)</a></li><li class="toc-l2"><a href="#Fingerprint_Login">Fingerprint Login</a></li><li class="toc-l2"><a href="#PIN_Login">PIN Login</a></li><li class="toc-l2"><a href="#Email-based_Password_Recovery_with_Untrusted_Server">Email-based
+Password Recovery with Untrusted Server</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Deprecated/" title="Deprecated"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Deprecated</span></a><a class="index internal" href="../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><span class="info"><span class="prev">Previous
+page: Deprecated</span><span class="index">Index page:
+Design</span></span></span>Edge Security Model</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Edge App - Crypto Currency Wallet - Security Model</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<p><strong>UNFINISHED</strong></p>
+<p>Based on this <a href="https://www.youtube.com/watch?v=7djc0E1ICjY">video</a>. Not based
+on reviewing the source code.</p>
+<h1 id="Untrusted_Server_Security_Model">Untrusted Server Security
+Model</h1>
+<h2 id="Summary">Summary</h2>
+<ul>
+<li>The server does not have plaintext data.</li>
+<li>The server has only encrypted data.</li>
+<li>The phone has only encrypted data.</li>
+<li>The phone does not hold the (full) decryption key?</li>
+<li>The server rate limits login attempts.</li>
+</ul>
+<h2 id="Basic_Operation">Basic Operation</h2>
+<p>How is it possible to use the same password for local encryption as
+well as for login to the remote server? Doesn't this mean that the
+server could learn the username and password to decrypt the local
+wallet? No. By using scrypt.</p>
+<ul>
+<li>username / password -&gt; scrypt -&gt; set of parameters
+"local-encryption" -&gt; local encryption key on phone</li>
+<li>username / password -&gt; scrypt -&gt; set of parameters
+"server-login" -&gt; authenticate with server</li>
+</ul>
+<h2 id="Compromised_Server_Risk">Compromised Server Risk</h2>
+<ul>
+<li>A compromised server can do nothing since it does not have data from
+the phone. It has only encrypted data and does not hold the decryption
+key.</li>
+<li>The server cannot link accounts to personal data (username, email,
+phone number, public address) since HMAC is used on the phone before
+sending to the server.</li>
+</ul>
+<h2 id="Server_Offline_Risk">Server Offline Risk</h2>
+<p>What happens if the server is offline?</p>
+<ul>
+<li>New users can sign up: no</li>
+<li>Existing users can access the wallet from an existing phone:
+yes</li>
+<li>Existing users can access the wallet from a new phone: no</li>
+<li>Receive funds: yes</li>
+<li>Spend funds: yes</li>
+<li>Can still log in using fingerprint or password, also called offline
+login</li>
+</ul>
+<p>Could not log in without a data connection. Bug?</p>
+<p>Could not reach auth server: /v2/login</p>
+<p>Is this due to 2FA being enabled?</p>
+<h2 id="Backup-less_Two-factor_Authentication_(2FA)">Backup-less
+Two-factor Authentication (2FA)</h2>
+<ul>
+<li>When another device wants to log in, an existing device needs to
+scan a QR code or provide an authentication code.</li>
+<li>No need to enter a 6-digit one-time password (OTP).</li>
+<li>2FA backup code is optional.</li>
+<li>If there are no other devices available to validate 2FA, then 2FA
+can be requested to be disabled, which takes one week.</li>
+<li>Similar to Telegram / Signal network re-registration lock.</li>
+</ul>
+<h2 id="Fingerprint_Login">Fingerprint Login</h2>
+<p>Optional. Phone security protects a key. That key is used to decrypt
+another key on the phone, which is then used to authenticate to the
+server. The server then sends the key to decrypt the data.</p>
+<h2 id="PIN_Login">PIN Login</h2>
+<p>Optional. PIN code + HMAC (on phone) -&gt; server sends back a key
+which allows decryption of the data. The server can rate limit PIN
+entries. Users have to wait exponentially longer: 1 second, 2 seconds, 4
+seconds, 8 seconds, etc.</p>
+<p>PINs are more secure legally, since fingerprints can be compelled but
+PIN codes often cannot be compelled.</p>
+<p>PIN login / fingerprint is just a shortcut to let the phone access
+the encrypted data, depending on phone security. It is a usability
+feature since typing the password every time is too tiresome.</p>
+<h2 id="Email-based_Password_Recovery_with_Untrusted_Server">Email-based
+Password Recovery with Untrusted Server</h2>
+<ul>
+<li>Email-based password recovery is optional. The user is not forced to
+set it up.</li>
+<li>The app will send the password recovery email from your email
+account to your email account.</li>
+<li>The password recovery email does not come from the server.</li>
+<li>The server will not send a password recovery email when the email
+address is forgotten.</li>
+<li>The only way is to set up email-based password recovery ahead of
+time, before forgetting the password.</li>
+<li>Half of the key is in the email link.</li>
+<li>Half of the key is on the phone and backed up on the server.</li>
+<li>Password recovery answers are sent to the server. These are hashed
+before sending, not the actual answers.</li>
+<li>If the password recovery answers are correct, the server will
+provide a key to decrypt local data.</li>
+<li>Risk: If an attacker gains access to the email (password recovery
+link) and also discovers the answers to the password recovery questions,
+they could access the funds. What could still prevent the attacker from
+accessing the funds is 2FA.</li>
+</ul>
+<h1 id="Features">Features</h1>
+<ul>
+<li>Buy bitcoin without KYC by using SEPA bank wire or credit card.</li>
+<li>Password reminder: a popup checks to verify the password. If wrong,
+the password can be reset.</li>
+</ul>
+<h1 id="Usability_Issues">Usability Issues</h1>
+<p>First letter is capitalized when typing username/password.</p>
+<h1 id="Breaking_Security_Model">Breaking Security Model</h1>
+<ul>
+<li>A malicious app update could upload the wallet seed to the server.
+But the same argument could be made against any phone wallet such as
+Electrum.</li>
+</ul>
+<h1 id="Miscellaneous">Miscellaneous</h1>
+<ul>
+<li>scrypt takes half a second on the phone.</li>
+</ul>
+<h1 id="Bug">Bug</h1>
+<ul>
+<li>I did not get the 2FA disabling request, even after re-login. How
+long does that take? Then later, after logging in from a new device, a
+notification about the 2FA request appeared.</li>
+<li>Could not log in without a data connection. Bug? "Could not reach
+auth server: /v2/login" Is this due to 2FA being enabled?</li>
+</ul>
+<h1 id="Questions">Questions</h1>
+<ul>
+<li>The phone does not hold the (full) decryption key?</li>
+<li>What if using 2FA and the server goes out of business?</li>
+<li>Dump private key feature?</li>
+<li>Dump wallet seed feature?</li>
+<li>Said "data on phone is useless without data from server"?</li>
+<li>Server offline cannot log in by PIN?</li>
+<li>How much stronger do passwords get by use of scrypt?</li>
+<li>Port to argon2?</li>
+<li>Is username case-sensitive?</li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Deprecated/" title="Deprecated"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Deprecated</span></a><a class="index internal" href="../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><span class="info"><span class="prev">Previous
+page: Deprecated</span><span class="index">Index page:
+Design</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

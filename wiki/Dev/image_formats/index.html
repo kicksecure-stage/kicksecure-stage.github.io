@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/image formats</title>
+<meta name="description" content="Considerations for the default file image format in Kicksecure: Is ISO a required image format, or can it be substituted by RAW images?">
+<meta property="og:description" content="Considerations for the default file image format in Kicksecure: Is ISO a required image format, or can it be substituted by RAW images?">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/image_formats/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/image_formats/">
+<meta property="og:title" content="Image Formats Development Considerations">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>image formats</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../image_creation/">Image
+Creation</a></li>
+<li><a href="./">Image Formats</a></li>
+<li><a href="../boot/">Boot Process</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Considerations for the default file image format in Kicksecure: Is
+ISO a required image format, or can it be substituted by RAW images?</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Technical_Information">Technical Information</h1>
+<ul>
+<li><u>persistence:</u>
+<ul>
+<li><u>full persistence:</u> When installing an operating system such as
+Debian to the hard drive when all changes persist this is defined here
+as full persistence. All actions such as package and kernel upgrades are
+trivially possible.</li>
+<li><u>partial persistence:</u> For example, Debian supports <a href="https://manpages.debian.org/testing/live-boot-doc/persistence.conf.5.en.html">persistence.conf,
+a <code>persistence volume</code></a>. <a href="https://fedoraproject.org/wiki/LiveOS_image#Kernel_updates_for_images_with_a_persistent_overlay">Kernel
+upgrades might be possible</a> but are not trivial through the normal
+use of the system's package manager.</li>
+</ul></li>
+<li><u>ISO read-only:</u> ISOs are primarily a read-only format. There
+is no way to mount an ISO as read-write and use it normally,
+persistently.
+<ul>
+<li><u>Non-alternatives:</u> There is <code>growisofs</code> or <a href="https://wiki.debian.org/RepackBootableISO">Repack Bootable ISO</a>
+but these cannot be used to write an ISO to USB and use it as a
+fully-persistent file system.</li>
+</ul></li>
+<li><u>ISO compression:</u>
+<ul>
+<li>Is an <code>.iso</code> compressed? No, the <code>.iso</code> format
+itself does not support compression.</li>
+<li>So how are downloadable boot images by Linux distributions usually
+compressed? Inside the image (usually <code>.iso</code> or
+<code>.img</code>), there is <code>squashfs.img</code> (<a href="https://en.wikipedia.org/wiki/SquashFS">SquashFS</a>), which is a
+compressed archive.</li>
+</ul></li>
+<li><u>ISO image format advantages:</u>
+<ul>
+<li>Most Linux distributions provide ISO images. Therefore, many users
+know what to do with these.</li>
+</ul></li>
+<li><u>Non-features of ISO images:</u>
+<ul>
+<li><a href="../../Live_Mode/">Live Mode</a>: Is live mode a
+feature of ISO images? No. Both ISO and raw images can be booted into
+live mode. The image becomes read-only thanks to the boot options, the
+squashfs. Even an installed operating system can be opt-in booted into
+live mode using <a href="../../Grub-live/">grub-live</a>.</li>
+</ul></li>
+</ul>
+<h1 id="ISO_Images_vs_RAW_Images">ISO Images vs RAW Images</h1>
+<ul>
+<li><u>Disadvantages of not providing ISO images:</u>
+<ul>
+<li><u>usability:</u> Some users will be confused.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+</ul></li>
+<li><u>Advantages of RAW images / Advantages of deprecation of ISO
+images:</u>
+<ul>
+<li><u>lower development effort:</u>
+<ul>
+<li>Writing build scripts to create bootable ISO images has a high
+initial development effort.</li>
+<li>Faster build process.</li>
+<li>Even mkosi by the systemd project does not support ISO images yet
+due to the difficulty of creating (SecureBoot compatible) bootable ISO
+images. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+</ul></li>
+</ul></li>
+<li><u>Advantages of RAW images:</u>
+<ul>
+<li><u>DVD support:</u> Only ISO images are compatible with optical
+media. However, DVD drives are rarely used nowadays.</li>
+<li><u>read-write support:</u> An image written to USB can be fully
+persistent.</li>
+</ul></li>
+</ul>
+<h1 id="Image_Compression_Issue">Image Compression Issue</h1>
+<p>If images are compressed (for example to <code>.tar.gz</code>), this
+causes a usability issue. At the time of writing, no image to USB
+writing tool could be found that natively supports compressed RAW images
+except balenaEtcher, which has privacy issues, see <a href="../../Download_Security/#balenaEtcher">balenaEtcher</a>.
+The user would have to decompress the image before flashing it, which
+requires an extra step and is therefore a usability issue.</p>
+<p>This issue equally applies to ISO images as well as RAW images.</p>
+<p>The only other solution would be using a SquashFS but that would make
+the image read-only after it has been booted. Maybe the SquashFS could
+be persistently decompressed during the first boot?</p>
+<p><a href="https://github.com/systemd/systemd/issues/32714">systemd
+feature request: add option for persistent de-compression of SquashFS
+during first boot</a></p>
+<h1 id="Image_Encryption_Issue">Image Encryption Issue</h1>
+<ul>
+<li><u>unencrypted images:</u> If just flashing a RAW image to USB, it
+would be unencrypted by default. In the ecosystem of Linux desktop
+operating systems, there is no in-place encryption that users could
+easily enable after the first boot. Encrypting an already installed
+system requires difficult sysadmin skills and booting from an external
+drive.</li>
+<li><u>encrypted images:</u> Images could be encrypted by default with a
+public, well-known key, and later users could be told to change the
+password and use <code>cryptsetup-reencrypt</code>.
+<ul>
+<li>However, this could be a security issue if users misunderstand the
+security properties of such an encrypted-by-default system.</li>
+<li>In theory, the system could boot automatically without password
+entry as long as the user does not change the default password.</li>
+<li>This approach could confuse users who do not wish to use encryption,
+as it would complicate data recovery (accessing the internal hard drive
+after booting from an external USB) and data backups.</li>
+<li><u>reputation risk:</u> Bad security practice with a hardcoded,
+public, well-known key.</li>
+</ul></li>
+<li><u>maintenance load:</u> Most likely, both an unencrypted and an
+encrypted image would need to be offered for download.</li>
+<li><u>usability issue:</u> When offering both types of images
+(unencrypted, encrypted), users might be confused.</li>
+<li><u>potential solution:</u> <a href="https://github.com/systemd/systemd/issues/32718">systemd feature
+request: option to set up full disk encryption during first
+boot</a></li>
+</ul>
+<h1 id="Future">Future</h1>
+<ul>
+<li>grml-debootstrap, the tool used to create Kicksecure based images,
+does not support creating encrypted images. upstream feature request: <a href="https://github.com/grml/grml-debootstrap/issues/131">encrypted VM
+images support</a></li>
+<li>Porting to mkosi might be an option because it supports encryption,
+but <a href="../Derivative-Maker/">Derivative-Maker</a>
+has not been ported to mkosi yet.
+<ul>
+<li>Does mkosi support other architectures besides <code>amd64</code>
+such as <code>arm64</code>?</li>
+</ul></li>
+</ul>
+<h1 id="Comparison_with_Others">Comparison with Others</h1>
+<p>Tails offers <code>.img</code> and <code>.iso</code> images. Tails
+has a ticket <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/18055">Stop
+distributing ISO images</a>.</p>
+<h1 id="Goals">Goals</h1>
+<ul>
+<li>The differences in the code base for Live Systems vs. Installer
+Systems vs. Installed Systems should be reduced as much as
+possible.</li>
+</ul>
+<p><blockquote><p>Live Systems vs. Installer Systems vs. Installed Systems</p>
+<p>In my model I'd like to remove the distinction between these three
+concepts as much as possible: each of these three images should carry
+the exact same `/usr/` file system, and should be suitable to be
+replicated the same way.</p>
+<p>So I want to provide a generic image for users to download. The image
+should be able to be flashed on an internal hard drive, a USB drive, on
+a server or anywhere else.<span class="blockquote-context"><a href="https://0pointer.net/blog/fitting-everything-together.html">Fitting
+Everything Together</a></span></p></blockquote></p>
+<ul>
+<li>Installer specific code should be as minimal as possible.</li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://forum.torproject.org/t/regards-to-installing-tails-5-8-o-s/6346">https://forum.torproject.org/t/regards-to-installing-tails-5-8-o-s/6346</a></li>
+<li id="cite_note-2">* mkosi: <a href="https://github.com/systemd/mkosi/issues/1220">Support iso9660 as
+output format</a> * repart: <a href="https://github.com/systemd/systemd/issues/28798">repart: Support
+booting via CD-ROM</a> * <a href="https://github.com/systemd/systemd/pull/28806">repart: Make image
+ISO bootable if possible</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

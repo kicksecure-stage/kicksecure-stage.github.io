@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/maintainability</title>
+<meta name="description" content="Exploring the challenges of maintainability in the Kicksecure project and Open Source development.">
+<meta property="og:description" content="Exploring the challenges of maintainability in the Kicksecure project and Open Source development.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/maintainability/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/maintainability/">
+<meta property="og:title" content="Maintainability">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>maintainability</span></nav><div class="mininav">
+<p>This group of pages centers around all maintainability aspects of
+Kicksecure.</p>
+<ul>
+<li><a href="./">Maintainability</a></li>
+<li><a href="../Relationship_With_Upstream/">Relationship With Upstream</a></li>
+<li><a href="../../Stable_Version_User_Experience/">Stable
+Version User Experience</a></li>
+<li><a href="../Stable_vs_Rolling_Distributions/">Stable vs Rolling Distributions</a></li>
+<li><a href="../../Reasonable_Security/">Reasonable
+Security</a></li>
+<li><a href="../../Practical_Security/">Practical
+Security</a></li>
+<li><a href="../../Enterprise_Security/">Enterprise
+Security</a></li>
+<li><a href="../../Maximum_Security/">Maximum
+Security</a></li>
+<li><a href="../../Perfect_Security/">Perfect
+Security</a></li>
+<li><a href="../../Privacy/">Privacy Goals and
+Non-Goals</a></li>
+<li><a href="../../Project_Policies/">Project
+Policies</a></li>
+</ul>
+</div><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Stable_vs_Rolling_Distributions/" title="Dev/Stable vs Rolling Distributions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Stable
+vs Rolling
+Distributions</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../coding_style/" title="Dev/coding style"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/coding
+style</span></a><span class="info"><span class="prev">Previous page:
+Dev/Stable vs Rolling Distributions</span><span class="index">Index
+page: Design</span><span class="next">Next page: Dev/coding
+style</span></span></span>Maintainability</p>
+</div>
+
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Discussion of the practical limitations of implementing certain
+features within the Kicksecure project due to maintainability
+concerns.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>While the ambition to innovate is always present, some desired
+features may be unrealistic to implement due to various constraints. For
+instance, the initiative to <a href="../../Hardened-kernel/">develop a hardened kernel</a> has stalled due to
+limited resources and the complexity of the task.</p>
+<h1 id="Related_Development_Philosophy">Related Development
+Philosophy</h1>
+<p>Kicksecure's development philosophy emphasizes maintainability and
+aligns with the following principles:</p>
+<ul>
+<li><a href="../../Stable_Version_User_Experience/">Stable
+Version User Experience</a></li>
+<li><a href="https://forums.whonix.org/t/focus-on-whonix-core-development/5036">Focus
+on Core Development</a></li>
+<li><a href="https://forums.whonix.org/tag/project-philosophy">Project
+Philosophy</a></li>
+</ul>
+<h1 id="Existing_Maintenance_Load">Existing Maintenance Load</h1>
+<ul>
+<li><a href="https://www.kicksecure.com/wiki/What_we_do">Kicksecure
+project activities</a></li>
+<li>(<a href="https://www.whonix.org/wiki/What_we_do">Whonix project
+activities</a>)</li>
+<li><a href="../Derivative-Maker/">Derivative
+Maker</a></li>
+<li><a href="https://github.com/Kicksecure">~ 56 Kicksecure source code
+repositories</a>.</li>
+<li>(<a href="https://github.com/Whonix">~ 16 Whonix source code
+repositories</a>)</li>
+<li><a href="../../What_we_do/">What we do</a></li>
+</ul>
+<p>(Whonix is mentioned here because the maintainers of Kicksecure are
+also maintainers of Whonix.)</p>
+<h1 id="The_Issue_of_Open_Source_Funding">The Issue of Open Source
+Funding</h1>
+<p>One of the core challenges is the absence of a sustainable Open
+Source business model, as discussed in <a href="../Open_Source_Business_Models/">Open Source
+Business Models</a>. The Kicksecure project, like many others, struggles
+to find a stable income stream to support even a small team of full-time
+developers.</p>
+<h1 id="Lack_of_Automated_Testing">Lack of Automated Testing</h1>
+<p>Automated testing is a <a href="https://forums.whonix.org/t/automated-test-suite/5942">wanted
+feature since 2018, if not earlier</a>. A contributor has implemented <a href="https://forums.whonix.org/t/continuous-integration-ci-whonix-testing/15839">CI
+testing for derivative-maker image builds</a>, but actual testing of the
+images, upgrades, and various platforms is a huge task and has not been
+implemented yet.</p>
+<p>If automated testing (CI) were implemented, then it might be possible
+to maintain more things, since less time would be required for
+testing.</p>
+<h1 id="Oldstable_Support">Oldstable Support</h1>
+<p>Legacy support requires a high level of effort.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h1 id="The_High_Cost_of_Custom_Solutions">The High Cost of Custom
+Solutions</h1>
+<p>Venturing into projects like maintaining a custom (hardened) kernel,
+for instance, is beyond what is considered manageable given the current
+resource constraints. The history of security, privacy, and
+anonymity-focused operating systems is littered with projects that are
+no longer updated and can be considered abandoned:</p>
+<ul>
+<li>Libert&#233; Linux</li>
+<li><a href="https://en.wikipedia.org/wiki/Anonym.OS">Anonym.OS</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Subgraph_(operating_system)">Subgraph
+OS</a></li>
+<li><a href="https://tails.boum.org/doc/about/acknowledgments_and_similar_projects/index.en.html">There
+is a huge list of abandoned projects but only a very small list of
+active projects.</a></li>
+</ul>
+<p>This pattern is not exclusive to security-focused distributions; a <a href="https://en.wikipedia.org/wiki/List_of_Linux_distributions">quick
+review of Linux distributions</a> shows that many have been
+discontinued.</p>
+<h1 id="Tails_on_Maintainability">Tails on Maintainability</h1>
+<p>The Tails project shares similar views on the maintainability of
+Linux distributions. Their insights are well regarded and align with
+Kicksecure's experiences:</p>
+<p><blockquote><p>Many, many Live system projects -- including a few ones that aimed at
+enhancing their users' privacy -- have lived fast and died young. We
+explain this by their being one wo/man efforts, as well as design
+decisions that made their maintenance much too costly timewise and
+energywise.<span class="blockquote-context"><a href="https://tails.net/contribute/how/code/#index1h2">Tails: Focus on
+low-effort maintainability</a></span></p></blockquote></p>
+<p><blockquote><p>Do you remember Haven, Anonym.OS, ParanoidLinux, onionOS, Phantomix,
+Libert&#233; Linux, Mempo, ..., ?<span class="blockquote-context"><a href="https://web.archive.org/web/20240627000529/https://tails.net/contribute/how/promote/material/slides/NDH2k16-20160702/slides_NDH2k16.pdf/">Tails:
+Security, Maintainability and Usability</a></span></p></blockquote></p>
+<p><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=S9vXTSOFp_o">
+<img src="../../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=S9vXTSOFp_o">HackerZVoice
+- NDH2K16 - Tails - Security, Maintainability and Usability, pick
+three!</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=S9vXTSOFp_o"><img src="../../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=S9vXTSOFp_o"><img src="../../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=S9vXTSOFp_o"><img src="../../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></p>
+<p>forums discussion: <a href="https://forums.whonix.org/t/focus-on-low-effort-maintainability/9067">focus
+on low-effort maintainability</a></p>
+<h1 id="The_Reality_of_Open_Source_Maintenance">The Reality of Open
+Source Maintenance</h1>
+<p>The discontinuation of Linux distributions is often attributed to
+various factors, including health issues, financial constraints,
+burnout, and the perception of insufficient impact or appreciation.
+Below are some testimonials from Open Source maintainers detailing their
+experiences:</p>
+<ul>
+<li><a href="https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md">Core-js:
+What's next?</a></li>
+<li><a href="https://www.jeffgeerling.com/blog/2022/burden-open-source-maintainer">The
+Burden of an Open Source Maintainer</a></li>
+<li><a href="https://www.jeffgeerling.com/blog/2022/just-say-no">Just
+Say No</a></li>
+<li><a href="https://blog.tidelift.com/maintainer-burnout-is-real">Maintainer
+Burnout is Real</a></li>
+<li><a href="https://dev.to/sapegin/why-i-quit-open-source-1n2e">Why I
+Quit Open Source</a></li>
+<li><a href="https://dev.to/opensauced/the-lonely-journey-of-open-source-maintainers-a-call-for-connection-and-recognition-2ghe">The
+Lonely Journey of Open Source Maintainers</a></li>
+<li><a href="https://nolanlawson.com/2017/03/05/what-it-feels-like-to-be-an-open-source-maintainer/">What
+it feels like to be an Open Source Maintainer</a></li>
+<li><a href="https://betterprogramming.pub/why-open-source-developers-are-burning-out-1a860854884c">Why
+Open Source Developers are Burning Out</a></li>
+<li><a href="https://mikemcquaid.com/open-source-maintainers-owe-you-nothing/">Open
+Source Maintainers Owe You Nothing</a></li>
+<li><a href="https://web.archive.org/web/20230329000537/https://www.businessinsider.com/open-source-developers-burnout-low-pay-internet-2022-3">Open
+Source Developers Face Burnout and Low Pay</a></li>
+<li><a href="https://news.ycombinator.com/item?id=25946190">https://news.ycombinator.com/item?id=25946190</a></li>
+<li><a href="https://news.ycombinator.com/item?id=25940195">https://news.ycombinator.com/item?id=25940195</a></li>
+<li><a href="https://lowendbox.com/blog/open-source-but-not-open-contributions/">https://lowendbox.com/blog/open-source-but-not-open-contributions/</a></li>
+<li><a href="https://github.com/readme/featured/how-open-is-open-source">https://github.com/readme/featured/how-open-is-open-source</a></li>
+<li><a href="https://github.com/benbjohnson/litestream/commit/a8d63b54aa5bd2d9639af01e1e0c2098a65b323a#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R121">https://github.com/benbjohnson/litestream/commit/a8d63b54aa5bd2d9639af01e1e0c2098a65b323a#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R121</a></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uC4Xay0q9_Q">
+<img src="../../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uC4Xay0q9_Q">Global
+Maintainer Summit 2021: Bart&amp;#x142;omiej P&amp;#x142;otka-Should I
+merge this
+feature?</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=uC4Xay0q9_Q"><img src="../../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=uC4Xay0q9_Q"><img src="../../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=uC4Xay0q9_Q"><img src="../../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li>(Note: There are many more references that could be listed
+here.)</li>
+</ul>
+<h1 id="Practical_Examples">Practical Examples</h1>
+<ul>
+<li><a href="https://github.com/Kicksecure/security-misc/pull/147">Install
+<code>libpam-tmpdir</code> by default (Pull Request (PR))</a> sounds
+pretty simple and works well at first when manually testing by <a href="https://packages.debian.org/libpam-tmpdir">installing the
+<code>libpam-tmpdir</code> package</a> as a tester. However, see the PR.
+It contains a list of links pointing to bugs that were caused as a
+result.</li>
+<li>Mounting <code>/tmp</code> with <code>noexec</code> but then <a href="https://github.com/Kicksecure/security-misc/issues/198">pam-tmpdir-helper
+breaks certain initramfs-update actions on systems with noexec on the
+/tmp mount</a>.</li>
+</ul>
+<h1 id="working_system_is_much_easier_to_debug_than_a_dead_one">working
+system is much easier to debug than a dead one</h1>
+<p><a href="https://yarchive.net/comp/linux/BUG.html">philosophy that a
+working system is much easier to debug than a dead one</a></p>
+<h1 id="Conclusion">Conclusion</h1>
+<p>In light of these challenges, to safeguard the sustainability of
+Kicksecure, features that demand high maintenance will not be
+pursued.</p>
+<ul>
+<li><a href="https://www.whonix.org/wiki/File:Whonix-10-year-celebration-banner.jpg">In
+<code>2022</code>, Whonix celebrated <code>10</code> years of
+existence.</a></li>
+<li><a href="https://www.whonix.org/wiki/File:Banner-11-years.jpg">In
+<code>2023</code>, Whonix celebrated <code>11</code> years of
+existence.</a></li>
+<li><a href="https://www.whonix.org/wiki/History">Whonix History</a>
+([Broken-ExtLink--no-url-was-provided].)</li>
+<li><a href="../../History/">Kicksecure has a <code>11</code>
+years History</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/focus-on-low-effort-maintainability/9067">https://forums.whonix.org/t/focus-on-low-effort-maintainability/9067</a></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Stable_vs_Rolling_Distributions/" title="Dev/Stable vs Rolling Distributions"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Stable
+vs Rolling
+Distributions</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../coding_style/" title="Dev/coding style"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/coding
+style</span></a><span class="info"><span class="prev">Previous page:
+Dev/Stable vs Rolling Distributions</span><span class="index">Index
+page: Design</span><span class="next">Next page: Dev/coding
+style</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+<div class="references">
+<ol>
+<li id="cite_note-1">* <a href="https://forums.whonix.org/t/whonix-17-end-of-security-support-and-deprecation-notice-all-users-should-move-to-whonix-18-as-soon-as-possible/22644">https://forums.whonix.org/t/whonix-17-end-of-security-support-and-deprecation-notice-all-users-should-move-to-whonix-18-as-soon-as-possible/22644</a>
+* <a href="https://forums.whonix.org/t/expkeysig-error-gpg-key-whonix/22721">https://forums.whonix.org/t/expkeysig-error-gpg-key-whonix/22721</a>
+** <a href="https://forums.whonix.org/t/gpg-warning-command-not-found/22927">https://forums.whonix.org/t/gpg-warning-command-not-found/22927</a>
+* <a href="https://forums.whonix.org/t/tb-updater-package-stuck-at-3-39-4-1/22921">https://forums.whonix.org/t/tb-updater-package-stuck-at-3-39-4-1/22921</a>
+** Example. Updating tb-updater package newer Qubes Rx.x and newer
+derivative release based on Debian stable rather than oldstable has been
+released. # have Qubes R4.2 # have version 17 Templates # have bookworm
+build environment # checkout bookworm branch # upgrade # upload to
+bookworm-developers # test # migrate to all other repositories The test
+might get skipped but then more unexpected breakage might happen,
+requiring more complex solutions.</li>
+</ol>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

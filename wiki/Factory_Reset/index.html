@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Factory Reset</title>
+<meta name="description" content="Guidelines on how to reset Kicksecure to its original settings. Learn how to restore configuration files to defaults, re-install meta-packages, and revert the system closer to vendor defaults.">
+<meta property="og:description" content="Guidelines on how to reset Kicksecure to its original settings. Learn how to restore configuration files to defaults, re-install meta-packages, and revert the system closer to vendor defaults.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Factory_Reset/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Factory_Reset/">
+<meta property="og:title" content="Resetting Kicksecure: A Factory Reset Guide">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Factoryreset13124512.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Troubleshooting/#General_Troubleshooting">General Troubleshooting</a></li>
+<li><a href="../Troubleshooting/#Connectivity_Troubleshooting">Connectivity Troubleshooting</a></li>
+<li><a href="../VirtualBox/Troubleshooting/">VirtualBox
+Troubleshooting</a></li>
+<li><a href="../Recovery/">Recovery</a></li>
+<li><a href="../Grub/">GRUB</a></li>
+<li><a href="../Dracut/">dracut</a></li>
+<li><a href="../Broken_Boot/">Broken Boot</a></li>
+<li><a href="./">Factory Reset</a></li>
+<li><a href="../Download_Issues/">Download Issues</a></li>
+</ul>
+</div>
+<p><img src="../../media/Factoryreset13124512.png.webp" width="250" alt="Factoryreset13124512.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Guidelines on how to reset Kicksecure to its original settings. Learn
+how to restore configuration files to defaults, re-install
+meta-packages, and revert the system closer to vendor defaults.</p>
+<div class="post-intro-p">
+</div>
+<p>For those looking to revert their system to its initial state, a term
+often used is <code>factory reset</code>.<sup class="reference"><a href="#cite_note-1">[1]</a></sup> Two primary
+methods are available:</p>
+<ul>
+<li><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">A</i>
+<strong><u>Re-installation Approach</u>:</strong> For a thorough reset,
+delete Kicksecure (or for VM users: simply remove the desired VMs) and
+then install the latest stable version of Kicksecure. This approach is
+more thorough and will revert the system closer to vendor defaults. Do
+note, this means important user data needs to be backed up and migrated
+if necessary. For more insights, refer to <a href="../Operating_System_Software_and_Updates/#Update_vs_Image_Re-Installation">Update vs Image Re-Installation</a>.</li>
+<li><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">B</i>
+<strong><u>Settings Reset Approach</u>:</strong> This approach strives
+to restore settings to vendor defaults to the best extent possible.
+However, it is not flawless and might not undo all user modifications or
+address all issues.
+<ul>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+<a href="../Debian_Packages/#Re-install_Meta_Packages_and_Safely_Run_Autoremove">Re-install Meta Packages and Safely Run
+Autoremove</a></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+<a href="../Configuration_Files/#Reset_Configuration_Files_to_Vendor_Default">Restore Configuration Files to Vendor Default</a></li>
+<li><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+<a href="../Desktop/#LXQt_Settings_Reset">LXQt Settings
+Reset</a></li>
+</ul></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Operating_System_Software_and_Updates/">Operating System Software and Updates</a></li>
+<li><a href="../Recovery/">Recovery</a></li>
+<li><a href="../Disaster_Recovery/">Strategies for Disaster
+Recovery Post-Compromise</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Within the context of Kicksecure, the term
+<code>factory reset</code> is not entirely accurate, since, as of this
+writing, the platform pertains solely to software and is not tied to
+hardware. Technically, there are no "factory defaults". Yet, the phrase
+<code>vendor settings reset</code> might be less intuitive, whereas
+<code>factory reset</code> is more universally understood and has a more
+familiar feel.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

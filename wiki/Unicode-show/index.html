@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Unicode-show</title>
+<meta name="description" content="Detect and annotate non-ASCII or suspicious Unicode characters in files">
+<meta property="og:description" content="Detect and annotate non-ASCII or suspicious Unicode characters in files">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Unicode-show/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Unicode-show/">
+<meta property="og:title" content="unicode-show">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Unicode-show.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#SYNOPSIS">SYNOPSIS</a></li><li class="toc-l2"><a href="#DESCRIPTION">DESCRIPTION</a></li><li class="toc-l2"><a href="#COLOR_OUTPUT_DISABLED_IF">COLOR OUTPUT DISABLED IF</a></li><li class="toc-l2"><a href="#OPTIONS">OPTIONS</a></li><li class="toc-l2"><a href="#EXIT_STATUS">EXIT STATUS</a></li><li class="toc-l2"><a href="#EXAMPLES">EXAMPLES</a></li><li class="toc-l2"><a href="#ENVIRONMENT">ENVIRONMENT</a></li><li class="toc-l2"><a href="#SAMPLE_OUTPUT">SAMPLE OUTPUT</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Unicode/" title="Unicode"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Unicode</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Stdisplay/" title="Stdisplay"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Stdisplay</span></a><span class="info"><span class="prev">Previous
+page: Unicode</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Stdisplay</span></span></span>unicode-show</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Unicode/">Unicode</a></li>
+<li><a href="./">unicode-show</a></li>
+<li><a href="../Stdisplay/">stdisplay (stcatn, stecho,
+etc.)</a></li>
+<li><a href="../Shell/">Hidden Text Attacks</a></li>
+<li><a href="../Shell_scripting/">Shell Scripting</a></li>
+</ul>
+</div>
+<p><img src="../../media/Unicode-show.png.webp" width="200" alt="unicode-show logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Detect and annotate non-ASCII or suspicious Unicode characters in
+text or files.</p>
+<div class="post-intro-p">
+</div>
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+<p><code>unicode-show [FILE]...</code></p>
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+<p><code>unicode-show</code> is a utility that reads text input (from
+standard input or files) and highlights suspicious Unicode characters,
+such as those outside the safe ASCII range. This tool is useful for
+identifying potentially malicious or misleading Unicode characters in
+source code, logs, or user input.</p>
+<p><strong>For each suspicious character, <code>unicode-show</code>
+prints:</strong></p>
+<ul>
+<li>The line it appears on, annotated with <code>[U+XXXX]</code>
+markers</li>
+<li>A description including the character (if visible), Unicode
+codepoint, character name, and category</li>
+</ul>
+<p><strong>What is considered suspicious:</strong></p>
+<ul>
+<li>Characters outside the printable ASCII range
+(<code>0x20</code>-<code>0x7E</code>)</li>
+<li>Control characters (excluding <code>\n</code>, <code>\r</code>,
+<code>\t</code>)</li>
+<li>Any character not in the standard set of ASCII letters, digits,
+punctuation</li>
+<li>trailing whitespace</li>
+<li>missing newline at the end of the file</li>
+</ul>
+<p><strong>Output formatting:</strong></p>
+<ul>
+<li>Annotations are colorized using ANSI escape codes if stdout is a
+terminal and the environment is color-friendly</li>
+<li>Red for inline <code>[U+XXXX]</code> markers</li>
+<li>Cyan for character metadata descriptions</li>
+</ul>
+<h2 id="COLOR_OUTPUT_DISABLED_IF">COLOR OUTPUT DISABLED IF</h2>
+<ul>
+<li>The environment variable <code>NOCOLOR</code> is set</li>
+<li><code>TERM</code> is set to <code>dumb</code></li>
+<li>Output is redirected (non-interactive terminal)</li>
+</ul>
+<h2 id="OPTIONS">OPTIONS</h2>
+<p>This tool takes no options. Any arguments are treated as file paths.
+If no arguments are given, input is read from standard input.</p>
+<h2 id="EXIT_STATUS">EXIT STATUS</h2>
+<ul>
+<li><code>0</code> No suspicious Unicode characters found</li>
+<li><code>1</code> Suspicious characters were detected</li>
+<li><code>2</code> An error occurred (e.g., file I/O or decoding
+failure)</li>
+</ul>
+<h2 id="EXAMPLES">EXAMPLES</h2>
+<p><strong>Scan a file for suspicious characters:</strong></p>
+<p><span class="code-select">unicode-show suspicious.txt</span></p>
+<p><strong>Scan multiple files:</strong></p>
+<p><span class="code-select">unicode-show file1.txt file2.md</span></p>
+<p><strong>Scan input from a pipeline:</strong></p>
+<p><span class="code-select">cat file1.txt | unicode-show</span></p>
+<p><strong>Disable color output:</strong></p>
+<p><span class="code-select">NOCOLOR=1 unicode-show
+example.txt</span></p>
+<h2 id="ENVIRONMENT">ENVIRONMENT</h2>
+<ul>
+<li><code>NOCOLOR</code> - disables color output if set</li>
+<li><code>TERM</code> - if set to <code>dumb</code>, disables color
+output</li>
+</ul>
+<h2 id="SAMPLE_OUTPUT">SAMPLE OUTPUT</h2>
+<p><span class="code-select">unicode-show
+trojan-source/Python/early-return.py</span></p>
+<pre><code>trojan-source/Python/early-return.py:5:     &#39;&#39;&#39; Subtract funds from bank account then [U+2067]&#39;&#39;&#39; ;return
+   -&gt; &#39;\u2067&#39; (U+2067, RIGHT-TO-LEFT ISOLATE, Cf)
+trojan-source/Python/early-return.py:11: [missing newline at end]</code></pre>
+<p>Kicksecure only if using Zsh:</p>
+<pre><code>zsh: exit 1     unicode-show trojan-source/Python/early-return.py</code></pre>
+<h1 id="Source_Code">Source Code</h1>
+<ul>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/unicode-show">Kicksecure/helper-scripts</a></span></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Unicode/" title="Unicode"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Unicode</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Stdisplay/" title="Stdisplay"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Stdisplay</span></a><span class="info"><span class="prev">Previous
+page: Unicode</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Stdisplay</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

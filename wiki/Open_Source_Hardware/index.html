@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Open Source Hardware</title>
+<meta name="description" content="Establishing Hardware Trust, Open Source Hardware Alternatives">
+<meta property="og:description" content="Establishing Hardware Trust, Open Source Hardware Alternatives">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Open_Source_Hardware/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Open_Source_Hardware/">
+<meta property="og:title" content="Open Source Hardware">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Opensourcehardware.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#ARM-based_Platforms">ARM-based Platforms</a></li><li class="toc-l2"><a href="#Open-source_Processors">Open-source Processors</a></li><li class="toc-l2"><a href="#RISC-V">RISC-V</a></li><li class="toc-l2"><a href="#single-board_computers_-_SBCs">single-board computers -
+SBCs</a></li><li class="toc-l2"><a href="#Security-Focused_Hardware_Vendors">Security-Focused Hardware
+Vendors</a></li><li class="toc-l2"><a href="#OpenPOWER">OpenPOWER</a></li><li class="toc-l2"><a href="#Future">Future</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="../Boot_firmware/">Boot Firmware</a></li>
+<li><a href="../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Dev/Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../Measured_boot/">Measured Boot</a></li>
+<li><a href="../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="./">Open Source
+Hardware</a></li>
+<li><a href="../Dev/confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../Dev/bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="../Dev/Stateless/">stateless (dev)</a></li>
+<li><a href="../Dev/immutable/">immutable (dev)</a></li>
+</ul>
+</div>
+<p><img src="../../media/Opensourcehardware.png.webp" width="200" alt="Opensourcehardware.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Establishing Hardware Trust, Open Source Hardware Alternatives</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This chapter contains general security advice and is unspecific to
+Kicksecure. Readers interested in this topic should undertake
+significant research before purchasing any open-source hardware. It is
+also recommended to learn more about <a href="https://www.gnu.org/philosophy/free-hardware-designs.en.html">free
+hardware designs</a>.</p>
+</div>
+<h1 id="Hardware_Trust_in_Modern_Computing">Hardware Trust in Modern
+Computing</h1>
+<p>Security researcher and Qubes founder, Joanna Rutkowska, has noted
+that modern computing and networking security relies upon a critical
+foundation - trusted hardware and firmware domains. Even high-security
+operating systems have a security upper bound, since that is defined by
+the trustworthiness of hardware components that are ideally placed to
+compromise the entire system if bugs or backdoors are present:
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>... for years we have been, similarly, assuming the underlying
+hardware, together with all the firmware that runs on it, such as the
+BIOS/UEFI and the SMM, GPU/NIC/SATA/HDD/EC firmware, etc., is all...
+trusted.<br />
+But isn't that a rational assumption, after all?<br />
+<br />
+Well, not quite: today we know it is rather unwise to assume all
+hardware and firmware is trusted. Various research from the last ten
+years, as discussed below, has provided enough evidence for that, in the
+author's opinion. We should thus revisit this assumption. And given
+what's at stake, the sooner we do this, the better.</p></blockquote></p>
+<p><blockquote><p>So computer and network security in practice starts at the hardware
+and firmware underneath the endpoints. Their security provides an upper
+bound for the security of anything built on top.</p></blockquote></p>
+<p>Rutkowska has concluded the following hardware components and
+mechanisms are all vulnerable to exploitation and often flawed in their
+implementation, making them easy to "backdoor": <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<div>
+<ul>
+<li>x86 boot security (BIOS implementation).</li>
+<li>Vt-d (CPU-enforced sandboxing of networking).</li>
+<li>Graphics cards (GPUs) and sub-systems.</li>
+<li>USB controllers.</li>
+<li>Disk controllers (SATA etc.).</li>
+<li>Embedded controllers (for keyboard operation, battery charging
+etc.).</li>
+<li>Audio cards.</li>
+<li>Peripheral devices.</li>
+<li>Intel Management Engine (ME) and AMD Security Processor (embedded
+microcontrollers).</li>
+<li>Built-in speakers, microphones and cameras.</li>
+</ul>
+</div>
+<p>This is particularly true for privileged, out-of-band hardware
+components like Intel ME's AMT which can read or write any of the host
+computer's memory, without any constraints - the perfect, undetectable
+rootkiting infrastructure. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> In short, it appears that
+modern computing architectures are impossible to secure properly,
+especially since popular, proprietary hardware options (Intel and AMD)
+dominate the market. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h1 id="Open_Source_BIOS_and_Firmware_Security_Impact">Open Source BIOS
+and Firmware Security Impact</h1>
+<p>Quote Kicksecure developer Patrick Schleizer <sup class="reference"><a href="#cite_note-3">[3]</a></sup>:</p>
+<p><blockquote><p>Hardware is solidified software.</p></blockquote></p>
+<p><blockquote><p>Attempts on reverse-engineering, re-implementing BIOS as Open Source,
+Intel ME, AMD PSP are awesome, an important step but all just scratching
+the surface. The following video elaborates on that.</p>
+<p>Disclaimer: I didn't look much into RISC-V. This isn't an endorsement
+/ non-endorsement of RISC-V. That video isn't much of a RISC-V
+promotion. The video is chosen as an example because it nicely
+elaborates on the extremely difficulty of having hardware that is
+secure, reasonable certain free of backdoors, Open Hardware, and
+whatnot.</p>
+<p><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zXwy65d_tu8">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zXwy65d_tu8">Wednesday
+11 00am Keynote Address Impedance Matching Expectations Between RISC V
+and the Open
+Har</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zXwy65d_tu8"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=zXwy65d_tu8"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=zXwy65d_tu8"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></p></blockquote></p>
+<p><blockquote><p>Freedom? Security? The hardware is proprietary. In simplified terms,
+there is no meaningful distinction between hardware and security from a
+freedom and security perspective. Maybe the term "hardware acceleration"
+easily illustrates that. Hardware in a sense is solidified software.
+Hardware is for a large part just a different representation of
+software. What's software? One level to look at it, it's just zero's and
+one's on some storage medium. What hardware does is has concepts how to
+process incoming data / electricity burnt, solidified into silicon.</p>
+<p>You need a complex program to write a complex blueprint which then
+creates other complex files which then are used by complex machines
+which then create the actual hardware. At each step, a backdoor could be
+introduced.</p></blockquote></p>
+<p>See also this presentation
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Hzb37RyagCQ">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Hzb37RyagCQ">36C3
+- Open Source is Insufficient to Solve Trust Problems in
+Hardware</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Hzb37RyagCQ"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=Hzb37RyagCQ"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=Hzb37RyagCQ"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>
+by Andrew "bunnie" Huang or
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=RqQhWitJ1As">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=RqQhWitJ1As">BlueHat
+IL 2019 - Andrew "bunnie" Huang - Supply Chain Security: "If I were a
+Nation
+State..."</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=RqQhWitJ1As"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=RqQhWitJ1As"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=RqQhWitJ1As"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>.</p>
+<p>A CPU is not just a dumb piece of hardware that can do basic
+calculations at high speed. Modern CPU from Intel / AMD have many
+"software alike" features built-in. To name a few of a plethora of
+examples:</p>
+<ul>
+<li><a href="https://en.m.wikipedia.org/wiki/Hardware_acceleration">hardware
+acceleration</a></li>
+<li>Hardware accelerated AES encryption, the <a href="https://en.wikipedia.org/wiki/AES_instruction_set">AES instruction
+set</a>. Historically AES encryption was implemented as software.
+Nowadays implementations of AES are implemented as hardware.</li>
+<li><a href="https://en.wikipedia.org/wiki/Hardware_virtualization">Hardware
+virtualization</a> such as <a href="https://en.wikipedia.org/wiki/X86_virtualization#Intel-VT-x">Intel
+VT-x</a> or <a href="https://en.wikipedia.org/wiki/X86_virtualization#AMD_virtualization_(AMD-V)">AMD-V</a>
+are complex CPU instructions directly built into the CPU.</li>
+<li><a href="https://en.wikipedia.org/wiki/RDRAND">RDRAND</a>, quote
+Wikipedia "is an instruction for returning random numbers from an Intel
+on-chip hardware random number generator which has been seeded by an
+on-chip entropy source."</li>
+<li><a href="https://en.m.wikipedia.org/wiki/VHDL">VHDL</a> (VHSIC
+Hardware Description Language) is a hardware description language.</li>
+<li><a href="https://en.wikipedia.org/wiki/EFuse">EFuse</a> to allow for
+the dynamic real-time reprogramming of chips.</li>
+<li><a href="https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)">Spectre
+(security vulnerability)</a>, quote Wikipedia "Spectre is one of the two
+original transient execution CPU vulnerabilities (the other being
+Meltdown), which involve microarchitectural side-channel attacks. These
+affect modern microprocessors that perform branch prediction and other
+forms of speculation.[1][2][3] On most processors, the speculative
+execution resulting from a branch misprediction may leave observable
+side effects that may reveal private data to attackers."</li>
+</ul>
+<p>See also these blog posts by Joanna Rutkowska, security researcher
+and founder of Qubes OS:</p>
+<ul>
+<li><a href="https://theinvisiblethings.blogspot.com/2009/03/trusting-hardware.html">Trusting
+Hardware</a></li>
+<li><a href="https://blog.invisiblethings.org/2009/06/01/more-thoughts-on-cpu-backdoors.html">More
+Thoughts on CPU backdoors</a></li>
+</ul>
+<p>As well as these:</p>
+<ul>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KrksBdWcZgQt40s">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KrksBdWcZgQt40s">Breaking
+the x86 Instruction
+Set</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KrksBdWcZgQt40s"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=KrksBdWcZgQt40s"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=KrksBdWcZgQt40s"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li><a href="https://www.tomshardware.com/pc-components/cpus/30-year-old-pentium-fdiv-bug-tracked-down-in-the-silicon-ken-shirriff-takes-the-microscope-to-intels-first-ever-recall">Tom's
+Hardware: 30-year-old Pentium FDIV bug tracked down in the silicon --
+Ken Shirriff takes the microscope to Intel's first-ever recall</a>
+<ul>
+<li>The blog post by the author <a href="https://www.righto.com/2024/11/antenna-diodes-in-pentium-processor.html">Antenna
+diodes in the Pentium processor</a> manages to pinpoint a software bug
+from the physical world.</li>
+</ul></li>
+</ul>
+<p>For a video showing that hardware based encryption (in a different
+context) can be vulnerable, see this computer chaos club (CCC) talk
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=C5hLTk5MyGU">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=C5hLTk5MyGU">35C3
+- Self-encrypting
+deception</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=C5hLTk5MyGU"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=C5hLTk5MyGU"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=C5hLTk5MyGU"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>.</p>
+<p><blockquote><p>From my personal perspective, in terms of threats customers already
+need to trust AMD with manufacturing something as complex as a CPU
+without introducing bugs (let alone backdoors). "Cleaning" one small
+piece of this complex system (i.e. the PSP's firmware) would be a drop
+in the ocean.<span class="blockquote-context">Security researcher <a href="https://www.user.tu-berlin.de/cwerling/">Christian Werling</a> in
+<a href="https://github.com/PSPReverse/PSPTool/issues/54">Question,
+regarding psp</a></span></p></blockquote></p>
+<p>Can modern hardware be audited? For the most part, no. Security
+researchers can investigate and sometimes discover hardware security
+vulnerabilities such as Spectre and Meltdown. Occasionally, a
+significant vulnerability is uncovered, akin to finding a needle in a
+haystack. However, it is generally not feasible to audit the entirety of
+modern hardware comprehensively.</p>
+<p><blockquote><p>it is a completely opaque construction. We absolutely no way to
+examine what's inside.<span class="blockquote-context">Joanna Rutkowska,
+security researcher and founder of Qubes OS, at timestamp 7:40, <a href="https://www.youtube.com/watch?v=rcwngbUrZNg">Joanna Rutkowska:
+Towards (reasonably) trustworthy x86 laptops</a></span></p></blockquote></p>
+<p>Can one hardware producer audit another? No.</p>
+<p><blockquote><p>Some people believe that processor backdoors do not exist in reality,
+because if they did, the competing CPU makers would be able to find them
+in each others' products, and later would likely cause a "leak" to the
+public about such backdoors (think: Black PR). Here people make an
+assumption that AMD or Intel is technically capable of reversing each
+others processors, which seems to be a natural consequence of them being
+able to produce them.</p>
+<p>I don't think I fully agree with such an assumption though. Just the
+fact that you are capable of designing and producing a CPU, doesn't mean
+you can also reverse engineer it. Just the fact that Adobe can write a
+few hundred megabyte application, doesn't mean they are automatically
+capable of also reverse engineering similar applications of that size.
+Even if we assumed that it is technically feasible to use some electron
+microscope to scan and map all the electronic elements from the
+processor, there is still a problem of interpreting of how all those
+hundreds of millions of transistors actually
+work.<span class="blockquote-context">Joanna Rutkowska, security
+researcher and founder of Qubes OS, <a href="https://blog.invisiblethings.org/2009/06/01/more-thoughts-on-cpu-backdoors.html">More
+Thoughts on CPU backdoors</a></span></p></blockquote></p>
+<p>See also:</p>
+<ul>
+<li><a href="https://danluu.com/cpu-backdoors/">https://danluu.com/cpu-backdoors/</a></li>
+<li><a href="https://redmine.replicant.us/projects/replicant/wiki/SamsungGalaxyBackdoor">https://redmine.replicant.us/projects/replicant/wiki/SamsungGalaxyBackdoor</a></li>
+<li><a href="https://www.youtube.com/watch?v=_eSAF_qT_FY">https://www.youtube.com/watch?v=_eSAF_qT_FY</a></li>
+<li><a href="https://i.blackhat.com/us-18/Thu-August-9/us-18-Domas-God-Mode-Unlocked-Hardware-Backdoors-In-x86-CPUs-wp.pdf">https://i.blackhat.com/us-18/Thu-August-9/us-18-Domas-God-Mode-Unlocked-Hardware-Backdoors-In-x86-CPUs-wp.pdf</a></li>
+<li><a href="https://www.cl.cam.ac.uk/~sps32/ches2012-backdoor.pdf">https://www.cl.cam.ac.uk/~sps32/ches2012-backdoor.pdf</a></li>
+<li><a href="https://www.cl.cam.ac.uk/~sps32/sec_news.html">https://www.cl.cam.ac.uk/~sps32/sec_news.html</a></li>
+</ul>
+<p>related:</p>
+<ul>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=36myc8wQhLo">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=36myc8wQhLo">USENIX
+ATC '21/OSDI '21 Joint Keynote Address-It's Time for Operating Systems
+to Rediscover
+Hardware</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=36myc8wQhLo"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=36myc8wQhLo"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=36myc8wQhLo"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vaGZapAGvwM">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vaGZapAGvwM">I
+built my own computer. by
+hand.</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vaGZapAGvwM"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=vaGZapAGvwM"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=vaGZapAGvwM"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+</ul>
+<h1 id="Requirements_for_Trustworthy_Hardware">Requirements for
+Trustworthy Hardware</h1>
+<p><strong>1.</strong> Open Source Blueprints</p>
+<p><strong>2.</strong> Blueprints Auditing</p>
+<p><strong>3.</strong> Fabrication Auditing</p>
+<p><blockquote><p>Unfortunately there is nothing that could stop a processor vendor to
+provide its customers with a different blueprints than those that are
+used to actually "burn" the processors. So, the additional requirement
+would be needed that they also allow to audit their manufacturing
+process.<span class="blockquote-context">Joanna Rutkowska, security
+researcher and founder of Qubes OS, <a href="https://theinvisiblethings.blogspot.com/2009/03/trusting-hardware.html">Trusting
+Hardware</a></span></p></blockquote></p>
+<p><blockquote><p>Some people believe that processor backdoors do not exist in reality,
+because if they did, the competing CPU makers would be able to find them
+in each others' products, and later would likely cause a "leak" to the
+public about such backdoors (think: Black PR). Here people make an
+assumption that AMD or Intel is technically capable of reversing each
+others processors, which seems to be a natural consequence of them being
+able to produce them.</p>
+<p>I don't think I fully agree with such an assumption though. Just the
+fact that you are capable of designing and producing a CPU, doesn't mean
+you can also reverse engineer it. Just the fact that Adobe can write a
+few hundred megabyte application, doesn't mean they are automatically
+capable of also reverse engineering similar applications of that size.
+Even if we assumed that it is technically feasible to use some electron
+microscope to scan and map all the electronic elements from the
+processor, there is still a problem of interpreting of how all those
+hundreds of millions of transistors actually
+work.<span class="blockquote-context">Joanna Rutkowska, security
+researcher and founder of Qubes OS, <a href="https://blog.invisiblethings.org/2009/06/01/more-thoughts-on-cpu-backdoors.html">More
+Thoughts on CPU backdoors</a></span></p></blockquote></p>
+<p>For a deeper understanding of how modern processors are produced and
+function, it is recommended to watch videos on the subject. These videos
+provide insightful information on the complexities and intricacies
+involved in processor production.</p>
+<ul>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2kJDTzFtUr4">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2kJDTzFtUr4">How
+ASML, TSMC And Intel Dominate The Chip
+Market</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=2kJDTzFtUr4"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=2kJDTzFtUr4"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=2kJDTzFtUr4"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=GU87SH5e0eI">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=GU87SH5e0eI">Secretive
+Giant TSMC's $100 Billion Plan To Fix The Chip
+Shortage</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=GU87SH5e0eI"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=GU87SH5e0eI"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=GU87SH5e0eI"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cNN_tTXABUA">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cNN_tTXABUA">How
+a CPU
+Works</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cNN_tTXABUA"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=cNN_tTXABUA"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=cNN_tTXABUA"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+</ul>
+<p>A processor producer may not have the capability to audit their own
+processors. CPUs are produced using lithography, with the producer of
+lithography equipment (ASML) relying on components from various vendors.
+This results in a complex, not publicly documented supply chain. No
+single company possesses all the knowledge or machinery required. In a
+chain of complex machines used to build other complex machines, a
+backdoor could be introduced at any stage of the fabrication
+process.</p>
+<p>Processors are "burnt" in layers, and once these layers are
+established, they cannot be reversed without destroying the processor.
+Current technology for non-destructive disassembly of modern processors
+does not exist. Even the <a href="https://en.wikipedia.org/wiki/I386">Intel I386 (80386)</a>, with
+"only" 275,000 transistors and released in 1985, cannot be disassembled,
+audited, reassembled, or modified. Modern CPUs, like the Intel i7, are
+much more complex and can contain over 1 billion transistors.</p>
+<p><strong>4.</strong> Secure shipping.</p>
+<h1 id="Open_Source_Hardware_Alternatives">Open Source Hardware
+Alternatives</h1>
+<p>People who are motivated to avoid proprietary hardware solutions are
+in a bind. There are few options available that are truly "free" (as in
+freedom), affordable, and which provide suitable processing power to run
+"secure" operating systems like <a href="../Qubes/">Kicksecure for Qubes</a>, because specific hardware
+requirements like VT-d and VT-x are necessary for compatibility with
+future software releases.</p>
+<p>Open-source hardware is also not perfectly secure since it is not
+"stateless". Meeting this standard requires there be no persistent
+storage at all. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> Further, "free" hardware does not
+really exist, since by definition it requires that hardware is free at
+all levels, including: licensing, the chip and circuit board designs,
+the field-programmable gate array, source code, relevant repositories
+and so on. Also, proprietary "soft cores" which are often incorporated
+in various hardware circuits need to be purged to meet the necessary
+criteria. <sup class="reference"><a href="#cite_note-4">[4]</a></sup> <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<h2 id="ARM-based_Platforms">ARM-based Platforms</h2>
+<p>ARM architecture dominates smartphone and tablet markets, providing a
+good level of performance. However, an open-source "ARM processor" is
+non-existent, because only the specifications and other intellectual
+property (IP) are released to manufacturers under specific licenses.
+This leads to NVIDIA, Samsung and others combining the ARM IP with their
+own, leading to the actual, customized processors called System-on-Chips
+(SoCs). <sup class="reference"><a href="#cite_note-1">[1]</a></sup> ARM SoCs also often have a TrustZone
+extension, with implementation providing similar functionality to
+Intel's ME. There is nothing special in ARM architecture that prevents
+the possible introduction of backdoors.</p>
+<h2 id="Open-source_Processors">Open-source Processors</h2>
+<p>Unfortunately, a fully open-source, <a href="https://lowrisc.org">Linux-capable based processor (SoC)</a> is
+not yet available.</p>
+<p>While this project will eventually allow a 64-bit RISC-V instruction
+set architecture (ISA) and the development of low-cost boards, the wait
+may be lengthy (many years) and it is not clear such processors will
+perform well enough for typical desktop workflows like watching movies,
+running browsers, using office suites and so on.</p>
+<p>It is also unknown whether this design will allow for security
+technologies like IOMMU and memory virtualization. <sup class="reference"><a href="#cite_note-6">[6]</a></sup>
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Another initiative related to this topic is the <a href="https://openpowerfoundation.org/">OpenPOWER Foundation</a>, which
+was established in 2013. The foundation has a number of influential
+partners, including IBM, Google, NVIDIA, Samsung Electronics, and
+Canonical. Critically, IBM is "...opening up technology surrounding
+their Power Architecture offerings, such as processor specifications,
+firmware, and software with a liberal license, and will be using a
+collaborative development model with their partners." <sup class="reference"><a href="#cite_note-7">[7]</a></sup>
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup> The initiative will also include open-source
+software, firmware, the KVM hypervisor, and a little-endian Linux
+operating system. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> OpenPOWER code can be found on <a href="https://github.com/open-power">GitHub</a>.</p>
+<p>News:</p>
+<ul>
+<li><a href="https://www.devever.net/~hl/omi">In the future, even your
+RAM will have firmware; and the subject of POWER10 blobs 2</a></li>
+<li><a href="https://forums.whonix.org/t/free-bios-hardware-that-support-all-your-needs/6411/13">https://forums.whonix.org/t/free-bios-hardware-that-support-all-your-needs/6411/13</a></li>
+</ul>
+<h1 id="Hardware_Purchase_Considerations">Hardware Purchase
+Considerations</h1>
+<p>Check <a href="https://ryf.fsf.org/">this list</a> from the FSF, as
+they are certified "RYF" (Respects Your Freedom hardware product
+certification).</p>
+<p>The Free Software Foundation (FSF) makes a number of relevant
+recommendations: <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<ul>
+<li>Find devices which support fully free distributions of
+GNU/Linux.</li>
+<li>Purchase hardware:
+<ul>
+<li>From manufacturers who support GNU/Linux.</li>
+<li>Which supports coreboot/libreboot as a proprietary BIOS
+replacement.</li>
+<li>Without the need for proprietary drivers or firmware; see <a href="https://h-node.org/">h-node.org</a>.</li>
+</ul></li>
+<li>Check the <a href="https://ryf.fsf.org/about/criteria/">FSF
+criteria</a> for hardware certification requirements.</li>
+<li>If looking for a single-board computer (SBC), check the <a href="https://www.fsf.org/resources/hw/single-board-computers">list</a>
+of available (flawed) hardware. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
+<li>Check the list of <a href="https://coreboot.org/status/board-status.html">motherboards</a>
+that are compatible with coreboot. <sup class="reference"><a href="#cite_note-12">[12]</a></sup></li>
+</ul>
+<p>A list of suppliers selling or providing <a href="https://libreboot.org/">Libreboot</a> pre-installed on laptops,
+desktops, servers and motherboards can be found <a href="https://minifree.org/">here</a>. Readers interested in purchasing
+hardware with Coreboot pre-installed can start their search <a href="https://www.coreboot.org/users.html">here</a>.</p>
+<h1 id="Open_Hardware_Alternatives">Open Hardware Alternatives</h1>
+<h2 id="RISC-V">RISC-V</h2>
+<p>Based on the preceding information and links, those seeking an
+open-source solution need to make a compromise. Since an Open Source
+LowRISC processor based on the RISC-V ISA -- which can support a
+fully-fledged operating system -- does not yet exist,
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
+<p>some open source</p>
+<p>some not</p>
+<p>Not yet compatible with Qubes OS. (October 2024)</p>
+<p>RISC-V isn't that far behind...</p>
+<p><a href="https://deepcomputing.io/product/dc-roma-risc-v-laptop-ii/">https://deepcomputing.io/product/dc-roma-risc-v-laptop-ii/</a></p>
+<p><a href="https://youtube.com/watch?v=3mhd98AGNXQ">https://youtube.com/watch?v=3mhd98AGNXQ</a></p>
+<p>Performance is being shown in the video. It's usable.</p>
+<h2 id="single-board_computers_-_SBCs">single-board computers -
+SBCs</h2>
+<p>the closest thing available is <a href="https://www.fsf.org/resources/hw/single-board-computers">single-board
+computers (SBCs)</a>, which are delivered as one circuit board that are
+powerful enough to run a real operating system.</p>
+<p>These systems generally contain a SoC with an ARM processor, with
+options like</p>
+<ul>
+<li><a href="https://spectrum.ieee.org/novena-a-laptop-with-no-secrets">Novena</a>
+(<a href="https://www.crowdsupply.com/sutajio-kosagi/novena/updates/novena-five-year-anniversary">EOL
+(end of life)</a>), and</li>
+<li><a href="https://eu.mouser.com/new/pandaboardorg/pandaboardES/">PandaBoardES</a>
+falling into this category.</li>
+</ul>
+<p>However, they still have a number of closed-source binary blobs and
+the FSF also notes "severe flaws" in these products due to proprietary
+design concerns.</p>
+<p><blockquote><p>The Pandaboard has another serious flaw: a WiFi and Bluetooth chip
+that can't work without nonfree software. The workaround is to get an
+external USB device for these functions, if you want them. See the
+documentation of your board for information about using these USB
+devices with it.<span class="blockquote-context"><a href="https://www.fsf.org/resources/hw/single-board-computers">single-board
+computers (SBCs)</a></span></p></blockquote></p>
+<p>Running tier 1 Linux distributions is often difficult or impossible.
+See <a href="../Dev/boot/#ARM">Dev/boot wiki page chapter
+ARM</a>.</p>
+<h2 id="Security-Focused_Hardware_Vendors">Security-Focused Hardware
+Vendors</h2>
+<p>There isn't a well defined definition of the "Security-Focused
+Hardware Vendors" term yet. Potential criteria:</p>
+<ul>
+<li>Intel ME disabled using HAP method</li>
+<li>Freedom Software based firmware</li>
+<li>blob free (no non-freedom firmware required and no non-freedom
+device drivers required)</li>
+<li>open hardware design</li>
+</ul>
+<p>Some hardware producers seek to remove as many proprietary blobs as
+possible, for example by using the Freedom Software coreboot in place of
+the standard closed source BIOS or EFI implementation.</p>
+<ul>
+<li>in no particular order</li>
+<li>no recommendation by Kicksecure yet</li>
+<li>the user must carefully review each vendor and device on its
+own</li>
+<li>this list cannot guarantee that all devices are free from Intel ME
+and come with Open Source firmware such as coreboot</li>
+<li><a href="https://system76.com/">https://system76.com/</a></li>
+<li><a href="https://puri.sm/">https://puri.sm/</a></li>
+<li><a href="https://shop.nitrokey.com">https://shop.nitrokey.com</a></li>
+<li><a href="https://novacustom.com">https://novacustom.com</a></li>
+<li><a href="https://se.starlabs.systems">https://se.starlabs.systems</a></li>
+<li><a href="https://insurgo.ca">https://insurgo.ca</a></li>
+<li><a href="https://www.tuxedocomputers.com">https://www.tuxedocomputers.com</a>
+<ul>
+<li><a href="https://www.tuxedocomputers.com/en/Infos/News/TUXEDO-disables-Intels-Management-Engine.tuxedo">https://www.tuxedocomputers.com/en/Infos/News/TUXEDO-disables-Intels-Management-Engine.tuxedo</a></li>
+<li><a href="https://www.tuxedocomputers.com/en/Infos/Help-Support/Frequently-asked-questions/Coreboot-on-TUXEDO-Computers-devices.tuxedo">https://www.tuxedocomputers.com/en/Infos/Help-Support/Frequently-asked-questions/Coreboot-on-TUXEDO-Computers-devices.tuxedo</a></li>
+<li><a href="https://docs.dasharo.com/variants/tuxedo_ibs15/releases/">https://docs.dasharo.com/variants/tuxedo_ibs15/releases/</a></li>
+</ul></li>
+<li><a href="https://3mdeb.com/open-source-hardware/">https://3mdeb.com/open-source-hardware/</a></li>
+<li><a href="https://shop.vikings.net/">https://shop.vikings.net/</a></li>
+<li><a href="https://www.thinkpenguin.com/">https://www.thinkpenguin.com/</a></li>
+<li><a href="https://tehnoetic.com/">https://tehnoetic.com/</a></li>
+<li><a href="https://minifree.org/">https://minifree.org/</a>
+<ul>
+<li>Does not mention HAP (High Assurance Platform) Intel ME disablement
+method.</li>
+</ul></li>
+</ul>
+<p>TODO: Unfortunately, this solution is expensive and still relies on
+an Intel processor. Despite the claims that ME is "neutralized", the ME
+still poses potential security threats to the user as highlighted in
+Rutkowska's research.</p>
+<p><a href="https://www.theregister.com/2015/12/31/rutkowska_talks_on_intel_x86_security_issues/">https://www.theregister.com/2015/12/31/rutkowska_talks_on_intel_x86_security_issues/</a></p>
+<h2 id="OpenPOWER">OpenPOWER</h2>
+<ul>
+<li><u>Worthy mention:</u> <a href="https://www.raptorcs.com/">Raptor
+Computing Systems</a> have built their processors based on IBM OpenPOWER
+technology.
+<ul>
+<li>OpenPOWER is not fully open-source. The instruction set architecture
+is source-available and allows one to freely produce POWER-compliant
+processors, and it is allowable to implement extensions to the
+architecture, however implementing remixes of the ISA is not permitted.
+See <a href="https://openpower.foundation/blog/final-draft-of-the-power-isa-eula-released/">https://openpower.foundation/blog/final-draft-of-the-power-isa-eula-released/</a>.
+Note that this is only the license for the ISA, it does not cover
+individual chip designs. Those may be kept proprietary or made open as
+each designer sees fit.</li>
+<li>Examples of source-available POWER CPU cores may be seen at <a href="https://git.openpower.foundation/cores">https://git.openpower.foundation/cores</a>.</li>
+<li>Available user guides <sup class="reference"><a href="#cite_note-14">[14]</a></sup> appear to at least
+partially meet <a href="https://en.wikipedia.org/wiki/Open-source_hardware">opensource
+hardware principles</a>. <sup class="reference"><a href="#cite_note-15">[15]</a></sup></li>
+<li>Unfortunately it is not compatible with Qubes OS, but it will run
+Linux. It is possible to run the <a href="https://wiki.raptorcs.com/wiki/Whonix">Kicksecure KVM version as
+it is documented in the Raptor Computing Systems Wiki</a>, but this is
+<a href="../Unsupported/">unsupported</a> by Kicksecure
+developers. For further information, see footnotes. <sup class="reference"><a href="#cite_note-16">[16]</a></sup>
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup></li>
+</ul></li>
+</ul>
+<h2 id="Future">Future</h2>
+<p>In the coming years when open-source processors and hardware designs
+further mature and the necessary functionality is provided for
+virtualization, reasonable and fairly-priced alternatives to proprietary
+architectures will start to emerge.</p>
+<h1 id="Firmware_Considerations">Firmware Considerations</h1>
+<p><a href="https://en.wikipedia.org/wiki/Open-source_hardware">Open-source
+hardware</a> is not affected by the non-freedom firmware updates issue
+described in the previous chapter. Such hardware might be more
+trustworthy, but open-source firmware can be just as insecure as a
+proprietary one. Fortunately, open-source firmware increases the chances
+of actually making it secure, with options like coreboot appearing to be
+a promising solution. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://forum.qubes-os.org/t/intel-vs-arm-vs-power-vs-risc-v-architecture-freedom-perspective/14172/11">hardware
+is solidified software</a></li>
+<li><a href="../Malware_and_Firmware_Trojans/#Firmware_Trojans">Firmware Trojans</a></li>
+<li>Hardware <a href="../Backdoor/">Backdoors</a>:
+<ul>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Fw5FEuGRrLE">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Fw5FEuGRrLE">Keynote:
+Precursor - Trustable Open Hardware for Everyday Use - Bunnie
+Huang</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Fw5FEuGRrLE"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=Fw5FEuGRrLE"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=Fw5FEuGRrLE"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>
+topics:
+<ul>
+<li>cannot hash hardware</li>
+<li>NSA JTAG implants</li>
+<li>NSA interception cisco routers</li>
+<li>phone implants</li>
+<li><a href="../Mobile_Operating_System_Comparison/#Precursor">Precursor</a></li>
+</ul></li>
+</ul></li>
+<li><a href="../Mobile_Operating_System_Comparison/#Betrusted">Betrusted</a></li>
+<li>Flashkeeper
+<ul>
+<li><a href="https://nlnet.nl/project/Flashkeeper/">https://nlnet.nl/project/Flashkeeper/</a></li>
+<li><a href="https://github.com/linuxboot/heads-wiki/issues/107#issuecomment-2211839100">https://github.com/linuxboot/heads-wiki/issues/107#issuecomment-2211839100</a></li>
+<li><a href="https://dodoid.com/flashkeeper">https://dodoid.com/flashkeeper</a></li>
+<li><a href="https://forum.qubes-os.org/t/flashkeeper-the-solution-to-spi-flash-firmware-tampering/28028">Flashkeeper:
+The Solution to SPI Flash Firmware Tampering?</a> [login required]</li>
+</ul></li>
+</ul>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://blog.invisiblethings.org/papers/2015/x86_harmful.pdf">https://blog.invisiblethings.org/papers/2015/x86_harmful.pdf</a></li>
+<li id="cite_note-2">AMD-based x86 platforms have analogous hardware mechanisms to Intel,
+so they are not theoretically safer.</li>
+<li id="cite_note-3">A login requirement was enabled by Qubes forum after this was
+posted. (Not specifically because of this forum thread but because of
+the sub forum in which it resides. Link:
+https://forum.qubes-os.org/t/intel-vs-arm-vs-power-vs-risc-v-architecture-freedom-perspective/14172/11</li>
+<li id="cite_note-4"><a href="https://www.wired.com/2015/03/richard-stallman-how-to-make-hardware-designs-free/">https://www.wired.com/2015/03/richard-stallman-how-to-make-hardware-designs-free/</a></li>
+<li id="cite_note-5"><a href="https://www.wired.com/2015/03/need-free-digital-hardware-designs/">https://www.wired.com/2015/03/need-free-digital-hardware-designs/</a></li>
+<li id="cite_note-6"><a href="https://lowrisc.org/about/">https://lowrisc.org/about/</a></li>
+<li id="cite_note-7"><a href="https://en.wikipedia.org/wiki/OpenPOWER_Foundation">https://en.wikipedia.org/wiki/OpenPOWER_Foundation</a></li>
+<li id="cite_note-8">Primarily the Power8 chip technology, but previous designs will also
+be available for licensing.</li>
+<li id="cite_note-9">Firmware to boot Linux was released in 2014.</li>
+<li id="cite_note-10"><a href="https://www.fsf.org/resources/hw">https://www.fsf.org/resources/hw</a></li>
+<li id="cite_note-11">None of these options are completely free in their design.</li>
+<li id="cite_note-12">Some motherboards still require proprietary CPU microcode.</li>
+<li id="cite_note-13">The <a href="https://lowrisc.org/docs/current-release-faq/">LowRISC
+FAQ</a> notes the rough processor speed that is expected:
+<blockquote><p>The clock rate achieved will depend on the technology node and
+particular process selected. As a rough guide we would expect ~0.5-1GHz
+at 40nm and ~1.0-1.5GHz at 28nm.</p></blockquote></li>
+<li id="cite_note-14">For example, see the <a href="https://wiki.raptorcs.com/w/images/e/e3/T2P9D01_users_guide_version_1_0.pdf">T2P9D01
+Mainboard document</a>.</li>
+<li id="cite_note-15">This requires: <blockquote><p>... that information about the hardware is easily discerned so that
+others can make it - coupling it closely to the maker movement. Hardware
+design (i.e. mechanical drawings, schematics, bills of material, PCB
+layout data, HDL source code and integrated circuit layout data), in
+addition to the software that drives the hardware, are all released
+under free/libre terms.</p></blockquote></li>
+<li id="cite_note-16"><a href="https://www.fsf.org/blogs/licensing/support-the-talos-ii-a-candidate-for-respects-your-freedom-certification-by-pre-ordering-by-september-15">https://www.fsf.org/blogs/licensing/support-the-talos-ii-a-candidate-for-respects-your-freedom-certification-by-pre-ordering-by-september-15</a></li>
+<li id="cite_note-17"><a href="https://twitter.com/Whonix/status/1190634591045865472">https://twitter.com/Whonix/status/1190634591045865472</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/compiler hardening</title>
+<meta name="description" content="Compiler flags for hardening compiled applications at both binary and source code levels.">
+<meta property="og:description" content="Compiler flags for hardening compiled applications at both binary and source code levels.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/compiler_hardening/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/compiler_hardening/">
+<meta property="og:title" content="Compiler Hardening">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>compiler hardening</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../coding_style/">Dev/coding
+style</a></li>
+<li><a href="./">Dev/compiler
+hardening</a></li>
+<li><a href="../bash/">Dev/bash</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Compiler flags for hardening compiled applications at both binary and
+source code levels.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Many compilers for languages such as C have only a small subset of
+their available hardening and diagnostic features enabled by default.
+Enabling these features can help produce higher-quality code and make
+compiled executables much more difficult to exploit.</p>
+<h1 id="C_compiler_flags">C compiler flags</h1>
+<p>For all file types built with GCC and Clang on all platforms:</p>
+<ul>
+<li><code>-O2</code>: Enables a safe level of optimization. Improves
+both speed and security.</li>
+<li><code>-g</code>: Enables generation of debugging symbols.</li>
+<li><code>-Wall</code>: Enables general warnings that should be
+addressed in all applications.</li>
+<li><code>-Wextra</code>: Enables additional warnings that should be
+addressed in most applications.</li>
+<li><code>-Wformat -Wformat=2</code>: Checks calls to string formatting
+functions such as <code>printf</code> and warns if they appear
+malformed.</li>
+<li><code>-Wconversion</code>: Prints warnings when implicit type
+conversions may alter a value. Catches issues such as attempting to
+store negative values in unsigned integers.</li>
+<li><code>-Wimplicit-fallthrough</code>: Catches instances where a
+<code>switch</code> case block falls through into the block beneath
+it.</li>
+<li><code>-Werror=format-security</code>: Disallows
+<code>printf</code>-like calls that are likely to be security
+holes.</li>
+<li><code>-Werror=implicit</code>: Disallows function declarations
+without a type and function calls before a function is declared.</li>
+<li><code>-Werror=int-conversion</code>: Disallows incompatible implicit
+pointer-to-integer conversions and vice versa.</li>
+<li><code>-Werror=incompatible-pointer-types</code>: Disallows
+conversion of pointers between incompatible types.</li>
+<li><code>-Wformat-overflow</code>: Warns when parameters to
+<code>sprintf</code> and similar functions may overflow the destination
+buffer.</li>
+<li><code>-Wformat-signedness</code>: Warns if an unsigned integer is
+passed to <code>printf</code> or a similar function when a signed
+integer is needed, and vice versa.</li>
+<li><code>-Wformat-truncation</code>: Warns when output from a
+<code>printf</code>-like function is truncated.</li>
+<li><code>-Wnull-dereference</code>: Warns if a <code>NULL</code>
+pointer dereference is detected by the compiler (note: by default this
+is a no-op because we use
+<code>-fno-delete-null-pointer-checks</code>).</li>
+<li><code>-Winit-self</code>: Warns if code attempts to initialize an
+uninitialized variable with itself.</li>
+<li><code>-Wmissing-include-dirs</code>: Warns if a user-supplied
+include directory does not exist.</li>
+<li><code>-Wshift-negative-value</code>: Warns if attempting to
+left-shift a negative value.</li>
+<li><code>-Wshift-overflow</code>: Warns if a left shift causes an
+overflow in unsafe cases.</li>
+<li><code>-Wswitch-default</code>: Warns if a <code>switch</code>
+statement does not have a <code>default</code> case.</li>
+<li><code>-Wuninitialized</code>: Warns if an uninitialized variable is
+used.</li>
+<li><code>-Walloca</code>: Warns if the <code>alloca</code> function is
+used. This function is unsafe because it can cause stack overflow or
+behave unpredictably with function arguments.</li>
+<li><code>-Warray-bounds</code>: Warns if an out-of-bounds array access
+is detected.</li>
+<li><code>-Wfloat-equal</code>: Warns if attempting to perform a direct
+equality comparison with floating-point numbers (as this is prone to
+errors).</li>
+<li><code>-Wshadow</code>: Warns if a local variable or type declaration
+shadows another.</li>
+<li><code>-Wpointer-arith</code>: Warns if performing arithmetic using
+the size of <code>void</code> or function types, which have a size of 1
+counterintuitively.</li>
+<li><code>-Wundef</code>: Warns if an undefined identifier is evaluated
+in a <code>#if</code> directive.</li>
+<li><code>-Wunused-macros</code>: Warns if a macro is defined but never
+used.</li>
+<li><code>-Wbad-function-cast</code>: Warns if a function call is cast
+to a non-matching type (for example, casting a function that returns
+<code>int</code> to one returning another pointer type).</li>
+<li><code>-Wcast-qual</code>: Warns if a cast removes a type qualifier,
+such as casting <code>const char *</code> to <code>char *</code>.</li>
+<li><code>-Wcast-align</code>: Warns if a pointer cast results in
+possible pointer alignment issues.</li>
+<li><code>-Wwrite-strings</code>: Warns if a string constant's address
+is placed in a non-const buffer.</li>
+<li><code>-Wdate-time</code>: Warns if time-related macros are
+encountered. These break build reproducibility.</li>
+<li><code>-Wstrict-prototypes</code>: Warns if a function is declared or
+defined without specifying argument types.</li>
+<li><code>-Wold-style-definition</code>: Warns if using an old-style C
+function declaration, which is very error-prone.</li>
+<li><code>-Wredundant-decls</code>: Warns if the same entity is declared
+more than once in the same scope.</li>
+<li><code>-Winvalid-utf8</code>: Warns if an invalid UTF-8 character is
+found.</li>
+<li><code>-Wvla</code>: Warns if a variable-length array is used.</li>
+<li><code>-Wdisabled-optimization</code>: Warns if the compiler cannot
+optimize the code in all requested ways.</li>
+<li><code>-Wstack-protector</code>: Warns about functions not protected
+from stack smashing.</li>
+<li><code>-Wdeclaration-after-statement</code>: Warns if declarations
+occur after statements in a scope block. This encourages grouping
+declarations, making it easier to ensure variables are properly
+initialized.</li>
+<li><code>-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3</code>: Adds additional
+compile-time and run-time checks for several libc functions.</li>
+<li><code>-fstack-clash-protection</code>: Attempts to prevent stack
+clash style attacks.</li>
+<li><code>-fstack-protector-all</code>: Protects against stack smashing
+in all functions.</li>
+<li><code>-fno-delete-null-pointer-checks</code>: Prevents the compiler
+from deleting explicit null pointer checks from code. This optimization
+is potentially very dangerous. Note that disabling this optimization
+also renders <code>-Wnull-dereference</code> unable to warn about
+anything, so developers should temporarily remove it before doing test
+builds, then re-add it later.</li>
+<li><code>-fno-strict-overflow</code>: Prevents the compiler from
+assuming that signed integer overflow is undefined behavior. Without
+this flag, the compiler may optimize away overflow checks, potentially
+creating security vulnerabilities.</li>
+<li><code>-fno-strict-aliasing</code>: Disables strict aliasing rules,
+so that casting between pointer types (for example, from a char buffer
+to <code>uint64_t</code>) is well-defined.</li>
+<li><code>-fstrict-flex-arrays=3</code>: Treats a trailing array in a
+struct as flexible only if it is defined with no specified length.</li>
+<li><code>-ftrivial-auto-var-init=pattern</code>: Ensures
+stack-allocated variables are virtually always initialized, using a
+special pattern that will probably cause a crash if the variable is not
+intentionally initialized. This both mitigates security issues resulting
+from uninitialized variables and makes it easier to catch bugs resulting
+from them.</li>
+<li><code>-Wl,-z,nodlopen</code>: Disallows using <code>dlopen</code> on
+the compiled objects.</li>
+<li><code>-Wl,-z,noexecstack</code>: Marks compiled objects as not
+requiring an executable stack.</li>
+<li><code>-Wl,-z,relro -Wl,-z,now</code>: Resolves all symbols when the
+program is loaded and then makes the global offset table read-only,
+thwarting GOT overwrite attacks.</li>
+<li><code>-Wl,-z,separate-code</code>: Renders some non-code data in the
+program non-executable, making ROP attacks harder. (This is enabled by
+default in Debian 13's toolchain, but is worth explicitly specifying as
+defense-in-depth.)</li>
+<li><code>-Wl,--as-needed</code>: Links only libraries that are actually
+used, reducing attack surface.</li>
+<li><code>-Wl,--no-copy-dt-needed-entries</code>: Prevents libraries
+from pulling in unneeded dependencies. All needed libraries must be
+explicitly specified.</li>
+</ul>
+<p>For all file types built with GCC only, not supported by Clang:</p>
+<ul>
+<li><code>-Wtrampolines</code>: Warns if GCC creates trampoline code on
+the stack, which often requires an executable stack.</li>
+<li><code>-Wbidi-chars=any,ucn</code>: Warns if bidirectional control
+characters or UCN codes are used. These can be used for trojan source
+attacks.</li>
+<li><code>-Wformat-overflow=2</code>: Performs deeper analysis to detect
+format overflow bugs.</li>
+<li><code>-Wformat-truncation=2</code>: Warns if a
+<code>printf</code>-like call is likely to truncate output, even when
+the return value is used.</li>
+<li><code>-Wshift-overflow=2</code>: Warns if a left shift could be
+unsafe, even if a 1 is being left-shifted into the sign bit (something
+plain <code>-Wshift-overflow</code> does not catch).</li>
+<li><code>-Wtrivial-auto-var-init</code>: Warns if a stack-allocated
+variable cannot be automatically initialized (for example, in
+<code>switch</code> blocks before the first <code>case</code>
+statement).</li>
+<li><code>-Wstringop-overflow=3</code>: Performs paranoid-level checks
+for memory copy overflows.</li>
+<li><code>-Wstrict-flex-arrays</code>: Warns if code appears to misuse
+an array at the end of a struct as a flexible array member.</li>
+<li><code>-Walloc-zero</code>: Warns if attempting to allocate a
+zero-size buffer.</li>
+<li><code>-Warray-bounds=2</code>: Performs paranoid-level checks for
+out-of-bounds array accesses.</li>
+<li><code>-Wattribute-alias=2</code>: Warns if a function alias has
+incompatible or more restrictive attributes than the function it
+aliases.</li>
+<li><code>-Wduplicated-branches</code>: Warns if both branches of an
+<code>if</code>/<code>else</code> perform the same action.</li>
+<li><code>-Wduplicated-cond</code>: Warns if the same condition appears
+multiple times in an <code>if</code>-<code>else if</code> chain.</li>
+<li><code>-Wcast-align=strict</code>: Warns about potential alignment
+issues from casts, even on CPUs where alignment may not matter. This
+likely helps catch bugs that will strike only some CPUs, even if we are
+not building for those CPUs.</li>
+<li><code>-Wjump-misses-init</code>: Warns if a jump skips over or
+duplicates a variable initialization.</li>
+<li><code>-Wlogical-op</code>: Warns about suspicious logical operator
+use (for example, when a bitwise operator was likely intended).</li>
+</ul>
+<p>For all file types built with Clang only, not supported by GCC:</p>
+<ul>
+<li><code>-fsanitize=undefined -fsanitize-minimal-runtime -fno-sanitize-recover=all</code>:
+Catches some undefined behavior and aborts the program if it is
+encountered.
+<ul>
+<li>WARNING: Do NOT use <code>-fsanitize=address</code> at all, and do
+NOT use <code>-fsanitize=undefined</code> without
+<code>-fsanitize-minimal-runtime</code>. Doing either of these things
+will probably open up security vulnerabilities. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+<li>Note: It is unclear whether this actually provides any meaningful
+level of hardening. Omitting these flags may be desirable even with
+Clang.</li>
+</ul></li>
+</ul>
+<p>For all file types built with GCC and Clang, x86_64 only:</p>
+<ul>
+<li><code>-fcf-protection=full</code>: Enables full control-flow
+protection.</li>
+</ul>
+<p>For all file types built with GCC and Clang, aarch64 only:</p>
+<ul>
+<li><code>-mbranch-protection=standard</code>: Enables all branch
+protection features.</li>
+</ul>
+<p>For all file types built with GCC and Clang, x86_64 and aarch64 but
+potentially not other architectures:</p>
+<ul>
+<li><code>-fzero-call-used-regs=all</code>: Zeroes call-used registers
+at function return. Mitigates data leaks and ROP attacks.</li>
+</ul>
+<p>For executables built with GCC and Clang, not libraries:</p>
+<ul>
+<li><code>-fPIE</code>: Generates position-independent executable
+code.</li>
+<li><code>-pie</code>: Creates a position-independent executable.</li>
+</ul>
+<p>For libraries built with GCC and Clang, not executables:</p>
+<ul>
+<li><code>-fPIC</code>: Generates position-independent library
+code.</li>
+</ul>
+<p>All flags for GCC x86_64 executables:</p>
+<p><span class="code-select">-O2 -g -Wall -Wextra -Wformat -Wformat=2
+-Wconversion -Wimplicit-fallthrough \ -Werror=format-security
+-Werror=implicit -Werror=int-conversion \
+-Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness
+\ -Wformat-truncation -Wnull-dereference -Winit-self
+-Wmissing-include-dirs -Wshift-negative-value -Wshift-overflow
+-Wswitch-default -Wuninitialized \ -Walloca -Warray-bounds \
+-Wfloat-equal -Wshadow -Wpointer-arith -Wundef -Wunused-macros \
+-Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdate-time
+\ -Wstrict-prototypes -Wold-style-definition -Wredundant-decls
+-Winvalid-utf8 \ -Wvla -Wdisabled-optimization -Wstack-protector
+-Wdeclaration-after-statement \ -Wtrampolines -Wbidi-chars=any,ucn
+-Wformat-overflow=2 -Wformat-truncation=2 \ -Wshift-overflow=2
+-Wtrivial-auto-var-init -Wstringop-overflow=3 \ -Wstrict-flex-arrays
+-Walloc-zero -Warray-bounds=2 -Wattribute-alias=2 \
+-Wduplicated-branches -Wduplicated-cond -Wcast-align=strict \
+-Wjump-misses-init -Wlogical-op -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 \
+-fstack-clash-protection -fstack-protector-all
+-fno-delete-null-pointer-checks \ -fno-strict-overflow
+-fno-strict-aliasing -fstrict-flex-arrays=3 \
+-ftrivial-auto-var-init=pattern -fzero-call-used-regs=all \
+-fcf-protection=full -fPIE -Wl,-z,nodlopen \ -Wl,-z,noexecstack
+-Wl,-z,relro -Wl,-z,now -Wl,-z,separate-code -Wl,--as-needed \
+-Wl,--no-copy-dt-needed-entries -pie</span></p>
+<p>All flags for Clang x86_64 executables:</p>
+<p><span class="code-select">-O2 -g -Wall -Wextra -Wformat -Wformat=2
+-Wconversion -Wimplicit-fallthrough \ -Werror=format-security
+-Werror=implicit -Werror=int-conversion \
+-Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness
+\ -Wformat-truncation -Wnull-dereference -Winit-self
+-Wmissing-include-dirs \ -Wshift-negative-value -Wshift-overflow
+-Wswitch-default -Wuninitialized \ -Walloca -Warray-bounds \
+-Wfloat-equal -Wshadow -Wpointer-arith -Wundef -Wunused-macros \
+-Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdate-time
+\ -Wstrict-prototypes -Wold-style-definition -Wredundant-decls
+-Winvalid-utf8 \ -Wvla -Wdisabled-optimization -Wstack-protector
+-Wdeclaration-after-statement \ -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3
+-fstack-clash-protection \ -fstack-protector-all
+-fno-delete-null-pointer-checks -fno-strict-aliasing \
+-fno-strict-overflow \ -fsanitize=undefined -fsanitize-minimal-runtime
+-fno-sanitize-recover=all \ -fstrict-flex-arrays=3
+-ftrivial-auto-var-init=pattern -fcf-protection=full \
+-fzero-call-used-regs=all -fPIE -Wl,-z,nodlopen -Wl,-z,noexecstack
+-Wl,-z,relro \ -Wl,-z,now -Wl,-z,separate-code -Wl,--as-needed
+-Wl,--no-copy-dt-needed-entries \ -pie</span></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../bash/">Dev/bash</a></li>
+<li><a href="../coding_style/">Dev/coding
+style</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.openwall.com/lists/oss-security/2016/02/17/9">https://www.openwall.com/lists/oss-security/2016/02/17/9</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

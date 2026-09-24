@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Shell</title>
+<meta name="description" content="Security Warning! Copy/Paste Attack - What you think you copy might not be what you are really copying!">
+<meta property="og:description" content="Security Warning! Copy/Paste Attack - What you think you copy might not be what you are really copying!">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Shell/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Shell/">
+<meta property="og:title" content="Shell, Default Interactive Shell, Hidden Text Attacks">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Shell_code123123.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#What_are_Hidden_Text_Attacks?">What are Hidden Text Attacks?</a></li><li class="toc-l2"><a href="#Demonstration_of_a_Hidden_Text_Attack">Demonstration of a Hidden
+Text Attack</a></li><li class="toc-l2"><a href="#Hidden_Text_Attacks_Discussion">Hidden Text Attacks
+Discussion</a></li><li class="toc-l2"><a href="#Protection_from_Hidden_Text_Attacks">Protection from Hidden Text
+Attacks</a></li><li class="toc-l3"><a href="#Safe_Copy">Safe Copy</a></li><li class="toc-l3"><a href="#Manually">Manually</a></li><li class="toc-l2"><a href="#Zsh">Zsh</a></li><li class="toc-l2"><a href="#bash">bash</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Warning/" title="Warning"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Warning</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Deep_scan_ready/" title="deep scan ready"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">deep
+scan ready</span></a><span class="info"><span class="prev">Previous
+page: Warning</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: deep scan
+ready</span></span></span>Shell, Default Interactive Shell, Hidden Text
+Attacks</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Unicode/">Unicode</a></li>
+<li><a href="../Unicode-show/">unicode-show</a></li>
+<li><a href="../Stdisplay/">stdisplay (stcatn, stecho,
+etc.)</a></li>
+<li><a href="./">Hidden Text Attacks</a></li>
+<li><a href="../Shell_scripting/">Shell Scripting</a></li>
+</ul>
+</div>
+<p><img src="../../media/Shell_code123123.jpg.webp" width="150" alt="Shell_code123123.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Security Warning! Copy/Paste Attack - What you think you copy might
+not be what you are really copying!</p>
+<div class="post-intro-p">
+</div>
+<p><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=6nHufztdkUI">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=6nHufztdkUI">OOPS!
+They tricked me to install MALWARE! Clipboard Hidden Text Attacks
+explained</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=6nHufztdkUI"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=6nHufztdkUI"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=6nHufztdkUI"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></p>
+<h1 id="Hidden_Text_Attacks">Hidden Text Attacks</h1>
+<h2 id="What_are_Hidden_Text_Attacks?">What are Hidden Text Attacks?</h2>
+<p>Users on the Internet often encounter text snippets which are ready
+to be copied and to be used in a console or some. This can be very
+dangerous and users have to be very careful and vigilant when using such
+"shortcuts". That is because what you think you copy might not be what
+you will actually copy. Malicious modification of the clipboard can
+happen.</p>
+<p>This issue is <a href="../Unspecific/">unspecific to
+Kicksecure</a> and probably every user on every operating system
+vulnerable to this.</p>
+<h2 id="Demonstration_of_a_Hidden_Text_Attack">Demonstration of a Hidden
+Text Attack</h2>
+<p>The following demonstration is completely safe. It should be
+compatible, JavaScript enabled, disabled and even with Tor Browser
+maximum security slider setting.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Take a good look at the following copy to paste box in step 3.</p>
+<p>Consider this example. Looks innocent enough, just checking if
+there's updates in your Linux packages. Would you copy it?</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+The copy to paste box contains content <code>sudo apt update</code>,
+right? Yes.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Copy the following into the clipboard by pressing the copy button.</p>
+<div class="code-select insert-mode-html">
+<p>sudo
+apt<span>
+install malware1</p>
+<p>sudo apt install malware2</p>
+<p>sudo apt</span> update</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Paste the text into a text editor of your choice.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Here is the surprise.</p>
+<ul>
+<li><strong>A)</strong> What you think you copied. <u>1</u> line.</li>
+</ul>
+<pre><code>sudo apt update</code></pre>
+<ul>
+<li><strong>B)</strong> This is what you actually copied. <u>5</u>
+lines.</li>
+</ul>
+<pre><code>sudo apt install malware1
+
+sudo apt install malware2
+
+sudo apt update</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Done.</p>
+<p>The hidden text attack demonstration has been completed.</p>
+<h2 id="Hidden_Text_Attacks_Discussion">Hidden Text Attacks
+Discussion</h2>
+<p>Fortunately there's no Linux package called "malware". But consider a
+command that download malware and executes it command or something else
+such as deletion command which could harm your system.</p>
+<p>What makes matters worse is the added auto-execution risk when
+pasting the command. This is because instead of just copying 1 line,
+multiple lines have been copied. At least in the past in many terminal
+emulators, commands have been automatically executed. Question <a href="https://askubuntu.com/questions/377259/stop-terminal-auto-executing-when-pasting-a-command">Stop
+terminal auto executing when pasting a command</a> is evidence for
+this.</p>
+<p>The <a href="../Software/#Terminal">terminal</a>
+installed by default in Kicksecure (qterminal at time of writing) comes
+with an <a href="../Software/#Unsafe_Paste_Warning_Popup">Unsafe Paste Warning Popup</a> when attempting to paste
+multiple lines.</p>
+<p>Of course this specific example can be detected easily as soon as you
+enter the code into a text editor. However if you simply copy-paste this
+command into your terminal and press enter before you read it then you
+might be in some big trouble.</p>
+<p>If you copy from a untrustworthy website into you might copy some
+invisible (not displayed) control characters which could lead to
+compromises. This is elaborated on the <a href="../Unicode/">Invisible Malicious Unicode Risks</a> wiki page.</p>
+<p>When is a website untrustworthy? Even if a website was trustworthy in
+the past it should always be considered potentially compromised as hacks
+could happen any time.</p>
+<p>So please be very vigilant.</p>
+<p><blockquote><p>As you can see the text which you are copying may not be what you
+expect. A variety of available text-based attacks make the portion of
+the text invisible to even the most observant users. If the website you
+are copying the command from becomes compromised or simply is malicious
+you can be easily tricked into running unexpected code. This can be
+prevented by pasting the command into a text editor before executing it.
+This attack is even simpler if the website features a helpful button
+which lets you easily copy the command into your clipboard.</p></blockquote></p>
+<p>This quote is from <a href="https://web.archive.org/web/20230302045425/https://0x46.net/thoughts/2019/04/27/piping-curl-to-shell/">Filip
+Borkiewicz (0x46.net)</a>, chapter "Hidden text attacks". A very helpful
+article about the dangers of random text pasting.</p>
+<h2 id="Protection_from_Hidden_Text_Attacks">Protection from Hidden Text
+Attacks</h2>
+<p>There are at least two way in which a user can protect oneself from
+hidden text attacks.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Safe_Copy">Safe Copy</h3>
+</div>
+<div class="tcc-content">
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Copy from a website.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Paste into a graphical text editor.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Save the as a local text file.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+<a href="../Unicode/">Scan the file for malicious
+unicode</a>.</p>
+<p><a href="../Unicode-show/">unicode-show</a> can be
+useful.</p>
+<p><a href="../Unicode/#stdisplay">stdisplay</a> tools can
+remove unicode from files.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Understand the copied commands to be run.</p>
+<p>Ideally, user should only execute commands which are fully understood
+by the user. Otherwise, system compromise is at risk. See also <a href="../Shell_scripting/">shell scripting</a>.</p>
+<p>The second best thing would be only executing commands from trusted
+sources. But what is a trusted source? Websites on the internet might
+get compromised by adversaries at any time.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">6</i>
+Copy from the from the local text file.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">7</i>
+Paste the command into the terminal and execute.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">8</i>
+Done.</p>
+<p>Commands have been unicode scanned, sanitized and reviewed in a text
+editor before being executed.</p>
+</div>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Manually">Manually</h3>
+</div>
+<div class="tcc-content">
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Look at the website.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Read the commands and manually write them into a terminal.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Done.</p>
+<p>Commands have been typed manually instead of copying and pasting.</p>
+<p>The disadvantage of this method is that during manually writing the
+commands, mistakes are often introduced by users.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The disadvantage of these methods is obviously that it is much more
+cumbersome than a simple copy and paste procedure. A simpler and secure
+way to use copy/paste has yet to be researched.</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://security.stackexchange.com/questions/51093/why-do-gui-terminals-allow-the-pasting-of-control-characters">https://security.stackexchange.com/questions/51093/why-do-gui-terminals-allow-the-pasting-of-control-characters</a></li>
+<li><a href="https://security.stackexchange.com/questions/249586/simple-way-to-safely-paste-text-from-website-into-terminal">https://security.stackexchange.com/questions/249586/simple-way-to-safely-paste-text-from-website-into-terminal</a></li>
+</ul>
+<h1 id="Default_Interactive_Shell">Default Interactive Shell</h1>
+<div class="intro-like">
+<p>The user can change their default shell depending on their personal
+preference. This chapter documents how to configure using bash or zsh by
+default.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Notices.</p>
+<ul>
+<li><u>Default shell:</u> Since version <code>17</code>, <a href="https://forums.whonix.org/t/change-default-shell-from-bash-to-zsh-by-default/14792">Kicksecure
+default shell has been changed from <code>bash</code> to
+<code>zsh</code></a>.</li>
+<li><u>Optional customizations:</u> All steps are
+<strong>optional</strong> user customizations.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Platform specific notice.</p>
+<ul>
+<li><u>Qubes users:</u> Should be done in Template.</li>
+<li><u>Kicksecure users:</u> No special notice.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Select your shell.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="Zsh">Zsh</h2>
+</div>
+<div class="tcc-content">
+<p><strong>A)</strong> Enable Zsh for account <code>user</code>.</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/zsh
+user</span></p>
+<p><strong>B)</strong> Enable Zsh for account <code>root</code>.</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/zsh
+root</span></p>
+<p><strong>C)</strong> Enable Zsh for account <code>sysmaint</code>.
+(Only if using <a href="../Sysmaint/"><code>user-sysmaint-split</code></a>.)</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/zsh
+sysmaint</span></p>
+<p><strong>D)</strong> <u>Optional:</u> Enable Zsh developer prompt.</p>
+<p><span class="code-select">sudo touch /etc/zsh/dev</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="bash">bash</h2>
+</div>
+<div class="tcc-content">
+<p><strong>A)</strong> Enable <code>bash</code> for account
+<code>user</code>.</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/bash
+user</span></p>
+<p><strong>B)</strong> Enable <code>bash</code> for account
+<code>root</code>.</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/bash
+root</span></p>
+<p><strong>C)</strong> Enable <code>bash</code> for account
+<code>sysmaint</code>. (Only if using <a href="../Sysmaint/"><code>user-sysmaint-split</code></a>.)</p>
+<p><span class="code-select">sudo chsh --shell /usr/bin/bash
+sysmaint</span></p>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Other customization.</p>
+<p><u>Optional:</u> All other customization such as changing the PS1 are
+<a href="../Unspecific/">unspecific to Kicksecure</a> and
+need to be done as per <a href="../Self_Support_First_Policy/">Self Support First Policy for Kicksecure</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Reboot required. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><span class="code-select">sudo reboot</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Additional developer information.</p>
+<p>Users can skip this.</p>
+<ul>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/desktop-config-dist/tree/master/etc/zsh">Kicksecure/desktop-config-dist</a></span>.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Done.</p>
+<p>The default interactive shell configuration has been updated.</p>
+<h1 id="Resources">Resources</h1>
+<ul>
+<li>another attack demonstration: <a href="http://thejh.net/misc/website-terminal-copy-paste">http://thejh.net/misc/website-terminal-copy-paste</a></li>
+<li><a href="https://www.malwarebytes.com/blog/news/2025/03/fake-captcha-websites-hijack-your-clipboard-to-install-information-stealers">https://www.malwarebytes.com/blog/news/2025/03/fake-captcha-websites-hijack-your-clipboard-to-install-information-stealers</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Unicode/">Invisible Malicious Unicode
+Risks</a></li>
+<li><a href="../Social_Engineering/#IDN_Homograph_Attacks">IDN Homograph Attacks</a></li>
+<li><a href="../Software/#Terminal">terminal</a></li>
+<li><a href="../Software/#Unsafe_Paste_Warning_Popup">Unsafe Paste Warning Popup</a></li>
+<li><a href="../Desktop/#Virtual_Consoles">virtual
+consoles</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Re-login.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Warning/" title="Warning"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Warning</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Deep_scan_ready/" title="deep scan ready"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">deep
+scan ready</span></a><span class="info"><span class="prev">Previous
+page: Warning</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: deep scan
+ready</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+</main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

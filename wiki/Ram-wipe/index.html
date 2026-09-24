@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Ram-wipe</title>
+<meta name="description" content="Wipe RAM at shutdown to prevent information extraction from memory. ram-wipe, a software project designed to defend against RAM extraction attacks by wiping a computer&#x27;s RAM clean during shutdown or restart. This provides an additional layer of security for organizations that handle sensitive information and prevents attackers from accessing any data that may have been stored in the RAM.">
+<meta property="og:description" content="Wipe RAM at shutdown to prevent information extraction from memory. ram-wipe, a software project designed to defend against RAM extraction attacks by wiping a computer&#x27;s RAM clean during shutdown or restart. This provides an additional layer of security for organizations that handle sensitive information and prevents attackers from accessing any data that may have been stored in the RAM.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Ram-wipe/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Ram-wipe/">
+<meta property="og:title" content="ram-wipe - Wipe RAM on shutdown and reboot">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Ram-wipe.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Full_Disk_Encryption/">Full Disk
+Encryption</a></li>
+<li><a href="../Cold_Boot_Attack_Defense/">Cold Boot Attack
+Defense</a></li>
+<li><a href="./">ram-wipe</a></li>
+<li><a href="../Dev/RAM_Wipe/">ram-wipe
+(Developers)</a></li>
+<li><a href="../Emerg-shutdown/">emerg-shutdown</a></li>
+<li><a href="../Encrypted_Images/">Encrypted VM
+Images</a></li>
+</ul>
+</div>
+<p><img src="../../media/Ram-wipe.png.webp" width="200" alt="ram-wipe logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Wipe RAM at shutdown to prevent information extraction from
+memory.</p>
+<p>ram-wipe is a software project designed to protect against RAM
+extraction attacks by erasing the contents of a computer's random access
+memory (RAM) when the system is shut down or restarted. This helps
+prevent attackers from recovering sensitive data that may have been
+temporarily stored in RAM.</p>
+<p>ram-wipe is especially useful for organizations that work with
+confidential information and need an extra layer of security. By
+clearing the RAM during shutdown or reboot, ram-wipe reduces the risk of
+data theft through RAM extraction and improves overall system
+security.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>RAM extraction attacks have been a known method to steal information
+from computers since at least 2008. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> Many people
+assume that all data in RAM disappears as soon as a computer is turned
+off, but this isn't always true. In some cases, the contents of RAM can
+remain for several seconds or even minutes after power loss.</p>
+<p>Research by 3MDEB <sup class="reference"><a href="#cite_note-2">[2]</a></sup> confirms that this type of
+attack still works with modern RAM like DDR4 and DDR5, which are common
+in today's computers. Sometimes RAM is wiped instantly after shutdown or
+power loss, but in many cases the contents can stay for a few seconds,
+or even minutes.</p>
+<p>Since at least 2011, the Linux <a href="../Live_Mode/">live</a> operating system <a href="https://tails.boum.org/">Tails</a> has included a RAM wiping
+feature during shutdown. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> (Live systems are run from
+USB sticks or DVDs.) However, Tails' <a href="https://tails.boum.org/contribute/design/memory_erasure/">documentation</a>
+explains that this feature has limitations.</p>
+<p>Until recently, no other Linux distributions like Debian or Fedora
+included RAM wiping by default.</p>
+<p>In 2023, the <code>ram-wipe</code> package was released as a new
+solution. It wipes RAM during Linux kernel reboot or shutdown sequences,
+helping prevent data from being recovered later. There has also been a
+<a href="https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/">ram-wipe
+security-audit by 3MDEB in 2025</a>.</p>
+<p><code>ram-wipe</code> works on Debian, Kicksecure, and possibly other
+Linux systems. It can also be adapted for other Linux-based setups or
+devices.</p>
+<p>The tool uses a <strong>dracut module</strong>, a plugin for the
+Dracut tool, which helps create the early environment used when the
+system boots. Many Linux distributions already include Dracut, so
+packaging <code>ram-wipe</code> for other systems is easier.</p>
+<p><code>ram-wipe</code> is free to use and Open Source. The <a href="https://github.com/Kicksecure/ram-wipe">source code</a> is
+available and has minimal dependencies (which are other software that
+must be present for a program to work). It is also Freedom Software,
+meaning anyone can study, modify, and share it under its license.</p>
+<p>However, software-based RAM wiping (like <code>ram-wipe</code> or the
+feature in Tails) has a key limitation: It only works <strong>if the
+system shuts down properly</strong>. For example, it will not protect
+from some of the cold boot attacks when the device suddenly loses power
+(for example when the power supply is being unplugged suddenly), and the
+software execution flow is broken. In such case, <code>ram-wipe</code>
+will not have a chance to be launched.</p>
+<p>For technical details on <code>ram-wipe</code> using
+<code>initramfs-tools</code> (a tool for building the early boot
+environment, similar to Dracut), see: <a href="../Dev/RAM_Wipe/#Status_of_initramfs-tools_Support">Status of initramfs-tools Support</a>.</p>
+<p>See also:</p>
+<ul>
+<li><a href="../Dev/RAM_Wipe/#Differences_of_ram-wipe_versus_Tails_Memory_Erasure">Differences between <code>ram-wipe</code> and Tails'
+memory erasure</a></li>
+<li><a href="../Dev/RAM_Wipe/"><code>ram-wipe</code>
+(developer documentation)</a></li>
+</ul>
+<h1 id="History_Summary">History Summary</h1>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2008</i>
+<strong>Public attack demonstration.</strong></p>
+<p>Cold boot and other RAM extraction attacks were publicly documented,
+showing that RAM contents can persist briefly after power loss and may
+be recoverable. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2011</i>
+<strong>Tails-specific RAM wiping without <u>F</u>ull <u>D</u>isk
+<u>E</u>ncryption (FDE) support</strong></p>
+<p>The Linux live operating system Tails added a RAM wiping feature on
+shutdown, demonstrating early practical defenses while also documenting
+important limitations. <sup class="reference"><a href="#cite_note-5">[5]</a></sup> Tails lacked FDE support
+because it is primarily used as a live system, not as an installed
+operating system with FDE.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2023</i>
+<strong>dracut-based ram-wipe with <u>F</u>ull <u>D</u>isk
+<u>E</u>ncryption (FDE) support.</strong></p>
+<p>The <code>ram-wipe</code> package was released as a dedicated
+solution for wiping RAM during Linux reboot and shutdown sequences.
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">2025</i>
+<strong>ram-wipe security audit.</strong></p>
+<p>Security audit efforts examined <code>ram-wipe</code> and modern RAM
+remanence behavior, helping validate the continued relevance of RAM
+wiping defenses. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h1 id="Installation_of_ram-wipe">Installation of ram-wipe</h1>
+<p><strong>1.</strong> Platform specific notice.</p>
+<ul>
+<li>Debian: Debian comes with <code>initramfs-tools</code> by
+default.</li>
+<li>Kicksecure: Newer builds of Kicksecure come with <code>dracut</code>
+by default.</li>
+<li>Qubes: <a href="../Unsupported/">Unsupported</a>.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+</ul>
+<p><strong>2.</strong> Migrate to <code>dracut</code>.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p>It's required to migrate to <code>dracut</code> if not already done.
+See instructions on the <a href="../Dracut/">dracut</a>
+wiki page to find out if dracut is already installed and to find
+instructions on how to install it.</p>
+<p><strong>3.</strong> Reboot.</p>
+<p>This is to test if <code>dracut</code> is functional. If the system
+boots normally, then everything is okay.</p>
+<p><strong>4.</strong> Add Kicksecure APT repository.</p>
+<p><u>Note:</u> Users of Kicksecure can skip this step.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Download the <a href="../Signing_Key/">Signing Key</a> used
+to verify Kicksecure packages.</p>
+<p><span class="code-select">wget <a href="https://www.kicksecure.com/keys/derivative.asc">https://www.kicksecure.com/keys/derivative.asc</a></span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+<em>Optional:</em> <a href="../Signing_Key/">Verify the
+Signing Key</a> to improve security assurances.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Install the Kicksecure signing key into the system keyring so APT can
+trust the repository.</p>
+<p><span class="code-select">sudo cp derivative.asc
+/usr/share/keyrings/derivative.asc</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Review the available Kicksecure APT repository options.</p>
+<p><em>Optional:</em> See <a href="../Packages_for_Debian_Hosts/">Kicksecure Packages for Debian Hosts and Kicksecure
+Host Enhancements</a> instead of the next step for more secure and
+advanced configurations.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Add the Kicksecure APT repository to the system.</p>
+<p><span class="code-select">echo "Types: deb URIs: <a href="https://deb.kicksecure.com">https://deb.kicksecure.com</a> Suites:
+trixie Components: main contrib non-free Enabled: yes Signed-By:
+/usr/share/keyrings/derivative.asc" | sudo tee
+/etc/apt/sources.list.d/derivative.sources</span></p>
+</div>
+<p><strong>5.</strong> Install <code>ram-wipe</code>.</p>
+<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select">sudo apt install ram-wipe</span></p>
+<p><strong>6.</strong> Done.</p>
+<p>The process of installing ram-wipe has been completed.</p>
+<h1 id="Host_vs_VMs">Host vs VMs</h1>
+<p>ram-wipe is useful on the host operating system but not so much
+inside a VM. See also <a href="../Dev/RAM_Wipe/#ram-wipe_Testing_inside_a_VM">Dev/RAM_Wipe#ram-wipe_Testing_inside_a_VM</a>.</p>
+<h1 id="Sample_Printout">Sample Printout</h1>
+<h2 id="Boot_Printout">Boot Printout</h2>
+<p>None.</p>
+<h2 id="Shutdown_Printout">Shutdown Printout</h2>
+<pre><code>[   42.474323] dracut INFO: wipe-ram.sh: RAM extraction attack defense... Starting RAM wipe pass during shutdown...
+[   42.501159] dracut INFO: wipe-ram.sh: RAM wipe pass completed, OK.
+[   42.502837] dracut INFO: wipe-ram.sh: Checking if there are still mounted encrypted disks...
+[   42.508801] dracut INFO: wipe-ram.sh: Success, there are no more mounted encrypted disks, OK.
+[   42.530125] reboot: Restarting system</code></pre>
+<h1 id="ram-wipe_Known_Issues">ram-wipe Known Issues</h1>
+<ul>
+<li>Wiping the video RAM (the RAM of the graphics card) has not been
+implemented anywhere to the knowledge of the author.
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
+</ul>
+<h1 id="Unmount_Encrypted_Root_Disk_to_Wipe_Full_Disk_Encryption_Key">Unmount
+Encrypted Root Disk to Wipe Full Disk Encryption Key</h1>
+<p>To wipe the LUKS full disk encryption (FDE) for the root disk from
+RAM it is required to unmount the root disk file system and close the
+root disk LUKS volume during the shutdown process.</p>
+<p>This has been implemented as per <a href="https://github.com/dracut-ng/dracut-ng/issues/204">dracut shutdown
+hook to close encrypted devices and wipe their encryption keys from
+kernel memory</a>.</p>
+<p>ram-wipe attempts to check if unencrypted root disks have been
+unmounted at the end of the shutdown process and to inform the user in
+case of potential failures.</p>
+<h1 id="Status">Status</h1>
+<ul>
+<li>ram-wipe is installed by default in Kicksecure 18 (and above).</li>
+</ul>
+<h1 id="Development">Development</h1>
+<ul>
+<li><a href="../Dev/RAM_Wipe/">RAM Extraction Attack
+Defense - RAM Wipe Design Documentation</a></li>
+<li><a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596">Is
+RAM Wipe possible? Cold Boot Attack Defense</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/w/index.php?title=Cold_boot_attack&amp;oldid=249088610">https://en.wikipedia.org/w/index.php?title=Cold_boot_attack&amp;oldid=249088610</a></li>
+<li id="cite_note-2">* <a href="https://blog.3mdeb.com/2024/2024-12-13-ram-data-decay-research/">Research
+of RAM data remanence times</a> * <a href="https://blog.3mdeb.com/2025/2025-01-24-ram-data-decay-research-part2/">Research
+of RAM data remanence times, part 2</a> * <a href="https://blog.3mdeb.com/2025/2025-02-20-conclusions-from-ram-data-remanence-tests/">Conclusions
+from RAM data remanence tests</a></li>
+<li id="cite_note-3"><a href="https://web.archive.org/web/20110423165633/https://tails.boum.org/contribute/design/memory_erasure/">https://web.archive.org/web/20110423165633/https://tails.boum.org/contribute/design/memory_erasure/</a></li>
+<li id="cite_note-4"><a href="https://en.wikipedia.org/w/index.php?title=Cold_boot_attack&amp;oldid=249088610">https://en.wikipedia.org/w/index.php?title=Cold_boot_attack&amp;oldid=249088610</a></li>
+<li id="cite_note-5"><a href="https://web.archive.org/web/20110423165633/https://tails.boum.org/contribute/design/memory_erasure/">https://web.archive.org/web/20110423165633/https://tails.boum.org/contribute/design/memory_erasure/</a></li>
+<li id="cite_note-6"><a href="https://github.com/Kicksecure/ram-wipe">https://github.com/Kicksecure/ram-wipe</a></li>
+<li id="cite_note-7">* Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/1562">Wipe RAM on
+shutdown</a></li>
+<li id="cite_note-8">Since ram-wipe is unavailable for <code>initramfs-tools</code> the
+user needs to migrate to <code>dracut</code>, the only supported initrd
+creator by ram-wipe.</li>
+<li id="cite_note-9"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5356">Erase
+video memory on shutdown</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

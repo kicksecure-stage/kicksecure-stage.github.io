@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Sysmaint</title>
+<meta name="description" content="Sysmaint, or system maintenance, is an account created by the [[sysmaint|&lt;code&gt;user-sysmaint-split&lt;/code&gt;]] feature. It increases security. Read about this feature, how to use it, and our rationale on this page. &quot;permission denied: sudo&quot;">
+<meta property="og:description" content="Sysmaint, or system maintenance, is an account created by the [[sysmaint|&lt;code&gt;user-sysmaint-split&lt;/code&gt;]] feature. It increases security. Read about this feature, how to use it, and our rationale on this page. &quot;permission denied: sudo&quot;">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Sysmaint/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Sysmaint/">
+<meta property="og:title" content="sysmaint - System Maintenance User">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Usersysmaint-clipart.svg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l2"><a href="#Kicksecure_for_Qubes">Kicksecure for Qubes</a></li><li class="toc-l3"><a href="#Qubes_R4.2">Qubes R4.2</a></li><li class="toc-l3"><a href="#Qubes_R4.3">Qubes R4.3</a></li><li class="toc-l2"><a href="#Kicksecure_2">Kicksecure</a></li><li class="toc-l2"><a href="#Kicksecure_for_Qubes_2">Kicksecure for Qubes</a></li><li class="toc-l2"><a href="#Enable_sudo_access_in_user_session">Enable sudo access in user
+session</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Root/" title="Root"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Root</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Unrestricted_admin_mode/" title="unrestricted admin mode"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">unrestricted
+admin mode</span></a><span class="info"><span class="prev">Previous
+page: Root</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: unrestricted admin
+mode</span></span></span>sysmaint - System Maintenance User</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Default_Passwords/">Default
+Passwords</a></li>
+<li><a href="../Passwords/">Passwords</a></li>
+<li><a href="../User/">Account Management</a></li>
+<li><a href="../Login/">Login</a></li>
+<li><a href="../Login_spoofing/">Login Spoofing</a></li>
+<li><a href="../Root/">Safely Use Root Commands</a></li>
+<li><a href="./"><code>sysmaint</code>
+Account</a></li>
+<li><a href="../System_Maintenance_Panel/">System
+Maintenance Panel</a></li>
+<li><a href="../Unrestricted_admin_mode/">Unrestricted
+Admin Mode</a></li>
+<li><a href="../Protection_Against_Physical_Attacks/">Protection against Physical Attacks</a></li>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/">User Account Isolation (developers)</a></li>
+<li><a href="../Dev/user-sysmaint-split/"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><a href="../Polkit/">Polkit (formerly PolicyKit) /
+<code>pkexec</code></a></li>
+<li><a href="../Privleap/">privleap /
+<code>leaprun</code></a></li>
+</ul>
+</div>
+<p><img src="../../media/Usersysmaint-clipart.svg" width="200" alt="Usersysmaint-clipart.svg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<ul>
+<li><u>Overview:</u> Sysmaint, or system maintenance, is an account
+created by the <a href="./"><code>user-sysmaint-split</code></a> feature. It
+increases security by separating daily activities from administrative
+tasks.</li>
+<li><u>Default:</u> Kicksecure-LXQt and Kicksecure-Qubes comes with <a href="./"><code>user-sysmaint-split</code></a> by
+default.</li>
+<li><u>Accounts:</u> There are two accounts:
+<ul>
+<li><u><code>user</code>:</u> For daily activities.</li>
+<li><u><code>sysmaint</code>:</u> For system maintenance administrative
+activities, such as installing software or upgrading.</li>
+</ul></li>
+<li><u>Recommended administrative access:</u> For administrative tasks
+(for example, using <code>sudo</code> or <code>pkexec</code>), reboot
+into the <code>sysmaint</code> session
+(<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>)
+and run the command there.</li>
+<li><u>Troubleshooting:</u> If you see the following errors, you are
+most likely in the <code>user</code> session:</li>
+</ul>
+<pre><code>permission denied: sudo</code></pre>
+<pre><code>permission denied: pkexec</code></pre>
+<ul>
+<li><u>Fix:</u> Reboot into the <code>sysmaint</code> session and retry
+the command.</li>
+<li><u>Advanced opt-out:</u> <a href="../Unrestricted_admin_mode/">Unrestricted Admin Mode</a> disables <code>user</code>
+and <code>sysmaint</code> separation and restores a more traditional
+setup where the <code>user</code> account can use administrative tools
+such as <code>sudo</code> or <code>pkexec</code> without using a
+<code>sysmaint</code> session. This is generally <u>not</u> recommended,
+because it removes the security benefits of
+<code>user-sysmaint-split</code>.</li>
+<li><u>Older versions:</u> For older versions, refer to <a href="./#Version_Overview">Version Overview</a>
+for upgrade information.</li>
+</ul>
+<div class="post-intro-p">
+</div>
+<h1 id="Screenshot">Screenshot</h1>
+<p><a href="../About/">Kicksecure</a>:</p>
+<p><strong>Image:</strong> <em>Kicksecure - sysmaint Boot Option in <a href="../Grub/">GRUB</a> Boot Menu</em></p>
+<p><img src="../../media/Kicksecure-persistent-mode-sysmaint-session.png.webp" alt="Persistent Mode - Sysmaint Session - GRUB Boot Menu Option" /></p>
+<p><a href="../Qubes/">Kicksecure for Qubes</a>:</p>
+<p><strong>Image:</strong> <em>Kicksecure - sysmaint Boot Option in
+Qubes VM Manager (QVMM)</em></p>
+<p><img src="../../media/Kicksecure-persistent-mode-sysmaint-session-qubes.png.webp" alt="Persistent Mode - Sysmaint Session - Qubes Boot Mode" /></p>
+<h1 id="Overview:_What_is_sysmaint_and_Why_Should_I_Care?">Overview: What
+is sysmaint and Why Should I Care?</h1>
+<p>Kicksecure comes with a security feature called <a href="./"><code>user-sysmaint-split</code></a> enabled by default
+(in <u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI) (LXQt) version
+and Qubes version). This feature creates two separate user accounts:</p>
+<ul>
+<li><code>user</code> - for daily activities like browsing, writing
+documents, etc.</li>
+<li><code>sysmaint</code> - short for <strong>system
+maintenance</strong>; used for tasks that require administrative rights
+such as installing or updating software.</li>
+</ul>
+<p>This separation improves security. For example, if malware
+compromises your web browser in the <code>user</code> session, it will
+not have permission to make critical system changes or install rootkits
+(malicious software that can hide in the system).</p>
+<p>You only use the <code>sysmaint</code> account when you want to
+change system behavior, such as adding new programs, applying updates,
+or performing administrative tasks.</p>
+<ul>
+<li><u>Recommended:</u> For administrative actions, boot into the
+<code>sysmaint</code> session and run the command there.</li>
+<li><u>Advanced opt-out:</u> The opposite of
+<code>user-sysmaint-split</code> is <a href="../Unrestricted_admin_mode/">Unrestricted Admin Mode</a>, which disables
+<code>user</code> and <code>sysmaint</code> separation and restores a
+more traditional setup where the <code>user</code> account can use
+administrative tools like <code>sudo</code>, <code>su</code>,
+<code>lxsudo</code>, <code>pkexec</code> directly. This is less secure
+and not enabled by default, but it can be configured if it better suits
+your use case.</li>
+</ul>
+<p>(<a href="../Root/#Rationale_for_Separate_sysmaint_Account">Read our rationale here</a>.)</p>
+<h1 id="Real-World_Example_Use_Cases">Real-World Example Use Cases</h1>
+<ul>
+<li><strong>You want to install a new application:</strong>
+<ul>
+<li>Reboot into the <code>sysmaint</code> account to perform the
+installation.</li>
+<li>Once done, reboot back into your regular desktop account.</li>
+</ul></li>
+<li><strong>You want to install system updates:</strong>
+<ul>
+<li>Boot into <code>sysmaint</code> mode and run the updates from the
+System Maintenance Panel.</li>
+</ul></li>
+<li><strong>You want to avoid malware affecting system
+settings:</strong>
+<ul>
+<li>Use your regular <code>user</code> account for browsing and daily
+work. Since it does not have admin access, it is harder for malware to
+deeply damage your system.</li>
+</ul></li>
+</ul>
+<h1 id="Default_Installation_Status">Default Installation Status</h1>
+<ul>
+<li><strong>Old versions:</strong> Kicksecure <a href="../Systemcheck/#Build_Version">build version</a> up
+to version <code>17.2.8.5</code> will <u>not</u> automatically include
+<code>user-sysmaint-split</code>. However, users can choose to install
+it manually (see <a href="#Installation">#Installation</a>).</li>
+<li><strong>New versions:</strong>
+<ul>
+<li><strong><u>g</u>raphical <u>u</u>ser <u>i</u>nterface
+(GUI):</strong> Includes <code>user-sysmaint-split</code> by
+default.</li>
+<li><strong><u>c</u>ommand <u>l</u>ine <u>i</u>nterface (CLI):</strong>
+The <code>kicksecure-*-cli</code> meta packages do <u>not</u> include
+<code>user-sysmaint-split</code> by default.</li>
+<li><strong>servers:</strong> <code>user-sysmaint-split</code> is not
+installed by default on servers.</li>
+<li><strong><a href="../Distribution_Morphing/">Distribution Morphing</a>:</strong> Not installed by
+default. Might be installed by default for the GUI version in a future
+<a href="../Release_Upgrade/">Release Upgrade</a>.</li>
+</ul></li>
+</ul>
+<h1 id="Version_Overview">Version Overview</h1>
+<p><u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI) versus
+<u>c</u>ommand <u>l</u>ine <u>i</u>nterface (CLI).</p>
+<table>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p><a href="../About/">Kicksecure</a> LXQt
+(GUI)</p></th>
+<th><p><a href="../About/">Kicksecure</a> CLI</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><code>user-sysmaint-split</code></p></td>
+<td><p>Yes,
+installed by default in new images.</p></td>
+<td><p>No,
+not installed by default.</p></td>
+</tr>
+<tr class="even">
+<td><p>Old Versions</p></td>
+<td><p>No,
+will not be automatically installed to avoid breaking existing user
+workflows.</p></td>
+<td><p>No,
+not applicable, will remain <code>sudo</code> passwordless by
+default.</p></td>
+</tr>
+<tr class="odd">
+<td><p>New Images</p></td>
+<td><p>Yes,
+will come with <code>user-sysmaint-split</code> installed by
+default.</p></td>
+<td><p>No,
+<code>user-sysmaint-split</code> will not be included.</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Release_Upgrade/">Release
+Upgrade</a></p></td>
+<td><p>No,
+<code>user-sysmaint-split</code> will not be included.</p></td>
+<td><p>No,
+<code>user-sysmaint-split</code> will not be included.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Opt-Out</p></td>
+<td><p>Yes,
+supported via <a href="../Unrestricted_admin_mode/">Unrestricted Admin Mode</a>.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Opt-In</p></td>
+<td><p>Yes,
+<code>user-sysmaint-split</code> can be installed at any time.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Installation">Installation</h1>
+<div class="info-box ">
+<p>Install package(s) <code>user-sysmaint-split sysmaint-panel</code>
+following these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>user-sysmaint-split sysmaint-panel</code>
+package(s).</p>
+<p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+user-sysmaint-split sysmaint-panel</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>user-sysmaint-split sysmaint-panel</code> is complete.</p>
+</div>
+<h1 id="Usage">Usage</h1>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Platform specific.</p>
+<p>Select your platform.</p>
+<div class="tab-content-controller " data-tcc-linkid="os">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure">Kicksecure</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Notices.</p>
+<p><img src="../../media/System-maintenance-panel.png.webp" alt="The sysmaint desktop session." />
+<img src="../../media/Sysmaint-tty.png.webp" alt="The sysmaint console session." /></p>
+<div class="info-box ">
+<ul>
+<li><u>Privilege escalation tools restricted:</u> When
+<code>user-sysmaint-split</code> is installed, the account
+<code>user</code> can no longer use privilege escalation tools
+(<code>sudo</code>, <code>su</code>, <code>pkexec</code>) when logged
+into any account other than <code>sysmaint</code>.</li>
+<li><u>Immediate effect:</u> This change takes effect immediately.</li>
+<li><u>System maintenance workflow:</u> To perform system maintenance
+tasks such as checking for software updates or installing updates,
+reboot into the <code>sysmaint</code> account.</li>
+<li><u>Reduced attack surface:</u> To reduce attack surface, most
+superfluous background services are suppressed while booted into the
+<code>sysmaint</code> account.</li>
+<li><u>Minimal session by design:</u> The <code>sysmaint</code> desktop
+session is intentionally minimal and not suited for normal desktop use.
+This is to discourage using it for work that has a higher risk of
+causing a difficult-to-avoid system compromise (such as web browsing).
+Quick shortcuts are provided for simple software management and system
+administration tasks, while more advanced tasks can be performed from a
+terminal. The <code>sudo</code> and <code>pkexec</code> commands will be
+usable here.</li>
+<li><u>Virtual console login:</u> When booted in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>,
+you can also log into the <code>sysmaint</code> account from a <a href="../Desktop/#Virtual_Consoles">virtual console</a>
+(<code>tty</code>) by entering <code>sysmaint</code> at the login
+prompt. This session behaves identically to a typical virtual console
+session. A short informational message will be printed after login
+reminding you that the <code>sysmaint</code> account must be used with
+caution.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Restart the system normally.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Select
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+from the boot menu.</p>
+<p><strong>Figure:</strong> <em>Persistent Mode - Sysmaint Session -
+GRUB Boot Menu Option</em></p>
+<p><img src="../../media/Kicksecure-persistent-mode-sysmaint-session.png.webp" width="600" alt="Persistent Mode - Sysmaint Session - GRUB Boot Menu Option" /></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+The system will boot into a minimal desktop session with the <a href="../System_Maintenance_Panel/">System Maintenance
+Panel</a> running.</p>
+<p><strong>Figure:</strong> <em>System Maintenance Panel</em></p>
+<p><img src="../../media/Sysmaint-panel.png.webp" width="600" alt="System Maintenance Panel" /></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">6</i>
+Perform your system maintenance tasks.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">7</i>
+Once you are done, click "Reboot" to reboot the system.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">8</i>
+Boot into <code>PERSISTENT Mode | USER Session | daily activities</code>
+or <code>LIVE Mode | USER Session | disposable use</code>. This will
+provide you with a standard desktop session.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">9</i>
+Done.</p>
+<p>The procedure is now complete.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-icon.png.webp" alt="Qubes-logo-icon.png" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure_for_Qubes">Kicksecure for Qubes</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Qubes version specific.</p>
+<p>Select your Qubes version.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Qubes_R4.2">Qubes R4.2</h3>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Notice.</p>
+<div class="info-box ">
+<ul>
+<li><u>In Qubes OS R4.2 and earlier:</u>
+<ul>
+<li><u>Status:</u> Kicksecure for Qubes cannot be booted into sysmaint
+session.</li>
+<li><u>Benefit:</u> <code>user-sysmaint-split</code> is still useful in
+Qubes VMs because it makes SUID privilege escalation tools
+(<code>sudo</code>, <code>su</code>, <code>pkexec</code>) inaccessible
+for account <code>user</code>.</li>
+<li><u>Upgrade recommended:</u> See <a href="https://forums.kicksecure.com/t/kicksecure-18-for-qubes-released-major-release-upgrade/1377">Kicksecure
+18 for Qubes Released! Major Release Upgrade!</a> (Similar to
+derivatives such as <a href="https://forums.whonix.org/t/qubes-whonix-18-released-major-release-upgrade/22517">Qubes-Whonix
+18 Released! Major Release Upgrade!</a>)</li>
+<li><u>Administrative actions:</u> Follow the instructions below to
+perform administrative actions and to use <code>sudo</code>,
+<code>su</code>, <code>pkexec</code>.</li>
+</ul></li>
+</ul>
+</div>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Administrative actions.</p>
+<p>You can access the <code>root</code> account by opening a <a href="../Root/#Qubes_Root_Console">Qubes Root
+Console</a>.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Qubes_R4.3">Qubes R4.3</h3>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Notices.</p>
+<div class="info-box ">
+<p><u>Qubes OS R4.3 and later:</u></p>
+<ul>
+<li><u>Boot modes support:</u> Supports <a href="https://github.com/QubesOS/qubes-issues/issues/9750">boot
+modes</a>.
+<ul>
+<li><u>Boot modes usage:</u> Kicksecure for Qubes uses boot modes to
+allow any Kicksecure Qube to be booted in either
+<code>PERSISTENT Mode | USER Session | daily activities</code> or
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>.</li>
+</ul></li>
+<li><u>Template:</u> The <code>kicksecure-18</code> Template boots in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+by default.</li>
+<li><u>App Qubes:</u> <code>Kicksecure</code> App Qubes and Disposables
+boot in <code>PERSISTENT Mode | USER Session | daily activities</code>
+by default.</li>
+<li><u>Changing boot modes:</u> Boot modes can be changed. See
+below.</li>
+</ul>
+<div class="toccolours mw-collapsible mw-collapsed">
+<ul>
+<li><u>Comparison with non-Qubes:</u> Optional reading and comparison
+notes.</li>
+</ul>
+<div class="mw-collapsible-content">
+<ul>
+<li><u>Definition:</u> non-Qubes means not using Qubes, such as using
+Kicksecure on hardware.</li>
+<li><u>Similarity:</u>
+<code>PERSISTENT Mode | USER Session | daily activities</code> and
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+are mostly functionally identical under Qubes OS.</li>
+<li><u>Key differences:</u> Under Qubes OS,
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>
+differs in the following ways:
+<ul>
+<li><u>Default user account:</u> The default user account for most
+actions is changed to <code>sysmaint</code>.</li>
+<li><u>URL opening disabled:</u> Potentially dangerous operations such
+as opening URLs are disabled.</li>
+<li><u>System Maintenance Panel:</u> The <a href="../System_Maintenance_Panel/">System Maintenance
+Panel</a> is usable.</li>
+<li><u>Privilege escalation usability:</u> Privilege escalation tools
+are easily usable, since the <code>sysmaint</code> account will be
+provided rather than the <code>user</code> account.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<ul>
+<li><u>Non-standard boot mode:</u> It is possible to boot a Kicksecure
+Qube in a non-standard boot mode, such as booting a Template in
+<code>PERSISTENT Mode | USER Session | daily activities</code> or
+booting an AppVM in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>.
+To do so, change the boot mode of the Qube before starting it.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Instructions.</p>
+<div class="info-box ">
+<p><u>Qubes R4.3 (and above) boot mode changes.</u></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Ensure the Qube is shut down.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Open Qube Manager.</p>
+<p><code>Start menu</code> &#8594; <code>Gear icon</code> &#8594;
+<code>Qubes Tools</code> &#8594; <code>Qube Manager</code></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Click on the VM you wish to change the boot mode of.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Click "Settings" in the toolbar.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Click the "Advanced" tab in the Settings window.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">6</i>
+In the "Kernel" section, change "Boot mode" to your desired boot
+mode.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">7</i>
+Click "OK" in the Settings window.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">8</i>
+Start the Qube. It will boot in the selected boot mode.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">9</i>
+Done.</p>
+<p>The procedure of switching the boot mode for a Qube is now
+complete.</p>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Done.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Fast_User_Switching">Fast User Switching</h1>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Platform specific.</p>
+<p>Select your platform.</p>
+<div class="tab-content-controller " data-tcc-linkid="os">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure_2">Kicksecure</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Notice.</p>
+<p><strong>Reboot into <code>sysmaint</code> session is required, as
+documented above.</strong></p>
+<p><u>Note:</u> It is <a href="../Unsupported/">unsupported</a> to switch from account
+<code>user</code> to <code>sysmaint</code> using <code>Start Menu</code>
+&#8594; <code>Power button</code> &#8594; <code>logout</code>.</p>
+<p>This is a security feature. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-icon.png.webp" alt="Qubes-logo-icon.png" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="Kicksecure_for_Qubes_2">Kicksecure for Qubes</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Notice.</p>
+<p>Not applicable.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Running_services_in_sysmaint_sessions">Running services in
+sysmaint sessions</h1>
+<p>When booted in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>,
+only the minimum services needed for the session to be usable are
+started by default. New services are prevented from automatically
+starting during APT software upgrades.</p>
+<p>While enabling additional services within the sysmaint session is
+generally discouraged, it may be necessary in some situations. Services
+can be started either temporarily for one sysmaint session, or
+persistently for all sysmaint sessions.</p>
+<p>To start a service for the current sysmaint session:</p>
+<div class="info-box ">
+<p><u>Note:</u> Replace <code>service-name</code> in the below steps
+with the name of the service you are starting. For instance, if you are
+configuring <code>openvpn.service</code>, replace all instances of
+<code>service-name</code> with <code>openvpn</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Open a terminal by clicking <code>Open Terminal</code> in the System
+Maintenance Panel.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Type <code>sudo systemctl start service-name.service</code></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Done.</p>
+<p>The procedure of starting a service for one sysmaint session is
+complete.</p>
+</div>
+<p>To enable a service persistently, so that it autostarts on every
+sysmaint session boot:</p>
+<div class="info-box ">
+<p><u>Note:</u> Replace <code>service-name</code> in the below steps
+with the name of the service you are configuring. For instance, if you
+are configuring <code>openvpn.service</code>, replace all instances of
+<code>service-name</code> with <code>openvpn</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Open a terminal by clicking <code>Open Terminal</code> in the System
+Maintenance Panel.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Navigate to the directory containing the systemd unit for the service
+you wish to enable. Usually, this will be
+<code>/usr/lib/systemd/system</code> or
+<code>/etc/systemd/system</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Create a new configuration directory for the service by running
+<code>sudo mkdir -p service-name.service.d</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Enter the directory you just created by running
+<code>cd service-name.service.d</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Create a new configuration file for the service by running
+<code>sudo nano 99_sysmaint-enable.conf</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">6</i>
+Type the following lines into the configuration file:</p>
+<p><span class="code-select">[Install]
+WantedBy=sysmaint-boot.target</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">7</i>
+Press <code>Ctrl+S</code> to save the file, then press
+<code>Ctrl+X</code> to exit the text editor.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">8</i>
+Reload systemd unit configuration files by running
+<code>sudo systemctl daemon-reload</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">9</i>
+Fully enable the service by running
+<code>sudo systemctl enable service-name.service</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">10</i>
+Ensure the <code>systemctl enable</code> command outputs the following
+notice. If you see this, it indicates that the service has been
+successfully enabled.</p>
+<pre><code>Created symlink /etc/systemd/system/sysmaint-boot.target.wants/service-name.service &amp;rarr; /lib/systemd/system/service-name.service.</code></pre>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">11</i>
+Start the service in the current sysmaint session by running
+<code>sudo systemctl start service-name.service</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">12</i>
+Done.</p>
+<p>The procedure of persistently enabling and starting a service in
+sysmaint sessions is now complete.</p>
+</div>
+<h1 id="Notes">Notes</h1>
+<ul>
+<li><strong><code>sysmaint</code> account restrictions</strong>: Several
+restrictions are imposed to reduce the risk of the <code>sysmaint</code>
+account becoming compromised:
+<ul>
+<li><strong>Locked access depending on boot mode</strong>: The
+<code>sysmaint</code> account is locked and cannot be logged into when
+booted into modes other than
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>.</li>
+<li><strong>Session limitation</strong>: Logging into the
+<code>sysmaint</code> account using anything other than the special
+<code>sysmaint</code> desktop session is prohibited.</li>
+<li><strong>Prohibition of other logins</strong>: When booted in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>,
+you will be prevented from logging into accounts other than
+<code>sysmaint</code>.<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li><strong>Inhibition of non-critical services</strong>: When booted in
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>,
+only the minimum services needed for the session to be usable are
+started by default. New services are prevented from automatically
+starting during APT software upgrades.</li>
+</ul></li>
+</ul>
+<h1 id="Questions_and_Answers">Questions and Answers</h1>
+<ul>
+<li>Why is there a separate <code>sysmaint</code> account?
+<ul>
+<li>See <a href="../Root/#Rationale_for_Separate_sysmaint_Account">Rationale for Separate <code>sysmaint</code>
+Account</a>.</li>
+</ul></li>
+</ul>
+<ul>
+<li>Why is it required to boot into <code>sysmaint</code> mode, why not
+simply log out (<code>Start Menu</code> &#8594; <code>Power button</code> &#8594;
+<code>Logout</code>) and log into account <code>sysmaint</code>? (<a href="./#Fast_User_Switching">Fast User
+Switching</a>)
+<ul>
+<li>This is to mitigate <a href="../Login_spoofing/">login
+spoofing</a> attacks and to prevent <a href="../Dev/Strong_Linux_User_Account_Isolation/#sudo_password_sniffing"><code>sudo</code> password sniffing</a>.</li>
+</ul></li>
+</ul>
+<ul>
+<li>How to go back to <a href="../Unrestricted_admin_mode/">unrestricted admin mode</a>, where account
+<code>user</code> can use <code>sudo</code>?
+<ul>
+<li>See <a href="#Uninstallation">#Uninstallation</a>.</li>
+</ul></li>
+</ul>
+<h1 id="user-sysmaint-split_-_GUI_vs_CLI_-_Default_Installation_Status_Differences">user-sysmaint-split
+- GUI vs CLI - Default Installation Status Differences</h1>
+<p><code>user-sysmaint-split</code> is different for the
+<u>g</u>raphical <u>u</u>ser <u>i</u>nterface (GUI) versus the
+<u>c</u>ommand <u>l</u>ine <u>i</u>nterface (CLI) version.</p>
+<p>In the future, the CLI version will be improved to be more suitable
+for servers.</p>
+<p>Server support for <code>user-sysmaint-split</code>, however, is not
+as sophisticated yet as it is for the GUI version. For some server use
+cases, <code>user-sysmaint-split</code> may be less needed or unneeded.
+This topic is elaborated in the development chapter <a href="../Dev/user-sysmaint-split/#Server_Support"><code>user-sysmaint-split</code> Server
+Support</a>.</p>
+<h1 id="Applications_requiring_Administrative_Rights_during_User_Session">Applications
+requiring Administrative Rights during User Session</h1>
+<p>If it is unsuitable to run some applications in the sysmaint session,
+then this could be difficult. This is because historically, Freedom
+Software Linux desktop distributions did not have a strong <a href="../Dev/user-sysmaint-split/"><code>user-sysmaint-split</code></a>.</p>
+<p>There might be many cases where applications should be run in the
+user session, but this is not possible because some aspect of the
+application requires <a href="../Root/">administrative
+("<code>root</code>") rights</a>.</p>
+<p><strong>Options:</strong></p>
+<ul>
+<li><strong>A)</strong> <strong><code>privleap</code> custom
+actions:</strong> If it is possible to do this on the <u>c</u>ommand
+<u>l</u>ine <u>i</u>nterface (CLI), <a href="../Advanced_Users/">Advanced Users</a> could consider configuring <a href="../Root/#privleap_custom_actions">privleap custom
+actions</a>.</li>
+<li><strong>B)</strong> <strong><a href="../Unrestricted_admin_mode/">Unrestricted admin mode</a>:</strong> This mode
+disables the separation between the user and system maintenance roles,
+allowing the user to directly perform administrative tasks without
+needing to switch contexts. It provides more flexibility for tasks
+requiring elevated privileges but at the cost of reduced
+compartmentalization and security. This approach might be more suitable
+in environments where usability or workflow requirements outweigh the
+benefits of strict privilege separation. See <a href="../Unrestricted_admin_mode/#Uninstalling_user-sysmaint-split_and_Enabling_Unrestricted_Admin_Mode">Uninstalling user-sysmaint-split and Enabling
+Unrestricted Admin Mode</a>.</li>
+<li><strong>C)</strong> <strong>Use multiple <u>v</u>irtual
+<u>m</u>achines (VM):</strong> For compartmentalization. VMs that
+require administrative ("<code>root</code>") rights could use
+Unrestricted Admin Mode. Others could keep
+<code>user-sysmaint-split</code>.</li>
+</ul>
+<h1 id="Advanced_Topics">Advanced Topics</h1>
+<p>For <a href="../Advanced_Users/">Advanced Users</a>.</p>
+<h2 id="Enable_sudo_access_in_user_session">Enable sudo access in user
+session</h2>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Warnings.</p>
+<ul>
+<li><u>Intended audience:</u> For debugging or advanced users only.</li>
+<li><u>Security warning:</u> Enabling <code>sudo</code> access during
+user session can be a security issue.</li>
+<li><u>Recommendation:</u> This is often unnecessary. <a href="#Uninstallation">Uninstallation of the
+<code>user-sysmaint-split</code> package</a> might be better.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Boot into
+<code>PERSISTENT Mode | SYSMAINT Session | system maintenance tasks</code>.</p>
+<p>Setting this up requires booting into <code>sysmaint</code>
+session.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Create file
+<code>/etc/privleap/conf.d/privleap-debugging.conf</code>.</p>
+<p><span class="code-select">sudo append-once
+/etc/privleap/conf.d/privleap-debugging.conf "\ [action:sudo]
+Command=chmod o+x /usr/bin/sudo</p>
+<ol>
+<li>Command=/usr/libexec/helper-scripts/sudo-tools-enable</li>
+</ol>
+<p>AuthorizedGroups=sudo AuthorizedUsers=user "</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
+Boot into
+<code>PERSISTENT Mode | USER Session | daily activities</code>.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
+Enable <code>sudo</code>.</p>
+<p><span class="code-select">leaprun sudo</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">6</i>
+Notice.</p>
+<p>The above command can be run whenever required to enable
+<code>sudo</code>.</p>
+<p><code>sudo</code> access will be automatically disabled after
+installing or removing a package using APT. This is because this
+triggers <a href="../SUID_Disabler_and_Permission_Hardener/">SUID Disabler and Permission Hardener</a>, which will
+re-disable <code>sudo</code>, unless an
+<code>/etc/permission-hardener.d</code> configuration folder snippet
+gets added.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">7</i>
+Use of <code>sudo</code>.</p>
+<p><code>sudo</code> can be used normally. For example:</p>
+<p><span class="code-select">sudo touch /etc/testfile</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">8</i>
+Done.</p>
+<p>The process is complete.</p>
+<h1 id="Uninstallation">Uninstallation</h1>
+<p>See <a href="../Unrestricted_admin_mode/#Uninstalling_user-sysmaint-split_and_enabling_Unrestricted_Admin_Mode">Uninstalling user-sysmaint-split and enabling
+Unrestricted Admin Mode</a>.</p>
+<h1 id="Known_Issues">Known Issues</h1>
+<ul>
+<li><u>Compatibility issues:</u> Known application compatibility
+limitations and related forum discussions.
+<ul>
+<li><u>Additional documentation:</u> In case of compatibility issues,
+see also section <a href="./#Applications_requiring_Administrative_Rights_during_User_Session">Applications requiring Administrative Rights during
+User Session</a>.</li>
+<li><u>ZuluCrypt:</u> <a href="https://forums.whonix.org/t/zulucrypt-not-working-in-user-session/21609">ZuluCrypt
+not working in user session</a></li>
+<li><u>VeraCrypt:</u> <a href="https://forums.kicksecure.com/t/veracrypt-containers-do-not-open/1091">VeraCrypt
+containers do not open</a>
+<ul>
+<li><u>Related discussion:</u> <a href="https://forums.whonix.org/t/whonix-user-isolation-user-sysmaint-split-breaks-veracrypt-workflow/21629">Whonix
+user isolation (user-sysmaint-split) breaks VeraCrypt workflow</a></li>
+</ul></li>
+<li><u>Usability:</u> <a href="https://forums.kicksecure.com/t/struggling-with-the-point-release-update-user-sysmaint-split-sudo/1051">Struggling
+with the point release update - user-sysmaint-split - sudo</a></li>
+<li><u>ProtonVPN:</u> <a href="https://forums.kicksecure.com/t/cant-open-proton-vpn-in-kicksecure-18/1413">Can't
+open Proton VPN in Kicksecure 18</a></li>
+</ul></li>
+<li><u>Security issues:</u> Upstream or platform issues that may affect
+Kicksecure users.
+<ul>
+<li><u>Qubes potential local privilege escalation:</u> <a href="https://github.com/QubesOS/qubes-issues/issues/9717">harden
+insecure permissions inside <code>/dev/xen</code> folder / research
+security impact of the Qubes <code>/dev/xen</code> folder permissions
+#9717</a> -- This issue is <a href="../Unspecific/">unspecific to Kicksecure</a> and is entirely unrelated
+to Kicksecure. It equally applies to App Qubes that are not using
+<code>qubes-core-agent-passwordless-root</code>, such as Qubes Debian
+minimal Template.</li>
+</ul></li>
+</ul>
+<h1 id="Developers">Developers</h1>
+<ul>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/">User Account Isolation (developers)</a></li>
+<li><a href="../Dev/user-sysmaint-split/"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split">Kicksecure/user-sysmaint-split</a></span></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sysmaint-panel">Kicksecure/sysmaint-panel</a></span></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="../Dev/user-sysmaint-split/#Fast_User_Switching"><code>user-sysmaint-split</code> (developers), Fast
+User Switching</a></li>
+<li id="cite_note-2">Implemented in a script that runs as a PAM module:
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/block-unsafe-logins%23security-misc-shared">Kicksecure/security-misc</a></span></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Root/" title="Root"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Root</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Unrestricted_admin_mode/" title="unrestricted admin mode"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">unrestricted
+admin mode</span></a><span class="info"><span class="prev">Previous
+page: Root</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: unrestricted admin
+mode</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/RAM Wipe Old Notes</title>
+<meta name="description" content="Implementation notes.">
+<meta property="og:description" content="Implementation notes.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/RAM_Wipe_Old_Notes/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/RAM_Wipe_Old_Notes/">
+<meta property="og:title" content="Warm Boot Attack Defense - Archived RAM Wipe Development Notes">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>RAM Wipe Old Notes</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#cryptsetup-suspend">cryptsetup-suspend</a></li><li class="toc-l2"><a href="#Potential_cryptsetup-suspend_Security_Issue">Potential
+cryptsetup-suspend Security Issue</a></li><li class="toc-l2"><a href="#cryptsetup">cryptsetup</a></li><li class="toc-l2"><a href="#systemd">systemd</a></li><li class="toc-l2"><a href="#initramfs">initramfs</a></li><li class="toc-l2"><a href="#Inspiration">Inspiration</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<p><u><strong>Superseded by <a href="../RAM_Wipe/">Dev/RAM Wipe</a>!</strong></u></p>
+<h1 id="Old_RAM_Wipe_Development_Notes">Old RAM Wipe Development
+Notes</h1>
+<h2 id="cryptsetup-suspend">cryptsetup-suspend</h2>
+<ul>
+<li><a href="https://manpages.debian.org/cryptsetup-suspend">https://manpages.debian.org/cryptsetup-suspend</a></li>
+<li><a href="https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=cryptsetup-suspend">https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=cryptsetup-suspend</a></li>
+<li>Its in <a href="https://packages.debian.org/bookworm/cryptsetup-suspend">Debian
+bookworm</a></li>
+<li><a href="https://salsa.debian.org/mejo/cryptsetup-suspend/-/blob/suspend/debian/control">https://salsa.debian.org/mejo/cryptsetup-suspend/-/blob/suspend/debian/control</a></li>
+</ul>
+<p>(Bold added.)</p>
+<p><blockquote><p>Package: cryptsetup-suspend [...] Description: disk encryption
+support - suspend mode integration</p>
+<p><code>Cryptsetup&#160;provides&#160;an&#160;interface&#160;for&#160;configuring&#160;encryption&#160;on&#160;block</code><br />
+<code>devices&#160;(such&#160;as&#160;/home&#160;or&#160;swap&#160;partitions),&#160;using&#160;the&#160;Linux&#160;kernel</code><br />
+<code>device&#160;mapper&#160;target&#160;dm-crypt.&#160;It&#160;features&#160;integrated&#160;Linux&#160;Unified&#160;Key</code><br />
+<code>Setup&#160;(LUKS)&#160;support.</code><br />
+<code>.</code><br />
+<code>This&#160;package&#160;provides&#160;suspend&#160;mode&#160;integration&#160;for&#160;cryptsetup.&#160;</code><strong><code>It takes</code></strong><br />
+<strong><code>care of removing LUKS master key from memory before system suspend.</code></strong><br />
+<code>.</code><br />
+<code>Please&#160;note&#160;that&#160;the&#160;supsend&#160;mode&#160;integration&#160;is&#160;limited&#160;to&#160;LUKS&#160;devices</code><br />
+<code>and&#160;requires&#160;systemd.</code></p></blockquote></p>
+<ul>
+<li><a href="https://archive.fosdem.org/2020/schedule/event/dip_close_lid_encrypt/attachments/slides/3946/export/events/attachments/dip_close_lid_encrypt/slides/3946/cryptsetup_fosdem.pdf">https://archive.fosdem.org/2020/schedule/event/dip_close_lid_encrypt/attachments/slides/3946/export/events/attachments/dip_close_lid_encrypt/slides/3946/cryptsetup_fosdem.pdf</a></li>
+<li><a href="https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/debian/experimental/debian/scripts/suspend/cryptsetup-suspend.c">https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/debian/experimental/debian/scripts/suspend/cryptsetup-suspend.c</a></li>
+<li><a href="https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/debian/experimental/debian/scripts/suspend/cryptsetup-suspend-wrapper">https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/debian/experimental/debian/scripts/suspend/cryptsetup-suspend-wrapper</a></li>
+<li><a href="https://packages.debian.org/experimental/amd64/cryptsetup-suspend/filelist">https://packages.debian.org/experimental/amd64/cryptsetup-suspend/filelist</a></li>
+</ul>
+<h2 id="Potential_cryptsetup-suspend_Security_Issue">Potential
+cryptsetup-suspend Security Issue</h2>
+<p>Might not suspend and wipe cryptsetup key.</p>
+<p><blockquote><p>Not enough memory available. Please close some programs or add swap
+space to suspend successfully.</p></blockquote></p>
+<p><a href="https://salsa.debian.org/cryptsetup-team/cryptsetup/-/blob/debian/experimental/debian/scripts/suspend/cryptsetup-suspend-wrapper"><code>/lib/cryptsetup/scripts/suspend/cryptsetup-suspend-wrapper</code></a></p>
+<pre><code>        if [ $((MemAvailable+SwapFree)) -lt $((300*1024*1024)) ]; then
+            log_error &quot;Not enough memory available. Please close some programs or add swap space to suspend successfully.&quot;
+            exit 1
+        fi</code></pre>
+<h2 id="cryptsetup">cryptsetup</h2>
+<p>Quote <a href="https://manpages.debian.org/cryptsetup"><code>cryptsetup luksSuspend</code>,
+<code>cryptsetup close</code> (previously
+<code>cryptsetup lukseClose</code>) man page</a>. (Bold added.)</p>
+<p><blockquote><p>luksSuspend</p>
+<p>suspends active device (all IO operations are frozen) and
+<strong>wipes encryption key from kernel</strong>.</p></blockquote></p>
+<p><blockquote><p>close</p>
+<p>Removes the existing mapping  and <strong>wipes the key from
+kernel memory</strong>.</p></blockquote></p>
+<p>Does <code>systemd</code> run <code>cryptsetup luksSuspend</code>,
+<code>cryptsetup close</code> or <code>cryptsetup lukseClose</code> on
+the root device and thereby wipe the cryptsetup encryption key from
+kernel memory?</p>
+<p>Quote <a href="https://www.freedesktop.org/software/systemd/man/systemd-halt.service.html">https://www.freedesktop.org/software/systemd/man/systemd-halt.service.html</a></p>
+<p><blockquote><p>When these services are run, they ensure that PID 1 is replaced by
+the /usr/lib/systemd/systemd-shutdown tool which is then responsible for
+the actual shutdown. Before shutting down, this binary will try to
+unmount all remaining file systems, disable all remaining swap devices,
+detach all remaining storage devices and kill all remaining
+processes.</p></blockquote></p>
+<ul>
+<li><a href="https://manpages.debian.org/systemd-shutdown">https://manpages.debian.org/systemd-shutdown</a></li>
+<li><a href="https://github.com/systemd/systemd/blob/master/src/shutdown/shutdown.c">https://github.com/systemd/systemd/blob/master/src/shutdown/shutdown.c</a>
+<ul>
+<li>mentions <code>need_dm_detach</code>, <code>dm_detach_all</code>
+<ul>
+<li><a href="https://github.com/systemd/systemd/blob/master/src/shutdown/umount.c#L815">https://github.com/systemd/systemd/blob/master/src/shutdown/umount.c#L815</a>
+implements <code>dm_detach_all</code>
+<ul>
+<li><a href="https://lists.freedesktop.org/archives/systemd-devel/2012-June/005443.html">https://lists.freedesktop.org/archives/systemd-devel/2012-June/005443.html</a>
+might imply that <code>dm_detach_all</code> refers to
+<code>dm-crypt</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><code>/lib/cryptsetup/cryptdisks-functions</code></p>
+<pre><code># Removes all mappings in crypttab, except the ones holding the root
+# file system or /usr
+do_stop() {</code></pre>
+<h2 id="systemd">systemd</h2>
+<ul>
+<li>systemd feature request: <a href="https://github.com/systemd/systemd/issues/5794"><code>cryptsetup luksSuspend</code>
+(wipes encryption key from kernel) on suspend</a></li>
+<li>systemd feature request: <a href="https://github.com/systemd/systemd/issues/17887">Wipe LUKS Disk
+Encryption Key for Root Disk from RAM during Shutdown to defeat Cold
+Boot Attacks</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/systemd-cryptsetup@.service.html">https://www.freedesktop.org/software/systemd/man/systemd-cryptsetup@.service.html</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/crypttab.html">https://www.freedesktop.org/software/systemd/man/crypttab.html</a></li>
+<li><a href="https://systemd.io/INITRD_INTERFACE/">https://systemd.io/INITRD_INTERFACE/</a></li>
+<li><a href="https://systemd.io/ROOT_STORAGE_DAEMONS/">https://systemd.io/ROOT_STORAGE_DAEMONS/</a></li>
+</ul>
+<h2 id="initramfs">initramfs</h2>
+<ul>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778849">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778849</a></li>
+</ul>
+<h2 id="Inspiration">Inspiration</h2>
+<ul>
+<li><a href="https://github.com/vianney/arch-luks-suspend">https://github.com/vianney/arch-luks-suspend</a></li>
+<li><a href="https://github.com/nailfarmer/debian-luks-suspend/">https://github.com/nailfarmer/debian-luks-suspend/</a></li>
+<li><a href="https://waaaaargh.github.io/gnu&amp;linux/2013/08/06/lukssuspend-with-encrypted-root-on-archlinux/">https://waaaaargh.github.io/gnu&amp;linux/2013/08/06/lukssuspend-with-encrypted-root-on-archlinux/</a></li>
+</ul>
+<h1 id="Forum_Discussion">Forum Discussion</h1>
+<p><a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596</a></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

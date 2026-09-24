@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Thumbnails</title>
+<meta name="description" content="Thumbnails in Kicksecure.">
+<meta property="og:description" content="Thumbnails in Kicksecure.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Thumbnails/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Thumbnails/">
+<meta property="og:title" content="Thumbnails">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Deep_scan_ready/" title="deep scan ready"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">deep
+scan
+ready</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../File_indexing/" title="File indexing"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">File
+indexing</span></a><span class="info"><span class="prev">Previous page:
+deep scan ready</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: File
+indexing</span></span></span>Thumbnails</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Thumbnails are small preview images shown for files (for example,
+photos, PDFs, or videos) in the file manager. In Kicksecure, thumbnails
+are disabled by default in its default <a href="../Software/#File_Manager">file manager</a> to reduce the risk from malicious
+files.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><a href="https://en.wikipedia.org/wiki/Thumbnail">Thumbnail</a> is a
+small preview image of a file (such as a picture, video, or document).
+Thumbnails make it easier to recognize and organize files in a
+folder.</p>
+<h1 id="Security_Implication">Security Implication</h1>
+<p>To show thumbnails, the system must open and <em>decode</em> (parse)
+each file to create a preview. If a file is malicious or specially
+crafted, it can sometimes exploit bugs in the thumbnailing software or
+related libraries. In the worst case, this can lead to the attacker
+running code on your system (remote code execution), for example by
+chaining multiple steps such as: exploit decoder &#8594; gain user privileges
+&#8594; exploit local privilege escalation/sandbox escape.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<h2 id="Mitigation">Mitigation</h2>
+<p>To mitigate these types of attack, the thumbnail feature is disabled
+by default in Kicksecure in its default <a href="../Software/#File_Manager">file manager</a>.</p>
+<p>Thumbnails are not the only feature that processes files
+automatically. <a href="../File_indexing/">File
+indexing</a> services (used for search), such as <a href="https://tracker.gnome.org/overview/">Tracker-Miner</a>, can also
+parse files in the background and may be vulnerable in similar ways. For
+reference, see <a href="../Dev/GNOME/#1-Click_RCE_on_GNOME_(CVE-2023-43641)_in_file_indexing_service">1-Click RCE on GNOME (CVE-2023-43641) in file indexing
+service</a>. At the time of writing there is no file indexing service by
+default in Kicksecure.</p>
+<p>See also <a href="../Computer_Security_Introduction/#Untrusted_Input_and_Attack_Surface">Untrusted Input and Attack Surface</a>.</p>
+<h2 id="Catfish">Catfish</h2>
+<p><a href="https://packages.debian.org/trixie/catfish">catfish</a>
+(file searching tool) is installed by default in Kicksecure.</p>
+<p>There does not appear to be a way to configure Catfish to disable
+thumbnails regardless of the view mode you choose in the hamburger menu.
+The "large" view is the thumbnail view, and according to the code,
+selecting the "large" view will enable thumbnails immediately and keep
+them enabled by default for subsequent starts of Catfish, until you set
+it back to "compact list" view.</p>
+<p>"Compact list" view appears to be the default view, and thumbnail
+generation seems to be disabled in this view, so explicitly disabling
+thumbnails may not be necessary.</p>
+<p>Forum discussion: <a href="https://forums.whonix.org/t/install-catfish-file-searching-tool-xfce-de-by-default/19837">Install
+Catfish file searching tool (Xfce DE) by default</a></p>
+<h1 id="Enable_Thumbnails_Again">Enable Thumbnails Again</h1>
+<p>If you want to enable thumbnails again, follow these steps:</p>
+<ul>
+<li>Click on File Manager &#8594; Edit &#8594; Preferences</li>
+</ul>
+<p><img src="../../media/Thumbnail1.png.webp" width="500" alt="Thumbnail1.png" /></p>
+<ul>
+<li>Click on Thumbnail &#8594; Tick Show thumbnails of files</li>
+</ul>
+<p><img src="../../media/Thumbnail2.png.webp" width="800" alt="Thumbnail2.png" /></p>
+<p>Forum discussion: <a href="https://forums.whonix.org/t/thumbnails-not-working-in-new-whonix-lxqt/22834">Thumbnails
+not working in new whonix lxqt</a></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Examples: * <a href="https://imagetragick.com/">ImageTragick</a> *
+<a href="https://talosintelligence.com/vulnerability_reports/TALOS-2017-0321">Poppler
+PDF library</a> * <a href="https://csorianognome.wordpress.com/2017/07/20/clarification-on-a-security-flaw-on-a-thumbnailer/">gnome-exe-thumbnailer/Bad
+Taste</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Deep_scan_ready/" title="deep scan ready"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">deep
+scan
+ready</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../File_indexing/" title="File indexing"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">File
+indexing</span></a><span class="info"><span class="prev">Previous page:
+deep scan ready</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: File
+indexing</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

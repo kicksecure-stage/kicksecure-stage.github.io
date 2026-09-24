@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/git</title>
+<meta name="description" content="Development Notes about git and ways to stay up to date with source code changes">
+<meta property="og:description" content="Development Notes about git and ways to stay up to date with source code changes">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/git/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/git/">
+<meta property="og:title" content="Dev/git">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>git</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Compare">Compare</a></li><li class="toc-l2"><a href="#master">master</a></li><li class="toc-l2"><a href="#signed_git_tags">signed git tags</a></li><li class="toc-l2"><a href="#Link_to_Source_Code">Link to Source Code</a></li><li class="toc-l2"><a href="#git">git</a></li><li class="toc-l2"><a href="#rss_feed_notification">rss feed notification</a></li><li class="toc-l2"><a href="#manually_in_your_browser">manually in your browser</a></li><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Get_the_Source_Code">Get the Source Code</a></li><li class="toc-l3"><a href="#Get_the_Signing_Key">Get the Signing Key</a></li><li class="toc-l3"><a href="#Get_the_Source_Code_2">Get the Source Code</a></li><li class="toc-l2"><a href="#Zsh_in_Kicksecure_or_Derivatives">Zsh in Kicksecure or
+Derivatives</a></li><li class="toc-l2"><a href="#bash_and_other_shells">bash and other shells</a></li><li class="toc-l3"><a href="#OpenPGP_Verify_the_Source_Code">OpenPGP Verify the Source
+Code</a></li><li class="toc-l3"><a href="#Choose_Version">Choose Version</a></li><li class="toc-l3"><a href="#Check_Git">Check Git</a></li><li class="toc-l2"><a href="#Find_Keywords">Find Keywords</a></li><li class="toc-l2"><a href="#Find_Files">Find Files</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../image_creation/" title="Dev/image creation"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/image
+creation</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../repository/" title="Dev/repository"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/repository</span></a><span class="info"><span class="prev">Previous
+page: Dev/image creation</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/repository</span></span></span>Dev/git</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Development Notes about git and ways to stay up to date with source
+code changes</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Security">Security</h1>
+<p><u>Definitions:</u></p>
+<ul>
+<li><strong>remote server</strong>: Means a cloud server and/or
+third-party hosted. Not under the full control of the project.</li>
+<li><strong>release builds</strong>: Binary images such as ISO, VM
+images, Debian packages.</li>
+</ul>
+<p><u>Policy:</u></p>
+<ul>
+<li><strong>Untrusted git remote servers</strong>: Git remote servers,
+such as GitHub, are considered untrustworthy.</li>
+<li><strong>Local release builds only</strong>: No release artifacts are
+produced on any remote servers. All builds are done locally.</li>
+<li><strong>Secure usage of CI</strong>: There is continuous
+integration, but it is for testing only. It is a "throw-away CI" only. A
+build is created on a remotely hosted server, but the build results
+(images) are not used for anything. Nothing gets touched or downloaded
+from the CI or any other remote server.</li>
+<li><strong>No write access for CI servers</strong>: CI servers or web
+servers do not have write access to source code (git).</li>
+<li><strong>Compromised git remote servers</strong>: Even if there was
+malicious write access to git, it would be noticed. Before making
+builds, the source code is always fetched, diffed, and reviewed before
+local merge. Only locally merged project source code that has been
+reviewed is used to create release builds.</li>
+<li><strong>Non-essential use of CI only</strong>: CI is only used as a
+"bonus", for non-essential tasks. Such as additional code scanners that
+are otherwise unavailable, infeasible or insecure to run locally.</li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="../../Digital_Signature_Policy/">Digital
+Signature Policy</a></li>
+<li><a href="../../Trust/">Trust</a></li>
+</ul>
+<h1 id="Repositories">Repositories</h1>
+<p>Kicksecure's code is organized into a number of individual project
+repos, and a "master" repo for the build system that includes the other
+repos as submodules. Examples of individual project repos are:</p>
+<ul>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/tirdad">Kicksecure/tirdad</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate">Kicksecure/sdwdate</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc">Kicksecure/security-misc</a></span></li>
+</ul>
+<p>The master build system repo for Kicksecure is <a href="https://github.com/Kicksecure/derivative-maker">derivative-maker</a>.
+Its primary purpose is to build all of the individual projects, and
+create Debian-based OS images (OVA, ISO, QCOW2, etc.) with these
+packages pre-installed.</p>
+<p>Individuals who are interested in building Kicksecure or auditing its
+code should clone the <a href="https://github.com/Kicksecure/derivative-maker">derivative-maker</a>
+repository and its submodules. Detailed instructions on building
+Kicksecure can be found in <a href="../Build_Documentation/images/">Dev/Build_Documentation/images</a>. Individuals
+interested in contributing to individual Kicksecure projects should
+clone the repository for the specific project they wish to contribute
+to.</p>
+<h1 id="Branches">Branches</h1>
+<h2 id="Introduction">Introduction</h2>
+<p>While the project is small, adrelanos thinks it is best not to make
+too difficult a policy.</p>
+<h2 id="Compare">Compare</h2>
+<p>For individual project repositories, version bumps occur on every
+commit with the message <code>bumped changelog version</code>. You can
+find the commits corresponding to the release of the versions you are
+interested in, and compare them using <code>git diff</code> or
+<code>git difftool</code>.</p>
+<p>Comparing the changes between two releases of Kicksecure is harder
+because of git limitations when working with submodules. Each release of
+Kicksecure is tagged, allowing you to use
+<code>git checkout --recurse-submodules</code> in the derivative-maker
+repository to go to a particular point in Kicksecure's development.
+However, the only tool in git that can show the changes between two
+releases of Kicksecure with submodule changes included is
+<code>git diff --submodule=diff</code>.
+<code>git difftool --submodule=diff</code> will not show you changes
+within submodules.</p>
+<p>To view the output of <code>git diff --submodule=diff</code> in an
+easier-to-read format, you can use <a href="https://github.com/megatops/PatchViewer/blob/ff5515e77c99bdad9741caebf49c87d0fbe9d1eb/PatchViewer.html">PatchViewer</a>
+to visualize the changes shown by Git. To use this:</p>
+<ul>
+<li>Open <a href="https://github.com/megatops/PatchViewer/blob/ff5515e77c99bdad9741caebf49c87d0fbe9d1eb/PatchViewer.html">https://github.com/megatops/PatchViewer/blob/ff5515e77c99bdad9741caebf49c87d0fbe9d1eb/PatchViewer.html</a>
+in your browser.</li>
+<li>Download the HTML file using the download button in the upper-right
+corner of the page.</li>
+<li>Open the downloaded HTML file in your browser.</li>
+<li>In a terminal, navigate to the <code>derivative-maker</code>
+repository, and run
+<code>git diff --submodule=diff old-ref new-ref &gt; diff</code>,
+replacing <code>old-ref</code> and <code>new-ref</code> as
+appropriate.</li>
+<li>In PatchViewer, click "Choose File", and select the diff file you
+just generated.</li>
+<li>The diff will be visualized for you as two side-by-side files.</li>
+</ul>
+<p>Note that this strategy will not show detailed information about
+changes to binary files such as images.</p>
+<h2 id="master">master</h2>
+<ul>
+<li><s>Adrelanos's progress of work.</s></li>
+<li>Not calling it unstable, because the changes will most likely never
+make it unstable, but it is just not tested whether it still
+builds.</li>
+<li>Branching model, project readme, information, gpg...</li>
+</ul>
+<h2 id="signed_git_tags">signed git tags</h2>
+<p>Releases will be tagged and gpg signed.</p>
+<h2 id="Link_to_Source_Code">Link to Source Code</h2>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/derivative-maker">Kicksecure/derivative-maker</a></span></p>
+<hr />
+<h1 id="subscribe_to_code_changes">subscribe to code changes</h1>
+<h2 id="git">git</h2>
+<p>Git clone <a href="https://github.com/Kicksecure/derivative-maker">GitHub</a>.</p>
+<p>A git specific workflow could be:</p>
+<pre><code>git fetch</code></pre>
+<p>every few days and then git diff(tool), merge, etc.</p>
+<h2 id="rss_feed_notification">rss feed notification</h2>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/derivative-maker/commits/master.atom">Kicksecure/derivative-maker</a></span></p>
+<h2 id="manually_in_your_browser">manually in your browser</h2>
+<p>Check every now and then
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/derivative-maker/commits/master.">Kicksecure/derivative-maker</a></span></p>
+<hr />
+<p><span class="manually-placed-anchor " id="grep_Kicksecure_source_code"></span></p>
+<p><span class="manually-placed-anchor " id="grep"></span>
+<span class="manually-placed-anchor " id="grep_Kicksecure_source_code"></span></p>
+<p><span class="manually-placed-anchor " id="grep_Whonix_source_code"></span></p>
+<h1 id="Search_the_Source_Code">Search the Source Code</h1>
+<h2 id="Introduction_2">Introduction</h2>
+<p><code>grep</code>ping (search for keywords inside files) or
+<code>find</code>ing files in the Kicksecure source code can be useful
+when looking for certain keywords or files. However, a common
+<code>grep -r</code> or <code>find .</code> will show lots of irrelevant
+search results due to changelog files, license files and git history.
+The following is a suggestion on how to securely acquire Kicksecure
+source code as well as on <code>grep</code>ping or <code>find</code>ing
+the Kicksecure source code with only relevant search results.</p>
+<h2 id="Get_the_Source_Code">Get the Source Code</h2>
+<h3 id="Get_the_Signing_Key">Get the Signing Key</h3>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This step is recommended for better security, but is not strictly
+required. (See <a href="../../Trust/">Trust</a>.)</p>
+</div>
+<p>Get the <a href="../../Signing_Key/">Kicksecure Signing
+Key</a> and import it.</p>
+<h3 id="Get_the_Source_Code_2">Get the Source Code</h3>
+<p><strong><a href="../../Reasons_for_Freedom_Software/" class="freelink" aria-label="Link to: Reasons for Freedom Software">FREE</a></strong></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<u>Note</u>: By proceeding, you acknowledge that you have read,
+understood, and agreed to our <a href="../../Terms_of_Service/"><span>Terms of
+Service</span></a> and <a href="../../Copyright/"><span>License
+Agreement</span></a>.</p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Install <code>git</code>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt install
+git</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Get the source code including git submodules. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p><u>Note:</u> Replace <code>18.2.1.9-developers-only</code> with the
+actual tag or branch you intend to build.</p>
+<p><span class="code-select">git clone --depth=1 --branch
+18.2.1.9-developers-only --jobs=4 --recurse-submodules
+--shallow-submodules <a href="https://github.com/Kicksecure/derivative-maker.git">https://github.com/Kicksecure/derivative-maker.git</a></span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Check if the above command succeeded.</p>
+<p>If there were errors such as:</p>
+<pre><code>fatal: unable to access &#39;https://github.com/.../&#39;: Could not resolve host: github.com</code></pre>
+<p>Or:</p>
+<pre><code>fatal: unable to access &#39;https://github.com/.../&#39;: gnutls_handshake() failed: The TLS connection was non-properly terminated.</code></pre>
+<p>then the download likely failed.</p>
+<p>Verify success by checking the exit code.</p>
+<p>Choose your shell.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="Zsh_in_Kicksecure_or_Derivatives">Zsh in Kicksecure or
+Derivatives</h2>
+</div>
+<div class="tcc-content">
+<p>If the last line contains something similar to:</p>
+<pre><code>zsh: exit 1</code></pre>
+<p>then do not proceed. See footnote. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="bash_and_other_shells">bash and other shells</h2>
+</div>
+<div class="tcc-content">
+<p>Show the exit code.</p>
+<p><span class="code-select">echo $?</span></p>
+<p>The output should be:</p>
+<pre><code>0</code></pre>
+<p>If any other exit code is shown, do not proceed and see footnote.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+</div>
+</div>
+</div>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+<p>Git repository cloning has been completed.</p>
+<h3 id="OpenPGP_Verify_the_Source_Code">OpenPGP Verify the Source
+Code</h3>
+<p><strong>This chapter is recommended for better security, but is not
+strictly required.</strong> (See <a href="../../Trust/">Trust</a>.)</p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<p><strong>1.</strong> Verify the chosen tag to build.</p>
+<p>Note: Replace with the tag you want to build.</p>
+<p><span class="code-select">git verify-tag 18.2.1.9-stable</span></p>
+<p><strong>2.</strong> Check the output of the verification step.</p>
+<p><u>If the file is verified successfully</u>, the output will include
+<code>Good signature</code>, which is the most important thing to
+check.</p>
+<pre><code>gpg: Good signature</code></pre>
+<p>This output might be followed by a warning as follows.</p>
+<pre><code>gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.</code></pre>
+<p>This message does not alter the validity of the signature related to
+the downloaded key. Rather, this warning refers to the level of trust
+placed in the Kicksecure signing key and the <a href="../../OpenPGP/#The_OpenPGP_Web_of_Trust">web of
+trust</a>. To remove this warning, the Kicksecure signing key must be
+personally signed with your own key.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+Remember to check the GPG signature timestamp. For instance, if you
+previously saw a signature from 2023 and now see one from 2022, this
+could indicate a potential rollback (downgrade) or indefinite freeze
+attack.<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+</div>
+<p><strong>3.</strong> Verify the git commit to build.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<p>Note: Replace <code>18.2.1.9</code> with the actual git tag being
+verified.</p>
+<p><span class="code-select">git verify-commit
+18.2.1.9-stable^{commit}</span></p>
+<p><strong>4.</strong> Check the output of the verification step.</p>
+<p><strong>5.</strong> Done.</p>
+<h3 id="Choose_Version">Choose Version</h3>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Retrieve a list of available git tags.</p>
+<p><span class="code-select">git --no-pager tag</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Use <i>git checkout</i> to select the preferred version to build.</p>
+<p><u>Note:</u> Replace <code>18.2.1.9-stable</code> with the actual
+version chosen for the build. Common sense is required when choosing the
+right version number. For example, the latest available version number
+is not necessarily the most stable or suitable. Follow the <a href="../../Stay_Tuned/">Kicksecure News Blog</a> as it might
+contain information.</p>
+<p><span class="code-select">git checkout --recurse-submodules
+18.2.1.9-stable</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Digital signature verification.</p>
+<p><u>Optional.</u> If you choose to perform digital signature
+verification above, you can verify the currently chosen commit
+(<code>HEAD</code>) again for additional assurance.</p>
+<p><span class="code-select">git verify-commit HEAD</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Done.</p>
+<p>Version selection has been completed.</p>
+<h3 id="Check_Git">Check Git</h3>
+<p><strong>1.</strong> Check if you really got the version you want.</p>
+<p><span class="code-select">git describe</span></p>
+<p>The output should show.</p>
+<pre><code>18.2.1.9-stable</code></pre>
+<p><strong>2.</strong> Check if source folder is pristine.</p>
+<p><span class="code-select">git status</span></p>
+<p>Output should be the following.</p>
+<ul>
+<li><strong>A)</strong></li>
+</ul>
+<p><code>HEAD detached at 18.2.1.9-stable</code><br />
+<code>nothing to commit, working tree clean</code><br />
+<u>or,</u></p>
+<ul>
+<li><strong>B)</strong></li>
+</ul>
+<pre><code>Not currently on any branch.
+nothing to commit, working tree clean</code></pre>
+<p>If it shows something else, do not continue.</p>
+<p><strong>3.</strong> Done.</p>
+<h2 id="Find_Keywords">Find Keywords</h2>
+<p><strong>1.</strong> Create folder <code>~/bin</code>.</p>
+<p><span class="code-select">mkdir -p ~/bin</span></p>
+<p><strong>2.</strong> Create a file <code>~/bin/mygrep</code>.</p>
+<p><strong>3.</strong> Paste the following content.</p>
+<p><span class="code-select">#!/bin/bash set -x grep \
+--exclude=README.md \ --exclude=GPLv2 \ --exclude=GPLv3 \
+--exclude=COPYING \ --exclude=changelog.upstream-old1 \
+--exclude-dir=mnt \ --exclude-dir=qubes-src/linux-template-builder/mnt \
+--exclude=changelog.upstream \ --exclude-dir=".git" \
+--exclude-dir=chroot-debian \ --exclude-dir=chroot-buster
+"$@"</span></p>
+<p><strong>4.</strong> Save.</p>
+<p><strong>5.</strong> Make executable.</p>
+<p><span class="code-select">chmod +x ~/bin/mygrep</span></p>
+<p><strong>6.</strong> Reboot is required.</p>
+<p><strong>7.</strong> You need to be inside the source code folder. If
+not already, change directory.</p>
+<p><span class="code-select">cd derivative-maker</span></p>
+<p><strong>8.</strong> Search for a textual string (keyword).</p>
+<p>For example <code>grub-pc</code>. Replace <code>grub-pc</code> with
+the actual keyword.</p>
+<p><span class="code-select">mygrep -r -i grub-pc</span></p>
+<h2 id="Find_Files">Find Files</h2>
+<p><strong>1.</strong> Create folder <code>~/bin</code>.</p>
+<p><span class="code-select">mkdir -p ~/bin</span></p>
+<p><strong>2.</strong> Create a file <code>~/bin/myfind</code>.</p>
+<p><strong>3.</strong> Paste the following.</p>
+<p><span class="code-select">#!/bin/bash set -x find \ "$@" \ -type f \
+-not -iwholename '*.git*'</span></p>
+<p><strong>4.</strong> Save.</p>
+<p><strong>5.</strong> Make executable.</p>
+<p><span class="code-select">chmod +x ~/bin/myfind</span></p>
+<p><strong>6.</strong> You need to be inside the source code folder. If
+not already, change directory.</p>
+<p><span class="code-select">cd derivative-maker</span></p>
+<p><strong>7.</strong> Search for a file name.</p>
+<p>For example <code>/etc/apparmor.d</code>.</p>
+<p><span class="code-select">myfind . | grep --color -i
+/etc/apparmor.d</span></p>
+<hr />
+<h1 id="Compiled_Code">Compiled Code</h1>
+<p>Source code that requires compilation and gets compiled into
+binaries.</p>
+<p><span class="code-select">find . -name '*.c' -not -iwholename
+'*.git*'</span></p>
+<pre><code>./sdwdate/usr/lib/sdwdate/sclockadj.c
+./bindp/usr/lib/bindp.c
+./kloak/src/main.c
+./kloak/src/keycodes.c
+./kloak/src/eventcap.c</code></pre>
+<h1 id="Goodies">Goodies</h1>
+<p>Optional. Just sharing. Like it or not.</p>
+<ul>
+<li>Bash completion can complete git commands and branch names.</li>
+<li><a href="https://web.archive.org/web/20200201201521/http://www.opinionatedprogrammer.com/2011/01/colorful-bash-prompt-reflecting-git-status/">Colorful
+git prompt.</a></li>
+</ul>
+<p><a href="https://web.archive.org/web/20220801180038/http://www.opinionatedprogrammer.com/post-img/git-prompt-screenshot.png">screenshot</a></p>
+<h1 id="apt_source">apt source</h1>
+<p>You need to enable <code>deb-src</code> in
+<code>/etc/apt/sources.list.d/derivative.sources</code>!</p>
+<pre><code>sudo apt update</code></pre>
+<pre><code>Hit:1 tor+http://deb.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion buster InRelease
+Hit:2 https://deb.qubes-os.org/r4.1/vm bullseye InRelease
+Ign:3 tor+http://2s4yqjx5ul6okpp3f2gaunr2syex5jgbfpfvhxxbbjwnrsvbk5v3qbid.onion/debian buster InRelease
+Hit:4 tor+http://5ajw6aqf3ep7sijnscdzw77t7xq4xjpsy335yb2wiwgouo7yfxtjlmid.onion buster/updates InRelease
+Hit:5 tor+http://2s4yqjx5ul6okpp3f2gaunr2syex5jgbfpfvhxxbbjwnrsvbk5v3qbid.onion/debian buster Release
+Ign:7 https://deb.debian.org/debian buster InRelease
+Hit:8 https://security.debian.org buster/updates InRelease
+Hit:9 https://deb.debian.org/debian buster Release
+Hit:11 https://deb.debian.org buster InRelease
+Reading package lists... Done
+E: Failed to fetch tor+http://deb.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion/dists/{{Stable project version based on Debian codename}}/InRelease  Unable to find expected entry &#39;contrib/source/Sources&#39; in Release file (Wrong sources.list entry or malformed file)
+E: Failed to fetch https://deb.debian.org/dists/stable/InRelease  Unable to find expected entry &#39;non-free/source/Sources&#39; in Release file (Wrong sources.list entry or malformed file)
+E: Some index files failed to download. They have been ignored, or old ones used instead.</code></pre>
+<p>The following messages can be ignored:</p>
+<ul>
+<li>"Unable to find expected entry 'contrib/source/Sources'" and</li>
+<li>"Unable to find expected entry 'non-free/source/Sources'"</li>
+</ul>
+<p>There is nothing in these repositories, and it does not limit
+functionality in any way. This is an inconvenient message but it will
+not be fixed since it was only raised once in the last five years.</p>
+<p>apt source is fully functional.</p>
+<pre><code>apt source sandbox-app-launcher</code></pre>
+<pre><code>Reading package lists... Done
+Picking &#39;kicksecure-meta-packages&#39; as source package instead of &#39;sandbox-app-launcher&#39;
+NOTICE: &#39;kicksecure-meta-packages&#39; packaging is maintained in the &#39;Git&#39; version control system at:
+{{Github_link|
+https://github.com/Kicksecure/sandbox-app-launcher.git
+}}
+Please use:
+git clone {{Github_link|
+https://github.com/Kicksecure/sandbox-app-launcher.git
+}}
+to retrieve the latest (possibly unreleased) updates to the package.
+Need to get 48.9 kB of source archives.
+Get:1 tor+http://deb.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion buster/main sandbox-app-launcher 3:7.9-1 (dsc) [5,513 B]
+Get:2 tor+http://deb.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion buster/main sandbox-app-launcher 3:7.9-1 (tar) [37.8 kB]
+Get:3 tor+http://deb.dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion buster/main sandbox-app-launcher 3:7.9-1 (diff) [5,588 B]
+Fetched 48.9 kB in 2s (19.4 kB/s)
+dpkg-source: info: extracting sandbox-app-launcher in sandbox-app-launcher-7.9
+dpkg-source: info: unpacking sandbox-app-launcher_7.9.orig.tar.xz
+dpkg-source: info: unpacking sandbox-app-launcher_7.9-1.debian.tar.xz</code></pre>
+<hr />
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Optional <code>git</code> parameters: *
+<u><code>--depth=1</code>:</u> Speeds up the download by fetching only
+the latest commit. *
+<u><code>--branch 18.2.1.9-developers-only</code>:</u> Convenience.
+Checks out the specified tag or branch directly. *
+<u><code>--jobs=4</code>:</u> Speeds up fetching submodules. *
+<u><code>--recurse-submodules --shallow-submodules</code>:</u> Ensures
+all required submodules are fetched efficiently. Experienced
+<code>git</code> users may omit any of these optional parameters.</li>
+<li id="cite_note-2">Alternatively, this can be achieved in several steps. This may be
+useful if network issues arise. * <u>Over HTTPS:</u> **
+<span class="code-select">git clone --depth=1 --branch
+18.2.1.9-developers-only --jobs=4 --recurse-submodules
+--shallow-submodules <a href="https://github.com/Kicksecure/derivative-maker.git">https://github.com/Kicksecure/derivative-maker.git</a></span>
+* <u>Over SSH:</u> ** Might work better over slow or unstable networks
+but requires a GitHub account and a configured SSH public key at GitHub.
+See footnote [A] below. ** <span class="code-select">git clone --depth=1
+--branch 18.2.1.9-developers-only
+git@github.com:Kicksecure/derivative-maker.git</span>
+<span class="code-select">cd derivative-maker</span>
+<span class="code-select">git submodule update --init --recursive
+--progress --jobs=4</span> ---- [A] GitHub SSH public key setup.
+<i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Create an SSH public key. See <a href="../../SSH/">SSH</a>.
+<i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+View your SSH public key. <span class="code-select">cat
+~/.ssh/id_ed25519.pub</span>
+<i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Copy the SSH public key.
+<i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Paste the SSH public key into your GitHub account. <a href="https://github.com/settings/keys">GitHub SSH keys
+settings</a></li>
+<li id="cite_note-3">Delete the <code>derivative-maker</code> source code folder and
+retry.
+<pre><code> sudo rm -r derivative-maker </code></pre></li>
+<li id="cite_note-4">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a></li>
+<li id="cite_note-5">It is advisable to verify the signature of the git commit as well.
+By convention, git tags should point to signed git commits. Beginning
+from git tag 9.6 and above. (<a href="https://forums.whonix.org/t/security-git-general-verification-verifying-whonix-submodules/513">forum
+discussion</a>)</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../image_creation/" title="Dev/image creation"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/image
+creation</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../repository/" title="Dev/repository"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/repository</span></a><span class="info"><span class="prev">Previous
+page: Dev/image creation</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/repository</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development/">Development</a> <a href="../../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

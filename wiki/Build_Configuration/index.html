@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Build Configuration</title>
+<meta name="description" content="Kicksecure Build Configuration. APT Repository, Onion Sources, APT Cache, VM Settings, Skip Steps, Source Code Changes">
+<meta property="og:description" content="Kicksecure Build Configuration. APT Repository, Onion Sources, APT Cache, VM Settings, Skip Steps, Source Code Changes">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Build_Configuration/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Build_Configuration/">
+<meta property="og:title" content="Build Configuration">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Buildconfiguration12354.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Dev/Derivative-Maker/">Derivative-Maker
+Image Builder</a></li>
+<li><a href="../Dev/Build_Documentation/">Build Kicksecure
+from Source Code Overview</a></li>
+<li><a href="../Dev/Build_Documentation/images/">Build
+Kicksecure Images from Source</a></li>
+<li><a href="../Dev/Build_Documentation/derivative-update/">Source Code Updater
+(<code>derivative-update</code>)</a></li>
+<li><a href="../Dev/Build_Documentation/Upgrading_Derivative_Deb_Packages_from_Source_Code/">Upgrading Kicksecure from Source</a></li>
+<li><a href="./">Build
+Configuration</a></li>
+<li><a href="../Dev/Expected_Build_Warnings/">Expected
+Build Warnings</a></li>
+</ul>
+</div>
+<p><img src="../../media/Buildconfiguration12354.png.webp" alt="Buildconfiguration12354.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Kicksecure Build Configuration. APT Repository, Onion Sources, APT
+Cache, VM Settings, Skip Steps, Source Code Changes</p>
+<div class="post-intro-p">
+</div>
+<p><u>Note:</u> All of the following build configuration steps are
+optional.</p>
+<p><button class="expand-or-collapse-all-button">Expand/Collapse
+all</button></p>
+<h1 id="Introduction">Introduction</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Usually the build configuration does not need to be changed.
+Kicksecure built from source code comes with safe defaults. The
+derivative APT Repository will <b>not</b> be used.</p>
+<p>The most interesting build configurations (Terminal-Only,
+NoDefaultApps etc.) are documented in the following chapters.</p>
+<p>If you are interested, click on Expand on the right.</p>
+<div class="mw-collapsible-content">
+<p>If build configurations were used earlier, it might be better to
+delete the build configuration folder. A few example filenames may have
+changed since the last build.</p>
+<pre><code>sudo rm -r /etc/buildconfig-dist.d</code></pre>
+<p>Alternatively, experts can manually examine the
+<em><span>/etc/buildconfig-dist.d</span></em>
+folder and change its contents to suit their preferences.</p>
+<p><em><span>/etc/buildconfig-dist.d</span></em>
+is a <a href="../Configuration_Files/">modular flexible .d
+style configuration folder</a>.</p>
+<p>Less popular build configurations are documented in the
+<em><span>buildconfig.d</span></em>
+folder and on the <a href="../Dev/Source_Code_Intro/#Build_Configuration">Dev/Source_Code_Intro#Build_Configuration</a> page, but
+it is less user-friendly.</p>
+<p>To avoid typos, it is best to copy and paste text when creating build
+configuration files. Take care that editors do not capitalize variable
+names which are supposed to be lower case during copy and paste
+procedures.</p>
+</div>
+</div>
+<h1 id="Platforms_Choice">Platforms Choice</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Advanced users can create 32-bit instead of 64-bit builds.</p>
+<p>If you are interested, click on Expand on the right.</p>
+<div class="mw-collapsible-content">
+<ul>
+<li>Kicksecure 14 and above is 64-bit by default. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+</ul>
+<p>To build Kicksecure 14 32-bit, add the following build parameter.</p>
+<pre><code>--arch i386</code></pre>
+<ul>
+<li>kFreeBSD is entirely untested and most likely needs additional work
+(see footnotes). <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+</ul>
+<ul>
+<li>Kicksecure for arm64 development discussion: <a href="https://forums.whonix.org/t/whonix-for-arm64-raspberry-pi-rpi/723">https://forums.whonix.org/t/whonix-for-arm64-raspberry-pi-rpi/723</a></li>
+<li>Generally speaking, 64-bit builds cannot be created if running a
+32-bit host kernel. See footnotes. <sup class="reference"><a href="#cite_note-4">[4]</a></sup>
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+</ul>
+</div>
+</div>
+<p><span class="manually-placed-anchor " id="repository"></span></p>
+<h1 id="Project_APT_Repository">Project APT Repository</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p><a href="../About/">Kicksecure</a>:<br />
+<u>Kicksecure APT Repository</u> is <u>disabled by default</u>
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup> for <u>builds from source code</u> for reasons of <a href="../Trust/">Trust</a>. Users can decide to update
+Kicksecure Debian packages by building them from source code (greater
+security). Alternatively, Kicksecure APT repository can be enabled right
+after building or after booting the build for the first time (greater
+convenience) using <a href="../Project-APT-Repository/">Kicksecure repository tool</a>. To use the latter
+method which sacrifices security for convenience, click on Expand on the
+right side.</p>
+<div class="mw-collapsible-content">
+<p>Do you want to <u>opt-in</u> <u>Kicksecure APT Repository</u>?</p>
+<p>The easy way to add Kicksecure <code>stable</code> repository the
+following command line option can be used.</p>
+<p><span class="code-select">--repo true</span></p>
+<p>Other settings can be set using an environment variable or <a href="../Dev/Source_Code_Intro/#Build_Configuration">build
+configuration</a>. Below are examples using an environment variable.</p>
+<p><span class="code-select">DERIVATIVE_APT_REPOSITORY_OPTS='--enable
+--repository stable'</span>
+<span class="code-select">DERIVATIVE_APT_REPOSITORY_OPTS='--enable
+--repository testers'</span>
+<span class="code-select">DERIVATIVE_APT_REPOSITORY_OPTS='--enable
+--repository developers'</span>
+<span class="code-select">DERIVATIVE_APT_REPOSITORY_OPTS='--enable
+--codename trixie'</span></p>
+<p>Add an environment variable as one normally does on that specific
+Linux platform. For example, to enable the Kicksecure stable repository
+during build, you could set <code>DERIVATIVE_APT_REPOSITORY_OPTS</code>
+by interjecting it between <code>sudo</code> and the
+<code>./derivative-maker</code> command. Below is an example. Do not use
+<code>[...]</code>. Replace it with other chosen build parameters (such
+as <code>--build</code>, <code>--target</code> etc.) after
+<code>./derivative-maker</code>.</p>
+<p><span class="code-select">sudo
+DERIVATIVE_APT_REPOSITORY_OPTS='--enable --repository stable'
+./derivative-maker [...]</span></p>
+</div>
+</div>
+<h1 id="APT_Onion_Build_Sources">APT Onion Build Sources</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>For better build security, you can also use onions apt sources for
+building Kicksecure.</p>
+<p>If you are interested, click on Expand on the right.</p>
+<div class="mw-collapsible-content">
+<p><strong>This does not ensure all build process networking will be
+torified!</strong></p>
+<p>Kicksecure 14 and above only:</p>
+<pre><code>--connection onion</code></pre>
+</div>
+</div>
+<p><strong>1)</strong> Also chapter below has to be considered.</p>
+<p><strong>2)</strong> See also: <a href="https://forums.whonix.org/t/derivative-maker-fails-with-onion-sources/20200">https://forums.whonix.org/t/derivative-maker-fails-with-onion-sources/20200</a></p>
+<h1 id="Torified_or_Host_APT_Cache">Torified or Host APT Cache</h1>
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Using an apt cache will greatly improve build speed when building
+several times in a row (e.g. when debugging, during development).
+Kicksecure build script sets up an apt cache by default.</p>
+<p>If you are interested in a torified apt-cacher-ng or host
+apt-cacher-ng, click on Expand on the right.</p>
+<div class="mw-collapsible-content">
+<div class="info-box ">
+<p><strong>torified apt-cacher-ng</strong></p>
+<div class="info-box ">
+<p>Notes:</p>
+<ul>
+<li>The following torified apt-cacher-ng setup only has to be applied,
+if you are building using onion apt sources using
+<code>--connection onion</code>.</li>
+<li>When building inside <a href="../Whonix/">Whonix</a>,
+this is not required.</li>
+</ul>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Note, this neither torifies all of the build script's connections nor
+hides Tor from your ISP! See [Broken-ExtLink--no-url-was-provided].</p>
+</div>
+<p>The goal of this is to torify <code>apt-cacher-ng</code> using
+<code>torsocks</code> so it will be able to connect to onions.</p>
+<p><strong>Note:</strong> <u>This is currently broken.</u> No fix
+available. <a href="../Unsupported/">Undocumented</a>.</p>
+<p><strong>1.</strong> Install <code>apt-cacher-ng</code>,
+<code>torsocks</code> and <code>tor</code>.</p>
+<pre><code>sudo apt install apt-cacher-ng torsocks tor</code></pre>
+<p><strong>2.</strong> Create folder apt-cacher-ng systemd drop-in
+folder <code>/lib/systemd/system/apt-cacher-ng.service.d</code>.</p>
+<pre><code>sudo mkdir -p /lib/systemd/system/apt-cacher-ng.service.d</code></pre>
+<p><strong>3.</strong> Open file
+<code>/lib/systemd/system/apt-cacher-ng.service.d/50_user.conf</code> in
+an editor with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/lib/systemd/system/apt-cacher-ng.service.d/50_user.conf</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/lib/systemd/system/apt-cacher-ng.service.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/lib/systemd/system/apt-cacher-ng.service.d/50_user.conf</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>4.</strong> Add. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<p><span class="code-select">[Service] ExecStart= ExecStart=torsocks
+/usr/sbin/apt-cacher-ng SocketPath=/run/apt-cacher-ng/socket -c
+/etc/apt-cacher-ng ForeGround=1</span></p>
+<p><strong>5.</strong> Save.</p>
+<p><strong>6.</strong> Reload systemd.</p>
+<p><span class="code-select">sudo systemctl daemon-reload</span></p>
+<p><strong>7.</strong> Restart apt-cacher-ng.</p>
+<p><span class="code-select">sudo systemctl restart
+apt-cacher-ng</span></p>
+<p><strong>8.</strong> Done.</p>
+<p>The process of torification of apt-cacher-ng has been completed.</p>
+<p><strong>9.</strong> Broken!</p>
+<p><span class="code-select">/etc/tor/torsocks.conf</span> add:</p>
+<p><span class="code-select">AllowInbound 1 AllowOutboundLocalhost
+1</span></p>
+<p>But this is also insufficient.</p>
+<p><span class="code-select">sudo journalctl -f -u
+apt-cacher-ng</span></p>
+<p>shows errors:</p>
+<pre><code>WARNING torsocks[17645]: Config file not found: /etc/tor/torsocks.conf. Using default for Tor (in config_file_read() at config-file.c:583)
+Couldn&#39;t listen on socket: Operation not permitted
+Error creating socket: Function not implemented</code></pre>
+<p>No fix available. Help welcome.</p>
+</div>
+</div>
+<div class="info-box ">
+<p><strong>host apt-cacher-ng</strong></p>
+<p>This is probably only useful for developers. Most users will not need
+the complexity of an apt-cacher-ng running outside of the VM which runs
+derivative-maker or on another computer.</p>
+<div class="info-box ">
+<p>Be sure to have a firewall, so the whole internet cannot use the
+apt-cacher-ng service.</p>
+<p>When building inside a non-Whonix VM, an apt cache can be used on the
+host. In that case, adjust the IP accordingly and manually test that it
+is reachable. When building inside a (Kicksecure) VM, just install the
+apt cache inside the VM and point to a localhost apt cache.</p>
+<p>Prepend <code>REPO_PROXY=</code><a href="http://127.0.0.1:3142"><code>http://127.0.0.1:3142</code></a>
+before the build command.</p>
+<p>Replace the IP <code>127.0.0.1</code> with the IP address of your
+host. For security reasons, this should only be done over LAN and not
+over the internet.</p>
+<pre><code>sudo REPO_PROXY=http://127.0.0.1:3142 ./derivative-maker ...</code></pre>
+</div>
+</div>
+</div>
+</div>
+<h1 id="VM_Settings">VM Settings</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>If building VMs, settings such as image size, RAM, filesystem,
+hostname and password can be customized.</p>
+<p>If you are interested, press on expand on the right side.</p>
+<div class="mw-collapsible-content">
+<p>This is only relevant for VM builds.</p>
+<p>Several examples are below. Values can be changed to suit user
+preferences.</p>
+<p>VirtualBox's --vmsize option (virtual RAM).</p>
+<pre><code>--vmram 128</code></pre>
+<p>VirtualBox's --vram option (virtual video RAM).</p>
+<pre><code>--vram 12</code></pre>
+<p>grml-debootstrap's --vmsize option.</p>
+<pre><code>--vmsize 200G</code></pre>
+<p>grml-debootstrap's --filesystem option.</p>
+<pre><code>--file-system ext4</code></pre>
+<p>grml-debootstrap's --hostname option. <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<pre><code>--hostname host</code></pre>
+<p>grml-debootstrap's --password option.</p>
+<pre><code>--os-password changeme</code></pre>
+<p>grml-debootstrap's --debopt option.</p>
+<pre><code>--debopt &quot;--verbose&quot;</code></pre>
+</div>
+</div>
+<h1 id="Build_Variables_Changes">Build Variables Changes</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>It is possible to add build configuration files snippets which can
+change build variables.</p>
+<div class="mw-collapsible-content">
+<p><u>Build Configuration Folders</u>:</p>
+<p>You can drop configuration file either in:</p>
+<ol>
+<li><code>buildconfig.d</code> or in</li>
+<li><code>/etc/buildconfig-dist.d</code></li>
+<li><code>../buildconfig.d</code> folder.</li>
+</ol>
+<p>Files should have the file extension <code>.conf</code>.</p>
+<p>Method 2. is recommended for users.</p>
+<ol>
+<li>Contains examples. It is more difficult to use. <sup class="reference"><a href="#cite_note-9">[9]</a></sup>
+Rather use the following.</li>
+<li><code>sudo mkdir --parents /etc/buildconfig-dist.d</code></li>
+<li>When <code>/home/user/Kicksecure</code> is your Kicksecure source
+folder, you could use <code>/home/user/buildconfig.d</code> as your
+Kicksecure build configuration folder. It is easier to use, since you
+don't have to git commit your build config files.</li>
+</ol>
+<p><sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p>Below is an example how to use method 2.</p>
+<p><span class="code-select">sudo mkdir
+/etc/buildconfig-dist.d</span></p>
+<p>Open file <code>/etc/buildconfig-dist.d/50_user.conf</code> in an
+editor with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure_2">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/buildconfig-dist.d/50_user.conf</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes_2">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/buildconfig-dist.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives_2">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit
+/etc/buildconfig-dist.d/50_user.conf</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Add. (Replace it with whatever build configuration variable you wish
+to set.)</p>
+<p>Example 1.</p>
+<p><span class="code-select">export
+DERIVATIVE_APT_REPOSITORY_OPTS='--enable --repository stable'</span></p>
+<p>Example 2.</p>
+<p><span class="code-select">export tbb_version=13.0.1</span></p>
+<p>Save.</p>
+<p>Done.</p>
+</div>
+</div>
+<h1 id="Skip_Steps">Skip Steps</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>Developers can speed up the build and skip sanity tests.</p>
+<p>If you are interested, click on Expand on the right.</p>
+<div class="mw-collapsible-content">
+<pre><code>--sanity-tests false</code></pre>
+</div>
+</div>
+<h1 id="Source_Code_Changes">Source Code Changes</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p><strong>This is only required if changes were made to the
+derivative-maker source folder!</strong> In that case click on Expand on
+the right.</p>
+<p><strong>This is not required if only a customized build configuration
+was added to the
+<span>/etc/buildconfig-dist.d</span>
+folder.</strong></p>
+<div class="mw-collapsible-content">
+<p>If changes were made to the derivative-maker source code, it is the
+easiest to use the following build parameter.</p>
+<pre><code>--allow-uncommitted true</code></pre>
+<p>Or if not building from a git tag, it is the easiest to use the
+following build parameter.</p>
+<pre><code>--allow-untagged true</code></pre>
+<p>Otherwise, changes must be committed to git first, before creating a
+git tag.</p>
+</div>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://forums.whonix.org/t/state-of-offical-64-bit-builds">State
+of official 64-bit builds</a>.</li>
+<li id="cite_note-2">Don't get confused by the term <code>amd64</code>. It runs on both,
+Intel and AMD. <code>amd64</code> is only how Debian names the kernel.
+It works equally well on Intel and AMD.</li>
+<li id="cite_note-3">kFreeBSD (32-bit).
+<pre><code> --arch kfreebsd-i386 --kernel kfreebsd-image --headers kfreebsd-headers </code></pre>
+<p>kFreeBSD (64-bit).</p>
+<pre><code> --arch kfreebsd-amd64 --kernel kfreebsd-image --headers kfreebsd-headers </code></pre></li>
+<li id="cite_note-4"><a href="https://github.com/grml/grml-debootstrap/pull/13">https://github.com/grml/grml-debootstrap/pull/13</a></li>
+<li id="cite_note-5">In this case, try installing the packages
+<span>linux-image-amd64</span> and
+<span>linux-headers-amd64</span> on
+your host, then boot the amd64 kernel by choosing it in the boot menu.
+The whole system does not require re-installation; just be sure to boot
+with an amd64 kernel. Alternatively, consider to re-install your host
+using amd64.</li>
+<li id="cite_note-6">Since Kicksecure <code>7.3.3</code></li>
+<li id="cite_note-7">* The first <span class="code-select inline-style">ExecStart=</span>
+is to disable the default <code>ExecStart</code> in
+<code>/lib/systemd/system/apt-cacher-ng.service</code>. * This is based
+on
+<span class="code-select inline-style">/lib/systemd/system/apt-cacher-ng.service</span>
+. * Only <span class="code-select inline-style">torsocks</span> is
+prepended in front of
+<span class="code-select inline-style">/usr/sbin/apt-cacher-ng</span> *
+No other changes.</li>
+<li id="cite_note-8">The <a href="https://github.com/Kicksecure/dist-base-files">dist-base-files</a>
+package will change this later on.</li>
+<li id="cite_note-9">Since you would have to either: * A) git commit your build config
+files, OR, * B) See chapter source code changes below.</li>
+<li id="cite_note-10">This is because <code>..</code> means "one level below this
+folder".</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a> <a href="../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

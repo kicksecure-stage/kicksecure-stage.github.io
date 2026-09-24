@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>One Time Pad</title>
+<meta name="description" content="Creating a Physical One Time Pad. Unbreakable Encryption for Secure Communication.">
+<meta property="og:description" content="Creating a Physical One Time Pad. Unbreakable Encryption for Secure Communication.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/One_Time_Pad/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/One_Time_Pad/">
+<meta property="og:title" content="Physical One-time Pad">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Onetimepage13123123.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Glossary">Glossary</a></li><li class="toc-l2"><a href="#Perfect_Secrecy">Perfect Secrecy</a></li><li class="toc-l2"><a href="#Message_Authentication">Message Authentication</a></li><li class="toc-l2"><a href="#One-time_Pad_Security_Prerequisites">One-time Pad Security
+Prerequisites</a></li><li class="toc-l2"><a href="#One-time_Pad_Resources">One-time Pad Resources</a></li><li class="toc-l2"><a href="#One-time_Pad_Creation">One-time Pad Creation</a></li><li class="toc-l2"><a href="#Message_Preparation">Message Preparation</a></li><li class="toc-l2"><a href="#Message_Encryption">Message Encryption</a></li><li class="toc-l2"><a href="#Message_Decryption">Message Decryption</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Onetimepage13123123.png.webp" width="200" alt="Onetimepage13123123.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Creating a Physical One Time Pad. Unbreakable Encryption for Secure
+Communication.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Kicksecure users with high-security needs can utilize a
+<em>physical</em> one-time pad to pair with encrypted email as a
+bulletproof, secure communications channel that it is military grade. A
+one-time pad is: <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>... the only mathematically unbreakable encryption system, is usually
+a sheet of paper with random numbers in groups of five or more digits.
+Typically, the letters of the message are converted into numbers and are
+added to numbers from the notepad using a simple mathematical operation
+known as "false addition." The result is then transmitted. The recipient
+uses the same page from his own one-time pad and extracts the plain text
+message by applying "false subtraction" to the encrypted message.</p>
+<p>This procedure is simple, yet highly effective: The message can only
+be decoded by a third party if they get access to recipients' one-time
+pads.</p></blockquote></p>
+<p>Although software options are available to undertake this function
+such as <a href="https://en.wikipedia.org/wiki/One-time_pad">onetime</a>
+in Debian, this presupposes an advanced adversary has not already
+compromised the computer that is being used for secure communications.
+By creating and utilizing a one-time pad created with physical
+instruments, this circumvents the threat of any potentially hostile
+actors and hardware.</p>
+<h1 id="One-time_Pad_Overview">One-time Pad Overview</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+The description of this procedure draws heavily upon the following paper
+authored by Dirk Rijemnants from <a href="https://web.archive.org/web/20160216191153/http://users.telenet.be/d.rijmenants/">Cipher
+Machines and Cryptology</a>: <a href="https://web.archive.org/web/20150924142953/http://users.telenet.be/d.rijmenants/papers/one_time_pad.pdf">The
+Complete Guide to Secure Communications with the One Time Pad
+Cipher</a>; all credits go to the author. Readers who are interested in
+cipher machines, cryptology, intelligence and security matters can also
+visit Dirk's blog: <a href="https://rijmenants.blogspot.com/">SIGINT
+CHATTER</a>. This material has been used with the author's
+permission.</p>
+</div>
+<p>This chapter describes how to protect short text messages with
+one-time pad encryption. Only communication between two parties is
+described for simplicity. The essence of this technique is a plaintext
+is paired with a random secret key (also referred to as a one-time pad).
+Then, each bit or character of the plaintext is encrypted by combining
+it with the corresponding bit or character from the pad using modular
+addition.</p>
+<p>All that is required is pencil and paper, use of a
+character-to-digits checkerboard, physical dice to create the one-time
+pad encryption key, and a communication channel (computer) for relaying
+the message.</p>
+<h2 id="Glossary">Glossary</h2>
+<ul>
+<li>Cryptography and cryptanalysis: the sciences of making and breaking
+codes.</li>
+<li>Plaintext: the readable and unprotected message.</li>
+<li>Plaincode: plaintext that is encoded into digits (but still in plain
+readable form)</li>
+<li>Encryption / enciphering: the process of making the message
+unintelligible by applying an algorithm under control of a key.</li>
+<li>Ciphertext: the result of encryption.</li>
+<li>Decryption or deciphering: the process of turning the ciphertext
+back into readable plaincode or plaintext with the help of the proper
+key.</li>
+</ul>
+<h2 id="Perfect_Secrecy">Perfect Secrecy</h2>
+<p>If this technique is correctly applied it will be mathematically
+impossible for any eavesdroppers to decrypt the message without the
+proper decryption key (held on your person and your intended
+communication partner): <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p><blockquote><p>One-time pads are "information-theoretically secure" in that the
+encrypted message (i.e., the ciphertext) provides no information about
+the original message to a cryptanalyst (except the maximum possible
+length of the message). This is a very strong notion of security first
+developed during WWII by Claude Shannon and proved, mathematically, to
+be true for the one-time pad by Shannon about the same time... Properly
+used one-time pads are secure in this sense even against adversaries
+with infinite computational power.</p>
+<p>Claude Shannon proved, using information theory considerations, that
+the one-time pad has a property he termed perfect secrecy; that is, the
+ciphertext C gives absolutely no additional information about the
+plaintext. This is because, given a truly random key which is used only
+once, a ciphertext can be translated into any plaintext of the same
+length, and all are equally likely.</p>
+<p>Thus, the a priori probability of a plaintext message M is the same
+as the a posteriori probability of a plaintext message M given the
+corresponding ciphertext. Mathematically, this is expressed as
+H(M)=H(M|C), where H(M) is the entropy of the plaintext and H(M|C) is
+the conditional entropy of the plaintext given the ciphertext C. Perfect
+secrecy is a strong notion of cryptanalytic difficulty.</p></blockquote></p>
+<p>It should be emphasized that although you do not need a computer,
+special equipment or any knowledge about cryptographic techniques or
+mathematics, the advice must be carefully read and followed.
+Nevertheless, if used properly it is impossible for adversaries to
+decrypt the encrypted data without the physical key, regardless of the
+possible development of quantum computers or more advanced cryptanalytic
+attacks and/or technology.</p>
+<p>Also note that although the method of combining plaintext with a
+random key is unbreakable, it does not prevent malicious modification of
+the cipher text by an adversary, given it does not utilise message
+authentification protocols.</p>
+<h2 id="Message_Authentication">Message Authentication</h2>
+<p>It should be noted that one-time pads do not provide message
+authentication. In comparison, standard encryption computer protocols
+like OTR, OpenVPN and so on use a message authentication code (MAC) to
+authenticate messages/data and provide an integrity check to see whether
+there have been any changes to the content.</p>
+<p>MAC is normally achieved via multiple methods, such as crytographic
+hash functions, universal hashing and block cipher algorithms, but this
+is impossible with purely manual methods. This means if the message is
+corrupted and does not make sense when decrypted, this may relate to
+transmission errors across the network or possible modification of the
+cipher text by an adversary, with it remaining the exact same size as
+the original message. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<h2 id="One-time_Pad_Security_Prerequisites">One-time Pad Security
+Prerequisites</h2>
+<p>Ciphers will <em>only</em> remain unbreakable if the following
+conditions are fully met:</p>
+<ul>
+<li>Values in the one-time pad are truly random and not pseudo-random.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
+<li>Secure messages require one-time pad values that are at least as
+long as the message to be encrypted.</li>
+<li>The sender or receiver never uses the encryption keys more than
+once.</li>
+<li>The sender/receiver destroy encryption keys immediately after use.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+<li>Communicating parties keep one-time pads secure at all times.</li>
+<li>Only two copies of the key are maintained: one each for the sender
+and receiver.</li>
+</ul>
+<p>In this example, the key and plaintext are calculated utilizing
+modulo 10 (digits).</p>
+<h2 id="One-time_Pad_Resources">One-time Pad Resources</h2>
+<p>The following resources are necessary for this procedure:</p>
+<ul>
+<li>Two six-sided dice. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
+<li>Sheets of paper and a pencil to write unique keys down.</li>
+<li>A suitable checkerboard variation (see further below) to convert
+plain text into digits.</li>
+<li>Mental calculation ability to perform simple subraction/addition to
+encrypt/decrypt messages (modulo 10 for numerical keys).</li>
+<li>A computer and an agreed communication channel for relaying the
+encrypted message:
+<ul>
+<li>Persons at high-risk are recommended to avoid sending or receiving
+messages at their home address -- any evidence of encrypted messages may
+itself pose a risk. In this case it may be safer to utilize <a href="../USB_Installation/">Kicksecure on USB</a> from a
+USB on a random computer.</li>
+<li>If evidence of encrypted messages is not a risk in your
+circumstances, then common email programs (preferably with OpenPGP
+encryption configured) can be utilized.</li>
+<li>Another alternative is to hide the cipher text in plain looking
+messages or using <a href="https://en.wikipedia.org/wiki/Steganography">steganography</a>;
+see <a href="#Appendix">Appendix</a>.</li>
+</ul></li>
+</ul>
+<h1 id="Procedure">Procedure</h1>
+<h2 id="One-time_Pad_Creation">One-time Pad Creation</h2>
+<p>To perform encryption, we need a key aka one-time pad. This could be
+a single sheet, a booklet or a roll of paper tape that contains a series
+of truly random digits. <sup class="reference"><a href="#cite_note-7">[7]</a></sup> A one-time pad actually
+consists of <u>two</u> identical one-time pads, one pad called OUT and
+one called IN:</p>
+<ul>
+<li>For <u>one-way</u> communications, only an OUT pad is required for
+the sender and an <em>identical</em> copy called IN pad is held by the
+receiver.</li>
+<li>For <u>two-way</u> communications, two different one-time pad sets
+are required:
+<ul>
+<li>Person A has an OUT pad and person B has the identical IN copy.</li>
+<li>Person B has <em>another</em> OUT pad and person A has the identical
+IN copy.</li>
+</ul></li>
+</ul>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Do not use a single pad for communicating in both directions, as this
+risks simultaneously using the same pad sheet.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<strong>Reminder:</strong> One-time pad encryption requires both the
+sender and receiver to be in possession of the same key -- it is
+necessary to exchange keys beforehand (physically, not electronically!).
+It is necessary to have enough key material for all communications until
+a new exchange of keys is possible.</p>
+</div>
+<p><strong>Figure:</strong> <em>Example One-time Pad Sheet</em></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;OUT&#160;00036</code></p>
+<p>32065 41228 53555 27266 65125<br />
+42381 77751 64923 23378 42602<br />
+32301 35198 55997 10309 17844<br />
+65103 58856 42733 03499 92585<br />
+06702 42784 63883 51365 56374<br />
+80507 19148 80368 28748 20106<br />
+21459 71827 00362 01538 04614<br />
+40915 44398 89632 57444 97452<br />
+18508 32496 73818 88177 92422<br />
+83366 94296 49126 86947 32382</p>
+<p>As can be seen above, each sheet contains 250 digits, which are
+formatted in five-digit groups. This is enough for a message of
+approximately 180 characters. It must be reiterated that all digits
+<u>must</u> be truly random, as this ensures the security of the
+encryption process.</p>
+<p>Note also that each sheet is marked with OUT or IN at the top, with
+the first five-digit group serving as a key indicator (indicating to the
+receiver which pad they should decrypt the message with). It is
+essential that this key indicator group is truly random, and is always
+different from the first group of all other sheets in the same pad (so
+there is no confusion). Do <u>not</u> use a serial number or
+pre-arranged format as the key indicator, as this reveals information
+about the number of messages sent, their order, or could link the owner
+to previously sent messages.</p>
+<p>To create your own sample one-time pad -- remembering that each pad
+would be used in turn for each message -- utilize the following table.
+This will generate true random numbers between 0-9 when using six-sided
+dice (be sure to discard throws with a black six).</p>
+<p>Generating True Random Digits 0 to 9 with <u>B</u>lack and
+<u>W</u>hite dice. THROWS WITH BLACK 6 ARE DISCARDED</p>
+<table>
+<caption><em>True Random Number Generation Table</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>BW</strong></p></th>
+<th><p><strong>BW</strong></p></th>
+<th><p><strong>BW</strong></p></th>
+<th><p><strong>BW</strong></p></th>
+<th><p><strong>BW</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>11 = 0</p></td>
+<td><p>21 = 6</p></td>
+<td><p>31 = 2</p></td>
+<td><p>41 = 8</p></td>
+<td><p>51 = 4</p></td>
+</tr>
+<tr class="even">
+<td><p>12 = 1</p></td>
+<td><p>22 = 7</p></td>
+<td><p>32 = 3</p></td>
+<td><p>42 = 9</p></td>
+<td><p>52 = 5</p></td>
+</tr>
+<tr class="odd">
+<td><p>13 = 2</p></td>
+<td><p>23 = 8</p></td>
+<td><p>33 = 4</p></td>
+<td><p>43 = 0</p></td>
+<td><p>53 = 6</p></td>
+</tr>
+<tr class="even">
+<td><p>14 = 3</p></td>
+<td><p>24 = 9</p></td>
+<td><p>34 = 5</p></td>
+<td><p>44 = 1</p></td>
+<td><p>54 = 7</p></td>
+</tr>
+<tr class="odd">
+<td><p>15 = 4</p></td>
+<td><p>25 = 0</p></td>
+<td><p>35 = 6</p></td>
+<td><p>45 = 2</p></td>
+<td><p>55 = 8</p></td>
+</tr>
+<tr class="even">
+<td><p>16 = 5</p></td>
+<td><p>26 = 1</p></td>
+<td><p>36 = 7</p></td>
+<td><p>46 = 3</p></td>
+<td><p>56 = 9</p></td>
+</tr>
+</tbody>
+</table>
+<p>Roll your two six-sided dice to generate each individual number in
+the pad, until all 250 digits have been generated (throws with black six
+are discarded). Take special note of the following warning:</p>
+<p><blockquote><p>Never ever simply use normal six-sided dice by adding the values of
+two dice. This method is statistically unsuitable to produce values from
+0 to 9 and thus absolutely insecure (the total of 7 will occur about 6
+times more often that the values 2 or 12). Instead, use one black and
+one white die and assign a value to each of the 36 combinations, taking
+in account the order/colour of the dice (see table below). This way,
+each combination has a .0277 probability (1 on 36). We can produce three
+series of values between 0 and 9. The remaining 6 combinations (with a
+black 6) are simply disregarded, which doesn't affect the probability of
+the other combinations.</p></blockquote></p>
+<p>&#8203;</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<strong>Reminder:</strong> This key material should be stored in a small
+pad at all times and <u>not</u> stored on a computer or removable media
+device such as a CD, USB and so on.</p>
+</div>
+<h2 id="Message_Preparation">Message Preparation</h2>
+<p>Once your key material is ready, your message must be prepared for
+sending. It is recommended to use only short, concise sentences and
+remove spaces where it does not affect readability. Abbreviations are
+also recommended. However, do <u>not</u>:</p>
+<ul>
+<li>Use names of persons or places unnecessarily, that is, if the
+message contents clarifies those names/places or simply the
+origin/destination of the message does so.</li>
+<li>Use fixed structures or formatting in the message.</li>
+<li>Exceed 250 digits in message length (larger messages are split into
+parts, with each part using a new one-time pad key).</li>
+</ul>
+<p>Before encrypting the message, plaintext is converted into a series
+of digits (plaincode) via the use of a checkerboard. <sup class="reference"><a href="#cite_note-8">[8]</a></sup>
+It should be emphasized the plaintext to plaincode conversion provides
+no security at all -- this is simply a necessary step before final
+encryption. To illustrate this technique, the checkerboard below will be
+utilized. Note that various checkerboards exist, particularly for
+languages other than English.</p>
+<table>
+<caption><em>Conversion Table No.1: English</em></caption>
+<tbody>
+<tr class="odd">
+<td><p>CODE-0</p></td>
+<td><p>B-70</p></td>
+<td><p>P-80</p></td>
+<td><p>FIG-90</p></td>
+</tr>
+<tr class="even">
+<td><p>A-1</p></td>
+<td><p>C-71</p></td>
+<td><p>Q-81</p></td>
+<td><p>(.)-91</p></td>
+</tr>
+<tr class="odd">
+<td><p>E-2</p></td>
+<td><p>D-72</p></td>
+<td><p>R-82</p></td>
+<td><p>(:)-92</p></td>
+</tr>
+<tr class="even">
+<td><p>I-3</p></td>
+<td><p>F-73</p></td>
+<td><p>S-83</p></td>
+<td><p>(')-93</p></td>
+</tr>
+<tr class="odd">
+<td><p>N-4</p></td>
+<td><p>G-74</p></td>
+<td><p>U-84</p></td>
+<td><p>( )-94</p></td>
+</tr>
+<tr class="even">
+<td><p>O-5</p></td>
+<td><p>H-75</p></td>
+<td><p>V-85</p></td>
+<td><p>(+)-95</p></td>
+</tr>
+<tr class="odd">
+<td><p>T-6</p></td>
+<td><p>J-76</p></td>
+<td><p>W-86</p></td>
+<td><p>(-)-96</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>K-77</p></td>
+<td><p>X-87</p></td>
+<td><p>(=)-97</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>L-78</p></td>
+<td><p>Y-88</p></td>
+<td><p>REQ-98</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>M-79</p></td>
+<td><p>Z-89</p></td>
+<td><p>SPC-99</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that it does not matter which checkerboard is used, so long as
+the recipient also uses the same one. Also, an adversary's awareness of
+the checkerboard method used does not assist in decryption.</p>
+<p>Based on the table above:</p>
+<ul>
+<li>spaces are represented by 99 (SPC)</li>
+<li>a comma and apostrophe are both represented by 93 (')</li>
+<li>94 ( ) opens and closes parentheses</li>
+<li>figures are written out three times to avoid errors and preceded and
+followed by 90 (FIG)</li>
+<li>request code 98 (REQ) can be replaced by a question mark</li>
+</ul>
+<p>Inspect the example below.</p>
+<pre><code>W  H  O N I X     I S     B  E T T E R     T H  A N
+86 75 5 4 3 87 99 3 83 99 70 2 6 6 2 82 99 6 75 1 4 99
+
+U  S  I N G     W  I N D  O Z  E    S  P  Y  W  A R  E (,)
+84 83 3 4 74 99 86 3 4 72 5 89 2 99 83 80 88 86 1 82 2 93 90
+
+1   0   0      P  E R  C  E N T (.) P  A T R  I C  K     R  O C  K  S     O K
+111 000 000 90 80 2 82 71 2 4 6 91  80 1 6 82 3 71 77 99 82 5 71 77 83 99 5 77</code></pre>
+<p>Note that codebooks exist for use with common words, but for
+simplicity that has not been used in this example. &#8203; To prepare the
+message for encryption, the numbers above are arranged in groups of
+five:</p>
+<p>86755 43879 93839 97026 62829 96751 49984 83347 49986 34725 89299
+83808 88618 22939 01110 00000 90802 82712 46918 01682 37177 99825 71778
+39957 79191</p>
+<p>The last group is always completed with full stops (9191...), hence
+the additional (x2) '91' in the series.</p>
+<h2 id="Message_Encryption">Message Encryption</h2>
+<p>Now the message has been converted into digits, it is possible to
+start the encryption. The first group of the one-time pad is the key
+indicator, so it should <u>never</u> be used in the encryption process.
+To encrypt the message:</p>
+<ol>
+<li>the plaincode from the previous section is written down (in groups
+of five)</li>
+<li>the digits of the one-time pad key are written beneath them</li>
+<li>subtract the one-time pad digits from the plaincode, digit by digit
+from left to right and by modulo ten. Where necessary, this means
+subtracting without borrowing e.g. 3 - 8 = 5 because [1]3 - 8 = 5.</li>
+<li>write the resulting ciphertext at the bottom</li>
+</ol>
+<p>Using our earlier one-time pad sample with the plaincode leads to the
+following ciphertext.</p>
+<p><strong>Plaincode</strong> : KEYID 86755 43879 93839 97026 62829
+96751 49984 83347 49986 34725 89299 83808 88618 22939 01110 00000 90802
+82712 46918 01682 37177 99825 71778 39957 79191</p>
+<p><strong>OTP Key(-)</strong>: 32065 41228 53555 27266 65125 42381
+77751 64923 23378 42602 32301 35198 55997 10309 17844 65103 58856 42733
+03499 92585 06702 42784 63883 51365 56374 80507</p>
+<p><strong>Ciphertext</strong>: 32065 45537 90324 76673 32901 20548
+29000 85061 60079 07384 02424 54101 38911 78319 15195 46017 52254 58179
+89323 54433 05980 95493 36042 20413 83683 99494</p>
+<p>Below is the ciphertext that would be sent, rearranged in five groups
+per row.</p>
+<p>32065 45537 90324 76673 32901<br />
+20548 29000 85061 60079 07384<br />
+02424 54101 38911 78319 15195<br />
+46017 52254 58179 89323 54433<br />
+05980 95493 36042 20413 83683<br />
+99494</p>
+<p>Be sure to destroy the pad you just used, including any unused part!
+<u>Never</u> reuse a pad.</p>
+<h2 id="Message_Decryption">Message Decryption</h2>
+<p>Upon receiving an encrypted message:</p>
+<ul>
+<li>the receiver checks the first group (the key indicator/ID) to check
+the correct one time pad is used</li>
+<li>the cipher text is written down first</li>
+<li>the proper one time pad digits (OTP key) is written directly
+underneath</li>
+<li>the first group is ignored, as it only identifies the necessary key
+to use</li>
+<li>the digits are added together (without carry; for example 9 + 7 = 6,
+not 16) to generate the plaincode</li>
+<li>the checkerboard is used to re-covert the plaincode digits into
+plaintext</li>
+</ul>
+<p>&#8203;To decrypt the message, the receiver verifies the first group of the
+message to ensure that he uses the correct one-time pad sheet. Next, he
+writes the proper one-time pad digits underneath the ciphertext and adds
+the key to the ciphertext, digit by digit, without carry (e.g. 9 + 6 = 5
+and not 15). The first group is skipped as it is only used to identify
+the key.</p>
+<p><strong>Ciphertext</strong> : 32065 45537 90324 76673 32901 20548
+29000 85061 60079 07384 02424 54101 38911 78319 15195 46017 52254 58179
+89323 54433 05980 95493 36042 20413 83683 99494</p>
+<p><strong>OTP Key(+)</strong> : 32065 41228 53555 27266 65125 42381
+77751 64923 23378 42602 32301 35198 55997 10309 17844 65103 58856 42733
+03499 92585 06702 42784 63883 51365 56374 80507</p>
+<p><strong>Plaincode</strong> : KEYID 86755 43879 93839 97026 62829
+96751 49984 83347 49986 34725 89299 83808 88618 22939 01110 00000 90802
+82712 46918 01682 37177 99825 71778 39957 79991</p>
+<p>Now the plaincode digits are available, they are converted back into
+plaintext with the use of the checkerboard. It is simple to separate
+single-digit from double-digit values:</p>
+<ul>
+<li>if the first-next digit is between 1 and 6, it represent a single
+digit value.</li>
+<li>if the first-next digit is 7, 8 or 9, it represents a double-digit
+value and the following digit must be appended to complete the
+double-digit value</li>
+</ul>
+<p>Using the checkerboard, the message above can be revealed:</p>
+<pre><code>86 75 5 4 3 87 99 3 83 99 70 2 6 6 2 82 99 6 75 1 4
+W  H  O N I X     I S     B  E T T E R     T H  A N
+
+99 84 83 3 4 74 99 86 3 4 72 5 89 2 99 83 80 88 86 1 82 2
+   U  S  I  N G     W I N D  O Z  E    S  P  Y  W  A R  E
+
+93 90 111 000 000 90 80 2 82 71 2 4 6 91 80 1 6 82 3 71 77 99 82 5 71 77 83 99 5 77 99 91
+,     1   0   0      P  E R  C  E N T .  P  A T R  I C  K     R  O C  K  S     O K     .</code></pre>
+<p>Be sure to destroy the one-time pad sheet straight away after
+decryption!</p>
+<h1 id="Summary">Summary</h1>
+<p>To encrypt a message, convert the message into plaincode digits with
+the checkerboard table and subtract (without borrowing) the one time pad
+from the plaincode. The first group of the one-time pad is used as the
+key indicator and is <u>not</u> actually used for actual encryption into
+ciphertext.</p>
+<p>To decrypt a message, use the first group of the ciphertext (key
+indicator) to identify the relevant one-time pad to use. Write the one
+time pad underneath the ciphertext digits, and add both without carry.
+Use the checkerboard table to convert the plaincode back into readable
+text.</p>
+<h1 id="Appendix">Appendix</h1>
+<p>It is possible to go further and conceal ciphertext in seemingly
+innocent text, emails or letters. For instance, the "Words-Per-Sentence"
+(WPS) method is one option for full deniability: <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<p><blockquote><p>The plaintext message (payload) is encrypted and the ciphertext
+digits are hidden inside a seemingly innocent text, e-mail or letter
+(carrier). This technique is called steganography (lit. hidden writing)
+and enables both sender and receiver to fully deny the existence of
+encrypted communications. Note that the payload must always be encrypted
+before hiding it in the carrier. Even when the adversary knows the
+method of hiding, any attempt to extract encrypted information would
+merely produce unintelligible digits. The message remains fully
+deniable. However, an attempt to extract non-encrypted data could reveal
+the message. Protect before hiding! There are various ways to hide
+ciphertext digits in a seemingly innocent text. Of course, simply
+inserting strange sequences of digits or some illogical values will draw
+suspicion.</p>
+<p>The Words-Per-Sentence (WPS) system is a simple yet effective
+text-based method to conceal digits. For each digit, a sentence is
+composed with as many words as the digit + 5. Adding 5 to the total
+ensures that all sentences have at least five words. Words like "it's",
+"you're" or "set-up" are regarded as one word. To retrieve the original
+digits, the receiver subtracts 5 from the total number of words in each
+sentence.</p>
+<p>To avoid statistical bias, some sentences with less than five words
+or more than fourteen words should be added (these are later simply
+ignored). The advantages of this method are an excellent linguistic
+freedom and the lack of complex calculations or conversions. Always
+start by writing a meaningful text and then play with the words to
+obtain the required sentence length. Exclude the salutation in a letter
+from the system, as a nine-letter salutation would arouse suspicion. The
+random digits produce an average of ten-words sentences.</p></blockquote></p>
+<p>Using the example on this page, the first five digit cipher (32065)
+could be buried in the following email: &#8203;</p>
+<pre><code>Dear Patrick,
+
+I really, really love the latest Kicksecure release!
+
+The SUID Disabler option will certainly protect users. Can&#39;t wait until Kicksecure new release.
+
+Anyhow, letting you know that we truly appreciate all your work.
+
+I&#39;ll be sending you a large Bitcoin donation very soon.
+
+Private.</code></pre>
+<p>Words per sentence = 8, 7, 5, 11, 10 WPS (-5) = 32065</p>
+<p>&#8203;So long as the recipient understood that sentences with less than
+four words long are ignored (as well as any future sentences of more
+than 14 words), they would quickly identify the first cipher in the
+message as 32065.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.amrron.com/wp-content/uploads/2015/05/one_time_pad.pdf">https://www.amrron.com/wp-content/uploads/2015/05/one_time_pad.pdf</a></li>
+<li id="cite_note-2"><a href="https://en.wikipedia.org/wiki/One-time_pad">https://en.wikipedia.org/wiki/One-time_pad</a></li>
+<li id="cite_note-3"><a href="https://crypto.stackexchange.com/questions/74880/why-do-one-time-pads-not-provide-message-authentication">https://crypto.stackexchange.com/questions/74880/why-do-one-time-pads-not-provide-message-authentication</a></li>
+<li id="cite_note-4"><a href="https://web.archive.org/web/20190727123642/https://simplicable.com/new/pseudorandom-vs-random">Pseudorandom
+vs Random</a>: <blockquote><p>Pseudorandom is an approximated random number generated by software.
+Software running on regular hardware is highly deterministic, meaning it
+runs the same every time. As such, it is difficult to generate a real
+random number in software as it runs too predictably to be considered
+random. A true random number is a number selected from a range with each
+number in the range having equal and completely unpredictable chance of
+selection.</p></blockquote></li>
+<li id="cite_note-5">This is why randomness functions in operating systems are not used
+to generate keys -- as well as being pseudorandom, traces of computing
+activity are left scattered throughout the system.</li>
+<li id="cite_note-6">If physical dice from game sets are unavailable, it is possible to
+use <a href="https://timvandevall.com/printable-paper-dice-template/">printed
+templates that form paper dice</a>.</li>
+<li id="cite_note-7">There are also one-time pads with random letters, but they are only
+suitable to encrypt letters-only text. Therefore, they are ignored for
+the purpose of flexibility and practicality.</li>
+<li id="cite_note-8">Letters used often are represented with a single-digit value, with
+all other characters represented by a double-digit value.</li>
+<li id="cite_note-9"><a href="https://www.yumpu.com/en/document/view/54705604/secure-communications-one-time-pad-cipher">https://www.yumpu.com/en/document/view/54705604/secure-communications-one-time-pad-cipher</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

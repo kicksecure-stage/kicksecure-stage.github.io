@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Mental Model</title>
+<meta name="description" content="Critically Important Mental Models for Computer Security, Threat Modeling">
+<meta property="og:description" content="Critically Important Mental Models for Computer Security, Threat Modeling">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Mental_Model/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Mental_Model/">
+<meta property="og:title" content="Computer Security Mental Model">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Mentalcomputer4801544640.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Threat_Assessment">Threat Assessment</a></li><li class="toc-l2"><a href="#Best_Practices">Best Practices</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Mentalcomputer4801544640.png.webp" alt="Mentalcomputer4801544640.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>For effective computer security it is crucial to construct a rough
+mental model of how the computer broadly functions on a technical
+level.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Mental_Model_Overview">Mental Model Overview</h1>
+<h2 id="Introduction">Introduction</h2>
+<p>The majority of program code that is run on a computer is from
+diverse sources. Some software is sourced from "trusted"
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup> vendors (out of necessity), while others stem from
+less-trusted or untrusted sources. The spectrum of trust arises because
+it is required for useful functionality in general computing.
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>When a computer boots, there are four basic steps:</p>
+<ol>
+<li>If a computer is fully powered off and it previously did not have a
+battery or power cord connected, when it is powered on the first thing
+that occurs is the hardware initialization (which is invisible to the
+user).</li>
+<li>During the boot process, the first visible sign to the user is the
+BIOS. It is an essential skill to visually recognize the BIOS.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+<li>The next visible sign is the bootloader, such as grub on Linux.</li>
+<li>Disregarding intermediary steps, <sup class="reference"><a href="#cite_note-4">[4]</a></sup> the next visible
+sign most users will see is the operating system desktop
+environment.</li>
+</ol>
+<p>By booting any computer with an operating system and associated
+software:</p>
+<ol>
+<li>The hardware, BIOS is ultimately trusted. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+<li>The operating system is highly trusted. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></li>
+<li>Less trusted are applications like web browsers, for example
+Firefox, Chrome or Tor Browser.</li>
+<li>Least trusted are the contents shows by applications such as a
+website in a web browser.</li>
+</ol>
+<p>Based on the simplified model above, it is therefore important to
+know which program code (application or program) usually
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup> has associated permissions to draw windows in certain
+places.</p>
+<h2 id="Threat_Assessment">Threat Assessment</h2>
+<p>When an appropriate mental model has been adopted, it becomes easier
+for users to detect legitimate threats or those which are most likely
+false alarms. As an example, consider the following image which is
+genuine.</p>
+<p><strong>Figure:</strong> <em>Tor Browser DuckDuckGo Website in
+VirtualBox VM Utilizing Kicksecure Xfce</em></p>
+<p><img src="../../media/Tor_browser_duckduckgo2.png.webp" width="1200" alt="Tor_browser_duckduckgo2.png" /></p>
+<p>In contrast, the following image is an example of a scam which
+"alerts" the user with a false alarm.</p>
+<p><strong>Figure:</strong> <em>Internet Explorer
+<code>systembrowsing.com</code> Scam Popup in Windows</em>
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<p><img src="../../media/Systembrowsing-com-popup.jpg.webp" alt="Systembrowsing-com-popup.jpg" /></p>
+<p>More experienced users with the proper mental model will quickly
+categorize the <code>systembrowsing.com</code> alert as a scam. The
+reason is <code>systembrowsing.com</code> is just a website inside the
+browser window, without broader access to the user's operating system
+(in order to possibly detect local viruses). <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p>It is important to mentally compartmentalize the different parts of a
+computer system:</p>
+<ul>
+<li>operating system: <code>Windows</code></li>
+<li>application: <code>Internet Explorer</code></li>
+<li>website: <code>systembrowsing.com</code> (scam)</li>
+</ul>
+<p>By adopting a skeptical mindset and the mental model above,
+experienced users quickly realize the image's warning cannot be trusted,
+solely because it states a virus has been detected; it is just text on a
+website. This means the website is also the source of the message, while
+the browser is just the messenger. Finally, the operating system and
+computer display the final message destination, but the message is not
+actually generated by a virus scanner.</p>
+<p>Website messages stating your computer is infected with viruses or
+other malware are almost always false. This does not mean your computer
+is not actually infected, it could be for completely unrelated reasons.
+But even in this case the website would be unaware of it -- websites
+only have permission to show text, images or audio in the web browser.
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup> Simply put, web browsers are neither designed, nor
+supposed to scan for viruses; if that was the case, it would be well
+documented.</p>
+<p>Similar to bulk phishing attempts, scam websites that resort to these
+tactics do not usually possess the skill to exploit vulnerabilities in
+web browsers or operating systems. If they did, they would just
+compromise the victim's computer instead of relying on a ruse.
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup> A highly skeptical user will disregard such
+messages, or possibly seek advice or conduct appropriate research before
+taking any action, thereby staying safe from such attacks. Always
+remember that various <a href="../Social_Engineering/#Psychological_Techniques">psychological techniques</a> are relied upon by
+attackers (including urgent instructions), leading to security
+compromises.</p>
+<p>The take-home messages is while users must trust their operating
+system and less so their applications, utmost skepticism should be the
+default position concerning claims made by websites. Users who are
+unaware of this concept remain a highly vulnerable target.</p>
+<h2 id="Best_Practices">Best Practices</h2>
+<p>When any information, text, audio or image is displayed by the
+computer, consider the following questions:</p>
+<ul>
+<li>Which program code is likely generating this message?</li>
+<li>Which program code is likely drawing this window or part of it?</li>
+<li>Does this application have access to this information?</li>
+<li>How does this application have access to this information?
+<sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
+</ul>
+<p>This mental model is useful to avoid potential threats, and also
+helps to diagnose and fix issues. The concepts documented in the
+following, related wiki chapters can also deepen understanding of this
+topic: <a href="../Social_Engineering/">Social Engineering
+and (Spear) Phishing</a>, <a href="../Hardware_Wallet_Security/">Cryptocurrency Hardware Wallet: Threat Model</a> and <a href="../Login_spoofing/">Login Spoofing</a>.</p>
+<p>As an example, the following ClamTK Virus Scanner screenshot is
+legitimate.</p>
+<p><strong>Figure:</strong> <em>ClamTK Virus Scanner</em>
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
+<p><img src="../../media/ClamTk_4.30.png.webp" alt="ClamTk_4.30.png" /></p>
+<p>By asking the questions further above, a user will notice these are
+"real" windows. The window decoration (minimize to tray, maximize, close
+buttons) as well as the window itself are drawn by the operating system.
+Further, the ClamTK application is responsible for the window title and
+content of the window and has the necessary permissions to perform a
+scan of system files. For these reasons, greater trust can be placed in
+the application's output (scanning results).</p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Threat_Modeling/">Threat Modeling</a></li>
+<li><a href="../Social_Engineering/">Social Engineering and
+(Spear) Phishing</a></li>
+<li><a href="../Hardware_Wallet_Security/">Cryptocurrency
+Hardware Wallet: Threat Model</a></li>
+<li><a href="../Login_spoofing/">Login Spoofing</a></li>
+<li><a href="../Malware_and_Firmware_Trojans/">Malware</a></li>
+<li><a href="https://forums.whonix.org/t/very-hard-to-notice-phishing-scam-firefox-tor-browser-url-not-showing-real-domain-name-homograph-attack-punycode/8373">very
+hard to notice Phishing Scam - Firefox / Tor Browser URL not showing
+real Domain Name - Homograph attack (Punycode)</a></li>
+</ul>
+<h1 id="External">External</h1>
+<div>
+<ul>
+<li><a href="https://www.geeksforgeeks.org/threat-modelling/">GeeksforGeeks:
+Threat Modelling</a></li>
+<li><a href="https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf">Guide
+to Data-Centric System Threat Modeling</a></li>
+<li><a href="https://www.linddun.org/">Linddun: privacy threat modeling
+methodology</a></li>
+<li><a href="https://web.archive.org/web/20210711215728/https://github.com/devbret/online-opsec">Online
+Operations Security (OpSec)</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">OWASP
+Cheat Sheet Series: Threat Modeling Cheat Sheet</a></li>
+<li><a href="https://versprite.com/tag/pasta-threat-modeling/">PASTA
+Threat Modeling</a></li>
+<li><a href="https://www.privacyguides.org/basics/common-threats/">Privacy
+Guides: What are threat models?</a></li>
+<li><a href="https://insights.sei.cmu.edu/blog/threat-modeling-12-available-methods/">Software
+Engineering Institute: Threat Modeling: 12 Available Methods</a></li>
+<li><a href="https://en.wikipedia.org/wiki/STRIDE_%28security%29">STRIDE
+threat modeling</a></li>
+<li><a href="https://www.threatmodelingmanifesto.org/">Threat Modeling
+Manifesto</a></li>
+<li><a href="https://imgs.xkcd.com/comics/authorization.png">https://imgs.xkcd.com/comics/authorization.png</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">"Trusted" here refers to enforced trust, not because it is an
+individual decision to trust.</li>
+<li id="cite_note-2">In contrast, in the example of a classic washing machine -- without
+an Internet connection, sophisticated software or remote controls -- the
+only trusted program code by the washing machine vendor is that which is
+used to draw information on the display.</li>
+<li id="cite_note-3">Theoretically, when rebooting it is not guaranteed the real BIOS
+will present itself. It is possible a user could be presented with a
+fake reboot, whereby the real operating system keeps running normally
+but shows a graphical simulation of a full reboot sequence. However,
+there is no evidence this technique has ever been deployed in
+practice.</li>
+<li id="cite_note-4">Such as kernel initialization, initramfs or dracut, systemd, and
+single user mode in Linux.</li>
+<li id="cite_note-5">Unless there is hardware, firmware or BIOS level malware it is
+always possible to replace a compromised operating system with a clean
+operating system.</li>
+<li id="cite_note-6">Aside from malware-compromised code.</li>
+<li id="cite_note-7"><a href="https://malwaretips.com/blogs/systembrowsing-com-removal/">https://malwaretips.com/blogs/systembrowsing-com-removal/</a></li>
+<li id="cite_note-8">The only exception to this rule is some special URLs in Firefox,
+Chrome and Tor Browser such as <a href="about:config"><code>about:config</code></a> or <a href="about:preferences"><code>about:preferences</code></a>. Content of
+these is not generated by websites but by the browser itself.</li>
+<li id="cite_note-9">Ignoring deprecated, dangerous technologies such as Internet
+Explorer with ActiveX.</li>
+<li id="cite_note-10">In other words, the attacker would not need to instruct users to
+compromise themselves.</li>
+<li id="cite_note-11">For example, browsers <em>can</em> ask for permission to use the
+microphone, or for access to the IP address to determine a user's
+location.</li>
+<li id="cite_note-12"><a href="https://en.wikipedia.org/wiki/ClamTk">https://en.wikipedia.org/wiki/ClamTk</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

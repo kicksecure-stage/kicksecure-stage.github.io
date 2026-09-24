@@ -1,0 +1,1191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Comparison with Others</title>
+<meta name="description" content="Comparison of Kicksecure with Debian. About security, privacy, usability, and hardening by default.">
+<meta property="og:description" content="Comparison of Kicksecure with Debian. About security, privacy, usability, and hardening by default.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Comparison_with_Others/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Comparison_with_Others/">
+<meta property="og:title" content="Security Operating System Comparison - Kicksecure vs Debian">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Kicksecure_versus_Debian.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Account_&amp;_Privilege_Management">Account &amp; Privilege
+Management</a></li><li class="toc-l2"><a href="#Package_&amp;_Binary_Security">Package &amp; Binary Security</a></li><li class="toc-l2"><a href="#Network_Security">Network Security</a></li><li class="toc-l2"><a href="#Encryption_&amp;_Data_Protection">Encryption &amp; Data
+Protection</a></li><li class="toc-l2"><a href="#System_Hardening">System Hardening</a></li><li class="toc-l2"><a href="#Build_Integrity_&amp;_Transparency">Build Integrity &amp;
+Transparency</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><hr />
+<p><a href="../About/">About</a></p></li>
+<li><a href="../Design/">Design Documentation</a></li>
+<li><a href="./">Comparison with
+Debian</a></li>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+</ul>
+</div>
+<p><img src="../../media/Kicksecure_versus_Debian.png.webp" width="150" alt="Kicksecure_versus_Debian.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><strong>Kicksecure ships dozens of security-hardening defaults that
+Debian does not.</strong></p>
+<div class="post-intro-p">
+</div>
+<p>Grouped into the six categories below. Jump to a category:</p>
+<ul>
+<li><i class="fa-solid fa-user-shield"></i><span><a href="#Account_&amp;amp;_Privilege_Management">Account
+&amp;amp; Privilege Management</a></span></li>
+<li><i class="fa-solid fa-box-open"></i><span><a href="#Package_&amp;amp;_Binary_Security">Package
+&amp;amp; Binary Security</a></span></li>
+<li><i class="fa-solid fa-network-wired"></i><span><a href="#Network_Security">Network
+Security</a></span></li>
+<li><i class="fa-solid fa-lock"></i><span><a href="#Encryption_&amp;amp;_Data_Protection">Encryption
+&amp;amp; Data Protection</a></span></li>
+<li><i class="fa-solid fa-shield-halved"></i><span><a href="#System_Hardening">System
+Hardening</a></span></li>
+<li><i class="fa-solid fa-certificate"></i><span><a href="#Build_Integrity_&amp;amp;_Transparency">Build
+Integrity &amp;amp; Transparency</a></span></li>
+</ul>
+<h1 id="Introduction">Introduction</h1>
+<p>This wiki page compares the security-focused, hardened defaults of
+Kicksecure against upstream <a href="https://www.debian.org">Debian</a>.
+The differences are comprehensively detailed in several tables and
+visually highlighted below. The aspects considered are security
+hardening, several privacy aspects, and usability aspects. (<a href="./#Table_of_Contents">Table
+of Contents</a>)</p>
+<h1 id="Security_Hardening_by_Default">Security Hardening by
+Default</h1>
+<h2 id="Account_&_Privilege_Management">Account &amp; Privilege
+Management</h2>
+<table>
+<caption><em>Account &amp; Privilege Management Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../Sysmaint/"><code>user-sysmaint-split</code></a></p></td>
+<td><p>Separate daily and admin accounts by default</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Improved protection from <a href="../Backdoor/#Firmware_Trojan">firmware trojans</a> (a type of <a href="../Malware_and_Firmware_Trojans/">malware</a> / <a href="../Backdoor/#Hardware_Backdoor">hardware backdoor</a>) and rootkits</p></td>
+<td><p>Due to above.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Holistic administrative ("<a href="../Root/">root</a>") account protection</p></td>
+<td><ul>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/#Root_Account_Locked">Root Account Locked</a></li>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/#su_restrictions">su restrictions</a></li>
+<li>Protection from <a href="../Dev/Strong_Linux_User_Account_Isolation/#sudo_password_sniffing">sudo password sniffing</a></li>
+<li><a href="../Root/#Rationale_for_Protecting_the_Root_Account">Rationale for Protecting the Root Account</a></li>
+</ul></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/">Strong Linux User Account Isolation</a></p></td>
+<td><p>Enforces strict separation between user accounts with protections
+against privilege escalation, password sniffing, cross-account access,
+and brute-force attacks.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#libpam-tmpdir">libpam-tmpdir</a></p></td>
+<td><p>Make symlink attacks and other <code>/tmp</code> based attacks
+harder or impossible.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#Permission_Lockdown">Permission Lockdown</a></p></td>
+<td><p>Permission Lockdown enforces strong user separation by
+restricting access to other users' home directories using strict file
+permissions.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#umask_hardening">umask hardening</a></p></td>
+<td><p>Restrictive <code>umask</code> to tighten file system permissions
+for newly created files.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#Console_Lockdown">Console Lockdown</a> / <a href="../Dev/Strong_Linux_User_Account_Isolation/#.2Fetc.2Fsecuretty">/etc/securetty</a> hardening</p></td>
+<td><p>Console lockdown reduces the attack surface for console based
+attacks.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#Bruteforcing_Linux_Account_Passwords_Protection">Bruteforcing Linux Account Passwords
+Protection</a></p></td>
+<td><p><a href="../Dev/Strong_Linux_User_Account_Isolation/#Online_Password_Cracking_Restrictions">Online Password Cracking Restrictions</a> / <a href="../Dev/Strong_Linux_User_Account_Isolation/#sudo_restrictions">sudo restrictions</a></p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Package_&_Binary_Security">Package &amp; Binary Security</h2>
+<table>
+<caption><em>Package &amp; Binary Hardening Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../SUID_Disabler_and_Permission_Hardener/">SUID Disabler and Permission Hardener</a></p></td>
+<td><p>Improves security by disabling SUID binaries, tightening file
+permissions, and enhancing user account isolation to reduce potential
+attack surfaces.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Default package selection</p></td>
+<td><p>Minimal by default, therefore reduced attack surface from
+optional services such as <code>exim</code> / <code>samba</code> /
+<code>cups</code> <sup class="reference"><a href="#cite_note-1">[1]</a></sup> by default</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+<td><p>Depends.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Secure APT sources</p></td>
+<td><p>HTTPS APT sources are used by default</p></td>
+<td><p>Yes</p></td>
+<td><p>Depends.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://github.com/Kicksecure/security-misc"><code>security-misc</code></a></p></td>
+<td><p>Kernel hardening, kernel module restrictions, entropy, mount
+options, brute-force protection, <a href="../Panic-on-oops/">panic-on-oops</a></p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Network_Security">Network Security</h2>
+<table>
+<caption><em>Network Security Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Protection against targeted, malicious software upgrades</p></td>
+<td><p>Anonymous (<code>Tor</code>ified) software upgrades
+(<code>APT</code> upgrades run over Tor) by default</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Tirdad/">TCP ISN randomization
+(tirdad)</a></p></td>
+<td><p>TCP Initial Sequence Numbers Randomization: mitigates a reported
+TCP ISN based information leak side channel; see footnote.
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Secure network time synchronization / Protection from <a href="../Time_Attacks/">Time Attacks</a></p></td>
+<td><p>Uses authenticated web-date protocol / <a href="../Sdwdate/#Sdwdate_vs_NTP">sdwdate versus
+NTP</a></p></td>
+<td><p>Yes
+(<a href="../Sdwdate/">sdwdate</a>)</p></td>
+<td><p>No
+(NTP)</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://github.com/Kicksecure/open-link-confirmation">open-link-confirmation</a></p></td>
+<td><p>This is enabled by default and prevents links from being
+unintentionally opened in supported browsers.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>No open server ports by default</p></td>
+<td><p>All unsolicited incoming connections are blocked</p></td>
+<td><p>Yes</p></td>
+<td><p>Depends.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Network stack hardening by default</p></td>
+<td><p>Hardened networking defaults including anti-spoofing protections,
+safer ICMP and ARP handling, SYN flood mitigations, reduced information
+leaks, and other kernel-level network hardening.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Bluetooth Hardening</p></td>
+<td><p>Bluetooth is enabled in the kernel but disabled by default;
+private MAC addresses, limited discoverability timeout, and manual user
+activation required.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Hardened SSH client and server configuration</p></td>
+<td><ul>
+<li><u>Client hardening:</u> Secure defaults for SSH client
+cryptography, key exchange, MACs, and host key algorithms.</li>
+<li><u>Server hardening:</u> Restrictive authentication defaults, strong
+cryptography, and reduced attack surface.</li>
+</ul></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-9">[9]</a></sup></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Encryption_&_Data_Protection">Encryption &amp; Data
+Protection</h2>
+<table>
+<caption><em>Encryption &amp; Data Protection Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Strong Entropy Generation</p></td>
+<td><p>Ensures secure cryptographic operations by improving early boot
+entropy collection and reducing reliance on CPU and bootloader supplied
+entropy. See also <a href="../Dev/Entropy/">Dev/Entropy</a>.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Full_Disk_Encryption/"><u>F</u>ull
+<u>D</u>isk <u>E</u>ncryption (FDE)</a></p></td>
+<td><p>Enabled by default in the installer</p></td>
+<td><p>Yes</p></td>
+<td><p>Depends</p></td>
+</tr>
+<tr class="odd">
+<td><p>Improved Full Disk Encryption (FDE) installer defaults</p></td>
+<td><p>The Calamares installer offers improved, more secure default Full
+Disk Encryption (FDE) settings. <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p></td>
+<td><p>Yes</p></td>
+<td><p>Depends</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Ram-wipe/">ram-wipe</a></p></td>
+<td><p>Wipes RAM at shutdown and reboot to prevent information
+extraction from memory.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Sensitive crash artifact reduction</p></td>
+<td><p>Reduces leakage of sensitive information by disabling coredumps
+and PStore, and by clearing kernel symbol data such as
+<code>System.map</code>.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../USBGuard/">USBGuard</a> enabled by
+default</p></td>
+<td><p>Provides policy-based USB device authorization framework to
+protect against malicious USB devices.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Emerg-shutdown/">Emergency
+shutdown</a></p></td>
+<td><ul>
+<li>Forcibly powers off the system if the boot drive is removed.</li>
+<li>Forcibly powers off the system via a "panic key sequence" (default:
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">End</i></span>).</li>
+<li>Can be triggered by running:
+<code>sudo /run/emerg-shutdown --instant-shutdown</code></li>
+</ul></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Email encryption and signing support</p></td>
+<td><p>Communications (email) can be end-to-end encrypted and digitally
+signed with <a href="../OpenPGP/">OpenPGP</a>.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="System_Hardening">System Hardening</h2>
+<table>
+<caption><em>System Hardening Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../Protection_Against_Physical_Attacks/">Protection against Physical Attacks</a> Audit</p></td>
+<td><p><a href="../Systemcheck/">systemcheck</a></p></td>
+<td><p>Yes
+(<a href="../Systemcheck/#Physical_Security_Check">Physical
+Security Check</a>)</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Kernel hardening by default</p></td>
+<td><p>Extensive kernel hardening via hardened <code>sysctl</code>
+settings, boot parameters, ASLR improvements, safer defaults for risky
+kernel features, and reduced kernel attack surface.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>CPU vulnerability mitigations in strict mode</p></td>
+<td><p>Uses strict kernel boot mitigations for known CPU vulnerabilities
+such as Spectre, Meltdown, L1TF, MDS, Retbleed, GDS, RFDS, and related
+issues, rather than relying only on generic automatic mitigation
+defaults.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Kernel module attack surface reduction</p></td>
+<td><p>Blacklists and disables a wide range of risky, legacy, or
+unnecessary kernel modules to reduce attack surface, with optional
+hardening to disable loading of new modules after boot.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Recovery/#Recovery_Mode">Recovery Mode
+Lockdown</a></p></td>
+<td><p>Disables Recovery Mode by default and restricts fallback recovery
+shells.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Thumbnails/">Thumbnails</a>
+protection</p></td>
+<td><p>Thumbnails and previews are disabled by default in supported file
+managers because malicious files can sometimes exploit bugs in
+thumbnailing or preview code leading to remote code execution.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../File_indexing/">File indexing attack
+surface reduction</a></p></td>
+<td><p>No indexing service is installed by default because malicious
+files can sometimes exploit bugs in the indexing software leading to
+remote code execution. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p></td>
+<td><p>Yes</p></td>
+<td><p>Depends</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Build_Integrity_&_Transparency">Build Integrity &amp;
+Transparency</h2>
+<table>
+<caption><em>Build Integrity &amp; Transparency Features</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../Deep_scan_ready/">Deep scan
+ready</a></p></td>
+<td><p>Can be inspected from a trusted external system without booting
+the suspect <u>o</u>perating <u>s</u>ystem (OS), enabling offline or
+detached scanning of all storage and boot components.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p><span class="manually-placed-anchor mpa-visible" id="unicode">unicode</span>
+Protects its in-house source code from malicious <a href="../Unicode/">unicode</a></p></td>
+<td><p><a href="https://trojansource.codes/">Some Vulnerabilities are
+Invisible. Rather than inserting logical bugs, adversaries can attack
+the encoding of source code files to inject vulnerabilities. These
+adversarial encodings produce no visual artifacts.</a></p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-12">[12]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-13">[13]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Protection from supply chain attacks</p></td>
+<td><p>Mandates digital signature verification at all stages of
+development. This includes source code commits, git tags, the build
+process, and final downloads. Execution or deployment of unsigned code
+is strictly forbidden. The policy helps prevent supply chain attacks by
+ensuring the authenticity and integrity of software throughout its
+development and distribution.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-14">[14]</a></sup></p></td>
+<td><p>No
+<sup class="reference"><a href="#cite_note-15">[15]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Trust/#canary">Warrant
+canary</a></p></td>
+<td><p>Public statement confirming no secret warrants or gag orders have
+been served on the project, helping maintain user trust.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Dev/Build_Documentation/">build
+documentation</a></p></td>
+<td><p>Building your own images is encouraged, made as secure and easy
+as possible, with free user support being provided in the
+forums.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Security_Tools">Security Tools</h1>
+<table>
+<caption><em>Security Tools</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../Protection_Against_Physical_Attacks/#grub-pwchange"><code>grub-pwchange</code></a></p></td>
+<td><p><code>grub-pwchange</code> is a GRUB bootloader password
+management tool for setting a <a href="../Protection_Against_Physical_Attacks/#Bootloader_Password">Bootloader Password</a>.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Unicode/#Searching_Files_and_Folders_for_Unicode">Searching Files and Folders for Unicode</a> tools
+pre-installed</p></td>
+<td><p><a href="../Unicode/#grep-find-unicode-wrapper">grep-find-unicode-wrapper</a> and <a href="../Unicode-show/">unicode-show</a>
+pre-installed</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Login/#Configuring_Passwords"><code>pwchange</code></a></p></td>
+<td><p>Terminal-based tool for secure password changes using the command
+line.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><code>crypt-pwchange</code></p></td>
+<td><p>Utility for changing LUKS-encrypted volume passwords
+securely.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Usability">Usability</h1>
+<table>
+<caption><em>Usability and Convenience</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Better download and installation instructions</p></td>
+<td><p>Clearer guidance for downloading and installing the operating
+system, reducing user mistakes during installation and first
+boot.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Live_Mode/">Live Mode</a></p></td>
+<td><p>Easily activated from the boot menu, Live Mode discards all data
+after shutdown, leaving no trace of the session.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../System_Maintenance_Panel/">System
+Maintenance Panel</a> (<code>sysmaint-panel</code>)</p></td>
+<td><p>GUI tool for common administrative tasks: software updates,
+package installation, account management, password changes, keyboard
+layout configuration, system checks, and more.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Calamares installer with improved UX</p></td>
+<td><p>Graphical installer offering a user-friendly installation
+experience with fewer steps and clearer options.</p></td>
+<td><p>Yes</p></td>
+<td><p>Depends.
+<sup class="reference"><a href="#cite_note-16">[16]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Functional APT sources list</p></td>
+<td><p>Pre-configured and working APT sources to ensure package updates
+and installations function out of the box.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-17">[17]</a></sup></p></td>
+<td><p>Depends.</p></td>
+</tr>
+<tr class="even">
+<td><p>sudo pre-configured</p></td>
+<td><p>sudo is ready to use without additional setup, allowing safe
+privilege escalation by default.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-18">[18]</a></sup></p></td>
+<td><p>Depends.</p></td>
+</tr>
+<tr class="odd">
+<td><p>bash-completion, Zsh shell</p></td>
+<td><p>Command-line enhancements like tab completion and Zsh shell for
+improved terminal usability.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://github.com/Kicksecure/vm-config-dist">vm-config-dist</a></p></td>
+<td><p>Provides virtual machine usability improvements such as auto
+mounting shared folders, setting a sensible screen resolution, automatic
+screen resizing, and integration helpers for common VM
+environments.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://github.com/Kicksecure/usability-misc">usability-misc</a></p></td>
+<td><p>Miscellaneous usability enhancements.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Popular apps pre-installed</p></td>
+<td><p>Frequently used applications are pre-installed with secure
+defaults for convenience and security.</p></td>
+<td><p>Yes <a href="../Software/">with secure defaults</a></p></td>
+<td><p>Depends.</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Chmod-calc/">chmod-calc</a>
+pre-installed</p></td>
+<td><p>Comprehensive File and Directory Inspection Tool</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Simple system-wide keyboard layout configuration</p></td>
+<td><p>A tool is provided for changing the keyboard layout for the labwc
+display server, as well as system-wide (console, GUI, disk encryption
+passphrase prompt, GRUB)</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-19">[19]</a></sup></p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><code>apt-get-noninteractive</code></p></td>
+<td><p>A wrapper for <code>apt-get</code> that allows for automated,
+non-interactive package installation and upgrades.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><code>dpkg-noninteractive</code></p></td>
+<td><p>A wrapper for <code>dpkg</code> to ensure non-interactive
+behavior suitable for scripts or automation.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Configuration_Files/#Reset_Configuration_Files_to_Vendor_Default"><code>apt-get-reset</code></a></p></td>
+<td><p>Resets configuration files to vendor defaults, useful for
+recovery or resolving misconfigurations.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Grub/#Temporary_Kernel_Boot_Parameter_Change">GRUB boot menu with keyboard layout selection sub-menu
+(<code>set-grub-keymap</code>) </a></p></td>
+<td><p>GRUB bootloader includes a sub-menu for selecting keyboard
+layouts to support localized access at boot time.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Recovery/#Recovery_Mode">Recovery
+Mode</a> with user-specified keyboard layout
+(<code>set-system-keymap</code>)</p></td>
+<td><p>Recovery Mode supports custom keyboard layouts, enhancing
+accessibility in emergency scenarios.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Recovery/#Emergency_Recovery_Console">Emergency Recovery Console</a> with user-specified
+keyboard layout (<code>set-system-keymap</code>)</p></td>
+<td><p>Emergency console can be used with user-defined keyboard layout
+for troubleshooting and system repair.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>todo: <a href="../Browser-choice/">browser-choice</a> +
+hp</li>
+</ul>
+<h1 id="Platform_Support">Platform Support</h1>
+<table>
+<caption><em>Platform Support</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Extensive architecture support</p></td>
+<td><p>Availability of support across multiple processor architectures,
+such as x86_64 (<a href="../Intel_AMD64/">Intel /
+AMD64</a>), <a href="../ARM64/">ARM</a>, <a href="../PPC64/">PPC</a>, <a href="../RISCV64/">RISCV</a>
+and others.</p></td>
+<td><p>Limited.
+See <a href="../Architecture_Support/">Architecture
+Support</a>.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Major Virtualizer Support</p></td>
+<td><p>Availability of official images for virtualizers.</p></td>
+<td><p><a href="../VirtualBox/">VirtualBox</a>, <a href="../Linux/">VirtualBox Linux installer</a>, <a href="../KVM/">KVM</a>, <a href="../Qubes/">Qubes</a></p></td>
+<td><p>OpenStack, QEMU, Amazon EC2 / AWS Marketplace, Microsoft Azure /
+Azure Marketplace.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Extensive desktop environment support</p></td>
+<td><p>GNOME, KDE, LXQt, MATE, Cinnamon and <a href="https://wiki.debian.org/DesktopEnvironment">more</a></p></td>
+<td><p>No,
+see <a href="../Other_Desktop_Environments/">Other Desktop
+Environments</a>.</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="General">General</h1>
+<table>
+<caption><em>General Comparison</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Open Source distribution</p></td>
+<td><p>Freely available source code and licensed under open-source
+terms.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Based on Debian</p></td>
+<td><p>Built directly on top of Debian for compatibility, stability, and
+maintainability.</p></td>
+<td><p>Yes
+(<a href="../Based_on_Debian/">Kicksecure is based on
+Debian</a>)</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="odd">
+<td><p>High quality packaging distribution</p></td>
+<td><p>Ensures software is secure, reproducible, license-compliant, and
+well-integrated into the distribution through auditing, patching, and
+enforcing technical and legal standards. See <a href="../Dev/About_Debian_Packaging/#Purpose_of_Packaging">Purpose of Packaging</a>.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Based on Linux</p></td>
+<td><p>Built on the reliable, secure, and freedom-respecting Linux
+operating system to leverage its open-source foundation.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Pre-installed security tools</p></td>
+<td><p>Comes with hardened tools and services for security, privacy, and
+anonymity.</p></td>
+<td><p><a href="../AppArmor/">AppArmor</a>, <a href="../Sdwdate/">sdwdate</a>, <a href="https://github.com/Kicksecure/tirdad">tirdad</a>, <a href="https://github.com/Kicksecure/security-misc">security-misc</a></p></td>
+<td><p>Minimal (optional install)</p></td>
+</tr>
+<tr class="even">
+<td><p>Secure defaults (network, packages, accounts)</p></td>
+<td><p>Defaults favor security: no open ports, limited user privileges,
+hardened configurations.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Target audience</p></td>
+<td><p>Designed for users needing strong security and privacy
+protections.</p></td>
+<td><p>Users seeking strong defense</p></td>
+<td><p>General-purpose users, servers, desktops</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../About/#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian
+Manual</a></p></td>
+<td><p>Applies relevant recommendations from Debian's official security
+manual by default, adapting and modernizing where necessary.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Onion service version of website</p></td>
+<td><p>Provides a more secure, end to end encrypted connection that
+bypasses traditional DNS and avoids reliance on certificate
+authorities.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Comprehensive security <a href="../Documentation/">Documentation</a></p></td>
+<td><p>In-depth guides and resources to help users understand,
+implement, and maintain strong security practices.</p></td>
+<td><p>Yes
+(<a href="../System_Hardening_Checklist/">System Hardening
+Checklist</a>)</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-20">[20]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Signed downloads</p></td>
+<td><p>All downloads are cryptographically signed, allowing users to
+verify the authenticity and integrity of releases.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Documentation encourages users to perform digital software
+signature verification</p></td>
+<td><p><a href="../Verifying_Software_Signatures/">Verifying Software Signatures</a> is consistently
+pointed out in documentation for software installation and updating (not
+only for the ISO), and detailed verification instructions are provided
+where feasible.</p></td>
+<td><p>Yes
+<sup class="reference"><a href="#cite_note-21">[21]</a></sup></p></td>
+<td><p>Depends.
+<sup class="reference"><a href="#cite_note-22">[22]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Freedom_and_Transparency">Freedom and Transparency</h1>
+<table>
+<caption><em>Freedom and Transparency</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Open Source</p></td>
+<td><p>Users have the right to inspect, modify, and share the entire
+source code, promoting collective security and privacy
+benefits.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Freedom Software</p></td>
+<td><p>Includes software that adheres to Free Software Foundation (FSF)
+approved licenses.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Security hardening research and implementation focus</p></td>
+<td><p>Maintained as a transparent and ongoing security-focused project
+with public visibility of issues and continual improvement.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p>Fully Auditable</p></td>
+<td><p>All software is open for inspection and verification by
+independent developers and researchers worldwide.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Complete respect for privacy and user freedom</p></td>
+<td><p>No user tracking, no advertising integrations, and no personal
+data harvesting.</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>No user freedom restrictions such as <a href="../Miscellaneous_Threats_to_User_Freedom/#Administrative_Rights">administrative rights refusal</a></p></td>
+<td></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>No tivoization / no vendor lock-in</p></td>
+<td></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Obey user settings as a project value and development
+goal</p></td>
+<td></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Malware analysis / malicious backdoor and rootkit hunting
+possible reasonably easily</p></td>
+<td><p>Not a design that simplifies implementation of <a href="../Backdoor/#The_Perfect_Malicious_Backdoor">The
+"Perfect" Malicious Backdoor</a>. (<a href="../Deep_scan_ready/">deep scan ready</a>)</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Opt-in_and_Testers">Opt-in and Testers</h1>
+<p>TODO</p>
+<h1 id="Upcoming">Upcoming</h1>
+<table>
+<caption><em>Planned Features (Not Yet Implemented)</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128">Related
+forum thread</a></p></td>
+<td><p>Discussion about potential improvements for screen locking and
+shutdown behavior.</p></td>
+<td><p>No
+<em>Planning/Discussion</em></p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Verified_Boot/#Protecting_the_Kernel_Command_Line">Protecting the Kernel Command Line</a>
+<sup class="reference"><a href="#cite_note-23">[23]</a></sup></p></td>
+<td><p>Enhanced protection for kernel boot parameters to prevent
+tampering.</p></td>
+<td><p>No
+<em>Planned</em></p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Sovereign_Boot/">Sovereign
+Boot</a></p></td>
+<td><p>Integration with <a href="../Sovereign_Boot/">Sovereign Boot</a> for verifiable system boot
+integrity.</p></td>
+<td><p>No
+<em>Planned</em></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Development">Development</h1>
+<table>
+<caption><em>Development Tools and Debugging</em></caption>
+<thead>
+<tr class="header">
+<th><p>Feature</p></th>
+<th><p>Description</p></th>
+<th><p>Kicksecure</p></th>
+<th><p>Debian</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="../Recovery/#Serial_Console">Easy setup of
+Serial Console</a></p></td>
+<td><p><a href="https://github.com/Kicksecure/serial-console-enable">serial-console-enable</a>:
+simplifies enabling a serial console for debugging purposes.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="../Debug-misc/">debug-misc</a></p></td>
+<td><p><a href="https://github.com/Kicksecure/debug-misc">debug-misc</a>:
+Simplifies enabling settings required for troubleshooting and
+debugging.</p></td>
+<td><p>Yes</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Attribution">Attribution</h1>
+<ul>
+<li><u>Not anti-Debian:</u> This article should not be misunderstood as
+hatred toward <a href="https://www.debian.org">Debian</a>.</li>
+<li><u>Lineage:</u> <a href="../Based_on_Debian/">Kicksecure is based on Debian</a>.</li>
+<li><u>Fork friendly:</u> Debian welcomes <a href="https://en.wikipedia.org/wiki/Fork_(software_development)">software
+forks</a>, meaning anyone can create a new project by copying Debian
+under the respective licenses and developing it in their own way. See
+also [Broken-ExtLink--no-url-was-provided].</li>
+<li><u>Gratitude:</u> Without Debian, Kicksecure would not exist.
+Gratitude is expressed to the Debian project and its contributors.</li>
+<li><u>Innovation:</u> Debian continues to innovate.
+<sup class="reference"><a href="#cite_note-24">[24]</a></sup></li>
+</ul>
+<p><blockquote><p><a href="https://github.com/kpcyrd/repro-threshold">repro-threshold</a>,
+which implements an APT transport that "defines a threshold of at least
+X of my N trusted rebuilders need to confirm they reproduced the binary"
+before installing Debian packages.<span class="blockquote-context"><a href="https://reproducible-builds.org/reports/2025-11/">Reproducible
+Builds News</a></span></p></blockquote></p>
+<p><blockquote><p>We stand on the shoulders of giants - Kicksecure and many other Libre
+software projects are only made possible because people invested in
+writing code that is kept accessible for the public
+benefit.<span class="blockquote-context"><a href="../Reasons_for_Freedom_Software/">Reasons for Freedom
+Software / Open Source</a></span></p></blockquote></p>
+<p><blockquote><p>Debian - the best parent one can
+have<span class="blockquote-context"><a href="https://puri.sm/posts/what-is-pureos-and-how-is-it-built/">PureOS</a></span></p></blockquote></p>
+<p><blockquote><p>Reasons for being based on
+Debian:<span class="blockquote-context">[Broken-ExtLink--no-url-was-provided]</span></p></blockquote></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../About/#Hardening_by_Default">Hardening by
+Default</a></li>
+<li><a href="../About/#Kicksecure_Development_Goals">Kicksecure Development Goals</a></li>
+<li><a href="../Full_Disk_Encryption/">Full Disk
+Encryption</a></li>
+<li><a href="../Sysmaint/">sysmaint</a></li>
+<li><a href="../Debian_Tips/">Debian Tips</a></li>
+</ul>
+<h1 id="Table_of_Contents">Table of Contents</h1>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.evilsocket.net/2024/09/26/Attacking-UNIX-systems-via-CUPS-Part-I/">https://www.evilsocket.net/2024/09/26/Attacking-UNIX-systems-via-CUPS-Part-I/</a></li>
+<li id="cite_note-2">See also: <a href="../About/#Default_security_software">Default package selection</a></li>
+<li id="cite_note-3">Debian package selection depends on installer choices and tasks. For
+example, Exim is commonly installed in some Debian setups. See: <a href="https://wiki.debian.org/Exim">Debian Exim wiki page</a>.</li>
+<li id="cite_note-4">See footnote: <a href="../About/#Secure_Package_Sources_Configuration">About#Secure_Package_Sources_Configuration</a>.</li>
+<li id="cite_note-5"><a href="../About/#torified_updates">See Torified
+Updates</a></li>
+<li id="cite_note-6"><blockquote><p>The Linux kernel has a side-channel information leak bug. It is
+leaked in any outgoing traffic. This can allow side-channel attacks
+because sensitive information about a system's CPU activity is leaked.
+It may prove very dangerous for long-running cryptographic operations.
+Research has demonstrated that it can be used for de-anonymization of
+location-hidden services.</p></blockquote></li>
+<li id="cite_note-7">Debian's default listening services and open ports depend on
+installation choices and configuration. See also: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch12.en.html">Securing
+Debian Manual FAQ</a> and <a href="../Debian_Tips/#Open_Ports">Debian Open Ports</a>.</li>
+<li id="cite_note-8">* <a href="https://github.com/Kicksecure/security-misc?tab=readme-ov-file#bluetooth-hardening">Bluetooth
+Hardening</a> * <a href="https://github.com/Kicksecure/security-misc/blob/master/etc/bluetooth/30_security-misc.conf">See
+security-misc Bluetooth settings</a></li>
+<li id="cite_note-9">Settings are maintained as part of the security-misc package, see
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><code>github-link-widget-no-url-given</code></span>.</li>
+<li id="cite_note-10"><a href="https://forums.kicksecure.com/t/iso-cryptsetup-full-disk-encryption-fde-set-more-secure-default-encryption-settings/588">https://forums.kicksecure.com/t/iso-cryptsetup-full-disk-encryption-fde-set-more-secure-default-encryption-settings/588</a></li>
+<li id="cite_note-11"><a href="../Dev/GNOME/#1-Click_RCE_on_GNOME_(CVE-2023-43641)_in_file_indexing_service">1-Click RCE (Remote Code Execution) on GNOME
+(CVE-2023-43641) in file indexing service</a></li>
+<li id="cite_note-12">*
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/developer-meta-files/blob/master/usr/bin/dm-check-unicode">Kicksecure/developer-meta-files</a></span>
+* <a href="https://forums.whonix.org/t/detecting-malicious-unicode-in-source-code-and-pull-requests/13754/29">https://forums.whonix.org/t/detecting-malicious-unicode-in-source-code-and-pull-requests/13754/29</a></li>
+<li id="cite_note-13">* <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1014029">invisible
+malicious unicode in source code - detection and prevention</a> * This
+issue has been discussed publicly, but implementations and mitigations
+vary by project.</li>
+<li id="cite_note-14"><a href="../Digital_Signature_Policy/">Digital
+Signature Policy</a></li>
+<li id="cite_note-15">Debian's live-build has an open, security-tagged bug about
+authenticating all files it downloads as of December 2025. Debian bug
+report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=718225">live-build
+should authenticate files it downloads</a></li>
+<li id="cite_note-16">Debian Live uses Calamares; regular D-I does not</li>
+<li id="cite_note-17">See also: <a href="../Debian_Tips/">Debian
+Tips</a></li>
+<li id="cite_note-18">See <a href="../Root/#Root_Account_Management">Root
+Account Management</a></li>
+<li id="cite_note-19"><code>set-console-keymap</code>, <code>set-labwc-keymap</code>,
+<code>set-grub-keymap</code>, and <code>set-system-keymap</code>
+scripts, in package <a href="https://github.com/Kicksecure/helper-scripts">helper-scripts</a></li>
+<li id="cite_note-20"><a href="https://www.debian.org/doc/manuals/securing-debian-manual/">Securing
+Debian Manual</a></li>
+<li id="cite_note-21"><a href="../Digital_Signature_Policy/">Digital
+Signature Policy</a></li>
+<li id="cite_note-22">Debian provides verification guidance and links (for example,
+checksum and signature links on the download page and a dedicated ISO
+verification guide), but this is not always presented as an explicit
+step-by-step verification requirement across all documentation pages.
+See: <a href="https://www.debian.org/download">Downloading Debian</a>,
+<a href="https://www.debian.org/distrib/">Download Debian</a>, and <a href="https://www.debian.org/CD/verify">Verifying authenticity of Debian
+images</a>.</li>
+<li id="cite_note-23"><a href="https://forums.kicksecure.com/t/protecting-the-kernel-command-line/1251">https://forums.kicksecure.com/t/protecting-the-kernel-command-line/1251</a></li>
+<li id="cite_note-24"><a href="https://forums.whonix.org/t/reproducible-builds-innovation/23057">https://forums.whonix.org/t/reproducible-builds-innovation/23057</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

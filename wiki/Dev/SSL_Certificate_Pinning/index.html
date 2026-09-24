@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/SSL Certificate Pinning</title>
+<meta name="description" content="Technical Design Documentation about SSL Certificate Pinning">
+<meta property="og:description" content="Technical Design Documentation about SSL Certificate Pinning">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/SSL_Certificate_Pinning/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/SSL_Certificate_Pinning/">
+<meta property="og:title" content="Dev/SSL Certificate Pinning">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>SSL Certificate Pinning</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Defaults_Discussion">Defaults Discussion</a></li><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#PIN_Certificate_Authority">PIN Certificate Authority</a></li><li class="toc-l2"><a href="#PIN_Certificate_Directly">PIN Certificate Directly</a></li><li class="toc-l3"><a href="#curl_method">curl method</a></li><li class="toc-l3"><a href="#Alternate_perl_method">Alternate perl method</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Technical Design Documentation about SSL Certificate Pinning</p>
+<div class="post-intro-p">
+</div>
+<p><strong><em>DRAFT! UNFINISHED!</em></strong></p>
+<h1 id="Design">Design</h1>
+<h2 id="Defaults_Discussion">Defaults Discussion</h2>
+<p>Reasons for not enabling this feature by default:</p>
+<ul>
+<li>The feature is not yet implemented.</li>
+<li>Usefulness.
+<ul>
+<li>Not even Tor Browser does pin the Certificate yet. (The Tor Project
+ticket: <a href="https://gitlab.torproject.org/legacy/trac/-/issues/3555">enhancement:
+Pin *.torproject.org's certs in TBB</a>) Mike also says "low priority",
+where Patrick disagrees. However, Tor Browser at least <a href="https://gitlab.torproject.org/legacy/trac/-/issues/6098#comment:4">enforces
+HSTS for *.torproject.org</a>.</li>
+</ul></li>
+<li>Implementation.
+<ul>
+<li>torbrowser-launcher is not installable from Debian stable at time of
+writing. TODO: expand</li>
+<li>Kicksecure is still installing <a href="https://github.com/Kicksecure/tb-updater">tb-updater</a> rather
+than <a href="https://github.com/micahflee/torbrowser-launcher/">torbrowser-launcher</a>
+by default because, see <a href="https://phabricator.whonix.org/T18">ticket</a>. So the certificate
+file
+<em><span>/usr/share/torbrowser-launcher/torproject.pem</span></em>
+is not installed by default.</li>
+<li>It might be a Debian packaging bug to have whonixcheck depend on
+torbrowser-launcher for this purpose? Ignorable point, because
+whonixcheck is too specific to be included into Debian official
+repository anyhow.</li>
+<li>We would also have to install torbrowser-launcher on Kicksecure, so
+the certificate file
+<em><span>/usr/share/torbrowser-launcher/torproject.pem</span></em>
+gets installed by default. But since by Kicksecure design, users must
+not use Tor Browser in Kicksecure, we would have to hide
+(config-package-dev displace) torbrowser-launcher's start menu entries
+as well as build a wrapper around its binaries to warn against this.
+This is doable, but no one has implemented that yet.</li>
+<li>We are unaware of any other package or even project that does
+provide SSL certificates for direct pinning (do not confuse this with
+SSL CA pinning), that we could rely on. Apparently there is not even a
+list of certain domains and their SSL certificates (public key hashes)
+(do not confuse this with SSL CA pinning).</li>
+</ul></li>
+<li>Maintenance burden.
+<ul>
+<li><a href="https://gitlab.torproject.org/legacy/trac/-/issues/5789">The Tor
+Project (TPO) refused to maintain an OpenPGP signed certificate</a>.
+(They are excused: maintenance burden. TODO: expand)</li>
+<li>Relying on <a href="https://github.com/micahflee/torbrowser-launcher/">torbrowser-launcher</a>
+to maintain The Tor Project's SSL certificate file
+<em><span>/usr/share/torbrowser-launcher/torproject.pem</span></em>.
+<ul>
+<li>One time the maintainer of torbrowser-launcher was busy and needed
+~1 month to upgrade TPO's SSL certificate file. (<a href="https://github.com/micahflee/torbrowser-launcher/issues/84">reference</a>)
+He is excused, because he is a volunteer maintaining the software, under
+no obligations, probably earning no money with torbrowser-launcher,
+having other obligations. This is Freedom Software. Thank you for
+torbrowser-launcher!</li>
+<li>The plan of the maintainer of torbrowser-launcher is to wait until
+the certificate breaks before upgrading it. This is already the best the
+maintainer can do in the absence of better support from TPO for this use
+case. No blame here. Everyone is excused here, also TPO, since
+maintaining this adds up to the maintenance burden. (<a href="https://github.com/micahflee/torbrowser-launcher/issues/45">reference</a>)</li>
+<li>See also <a href="https://github.com/micahflee/torbrowser-launcher/issues?q=pin">torbrowser-launcher
+issues search "pin"</a> for eventual further issues with pinning.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>TODO: expand</p>
+<h1 id="Technical">Technical</h1>
+<h2 id="Introduction">Introduction</h2>
+<p>Please don't confuse SSL CA (Certificate Authority) pinning SSL
+direct pinning.</p>
+<p>See also:<br />
+https://github.com/Whonix/Whonix/issues/24</p>
+<h2 id="PIN_Certificate_Authority">PIN Certificate Authority</h2>
+<p>Weaker method (still better than no pinning at all), more easy to
+maintain.</p>
+<p>Install required software.</p>
+<pre><code>sudo apt install ca-certificates curl</code></pre>
+<p>Test, expected to work.</p>
+<p><span class="code-select">curl --verbose --tlsv1.3 --capath /invalid/
+--cacert
+/usr/share/ca-certificates/mozilla/DigiCert_High_Assurance_EV_Root_CA.crt
+<a href="https://check.torproject.org">https://check.torproject.org</a></span></p>
+<p>Test, expected to fail.</p>
+<p><span class="code-select">curl --verbose --tlsv1.3 --capath /invalid/
+--cacert /usr/share/ca-certificates/mozilla/AddTrust_External_Root.crt
+<a href="https://check.torproject.org">https://check.torproject.org</a></span></p>
+<h2 id="PIN_Certificate_Directly">PIN Certificate Directly</h2>
+<h3 id="curl_method">curl method</h3>
+<h4 id="Introduction_2">Introduction</h4>
+<p>Better method, more difficult to maintain.</p>
+<h4 id="Get_the_Certificate">Get the Certificate</h4>
+<h5 id="Introduction_3">Introduction</h5>
+<p>Install required software:</p>
+<pre><code>apt install ca-certificates curl</code></pre>
+<p>Download the public SSL certificate.</p>
+<h5 id="pem_Format">pem Format</h5>
+<h6 id="Method_1">Method 1</h6>
+<p>Method 1 just getting the certificate.</p>
+<pre><code>openssl s_client -connect torproject.org:443 &gt;./x.cert &lt;/dev/null</code></pre>
+<h6 id="Method_2">Method 2</h6>
+<p>Or better method 2, getting the certificate while pinning
+torproject.org's certificate authority.</p>
+<pre><code>openssl s_client -connect torproject.org:443 -CAfile /usr/share/ca-certificates/mozilla/DigiCert_Assured_ID_Root_CA.crt &gt;./x.cert &lt;/dev/null</code></pre>
+<h6 id="Method_3">Method 3</h6>
+<p>Or even better method 3, getting the certificate while pinning
+torproject.org's certificate authority and automatically extracting the
+certificate.</p>
+<pre><code>echo -n | openssl s_client -connect torproject.org:443 -CAfile /usr/share/ca-certificates/mozilla/DigiCert_Assured_ID_Root_CA.crt | sed -ne &#39;/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p&#39; &gt; ./torproject.pem</code></pre>
+<h6 id="der_Format">der Format</h6>
+<p><strong>Untested!</strong></p>
+<p><a href="https://www.mail-archive.com/curl-library@cool.haxx.se/msg20506.html">source</a></p>
+<pre><code>openssl s_client -connect torproject.org:443 2&gt;&amp;1 &lt; /dev/null | sed -n &#39;/-----BEGIN/,/-----END/p&#39; | openssl x509 -noout -pubkey | openssl rsa -pubin -outform DER &gt; torproject.org.der</code></pre>
+<h4 id="Verify_the_Certificate">Verify the Certificate</h4>
+<p>Get SHA-256 fingerprint:</p>
+<pre><code>openssl x509 -noout -in torproject.pem -fingerprint -sha256</code></pre>
+<h4 id="Usage">Usage</h4>
+<p><strong>Defunct!</strong></p>
+<p>Optionally render the ca-certificates useless for testing purposes.
+Using <em>curl</em> here, but <em>wget</em> has a <a href="https://lists.gnu.org/archive/html/bug-wget/2012-07/msg00015.html">bug</a>
+and uses the ca-files anyway.</p>
+<pre><code>sudo mv /usr/share/ca-certificates /usr/share/ca-certificates_</code></pre>
+<p>Download with curl and the pinned certificate:</p>
+<p><strong>Broken!</strong></p>
+<p>This needs curl 7.39.0 or above, because older versions do not
+support --pinnedpubkey.</p>
+<p><span class="code-select">curl --tlsv1.3 --cacert ./torproject.pem <a href="https://check.torproject.org/">https://check.torproject.org/</a>
+&gt; check.html</span></p>
+<p>Eventually undo.</p>
+<pre><code>sudo mv /usr/share/ca-certificates_ /usr/share/ca-certificates</code></pre>
+<h3 id="Alternate_perl_method">Alternate perl method</h3>
+<p><a href="https://security.stackexchange.com/questions/20399/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl">Source</a>.
+<strong><em>Not reviewed!</em></strong></p>
+<pre><code>#!/usr/bin/perl
+# https://security.stackexchange.com/questions/20399/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl
+# Code snippets taken from Net::SSLeay documentation and mildly modified.
+# Requires a newer version of SSLeay (tested with 1.48)
+# Needless to say, verify correct $host and $fingerprint before testing!!!
+
+use Net::SSLeay qw(get_https3);
+
+$host = &quot;www.google.com&quot;;
+$port = 443;
+$fingerprint = &quot;C1:95:6D:C8:A7:DF:B2:A5:A5:69:34:DA:09:77:8E:3A:11:02:33:58&quot;;
+
+($p, $resp, $hdrs, $server_cert) = get_https3($host, $port, &#39;/&#39;);
+if (!defined($server_cert) || ($server_cert == 0)) {
+    warn &quot;Subject Name: undefined, Issuer  Name: undefined&quot;;
+} elsif (Net::SSLeay::X509_get_fingerprint($server_cert, &quot;sha1&quot;) ne $fingerprint) {
+    warn &#39;Invalid certificate fingerprint &#39;
+        .  Net::SSLeay::X509_get_fingerprint($server_cert, &quot;sha1&quot;)
+        . &#39; for &#39; . Net::SSLeay::X509_NAME_oneline(
+             Net::SSLeay::X509_get_subject_name($server_cert));
+} else {
+    print $p;
+}</code></pre>
+<h1 id="Sources">Sources</h1>
+<p> Sources:</p>
+<ul>
+<li><a href="https://sourceforge.net/p/curl/feature-requests/64/">curl
+Feature Request: Pinning SSL certificates / check SSL fingerprints - ID:
+3569642</a></li>
+<li><a href="https://stackoverflow.com/questions/7084482/how-to-save-the-ldap-ssl-certificate-from-openssl">How
+to save the LDAP SSL Certificate from OpenSSL</a></li>
+<li><a href="https://www.madboa.com/geek/openssl/">OpenSSL Command-Line
+HOWTO</a> </li>
+</ul>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

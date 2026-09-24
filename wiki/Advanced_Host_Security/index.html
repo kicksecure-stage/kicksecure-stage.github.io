@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Advanced Host Security</title>
+<meta name="description" content="Advanced Host Security for Advanced Users, Kicksecure Hardening">
+<meta property="og:description" content="Advanced Host Security for Advanced Users, Kicksecure Hardening">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Advanced_Host_Security/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Advanced_Host_Security/">
+<meta property="og:title" content="Advanced Host Security">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Host232security23434234.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Attack_Surface_Reduction">Attack Surface Reduction</a></li><li class="toc-l2"><a href="#Proactive_Defenses">Proactive Defenses</a></li><li class="toc-l2"><a href="#Retroactive_Defenses">Retroactive Defenses</a></li><li class="toc-l2"><a href="#VirtualBox">VirtualBox</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Host232security23434234.jpg.webp" alt="Host232security23434234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Kicksecure comes with <a href="https://www.kicksecure.com/#security">many security features</a>.
+<a href="../About/">Kicksecure</a> is Security Hardened by
+default and also provides extensive <a href="../Documentation/">Documentation</a> including a <a href="../System_Hardening_Checklist/">System Hardening
+Checklist</a>. The more you know, the safer you can be.</p>
+<p>This page is targeted at advanced users who wish to improve the
+general security of their host operating system to become even more
+secure.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="apt-transport-tor">apt-transport-tor</h1>
+<p>apt-transport-tor is a package that allows non-Kicksecure that are
+not behind a torifying gateway to torify their APT traffic for
+individual repositories.</p>
+<p>For security reasons APT blocks clearnet connections to
+<code>.onion</code> domains by default. APT developers want to protect
+users from accidentally trying to use <code>.onion</code> repositories
+without using Tor. Otherwise, a rogue DNS server could redirect users to
+a false domain and trick them into thinking they are using Tor when they
+are not.</p>
+<p>apt-transport-tor (<code>tor+http</code>) is the default from
+Kicksecure 14 onward because it provides better error handling.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<h1 id="DMZ">DMZ</h1>
+<p>If users have a shared network -- such as a cable modem/router or
+ADSL/router setup that is utilized by others -- then consider
+configuring a Kicksecure <a href="https://en.wikipedia.org/wiki/DMZ_%28computing%29">DMZ</a>.</p>
+<p>A properly configured DMZ restricts Kicksecure from accessing, and
+being accessible to, other nodes on the network like printers, phones,
+computers and laptops. This is true even if root access is somehow
+achieved.</p>
+<p>Should an incursion take place, a DMZ prevents an adversary from
+exploring other systems and possibly compromising them.</p>
+<p>However, in this case a DMZ does not protect the user's anonymity,
+since the adversary could just ping a remote server and discover the
+real IP address. Another benefit of a DMZ is that should other systems
+be compromised, it is more difficult to compromise Kicksecure.</p>
+<h1 id="Hardware_Security">Hardware Security</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Kicksecure cannot provide protection against hardware backdoors.</p>
+</div>
+<p>Trusted computer hardware is fundamental to security. It is
+recommended to purchase and use "clean" computers that have components
+manufactured by reputable companies. It is preferable to pay in cash so
+hardware IDs do not leak your identity.</p>
+<p>As outlined in the <a href="../System_Configuration_and_Access/#Use_a_Dedicated_Host_Operating_System_and_Computer">System Configuration and Access</a> entry, it is safest
+to purchase a computer that is solely used for Kicksecure activities
+because this minimizes the risk of a prior hardware compromise.</p>
+<h1 id="Key_Hardening_Steps">Key Hardening Steps</h1>
+<p>For greater security, advanced users should harden the host
+<u>o</u>perating <u>s</u>ystem (OS) as much as is practicably possible.
+This includes, but is not limited to applying relevant steps from the <a href="../System_Hardening_Checklist/">System Hardening
+Checklist</a> and instructions found throughout this section:</p>
+<div>
+<ul>
+<li><a href="../System_Hardening_Checklist/#Disabling_and_Minimizing_Hardware_Risks">Disable and minimize hardware risks</a>.</li>
+<li><a href="../System_Hardening_Checklist/#Secure_Downloads">Securely download files</a> and <a href="../System_Hardening_Checklist/#Secure_Software_Installation">install software on the host</a>.</li>
+<li>Avoid <a href="https://github.com/Qubes-Community/Contents/blob/master/docs/configuration/multiboot.md">insecure
+dual-boot arrangements</a>.</li>
+<li>Choose a host OS that is <a href="../Host_Operating_System_Selection/">compatible with privacy and security goals</a>.</li>
+<li><a href="../Operating_System_Hardening/#Harden_Debian">Harden</a> the host.
+<ul>
+<li>Use <a href="../Full_Disk_Encryption/">Full Disk
+Encryption (FDE)</a> on the host.</li>
+<li>Apply a <a href="../Protection_Against_Physical_Attacks/#BIOS_Password">BIOS password</a> for BIOS set up and boot.</li>
+<li>Torify APT traffic on the host to prevent fingerprinting and leakage
+of sensitive security information. Kicksecure does that by default, see
+<a href="../About/#Torified_Apt_Upgrades">Torified Apt
+Upgrades</a>.</li>
+<li><a href="./#Kicksecure">Further
+harden the host OS</a> against <a href="../Protection_Against_Physical_Attacks/">physical
+attacks</a>.</li>
+</ul></li>
+<li>Apply instructions to <a href="../System_Hardening_Checklist/#Networking">harden
+networking</a>, including:
+<ul>
+<li>Use a <a href="../Host_Firewall/#Dedicated_Connection">dedicated network connection</a>.</li>
+<li>Configure a <a href="./#DMZ">de-militarized zone (perimeter network)</a> if
+necessary.</li>
+<li>Test the router / firewall with a <a href="../Host_Firewall/#Port_Scan">port scanning device</a>.</li>
+<li>Change the default administration router password and <a href="../Router_and_Local_Area_Network_Security/#Recommended_Router_Settings">lock it down with strict settings</a>.</li>
+<li><a href="../System_Hardening_Checklist/#Flash_the_Router_with_Opensource_Firmware">Flash the router with opensource firmware</a>.</li>
+</ul></li>
+<li><a href="../MAC_Address/#Changing_MAC_Addresses">Spoof
+MAC addresses</a> if necessary.</li>
+<li>Disable <a href="../Disable_TCP_and_ICMP_Timestamps/">TCP and ICMP timestamps</a>.</li>
+<li><a href="../Time_Attacks/#Mitigations">Remove the NTP
+client</a> and disable the NTP synchronization feature.</li>
+</ul>
+</div>
+<h1 id="Layered_Defense">Layered Defense</h1>
+<h2 id="Attack_Surface_Reduction">Attack Surface Reduction</h2>
+<p>In addition to the checklist above, it is suggested to also follow
+the principles of minimizing the <a href="https://en.wikipedia.org/wiki/Attack_surface">attack surface</a>
+of the OS, and securely configuring services -- for example when using
+SSH, implementing <a href="https://www.fail2ban.org/wiki/index.php/Main_Page">Fail2ban</a> so
+only key authentication is allowed.</p>
+<p>The attack surface concept deserves more consideration. Simply put,
+it is the sum of different attack vectors (aggregate of vulnerabilities)
+where an unauthorized user can try to enter or extract data from an
+environment. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> To reduce the attack surface and
+mitigate risks, it is necessary to: <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<ul>
+<li>Enforce least privilege for all executed processes and reduce entry
+points for untrusted users.</li>
+<li>Control system and network segment access across the network, for
+example, reduce (unauthenticated) access to network endpoints.</li>
+<li>Minimize exposed system targets by reducing the amount of code
+running and removing unnecessary functionality.</li>
+<li>Remove or shutdown software and services (channels, protocols) that
+are infrequently or rarely used.</li>
+<li>Frequently patch security vulnerabilities.</li>
+</ul>
+<h2 id="Proactive_Defenses">Proactive Defenses</h2>
+<p>This includes, but is not limited to:</p>
+<ul>
+<li><a href="https://wiki.debian.org/Hardening">Compile time
+hardening</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Intrusion_prevention_system">Intrusion
+Prevention Systems</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Mandatory_access_control">Mandatory
+Access Control</a></li>
+</ul>
+<h2 id="Retroactive_Defenses">Retroactive Defenses</h2>
+<p>The usefulness of this approach is limited because it does not
+prevent security breaches; it can only help in making future breaches
+less probable:</p>
+<ul>
+<li><a href="../Malware_and_Firmware_Trojans/#Malware">Anti-virus and anti-malware programs</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Intrusion_detection_system">Intrusion
+Detection System (IDS)</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Rkhunter">Rootkit Hunter
+(rkhunter)</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Snort_%28software%29">Snort
+network intrusion prevention system</a>.</li>
+<li><a href="https://packages.debian.org/sxid">sxid file and directory
+change tracker</a>.</li>
+<li><a href="https://packages.debian.org/tiger">TIGER security auditing
+program</a>.</li>
+</ul>
+<p>The programs listed in this section are only a very brief
+introduction to this topic. If interested, users should research these
+topics in depth because they are beyond the scope of this guide.</p>
+<h1 id="Separate_VirtualBox_User_Account">Separate VirtualBox User
+Account</h1>
+<p>Security-wise, it makes sense to create a separate user account
+solely for using <a href="../VirtualBox/">VirtualBox</a>,
+which is not in the admin/sudo group.</p>
+<h1 id="Virtualization_Platform">Virtualization Platform</h1>
+<p><span class="manually-placed-anchor " id="About_VirtualBox"></span></p>
+<h2 id="VirtualBox">VirtualBox</h2>
+<p><a href="../VirtualBox/">VirtualBox</a> is developed by
+Oracle, a company which has a reputation of not being very "open". In
+the past, concerns have been raised about how they announce security
+issues in their products and how well they communicate with each other,
+leading to a negative perception by the security community.</p>
+<p>VirtualBox is primarily a simple, "user-friendly", desktop solution
+and is most certainly not designed with the Kicksecure threat model in
+mind.</p>
+<p>Users that have a strong preference for security should strongly
+consider using <a href="../Qubes/">Kicksecure for
+Qubes</a>, if they have suitably modern hardware. In short, <a href="../Qubes/">Kicksecure for Qubes</a> is more secure
+than the default Kicksecure configuration using a <a href="../Virtualization_Platform_Security/#Type_1_vs_Type_2_Hypervisors">Type 2 hypervisor like VirtualBox</a>.</p>
+<p>Related VirtualBox Links:</p>
+<ul>
+<li><a href="https://www.virtualbox.org/query?summary=~&amp;col=id&amp;col=summary&amp;col=status&amp;col=owner&amp;col=type&amp;col=priority&amp;col=component&amp;order=priority">Custom
+Ticket Search</a></li>
+<li><a href="https://www.virtualbox.org/newticket">New Ticket</a></li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><a href="../Dev/VirtualBox/">Dev/VirtualBox</a> for
+licensing issues.</li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Essential_Host_Security/">Basic Host
+Security</a></li>
+<li><a href="../Host_Operating_System_Selection/">Host
+Operating System Selection</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">source: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=754242#54">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=754242#54</a>
+<blockquote><p>That said, it might make sense to use a-t-tor anyhow even if not
+strictly needed as it will deal better with certain tor anomalies given
+that it knows tor is involved reporting better errors (like telling you
+that the .onion address you typo'ed is too long/short; saying
+"unreachable host" if a service is... well, not reachable, instead of
+saying "TTL expired" which is reported by Tor and technically more
+correct but unhelpful), will use different circuits for different
+sources and stuff.</p></blockquote></li>
+<li id="cite_note-2">For instance it reports if the <i>.onion</i> address is too long or
+short, and will use different circuits for different sources.</li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Attack_surface">Wikipedia:
+Attack surface</a></li>
+<li id="cite_note-4"><a href="https://resources.infosecinstitute.com/topic/attack-surface-reduction/">https://resources.infosecinstitute.com/topic/attack-surface-reduction/</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

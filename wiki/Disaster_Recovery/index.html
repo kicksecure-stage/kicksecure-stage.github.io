@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Disaster Recovery</title>
+<meta name="description" content="In the event of a system compromise, users to have a plan in place to contain and recover from the a malware infection while preventing re-infection.">
+<meta property="og:description" content="In the event of a system compromise, users to have a plan in place to contain and recover from the a malware infection while preventing re-infection.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Disaster_Recovery/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Disaster_Recovery/">
+<meta property="og:title" content="Compromise Recovery">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Recovery43324.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The removal of malware can be challenging due to its ability to
+infect a variety of file types, including data files such as images and
+text files, in addition to executable files. Even if the hard drive is
+completely wiped and the malware appears to be removed, there is a risk
+of re-infection with the same malware as it may have previously infected
+a non-executable file. This makes it difficult to completely eradicate
+the malware from the system.</p>
+<p>In the event of a system compromise, users to have a plan in place to
+contain and recover from the a malware infection while preventing
+re-infection.</p>
+<div class="post-intro-p">
+</div>
+<p><img src="../../media/Recovery43324.jpg.webp" alt="Recovery43324.jpg" /></p>
+<h1 id="Introduction">Introduction</h1>
+<p>In the event of a system compromise, users have to have a plan in
+place to contain and recover from the a malware infection while
+preventing re-infection.</p>
+<p>In the event a system compromise is suspected or confirmed, the
+ultimate goal is to re-establish a trusted, private environment for
+future activities. This is essential to protect yourself and other
+parties that are communicated with.</p>
+<p>This entry assumes you still have or have regained access to your
+digital property. In order to move forward, it is necessary to adopt a
+reasonable compromise recovery technique that poses an acceptable
+trade-off between difficulty and security. The possible methods outlined
+below are listed in order of increasing security:</p>
+<ul>
+<li>powered on, Internet-connected compromised machines</li>
+<li>powered on, LAN-connected compromised machines</li>
+<li>powered on machines without connectivity (shared folder for VM or
+USB for host)</li>
+<li>powered off machines and mount</li>
+<li>the Qubes method</li>
+</ul>
+<p>The threat models below currently utilize the "powered on,
+LAN-connected compromised machines" method. Community contributions to
+outline additional techniques are most welcome.</p>
+<h1 id="Threat_Models">Threat Models</h1>
+<h2 id="Host_Compromise">Host Compromise</h2>
+<p>This threat model assumes a host compromise has been confirmed or is
+strongly suspected. In this case, it is important to remember that
+hardware is expendable, but data is precious. Consider your current
+hardware and everything attached to it as compromised.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+It is strongly recommended to no longer use the hardware, other than to
+salvage existing data. It is safest to assume all private data has been
+seized, copied, scrutinized and maliciously altered. Unless precautions
+are taken, the continued use of data from compromised hosts/VMs in clean
+systems risks reinfection.</p>
+</div>
+<div class="info-box ">
+<p><strong>1.</strong> Acquire a new laptop/desktop and external storage
+with cash from a store.</p>
+<p><strong>2.</strong> Set up Debian with Kicksecure.</p>
+<p><strong>3.</strong> The compromised computer should never be allowed
+to connect to the Internet again; see footnote. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><strong>4.</strong> Change the WiFi access point password.</p>
+<p>This step is not foolproof as an intelligent virus can attempt to
+connect from open hot-spots, but that might be a rare occurrence in your
+area. Also bear in mind that infected cellphones might be another
+exfiltration vector via ultrasound. For this reason it is safest to turn
+them off and keep them in a <a href="https://en.wikipedia.org/wiki/Faraday_cage">Faraday Cage</a> like
+a microwave for the duration of this procedure. Use a LAN connection
+only for the next steps.</p>
+<p><strong>5.</strong> Turn on your compromised machine and connect any
+infected external USB or HDDs to that device and copy everything over to
+the main disk.</p>
+<ul>
+<li>Install <a href="https://syncthing.net/">Syncthing</a> (file
+synchronization program) on that machine by transferring the package
+offline from the new computer via a fresh USB.</li>
+<li>Afterwards, discard the USB.</li>
+<li>Start the Syncthing session.</li>
+<li>It is recommended to keep the compromised machine in another room
+far away from the new computer. This will minimize the risk of hardware
+electromagnetic side-channel leaks that can expose key material and the
+information on your screen to the infected device.</li>
+</ul>
+<p><strong>6.</strong> Start Syncthing in a Debian VM on the uninfected
+machine.</p>
+<p>Connect both machines to a LAN only connection and initiate a
+transfer session -- copy over everything that needs to be salvaged. Once
+finished, move these files out of the Debian VM via a shared folder.</p>
+<p><strong>7.</strong> Connect new external storage to the uninfected
+machine and format it with encryption following the <a href="../Full_Disk_Encryption/#New_Removable_Media">Kicksecure guidelines</a>.</p>
+<p>Move the files back onto the storage device without opening them.
+Files are innocuous if not opened, so they can be copied over safely to
+the backup device. Since you cannot be sure if some file types were
+infected (PDFs, media), it is recommended you always copy the data you
+will be working on into the Workstation shared folder and execute it
+there from within the VM.</p>
+<p><strong>8.</strong> Once data from the old computer has been backed
+up, shut it down and permanently discard it along with the infected
+storage.</p>
+<p><strong>9.</strong> Consider any and all passwords as
+compromised.</p>
+<p>Immediately change all passwords following the recommendations
+outlined on the <a href="../Passwords/">Passwords
+page</a>.</p>
+<p><strong>10.</strong> Revoke all keys and generate new key pairs.</p>
+<p>Announce this key migration action to all contacts and the reason
+behind it. Put notices on your code repositories to alert potential
+users so they can inspect them for foul play and take necessary
+precautions.</p>
+<p><strong>11.</strong> Study your failures to prevent similar
+situations reoccurring in the future.</p>
+<p>If/when a host compromise occurs in the future, you may not be lucky
+enough to detect it. Understanding why your system was infiltrated is a
+crucial piece of information that should be gathered and shared with
+others.</p>
+</div>
+<h2 id="Kicksecure_VM_Compromise_without_Virtual_Machine_Escape">Kicksecure
+VM Compromise without Virtual Machine Escape</h2>
+<p>This threat model assumes a Kicksecure VM compromise has been
+confirmed or is strongly suspected, but there has not been a <a href="https://en.wikipedia.org/wiki/Virtual_machine_escape">VM escape
+(breakout)</a> or <a href="https://en.wikipedia.org/wiki/Hyperjacking">Hyperjacking</a>.</p>
+<p>1. Disconnect the internet to the infected VM or to the entire
+host.</p>
+<p>2. Transfer the data out of the Kicksecure VM via a shared
+folder.</p>
+<p>3. Apply steps 9 and 10 from the section above.</p>
+<p>4. Discard the infected Workstation snapshot or VM image.</p>
+<p>More complex ideas for recovering from an AppVM compromise on Qubes
+can be found <a href="https://www.qubes-os.org/news/2017/04/26/qubes-compromise-recovery/">here</a>.
+However this may not be necessary because the steps above should equally
+apply to any hypervisor and are easier to grasp. Qubes does not have the
+concept of shared folders, so it is best to draw inspiration from ideas
+suggested in that link.</p>
+<h1 id="Forum_Discussion">Forum Discussion</h1>
+<p><a href="https://forums.whonix.org/t/document-recovery-procedure-after-compromise/3296">Document
+recovery procedure after compromise</a></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Factory_Reset/">Factory Reset</a></li>
+<li><a href="../Malware_and_Firmware_Trojans/#Malware_Audits">Malware Audits</a></li>
+<li><a href="../Malware_and_Firmware_Trojans/">Malware</a></li>
+</ul>
+<h1 id="Attribution">Attribution</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="../About/">Kicksecure</a>
+is an <a href="../About/#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/after-compromise.en.html">After
+the compromise (incident
+response)</a><img src="../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Risk of booting a malicious VM without an Internet connection: * If
+disconnected from the Internet for too long, malware might be programmed
+to trigger the deletion or malicious editing of files (adding fabricated
+evidence), or perform actions which damage the hardware. Risk of
+maintaining an Internet connection when compromised: * Malware could
+load more code which might include capabilities to infect more hardware
+or perform a VM escape. * The possibility of exfiltration may not be a
+simple binary (yes or no) proposition. For example: ** Imagine a
+scenario whereby the attacker is using malware to remotely search
+images/videos/other files in succession (there are screenshots/videos
+available about malware features). ** Not all attackers will immediately
+fetch a whole image dump. ** Malware might upload more files over time.
+** Depending on when the compromise was noticed, everything may not be
+in the hands of the attacker yet. This is particularly true with large
+files such as video recordings. * The attacker might upload illegal
+files somewhere that result in a raid by authorities. * The attacker
+might come up with a new strategy, such as uploading false evidence
+files to the victim's computer followed by authority tip-offs that
+result in a police raid and false accusations. * When a malicious
+computer is connected, it might perform illegal activities like becoming
+part of a spam botnet. * The longer a compromised machine is connected
+to the Internet -- imagine a user following poor advice and taking days
+to search for all relevant data and making backups -- it is harder to
+explain away a decision to continue operating it. For example, stating
+"my computer was compromised, it wasn't me" is hard to reconcile with
+evidence that it was used in an attack for days on end. Refer to the
+following image to understand what compromised computers can be used
+for: <a href="https://krebsonsecurity.com/wp-content/uploads/2012/10/HackedPC2012.png">https://krebsonsecurity.com/wp-content/uploads/2012/10/HackedPC2012.png</a>
+It is far safer to avoid these risks, so <u>do not</u> connect a
+compromised VM or machine to the Internet.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

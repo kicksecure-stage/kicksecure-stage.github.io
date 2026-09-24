@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Hardened Malloc</title>
+<meta name="description" content="Hardened Memory Allocator for many Applications to increase Security - installation from Kicksecure repository">
+<meta property="og:description" content="Hardened Memory Allocator for many Applications to increase Security - installation from Kicksecure repository">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Hardened_Malloc/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Hardened_Malloc/">
+<meta property="og:title" content="Hardened Malloc (Default)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Malloc423.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#NOINDEX">NOINDEX</a></li><li class="toc-l2"><a href="#Discussion">Discussion</a></li><li class="toc-l2"><a href="#Launch_Specific_Applications_with_Hardened_Malloc_Default">Launch
+Specific Applications with Hardened Malloc Default</a></li><li class="toc-l2"><a href="#Launch_Systemd_Services_with_Hardened_Malloc_Default">Launch
+Systemd Services with Hardened Malloc Default</a></li><li class="toc-l2"><a href="#Launch_All_Applications_by_Default_with_Hardened_Malloc_Default">Launch
+All Applications by Default with Hardened Malloc Default</a></li><li class="toc-l2"><a href="#Disable_Hardened_Malloc_per_Application">Disable Hardened Malloc
+per Application</a></li><li class="toc-l2"><a href="#Incompatible_Applications">Incompatible Applications</a></li><li class="toc-l3"><a href="#Graphical_Desktop_Environment_Xorg">Graphical Desktop
+Environment Xorg</a></li><li class="toc-l3"><a href="#VirtualBox_Host_Software">VirtualBox Host Software</a></li><li class="toc-l3"><a href="#Browsers">Browsers</a></li><li class="toc-l3"><a href="#Flatpak">Flatpak</a></li><li class="toc-l3"><a href="#snap">snap</a></li><li class="toc-l3"><a href="#php">php</a></li><li class="toc-l3"><a href="#Others">Others</a></li><li class="toc-l2"><a href="#workaround_available">workaround available</a></li><li class="toc-l2"><a href="#no_workaround_available">no workaround available</a></li><li class="toc-l2"><a href="#Development_Notes">Development Notes</a></li><li class="toc-l3"><a href="#Tickets_and_Discussions">Tickets and Discussions</a></li><li class="toc-l3"><a href="#Upstream_Considerations_of_Hardened_Malloc_Deprecation_for_x86">Upstream
+Considerations of Hardened Malloc Deprecation for x86</a></li><li class="toc-l2"><a href="#Check_If_Hardened_Malloc_is_Enabled">Check If Hardened Malloc is
+Enabled</a></li><li class="toc-l2"><a href="#Check_If_Hardened_Malloc_Default_or_Hardened_Malloc_Light_is_Enabled">Check
+If Hardened Malloc Default or Hardened Malloc Light is Enabled</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">Hardened Malloc
+(Default)</a></li>
+<li><a href="../Hardened_Malloc_Light/">Hardened Malloc
+Light</a></li>
+</ul>
+</div>
+<p><img src="../../media/Malloc423.jpg.webp" alt="Malloc423.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Hardened Memory Allocator for many Applications to increase
+Security</p>
+<div class="post-intro-p">
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Internet_Archive_logo.png.webp" width="40" alt="Info" /></span>
+This page is archived.</p>
+</div>
+<h1 id="Deprecation_in_Kicksecure">Deprecation in Kicksecure</h1>
+<p>Context:</p>
+<ul>
+<li>This context was added in November 2025.</li>
+<li>The original rationale was written in February 2024.</li>
+<li>Purpose of this explanation: To justify the integration or
+non-integration of hardened_malloc into Kicksecure (and Whonix), from
+the perspective of distribution development.</li>
+</ul>
+<p>Reasons - written in February 2024:</p>
+<ul>
+<li><strong>Not stable enough:</strong> Through testing and integration
+development in Kicksecure, the unresolveable <a href="#Issues">#Issues</a> being found, it has been determined that it
+will never be stable enough to be suitable for installation by default
+for all users.</li>
+<li><strong>Unclear Benefit:</strong> See chapter <a href="#Tickets_and_Discussions">#Tickets and
+Discussions</a>. Whenever it has been suggested to other projects to
+port to Hardened Malloc (HM), it did not get favorable reviews from
+other developers.</li>
+<li><strong>Lack of outreach by upstream:</strong> Upstream mentioned
+that others do not understand HM but also does not have time to engage
+with them.</li>
+<li><strong>Potential future deprecation by upstream:</strong> <a href="#Upstream_Considerations_of_Hardened_Malloc_Deprecation_for_x86">Upstream contemplated deprecation of Hardened Malloc
+support for usage outside of a Android / GrapheneOS context.</a></li>
+<li><strong>Security issues?</strong> <strong>No.</strong> Users can
+keep using Hardened Malloc (Default) or Hardened Malloc Light until the
+next major release (Kicksecure version 18) but it will be <a href="../Unsupported/">unsupported</a>.</li>
+<li><s><strong>Architecture support:</strong> <strong>Limited.</strong>
+(HM supports AMD64 architecture only, which makes Kicksecure progress
+towards multiple architecture support such as ARM64 and PPC harder.)</s>
+<ul>
+<li>Update November 2025: The original issue can no longer be
+identified, possibly due to <a href="#Upstream_Deleting_Posts">Upstream Deleting Posts</a>. It may have been similar
+to <a href="https://github.com/GrapheneOS/hardened_malloc/issues/228">Build
+issue on Rocky Linux 9 aarch64 #228</a>, a compilation issue that might
+have been resolvable in theory, but Kicksecure lacked the resources to
+maintain a fix at the time this was written. As of February 2024, HM
+offered no direct support for Debian. Pull request <a href="https://github.com/GrapheneOS/hardened_malloc/pull/90">Debian
+packaging work in progress #90</a> received no feedback and was locked
+without explanation. This is entirely within the rights of the HM
+project, which has no obligation to support other Linux distributions.
+However, it is relevant context and has contributed to the deprecation
+of HM in Kicksecure, and is therefore included here.</li>
+</ul></li>
+<li><strong>Future:</strong> Is there any chance this package will get
+unarchived, maintained again in Kicksecure? No.</li>
+<li><strong>Forum discussion:</strong> <a href="https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/231">https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/231</a></li>
+</ul>
+<p>New reason - added November 2025:</p>
+<ul>
+<li><strong>Upstream is difficult to work with:</strong> Upstream has
+declined communication and issued bans.
+<ul>
+<li><a href="https://tech.michaelaltfield.net/2025/08/19/grapheneos-daniel-micay-banned/">https://tech.michaelaltfield.net/2025/08/19/grapheneos-daniel-micay-banned/</a></li>
+<li><a href="https://forums.kicksecure.com/t/grapheneos-attacks-kicksecure-what-should-the-response-be/739/6">https://forums.kicksecure.com/t/grapheneos-attacks-kicksecure-what-should-the-response-be/739/6</a></li>
+<li><a href="#Upstream_Deleting_Posts">Upstream
+Deleting Posts</a>
+<ul>
+<li>Upstream's decision to disengage will be respected.</li>
+<li>To clarify, no private communication has occurred.</li>
+<li>All prior interactions have fortunately taken place in public.</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="NOINDEX">NOINDEX</h2>
+<p>For context, wiki page Hardened Malloc uses wiki keyword
+<code>NOINDEX</code>. Quote Wikipedia:</p>
+<p><blockquote><p>The noindex value of an HTML robots meta tag requests that automated
+Internet bots avoid indexing a web
+page.<span class="blockquote-context"><a href="https://en.wikipedia.org/wiki/Noindex">Wikipedia article
+<code>noindex</code></a></span></p></blockquote></p>
+<p>This is done deliberately to prevent the page from appearing in
+Google and other search engine results. The intention is to minimize
+drama. Discussion about hardened malloc is not a core activity of the
+project. Those interested in Kicksecure's development and integration
+perspective can find the details; otherwise, the topic is considered
+sufficiently addressed.</p>
+<h2 id="Discussion">Discussion</h2>
+<ul>
+<li><a href="https://forum.qubes-os.org/t/secureblue-for-default-templatevm-and-dom0/32362/34">https://forum.qubes-os.org/t/secureblue-for-default-templatevm-and-dom0/32362/34</a></li>
+<li><a href="https://forum.qubes-os.org/t/secureblue/35566/19">https://forum.qubes-os.org/t/secureblue/35566/19</a></li>
+</ul>
+<h1 id="Introduction">Introduction</h1>
+<p>Hardened Malloc (Default) is a hardened memory allocator which can be
+used with many applications to increase security.</p>
+<p><blockquote><p>This is a security-focused general purpose memory allocator providing
+the malloc API along with various extensions. It provides substantial
+hardening against heap corruption vulnerabilities. The security-focused
+design also leads to much less metadata overhead and memory waste from
+fragmentation than a more traditional allocator design. It aims to
+provide decent overall performance with a focus on long-term performance
+and memory usage rather than allocator micro-benchmarks. It offers
+scalability via a configurable number of entirely independently arenas,
+with the internal locking within arenas further divided up per size
+class.<span class="blockquote-context">Daniel Micay, Hardened Malloc
+developer, founder and lead developer of <a href="https://grapheneos.org/">GrapheneOS</a>, <a href="https://github.com/GrapheneOS/hardened_malloc">hardened_malloc
+project page</a></span></p></blockquote></p>
+<p>Readers who wish to discuss the integration of Hardened Malloc with
+Kicksecure should refer to <a href="https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474">this
+forum thread</a>.</p>
+<h1 id="Naming">Naming</h1>
+<p>The author of <code>Hardened Malloc</code> uses only the terms:</p>
+<ul>
+<li><code>Hardened Malloc</code></li>
+<li><code>Hardened Malloc Light</code></li>
+</ul>
+<p>To distinguish better which version is used, this websites uses the
+terms:</p>
+<ul>
+<li><code>Hardened Malloc (Default)</code></li>
+<li><code>Hardened Malloc Light</code></li>
+</ul>
+<p>This is unrelated to price. Both versions are Freedom Software, free
+as in price as well as in freedom.</p>
+<p><code>Hardened Malloc Light</code> is provided for cases in which
+<code>Hardened Malloc (Default)</code> cannot be used due to application
+specific issues. <code>Hardened Malloc (Default)</code> might trigger
+issues due to memory allocation bugs found in some applications.</p>
+<h1 id="Installation">Installation</h1>
+<p>Hardened Malloc (Default) is pre-installed.</p>
+<h1 id="How-to:_Launch_Applications_with_Hardened_Malloc_Default">How-to:
+Launch Applications with Hardened Malloc Default</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Cornues.png.webp" width="40" alt="Testers only!" /></span>
+Warning: This is for <u><strong>testers-only</strong></u>!</p>
+</div>
+<h2 id="Launch_Specific_Applications_with_Hardened_Malloc_Default">Launch
+Specific Applications with Hardened Malloc Default</h2>
+<p>To launch chosen applications with Hardened Malloc (Default), the
+<code>LD_PRELOAD</code> environment variable must be edited before
+starting the application.</p>
+<p>For example, to launch <code>application-name</code> in this way,
+run.</p>
+<p><span class="code-select">LD_PRELOAD='libhardened_malloc.so'
+application-name</span></p>
+<p>Using administrative rights, example:</p>
+<p><span class="code-select">sudo LD_PRELOAD='libhardened_malloc.so' apt
+update</span></p>
+<h2 id="Launch_Systemd_Services_with_Hardened_Malloc_Default">Launch
+Systemd Services with Hardened Malloc Default</h2>
+<p>To launch individual systemd services with Hardened Malloc (Default),
+add a drop-in systemd configuration snippet.</p>
+<p><span class="code-select">Environment="LD_PRELOAD='libhardened_malloc.so'"</span></p>
+<h2 id="Launch_All_Applications_by_Default_with_Hardened_Malloc_Default">Launch
+All Applications by Default with Hardened Malloc Default</h2>
+<p>It is possible to make all applications use Hardened Malloc (Default)
+as the default memory allocator.</p>
+<p><u>Note</u>:</p>
+<ul>
+<li><u>If using a graphical desktop environment</u> (such as Xfce): This
+action breaks the graphical desktop environment (Xorg). Most users using
+a graphical desktop environment (such as Xfce) should not proceed
+enabling Hardened Malloc (Default) for all applications. Only <a href="../Hardened_Malloc_Light/">Hardened Malloc Light</a>
+is suitable for that.</li>
+<li><u>If using a command line interface (CLI)</u> (no graphical desktop
+environment) (such as a server): This can be attempted! Testers
+only!</li>
+</ul>
+<p>To configure this option, the path to the
+<code>hardened_malloc.so</code> library must be added to the
+<code>/etc/ld.so.preload</code> file. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<div class="info-box ">
+<p><strong>1.</strong> Open file <code>/etc/ld.so.preload</code> in an
+editor with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure">
+<p>Kicksecure</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
+<p>Kicksecure-Qubes</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="../Qubes/">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="../Qubes/#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="../Unspecific/">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  info-box">
+<div class="tcc-image">
+<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading5 widget-headline ">
+<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
+<p>Others and Alternatives</p>
+</h5>
+</div>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="../Software/#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><strong>2.</strong> Add the <code>hardened_malloc.so</code>
+library.</p>
+<p>Paste.</p>
+<p><span class="code-select">libhardened_malloc.so</span></p>
+<p><strong>3.</strong> Save the file.</p>
+<p><strong>4.</strong> Done.</p>
+<p>The procedure is complete. Hardened Malloc Default has been enabled
+for all applications by default.</p>
+</div>
+<h2 id="Disable_Hardened_Malloc_per_Application">Disable Hardened Malloc
+per Application</h2>
+<p>In case Hardened Malloc Default/Light is enabled globally for all
+applications it is possible to disable it for select applications should
+that be required due to application incompatibilities.</p>
+<p>Apply the following steps to disable Hardened Malloc Default/Light
+per application.</p>
+<p>Prepend the
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/ld-system-preload-disable">Kicksecure/helper-scripts</a></span>
+wrapper.</p>
+<p>Syntax:</p>
+<p><span class="code-select">ld-system-preload-disable
+application</span></p>
+<p>Example:</p>
+<p>Notes:</p>
+<ul>
+<li>This disabled all ld system preload. This only matters in case the
+user previously modified ld system preload configuration file
+<code>/etc/ld.so.preload</code> which the vast majority of users do not
+do.</li>
+<li>Replace <a href="../Chromium/"><code>chromium</code></a> with the actual application
+which should be started without ld system preload.</li>
+</ul>
+<p><span class="code-select">ld-system-preload-disable
+chromium</span></p>
+<h1 id="Issues">Issues</h1>
+<h2 id="Incompatible_Applications">Incompatible Applications</h2>
+<h3 id="Graphical_Desktop_Environment_Xorg">Graphical Desktop
+Environment Xorg</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p><strong>Hardened Malloc (Default)</strong></p></td>
+<td><p><strong><a href="../Hardened_Malloc_Light/">Hardened
+Malloc Light</a></strong></p></td>
+</tr>
+<tr class="even">
+<td><p>Kicksecure on the host</p></td>
+<td><p>Yes,
+functional.</p></td>
+<td><p>Yes,
+functional.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Kicksecure inside VirtualBox Xfce</p></td>
+<td><p>No,
+Xorg broken.</p></td>
+<td><p>Yes,
+functional.</p></td>
+</tr>
+<tr class="even">
+<td><p>Kicksecure inside VirtualBox CLI</p></td>
+<td><p>Yes,
+functional. (Not using Xorg.)</p></td>
+<td><p>Yes,
+functional. (Not using Xorg.)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Kicksecure inside KVM</p></td>
+<td><p>Yes,
+functional.</p></td>
+<td><p>Yes,
+functional.</p></td>
+</tr>
+<tr class="even">
+<td><p>Kicksecure for Qubes</p></td>
+<td><p>Yes,
+functional. (Not using Xorg.)</p></td>
+<td><p>Yes,
+functional. (Not using Xorg.)</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>TODO:</p>
+<ul>
+<li>Xorg systemd drop in InaccessiblePaths=-/etc/ld.so.preload</li>
+<li><a href="https://forums.whonix.org/t/port-to-wayland/17380">port to
+Wayland</a></li>
+</ul>
+<h3 id="VirtualBox_Host_Software">VirtualBox Host Software</h3>
+<ul>
+<li><strong>A)</strong> Hardened Malloc on the host: <a href="https://www.virtualbox.org/ticket/20107">VirtualBox crashes with
+hardened memory allocator Hardened Malloc on the host.</a>
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li><strong>B)</strong> Hardened Malloc inside a VM: However, using HM
+inside VirtualBox VMs is different. For that, see above wiki
+chapter.</li>
+</ul>
+<h3 id="Browsers">Browsers</h3>
+<h4 id="Firefox">Firefox</h4>
+<p>Using Hardened Malloc Default/Light with Firefox is broken and <a href="../Unsupported/">unsupported</a>.
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p>To start Firefox without Hardened Malloc, run.</p>
+<p><span class="code-select">ld-system-preload-disable
+firefox-esr</span></p>
+<h4 id="Tor_Browser">Tor Browser</h4>
+<p>Using Hardened Malloc Default/Light with Tor Browser is also is
+broken and <a href="../Unsupported/">unsupported</a>. Same
+as above. This is because Tor Browser is based on Firefox.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<ul>
+<li>To start Tor Browser without Hardened Malloc:
+<ul>
+<li>Note: Adjust path Tor Browser's startup script
+<code>start-tor-browser</code> if you are using a different Tor Browser
+installation folder.</li>
+<li><span class="code-select">ld-system-preload-disable
+~/.tb/tor-browser/Browser/start-tor-browser</span></li>
+</ul></li>
+<li>If using Tor Browser Starter (package: <code>tb-starter</code>) by
+Whonix developers:
+<ul>
+<li><span class="code-select">ld-system-preload-disable
+torbrowser</span></li>
+</ul></li>
+</ul>
+<h4 id="Chromium">Chromium</h4>
+<p>Using Hardened Malloc Default/Light with <a href="../Chromium/">Chromium</a> is also is broken and <a href="../Unsupported/">unsupported</a>.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<p>To start Tor Browser without Hardened Malloc, run.</p>
+<p><span class="code-select">ld-system-preload-disable
+chromium</span></p>
+<h4 id="Other_Browsers">Other Browsers</h4>
+<p>It is unknown whether other browsers can benefit from Hardened Malloc
+Default/Light.</p>
+<h3 id="Flatpak">Flatpak</h3>
+<p><a href="../Install_Software/#Flatpak">Flatpak</a> does
+not honor <code>/etc/ld.so.preload</code>. Therefore using Hardened
+Malloc with Flatpak applications is currently <a href="../Unsupported/">unsupported</a>. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p><a href="https://forums.whonix.org/t/bug-hardened-malloc-ignored-by-flatpaks/18199">Bug:
+Hardened Malloc Ignored by Flatpaks</a></p>
+<h3 id="snap">snap</h3>
+<p><a href="../Install_Software/#snap">snap</a> is <a href="../Unsupported/">untested</a>. Possibly has the same
+issue as <a href="#Flatpak">Flatpak</a>.</p>
+<h3 id="php">php</h3>
+<p><code>php</code> command from <code>php8.2-cli</code> php package
+segfaults.</p>
+<p><span class="code-select">php</span></p>
+<pre><code>zsh: segmentation fault (core dumped)  php</code></pre>
+<p>To start PHP on the command line without Hardened Malloc, run.</p>
+<p><span class="code-select">ld-system-preload-disable php</span></p>
+<p>If PHP is started by other applications such as a web server, it is
+currently <a href="../Unsupported/">untested</a> if that is
+broken.</p>
+<h3 id="Others">Others</h3>
+<p>Other applications might not easily benefit from Hardened Malloc
+Default/Light for the same reasons outlined in the <a href="#Browsers">browsers</a> section above.</p>
+<p>Whether an application can benefit from Hardened Malloc Default/Light
+or not depends on technical implementation details of the application in
+question. Vendors of applications will probably know if their
+application is compatible with Hardened Malloc Default/Light. Community
+wiki contributions are most welcome -- please post any additional vendor
+Q&amp;As here.</p>
+<h2 id="workaround_available">workaround available</h2>
+<p>Slowdown of swap-file-creator at shutdown.</p>
+<ul>
+<li>related to above cryptsetup slowdown by factor ~ 7</li>
+<li>workaround OK
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/swap-file-creator/commit/c65edf17f952ac4a296ae6a0aac5a10541579ff6">Kicksecure/swap-file-creator</a></span></li>
+</ul>
+<h2 id="no_workaround_available">no workaround available</h2>
+<p>major issues:</p>
+<ul>
+<li>cryptsetup slowdown by factor ~ 6
+<ul>
+<li>reported upstream: <a href="https://gitlab.com/cryptsetup/cryptsetup/-/issues/617">cryptsetup
+luksFormat slowdown of factor ~ 6 when using hardened memory allocator
+Hardened Malloc</a></li>
+</ul></li>
+</ul>
+<p>minor issues:</p>
+<ul>
+<li>Qubes issues (when using Debian based VMs inside Qubes OS):
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/6873">Installing
+Hardened Malloc and enforce enabling it will lead to duplication in Copy
+to VM &amp; Move to VM</a></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/7431">Memory
+issue founded by Hardened-Malloc - "icon-sender: segfault at ...
+libc-2.31.so"</a></li>
+</ul></li>
+<li>element bug report: <a href="https://github.com/vector-im/element-web/issues/21805">Memory
+issues detected by hardened malloc - libva error:
+vaGetDriverNameByIndex() failed with unknown libva error, driver_name =
+(null)</a></li>
+</ul>
+<h2 id="Development_Notes">Development Notes</h2>
+<h3 id="Tickets_and_Discussions">Tickets and Discussions</h3>
+<ul>
+<li>chromium feature request: <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1204783">consider
+using hardened malloc</a>
+<ul>
+<li>No favorable review by Chromium developers.
+<ul>
+<li><blockquote><p>This is probably made unnecessary by the PartitionAlloc work, which
+contains similar security features. See <a href="https://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/PartitionAlloc.md">https://source.chromium.org/chromium/chromium/src/+/main:base/allocator/partition_allocator/PartitionAlloc.md</a>.</p></blockquote></li>
+</ul></li>
+</ul></li>
+<li>tor-dev mailing list: <a href="https://lists.torproject.org/pipermail/tor-dev/2019-August/013989.html">TBB
+Memory Allocator choice fingerprint implications</a>
+<ul>
+<li>tor-dev mailing list thread <a href="https://archive.torproject.org/websites/lists.torproject.org/pipermail/tor-dev/2019-August/thread.html#13977">TBB
+Memory Allocator choice fingerprint implication</a></li>
+<li><a href="https://archive.torproject.org/websites/lists.torproject.org/pipermail/tor-dev/2019-August/013998.html">The
+thread did not go well.</a></li>
+</ul></li>
+<li>Tor Browser feature request: <a href="https://gitlab.torproject.org/tpo/applications/tor-browser/-/issues/31440">consider
+using Hardened Malloc for better security in TBB</a> - got closed
+probably due to the outcome of above mailing list discussion.</li>
+<li>glibc feature request: <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=25223">consider
+using Hardened Malloc</a></li>
+</ul>
+<h4 id="Related_Feature_Requests_Improving_Integration_Work">Related
+Feature Requests Improving Integration Work</h4>
+<p>These are not caused by hardened malloc but instead are feature
+requests for other upstream projects which would ease integration.</p>
+<ul>
+<li><a href="https://www.gnu.org/software/libc/"><code>glibc</code></a>
+feature request: <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24913"><code>/etc/ld.so.preload.d</code>
+drop-in configuration folder support</a></li>
+<li><code>glibc</code> feature request: <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=26723">LD_ETC_IGNORE
+- environment variable to ignore /etc/ld.so.preload configuration file
+on a per-application basis</a></li>
+<li>Debian request for packaging: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945455">RFP:
+hardened-malloc -- hardened memory allocator</a></li>
+<li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/7444">Hardened
+Malloc For Qubes OpenQA</a></li>
+<li>Debian <code>glibc</code> feature request: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945457">consider
+using hardened malloc (hardened memory allocator)</a></li>
+</ul>
+<h3 id="Upstream_Considerations_of_Hardened_Malloc_Deprecation_for_x86">Upstream
+Considerations of Hardened Malloc Deprecation for x86</h3>
+<p>Context:</p>
+<ul>
+<li>This context was added November 2025.</li>
+<li>Original was written in February 2024.</li>
+<li>Original source not archived. And not worthwhile to investigate
+further. Hence, <s>strike-through</s> formatting will be used.</li>
+</ul>
+<p><blockquote><p><s>Perhaps we'll give up on the partial support for using
+hardened_malloc outside of an Android-based OS, particularly since
+people don't seem to understand the difference between it and simply
+bolting on some hardening features to a traditional allocator
+design,</p>
+<p>I've already had the usual experience
+today.</s><span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/4371#issuecomment-1912807801">quote</a>
+<s>Hardened Malloc upstream developer <a href="https://github.com/thestinger">Daniel Micay,
+@thestinger</a></s></span></p></blockquote></p>
+<p>There are many examples of imported public statements which are
+deleted by upstream but still available on the Web Archive.</p>
+<h4 id="Upstream_Deleting_Posts">Upstream Deleting Posts</h4>
+<p>Certain statements were made and later deleted, making meaningful
+cooperation difficult.</p>
+<ul>
+<li>Michael Altfield was banned from the GrapheneOS project by Daniel
+Micay after submitting a feature request and reopening a previously
+deleted issue. No specific misconduct was identified, and Daniel Micay
+subsequently deleted his own comments and declined to explain the
+rationale behind the ban, leaving Michael Altfield uncertain about the
+reason. For further context, refer to the blog post: <a href="https://tech.michaelaltfield.net/2025/08/19/grapheneos-daniel-micay-banned/">Why
+I was banned from GrapheneOS by Daniel Micay</a></li>
+<li>Below are examples of posts that were later removed.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th><p>Original Link (defunct nowadays)</p></th>
+<th><p>Archived Link</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><a href="https://github.com/thestinger/daniel.micay.dev/commit/79e44b41190cd5c64c4ccd9fec4301ee6008da53">https://github.com/thestinger/daniel.micay.dev/commit/79e44b41190cd5c64c4ccd9fec4301ee6008da53</a></p></td>
+<td><p><a href="https://web.archive.org/web/20230526182001/https://github.com/thestinger/daniel.micay.dev/commit/79e44b41190cd5c64c4ccd9fec4301ee6008da53">https://web.archive.org/web/20230526182001/https://github.com/thestinger/daniel.micay.dev/commit/79e44b41190cd5c64c4ccd9fec4301ee6008da53</a></p></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://twitter.com/DanielMicay/status/1662212227561308160">https://twitter.com/DanielMicay/status/1662212227561308160</a></p></td>
+<td><p><a href="https://web.archive.org/web/20230526232932/https://twitter.com/DanielMicay/status/1662212227561308160">https://web.archive.org/web/20230526232932/https://twitter.com/DanielMicay/status/1662212227561308160</a></p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://nitter.net/DanielMicay/status/1662212227561308160">https://nitter.net/DanielMicay/status/1662212227561308160</a></p></td>
+<td><p><a href="https://web.archive.org/web/20230526221745/https://nitter.net/DanielMicay/status/1662212227561308160">https://web.archive.org/web/20230526221745/https://nitter.net/DanielMicay/status/1662212227561308160</a></p></td>
+</tr>
+<tr class="even">
+<td><p><a href="https://github.com/GrapheneOS/hardened_malloc/issues/84">https://github.com/GrapheneOS/hardened_malloc/issues/84</a></p></td>
+<td><ul>
+<li><a href="https://web.archive.org/web/20220416101153/https://github.com/GrapheneOS/hardened_malloc/issues/84">https://web.archive.org/web/20220416101153/https://github.com/GrapheneOS/hardened_malloc/issues/84</a></li>
+<li><a href="https://archive.ph/hHFxE">https://archive.ph/hHFxE</a></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td><p><a href="https://github.com/GrapheneOS/hardened_malloc/issues/86">https://github.com/GrapheneOS/hardened_malloc/issues/86</a></p></td>
+<td><ul>
+<li><a href="https://web.archive.org/web/20240905204810/https://github.com/GrapheneOS/hardened_malloc/issues/86">https://web.archive.org/web/20240905204810/https://github.com/GrapheneOS/hardened_malloc/issues/86</a></li>
+<li><a href="https://archive.ph/ZmYc9">https://archive.ph/ZmYc9</a></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Why does this wiki chapter, "Upstream Deleting Posts", exist? It
+originates from a <a href="https://forum.qubes-os.org/t/secureblue/35566">public Qubes forum
+discussion</a> that references <a href="./#Deprecation_in_Kicksecure">Deprecation in Kicksecure</a>. Statements cited in the
+"Deprecation in Kicksecure" section linked to posts that were
+subsequently deleted. This chapter provides evidence that upstream has a
+history of deleting links.</p>
+<h1 id="How-to:_Check_Hardened_Malloc_Status">How-to: Check Hardened
+Malloc Status</h1>
+<h2 id="Check_If_Hardened_Malloc_is_Enabled">Check If Hardened Malloc is
+Enabled</h2>
+<p>Open the terminal and type either:</p>
+<ul>
+<li><strong>A)</strong>: Using
+<code>hardened-malloc-enabled-test</code>.
+<span class="code-select">hardened-malloc-enabled-test</span>
+<ul>
+<li>If enabled, should output should show: <blockquote><p>yes</p></blockquote></li>
+</ul></li>
+<li><strong>B)</strong>: For advanced users: Using <a href="../Systemcheck/">systemcheck</a> with command line parameter
+<code>--verbose</code>. <span class="code-select">systemcheck
+--verbose</span>
+<ul>
+<li>If enabled, should output should include: <blockquote><p>[INFO] [systemcheck] Hardened Malloc: Hardened Malloc enabled.</p></blockquote></li>
+</ul></li>
+</ul>
+<h2 id="Check_If_Hardened_Malloc_Default_or_Hardened_Malloc_Light_is_Enabled">Check
+If Hardened Malloc Default or Hardened Malloc Light is Enabled</h2>
+<p><span class="code-select">hardened-malloc-type-test</span></p>
+<p>Possible outputs:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>default</code></li>
+<li><code>light</code></li>
+</ul>
+<h1 id="Kicksecure_Feature_Default_Status_Information">Kicksecure
+Feature Default Status Information</h1>
+<p>(A) blocker, reason why Hardened Malloc is not enabled by default in
+Kicksecure yet is because it <a href="#Browsers">breaks
+browsers</a>, which would be confusing.</p>
+<h1 id="Past_Contributions">Past Contributions</h1>
+<ul>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/87">https://github.com/GrapheneOS/hardened_malloc/pull/87</a></li>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/90">https://github.com/GrapheneOS/hardened_malloc/pull/90</a></li>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/91">https://github.com/GrapheneOS/hardened_malloc/pull/91</a></li>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/92">https://github.com/GrapheneOS/hardened_malloc/pull/92</a></li>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/93">https://github.com/GrapheneOS/hardened_malloc/pull/93</a></li>
+<li><a href="https://github.com/GrapheneOS/hardened_malloc/pull/121">https://github.com/GrapheneOS/hardened_malloc/pull/121</a></li>
+<li><a href="https://web.archive.org/web/20220416101153/https://github.com/GrapheneOS/hardened_malloc/issues/84">https://web.archive.org/web/20220416101153/https://github.com/GrapheneOS/hardened_malloc/issues/84</a></li>
+<li><a href="https://web.archive.org/web/20240905204810/https://github.com/GrapheneOS/hardened_malloc/issues/86">https://web.archive.org/web/20240905204810/https://github.com/GrapheneOS/hardened_malloc/issues/86</a></li>
+</ul>
+<h1 id="Credits_and_Source_Code">Credits and Source Code</h1>
+<p>The <a href="https://github.com/GrapheneOS/hardened_malloc">Hardened
+Malloc upstream source code</a> is maintained by security researcher,
+Daniel Micay.</p>
+<p><a href="./">This website</a> is the <a href="https://en.wikipedia.org/wiki/Fork_(software_development)">software
+fork</a> homepage for Hardened Malloc, with a focus on easy
+installation, added user documentation, and integration with <a href="../About/">Kicksecure</a>, <a href="https://www.whonix.org">Whonix<sup>&#174;</sup></a>, Debian, and other
+distributions. The Kicksecure software fork source code can be found <a href="https://github.com/Kicksecure/hardened_malloc">here</a>.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.gnu.org/software/libc/"><code>glibc</code></a>
+feature request: <a href="https://sourceware.org/bugzilla/show_bug.cgi?id=24913"><code>/etc/ld.so.preload.d</code>
+drop-in configuration folder support</a></li>
+<li id="cite_note-2">* <a href="https://www.virtualbox.org/wiki/VBoxMainLogging">https://www.virtualbox.org/wiki/VBoxMainLogging</a>
+* <a href="https://www.virtualbox.org/wiki/Core_dump">https://www.virtualbox.org/wiki/Core_dump</a></li>
+<li id="cite_note-3">Tor Browser is also based on Firefox, therefore the following
+information equally applies to both, Tor Browser and Firefox.
+<blockquote><p>LD_PRELOAD='/path/to/libhardened_malloc.so' /path/to/program will do
+nothing or approximately nothing.</p></blockquote> The reason is recompilation is necessary.
+<blockquote><p>To successfully replace Firefox memory allocator you should either
+use LD_PRELOAD _with_ a --disable-jemalloc build OR Firefox's
+replace_malloc functionality: <a href="https://searchfox.org/mozilla-central/source/memory/build/replace_malloc.h">https://searchfox.org/mozilla-central/source/memory/build/replace_malloc.h</a>
+Sources: * <a href="https://lists.torproject.org/pipermail/tor-dev/2019-August/013982.html">https://lists.torproject.org/pipermail/tor-dev/2019-August/013982.html</a>
+* <a href="https://lists.torproject.org/pipermail/tor-dev/2019-August/013990.html">https://lists.torproject.org/pipermail/tor-dev/2019-August/013990.html</a></p></blockquote></li>
+<li id="cite_note-4">* <a href="https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/202">https://forums.whonix.org/t/hardened-malloc-hardened-memory-allocator/7474/202</a>
+* <a href="https://gitlab.torproject.org/tpo/applications/tor-browser/-/issues/42104">https://gitlab.torproject.org/tpo/applications/tor-browser/-/issues/42104</a></li>
+<li id="cite_note-5">* <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=971876">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=971876</a>
+** workaround <code>ld-system-preload-disable chromium</code> ok **
+chromium from flathub also functional (Hardened Malloc Light is
+disregarded inside flatpak's bubblewrap based sandbox)
+<blockquote><p><a href="https://chromium.googlesource.com/chromiumos/platform/crosvm/">crosvm</a>
+functions only if an option is specified at compile time * CrosVM ships
+with strict Seccomp policies that block syscalls not typically generated
+by CrosVM. * The hardened_malloc library generates calls a syscall for a
+random number generator, which will be blocked silently. * Append string
+<code>getrandom: 1</code> to
+<code>jail/seccomp/x86_64/common_device.policy</code>, which permits the
+RNG syscall for all CrosVM devices. * Other <code>getrandom: 1</code>
+entries must be removed from files in
+<code>jail/seccomp/x86_64/*</code>, as CrosVM will not compile with
+duplicate entries for devices. * Without this addition: if too much data
+is buffered at once by the serial console or NIC, the device subprocess
+will crash, and thus the rest of the virtual machine. * Without this
+addition, errors regarding seccomp violations for <code>nr_random</code>
+syscalls are detected in
+strace.<span class="blockquote-context"><img src="../../media/Deep-web-1106648640.jpg.webp" alt="Deep-web-1106648640.jpg" />Anonymously
+contributed wiki edit.</span></p></blockquote></li>
+<li id="cite_note-6"><a href="../Install_Software/#Flatpak">Flatpak</a> does
+not honor <code>/etc/ld.so.preload</code>. Viewing contents of
+<code>/etc/ld.so.preload</code> on the host operating system.
+<span class="code-select">cat /etc/ld.so.preload</span> Expected output:
+<pre><code> libhardened_malloc-light.so </code></pre>
+<p>Starting a shell inside a Flatpak application sandbox. This example
+uses <code>org.chromium.Chromium</code> and could be replaced with any
+other Flatpak application. <span class="code-select">flatpak run
+--command=sh org.chromium.Chromium</span> Viewing contents of
+<code>/etc/ld.so.preload</code> inside the Flatpak sandbox.
+<span class="code-select">cat /etc/ld.so.preload</span> Conclusion: File
+<code>/etc/ld.so.preload</code> does not exist inside the Flatpak
+sandbox.</p>
+<pre><code> cat: /etc/ld.so.preload: No such file or directory </code></pre></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

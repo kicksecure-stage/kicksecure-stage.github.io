@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>DNS</title>
+<meta name="description" content="DNS">
+<meta property="og:description" content="DNS">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/DNS/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/DNS/">
+<meta property="og:title" content="DNS">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/DNS-Social-Illustration.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#/etc/resolv.conf">/etc/resolv.conf</a></li><li class="toc-l2"><a href="#DNS_Resolver_Libraries">DNS Resolver Libraries</a></li><li class="toc-l2"><a href="#DNS_Resolver_Clients">DNS Resolver Clients</a></li><li class="toc-l2"><a href="#DNS_Connection_illustrative_simplified">DNS Connection
+illustrative simplified</a></li><li class="toc-l2"><a href="#Summary">Summary</a></li><li class="toc-l2"><a href="#Disable_System_DNS">Disable System DNS</a></li><li class="toc-l2"><a href="#Disable_All_DNS">Disable All DNS</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Networking/" title="Networking"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Networking</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../DNS_Security/" title="DNS Security"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">DNS
+Security</span></a><span class="info"><span class="prev">Previous page:
+Networking</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: DNS
+Security</span></span></span>DNS</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Networking/">Networking</a></li>
+<li><a href="./">DNS</a></li>
+<li><a href="../DNS_Security/">DNS Security</a></li>
+</ul>
+</div>
+<p><img src="../../media/DNS-Social-Illustration.png.webp" width="400" alt="Illustrative Simplified Image" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>DNS</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Default_DNS_Configuration">Default DNS Configuration</h1>
+<p><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/kicksecure-network-conf">Kicksecure/kicksecure-network-conf</a></span></p>
+<h1 id="Linux_Default_DNS_Mechanism">Linux Default DNS Mechanism</h1>
+<p>On Linux, DNS libraries read the <code>/etc/resolv.conf</code> file.
+A DNS-resolving client such as Unbound is optional and not strictly
+required for basic DNS resolution.</p>
+<h2 id="/etc/resolv.conf">/etc/resolv.conf</h2>
+<ul>
+<li><strong>Purpose</strong>: The <code>/etc/resolv.conf</code> file is
+a standard configuration file in Linux systems used by DNS resolver
+libraries (like <code>glibc</code>) to determine how to perform DNS
+resolution.</li>
+<li><strong>Contents</strong>: It typically contains information such
+as:
+<ul>
+<li><code>nameserver</code> directives specifying the IP addresses of
+DNS servers.</li>
+<li><code>search</code> domains and <code>options</code> for resolving
+queries.</li>
+</ul></li>
+</ul>
+<h2 id="DNS_Resolver_Libraries">DNS Resolver Libraries</h2>
+<ul>
+<li>These libraries are part of most Linux systems and use
+<code>/etc/resolv.conf</code> to send DNS queries to the specified
+nameservers.</li>
+<li>The libraries themselves handle basic DNS resolution without needing
+an external DNS resolver client.</li>
+</ul>
+<h2 id="DNS_Resolver_Clients">DNS Resolver Clients</h2>
+<p>E.g., <code>unbound</code>, <code>systemd-resolved</code>.</p>
+<ul>
+<li><strong>Optional</strong>: External DNS resolving software like
+<code>unbound</code> or <code>systemd-resolved</code> is not strictly
+required for basic DNS resolution.</li>
+<li><strong>Purpose</strong>: These tools provide additional
+functionality, such as caching, advanced DNSSEC validation, or recursive
+DNS resolution.</li>
+<li><strong>Integration</strong>: When such a resolver is used,
+<code>/etc/resolv.conf</code> might point to <code>127.0.0.1</code>
+(localhost), as the local resolver handles DNS queries before forwarding
+them.</li>
+</ul>
+<h2 id="DNS_Connection_illustrative_simplified">DNS Connection
+illustrative simplified</h2>
+<p><strong>Image:</strong> <em>DNS Connection (illustrative simplified
+image)</em></p>
+<p><img src="../../media/DNS-Security-Ilustrative.png.webp" alt="DNS Connection illustrative simplified image" /></p>
+<h2 id="Summary">Summary</h2>
+<ul>
+<li>Basic DNS resolution on Linux relies on resolver libraries using
+<code>/etc/resolv.conf</code>.</li>
+<li>External DNS resolving clients like <code>unbound</code> are
+optional and primarily used to enhance DNS functionality. They are not
+required for basic operations if a valid nameserver is defined in
+<code>/etc/resolv.conf</code>.</li>
+</ul>
+<h1 id="Disable_DNS">Disable DNS</h1>
+<h2 id="Disable_System_DNS">Disable System DNS</h2>
+<p>System DNS only. Not all DNS. See next chapter for all DNS.</p>
+<p><strong>1.</strong> Prerequisite knowledge:</p>
+<ul>
+<li><a href="../Write_protection/">write
+protection</a></li>
+</ul>
+<p><strong>2.</strong> Backup the DNS configuration file
+<code>/etc/resolv.conf</code>.</p>
+<p><u>Optional.</u> Might make re-enabling DNS later easier. Might be
+difficult or impossible for many users without this step.</p>
+<p><span class="code-select">sudo cp /etc/resolv.conf
+~/resolv.conf</span></p>
+<p><strong>3.</strong> Clear DNS configuration file.</p>
+<p><span class="code-select">sudo overwrite /etc/resolv.conf
+""</span></p>
+<p><strong>4.</strong> Enable write protection.</p>
+<p><u>Optional.</u> Useful to avoid future operating system updates
+overwriting the file such as when a distribution or derivative (such as
+Debian, Qubes Debian or Kicksecure) stat shipping a DNS configuration
+file. Note, if that was ever the case the upgrade of the package will
+fail and the user will be notified through the usual package manager
+(apt-get) output. This might happen if/when Kicksecure implements <a href="../DNS_Security/">DNS Security</a>. Forum discussion:
+<a href="https://forums.whonix.org/t/use-dnscrypt-by-default-in-kicksecure-not-whonix/8117">use
+DNSCrypt by default in Kicksecure</a></p>
+<p><span class="code-select">sudo chattr +i /etc/resolv.conf</span></p>
+<p><strong>5.</strong> Done.</p>
+<p>System DNS has been disabled.</p>
+<h2 id="Disable_All_DNS">Disable All DNS</h2>
+<p><blockquote><p>Many applications do actually not use system DNS but their own
+internal DNS implementation.<span class="blockquote-context"><a href="../DNS_Security/#Potential_Obstacles">DNS Security,
+chapter Potential Obstacles</a></span></p></blockquote></p>
+<h1 id="Enabling_systemd-resolved">Enabling systemd-resolved</h1>
+<p>Only for users that have a specific reason to want to use
+<code>systemd-resolved</code>.</p>
+<p><a href="../Unsupported/">Untested</a>!</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Cornues.png.webp" width="40" alt="Testers only!" /></span>
+Warning: This is for <u><strong>testers-only</strong></u>!</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<a href="../Advanced_Users/">Advanced users</a> only!</p>
+</div>
+<p>Optional!</p>
+<p><span class="code-select">sudo touch /etc/dns-enable</span></p>
+<p><span class="code-select">sudo apt install
+systemd-resolved</span></p>
+<p><span class="code-select">sudo systemctl enable
+systemd-resolved</span></p>
+<p><span class="code-select">sudo systemctl start
+systemd-resolved</span></p>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Networking/" title="Networking"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Networking</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../DNS_Security/" title="DNS Security"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">DNS
+Security</span></a><span class="info"><span class="prev">Previous page:
+Networking</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: DNS
+Security</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Fingerprint</title>
+<meta name="description" content="About Kicksecure Network, Bridge/Guard, Internet Service Provider (ISP) Fingerprint and Website Traffic Fingerprinting.">
+<meta property="og:description" content="About Kicksecure Network, Bridge/Guard, Internet Service Provider (ISP) Fingerprint and Website Traffic Fingerprinting.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Fingerprint/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Fingerprint/">
+<meta property="og:title" content="Network, Browser and Website Fingerprint">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Eye-319668-640.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Entry_Guards_or_Bridges">Entry Guards or Bridges</a></li><li class="toc-l2"><a href="#ISP_or_Local_Network_Administrators">ISP or Local Network
+Administrators</a></li><li class="toc-l2"><a href="#Advanced_Traffic_Fingerprinting">Advanced Traffic
+Fingerprinting</a></li><li class="toc-l2"><a href="#Visited_Websites">Visited Websites</a></li><li class="toc-l2"><a href="#Website_Traffic_Fingerprinting">Website Traffic
+Fingerprinting</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Eye-319668-640.jpg.webp" alt="Eye-319668-640.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>About Kicksecure Network, Bridge/Guard, Internet Service Provider
+(ISP) Fingerprint and Website Traffic Fingerprinting.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>In this chapter, the term <em>fingerprint</em> refers to the specific
+way Kicksecure behaves on the Internet. Those specificities could be
+used to determine whether a particular user is running Kicksecure or
+not.</p>
+<h1 id="Fingerprinting_Information">Fingerprinting Information</h1>
+<p>Various types of information can be leaked about the user's browser,
+(host) operating system and hardware depending on the external party in
+question.</p>
+<h2 id="Entry_Guards_or_Bridges">Entry Guards or Bridges</h2>
+<p>The very same wiki chapter as in the Whonix wiki applies.
+[Broken-ExtLink--no-url-was-provided]</p>
+<h2 id="ISP_or_Local_Network_Administrators">ISP or Local Network
+Administrators</h2>
+<table>
+<caption><em>Fingerprinting Domains</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Domain</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Network Stack Hardening</p></td>
+<td><p>Kicksecure has implemented various <a href="https://github.com/Kicksecure/security-misc">security
+hardening</a> measures like disabling TCP timestamps, ICMP redirections,
+firewalling invalid packages, and more. Unfortunately these measures can
+increase the risk of ISP or Local Network fingerprinting. Despite this,
+security hardening has been prioritized.</p></td>
+</tr>
+<tr class="even">
+<td><p>Random ISN Generation</p></td>
+<td><p>Kicksecure prevents TCP ISN leaks through <a href="https://github.com/Kicksecure/tirdad">Tirdad kernel module for
+random ISN generation</a>. Unfortunately this reduces ISP or Local
+Network fingerprinting resistance. Despite this, security has been
+prioritized.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Tor Entry Guards</p></td>
+<td><p>Kicksecure uses an unmodified version of Tor, Tor Entry Guards
+are used as the default mechanism to connect to the Tor network.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup> Consequently, a Tor user will maintain the same relay
+as the first hop for an extended period, <sup class="reference"><a href="#cite_note-2">[2]</a></sup> which is a
+security feature.</p></td>
+</tr>
+<tr class="even">
+<td><p>Time Synchronization</p></td>
+<td><p>When Kicksecure is started, the system clock is synchronized to
+make sure it slightly differs from the host clock via <a href="../Sdwdate/"><code>sdwdate</code></a>. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>systemcheck</p></td>
+<td><p><a href="../Systemcheck/"><code>systemcheck</code></a> also issues some network
+traffic over Tor to check for updates and <a href="../Systemcheck/#Warrant_Canary_Check">Warrant Canary
+Check</a>, which all passes through different circuits. This behavior
+might be specific to Kicksecure.</p></td>
+</tr>
+<tr class="even">
+<td><p><a href="./#Website_Traffic_Fingerprinting">Website Traffic Fingerprinting</a></p></td>
+<td><p>Website traffic fingerprinting is also an open Tor research
+question, which is unspecific to Kicksecure. <sup class="reference"><a href="#cite_note-4">[4]</a></sup> A
+related and unresearched issue is whether fingerprinting risks also
+apply to other traffic, such as <code>apt</code> traffic.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Advanced_Traffic_Fingerprinting">Advanced Traffic
+Fingerprinting</h2>
+<p>See [Broken-ExtLink--no-url-was-provided].</p>
+<h2 id="Visited_Websites">Visited Websites</h2>
+<p>Destination websites can retrieve
+[Broken-ExtLink--no-url-was-provided] about a user's browser and system,
+while [Broken-ExtLink--no-url-was-provided] have even greater
+capabilities.</p>
+<p>This is not the focus of Kicksecure. For that, use <a href="../Whonix/">Whonix</a> instead.</p>
+<h2 id="Website_Traffic_Fingerprinting">Website Traffic
+Fingerprinting</h2>
+<p>See [Broken-ExtLink--no-url-was-provided].</p>
+<h1 id="Project_Goals_and_Non-Goals">Project Goals and Non-Goals</h1>
+<p>See <a href="../Privacy/">Privacy Goals and Non-Goals of
+Kicksecure</a>.</p>
+<h1 id="Non-Existing_Network_Fingerprint_Research_and_Implementation">Non-Existing
+Network Fingerprint Research and Implementation</h1>
+<p>The following do <u>not</u> exist, based on currently available
+public information. This is applicable to Kicksecure, but also <a href="../Unspecific/">unspecific to Kicksecure</a>. It is
+also applicable to other operating systems such as Qubes OS.</p>
+<ul>
+<li><strong>A)</strong> <u>No phone home research:</u> There is no
+ongoing research project that regularly checks whether software that
+comes pre-installed with Kicksecure (or is commonly installed by users)
+secretly connects to the internet (called "phoning home") using regular,
+non-anonymous internet connections (clearnet), without user action or
+consent. This kind of research would be important to ensure that the
+system is not leaking information in the background.</li>
+<li><strong>B)</strong> <u>No fingerprint research:</u> There is no
+active project that regularly studies and compares how different
+operating systems (like Microsoft Windows, Debian, Tor Browser Bundle
+(TBB), Tails, Whonix, Kicksecure, etc.) appear on the internet, known as
+their "network fingerprint." A network fingerprint is a set of technical
+clues that the <u>i</u>nternet <u>s</u>ervice <u>p</u>rovider (ISP) or
+servers can use to recognize what kind of system you're using, even
+without cookies or login information. These fingerprints can vary
+depending on the software and hardware combination, and without this
+kind of research, users may be more identifiable online than they
+realize.</li>
+<li><strong>C)</strong> <u>No fingerprint emulation development
+team:</u> Based on the lack of the above research, there is also no
+development team working on making Kicksecure (or similar systems) mimic
+the network fingerprint of more commonly used systems. The goal of such
+emulation would be to make users harder to identify or track by blending
+in with the crowd -- for example, by making their internet traffic look
+like that of a typical Windows or Debian user.</li>
+</ul>
+<h1 id="Project_Goal_and_Non-Goal_Comparison">Project Goal and Non-Goal
+Comparison</h1>
+<p>Users can check what goals a software project explicitly states.</p>
+<p>Many software projects do not list "radio silence" as a main
+objective. In this context, "radio silence" means that the system should
+not automatically send any network traffic unless the user initiates it.
+In more technical terms, this means avoiding clearnet traffic, which
+refers to regular, non-anonymous internet traffic that does not go
+through privacy networks like Tor.</p>
+<ul>
+<li><strong>Qubes OS:</strong> Avoiding clearnet traffic is not a goal
+of Qubes OS. It is also unlikely to become a major goal in the future.
+<ul>
+<li>Qubes FAQ entry <a href="https://www.qubes-os.org/faq/#what-about-privacy-in-non-whonix-qubes">What
+about privacy in non-Whonix qubes?</a> - This FAQ shows that privacy
+protection in non-Whonix parts of Qubes is not a focus.</li>
+<li>Qubes FAQ entry <a href="https://www.qubes-os.org/faq/#what-is-qubes-attitude-toward-changing-guest-distros">What
+is Qubes' attitude toward changing guest distros?</a> - Suggests limited
+willingness to adopt major changes aimed at improving privacy.</li>
+<li>Qubes issue ticket <a href="https://github.com/QubesOS/qubes-issues/issues/9332">create or
+fork a Linux distribution for default use by App Qubes for better
+security</a> Discusses whether to create a more secure Linux
+distribution for Qubes, but not focused on traffic anonymity.</li>
+<li>See the issue: <a href="https://github.com/QubesOS/qubes-issues/issues/1814"><code>sys-net</code>
+phones home to fedoraproject.org for captive portal detection</a>. This
+means that the network component of Qubes OS was connecting to Fedora's
+servers automatically to check for internet restrictions. The issue was
+reported in 2016, and no action was taken until 2022, when the issue
+resolved itself without deliberate changes. This indicates that
+preventing such traffic was not treated as a high priority.</li>
+<li>See list of issues [Broken-ExtLink--no-url-was-provided].</li>
+</ul></li>
+<li><strong><a href="../About/">Kicksecure</a>:</strong> There is a possible future
+feature that would allow blocking or allowing network access based on
+specific Linux user accounts or IP addresses. However, this feature has
+not been implemented yet. For the most recent updates, see: <a href="https://forums.kicksecure.com/t/kicksecure-firewall/378">Kicksecure
+Firewall</a></li>
+<li><strong>[Broken-ExtLink--no-url-was-provided]:</strong> This project
+aims to avoid clearnet traffic entirely, but as of the time of writing,
+it does not yet exist.</li>
+</ul>
+<p>As a user, knowing which goals are officially supported by a project
+helps manage expectations. If a feature or behavior is not listed as a
+goal or has not been implemented, users should assume it is not
+available and act accordingly to protect their privacy.</p>
+<h1 id="Non-Existing_Solutions">Non-Existing Solutions</h1>
+<p>Solution:</p>
+<p>C) security hardened networking + emulating "popular" network
+fingerprints: does <u>not</u> exist anywhere.</p>
+<h1 id="Future">Future</h1>
+<p>Kicksecure: Might get a feature to restrict outgoing traffic to
+specific Linux user accounts and/or IP addresses. But it's not yet
+implemented. For latest status, see ticket: <a href="https://forums.kicksecure.com/t/kicksecure-firewall/378">Kicksecure
+Firewall</a></p>
+<p>This however does not magically fix all advanced fingerprinting
+techniques.</p>
+<h1 id="Forum_Discussions">Forum Discussions</h1>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/how-many-details-are-there-in-kicksecures-fingerprint-revealing-to-isp-the-os/1044">https://forums.kicksecure.com/t/how-many-details-are-there-in-kicksecures-fingerprint-revealing-to-isp-the-os/1044</a></li>
+<li><a href="https://forums.kicksecure.com/t/outbound-traffic-security-kicksecure-and-qubes/1059">https://forums.kicksecure.com/t/outbound-traffic-security-kicksecure-and-qubes/1059</a></li>
+<li><a href="https://forums.whonix.org/t/what-exaclty-tells-to-isp-generating-by-whonix-traffic/21549">https://forums.whonix.org/t/what-exaclty-tells-to-isp-generating-by-whonix-traffic/21549</a></li>
+<li><a href="https://forum.qubes-os.org/t/question-to-develepors-what-hardware-information-reveals-qubes-system-clearnet-traffic-to-an-isp/33778">https://forum.qubes-os.org/t/question-to-develepors-what-hardware-information-reveals-qubes-system-clearnet-traffic-to-an-isp/33778</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://support.torproject.org/#about_entry-guards">https://support.torproject.org/#about_entry-guards</a></li>
+<li id="cite_note-2">Typically the entry guards are rotated after a few months.</li>
+<li id="cite_note-3">It is unknown if an ISP can detect whether a user has many different
+Tor circuits open. On the other hand, Tor seems to only open X entry
+guards and maintain them for a period, thus not opening as many entry
+guards as streams.</li>
+<li id="cite_note-4">See <a href="https://2019.www.torproject.org/projects/torbrowser/design/">Tor
+Browser Design</a> for further exploration of this issue.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

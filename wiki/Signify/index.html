@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Signify</title>
+<meta name="description" content="HowTo: Use Signify on Debian (based) Distributions">
+<meta property="og:description" content="HowTo: Use Signify on Debian (based) Distributions">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Signify/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Signify/">
+<meta property="og:title" content="Signify: Cryptographically Sign and Verify Files">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Signify1323.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../CPUID/" title="CPUID"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">CPUID</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="../MacOS_Hosts/" title="MacOS Hosts"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">MacOS
+Hosts</span></a><span class="info"><span class="prev">Previous page:
+CPUID</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: MacOS
+Hosts</span></span></span>Signify: Cryptographically Sign and Verify
+Files</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></li>
+<li><a href="../OpenPGP/">OpenPGP</a></li>
+<li><a href="../Air_Gapped_OpenPGP_Key/">Air Gapped OpenPGP
+Key</a></li>
+<li><a href="./">Signify</a></li>
+<li><a href="../PQCrypto/#Codecrypt">Codecrypt</a></li>
+<li><a href="../Authenticode/">Authenticode</a></li>
+<li><a href="../Digital_Signature_Policy/">Kicksecure
+Digital Signature Policy</a></li>
+</ul>
+</div>
+<p><img src="../../media/Signify1323.jpg.webp" alt="Signify1323.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>HowTo: Use Signify on Debian (based) Distributions</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Written in 2014 for OpenBSD, signify is a tool to cryptographically
+sign and verify files: <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <blockquote><p>It only supports a single algorithm, Ed25519, created by djb and his
+gang. It's fast, immune to timing attacks by design, produce
+deterministic signatures, uses small keys and produce small signatures,
+... it does look like a sound choice.</p></blockquote></p>
+<p>Signify's main benefits is that it has a small codebase and is not
+based on GnuPG. On the downside, there is no revocation mechanism
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup> and the trust path relies on getting the key directly
+from a trusted developer. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>Signify's usage is not just limited to OpenBSD and the tool has also
+been been packaged in Debian. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> To learn more about
+signify, refer to <a href="https://flak.tedunangst.com/post/signify">this blog post</a> by
+the original author.</p>
+<h1 id="Installation_and_Usage">Installation and Usage</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+In the steps below, installing package <code>qrencode</code> is optional
+and only needed if you intend to create QR codes.</p>
+</div>
+<div class="info-box ">
+<p><strong>1.</strong> Install signify.</p>
+<div class="info-box ">
+<p>Install package(s) <code>signify-openbsd qrencode</code> following
+these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the <code>signify-openbsd qrencode</code> package(s).</p>
+<p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+signify-openbsd qrencode</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>signify-openbsd qrencode</code> is complete.</p>
+</div>
+<p><strong>2.</strong> Create a key.</p>
+<p>This only needs to be done once unless multiple keys are desired; in
+that case different key names should be used. In the following example,
+<code>keyname</code> is used as the sample key name.</p>
+<p><span class="code-select">signify-openbsd -G -p keyname.pub -s
+keyname.sec</span></p>
+<p><strong>3.</strong> <em>Optional:</em> Add a key comment.</p>
+<p>Replace <code>comments here</code> with the actual comment but keep
+the <code>"</code>. The comment could be a name, position, website,
+e-mail address and/or anything else.</p>
+<p><span class="code-select">signify-openbsd -G -p keyname.pub -s
+keyname.sec -c "comments here"</span></p>
+<p><u>Note</u>:</p>
+<ul>
+<li>The private key file <code>keyname.sec</code> needs to stay private
+-- never share <code>keyname.sec</code> with anyone as this would defeat
+the purpose of signing files!</li>
+<li>The public key file <code>keyname.pub</code> can be shared with
+anyone.</li>
+</ul>
+<p><strong>4.</strong> Utilize signify.</p>
+<p>To sign a file <code>message.txt</code> (which has to be created by
+the user beforehand).</p>
+<p><span class="code-select">signify-openbsd -S -s keyname.sec -m
+message.txt</span></p>
+<p>This will create a signature file <code>message.txt.sig</code>.</p>
+<p>To verify a file <code>message.txt</code> with signature file
+<code>message.txt.sig</code>.</p>
+<p><span class="code-select">signify-openbsd -V -p keyname.pub -m
+message.txt</span></p>
+<p><strong>5.</strong> <em>Optional:</em> Create a QR code for the
+public key.</p>
+<p><span class="code-select">qrencode -r keyname.pub -o
+keyname.pub.png</span></p>
+<p>File <code>keyname.pub.png</code> would be the QR code of the public
+key.</p>
+<p>Refer to the Debian <a href="https://manpages.debian.org/signify-openbsd">signify-openbsd
+Manual Page</a> for further options.</p>
+<p><sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+</div>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Verify_the_images/#Signify_Signatures">Verify the Kicksecure Signify Signatures</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://isopenbsdsecu.re/mitigations/signify/">https://isopenbsdsecu.re/mitigations/signify/</a></li>
+<li id="cite_note-2">Meaning if the key is stolen, people can only be informed the key
+should not be trusted anymore.</li>
+<li id="cite_note-3"><a href="https://packages.debian.org/trixie/signify-openbsd">https://packages.debian.org/trixie/signify-openbsd</a></li>
+<li id="cite_note-4">* <a href="https://www.openbsd.org/papers/bsdcan-signify.html">https://www.openbsd.org/papers/bsdcan-signify.html</a>
+* <a href="https://forums.whonix.org/t/signify-openbsd/7842">https://forums.whonix.org/t/signify-openbsd/7842</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../CPUID/" title="CPUID"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">CPUID</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="../MacOS_Hosts/" title="MacOS Hosts"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">MacOS
+Hosts</span></a><span class="info"><span class="prev">Previous page:
+CPUID</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: MacOS
+Hosts</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

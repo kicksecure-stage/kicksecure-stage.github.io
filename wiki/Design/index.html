@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Design</title>
+<meta name="description" content="Technical Design and Conception of Kicksecure">
+<meta property="og:description" content="Technical Design and Conception of Kicksecure">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Design/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Design/">
+<meta property="og:title" content="Design">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Magic-cube-378543640.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../IOS/" title="IOS"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">IOS</span></a><a class="index internal" href="./" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Dev/research/" title="Dev/research"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/research</span></a><span class="info"><span class="prev">Previous
+page: IOS</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/research</span></span></span>Design</p>
+</div>
+<div class="mininav">
+<ul>
+<li><hr />
+<p><a href="../About/">About</a></p></li>
+<li><a href="./">Design Documentation</a></li>
+<li><a href="../Comparison_with_Others/">Comparison with
+Debian</a></li>
+<li>[Broken-ExtLink--no-url-was-provided]</li>
+</ul>
+</div>
+<p><img src="../../media/Magic-cube-378543640.jpg.webp" alt="Magic-cube-378543640.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Technical Design and Conception of Kicksecure</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Technical_Design">Technical Design</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Dev/research/">Security Research by
+Kicksecure</a></li>
+<li><a href="../Dev/compiler_hardening/">compiler
+hardening</a></li>
+<li><a href="../Dev/Strong_Linux_User_Account_Isolation/">Strong Linux User Account Isolation</a></li>
+<li><a href="../Dev/About_Computer_Insecurity/">Dev/About
+Computer (In)Security</a></li>
+<li><a href="../Dev/VirtualBox/">VirtualBox</a></li>
+<li><a href="../Dev/Qubes/">Qubes</a></li>
+<li><a href="../Dev/Entropy/">Dev/Entropy</a></li>
+<li><a href="../Security_Reviews_and_Feedback/">Security
+Reviews and Feedback, Press, Media</a></li>
+<li><a href="../Dev/Derivative-Maker/">Derivative-Maker -
+Debian based Linux Bootable Image Builder</a></li>
+<li><a href="../Build_Configuration/">Build
+Configuration</a></li>
+<li><a href="../Dev/Expected_Build_Warnings/">Dev/Expected
+Build Warnings</a></li>
+<li><a href="../Dev/Relationship_With_Upstream/">Dev/Relationship With Upstream</a></li>
+<li><a href="../Dev/About_Infrastructure/">Dev/About
+Infrastructure</a></li>
+<li><a href="../Trust/">Trusting Kicksecure</a></li>
+<li><a href="../Dev/Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Verified_Boot/">Verified Boot</a> (Secure
+Boot)</li>
+<li><a href="../Dev/Stateless/">Factory Reset, Stateless
+Systems, Reproducible Systems, Verifiable Systems, Clear Linux, NixOS,
+Fedora Silverblue</a></li>
+<li><a href="../Dev/bootstrappable_builds/">bootstrappable
+builds</a></li>
+<li><a href="../Dev/Automatic_Updates/">Automatic Updates
+(APT) - to Use or Not Use Them</a></li>
+<li><a href="../Dev/apt-revoker/">Dev/apt-revoker</a></li>
+<li><a href="../Dev/APT/">APT Signing Key Folders</a></li>
+<li><a href="../Dev/Automatic_Updates/">Package Manager
+Graphical, One Click Update Script - Simplified, Assisted
+Updates</a></li>
+<li><a href="../Dev/About_Debian_Packaging/">About Debian
+Packaging</a>
+<ul>
+<li><a href="../Dev/About_Debian_Packaging/#Analyzing_Dependency_Chains">Analyzing Dependency Chains</a></li>
+<li><a href="../Dev/About_Debian_Packaging/#Recommends_vs_Depends"><code>Recommends:</code> vs <code>Depends</code>
+(<code>--no-install-recommends</code>)</a></li>
+<li><a href="../Dev/About_Debian_Packaging/#Files_in_Home_Folder">ought to avoid writing into linux user
+<code>/home</code> folder</a></li>
+<li><a href="../Dev/About_Debian_Packaging/#Files_in_/etc/skel">Files in <code>/etc/skel</code></a></li>
+<li><a href="../Dev/About_Debian_Packaging/#Modifying_Default_Configuration_of_Third_Party_Packages">Modifying Default Configuration of Third Party
+Packages</a></li>
+</ul></li>
+<li><a href="../Dev/Versioning_Format_Conventions/">Versioning Format Conventions for packages developed
+under the Kicksecure hat</a></li>
+<li><a href="../Stable_Version_User_Experience/">Stable
+Version User Experience</a></li>
+<li><a href="../Dev/Stable_vs_Rolling_Distributions/">Stable vs Rolling Distributions - Development
+Considerations</a></li>
+<li><a href="../Dev/maintainability/">maintainability</a></li>
+<li><a href="../Privacy/">Privacy Goals and
+Non-Goals</a></li>
+<li><a href="../Dev/coding_style/">Coding Style</a></li>
+<li><a href="../Dev/RAM_Wipe/">RAM Wipe, cryptsetup
+suspend</a></li>
+<li><a href="../Dev/nonfree/">non-freedom (nonfree),
+proprietary, closed source firmware, CPU microcode and drivers</a></li>
+<li><a href="../Dev/filesystem/">filesystem
+<code>ext4</code>, <code>btrfs</code>, <code>zfs</code></a></li>
+<li><a href="../Dev/image_formats/">image formats:
+<code>.iso</code>, <code>.img</code>, <code>.raw</code></a></li>
+<li><a href="../Digital_Signature_Policy/">Kicksecure
+Digital Signature Policy</a></li>
+<li><a href="../Vulnerability_Disclosure_Policy/">Kicksecure Vulnerability Disclosure Policy</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+</p>
+<h1 id="Future_Technical_Design">Future Technical Design</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Security_Roadmap/">Security
+Roadmap</a></li>
+<li><a href="../Dev/Permanent_Takedown_Attack_Defender/">Permanent Takedown Attack Defender, proposal to defend
+a permanent takedown threat</a></li>
+<li><a href="../Dev/project-news/">Project / Emergency
+News</a></li>
+<li><a href="https://phabricator.whonix.org/T140">apt revoker</a></li>
+<li><a href="../Dev/remount-secure/">Dev/remount-secure</a>
+- Secure Mount Options</li>
+<li><a href="../Dev/reviewer/">Proposal: Base Distribution
+Developers = Derivative Developers</a></li>
+<li><a href="../Dev/confidential_computing/">Confidential
+Computing, Secure Cloud, Encrypted RAM, Remote Attestation</a></li>
+<li><a href="../Vm-app-manager/">vm-app-manager -
+Virtualization-powered application sandbox</a></li>
+</ul>
+<p></small></p>
+</div>
+<h1 id="General_Developer_Pages">General Developer Pages</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Dev/Developer_Portal/">Developer
+Portal</a></li>
+<li><a href="../Dev/todo/">ToDo for Developers</a></li>
+<li><a href="../Dev/todo/archived/">Archived Todo</a></li>
+<li><a href="../Progress_Reports/">Progress
+Reports</a></li>
+<li><a href="../First_Time_Source_Code_Contributor_Policy/">First-Time Source Code Contributor Policy</a></li>
+<li><a href="../Dev/sdwdate/">sdwdate Development
+Notes</a></li>
+<li><a href="../Dev/image_creation/">Development of System
+Image Creation and Bootstrapping Tools</a></li>
+<li><a href="../Dev/git/">Git branches</a></li>
+<li><a href="../Dev/repository/">Debian APT Repository on
+the Blockchain?</a></li>
+<li><a href="../Dev/APT_Repository/">APT Repository
+(Kicksecure Debian Package Maintenance) (.deb), reprepro</a></li>
+<li><a href="../Hosting_a_Mirror/">Hosting a Kicksecure
+Mirror</a></li>
+<li><a href="../Dev/APT_Pinning/">Why we should avoid APT
+Pinning / preferences / backports by default</a></li>
+<li><a href="../BackupScript/">kicksecure.com backup
+script, to make a backup of most kicksecure.com content</a></li>
+<li><a href="../Dev/Split_GPG/">Qubes Split GPG</a></li>
+<li><a href="../Dev/Firewall_Refactoring/">Firewall
+Refactoring</a></li>
+<li><a href="../Dev/Firejail/">Firejail</a></li>
+<li><a href="../Dev/Special_Keys/">Host Keys in various
+Virtualizers / special keys</a></li>
+<li><a href="../Dev/Ledger_Hardware_Wallet/">Ledger
+Hardware Wallet Development Notes</a></li>
+<li><a href="../AEM/">AEM</a> - anti evil maid</li>
+<li><a href="../Mobile_Operating_System_Comparison/">Mobile
+Operating System Comparison</a></li>
+<li><a href="../Non_Anonymous_Onion_Encryption_and_NAT_Traversal/">Non Anonymous NAT Traversal</a></li>
+<li><a href="../Dev/Licensing/">Dev/Licensing</a></li>
+<li><a href="../Dev/bash/">bash script security, proper
+whitespace handling, use of end of options parameter</a></li>
+<li><a href="../Dev/certification/">certification /
+audit</a>
+<ul>
+<li><a href="https://forums.whonix.org/t/run-openscap-security-test/9080">OpenSCAP</a></li>
+<li><a href="https://forums.whonix.org/t/lynis-security-auditing-tool-for-unix-based-systems/7633">lynis</a></li>
+<li><a href="https://forums.whonix.org/t/harbian-audit-hardened-debian-gnu-linux-distro-auditing/8513">harbian-audit
+- Hardened Debian GNU/Linux distro auditing</a></li>
+</ul></li>
+<li>Windows 10 Issues collection
+<ul>
+<li><a href="https://forums.whonix.org/t/gateway-startup-error-not-syncing-no-working-init-found/9481/11">https://forums.whonix.org/t/gateway-startup-error-not-syncing-no-working-init-found/9481/11</a></li>
+</ul></li>
+<li><a href="../Dev/Warrant_Canary_Draft/">Warrant Canary
+Draft</a></li>
+<li><a href="../Dev/VirusForget/">VirusForget - deactivate
+malware after reboot from non-root compromise</a></li>
+<li><a href="../Boot_Clock_Randomization/">Boot Clock
+Randomization</a></li>
+<li><a href="../Dev/user-sysmaint-split/">user-sysmaint-split - Role-Based Boot Modes (user
+versus sysmaint) for Enhanced Security</a></li>
+<li><a href="../Dev/boot/">Boot Process Related Development
+Notes</a></li>
+<li><a href="../Dev/Open_Source_Business_Models/">Open
+Source Business Models</a></li>
+<li><a href="../Donation_systray/">Donation
+systray</a></li>
+<li><a href="../Systemd/">systemd dependency
+cycles</a></li>
+<li><a href="../Seccomp/">seccomp</a></li>
+<li><a href="../Dev/audio/">audio, ALSA, PulseAudio,
+PipeWire</a></li>
+<li><a href="../Dev/Debian/">Dev/Debian</a></li>
+<li><a href="../Dev/secureblue/">Comparison of secureblue
+with Kicksecure and Development Notes</a></li>
+<li><a href="../Dev/Chromium/">Dev/Chromium</a></li>
+<li><a href="../Dev/Metapackages/">Dev/Metapackages</a></li>
+<li><a href="../Dev/flatpak/">Dev/flatpak</a></li>
+<li><a href="../Dev/videos/">Dev/videos</a></li>
+<li><a href="../Dev/Default_Application_Policy/">Kicksecure
+Default Application Policy</a></li>
+<li><a href="../Dev/Default_Browser/">Kicksecure Default
+Browser</a></li>
+<li><a href="../Project_Policies/">Kicksecure Project
+Policies</a></li>
+<li><a href="../Dev/cryptography/">cryptography</a></li>
+<li><a href="../Age-api/">Age Signaling and Interface
+Documentation and Design for Kicksecure</a></li>
+</ul>
+<p>archived:</p>
+<ul>
+<li><a href="../Dev/Password_Manager/">Comparing Password
+Managers, finding out best choice as default installed one</a></li>
+<li><a href="../Dev/grsecurity/">grsecurity</a></li>
+<li><a href="../Dev/yubikey/">Dev/yubikey</a></li>
+<li><a href="../Dev/Astra_Linux/">Dev/Astra Linux</a></li>
+<li><a href="../Dev/GNOME/">Dev/GNOME</a></li>
+<li><a href="../Dev/KDE/">Dev/KDE</a></li>
+<li><a href="../Dev/openSUSE/">Dev/openSUSE</a></li>
+<li><a href="../Dev/systemcheck/">Dev/systemcheck</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+</p>
+<h1 id="Website_Developer_Pages">Website Developer Pages</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Dev/mediawiki/">MediaWiki Developer
+Notes</a></li>
+<li><a href="../Dev/CSS/">Dev/CSS</a></li>
+<li><a href="../Dev/website/">Website Enhancements
+Planning</a></li>
+<li><a href="../Dev/wiki/">Wiki Editor
+Documentation</a></li>
+<li><a href="../Dev/wiki_todo/">Wiki Editor Todo</a></li>
+<li><a href="../TestpageForFlyInNotification/">Kicksecure
+Website FlyInNotification Test Page</a></li>
+<li><a href="../Dev/wikitest/">Wiki Test Page</a></li>
+<li><a href="../PerformanceTests/">Wiki Performance
+Tests</a></li>
+<li><a href="../Dev/discourse/">Documentation for
+Kicksecure Discourse Devs</a></li>
+<li><a href="../Dev/Documentation_Guidelines/">Documentation Guidelines</a></li>
+<li><a href="../Dev/Documentation_Markup_Format_Converters/">Documentation Markup Format Converters</a></li>
+<li><a href="../Dev/OpenPGP_Signed_Website/">OpenPGP Signed
+Website</a></li>
+<li><a href="../Transparency/">guidelines for advertising
+on kicksecure.com; Affiliate Conditions (VPN etc.)</a></li>
+<li><a href="https://archive.readme.io/docs/creating-a-snapshot">web.archive.org
+snapshot using command line interface (CLI)</a></li>
+<li><a href="../Privacy_Policy_Technical_Details/">Privacy
+Policy Technical Details of the Kicksecure Website</a></li>
+<li><a href="../Dev/SSL_Certificate_Pinning/">Technical
+Design Documentation about SSL Certificate Pinning</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+<span class="manually-placed-anchor " id="Download"></span></p>
+<h1 id="Download_/_Installation_-_Developer_Pages">Download / Installation
+- Developer Pages</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Download_Security/">Download
+Security</a></li>
+<li><a href="../Software_Signature_Verification_Usability_Issues_and_Proposed_Solutions/">Software Verification (OpenPGP / gpg) Usability Issues
+/ Secure Downloader to Download Kicksecure Images</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+</p>
+<h1 id="Build_from_Source_Code">Build from Source Code</h1>
+<div class="mininav">
+<ul>
+<li><a href="../Dev/Derivative-Maker/">Derivative-Maker
+Image Builder</a></li>
+<li><a href="../Dev/Build_Documentation/">Build Kicksecure
+from Source Code Overview</a></li>
+<li><a href="../Dev/Build_Documentation/images/">Build
+Kicksecure Images from Source</a></li>
+<li><a href="../Dev/Build_Documentation/derivative-update/">Source Code Updater
+(<code>derivative-update</code>)</a></li>
+<li><a href="../Dev/Build_Documentation/Upgrading_Derivative_Deb_Packages_from_Source_Code/">Upgrading Kicksecure from Source</a></li>
+<li><a href="../Build_Configuration/">Build
+Configuration</a></li>
+<li><a href="../Dev/Expected_Build_Warnings/">Expected
+Build Warnings</a></li>
+</ul>
+</div>
+<h1 id="Other_Related">Other Related</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Documentation/">Documentation</a></li>
+<li><a href="../Dev/Build_Documentation/">Build
+Documentation, How to build Kicksecure from Source Code, How to update
+Kicksecure from Source Code</a></li>
+<li><a href="https://github.com/Kicksecure/derivative-maker">Kicksecure
+Source Code</a></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/developer-meta-files/blob/master/usr/bin/dm-prepare-release">Kicksecure/developer-meta-files</a></span></li>
+<li><a href="../Dev/Maintenance/">Maintenance, The Tor
+Project (TPO) apt repository package mirroring to whonix.org repository,
+Tor Browser hardcoded version file</a></li>
+<li><a href="../Dev/Redistribution/#Pre_Building">Redistribution Pre Building</a> (Only required if you
+want to redistribute (official) Kicksecure release builds.)</li>
+<li><a href="../Dev/Redistribution/#Post_Building">Redistribution Post Building</a> (Only required if you
+want to redistribute (official) Kicksecure release builds.)</li>
+<li>Network Manager <code>nmcli</code> <a href="https://github.com/pop-os/pop/issues/2904">https://github.com/pop-os/pop/issues/2904</a></li>
+<li><a href="../Dev/Donate/">Organizational Donation
+Considerations</a></li>
+<li><a href="../Developer_Courses/">Developer Courses -
+Become a Developer</a></li>
+<li><a href="../Teacher/">Find a Teacher</a></li>
+<li><a href="../Dev/bounty/">Development Bounties</a></li>
+<li><a href="../Deprecated/">Deprecated</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+</p>
+<h1 id="Other_Unrelated">Other Unrelated</h1>
+<div>
+<p><small></p>
+<ul>
+<li><a href="../Credits/#License">Citation, backup of
+website content license grants</a></li>
+<li><a href="../Edge/">Edge Security Model (Android
+Wallet)</a></li>
+</ul>
+<p></small></p>
+</div>
+<p><br />
+</p>
+<h1 id="Just_Listing">Just Listing</h1>
+<div>
+<p><small></p>
+<ul>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/derivative-maker/blob/master/COPYING">Kicksecure/derivative-maker</a></span></li>
+</ul>
+<p></small></p>
+</div>
+<h1 id="TODO">TODO</h1>
+<ul>
+<li><a href="https://forums.whonix.org/tag/status_open_issue_todo">https://forums.whonix.org/tag/status_open_issue_todo</a></li>
+<li><a href="https://packages.debian.org/trixie/tiger">https://packages.debian.org/trixie/tiger</a></li>
+<li><a href="https://packages.debian.org/trixie/tiger-otheros">https://packages.debian.org/trixie/tiger-otheros</a></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../IOS/" title="IOS"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">IOS</span></a><a class="index internal" href="./" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Dev/research/" title="Dev/research"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/research</span></a><span class="info"><span class="prev">Previous
+page: IOS</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/research</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

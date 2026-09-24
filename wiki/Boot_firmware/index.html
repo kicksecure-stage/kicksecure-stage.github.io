@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Boot firmware</title>
+<meta name="description" content="This page provides a detailed overview of Kicksecure&#x27;s compatibility with different boot firmware options such as BIOS, EFI, SecureBoot, and coreboot. It also explains the key differences between BIOS and EFI, and offers guidance on selecting the best boot option for various system setups.">
+<meta property="og:description" content="This page provides a detailed overview of Kicksecure&#x27;s compatibility with different boot firmware options such as BIOS, EFI, SecureBoot, and coreboot. It also explains the key differences between BIOS and EFI, and offers guidance on selecting the best boot option for various system setups.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Boot_firmware/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Boot_firmware/">
+<meta property="og:title" content="Boot Firmware">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Boot-firmware.png">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="./">Boot Firmware</a></li>
+<li><a href="../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Dev/Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../Measured_boot/">Measured Boot</a></li>
+<li><a href="../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="../Open_Source_Hardware/">Open Source
+Hardware</a></li>
+<li><a href="../Dev/confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../Dev/bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="../Dev/Stateless/">stateless (dev)</a></li>
+<li><a href="../Dev/immutable/">immutable (dev)</a></li>
+</ul>
+</div>
+<p><img src="../../media/Boot-firmware.png.webp" width="200" alt="Boot-firmware.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This page serves as a comprehensive guide for understanding
+Kicksecure's boot compatibility with BIOS, EFI, SecureBoot, and
+coreboot. It provides users with the necessary information to make
+informed decisions regarding firmware setup for optimal system
+functionality.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>This document outlines the compatibility of Kicksecure with various
+boot firmware systems, including BIOS, EFI, SecureBoot, and coreboot. It
+provides insights into the technical aspects of each option and offers
+recommendations based on the system's configuration. Additionally, it
+highlights potential challenges and solutions related to system
+migration and SecureBoot implementation.</p>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported/">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="Kicksecure_BIOS_Boot_Compatibility">Kicksecure BIOS Boot
+Compatibility</h1>
+<p>Kicksecure is compatible with BIOS. Switching to EFI is optional.</p>
+<h1 id="Kicksecure_EFI_Boot_Compatibility">Kicksecure EFI Boot
+Compatibility</h1>
+<p>Kicksecure is compatible with EFI. Disabling EFI is optional.</p>
+<h2 id="Kicksecure_SecureBoot_Compatibility">Kicksecure SecureBoot
+Compatibility</h2>
+<p>Kicksecure is compatible with SecureBoot. Disabling SecureBoot is
+optional.</p>
+<p>However, if the user keeps SecureBoot enabled, then DKMS key
+enrollment is recommended, which is documented on the <a href="../Secure_Boot/">Secure Boot</a> wiki page.</p>
+<h1 id="Kicksecure_coreboot_Compatibility">Kicksecure coreboot
+Compatibility</h1>
+<p><a href="../Unsupported/">Untested</a>. But if coreboot is
+compatible with Debian on the motherboard, then Kicksecure should also
+be functional.</p>
+<h1 id="BIOS_vs_EFI">BIOS vs EFI</h1>
+<p>Some motherboards only support BIOS and do not yet have EFI support.
+Others support only EFI and no longer have BIOS support.</p>
+<p>Some motherboards support both, BIOS and EFI. The user can choose
+either in the firmware setup.</p>
+<p>What should be preferred? If only one option is available, use
+whatever is available.</p>
+<p>What if the user can select BIOS versus EFI?</p>
+<p>EFI (Extensible Firmware Interface) is significantly more complex
+than BIOS (Basic Input/Output System). One key difference is EFI's
+reliance on NVRAM (Non-Volatile Random-Access Memory), which functions
+similarly to a hard drive but is actually a chip integrated into the
+computer's motherboard.</p>
+<p>In BIOS-based systems, all information required to boot the system
+could be stored on an external device, such as a USB hard drive. EFI,
+however, operates differently. It typically writes part of the essential
+boot information to the NVRAM, which is specific to each
+motherboard.</p>
+<p>This architectural difference has important implications for system
+migration. When a user wants to transfer their hard drive from one
+computer to another (due to hardware issues or upgrades, for example),
+they may encounter problems. Unlike with BIOS systems, an EFI-based hard
+drive will likely be unbootable on the new hardware because it lacks the
+specific NVRAM data from the original motherboard.</p>
+<p><a href="../ISO/">Kicksecure's ISO installer</a> (based
+on Calamares) attempts to mitigate this issue. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>EFI comes with a lot more challenges for Linux distributions. See
+footnote for details. <sup class="reference"><a href="#cite_note-2">[2]</a></sup> Among these challenges is
+Secure Boot. See <a href="../Secure_Boot/">Secure Boot user
+documentation</a> and <a href="../Dev/Secure_Boot/">Complexities and security concerns of Secure Boot in
+the context of Linux distributions</a>.</p>
+<p>forum discussion: <a href="https://forums.whonix.org/t/bios-vs-efi-vs-coreboot-vs-libreboot/4513">BIOS
+vs EFI vs coreboot vs libreboot</a></p>
+<p><a href="https://www.bleepingcomputer.com/news/security/pkfail-secure-boot-bypass-lets-attackers-install-uefi-malware/">https://www.bleepingcomputer.com/news/security/pkfail-secure-boot-bypass-lets-attackers-install-uefi-malware/</a></p>
+<h1 id="SeaBIOS_is_not_a_Legacy_BIOS">SeaBIOS is not a Legacy BIOS</h1>
+<p>Calling SeaBIOS "legacy" is somewhat misleading. Here's why:</p>
+<p>1. SeaBIOS is actively maintained modern software that happens to
+implement the traditional BIOS interface. It's not outdated code from
+the 1980s.</p>
+<p>2. The "legacy" part refers to the interface it provides (16-bit real
+mode boot interface) rather than the code quality or capabilities.</p>
+<p>3. SeaBIOS has several advantages:</p>
+<ul>
+<li>Very stable and well-tested</li>
+<li>Simple and lightweight</li>
+<li>Highly compatible with existing operating systems and boot
+loaders</li>
+<li>Open source and easily debuggable</li>
+<li>Fast boot times</li>
+</ul>
+<p>4. While UEFI offers some additional features (like secure boot, GUI
+setup, networking), many of these aren't essential for most users. The
+traditional BIOS interface remains perfectly functional for its core
+purpose - initializing hardware and booting the OS.</p>
+<p>5. SeaBIOS is still widely used in virtualization (QEMU/KVM uses it
+by default) because it's reliable and efficient.</p>
+<p>So while "legacy" technically describes the interface type, it
+shouldn't be taken as meaning "obsolete" or "inferior." It's more
+accurate to think of SeaBIOS as a modern implementation of a classic
+interface. "Legacy" here really refers to its design lineage rather than
+its utility or reliability.</p>
+<h1 id="SeaBIOS_versus_EFI">SeaBIOS versus EFI</h1>
+<p><strong>prerequisite knowledge:</strong></p>
+<ul>
+<li>stateless computer - State considered harmful - A proposal for a
+stateless laptop
+<ul>
+<li><a href="https://blog.invisiblethings.org/2015/12/23/state_harmful.html">blog
+post</a></li>
+<li><a href="https://blog.invisiblethings.org/papers/2015/state_harmful.pdf">PDF
+version</a> / <a href="https://github.com/rootkovska/x86_harmful/blob/master/x86_harmful.md">web
+version</a></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rcwngbUrZNg">
+<img src="../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rcwngbUrZNg">Joanna
+Rutkowska (founder of Qubes OS): Towards (reasonably) trustworthy x86
+laptops</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=rcwngbUrZNg"><img src="../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=rcwngbUrZNg"><img src="../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=rcwngbUrZNg"><img src="../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+</ul></li>
+</ul>
+<p><strong>1. Codebase Size &amp; Complexity</strong></p>
+<ul>
+<li><strong>SeaBIOS</strong>: SeaBIOS is a minimal BIOS implementation
+with roughly 50K lines of code. This smaller codebase means it's
+simpler, easier to audit, and has fewer opportunities for security
+vulnerabilities or backdoors. SeaBIOS is also aligned with the idea of
+minimizing system state, akin to Joanna Rutkowska's "Stateless Notebook"
+concept, where simplicity is favored for security.</li>
+<li><strong>EFI (UEFI)</strong>: UEFI is significantly more complex,
+involving millions of lines of code. This increased complexity opens up
+more possibilities for bugs, vulnerabilities, or intentional backdoors.
+The large attack surface also makes it more challenging to perform a
+comprehensive security audit.</li>
+</ul>
+<p><strong>2. Secure Boot &amp; Measured Boot</strong></p>
+<ul>
+<li><strong>EFI</strong>: EFI offers features like <a href="../Secure_Boot/">Secure Boot</a> and <a href="../Measured_boot/">Measured Boot</a>, but these features add complexity.
+Moreover, Secure Boot, although it enhances the security model, can also
+be misused or introduce backdoors if not properly implemented. Projects
+like <strong>Dasharo</strong> aim to bring transparency and security to
+UEFI, but it's inherently more complicated than SeaBIOS.</li>
+<li><strong>SeaBIOS</strong>: It lacks the sophisticated boot integrity
+features found in EFI, such as Secure Boot or Measured Boot. However,
+this simplicity means it's easier to verify and audit the boot
+process.</li>
+</ul>
+<p><strong>3. Stateless Nature</strong></p>
+<ul>
+<li><strong>SeaBIOS</strong>: The absence of NVRAM storage and limited
+state retention make SeaBIOS closer to a "stateless" system, which is
+beneficial from a security standpoint, reducing persistence mechanisms
+that an attacker could leverage.</li>
+<li><strong>EFI</strong>: UEFI systems use <strong>NVRAM</strong> for
+storing boot settings and variables, introducing state that could be
+manipulated maliciously. This statefulness is a trade-off, adding
+functionality but increasing potential vulnerabilities.</li>
+</ul>
+<p><strong>4. Security Trade-Offs</strong></p>
+<ul>
+<li>SeaBIOS aligns more with a "less is more" security model, minimizing
+attack surface by reducing features.</li>
+<li>EFI provides additional layers of security features like Secure
+Boot, but these features come with significant complexity and increased
+risks, requiring more diligent auditing to ensure no vulnerabilities are
+introduced.</li>
+</ul>
+<p>Overall, if the goal is to reduce risk through simplicity and
+auditability, SeaBIOS is a better fit. If, however, the priority is to
+add layers of security (assuming the complexity can be effectively
+managed and trusted), EFI with Secure Boot and Measured Boot might be
+preferred.</p>
+<p>Coreboot + SeaBIOS can be not only sufficient but even preferable.
+So, while it may not have some of the bells and whistles of UEFI, it's
+definitely not "bad" by any stretch.</p>
+<p>SeaBIOS:</p>
+<ul>
+<li>SeaBIOS, with its minimal codebase, reduces the risk of backdoors
+and makes it resilient against certain remote attacks, though it lacks
+protection against physical attacks like tampering with the
+bootloader.</li>
+<li>SeaBIOS, on the other hand, is designed to be simpler and stateless,
+which makes it harder for an attacker to maintain a persistent presence,
+as there is no stored configuration that survives reboots. This makes
+SeaBIOS generally more resilient against persistent compromise.</li>
+</ul>
+<p>EFI:</p>
+<ul>
+<li>EFI provides stronger defenses against remote attacks through
+features like Secure Boot and Measured Boot, but its increased
+complexity introduces a higher risk of backdoors and makes it more
+vulnerable to physical attack vectors involving its persistent
+state.</li>
+<li>EFI is more vulnerable to persistent compromise compared to SeaBIOS.
+EFI maintains state using NVRAM to store configuration and boot data,
+which can be modified by attackers to maintain persistence even across
+reboots. Additionally, EFI's larger codebase and complexity make it
+harder to audit, increasing the chances of undetected vulnerabilities
+that could facilitate a persistent compromise.</li>
+</ul>
+<p>For typical online end users, remote attacks exploiting firmware
+vulnerabilities are more realistic against EFI than SeaBIOS due to EFI's
+complexity and larger attack surface. Attacks like firmware malware
+(rootkits or bootkits) that exploit bugs in EFI can persist across
+reboots, especially since EFI features stateful NVRAM.</p>
+<p>On the other hand, physical attacks, like modifying firmware settings
+or implanting malicious bootloaders, are generally less common for most
+users unless they are high-value targets with attackers capable of
+gaining physical access.</p>
+<p>For SeaBIOS users, attacks that focus on exploiting weaknesses in
+Secure Boot or similar protections are less relevant because those
+features aren't present, but the absence of these protections means
+physical attacks or tampering with the bootloader is more
+straightforward if an attacker has physical access.</p>
+<p>If the goal is just data stealing, physical attacks like firmware
+tampering are unlikely, as methods like cameras or microphones are more
+practical to still any full disk encryption password. However, if
+persistent control is desired, such as manipulating system behavior or
+compromising critical infrastructure, tampering with the boot firmware
+makes more sense, making boot firmware verification crucial in such
+cases.</p>
+<p>Instead of tampering with the any firmware or hard drive contents,
+adversaries might also deploy much simpler techniques such as hardware
+implants such as hardware based keyloggers. For example, by implanting
+the keyboard with a malicious chip that logs or leaks all
+keystrokes.</p>
+<p>TODO: versus <a href="https://docs.dasharo.com/dasharo-menu-docs/dasharo-system-features/">https://docs.dasharo.com/dasharo-menu-docs/dasharo-system-features/</a></p>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="./">Boot Firmware</a></li>
+<li><a href="../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Dev/Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../Measured_boot/">Measured Boot</a></li>
+<li><a href="../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="../Open_Source_Hardware/">Open Source
+Hardware</a></li>
+<li><a href="../Dev/confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../Dev/bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="../Dev/Stateless/">stateless (dev)</a></li>
+<li><a href="../Dev/immutable/">immutable (dev)</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/live-config-dist/blob/master/etc/calamares/modules/bootloader.conf.dist">Kicksecure/live-config-dist</a></span>
+setting <span class="code-select inline-style">installEFIFallback:
+true</span> .</li>
+<li id="cite_note-2">*
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/live-config-dist/commit/9cb8ecd174e3c0002a28056776c9e91d54a1a2b7">Kicksecure/live-config-dist</a></span>
+* <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1036019">EFI
+inside VirtualBox breaks Debian Installer (the traditional one, not
+Calamares)</a> * <a href="../Dev/image_creation/">Development of System Image Creation and Bootstrapping
+Tools</a></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Page Homepage</title>
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Page_Homepage/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Page_Homepage/">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Page Homepage</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Rock_Solid_Security">Rock Solid Security</a></li><li class="toc-l2"><a href="#Learn_What_Is_Kicksecure?">Learn
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;What&#160;Is&#160;Kicksecure?</a></li><li class="toc-l2"><a href="#Pre-release_-_Try_it_for_FREE">Pre-release&#160;-
+&#160;&#160;&#160;&#160;&#160;&#160;&#160;Try&#160;it&#160;for&#160;FREE</a></li><li class="toc-l2"><a href="#Pre-installed_applications_are_reviewed_and_configured_for_security">Pre-installed&#160;applications&#160;are&#160;reviewed&#160;and&#160;configured&#160;for&#160;security</a></li><li class="toc-l2"><a href="#Fully_Featured_with_Advanced_Security_Components">Fully&#160;Featured&#160;with&#160;Advanced&#160;Security&#160;Components</a></li><li class="toc-l3"><a href="#Protection_from_Targeted_Malicious_Updates">Protection from Targeted Malicious Updates</a></li><li class="toc-l3"><a href="#Kernel_Self_Protection_Settings">Kernel Self Protection Settings</a></li><li class="toc-l3"><a href="#Time_Attack_Protection">Time Attack Protection</a></li><li class="toc-l3"><a href="#No_Open_Ports_by_Default">No Open Ports by Default</a></li><li class="toc-l3"><a href="#CPU_Information_Leak_Protection_(TCP_ISN)">CPU Information Leak Protection (TCP ISN)</a></li><li class="toc-l3"><a href="#Available_for_many_virtualizers">Available for many virtualizers</a></li><li class="toc-l3"><a href="#15_more_amazing_features_&#8594;">15 more amazing features &#8594;</a></li><li class="toc-l3"><a href="#Brute_Force_Defense">Brute Force Defense</a></li><li class="toc-l3"><a href="#Entropy_Enhancements">Entropy Enhancements</a></li><li class="toc-l3"><a href="#Live_Mode">Live Mode</a></li><li class="toc-l3"><a href="#Based_on_Linux">Based on Linux</a></li><li class="toc-l3"><a href="#Onion_Website_Option">Onion Website Option</a></li><li class="toc-l3"><a href="#Risk_Minimization">Risk Minimization</a></li><li class="toc-l3"><a href="#Strong_Linux_User_Account_Separation">Strong Linux User Account Separation</a></li><li class="toc-l3"><a href="#Extensive_Documentation">Extensive Documentation</a></li><li class="toc-l3"><a href="#Virus_Protection">Virus Protection</a></li><li class="toc-l3"><a href="#Console_Lockdown">Console Lockdown</a></li><li class="toc-l3"><a href="#Vibrant_Community">Vibrant Community</a></li><li class="toc-l3"><a href="#Based_on_Debian">Based on Debian</a></li><li class="toc-l3"><a href="#Digitally_signed_releases">Digitally signed releases</a></li><li class="toc-l3"><a href="#Warrant_Canary">Warrant Canary</a></li><li class="toc-l3"><a href="#Swap_File_Creator">Swap File Creator</a></li><li class="toc-l3"><a href="#SUID_Disabler_and_Permission_Hardener">SUID Disabler and Permission Hardener</a></li><li class="toc-l2"><a href="#Freedom_Values">Freedom&#160;Values</a></li><li class="toc-l3"><a href="#12_Years_of_Success">12 Years of Success</a></li><li class="toc-l3"><a href="#Open_Source">Open Source</a></li><li class="toc-l3"><a href="#Freedom_Software">Freedom Software</a></li><li class="toc-l3"><a href="#Research_and_Implementation_Project">Research and Implementation Project</a></li><li class="toc-l3"><a href="#Fully_Auditable">Fully Auditable</a></li><li class="toc-l3"><a href="#Complete_respect_for_privacy_and_user_freedom">Complete respect for privacy and user freedom</a></li><li class="toc-l2"><a href="#Upcoming_Security_Enhancements">Upcoming&#160;Security&#160;Enhancements</a></li><li class="toc-l3"><a href="#8_more_Enhancements_&#8594;">8 more Enhancements &#8594;</a></li><li class="toc-l2"><a href="#Investors">Investors</a></li><li class="toc-l2"><a href="#Join_the_team!">Join&#160;the&#160;team!</a></li></ul></nav><div class="sections-wrapper">
+<div class="section-banner">
+<div class="inner-wrapper">
+<h2 class="slogan" id="Rock_Solid_Security">
+<p>Rock Solid Security</p>
+</h2>
+<p>Kicksecure is a secure by default OS always based on the latest
+security research.</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;</code><a href="../../Download/" class="call-to-action"><code>Download&#160;Now</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code><a class="overview-image" href="../../About/" title="Kicksecure Desktop"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="overview-image-preview" loading="eager" alt="Kicksecure Overview Preview" width="800" height="450" src="data:image/webp;base64,
+/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0a
+HBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIy
+MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAASACADASIA
+AhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAYDBAUC/8QAJRAAAgICAQIGAwAAAAAAAAAAAQID
+BAAhEQUSBjFBUWFxFFKR/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAEDAv/EABoRAQADAQEBAAAAAAAA
+AAAAAAEAAhEDIUH/2gAMAwEAAhEDEQA/AH5LPHrmr025TZJhYPDIpfnnfHxmGOmXvVFH24zA6hdn
+6N4qgisyLHDNVPcdMPNtb1vjjet5TlUsu/DYkXwjPW8RSyeIfw4lnjiRnVxKq8HtJU8EEnTY61bK
+ToACOcRqUdC0ktilWhrytoyEKpbfmAqg745y9AbNZgwtxgj4Jw6ovhJ8qNB13WdOzfsf7lGcB3Tv
+Hd97wwzFZWRkn3yJiffDDEwJ/9k=" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="eager" width="800" height="450" alt="Kicksecure Overview" src="../../../media/Kicksecure-image-hero-image.jpg.webp" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+<h2 class="learn" id="Learn_What_Is_Kicksecure?">
+<p>Learn</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../About/"><code>What&#160;Is&#160;Kicksecure?</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+</div>
+</div>
+<div id="download" class="section-download dark-section">
+<div class="inner-wrapper">
+<h2 id="Pre-release_-_Try_it_for_FREE">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Pre-release/"><code>Pre-release</code></a><code>&#160;-</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Download/"><code>Try&#160;it&#160;for&#160;FREE</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="download"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;is&#160;still&#160;in&#160;development&#160;and&#160;contributions&#160;are&#160;welcome.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+<div class="col-container-wrapper">
+<div class="col-container">
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Debian/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-blue-dark"><code>Hardware</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Logo-debian-500x500.png.webp" alt="Download for Debian" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Debian+</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../USB_Installation/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-blue-dark"><code>Hardware</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Logo-usb-500x500.png.webp" alt="Kicksecure on USB" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>On&#160;USB</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Download/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-blue-dark"><code>Hardware</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Cd-rom-icon.png.webp" alt="Kicksecure ISO" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image coming-soon" src="../../../media/Coming-soon.png.webp" alt="Comming Soon" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>ISO</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+</div>
+<div class="col-container">
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../VirtualBox/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Windows_logo_-_2012.svg.png.webp" alt="Download for Windows 10" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Windows</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../MacOS/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Logo-apple-500x500.png.webp" alt="Download for Mac" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>MacOS</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Linux/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Logo-linux-500x500.png.webp" alt="Download for Linux" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>VirtualBox&#160;Linux&#160;installer</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../VirtualBox/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Virtualbox_logo.png.webp" alt="Download for VirtualBox" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>VirtualBox</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Qubes/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Qubes-logo-blue.png.webp" alt="Download for Qubes" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Qubes</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../KVM/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-green-dark"><code>VM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Kvm-new-logo.png.webp" alt="Download for KVM" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>KVM</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+</div>
+<div class="col-container">
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Chroot/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="label cs-yellow"><code>Special</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" src="../../../media/Logo-chroot-500x500.png.webp" alt="Kicksecure on chroot" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>chroot</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section-navi">
+<div class="inner-wrapper">
+<div class="col-container cc-3">
+<div>
+<p><a href="../../Documentation/">Wiki</a></p>
+</div>
+<div>
+<p><a href="../../FAQ/">FAQ</a></p>
+</div>
+<div>
+<p><a href="#security">Features</a></p>
+</div>
+<div>
+<p><a href="https://forums.kicksecure.com/">Forum</a></p>
+</div>
+<div>
+<p><a href="https://forums.kicksecure.com/c/news">News</a></p>
+</div>
+<div>
+<p><a href="../../Donate/">Donate</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="section-apps dark-section">
+<div class="inner-wrapper">
+<h2 id="Pre-installed_applications_are_reviewed_and_configured_for_security">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Pre-installed&#160;applications&#160;are&#160;reviewed&#160;and&#160;configured&#160;for&#160;security</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<div class="col-container cc-5 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../E-Mail/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/Thunderbird256.png.webp" alt="Encrypted Email Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Thunderbird</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Passwords/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/KeePassXC.svg" alt="KeePassXC Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>KeePassXC</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../HexChat/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/Hexchaticon.png.webp" alt="HexChat Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>HexChat</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Software/#Media_Player" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="71" src="../../../media/2000px-VLC_Icon.svg.png.webp" alt="VLC Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>VLC</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Software/#Terminal" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/Utilities-terminal.png.webp" alt="Terminal Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Terminal</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Electrum/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/Electrum-appimage.png.webp" alt="Electrum Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Electrum</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Bitcoin/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/BC_Logo_.png.webp" alt="Bitcoin Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Bitcoin</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Monero/" target="_blank" rel="noopener"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="64" height="64" src="../../../media/Monero-symbol-1280.png.webp" alt="Monero Symbol" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><code>Monero</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+</div>
+</div>
+<div id="security" class="section-features">
+<div class="inner-wrapper">
+<h2 id="Fully_Featured_with_Advanced_Security_Components">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Fully&#160;Featured&#160;with&#160;Advanced&#160;Security&#160;Components</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="security"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<div class="col-container cc-3 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Operating_System_Software_and_Updates/" class="card-wrapper" id="explain-protectedupdates"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image image-cover" alt="Protection from Targeted Malicious Updates" src="../../../media/Malware-updates-promo.jpg.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Protection_from_Targeted_Malicious_Updates">
+<p>Protection from Targeted Malicious Updates</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;update&#160;servers&#160;know&#160;neither&#160;the&#160;identity&#160;nor&#160;IP&#160;address&#160;of&#160;the&#160;user&#160;because</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;all&#160;upgrades&#160;are&#160;downloaded&#160;over&#160;Tor.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/security-misc" target="_blank" class="card-wrapper" id="explain-kernel"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image image-cover" alt="Kernel Self Protection" src="../../../media/Tux-halo-promo.jpg.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Kernel_Self_Protection_Settings">
+<p>Kernel Self Protection Settings</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;uses&#160;strong&#160;Kernel&#160;Hardening&#160;Settings&#160;as&#160;recommended&#160;by&#160;the&#160;Kernel&#160;Self&#160;Protection&#160;Project</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(KSPP).</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Sdwdate/" class="card-wrapper" id="explain-time"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Time Attack Defense" src="../../../media/Stopwatch.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Time_Attack_Protection">
+<p>Time Attack Protection</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;defeats&#160;time&#160;attacks&#160;on&#160;its&#160;users&#160;through&#160;Boot&#160;Clock&#160;Randomization&#160;and&#160;secure&#160;network&#160;time</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;synchronization&#160;using&#160;sdwdate.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Debian_Tips/#Open_Ports" class="card-wrapper" id="explain-ports"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="No Open Ports" src="../../../media/Closed-ports-promo.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="No_Open_Ports_by_Default">
+<p>No Open Ports by Default</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;provides&#160;a&#160;much&#160;lower&#160;attack&#160;surface&#160;since</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;there&#160;are&#160;no&#160;open&#160;server&#160;ports&#160;by&#160;default&#160;unlike&#160;in&#160;some&#160;other&#160;Linux&#160;distributions.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/tirdad" target="_blank" class="card-wrapper" id="explain-tirdad"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="TCP ISN Leak Protection" src="../../../media/Data-leak.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="CPU_Information_Leak_Protection_(TCP_ISN)">
+<p>CPU Information Leak Protection (TCP ISN)</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Without&#160;TCP&#160;ISN&#160;randomization,&#160;sensitive&#160;information&#160;about&#160;a&#160;system's&#160;CPU&#160;activity&#160;can&#160;be&#160;leaked&#160;through</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;outgoing&#160;traffic,&#160;leaving&#160;it&#160;vulnerable&#160;to&#160;side-channel&#160;attacks.&#160;tirdad&#160;prevents&#160;that.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Download/" target="_blank" class="card-wrapper" id="explain-virtualizercompatible"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Available for many virtualizers" src="../../../media/Virtualizer-compatible.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Available_for_many_virtualizers">
+<p>Available for many virtualizers</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;With&#160;support&#160;for&#160;multiple&#160;virtualization&#160;options,&#160;trying&#160;out&#160;Kicksecure&#160;is&#160;easy.&#160;VMs&#160;also&#160;help&#160;contain&#160;and</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prevent&#160;the&#160;spread&#160;of&#160;malware.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+<div class="mw-collapsible mw-collapsed no-item slider-list-if-js" data-expandtext="Learn More" data-collapsetext="Show Less">
+<h3 id="15_more_amazing_features_&#8594;">
+<p>15 more amazing features &#8594;</p>
+</h3>
+<div class="mw-collapsible-content">
+<div class="col-container cc-3 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/security-misc" target="_blank" class="card-wrapper" id="explain-brute"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image image-cover" alt="Brute Force Defense" src="../../../media/Franck-v-_E1PQXKUkMw-unsplash.jpg.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Brute_Force_Defense">
+<p>Brute Force Defense</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;protects&#160;Linux&#160;user&#160;accounts&#160;against&#160;brute&#160;force&#160;attacks&#160;by&#160;using&#160;pam&#160;tally2.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../Entropy/" class="card-wrapper" id="explain-entropy"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Entropy Enhancements" src="../../../media/Entropy-promo.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Entropy_Enhancements">
+<p>Entropy Enhancements</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Strong&#160;entropy&#160;is&#160;required&#160;for&#160;computer&#160;security&#160;to&#160;ensure&#160;the&#160;unpredictability&#160;and&#160;randomness&#160;of</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cryptographic&#160;keys&#160;and&#160;other&#160;security-related&#160;processes.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;makes&#160;encryption&#160;more&#160;secure&#160;thanks&#160;to&#160;preinstalled&#160;random&#160;number&#160;generators.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Live_Mode/" class="card-wrapper" id="explain-livemode"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover image-left" src="../../../media/Live-mode-promo.jpg.webp" alt="Live Mode" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Live_Mode">
+<p>Live Mode</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;offers&#160;a&#160;much&#160;requested&#160;Live&#160;Mode.&#160;After&#160;the&#160;session&#160;all&#160;data&#160;will&#160;be&#160;gone.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Debian/" class="card-wrapper" id="explain-linuxbased"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Linux-based-kicksecure-promo.jpg.webp" alt="Based on Linux" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Based_on_Linux">
+<p>Based on Linux</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux&#160;is&#160;highly&#160;reliable,&#160;secure,&#160;free&#160;and&#160;open&#160;source.&#160;That's&#160;why&#160;Kicksecure&#160;is&#160;based&#160;on&#160;Linux.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Forcing_.onion_on_Project/" class="card-wrapper" id="explain-onionwebsite"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Onion-website-promo.jpg.webp" alt="Onion Website" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Onion_Website_Option">
+<p>Onion Website Option</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Our&#160;website&#160;offers&#160;an&#160;alternative&#160;onion&#160;version.&#160;This&#160;offers&#160;a&#160;higher&#160;connection&#160;security&#160;between&#160;the</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;user&#160;and&#160;the&#160;server.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../AppArmor/" class="card-wrapper" id="explain-apparmor"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" alt="Risk Minimization" src="../../../media/AppArmor-logo-promo.png.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Risk_Minimization">
+<p>Risk Minimization</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;AppArmor&#160;profiles&#160;restrict&#160;the&#160;capabilities&#160;of&#160;commonly&#160;used,&#160;high-risk&#160;applications.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/security-misc" target="_blank" class="card-wrapper" id="explain-account"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" alt="Strong Linux User Account Separation" src="../../../media/Account-separation-promo.png.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Strong_Linux_User_Account_Separation">
+<p>Strong Linux User Account Separation</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux&#160;User&#160;Account&#160;Separation&#160;is&#160;not&#160;always&#160;a&#160;given&#160;on&#160;Linux&#160;systems.&#160;In&#160;Kicksecure&#160;it&#160;is.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Documentation/" class="card-wrapper" id="explain-docs"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image image-cover" alt="Extensive Documentation" src="../../../media/Advanceddocumentation213123.jpg.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Extensive_Documentation">
+<p>Extensive Documentation</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;The&#160;more&#160;you&#160;know,&#160;the&#160;safer&#160;you&#160;can&#160;be:&#160;Extensive&#160;Kicksecure&#160;Documentation</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Malware_and_Firmware_Trojans/" class="card-wrapper" id="explain-virus"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" src="../../../media/Shield.png.webp" alt="Virus Protection" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Virus_Protection">
+<p>Virus Protection</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;provides&#160;additional&#160;security&#160;hardening&#160;measures&#160;and&#160;user&#160;education&#160;for&#160;better</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;protection&#160;from&#160;virus&#160;attacks.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../Strong_Linux_User_Account_Isolation/#Console_Lockdown" class="card-wrapper" id="explain-console"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Console Lockdown" src="../../../media/Console-lockdown.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Console_Lockdown">
+<p>Console Lockdown</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Legacy&#160;login&#160;methods&#160;can&#160;be&#160;a&#160;security&#160;risk.&#160;Console&#160;Lockdown&#160;disables&#160;them&#160;for&#160;improved&#160;security</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;hardening.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.kicksecure.com" target="_blank" class="card-wrapper" id="explain-community"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" alt="Vibrant Community" src="../../../media/Discourse_logo.png.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Vibrant_Community">
+<p>Vibrant Community</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Our&#160;vibrant&#160;community&#160;features&#160;Forums,&#160;Contributors&#160;and&#160;RSS.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../About/" class="card-wrapper" id="explain-debian"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" src="../../../media/Debian.png.webp" alt="Based on Debian" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Based_on_Debian">
+<p>Based on Debian</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;is&#160;based&#160;on&#160;Debian,&#160;one&#160;of&#160;the&#160;most&#160;reliable&#160;Linux&#160;distributions.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Verifying_Software_Signatures/" class="card-wrapper" id="explain-signed"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" src="../../../media/Key-lock-gpg.png.webp" alt="Digitally signed releases" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Digitally_signed_releases">
+<p>Digitally signed releases</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Downloads&#160;are&#160;signed&#160;so&#160;genuine&#160;Kicksecure&#160;releases&#160;can&#160;be&#160;verified.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Trust/#canary" class="card-wrapper" id="explain-canary"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Warrant Canary" src="../../../media/Canary-promo.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Warrant_Canary">
+<p>Warrant Canary</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A&#160;canary&#160;confirms&#160;that&#160;no&#160;warrants&#160;have&#160;ever&#160;been&#160;served&#160;on&#160;the&#160;Kicksecure&#160;project.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/swap-file-creator" target="_blank" class="card-wrapper" id="explain-swap"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" alt="Swap File Creator" src="../../../media/File-swap-promo.jpg.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Swap_File_Creator">
+<p>Swap File Creator</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Running&#160;low&#160;on&#160;RAM&#160;isn't&#160;a&#160;security&#160;problem&#160;with&#160;swap-file-creator.&#160;It&#160;will&#160;create&#160;an&#160;encrypted&#160;swap</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;file.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener" target="_blank" class="card-wrapper" id="explain-sui-disabler"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img loading="lazy" class="image image-cover" src="../../../media/Disablesuidbinary.jpg.webp" alt="Permission Hardener" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="SUID_Disabler_and_Permission_Hardener">
+<p>SUID Disabler and Permission Hardener</p>
+</h3>
+<p>SUID Disabler and Permission Hardener enhances system security by
+strengthening the isolation of Linux user accounts and more.</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="values" class="section-values">
+<div class="inner-wrapper">
+<h2 class="no-item" id="Freedom_Values">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Freedom&#160;Values</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="values"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<div class="col-container cc-3 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../History/" target="_blank" class="card-wrapper" id="explain-success"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" alt="12 Years of Success" src="../../../media/Success-symbol.png.webp" loading="lazy" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="12_Years_of_Success">
+<p>12 Years of Success</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;For&#160;over&#160;12&#160;years&#160;as&#160;the&#160;creators&#160;of&#160;Whonix&#160;we&#160;have&#160;successfully&#160;protected&#160;our&#160;users&#160;from&#160;everyday</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;trackers</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;even&#160;from&#160;high&#160;level&#160;attacks.&#160;And&#160;we're&#160;just&#160;getting&#160;started!</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure" target="_blank" class="card-wrapper" id="explain-opensource"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" alt="Open Source" src="../../../media/Osi_standard_logo_0.png.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Open_Source">
+<p>Open Source</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;We&#160;respect&#160;user&#160;rights&#160;to&#160;review,&#160;scrutinize,&#160;modify,&#160;and&#160;redistribute&#160;Kicksecure.&#160;This&#160;improves</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;security</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;privacy&#160;for&#160;everyone.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/" class="card-wrapper" id="explain-freedom"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" alt="Freedom Software" src="../../../media/Heckert_gnu.big.png.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Freedom_Software">
+<p>Freedom Software</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;is&#160;Freedom&#160;Software&#160;and&#160;contains&#160;software&#160;developed&#160;by&#160;the&#160;Free&#160;Software&#160;Foundation</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;the&#160;GNU&#160;Project.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../What_we_do/" class="card-wrapper" id="explain-research"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image" src="../../../media/Cornues.png.webp" alt="Research and Implementation Project" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Research_and_Implementation_Project">
+<p>Research and Implementation Project</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;is&#160;an&#160;actively&#160;maintained&#160;research&#160;project</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;making&#160;constant&#160;improvements;&#160;no&#160;shortcomings&#160;are&#160;ever&#160;hidden&#160;from&#160;users.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/" class="card-wrapper" id="explain-auditable"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Fully Auditable" src="../../../media/Bho78-4ycp0.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Fully_Auditable">
+<p>Fully Auditable</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;is&#160;independently&#160;verifiable&#160;by&#160;security&#160;experts&#160;and&#160;software&#160;developers&#160;around&#160;the&#160;world.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;This&#160;improves&#160;security&#160;and&#160;privacy&#160;for&#160;everyone.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/#No_Intentional_User_Freedom_Restrictions" class="card-wrapper" id="explain-respect"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Complete respect for privacy and users freedom" src="../../../media/Respect-freedom-symbol.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<h3 id="Complete_respect_for_privacy_and_user_freedom">
+<p>Complete respect for privacy and user freedom</p>
+</h3>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Kicksecure&#160;respects&#160;data&#160;privacy&#160;principles.&#160;We&#160;don't&#160;make&#160;advertising&#160;deals&#160;or&#160;collect&#160;sensitive</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;personal</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;data.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+</div>
+</div>
+<div id="upcoming" class="section-upcoming dark-section">
+<div class="inner-wrapper">
+<h2 id="Upcoming_Security_Enhancements">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Upcoming&#160;Security&#160;Enhancements</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="upcoming"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<div class="col-container cc-3 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Linux_Kernel_Runtime_Guard_LKRG/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Lkrg.png.webp" alt="LKRG" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Linux&#160;Kernel&#160;Runtime&#160;Guard&#160;(LKRG)&#160;performs&#160;runtime&#160;integrity&#160;checking&#160;of&#160;the&#160;Linux&#160;kernel&#160;and&#160;detection</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;of</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;security&#160;vulnerability&#160;exploits&#160;against&#160;the&#160;kernel.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Hardened_Malloc_Light/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Malloc.jpg.webp" alt="Hardened Malloc Light" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Hardened&#160;Malloc&#160;Light&#160;is&#160;a&#160;hardened&#160;memory&#160;allocator&#160;which&#160;can&#160;be&#160;used&#160;with&#160;many&#160;applications&#160;to</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;increase</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;security&#160;which&#160;is&#160;already&#160;installed&#160;by&#160;default&#160;and&#160;will&#160;be&#160;enabled&#160;by&#160;default.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Vm-app-manager/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Sandboxing123123.png.webp" alt="Sandboxed Application Launcher" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>sandbox-app-launcher is an application launcher that can start each
+application inside its own</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;restrictive&#160;sandbox.&#160;Each&#160;application&#160;runs&#160;as&#160;its&#160;own&#160;user,&#160;in&#160;a&#160;bubblewrap&#160;sandbox&#160;and&#160;confined&#160;by</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;AppArmor.</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+<div class="mw-collapsible mw-collapsed no-item slider-list-if-js" data-expandtext="Learn More" data-collapsetext="Show Less">
+<h3 id="8_more_Enhancements_&#8594;">
+<p>8 more Enhancements &#8594;</p>
+</h3>
+<div class="mw-collapsible-content">
+<div class="col-container cc-3 justify">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Apparmor.d/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Mandatoryaccesscontrol.jpg.webp" alt="AppArmor" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>apparmor.d - Full system Mandatory Access Control (MAC) policy -
+"AppArmor for everything"</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.whonix.org/t/untrusted-root-does-it-make-sense-to-try-to-improve-security-by-restricting-root/7998" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Untrustedrootaccess.jpg.webp" alt="Restricting root" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Untrusted Root User</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.whonix.org/t/allow-loading-signed-kernel-modules-by-default-disallow-kernel-module-loading-by-default/7880" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" src="../../../media/Signature-symbol.jpg.webp" alt="Kernel module Signatur" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Enforce kernel module software signature verification</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../VirusForget/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Deactivate malware after reboot" src="../../../media/Malware-symbol.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Deactivate malware after reboot from non-root compromise</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Hardened-kernel/" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Hardened Linux Kernel" src="../../../media/Hardenkernel.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Hardened Linux Kernel</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.whonix.org/t/use-codecrypt-to-sign-whonix-releases/7844/2" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Post-quantum cryptography resistant signing" src="../../../media/Postquantum.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Post-quantum cryptography resistant signing of releases</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Mount Options Hardening" src="../../../media/Mountoptions.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Mount Options Hardening</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-root-persistent-noroot-live-root-live-noroot/7708" target="_blank" rel="noopener" class="card-wrapper"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="image-wrapper"><img class="image image-cover" alt="Multiple Boot modes for besser security" src="../../../media/Multipleboot.jpg.webp" loading="lazy" /></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></p>
+<p>Multiple boot modes for better security (user, live, secureadmin and
+superadmin)</p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="investors" class="section-investor">
+<div class="inner-wrapper">
+<h2 id="Investors">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Investors</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="investors"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<p><code>&#160;&#160;&#160;&#160;&#160;</code><a href="../../Investors/" class="image-link"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img class="image" loading="lazy" width="697" height="354" src="../../../media/Shaking-hands.jpg.webp" alt="Investor shaking hands" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Interested&#160;in&#160;becoming&#160;an&#160;investor?&#160;See</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Investors/"><code>Project&#160;Metrics&#160;and&#160;contact&#160;details</code></a><code>.</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+</div>
+<div id="contribute" class="section-help dark-section">
+<div class="inner-wrapper">
+<h2 id="Join_the_team!">
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;Join&#160;the&#160;team!</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span class="share-tooltip" data-anchor="contribute"></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</h2>
+<div>
+<p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><a href="../../Contribute/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><img loading="lazy" width="450" height="415" src="../../../media/Digital-nomad.jpg.webp" alt="Help Welcome" /><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code><span><b><code>Your&#160;help&#160;is&#160;very&#160;welcome!</code></b><code>&#160;As&#160;a&#160;patron,&#160;as&#160;a&#160;multiplier&#160;or&#160;even&#160;as&#160;a&#160;contributor!</code></span><br />
+<code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;&#160;&#160;</code></p>
+</div>
+</div>
+</div>
+</div>
+<div class="mini-modal section-modal" id="modal-explain-protectedupdates">
+<p><code>&#160;</code><img src="../../../media/Malware-updates-promo.jpg.webp" alt="Protected Updates" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;update&#160;servers&#160;know&#160;neither&#160;the&#160;identity&#160;nor&#160;IP&#160;address&#160;of&#160;the&#160;user&#160;because</code><br />
+<code>&#160;&#160;&#160;</code><a href="wiki/About#torified_updates" target="_blank" rel="noopener"><code>all&#160;upgrades&#160;are&#160;downloaded&#160;over</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;Tor&#160;by&#160;default</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div class="mini-modal section-modal" id="modal-explain-kernel">
+<p><code>&#160;</code><img src="../../../media/Tux-halo-promo.jpg.webp" alt="Kernel Hardening" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;uses&#160;strong&#160;Kernel&#160;Hardening&#160;Settings&#160;as&#160;recommended&#160;by&#160;the&#160;Kernel&#160;Self&#160;Protection&#160;Project&#160;(KSPP).</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-time" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Stopwatch.jpg.webp" alt="Time Attacks Defense" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;</code><a href="../../Time_Attacks/"><code>Time&#160;attacks</code></a><br />
+<code>&#160;&#160;&#160;on&#160;Kicksecure&#160;users&#160;are&#160;defeated&#160;by</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Boot_Clock_Randomization/"><code>Boot&#160;Clock&#160;Randomization</code></a><br />
+<code>&#160;&#160;&#160;and&#160;secure&#160;network&#160;time&#160;synchronization&#160;through</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Sdwdate/"><code>sdwdate</code></a><br />
+<code>&#160;&#160;&#160;(Secure&#160;Distributed&#160;Web&#160;Date).</code><br />
+<code>&#160;</code></p>
+</div>
+<div class="mini-modal section-modal" id="modal-explain-ports">
+<p><code>&#160;</code><img src="../../../media/Closed-ports-promo.jpg.webp" alt="Closed Ports" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;provides&#160;a&#160;much&#160;lower&#160;attack&#160;surface&#160;since</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Debian_Tips/#Open_Ports"><code>there&#160;are&#160;no&#160;open&#160;server&#160;ports&#160;by&#160;default&#160;unlike&#160;other&#160;Linux</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;distributions.</code></a><br />
+<code>&#160;&#160;&#160;All&#160;unsolicited&#160;incoming&#160;connections&#160;are&#160;rejected.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-tirdad" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Data-leak.jpg.webp" alt="Prevent TCP ISN Leaks" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Without&#160;TCP&#160;ISN&#160;randomization,&#160;sensitive&#160;information&#160;about&#160;a&#160;system's&#160;CPU&#160;activity&#160;can&#160;be&#160;leaked&#160;through&#160;outgoing</code><br />
+<code>&#160;&#160;&#160;traffic,&#160;leaving&#160;it&#160;vulnerable&#160;to&#160;side-channel&#160;attacks.&#160;</code><a target="_blank" class="external text" href="https://github.com/Kicksecure/tirdad"><code>TCP&#160;ISN&#160;randomization</code></a><br />
+<code>&#160;&#160;&#160;prevents&#160;that.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-virtualizercompatible" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="https://www.kicksecure.com/w/images/thumb/8/8e/Virtualizer-compatible.jpg/600px-Virtualizer-compatible.jpg" alt="Many virtualizers" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;You&#160;can&#160;easily&#160;try&#160;Kicksecure&#160;by&#160;using</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Download/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;various&#160;virtualizers</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;,&#160;which&#160;enables&#160;security&#160;compartmentalization&#160;by&#160;running&#160;a&#160;Kicksecure&#160;VM&#160;on&#160;top&#160;of&#160;a&#160;Kicksecure&#160;host&#160;to&#160;isolate</code><br />
+<code>&#160;&#160;&#160;malware&#160;and&#160;testing&#160;inside&#160;the&#160;VM.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-brute" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Franck-v-_E1PQXKUkMw-unsplash.jpg.webp" alt="Brute Force defense" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;protects&#160;Linux&#160;user&#160;accounts</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/security-misc" target="_blank"><code>against&#160;brute&#160;force&#160;attacks</code></a><br />
+<code>&#160;&#160;&#160;by&#160;using&#160;pam&#160;tally2.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-entropy" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Entropy-promo.jpg.webp" alt="Better encryption" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Strong&#160;entropy&#160;is&#160;required&#160;for&#160;computer&#160;security&#160;to&#160;ensure&#160;the&#160;unpredictability&#160;and&#160;randomness&#160;of&#160;cryptographic&#160;keys</code><br />
+<code>&#160;&#160;&#160;and&#160;other&#160;security-related&#160;processes.</code><br />
+<code>&#160;&#160;&#160;Kicksecure&#160;makes&#160;encryption&#160;more&#160;secure&#160;thanks&#160;to&#160;</code><a href="../Entropy/"><code>preinstalled</code></a><code>&#160;random&#160;number</code><br />
+<code>&#160;&#160;&#160;generators.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-livemode" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Live-mode-promo.jpg.webp" alt="Live mode option" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Booting&#160;into</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Live_Mode/"><code>VM&#160;Live&#160;Mode</code></a><br />
+<code>&#160;&#160;&#160;is&#160;as&#160;simple&#160;as&#160;choosing&#160;Live&#160;Mode&#160;in&#160;the&#160;boot&#160;menu.</code><br />
+<code>&#160;&#160;&#160;Alternatively&#160;Debian&#160;and&#160;perhaps&#160;other&#160;Debian-based&#160;hosts&#160;can&#160;boot&#160;their&#160;existing&#160;host&#160;operating</code><br />
+<code>&#160;&#160;&#160;system&#160;into</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Live_Mode/"><code>Host&#160;Live&#160;Mode</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-linuxbased" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Linux-based-kicksecure-promo.jpg.webp" alt="Based on Linux" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Linux&#160;is&#160;highly&#160;reliable&#160;and&#160;secure.&#160;Its&#160;open&#160;source&#160;and&#160;freedom&#160;paradigm&#160;sets&#160;it&#160;apart&#160;from&#160;other&#160;OS.</code><br />
+<code>&#160;&#160;&#160;That's&#160;why&#160;Kicksecure</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Debian/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;is&#160;based&#160;on&#160;Linux.</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-onionwebsite" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Onion-website-promo.jpg.webp" alt="Onion website" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Our&#160;website&#160;offers&#160;an&#160;alternative&#160;onion&#160;version&#160;which&#160;offers&#160;a&#160;higher&#160;connection&#160;security&#160;between&#160;the&#160;user&#160;and&#160;the</code><br />
+<code>&#160;&#160;&#160;server.</code><br />
+<code>&#160;&#160;&#160;This&#160;is&#160;because&#160;connections&#160;over&#160;onions&#160;are&#160;providing&#160;an&#160;alternative&#160;end-to-end&#160;encryption&#160;which&#160;is&#160;independent&#160;from</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Forcing_.onion_on_Project/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;flawed&#160;TLS&#160;certificate&#160;authorities</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;and&#160;the&#160;mainstream&#160;Domain&#160;Name&#160;System&#160;(DNS).</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-firewall" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Firewall-symbol.png.webp" alt="Advanced Firewall" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Our&#160;Firewall&#160;is&#160;configured&#160;specifically&#160;for&#160;securely&#160;using&#160;the&#160;Internet.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-apparmor" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/AppArmor-logo-promo.png.webp" alt="Apparmor" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;</code><a href="../../AppArmor/"><code>AppArmor</code></a><code>&#160;profiles&#160;restrict&#160;the</code><br />
+<code>&#160;&#160;&#160;capabilities&#160;of</code><br />
+<code>&#160;&#160;&#160;commonly&#160;used,&#160;high-risk&#160;applications&#160;such&#160;as&#160;Tor&#160;Browser.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-account" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Account-separation-promo.png.webp" alt="Strong account separation" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Learn&#160;more&#160;about&#160;our&#160;Linux&#160;User&#160;Account&#160;Separation</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/security-misc" target="_blank"><code>security-misc</code></a><br />
+<code>&#160;&#160;&#160;.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-docs" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Advanceddocumentation213123.jpg.webp" alt="Extensive documentation" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;The&#160;more&#160;you&#160;know,&#160;the&#160;safer&#160;you&#160;can&#160;be:</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Documentation/"><code>Extensive&#160;Kicksecure&#160;Documentation</code></a><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-virus" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Shield.png.webp" alt="Virus Protection" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;provides&#160;additional&#160;security&#160;hardening&#160;measures&#160;and&#160;user&#160;education&#160;to&#160;provide&#160;better</code><br />
+<code>&#160;&#160;&#160;protection&#160;from</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Malware_and_Firmware_Trojans/"><code>viruses</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-console" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Console-lockdown.jpg.webp" alt="Console lockdown" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;</code><a href="../Strong_Linux_User_Account_Isolation/#Console_Lockdown"><br />
+<code>&#160;&#160;&#160;&#160;&#160;Console&#160;Lockdown</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;disables&#160;legacy&#160;login&#160;methods&#160;and&#160;thereby&#160;improves&#160;security&#160;hardening.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-community" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Discourse_logo.png.webp" alt="Vibrant community" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Our&#160;vibrant&#160;community&#160;features</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://forums.kicksecure.com" target="_blank"><code>Forums</code></a><code>,</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Contributors/"><code>Contributors</code></a><code>&#160;and</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://forums.kicksecure.com/c/news.rss" target="_blank"><code>RSS</code></a><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-debian" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Debian.png.webp" alt="Based on Debian" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;In&#160;oversimplified&#160;terms,&#160;Kicksecure&#160;is&#160;just&#160;a&#160;collection&#160;of&#160;configuration&#160;files&#160;and&#160;scripts.</code><br />
+<code>&#160;&#160;&#160;Kicksecure&#160;is&#160;not&#160;a&#160;stripped&#160;down&#160;version&#160;of&#160;Debian;&#160;anything&#160;possible&#160;in&#160;"vanilla"</code><br />
+<code>&#160;&#160;&#160;Debian&#160;GNU/Linux&#160;can&#160;be&#160;replicated&#160;in&#160;Whonix.</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../About/"><code>About&#160;Whonix</code></a><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-signed" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Key-lock-gpg.png.webp" alt="Securely signed" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Downloads&#160;are</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Verifying_Software_Signatures/"><code>signed</code></a><br />
+<code>&#160;&#160;&#160;so&#160;genuine&#160;Whonix&#160;releases&#160;can&#160;be</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Verify_the_images/"><code>verified</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-canary" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Canary-promo.jpg.webp" alt="Warrant caranry" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;A</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Trust/#canary"><code>canary</code></a><br />
+<code>&#160;&#160;&#160;confirms&#160;that&#160;no&#160;warrants&#160;have&#160;ever&#160;been&#160;served&#160;on&#160;the&#160;Kicksecure&#160;project.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-swap" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/File-swap-promo.jpg.webp" alt="Swap file creator" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Running&#160;low&#160;on&#160;RAM&#160;isn't&#160;a&#160;security&#160;problem.</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://github.com/Kicksecure/swap-file-creator" target="_blank"><code>swap-file-creator</code></a><br />
+<code>&#160;&#160;&#160;will&#160;create&#160;an&#160;encrypted&#160;swap&#160;file.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-success" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Success-symbol.png.webp" alt="12 years of success" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;is&#160;created&#160;by&#160;the&#160;developers&#160;of</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://www.whonix.org" target="_blank"><code>Whonix</code></a><code>,</code><br />
+<code>&#160;&#160;&#160;the&#160;great&#160;privacy&#160;tool&#160;with&#160;over&#160;12&#160;years&#160;of&#160;success.&#160;We&#160;have&#160;successfully&#160;protected&#160;our&#160;users&#160;from</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://www.whonix.org/wiki/Security_in_Real_World#Everyday_Trackers" target="_blank"><code>everyday</code><br />
+<code>&#160;&#160;&#160;&#160;&#160;trackers</code></a><br />
+<code>&#160;&#160;&#160;and&#160;even&#160;from</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://www.whonix.org/wiki/Security_in_Real_World" target="_blank"><code>high&#160;level&#160;attacks</code></a><br />
+<code>&#160;&#160;&#160;.&#160;Kicksecure&#160;is&#160;the&#160;rock&#160;solid&#160;foundation&#160;that&#160;Whonix&#160;is&#160;based&#160;on.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-opensource" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Osi_standard_logo_0.png.webp" alt="Open Source" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;All&#160;the&#160;</code><a href="https://github.com/Kicksecure" target="_blank"><code>Kicksecure&#160;source&#160;code</code></a><code>&#160;is</code><br />
+<code>&#160;&#160;&#160;licensed&#160;under</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://opensource.org/licenses/" target="_blank"><code>OSI&#160;Approved&#160;Licenses</code></a><code>.</code><br />
+<code>&#160;&#160;&#160;We&#160;respect&#160;user&#160;rights&#160;to&#160;review,&#160;scrutinize,&#160;modify,&#160;and&#160;redistribute&#160;Kicksecure.</code><br />
+<code>&#160;&#160;&#160;This&#160;improves&#160;security&#160;and&#160;privacy&#160;for&#160;everyone.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-freedom" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Heckert_gnu.big.png.webp" alt="Freedom Software" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;is</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/"><code>Freedom&#160;Software</code></a><br />
+<code>&#160;&#160;&#160;and&#160;contains&#160;software&#160;developed&#160;by&#160;the</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://www.fsf.org/" target="_blank"><code>Free&#160;Software&#160;Foundation</code></a><br />
+<code>&#160;&#160;&#160;and&#160;the</code><br />
+<code>&#160;&#160;&#160;</code><a href="https://www.gnu.org" target="_blank"><code>GNU&#160;Project</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-research" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Cornues.png.webp" alt="Research Implementation Project" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;</code><a href="../../What_we_do/" title="Research"><code>Research</code></a><br />
+<code>&#160;&#160;&#160;and&#160;Implementation&#160;Project:&#160;Kicksecure&#160;makes&#160;modest&#160;claims&#160;and&#160;is&#160;wary&#160;of&#160;overconfidence.</code><br />
+<code>&#160;&#160;&#160;Kicksecure&#160;is&#160;an&#160;actively&#160;maintained&#160;research&#160;project&#160;making&#160;constant&#160;improvements;&#160;no</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Warning/" title="Warning"><code>shortcomings</code></a><br />
+<code>&#160;&#160;&#160;are&#160;ever&#160;hidden&#160;from&#160;users.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-auditable" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Bho78-4ycp0.jpg.webp" alt="Independently verifiable" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;is&#160;independently&#160;verifiable&#160;by&#160;security&#160;experts&#160;and&#160;software&#160;developers&#160;around&#160;the&#160;world;&#160;you</code><br />
+<code>&#160;&#160;&#160;don't&#160;have&#160;to&#160;trust&#160;developer&#160;claims.</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;This&#160;improves&#160;security&#160;and&#160;privacy&#160;for&#160;everyone.</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-respect" class="mini-modal section-modal">
+<p><code>&#160;</code><img src="../../../media/Respect-freedom-symbol.jpg.webp" alt="Respect for privacy principles" loading="lazy" /><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;Kicksecure&#160;respects&#160;data&#160;privacy&#160;principles.&#160;We&#160;don't&#160;make&#160;advertising&#160;deals&#160;or&#160;collect&#160;sensitive</code><br />
+<code>&#160;&#160;&#160;personal&#160;data.&#160;There&#160;are</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../Reasons_for_Freedom_Software/#No_Intentional_User_Freedom_Restrictions"><br />
+<code>&#160;&#160;&#160;&#160;&#160;no&#160;artificial&#160;restrictions&#160;imposed&#160;on&#160;possible&#160;system&#160;configurations</code><br />
+<code>&#160;&#160;&#160;</code></a><code>.</code><br />
+<code>&#160;</code></p>
+</div>
+<div id="modal-explain-sui-disabler" class="mini-modal section-modal">
+<p><code>&#160;</code><span class="image-wrapper"><img loading="lazy" alt="SUI Disabler and Permission Hardener" src="../../../media/Disablesuidbinary.jpg.webp" /></span><br />
+<code>&#160;</code></p>
+<p><code>&#160;&#160;&#160;The&#160;purpose&#160;of</code><br />
+<code>&#160;&#160;&#160;</code><a href="../../SUID_Disabler_and_Permission_Hardener/"><br />
+<code>&#160;&#160;&#160;&#160;&#160;SUID&#160;Disabler&#160;and&#160;Permission&#160;Hardener</code><br />
+<code>&#160;&#160;&#160;</code></a><br />
+<code>&#160;&#160;&#160;is&#160;to&#160;enhance&#160;system&#160;security.&#160;It&#160;does&#160;this&#160;by&#160;strengthening&#160;the&#160;isolation&#160;of&#160;Linux&#160;user&#160;accounts,</code><br />
+<code>&#160;&#160;&#160;implementing&#160;stricter&#160;file&#160;permission&#160;settings,&#160;and&#160;decreasing&#160;potential&#160;security&#160;vulnerabilities&#160;by&#160;turning&#160;off&#160;SUID-enabled&#160;binaries.</code><br />
+<code>&#160;</code></p>
+</div>
+
+</main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

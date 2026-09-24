@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Metapackages</title>
+<meta name="description" content="Development Notes / Design Documentation about Kicksecure Metapackages">
+<meta property="og:description" content="Development Notes / Design Documentation about Kicksecure Metapackages">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Metapackages/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Metapackages/">
+<meta property="og:title" content="Dev/Metapackages">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Metapackages</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Chromium/" title="Dev/Chromium"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Chromium</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../flatpak/" title="Dev/flatpak"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/flatpak</span></a><span class="info"><span class="prev">Previous
+page: Dev/Chromium</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/flatpak</span></span></span>Dev/Metapackages</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Development Notes / Design Documentation about Kicksecure
+Metapackages</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Goals">Goals</h1>
+<ul>
+<li>Categorize packages such that Kicksecure can be built for a number
+of different environments (physical hardware, KVM, VirtualBox, Qubes) by
+installing one or more metapackages.</li>
+<li>Allow <a href="../../Distribution_Morphing/">Distribution_Morphing</a>.</li>
+</ul>
+<h1 id="Design_Update_Ideas_for_Trixie">Design Update Ideas for
+Trixie</h1>
+<p>The current naming scheme for metapackages seems rather inconsistent.
+There's no clear rules to the naming, and while there are some
+conventions, they aren't followed reliably. Plotting a graph of the
+dependency tree using graphviz resulted in a very messy graph (sometimes
+it was difficult or impossible to figure out which lines went where). To
+make things easier to understand and maintain over time, a system
+somewhat like the following might work:</p>
+<ul>
+<li>Each metapackage has a name structured somewhat like a directory
+path. Each component of the name is called a 'node'. Each node describes
+which category or subcategory the package falls under. The node
+separator character is the dash (-). Note that some nodes contain dashes
+in their names, so you cannot split a package name using dashes as the
+delimiter and get a list of nodes.</li>
+<li>Each node is either independent, shared, or partially shared. An
+independent node is one that does not enforce any dependency rules on
+the metapackage that node is a part of. A shared node is one that
+requires that any package containing a sibling node must depend on the
+corresponding package from the shared node. A partially shared node
+behaves like a shared node, but only enforces a dependency with certain
+sibling nodes. Examples of this are shown below.</li>
+<li>Not every single possible combination of nodes is expected to exist.
+If a package is mandated as "to be depended on" based on the below
+rules, but it doesn't actually exist, it may be ignored.</li>
+<li>Node 1: OS
+<ul>
+<li><code>kicksecure</code> - Independent node. For Kicksecure-specific
+packages.</li>
+<li><code>whonix-gateway</code> - Independent node. For Whonix Gateway
+specific packages.</li>
+<li><code>whonix-workstation</code> - Independent node. For Whonix
+Workstation specific packages.</li>
+<li><code>whonix</code> - Partially shared node, connected to
+<code>whonix-gateway</code> and <code>whonix-workstation</code>. For
+Whonix packages shared between all Whonix variants but not with
+Kicksecure.</li>
+<li><code>dist</code> - Shared node. For packages that are shared
+between Kicksecure and both Whonix variants.</li>
+</ul></li>
+<li>Node 2: Hardware platform
+<ul>
+<li><code>general</code> - Shared node. For packages that provide
+functionality that should be present regardless of the hardware
+platform.</li>
+<li><code>nonqubes</code> - Partially shared node, connected to
+<code>vm</code> and <code>baremetal</code>. For packages that should be
+installed only when not running in a Qubes OS template or AppVM.</li>
+<li><code>qubes</code> - Independent node. For packages that should be
+installed when the system is running as a Qubes OS template or
+AppVM.</li>
+<li><code>baremetal</code> - Independent node. For packages that should
+be installed when the system is not running under a VM.</li>
+<li><code>vm</code> - Independent node. For packages that should be
+installed when the system is running under a VM.</li>
+</ul></li>
+<li>Node 3: Persona
+<ul>
+<li><code>server</code> - Independent node. For packages that are
+specific to a server use case.</li>
+<li><code>cli</code> - Shared node. For packages that should be present
+on all Kicksecure systems. A system consisting only of CLI packages may
+be useful as a minimal text-only machine.</li>
+<li><code>gui</code> - Independent node. For packages that should be
+present on GUI-enabled systems.</li>
+</ul></li>
+<li>Node 3a: GUI Environment
+<ul>
+<li>NOTE! Only present when the persona node is 'gui'!</li>
+<li><code>xfce</code> - Independent node. For packages specific to an
+XFCE desktop. Does not exist currently.</li>
+<li><code>lxqt</code> - Independent node. For packages specific to an
+LXQt desktop.</li>
+<li>etc... (fill in the same for gnome, kde, whatever)</li>
+<li><code>all</code> - Shared node. For packages that should be present
+on all GUI systems.</li>
+</ul></li>
+<li><s>Node 4: Priority</s>
+<ul>
+<li><s><code>essential</code> - Shared node. For packages that
+absolutely must be present for the particular OS, hardware platform,
+persona, and GUI environment (if applicable) to be considered
+complete.</s></li>
+<li><s><code>recommended</code> - Independent node. For packages that
+should usually be present on this specific OS/hardware/persona/GUI
+environment combination.</s>
+<ul>
+<li>The priority node has been deprecated, it was of very limited use,
+and the <code>dummy-dependency</code> tool allows users to remove
+unwanted packages without system breakage.</li>
+</ul></li>
+</ul></li>
+<li>Examples:
+<ul>
+<li><code>kicksecure-general-server</code>: Packages which should be
+present on all Kicksecure servers.
+<ul>
+<li>Shared nodes involved are <code>dist</code> for node 1 and
+<code>cli</code> for node 3, thus this package must depend on
+<code>dist-general-server</code>, <code>kicksecure-general-cli</code>,
+and <code>dist-general-cli</code>.</li>
+</ul></li>
+<li><code>whonix-workstation-nonqubes-cli</code>: Packages which should
+exist on all Whonix Workstation systems that are not running under Qubes
+OS.
+<ul>
+<li>Shared nodes involved are <code>whonix</code> on node 1,
+<code>dist</code> for node 1, and <code>general</code> for node 2, thus
+this package must depend on
+<code>whonix-workstation-nonqubes-cli</code>,
+<code>whonix-workstation-general-cli</code>,
+<code>whonix-nonqubes-cli</code>, <code>whonix-general-cli</code>,
+<code>dist-nonqubes-cli</code>, and <code>dist-general-cli</code>.</li>
+</ul></li>
+</ul></li>
+<li>Observations:
+<ul>
+<li>Every single thing will end up depending on
+<code>dist-general-cli</code>.</li>
+<li><s>Everything recommended will end up depending on
+<code>dist-general-cli-recommended</code>.</s></li>
+<li>You can install a full Kicksecure GUI system on your physical
+machine by installing <code>kicksecure-baremetal-gui-lxqt</code>.</li>
+<li>Dummy packages aren't described in the above, they're pretty
+straightforward though.</li>
+</ul></li>
+<li>Questions
+<ul>
+<li>Is this whole thing overkill? I feel like it will make the system
+easier to maintain over time, but it's a radical departure from how
+things work now and would probably mandate full reinstalls or a
+substantial amount of package fiddling on upgrade in order to transition
+from the old way to this way. Definitely if we want to go with this
+scheme, it will have to wait until Trixie because it will be very
+difficult (probably impossible) to switch to this in a totally safe way
+during the Bookworm release. If we wait until Trixie to do it though we
+can just say that upgrades are unsupported, you have to reinstall.
+<ul>
+<li>There's also a release-upgrade script at
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/legacy-dist/blob/master/usr/sbin/release-upgrade">Kicksecure/legacy-dist</a></span>
+could this be used to bridge the gap?</li>
+</ul></li>
+<li>Should there be another node type under "Priority", for packages
+that are suggested but strictly optional?</li>
+<li>Is there any way that we can do <code>--no-install-recommends</code>
+for packages in general but then <em>do</em> install direct recommends
+of our packages? Right now we're duplicating Debian's
+Depends/Recommends/Suggests system to some degree, and this proposed
+scheme does the same thing but potentially even more "strongly". It
+would be great if we could just have a
+<code>kicksecure-baremetal-gui-lxqt</code> package that had essential,
+recommended, and supported packages broken up as
+Depends/Recommends/Suggests.</li>
+</ul></li>
+</ul>
+<p>This scheme has been implemented in Kicksecure 18.</p>
+<h1 id="Auditing_Tools">Auditing Tools</h1>
+<ul>
+<li><code>visualize-metapackage</code> - A script for visualizing the
+package dependency interactions in a Debian metapackage. <a href="https://gist.github.com/ArrayBolt3/7f2bf1edd8550fb3f23768255ec2ba22">https://gist.github.com/ArrayBolt3/7f2bf1edd8550fb3f23768255ec2ba22</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Chromium/" title="Dev/Chromium"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Chromium</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../flatpak/" title="Dev/flatpak"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/flatpak</span></a><span class="info"><span class="prev">Previous
+page: Dev/Chromium</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/flatpak</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+</main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

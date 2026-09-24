@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Append-once</title>
+<meta name="description" content="The &lt;code&gt;append&lt;/code&gt;, &lt;code&gt;append-once&lt;/code&gt;, and &lt;code&gt;overwrite&lt;/code&gt; utilities safely append a line to a file. &lt;code&gt;append&lt;/code&gt; appends a line unconditionally, &lt;code&gt;append-once&lt;/code&gt; appends a line only if the line isn&#x27;t present in the file already, and &lt;code&gt;overwrite&lt;/code&gt; overwrites the entire contents of the file with the provided line. The scripts feature sanity checks, atomic write operations, and a simplified interface.">
+<meta property="og:description" content="The &lt;code&gt;append&lt;/code&gt;, &lt;code&gt;append-once&lt;/code&gt;, and &lt;code&gt;overwrite&lt;/code&gt; utilities safely append a line to a file. &lt;code&gt;append&lt;/code&gt; appends a line unconditionally, &lt;code&gt;append-once&lt;/code&gt; appends a line only if the line isn&#x27;t present in the file already, and &lt;code&gt;overwrite&lt;/code&gt; overwrites the entire contents of the file with the provided line. The scripts feature sanity checks, atomic write operations, and a simplified interface.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Append-once/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Append-once/">
+<meta property="og:title" content="append/append-once/overwrite">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>How to use the <code>append</code>, <code>append-once</code>, and
+<code>overwrite</code> to append and replace data in files.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/append">Kicksecure/helper-scripts</a></span>:</p>
+<ul>
+<li>Appends a user-provided line to a text file.</li>
+<li>Includes additional sanity testing (checks if the folder where the
+file resides is writable; checks if the file is readable and
+writable).</li>
+<li>Offers an easier-to-use interface. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
+<li>Write operations are atomic.</li>
+<li>If called as <code>append-once</code>, it avoids duplicating the
+same content, should the exact same lines have already been appended
+earlier.<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li>If called as <code>overwrite</code>, replaces all of the contents of
+the file with the provided line.</li>
+<li>Its write operation is similar to:</li>
+</ul>
+<pre><code>printf &quot;%s\n&quot; &quot;text to append&quot; | sponge -a /file/to/append/to &gt;/dev/null</code></pre>
+<p><code>append</code> is the primary executable. The
+<code>append-once</code> and <code>overwrite</code> executables are
+simply symlinks to <code>append</code>. <code>append</code> will check
+what executable it was called as, and adjust its behavior
+accordingly.</p>
+<h1 id="Target_Audience">Target Audience</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<a href="../Advanced_Users/">Advanced users</a> only!</p>
+</div>
+<p>If <code>append</code>, <code>append-once</code>, or
+<code>overwrite</code> are used in a security critical context, it
+should only be used by people capable of reviewing its relatively short
+and simple source code.</p>
+<h1 id="Syntax">Syntax</h1>
+<pre><code>(append|append-once|overwrite) /path/to/file &#39;line to append&#39;</code></pre>
+<h1 id="Example">Example</h1>
+<p><span class="code-select">append ~/testfile 'some text
+here'</span></p>
+<h1 id="Exit_Codes">Exit Codes</h1>
+<ul>
+<li>0: Success.</li>
+<li>Non-Zero: Failure.</li>
+</ul>
+<h1 id="Limitations">Limitations</h1>
+<ul>
+<li>None known at the time of this writing.</li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">[1] No need to use: * <code>grep</code> * considering special
+characters in <code>grep</code> * <code>printf</code> * pipe *
+<code>readlink</code> * <code>&gt;/dev/null</code> redirection.</li>
+<li id="cite_note-2"><code>append-once</code> was previously implemented as a standalone
+Bash script, while <code>append</code> and <code>overwrite</code> did
+not exist. The new implementation is written in Python, fixes
+limitations, improves error and edge case handling, and provides the two
+additional utilities.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

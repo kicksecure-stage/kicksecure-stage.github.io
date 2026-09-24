@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Cryptocurrency Security Threats</title>
+<meta name="description" content="Cryptocurrency Threat Model">
+<meta property="og:description" content="Cryptocurrency Threat Model">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Cryptocurrency_Security_Threats/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Cryptocurrency_Security_Threats/">
+<meta property="og:title" content="Cryptocurrency Security Threats">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Cryptothreats123.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Blockchain_Based_Timelocks">Blockchain Based Timelocks</a></li><li class="toc-l2"><a href="#Software_Based_Timelocks">Software Based Timelocks</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">Cryptocurrency Security Threats</a></li>
+<li><a href="../Hardware_Wallet_Security/">Cryptocurrency
+Hardware Wallet: Threat Model</a></li>
+<li><a href="../Comparison_of_Hardware_Wallets/">Comparison
+of Hardware Wallets</a></li>
+<li><a href="../Ledger_Hardware_Wallet/">Ledger Hardware
+Wallet</a></li>
+<li><a href="../Ledger_Live_Installation_with_Verification/">Ledger Live Installation with Verification</a></li>
+<li><a href="../Trezor_Hardware_Wallet/">Trezor Hardware
+Wallet</a></li>
+</ul>
+</div>
+<p><img src="../../media/Cryptothreats123.jpg.webp" width="350" alt="Cryptothreats123.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This wiki page provides information on cryptocurrency security
+threats. The article discusses the use of QR codes, the best protection
+against theft, and multisig strategies. The page also lists specific
+rules to follow when using multisig for cryptocurrency storage,
+including the need to back up extended public keys (xpubs) and verifying
+the xpub of each hardware wallet used in a multisig quorum on the device
+it belongs to.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported/">this</a> for
+potential alternatives.</p>
+</div>
+<h1 id="QR_codes">QR codes</h1>
+<p>When scanning QR codes in the context of an air gap wallet, use a QR
+code scanner or camera? For example, Electrum running as a watch-only
+wallet on an online computer while Electrum is offline.</p>
+<p>A QR code scanner is supposedly working similarly to a USB keyboard,
+i.e. technically implemented the same way a USB keyboard is implemented.
+What would be more trustworthy?</p>
+<h1 id="Best_Protection_from_Theft">Best Protection from Theft</h1>
+<p>brain wallet + live system</p>
+<p>Advantage: Access to spend funds stored in a brain wallet (a
+cryptocurrency recovery seed phrase memorized in human memory) combined
+with a live system (read-only) cannot, in theory, be stolen by stealing
+any storage devices (hard drives) or by offline forensics, since data is
+never written to such devices in the first place.</p>
+<p>Disadvantage: Higher risk of loss (forgotten seed phrase), difficult
+inheritance planning, and no multisig.</p>
+<p>Related: <a href="../Live_Mode/">Live Mode</a>.</p>
+<h1 id="multisig">multisig</h1>
+<p>To be able to restore a multisig setup, every cosigner MUST back up
+all <u>extended public keys (<code>xpub</code>s)</u> (also known as
+Master Public Keys (MPKs)) of all cosigners as well as the <u>derivation
+path</u>. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> For example, with a quorum of 2/4
+setup:</p>
+<pre><code>Location 1: wallet seed 1, master pub key 2, master pub key 3, master pub key 4
+Location 2: master pub key 1, wallet seed 2, master pub key 3, master pub key 4
+Location 3: master pub key 1, master pub key 2, wallet seed 3, master pub key 4
+Location 4: master pub key 1, master pub key 2, master pub key 3, wallet seed 4</code></pre>
+<p>It is highly recommended to exercise the multisig restoration process
+before relying on multisig for anything except test transactions.</p>
+<p><blockquote><p>Now let's talk some multisig...<span class="blockquote-context"><a href="https://btcguide.github.io">https://btcguide.github.io</a> , (<a href="https://x.com/mflaxman">@mflaxman</a> (<a href="https://xcancel.com/mflaxman">xcancel</a>) guide)</span></p></blockquote></p>
+<p><blockquote><p>Rule #4: Verify the xpub of each hardware wallet used in a multisig
+quorum on the device it belongs to.</p>
+<p>This is not 100% mandatory - but if you're no expert - you really
+should do it.</p>
+<p>If a hardware wallet doesn't support displaying the xpub, (like
+Trezor), it could be fine to just verify each address on it - so long as
+you verify consistency on all other devices as well, but I wouldn't
+recommend such a device for non-experts.</p></blockquote></p>
+<p><blockquote><p>Rule #5: Verify "receive" addresses on EVERY device of the multisig
+quorum.</p>
+<p>This is especially true for at least one address (see next rule) but
+recommended for all. If using a device that you haven't verified the
+xpub of on-screen, you should verify all receive addresses on it!</p></blockquote></p>
+<p><blockquote><p>Rule #6: While it is best to verify each receive addresses on ALL
+devices in the multisig setup - you might choose to trust a specific
+one, verifying the xpub/ first address on all - then the rely only on
+the "trusted" device - ONLY IF YOU ALSO VERIFY XPUBS... By that, I mean
+verify on the "trusted" hww used for general verification, that the
+xpubs are consistent for all cosigners. This is needed only once with
+wallets like ColdCard, Cobo Vault, Bitbox02, and Specter DIY - since
+they allow saving the multisig xpubs on the device. With Trezor T - you
+have to verify the xpubs of cosigners every time - which is why it's not
+recommended for that purpose - with Trezor One it's simply not
+possible...</p>
+<p>So while you might use a Trezor in a multisig, I would not recommend
+it to non-experts.</p></blockquote></p>
+<p><blockquote><p>Rule #7: Do NOT use Ledger in a multisig setup! (unless you are an
+expert or have a very good reason...)</p>
+<p>Ledger currently does not allow verifying multisig addresses on the
+device - nor displaying the XPUB on its screen. This means you have no
+way to verify it was not swapped by an attacker in your multisig setup -
+EVEN IF YOU DO A SUCCESSFUL TEST TRANSACTION!</p>
+<p>It is still possible for a (very) sophisticated attacker to make you
+think it worked, while it was him signing for you...</p></blockquote></p>
+<p><blockquote><p>Rule #8: For convenience, you may print out/ write down a large batch
+of your receiving addresses - verify all at the same time, and rely on
+that paper list for your day to day verification. This is very useful
+for multisig! - where devices might be distributed in various
+places.</p></blockquote></p>
+<p><blockquote><p>Rule #9: Multisig change verification should be the same as with Rule
+#3 - on the device at the time of signing.</p>
+<p>Popular devices (besides Ledger as said), can verify that the address
+you send from and the change address used belong to the same multisig
+wallet (from same xpubs). If they fail to verify the change address -
+they will show it as a standard, independent, recipient - in that case
+YOU SHOULD NOT MAKE THE TRANSACTION. This is valid for both single sig
+and multisig! (although even more relevant for the latter).</p></blockquote></p>
+<p><blockquote><p>Please note: Some things here might not be fully accurate for the
+expert user (especially around multisig address verification), but for
+the less advanced users' sake, I have tried to be on the safe side when
+things get tricky... That said, if you see inaccuracies or mistakes (or
+just have questions), please comment!!</p>
+<p>Also check out some more info on multisig setups over
+at:<span class="blockquote-context"><a href="https://btcguide.github.io">https://btcguide.github.io</a> , (<a href="https://x.com/mflaxman">@mflaxman</a> (<a href="https://xcancel.com/mflaxman">xcancel</a>) guide)</span></p></blockquote></p>
+<h1 id="Timelocks">Timelocks</h1>
+<h2 id="Introduction_2">Introduction</h2>
+<p>Prevention of spending coins until a defined time has elapsed to
+avoid hasty and coerced transactions.</p>
+<p>Has <a href="#Complexity_Risk">Complexity
+Risk</a>.</p>
+<h2 id="Blockchain_Based_Timelocks">Blockchain Based Timelocks</h2>
+<p>This is an uncommon feature.</p>
+<p><blockquote><p>It is not advised to lock up bitcoins into the far future because it
+takes on risk of the bitcoin network changing. For example, if there
+were an ECDSA or RIPEMD160 algorithm break that made any coins spendable
+with a few months of CPU time, the network might need to to prohibit
+moving old unspent coins after some transition, but long locktimed coins
+could not make such a transition.<span class="blockquote-context"><a href="https://en.bitcoin.it/wiki/Timelock#Far-future_locks">https://en.bitcoin.it/wiki/Timelock#Far-future_locks</a></span></p></blockquote></p>
+<p><blockquote><p>The problem I see with time-locking coins is, if the keys are
+compromised, you'll find yourself in a race with an attacker when the
+coins are unlocked. The attacker might even set an enormous fee to get
+in a block before you.<span class="blockquote-context"><a href="https://www.reddit.com/r/Bitcoin/comments/7e0ums/best_way_to_timelock_bitcoin_to_hodl/dq1qtud/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3">https://www.reddit.com/r/Bitcoin/comments/7e0ums/best_way_to_timelock_bitcoin_to_hodl/dq1qtud/?utm_source=reddit&amp;utm_medium=web2x&amp;context=3</a></span></p></blockquote></p>
+<h2 id="Software_Based_Timelocks">Software Based Timelocks</h2>
+<p>Less trusted employees with limited permissions to spend
+cryptocurrency could be prevented from spending until a time defined on
+the trusted server has lapsed. Since the trusted server enforcing the
+timelock is, by definition, trusted, this does not seem possible outside
+of multi user or institutional level cryptocurrency custody.</p>
+<h1 id="whitelists">whitelists</h1>
+<p>Self-custody cryptocurrency wallets, enforced using blockchain
+features: Conceivable with smart contracts to permit spending only to
+defined recipients, such as perhaps a centralized cryptocurrency
+exchange. But how could the whitelist be updated if need be? Unpopular.
+No known example implementations.</p>
+<p>Self-custody cryptocurrency wallets, enforced using software: Similar
+to <a href="#Software_Based_Timelocks">Software Based
+Timelocks</a>.</p>
+<p>Funds on centralized exchanges: Withdrawal whitelists make sense,
+specifically if withdrawals are only allowed to high security
+(self-custody) wallets.</p>
+<p>Has <a href="#Complexity_Risk">Complexity
+Risk</a>.</p>
+<h1 id="spend_limits">spend limits</h1>
+<p>Similar to <a href="#whitelists">whitelists</a>.</p>
+<h1 id="Complexity_Risk">Complexity Risk</h1>
+<div class="intro-like">
+<p>You can make your setup so complicated that you lose your funds
+because of complexity risk.</p>
+</div>
+<p>Quote <a href="https://en.wikipedia.org/wiki/Andreas_Antonopoulos">Andreas
+Antonopoulos</a>.</p>
+<p><blockquote><p>Different audiences, different groups of people are going to have
+different risk models and they are also going to have different
+tolerance for technical complexity. The important thing to realize here
+is that <strong>technical complexity is part of the risk model. Meaning
+that if what you are trying to do with security is more technically
+complex than your level of skill you introduce a very serious risk, that
+you will lose your crypto. Not because it is stolen but because your
+ambition for technical excellence exceeded your skill level for
+technical execution and you frankly messed it up.</strong> This applies
+to every level of technical expertise. There is always a higher level of
+security you can achieve by adding a bit more complexity. Security is
+not an on, off thing. It is not "It is secure" or "It is not secure."
+There is no gold standard for security that applies for everyone. There
+is a sweet spot where the risks that you face from external factors,
+from the adversarial model that you have identified where you understand
+who might be after your crypto and under what circumstances they might
+access it. The risk model you have for resilient long term storage and
+also you should be thinking about inheritance and how your loved ones
+will deal with this is if something happens to you. The risk model you
+have for simple loss which includes a fire, a flood, an environmental
+disaster, a problem with your home or the other areas where you store
+keys, termites that eat through your paper backups or whatever else the
+risk model might be. Then you balance against your technical skill and
+you find which of these risks you can eliminate in a way that both you
+and the people you will designate as helping your loved ones recover
+your crypto if something happens to you can execute that technical plan
+flawlessly. That's the sweet spot.<span class="blockquote-context"><a href="https://btctranscripts.com/andreas-antonopoulos/2019-02-01-andreas-antonopoulos-hardware-wallet-security">source</a></span></p></blockquote></p>
+<p>Quote Andreas Antonopoulos.</p>
+<p><blockquote><p>For most people the simple Stone Age technology of paper, pencil with
+a little modern addition of a laminated sheet so you don't get moisture
+damage and a simple cheap, plastic envelope that makes it obvious if
+someone has peeked at your seed is sufficient. You don't need to go to
+the extremes and the technical complexity of Glacier protocol. Here's
+the problem. When people give advice like this, when they say that if
+you don't achieve this level of "I feel confident" you are not secure,
+what they are doing is not encouraging people to achieve better
+security. They are either pushing people to try to overextend their
+technical skill and making them at risk of losing their crypto due to a
+variety of technical problems or they are pushing people to go to
+custodial exchanges. The vast majority of people having read things like
+the Glacier protocol will go " I don't even know." They will either try
+to do it without understanding it fully, be very uncomfortable with
+their knowledge and probably lose their crypto because they messed it up
+or they are just going to give up on the first page and move their
+crypto into custodial storage and let someone else take care of the
+security.<span class="blockquote-context"><a href="https://diyhpl.us/wiki/transcripts/andreas-antonopoulos/2019-02-01-andreas-antonopoulos-hardware-wallet-security/">source</a></span></p></blockquote></p>
+<p>For example, the Parity blockchain based multisig locked Ethereum
+(ETH).</p>
+<p><blockquote><p>Multi-sig wallets have been frozen which are estimated to hold
+roughly $150 million in Ethereum.<span class="blockquote-context"><a href="https://www.zdnet.com/article/ethereum-user-accidentally-exploits-major-vulnerability-locks-wallets/">https://www.zdnet.com/article/ethereum-user-accidentally-exploits-major-vulnerability-locks-wallets/</a></span></p></blockquote></p>
+<p>At the time of writing (2021), these funds would be worth even more
+in fiat money equivalent. This has not been resolved, and a previous
+vote (#EIP-999) to resolve it failed.</p>
+<h1 id="Smart_Contract_On_Chain_Multisig_vs_Threshold_Signature_Wallets">Smart
+Contract On Chain Multisig vs Threshold Signature Wallets</h1>
+<p>Smart Contract On Chain Multisig is very much too complex. <a href="https://web.archive.org/web/20210922113708/https://www.springworks.in/blog/parity-multi-sig-wallets-funds-frozen-explained/">Millions
+worth of ETH was and still is frozen in the parity multisig
+smartcontract.</a></p>
+<p><a href="https://web.archive.org/web/20220909050353/https://sepior.com/blog/advanced-mpc">Sepior
+blog on advanced MPC</a></p>
+<p><a href="https://images.squarespace-cdn.com/content/v1/5f62f501406011026c1a26f2/1627682581701-H5FUQNWFU946744LHAR9/Custody+Wallet+Comparison+Table.png?format=1500w">Custody
+wallet comparison table</a></p>
+<p><a href="https://web.archive.org/web/20221019171209/https://sepior.com/blog/top-5-reasons-threshold-signature-wallets-are-better-than-multisig">Sepior
+blog on threshold signature wallets</a></p>
+<h1 id="Further_Reading">Further Reading</h1>
+<div>
+<ul>
+<li><a href="../Hardware_Wallet_Security/">Cryptocurrency
+Hardware Wallet: Threat Model</a></li>
+<li><a href="../Social_Engineering/">Social Engineering and
+(Spear) Phishing</a></li>
+<li><a href="../Bitcoin/">Bitcoin</a></li>
+<li><a href="../Electrum/">Electrum</a></li>
+<li><a href="../Monero/">Monero</a></li>
+<li><a href="../Ethereum/">Ethereum</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<ul>
+<li><a href="https://xcancel.com/fluffypony/status/1339245458934345730">https://xcancel.com/fluffypony/status/1339245458934345730</a></li>
+<li><a href="https://blog.coinkite.com/entropy-technical-backgrounder/">https://blog.coinkite.com/entropy-technical-backgrounder/</a></li>
+<li><a href="https://x.com/glxyresearch/status/2083181683067506899">https://x.com/glxyresearch/status/2083181683067506899</a></li>
+<li><a href="https://xcancel.com/i/article/2083216713693151552">https://xcancel.com/i/article/2083216713693151552</a></li>
+<li><a href="https://engineering.block.xyz/blog/predictable-rng-fallback-and-3">https://engineering.block.xyz/blog/predictable-rng-fallback-and-3</a></li>
+<li><a href="https://engineering.block.xyz/blog/predictable-rng-fallback-and-32-bit-reseed-in-coldcard-firmware">https://engineering.block.xyz/blog/predictable-rng-fallback-and-32-bit-reseed-in-coldcard-firmware</a></li>
+<li><a href="https://xcancel.com/sanket1729/status/2083149329200730486">https://xcancel.com/sanket1729/status/2083149329200730486</a></li>
+</ul>
+<div class="references">
+<ol>
+<li id="cite_note-1">* <a href="https://bitcoin.stackexchange.com/questions/107450/is-there-a-multisignature-scheme-that-dont-need-xpub-backups">https://bitcoin.stackexchange.com/questions/107450/is-there-a-multisignature-scheme-that-dont-need-xpub-backups</a>
+* <a href="https://bitcointalk.org/index.php?topic=2280898.msg23146497">https://bitcointalk.org/index.php?topic=2280898.msg23146497</a>
+* <a href="https://x.com/_benma_/status/1229414020391800833">Twitter</a>
+(<a href="https://xcancel.com/_benma_/status/1229414020391800833">xcancel</a>)</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

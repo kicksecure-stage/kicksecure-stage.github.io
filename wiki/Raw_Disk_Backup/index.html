@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Raw Disk Backup</title>
+<meta name="description" content="1 to 1 disk backup">
+<meta property="og:description" content="1 to 1 disk backup">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Raw_Disk_Backup/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Raw_Disk_Backup/">
+<meta property="og:title" content="Full Raw Disk Backup">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Backupraw123123.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Clarification:_what_disk_identifiers_means">Clarification: what
+&quot;disk identifiers&quot; means</a></li><li class="toc-l2"><a href="#echo_Output_Redirection_Essentials">echo Output Redirection
+Essentials</a></li><li class="toc-l2"><a href="#PipeViewer_Read-Only_Essentials">PipeViewer Read-Only
+Essentials</a></li><li class="toc-l2"><a href="#PipeViewer_Read-Write_Essentials">PipeViewer Read-Write
+Essentials</a></li><li class="toc-l2"><a href="#Qubes_Users_Recommendations">Qubes Users Recommendations</a></li><li class="toc-l2"><a href="#Backup_target_disk_size_requirement">Backup target disk size
+requirement</a></li><li class="toc-l2"><a href="#verification_without_progress_meter">verification without
+progress meter</a></li><li class="toc-l2"><a href="#verification_with_progress_meter">verification with progress
+meter</a></li><li class="toc-l2"><a href="#pv">pv</a></li><li class="toc-l2"><a href="#ddrescue">ddrescue</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/Backupraw123123.jpg.webp" alt="Backupraw123123.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>1 to 1 disk backup</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>A full raw disk backup is a sector-by-sector copy of an entire
+storage device.</p>
+<p>It copies every byte of the disk exactly as it exists at the block
+device level, including:</p>
+<ul>
+<li>the partition table (MBR or GPT),</li>
+<li>all partitions,</li>
+<li>filesystems,</li>
+<li>bootloader data,</li>
+<li>unused space,</li>
+<li>and all metadata.</li>
+</ul>
+<p>This is also called a 1 to 1 clone because the destination disk
+becomes an exact binary copy of the source disk.</p>
+<p>Unlike file-based backups, a full raw disk backup does not interpret
+files. It does not analyze directories, permissions, or mounted
+filesystems. Instead, it reads raw blocks from the source device and
+writes them directly to the destination device. As a result, deleted
+data, empty space, and all low-level structures are copied as well.</p>
+<p>Because everything is copied exactly, the result can be bootable,
+provided that:</p>
+<ul>
+<li>the target disk is the same size or larger than the source disk,
+and</li>
+<li>disk identifiers do not conflict if both disks are connected at the
+same time.</li>
+</ul>
+<p>It is not possible to backup an operating system installed on an
+internal disk such as for example Qubes OS while that operating system
+is running from that disk. This is because the disk is in active use and
+continuously changing. Therefore, a raw backup must be performed from a
+different operating system, typically booted from an external USB
+drive.</p>
+<p>The advantage of a full raw disk backup is that it should be bootable
+either by:</p>
+<ul>
+<li>disconnecting the internal disk and booting from the external backup
+disk, <u>OR</u></li>
+<li>changing the disk identifiers (<a href="../Unsupported/">undocumented</a>) (of either the internal disk or
+external disk after the backup), <u>OR</u></li>
+<li>using a different computer with compatible hardware to boot from the
+external disk.</li>
+</ul>
+<p>Unfortunately without either above method any attempt to boot the
+external drive after the backup might likely lead to actually boot the
+internal drive because these share the same disk identifiers after the
+raw disk backup.</p>
+<h2 id="Clarification:_what_disk_identifiers_means">Clarification: what
+"disk identifiers" means</h2>
+<p>A full raw disk backup is a 1 to 1 clone. It copies all bytes,
+including identifiers that are normally expected to be unique.</p>
+<p>Depending on disk partitioning and boot method, these identifiers can
+include (non-exhaustive list):</p>
+<ul>
+<li>GPT disk GUID (also known as "disk UUID")</li>
+<li>GPT partition GUIDs</li>
+<li>filesystem UUIDs (for example ext4 UUID)</li>
+<li><code>PARTUUID</code> values</li>
+<li>bootloader and EFI related identifiers and boot entries (depending
+on setup)</li>
+</ul>
+<p>If both original disk and the raw clone are connected at boot time,
+the firmware or bootloader might pick the wrong disk, because both disks
+can look identical by these identifiers.</p>
+<h1 id="Prerequisite_Knowledge">Prerequisite Knowledge</h1>
+<ul>
+<li>How to install an operating system (Debian) on an external USB
+drive.</li>
+</ul>
+<h1 id="Prerequisite_Exercises">Prerequisite Exercises</h1>
+<h2 id="echo_Output_Redirection_Essentials">echo Output Redirection
+Essentials</h2>
+<p>This should be exercised in a safe environment such as in a
+disposable VM.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Learn the syntax.</p>
+<p>Do not run the following command.</p>
+<ul>
+<li><code>&gt;</code> - the greater-than sign - means the <u>output</u>
+file to write to.</li>
+<li><span class="code-select">echo "input content" &gt;
+path-to-file-name</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Exercise the redirect to file redirection.</p>
+<p><span class="code-select">echo "test output" &gt;
+test-output-file</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+View the created file.</p>
+<p><span class="code-select">cat test-output-file</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Sample printout.</p>
+<pre><code>test output</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Exercise more.</p>
+<p>Based on above example, keep changing the file content and output
+file names until this becomes clear.</p>
+<h2 id="PipeViewer_Read-Only_Essentials">PipeViewer Read-Only
+Essentials</h2>
+<p>This should be exercised in a safe environment such as in a
+disposable VM.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Create a new file such as for example:</p>
+<p>Open file <code>file-input</code> in a <a href="../Software/#Text_Editor">text editor</a> of your choice as a regular, non-root
+user.</p>
+<div class="info-box ">
+<p><u>If you are using a graphical environment</u>, run.
+<span class="code-select">featherpad file-input</span></p>
+<p><u>If you are using a terminal</u>, run.
+<span class="code-select">nano file-input</span></p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Add some contents such as for example:</p>
+<p><span class="code-select">test input</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Save and close the file.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Learn the syntax.</p>
+<p>Do not run the following command.</p>
+<ul>
+<li><code>&lt;</code> - the less-than sign - means the <u>input</u> file
+to read from.</li>
+<li><span class="code-select">pv &lt;
+path-to-file-name-to-read-from</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Test reading from the file.</p>
+<p><span class="code-select">pv &lt; file-input</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Read the output.</p>
+<p>Sample output.</p>
+<pre><code>test input
+11.0 B 0:00:00 [34.9KiB/s] [================================================================&gt;] 100%</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Exercise more.</p>
+<p>Based on above example, keep changing the input file names until this
+becomes clear.</p>
+<h2 id="PipeViewer_Read-Write_Essentials">PipeViewer Read-Write
+Essentials</h2>
+<p>This should be exercised in a safe environment such as in a
+disposable VM.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Create a new file such as for example:</p>
+<p>Open file <code>file-input</code> in a <a href="../Software/#Text_Editor">text editor</a> of your choice as a regular, non-root
+user.</p>
+<div class="info-box ">
+<p><u>If you are using a graphical environment</u>, run.
+<span class="code-select">featherpad file-input</span></p>
+<p><u>If you are using a terminal</u>, run.
+<span class="code-select">nano file-input</span></p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Add some contents such as for example:</p>
+<p><span class="code-select">test input</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Save and close the file.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Learn the syntax.</p>
+<p>Do not run the following command.</p>
+<ul>
+<li><code>&lt;</code> - the less-than sign - means the <u>input</u> file
+to read from.</li>
+<li><code>&gt;</code> - the greater-than sign - means the <u>output</u>
+file to write to.</li>
+<li><span class="code-select">pv &lt; path-to-file-name-to-read-from
+&gt; path-to-file-name-to-write-to</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Test reading from an input file and redirecting the output to another
+output file.</p>
+<p><span class="code-select">pv &lt; file-input &gt;
+file-output</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Read the output.</p>
+<p>Sample output.</p>
+<pre><code>11.0 B 0:00:00 [ 149KiB/s] [================================================================&gt;] 100%</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Compare the files.</p>
+<p>View the two different files. These should look the same.</p>
+<p><span class="code-select">cat file-input</span></p>
+<p><span class="code-select">cat file-output</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Exercise more.</p>
+<p>Based on above example, keep changing the input files and output
+files until this becomes clear.</p>
+<h1 id="Prerequisites">Prerequisites</h1>
+<ul>
+<li>An installed operating system (such as for example Qubes OS) on an
+(internal) disk.</li>
+<li>An operating system installed on an external disk, most likely USB
+such as for example Debian.</li>
+<li>A separate external backup disk where the backup should be
+stored.</li>
+</ul>
+<h1 id="Information_Gathering">Information Gathering</h1>
+<h2 id="Qubes_Users_Recommendations">Qubes Users Recommendations</h2>
+<p>For educational purposes, it is useful to run gparted and gnome-disks
+from the Qubes installation which should be backed up as full raw disk
+backup.</p>
+<p>Tested in Qubes R4.0 only. In later Qubes versions with untrusted
+storage domain, these instructions might need changes.</p>
+<p>gparted is a disk partitioning tool which will be used as an easy way
+to find out how many hard drives the system has and what size they have.
+gnome-disks is a similar utility.</p>
+<p>Disconnect any unneeded storage devices.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+In dom0, install gparted and gnome-disks.</p>
+<p><span class="code-select">sudo qubes-dom0-update gparted
+gnome-disk-utility</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+In dom0, run gparted.</p>
+<p><span class="code-select">sudo --set-home gparted</span></p>
+<p>Check the arrow down button below the <code>X</code> (which would
+close the window) if there are multiple disks. Use the drop-down
+selector to switch between disks and observe their device paths and
+sizes.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+In dom0, run gnome-disks.</p>
+<p><span class="code-select">gnome-disks</span></p>
+<p>Again, review all listed disks and observe their device paths and
+sizes.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Make notes.</p>
+<p>Write the observed information either:</p>
+<ul>
+<li>into a text file (for example using a simple text editor),
+<u>OR</u></li>
+<li>on paper using pen and paper.</li>
+</ul>
+<p>The goal is to have a clear and persistent record of:</p>
+<ul>
+<li>the device path (for example <code>/dev/nvme0n1</code>), and</li>
+<li>the disk size (for example 476.91 GiB).</li>
+</ul>
+<p>Example notes.</p>
+<p><u>Note:</u> Modify these notes according to what can be seen in
+gparted and gnome-disks on your system.</p>
+<pre><code>Internal Qubes disk:
+/dev/nvme0n1 (476.91 GiB)
+
+No other internal disks detected.</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Done.</p>
+<p>Disk device paths and sizes have been recorded for later
+reference.</p>
+<p>Obviously easiest if there is only 1 disk. Assuming there is only 1
+disk.</p>
+<h1 id="Recommendations">Recommendations</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Exercise with completely different test hardware.</p>
+<p>It is recommended against applying this procedure with production
+hardware if doing this procedure for the first time.</p>
+<p>Since data loss is possible if making a mistake during the raw disk
+backup procedure, it is recommended to exercise the procedure with
+completely different hardware. Such as a second computer as well as an
+external boot drive and backup disk that does not contain any important
+data.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Creating a backup date note file.</p>
+<p>After booting from the internal disk (which should be backed up).</p>
+<p>Create a text file with a small explanation for yourself "Today is
+day x with date y and time z prior backup number 1."</p>
+<p>This will later be handy when doing a restoration test.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+USB boot operating system should have a graphical diff viewer such as
+meld installed as well as the following tools.</p>
+<p>After booting the operating system from USB.</p>
+<div class="info-box ">
+<p>Install package(s)
+<code>meld lxqt-sudo gnome-disk-utility gsmartcontrol gparted pv lshw hwinfo ddrescue</code>
+following these instructions:</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Platform specific notice.</p>
+<ul>
+<li><a href="../About/">Kicksecure</a>: No special
+notice.</li>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: In
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<a href="../Operating_System_Software_and_Updates/">Update
+the package lists and upgrade the system</a>.</p>
+<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
+full-upgrade</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Install the
+<code>meld lxqt-sudo gnome-disk-utility gsmartcontrol gparted pv lshw hwinfo ddrescue</code>
+package(s).</p>
+<p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
+most cases optional.</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+meld lxqt-sudo gnome-disk-utility gsmartcontrol gparted pv lshw hwinfo
+ddrescue</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Platform specific notice.</p>
+<ul>
+<li>Kicksecure: No special notice.</li>
+<li>Kicksecure-Qubes: Shut down Template and restart App Qubes based on
+it as per <a href="../Qubes/#Qubes_Template_Modifications">Qubes Template Modification</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
+Done.</p>
+<p>The procedure of installing package(s)
+<code>meld lxqt-sudo gnome-disk-utility gsmartcontrol gparted pv lshw hwinfo ddrescue</code>
+is complete.</p>
+</div>
+<h1 id="Backup_High_Level_Overview">Backup High Level Overview</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Boot from external USB drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Find out the device paths of the internal drive and the USB boot
+drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Find out the device path of the USB backup drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Use <code>pv</code> to read from the internal drive and to write to the
+USB backup drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Restoration test. (Optional but highly recommended.)</p>
+<h1 id="Backup_Instructions">Backup Instructions</h1>
+<p>In Linux, unfortunately device names and device paths are
+non-deterministic, unpredictable, might change with kernel versions and
+operating system upgrades.</p>
+<p>A raw backup with the <code>pv</code> can lead to data loss if used
+incorrectly as <code>pv</code> is a very powerful tool.</p>
+<p>For example, <code>sd</code><strong><code>a</code></strong> is a
+device name and <code>/dev/sd</code><strong><code>a</code></strong> is a
+device path. Other device path examples are
+<code>/dev/sd</code><strong><code>b</code></strong>,
+<code>/dev/sd</code><strong><code>c</code></strong>.</p>
+<p>The actual <code>pv</code> command is not very difficult but the
+device paths need to be carefully determined before starting the backup,
+otherwise data loss is at risk.</p>
+<h2 id="Backup_target_disk_size_requirement">Backup target disk size
+requirement</h2>
+<p>pv /dev/nvme0n1 --output /dev/sdb</p>
+<p>The target device (backup disk) must be the same size or larger than
+the source device (the disk being backed up). If the target device is
+smaller, the backup will fail part-way through and the target disk will
+already be overwritten and unusable.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Boot from external USB disk.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Do not attach any other disks at this time.</p>
+<p>If any other disks are already attached, remove them for now for
+simplicity.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Write output of fdisk to file "old".</p>
+<p><span class="code-select">sudo fdisk -l &gt; old</span></p>
+<p><u>Note:</u> This writes the file <code>old</code> into the current
+working directory as the current user. This is OK.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Information gathering with a few hard drive utilities.</p>
+<p>Using <code>lshw</code>.</p>
+<p><span class="code-select">sudo lshw -class disk</span></p>
+<p>Using <code>hwinfo</code>.</p>
+<p><span class="code-select">sudo hwinfo --disk</span></p>
+<p>See what disks are currently attached with an alternative tool such
+as <code>gnome-disks</code> as well.</p>
+<p>Try:</p>
+<p><span class="code-select">gnome-disks</span></p>
+<p>Try <code>gsmartcontrol</code>.</p>
+<p><span class="code-select">gsmartcontrol-root</span></p>
+<p>See what disks are currently attached with an alternative tool such
+as <code>gparted</code> as well.</p>
+<p>Try:</p>
+<ul>
+<li>Start <code>gparted</code> from start menu if it can be found
+there.</li>
+<li>Try with pkexec if that works:
+<span class="code-select">/usr/sbin/gparted</span></li>
+<li>Or try with lxsudo if that works: <span class="code-select">lxsudo
+/usr/sbin/gparted</span></li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Attach another disk, the external USB disk which should be used for the
+backup.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Write output of disk to file "new".</p>
+<p><span class="code-select">sudo fdisk -l &gt; new</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Compare file "old" with file "new" using "diff".</p>
+<p><span class="code-select">diff old new</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Compare file "old" with file "new" using "meld".</p>
+<p><span class="code-select">meld old new</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+View contents of file <code>/etc/fstab</code>.</p>
+<p><span class="code-select">cat /etc/fstab</span></p>
+<p>Example printout.</p>
+<pre><code># /etc/fstab: static file system information.
+#
+# Use &#39;blkid&#39; to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# &lt;file system&gt; &lt;mount point&gt;   &lt;type&gt;  &lt;options&gt;       &lt;dump&gt;  &lt;pass&gt;
+/dev/mapper/debian--vg-root /               ext4    errors=remount-ro 0       1
+
+# /boot was on /dev/sda1 during installation
+UUID=86983f37-38db-401f-889a-bc93d83a3be4 /boot           ext2    defaults        0       2
+
+#/dev/mapper/debian--vg-swap_1 none            swap    sw              0       0</code></pre>
+<p>Watch out for the <code>UUID=</code> field. In above example it is
+<code>86983f37-38db-401f-889a-bc93d83a3be4</code>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+View output of the <code>blkid</code>.</p>
+<p>For informational purposes only.</p>
+<p><span class="code-select">sudo blkid</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+Confirm the device path of the boot device.</p>
+<p>Compare output of file <code>/etc/fstab</code> with
+<code>blkid</code> command.</p>
+<p>For example.</p>
+<p><u>Note:</u> replace <code>UUID</code> with the actual
+<code>UUID</code> from <code>/etc/fstab</code>.</p>
+<p><span class="code-select">sudo blkid | grep
+86983f37-38db-401f-889a-bc93d83a3be4</span></p>
+<p>Sample printout.</p>
+<pre><code>/dev/sda1: UUID=&quot;86983f37-38db-401f-889a-bc93d83a3be4&quot; TYPE=&quot;ext2&quot; PARTUUID=&quot;decf0fe9-01&quot;</code></pre>
+<p>In above example, the device path of the boot disk is
+<code>/dev/sd</code><strong><code>a</code></strong>. <u>Not</u>
+<code>/dev/sd</code><strong><code>a</code></strong><u><code>1</code></u>.
+The <code>1</code> means partition number <code>1</code>. When making
+raw disk backups of the full disk, partition numbers must be omitted.
+Otherwise it would just be a partition backup. In this case, the backup
+would be unbootable and couldn't be easily restored.</p>
+<p><u>Note:</u> The <code>/etc/fstab</code> and <code>blkid</code> check
+can identify a partition on the boot disk (for example
+<code>/dev/sda1</code>). This is a hint for the whole-disk path (for
+example <code>/dev/sda</code>). This should be cross-checked with the
+earlier disk discovery steps (for example <code>fdisk -l</code> old
+versus new, and disk size checks) to avoid mistakes.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">12</i>
+Make some notes such as.</p>
+<pre><code>Qubes internal disk 476.91 GiB
+Debian external boot disk 931.42 GiB
+Backup external disk 931.41 GiB</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">13</i>
+Note the device paths.</p>
+<p>Write down the device paths of the internal disk, the external USB
+boot disk and the external USB backup disk with help according the above
+instructions.</p>
+<p>Example only.</p>
+<p>For this example, <code>/dev/nvme0n1</code> is the (Qubes) internal
+disk, <code>/dev/sd</code><strong><code>a</code></strong> the (Debian)
+USB boot disk and <code>/dev/sd</code><strong><code>b</code></strong>
+the USB backup drive. This might be different for readers!</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">14</i>
+Note that device paths can change after reboot.</p>
+<p>Note that device paths are unfortunately unstable. It happened to the
+author of this wiki page that paths were swapped. It is therefore
+required to re-identify device paths every time the computer is
+rebooted.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">15</i>
+Become root. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><span class="code-select">sudo su</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">16</i>
+Backup.</p>
+<p><u>Explanation</u>:</p>
+<ul>
+<li><code>&lt;</code> - the less-than sign - means the <u>input</u>
+device to read from</li>
+<li><code>&gt;</code> - the greater-than sign - means the <u>output</u>
+device to write to.</li>
+</ul>
+<p><u>Syntax</u>:</p>
+<p><blockquote><p>pv &lt; /dev/xxx &gt; /dev/yyy</p></blockquote></p>
+<p><u>Note</u>:</p>
+<ul>
+<li>Replace <code>/dev/xxx</code> with the actual device path of the
+drive which should be backed up.</li>
+<li>Replace <code>/dev/yyy</code> with the actual device path of the
+drive where the backup should be stored.</li>
+<li>The target device must be the same size or larger than the source
+device.</li>
+</ul>
+<p><u>Examples</u>:</p>
+<p><u>Notice</u>: DATA LOSS POSSIBLE if used incorrectly! Do not use
+this without prior verification of the device paths!</p>
+<ul>
+<li><blockquote><p>pv &lt; /dev/nvme0n1 &gt; /dev/sd<u>b</u></p></blockquote></li>
+<li><blockquote><p>pv &lt; /dev/sd<u>a</u> &gt; /dev/sd<u>b</u></p></blockquote></li>
+</ul>
+<p><sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>The backup might take a long time.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">17</i>
+Check exit code.</p>
+<p><span class="code-select">echo $?</span></p>
+<p>Expected output if success.</p>
+<pre><code>0</code></pre>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">18</i>
+Switch back to normal user.</p>
+<p>If the user was previously running <code>sudo su</code>, it should
+now be undone. Switch back to normal user by running the following
+command.</p>
+<p><span class="code-select">exit</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">19</i>
+Done.</p>
+<p>Backup is complete.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">20</i>
+Restoration test.</p>
+<p>Without restoration test, it's unclear if the backup could be
+restored in case needed.</p>
+<hr />
+<h1 id="Backup_Verification">Backup Verification</h1>
+<h2 id="verification_without_progress_meter">verification without
+progress meter</h2>
+<p><span class="code-select">size=$(sudo blockdev --getsize64
+/dev/nvme0n1)</span></p>
+<p><span class="code-select">sudo cmp --bytes=$size /dev/nvme0n1
+/dev/sdb</span></p>
+<h2 id="verification_with_progress_meter">verification with progress
+meter</h2>
+<p>Small script with progress meter. Untested.</p>
+<p><code>original_disk</code> and <code>backup_disk</code> need to be
+adjusted.</p>
+<p><span class="code-select">#!/bin/bash</p>
+<p>set -x set -e set -o pipefail</p>
+<p>original_disk=/dev/nvme0n1 backup_disk=/dev/sdb</p>
+<p>test -e "$original_disk" test -e "$backup_disk"</p>
+<ol>
+<li><ol>
+<li>Get the size of the original disk in bytes.</li>
+</ol></li>
+</ol>
+<p>original_size=$(blockdev --getsize64 "$original_disk")</p>
+<ol>
+<li><ol>
+<li>Compare the first "$original_size" bytes of the backup against the
+original.</li>
+<li>This avoids confusion if the backup disk is larger than the original
+disk.</li>
+<li></li>
+<li>Exit codes:</li>
+<li>* 0 means identical</li>
+<li>* 1 means mismatch (in this context: backup issue)</li>
+<li>* greater than 1 means error (read error, permission issue, missing
+device, etc.)</li>
+</ol></li>
+</ol>
+<p>pv "$original_disk" | cmp --bytes="$original_size" /dev/stdin
+"$backup_disk"</p>
+<ol>
+<li><ol>
+<li>Alternative. Untested.</li>
+</ol></li>
+<li>ddrescue --verbose --no-scrape --size="$original_size"
+"$original_disk" "$backup_disk" ~/logfile</span></li>
+</ol>
+<h1 id="Restoration_Test_High_Level_Overview">Restoration Test High
+Level Overview</h1>
+<p>Before a restoration test can be performed, a backup is required.
+Once a backup has been created, attempt the following restoration test
+instructions.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Boot from internal drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Create a (or update) a backup date note file.</p>
+<p>Create a text file with a small explanation for yourself "This is
+prior restoration test. The current date is replace-actual-date. The
+current time is actual-time. This note should no longer exist after the
+restoration test."</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Shut down.</p>
+<hr />
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Boot from external USB drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Find out the device paths of the internal drive and the USB boot
+drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Find out the device path of the USB backup drive.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Use <code>pv</code> to read from the USB backup drive and to write to
+the internal drive. (Vice versa backup procedure.)</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Shut down.</p>
+<hr />
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+Boot from internal disk to test if the restoration was successful.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+Check the backup date note file which was created in step 2.</p>
+<p>The note "This is prior restoration test." is now expected to be
+gone. If the note still exists, then restoration has not been
+successful. Make sure step 2, the update of the backup date note file
+has not been previously skipped.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
+Done.</p>
+<p>Restoration test has been completed.</p>
+<h1 id="Restoration_Example">Restoration Example</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Become root.</p>
+<p><span class="code-select">sudo su</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Determine the destination disk size.</p>
+<p><span class="code-select">size=$(blockdev --getsize64
+/dev/nvme0n1)</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Select either <code>pv</code> or <code>ddrescue</code>.</p>
+<div class="tab-content-controller " data-tcc-linkid="restoration-example-tab-controller">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="pv">pv</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Notes.</p>
+<p><u>NOTICE:</u> <strong>DATA LOSS POSSIBLE!</strong></p>
+<p><u>Note:</u> Modify for your needs. See above.</p>
+<p><u>Explanation</u>:</p>
+<p>This restoration example copies raw bytes from the backup disk to the
+internal disk.</p>
+<p>The variable <code>$size</code> is set to the size (in bytes) of the
+destination disk (<code>/dev/nvme0n1</code>).</p>
+<p>The <code>pv</code> options <code>--size</code> (<code>-s</code>) and
+<code>--stop-at-size</code> (<code>-S</code>) ensure that
+<code>pv</code> reads at most <code>$size</code> bytes from the input
+disk. This prevents reading more bytes than the destination disk size in
+case the backup disk is larger.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Restore.</p>
+<p><span class="code-select">pv --stop-at-size --size "$size" /dev/sdb
+&gt; /dev/nvme0n1</span></p>
+<p><u>Note</u>:</p>
+<p>If the backup disk (<code>/dev/sdb</code>) is smaller than the
+destination disk (<code>/dev/nvme0n1</code>), then the restore will fail
+early and will result in an incomplete restore.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Done.</p>
+<p>Raw restoration procedure has completed (if no errors occurred).</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h2 id="ddrescue">ddrescue</h2>
+</div>
+<div class="tcc-content">
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">1</i>
+Notes.</p>
+<p><u>WARNING:</u> <strong>UNTESTED!</strong></p>
+<p><u>NOTICE:</u> <strong>DATA LOSS POSSIBLE!</strong></p>
+<p><u>Note:</u> Modify for your needs.</p>
+<p><u>Explanation</u>:</p>
+<p>The <code>ddrescue</code> option <code>--size="$size"</code> limits
+how many bytes are read from the input disk (<code>/dev/sdb</code>).
+This ensures that at most the destination disk size is restored, even if
+the backup disk is larger.</p>
+<p>If the backup disk is smaller than the destination disk, the restore
+will fail early and will result in an incomplete restore.</p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">2</i>
+Restore.</p>
+<p><span class="code-select">ddrescue --force --size="$size" /dev/sdb
+/dev/nvme0n1 ~/restore.log</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
+Done.</p>
+<p>Raw restoration procedure has completed (if no errors occurred).</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Qubes_Specific">Qubes Specific</h1>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/8363#issuecomment-1637154529">Raw
+disk backup of Qubes EFI is unbootable</a></li>
+</ul>
+<h1 id="Alternatives">Alternatives</h1>
+<p>Potential alternatives, <a href="../Unsupported/">untested</a> by the author of this wiki page.</p>
+<p><a href="https://www.tecmint.com/linux-disk-cloning-tools/">TecMint:
+Linux disk cloning tools</a></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">Using sudo is unfortunately not possible. At least not without
+complicating the following <code>pv</code> command. Becoming root is
+required because shell redirection are a bash feature, not a sudo
+feature. These are set up before becoming sudo. Alternatively, it would
+be possible to write a small script, pasting the command there and
+executing that script using sudo.</li>
+<li id="cite_note-2">* <a href="https://unix.stackexchange.com/questions/433443/ssd-backup-image">Unix
+StackExchange discussion: SSD backup image</a> * It is unfortunately not
+possible to compare. Running <code>diff /dev/sda /dev/sdb</code> for
+backup verification is not possible because of different disk
+sizes.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/bash</title>
+<meta name="description" content="Supporting multiple command line parameters with spaces in wrapper scripts, safe output handling, and use of the end-of-options parameter (--).">
+<meta property="og:description" content="Supporting multiple command line parameters with spaces in wrapper scripts, safe output handling, and use of the end-of-options parameter (--).">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/bash/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/bash/">
+<meta property="og:title" content="/bin/bash - Proper Whitespace Handling - Whitespace Safety - End-of-Options Parameter Security">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>bash</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Error_swallowing">Error swallowing</a></li><li class="toc-l2"><a href="#Dynamic_scoping">Dynamic scoping</a></li><li class="toc-l2"><a href="#BASH_REMATCH">BASH_REMATCH</a></li><li class="toc-l2"><a href="#subshells_created_by_pipelines">subshells created by
+pipelines</a></li><li class="toc-l2"><a href="#stdin_stealing">stdin stealing</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Licensing/" title="Dev/Licensing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Licensing</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../certification/" title="Dev/certification"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/certification</span></a><span class="info"><span class="prev">Previous
+page: Dev/Licensing</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/certification</span></span></span>/bin/bash - Proper Whitespace
+Handling - Whitespace Safety - End-of-Options Parameter Security</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../coding_style/">Dev/coding
+style</a></li>
+<li><a href="../compiler_hardening/">Dev/compiler
+hardening</a></li>
+<li><a href="./">Dev/bash</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Supporting multiple command line parameters with spaces in wrapper
+scripts, safe output handling, and use of the end-of-options parameter
+(<code>--</code>) for better safety.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Summary">Summary</h1>
+<ul>
+<li><u>Shell options:</u> Use <code>set -o errexit</code>,
+<code>set -o nounset</code>, <code>set -o errtrace</code>, and
+<code>set -o pipefail</code>.</li>
+<li><u>Quoted expansions:</u> Quote variable expansions and prefer
+<code>${variable}</code> style.</li>
+<li><u>Array-based command building:</u> Bash: Build command lines with
+arrays. POSIX: <code>sh</code>, use <code>set --</code>.</li>
+<li><u>End-of-options marker:</u> Use the end-of-options parameter
+<code>--</code> after making sure it is supported, after options and
+before positional parameters.</li>
+<li><u>Long options:</u> Prefer long option names over short flags when
+sensible for example prefer <code>rm --force</code> over
+<code>rm -f</code>.</li>
+<li><u>Safe output:</u> Do not use <code>echo</code>. Use
+<code>printf</code> with an explicit format string. Preferebly use
+<code>printf '%s\n' "text here"</code> or use <code>stecho</code> for <a href="../../Unicode/">unicode</a> safe terminal output when
+<code>stecho</code> is available.</li>
+<li><u>Safe line input:</u> Use <code>IFS= read -r</code> for
+line-oriented input.</li>
+<li><u>Checking unset variables:</u> Under <code>nounset</code>, check
+explicitly whether variables exist.</li>
+<li><u>Local variable declaration:</u> Declare <code>local</code>
+variables first, then assign to them on a separate line.</li>
+<li><u>Dynamic scoping awareness:</u> Remember that Bash
+<code>local</code> uses dynamic scoping, and do not
+<code>local</code>ize <code>BASH_REMATCH</code>.</li>
+<li><u>Loop subshell avoidance:</u> Avoid piping into
+<code>while read</code> loops, because that can create a subshell.</li>
+<li><u>Stdin protection:</u> Prevent stdin stealing inside loops by
+using a separate file descriptor when needed.</li>
+<li><u>NUL-delimited input:</u> Use NUL-delimited input where required,
+for example with <code>find -files0-from</code>.</li>
+<li><u>Pipefail caution:</u> Be careful with <code>pipefail</code> when
+piping into early-exiting consumers such as
+<code>grep --quiet</code>.</li>
+<li><u>Readable project style:</u> Prefer explicit, readable,
+whitespace-safe code and project helper functions where
+appropriate.</li>
+<li><u>Indent style:</u>
+<ul>
+<li>No tabs.</li>
+<li>Newer scripts: Two (2) spaces to indent bash scripts.</li>
+<li>"Legacy" scripts: 3 spaces to indent bash scripts.</li>
+<li>Do not change indent style from 3 to 2, unless doing that in a
+separate clean commit that changes only whitespace.</li>
+<li>AI agents should generally not apply major indent style changes
+unless explicitly being told.</li>
+</ul></li>
+<li><u>No Trailing Whitespaces:</u> Use a proper editor and ensure that
+no trailing whitespace is left at the end of lines.</li>
+<li><u>Self-Identification</u> All programs and scripts should identify
+themselves in their output. Either only in their first and last output
+lines, or every line should be prefixed. For example:
+<code>printf '%s\n' "$0: ERROR: ..."</code>. This assists bug reporters
+and developers to pinpoint in which source code repository and source
+code file an error might have occurred.</li>
+<li><u>No editor configuration inside source files:</u> For example vim
+modlines due to security.</li>
+</ul>
+<h1 id="Safe_ways_to_print">Safe ways to print</h1>
+<p>For this style guide, do not use <code>echo</code>. Use
+<code>printf</code> with an explicit format string instead.</p>
+<ul>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lq98MM2ogBk">
+<img src="../../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lq98MM2ogBk">bash's
+echo command is
+broken</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lq98MM2ogBk"><img src="../../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=lq98MM2ogBk"><img src="../../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=lq98MM2ogBk"><img src="../../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+<li><span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ft0_cw54qak">
+<img src="../../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ft0_cw54qak">echo
+is broken: a follow-up
+video</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ft0_cw54qak"><img src="../../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=ft0_cw54qak"><img src="../../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=ft0_cw54qak"><img src="../../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span></li>
+</ul>
+<p><code>shellcheck</code> bug reports:</p>
+<ul>
+<li><a href="https://github.com/koalaman/shellcheck/issues/2674">Warn on
+echo "$var" when $var might be -e #2674</a></li>
+<li><a href="https://github.com/koalaman/shellcheck/issues?q=is%3Aissue+is%3Aopen+echo+in%3Atitle">Open
+shellcheck issues related to echo</a></li>
+</ul>
+<p>Please note that <code>printf</code> does not have a default format
+specifier. The first positional parameter is always treated as the
+format string. When the format is omitted, untrusted data can be
+interpreted as format directives or backslash escapes. It is always
+recommended to be explicit about the format being used.</p>
+<p>Normally, there is no need to interpret escape sequences from a
+variable. Therefore, use the <code>printf</code> format specifier
+<code>%s</code> when the data is not printed to a terminal:</p>
+<p><span class="code-select">var="$(printf '%s'
+"${untrusted_text}")"</span></p>
+<p><code>printf '%s\n' "message here"</code> is the usual replacement
+for <code>echo "message here"</code>.</p>
+<p>If you require escapes to be interpreted, interpret them on a
+per-need basis:</p>
+<p><span class="code-select">red="$(printf '%b' "\e[31m")" #
+red=$'\e[31m' # printf -v red '%b' "\e[31m" nocolor="$(printf '%b'
+"\e[m")" # nocolor=$'\e[m' # printf -v nocolor '%b' "\e[m"</span></p>
+<p>Escapes that are already interpreted can then be printed with
+<code>%s</code>:</p>
+<p><span class="code-select">var="$(printf '%s' "${red}
+${untrusted_text} ${nocolor}")"</span></p>
+<p>And this is why you should use <code>stecho</code> when printing to
+the terminal, because it sanitizes unsafe characters (<a href="../../Unicode/">unicode</a>). Simply using <code>printf '%s'</code> is
+not sufficient when escapes are already interpreted:</p>
+<p><span class="code-select">stecho "${red} ${untrusted_text}
+${nocolor}" printf '%s' "${red} ${untrusted_text} ${nocolor}" | stecho
+printf '%s' "${red} ${untrusted_text} ${nocolor}" | stecho | less
+-R</span></p>
+<p><strong>Rule of thumb</strong>:</p>
+<ul>
+<li><code>echo</code>: Never.</li>
+<li><code>printf</code>: Whenever the printed data is not used by a
+terminal.
+<ul>
+<li>Format <code>%b</code>: Only for trusted data or fixed
+literals.</li>
+<li>Format <code>%s</code>: With any data.</li>
+</ul></li>
+<li><code>stecho</code>: Whenever the printed data is used by a
+terminal.
+<ul>
+<li>When not using <code>stecho</code>: When <code>stecho</code> cannot
+reasonably be considered available, such as during early build steps
+when building Kicksecure from source code using derivative-maker.</li>
+</ul></li>
+</ul>
+<p>Resources:</p>
+<ul>
+<li><a href="https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md#echo--printf">shellharden:
+echo / printf</a></li>
+<li><a href="https://unix.stackexchange.com/questions/65803/why-is-printf-better-than-echo">Unix
+&amp; Linux Stack Exchange: Why is printf better than echo?</a></li>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/echo.html">POSIX
+<code>echo</code> specification</a></li>
+<li><a href="../../Stdisplay/">stdisplay</a></li>
+</ul>
+<h1 id="Bash_Proper_Whitespace_Handling">Bash Proper Whitespace
+Handling</h1>
+<ul>
+<li>Quote variables.</li>
+<li>Build parameters using arrays.</li>
+<li>Enforce <code>nounset</code>.</li>
+<li>Use end-of-options.</li>
+<li>Style: use long option names.</li>
+</ul>
+<pre><code>#!/bin/bash
+
+## https://yakking.branchable.com/posts/whitespace-safety/
+
+#set -x
+set -o errexit
+set -o nounset
+set -o errtrace
+set -o pipefail
+
+lib_dir=&quot;/tmp/test/lib/program with space/something spacy&quot;
+main_app_dir=&quot;/tmp/test/home/user/folder with space/abc&quot;
+
+mkdir --parents -- &quot;${lib_dir}&quot;
+mkdir --parents -- &quot;${main_app_dir}&quot;
+
+declare -a cmd_list
+
+cmd_list+=(&quot;cp&quot;)
+cmd_list+=(&quot;--recursive&quot;)
+cmd_list+=(&quot;--&quot;)
+cmd_list+=(&quot;${lib_dir}&quot;)
+cmd_list+=(&quot;${main_app_dir}/&quot;)
+
+printf &#39;%s\n&#39; &quot;cmd_list has ${#cmd_list[@]} items&quot;
+
+## Execution example.
+&quot;${cmd_list[@]}&quot;
+
+## &#39;for&#39; loop example.
+for cmd_item in &quot;${cmd_list[@]}&quot;; do
+    printf &#39;%s\n&#39; &quot;cmd_item: &#39;$cmd_item&#39;&quot;
+done
+
+## Alternative.
+cmd_alt_list=(
+    cp               ## program
+    --recursive      ## recursive
+    --               ## stop option parsing (protects against paths that begin with &#39;-&#39;)
+    &quot;$lib_dir&quot;       ## source directory
+    &quot;$main_app_dir/&quot; ## destination
+)
+
+## &#39;for&#39; loop example.
+for cmd_alt_item in &quot;${cmd_alt_list[@]}&quot;; do
+    printf &#39;%s\n&#39; &quot;cmd_alt_item: &#39;$cmd_alt_item&#39;&quot;
+done</code></pre>
+<h1 id="Why_nounset">Why <code>nounset</code></h1>
+<p>Without <code>nounset</code>, an unset variable silently expands to
+an empty string. That can turn a dangerous path into something
+unintended.</p>
+<pre><code>rm -- &quot;/$UNSET_VAR&quot;</code></pre>
+<p>If <code>UNSET_VAR</code> is unset and <code>nounset</code> is
+disabled, this becomes:</p>
+<pre><code>rm -- &quot;/&quot;</code></pre>
+<p>On many systems that will fail with an error such as:</p>
+<pre><code>rm: cannot remove &#39;/&#39;: Is a directory</code></pre>
+<p>That specific command happens to fail here, but the pattern is still
+unsafe. With <code>set -o nounset</code>, the shell aborts earlier
+before running <code>rm</code>.</p>
+<p>Setting <code>UNSET_VAR=""</code> would not solve the general problem
+either. Variables that may intentionally be empty should be handled
+explicitly.</p>
+<h1 id="local">local</h1>
+<h2 id="Error_swallowing">Error swallowing</h2>
+<p><u>Note:</u></p>
+<p><span class="code-select">local testvar=$(false)</span></p>
+<p><u>Expected:</u> error</p>
+<p><u>Actual:</u> no error</p>
+<p>When declaration and assignment are combined on the same line,
+<code>local</code> itself returns success and masks the failing command
+substitution.</p>
+<p>Better:</p>
+<p><span class="code-select">local testvar testvar=$(false)</span></p>
+<h2 id="Dynamic_scoping">Dynamic scoping</h2>
+<p><code>local</code> variables in Bash use dynamic scoping. That means
+nested function calls can still read and modify them unless they declare
+their own <code>local</code> variable.</p>
+<p><u>Example:</u></p>
+<p><span class="code-select">fn_01 () {</p>
+<p><code>&#160;local&#160;myvar</code><br />
+<code>&#160;myvar='supposedly&#160;local'</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;$myvar"</code><br />
+<code>&#160;fn_02</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;now&#160;$myvar"</code></p>
+<p>}</p>
+<p>fn_02 () {</p>
+<p><code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_02,&#160;myvar&#160;is&#160;$myvar"</code><br />
+<code>&#160;myvar='not&#160;so&#160;local&#160;after&#160;all'</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_02,&#160;myvar&#160;is&#160;now&#160;$myvar"</code></p>
+<p>}</p>
+<p>fn_01</span></p>
+<p><u>Output:</u></p>
+<pre><code>in fn_01, myvar is supposedly local
+in fn_02, myvar is supposedly local
+in fn_02, myvar is now not so local after all
+in fn_01, myvar is now not so local after all</code></pre>
+<p>To avoid problems from this, declare all function-local variables as
+<code>local</code> at the head of a function. For example:</p>
+<p><span class="code-select">fn_01 () {</p>
+<p><code>&#160;local&#160;myvar</code><br />
+<code>&#160;myvar='local&#160;to&#160;fn_01'</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;$myvar"</code><br />
+<code>&#160;fn_02</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;now&#160;$myvar"</code></p>
+<p>}</p>
+<p>fn_02 () {</p>
+<p><code>&#160;local&#160;myvar</code><br />
+<code>&#160;myvar='local&#160;to&#160;fn_02'</code><br />
+<code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_02,&#160;myvar&#160;is&#160;$myvar"</code></p>
+<p>}</p>
+<p>fn_01</span></p>
+<p><u>Output:</u></p>
+<pre><code>in fn_01, myvar is local to fn_01
+in fn_02, myvar is local to fn_02
+in fn_01, myvar is now local to fn_01</code></pre>
+<h2 id="BASH_REMATCH">BASH_REMATCH</h2>
+<p>Do not <code>local -a BASH_REMATCH</code>!</p>
+<p><blockquote><p>Note specifically:
+<code>Bash sets BASH_REMATCH in the global scope; declaring it as a local variable will lead to unexpected results.</code><span class="blockquote-context"><a href="https://www.gnu.org/software/bash/manual/bash.html">GNU Bash
+manual</a></span></p></blockquote></p>
+<h1 id="POSIX_array">POSIX array</h1>
+<p>On a POSIX shell, positional parameters provide the portable
+array-like container. <code>$@</code> has different scope per function
+or main script. You can build it with <code>set --</code>:</p>
+<p>Add items to the array:</p>
+<pre><code>set -- a b c</code></pre>
+<p>Add items to the beginning or end of the array:</p>
+<pre><code>set -- b
+set -- a &quot;$@&quot; c</code></pre>
+<h1 id="Use_of_End-of-Options_Parameter_(--)">Use of End-of-Options
+Parameter (--)</h1>
+<p>The end-of-options parameter "<code>--</code>" is important because
+otherwise inputs might be mistaken for command options. This can even
+become a security issue. Here are examples using the <code>sponge</code>
+command:</p>
+<p><span class="code-select">sponge -a testfilename
+&lt;/dev/null</span></p>
+<p>Result: OK. This works because "<code>testfilename</code>" does not
+look like an option.</p>
+<p><span class="code-select">sponge -a --testfilename
+&lt;/dev/null</span></p>
+<p>Result: Fail. The command interprets "<code>--testfilename</code>" as
+options:</p>
+<pre><code>sponge: invalid option -- &#39;-&#39;
+sponge: invalid option -- &#39;t&#39;
+sponge: invalid option -- &#39;e&#39;
+...</code></pre>
+<p><span class="code-select">sponge -a -- --testfilename
+&lt;/dev/null</span></p>
+<p>Result: OK. The <code>--</code> signals that
+"<code>--testfilename</code>" is a filename, not an option.</p>
+<p>Conclusion:</p>
+<ul>
+<li>The <code>--</code> parameter marks the end of command options.</li>
+<li>Place <code>--</code> after all command options and before filenames
+or other positional parameters, where the command supports it.</li>
+<li>This technique is applicable to many Unix/Linux commands, not just
+<code>sponge</code>.</li>
+<li>It is especially useful when input may begin with
+<code>-</code>.</li>
+</ul>
+<h1 id="nounset_-_Check_if_Variable_Exists">nounset - Check if Variable
+Exists</h1>
+<pre><code>#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o errtrace
+set -o pipefail
+
+## Enable for testing.
+#unset HOME
+
+if [ -z &quot;${HOME+x}&quot; ]; then
+    printf &#39;%s\n&#39; &quot;Error: HOME is not set.&quot; &gt;&amp;2
+    exit 1
+fi
+
+printf &#39;%s\n&#39; &quot;$HOME&quot;</code></pre>
+<h1 id="Safely_Using_Find_with_NUL-Delimited_Input">Safely Using Find
+with NUL-Delimited Input</h1>
+<p>Example:</p>
+<p><u>Note:</u> The variable could be different. It could, for example,
+be <code>--/usr</code>.</p>
+<p><span class="code-select">folder_name="/usr"</span></p>
+<p><span class="code-select">printf '%s\0' "${folder_name}" | find
+-files0-from - -perm /u=s,g=s -print0</span></p>
+<p>Do not use <code>stecho</code> or <code>stprint</code> here, because
+<code>find -files0-from</code> requires NUL-delimited input.</p>
+<p><code>NUL</code> ("<code>\0</code>") is required because:</p>
+<p><blockquote><p>The starting points in file have to be separated by ASCII NUL
+characters. Two consecutive NUL characters, i.e., a starting point with
+a Zero-length file name is not allowed and will lead to an error
+diagnostic followed by a non-Zero exit code
+later.<span class="blockquote-context"><a href="https://manpages.debian.org/unstable/findutils/find.1.en.html">Debian
+<code>find</code> man page</a></span></p></blockquote></p>
+<p>A single trailing <code>NUL</code> is normal. Two consecutive
+<code>NUL</code> bytes would mean an empty file name entry, which is
+invalid.</p>
+<h1 id="Safely_Dereferencing_Variables">Safely Dereferencing
+Variables</h1>
+<p><code>printf '%s\n' "${!var_name}"</code> may execute arbitrary code
+in the string stored in <code>var_name</code>. Example:</p>
+<pre><code>print_var_contents() {
+  local var_name
+  var_name=&quot;$1&quot;
+  printf &#39;%s\n&#39; &quot;${!var_name}&quot;
+}
+print_var_contents &#39;a[$(uname&gt;&amp;2)0]&#39; # prints &#39;Linux&#39;</code></pre>
+<p>Variable names must be validated before dereferencing them. Variable
+names will consist entirely of letters, numbers, and underscores, and
+will start with a letter, number, or underscore <sup class="reference"><a href="#cite_note-1">[1]</a></sup>, so a
+regex can be used for validation:</p>
+<pre><code>print_var_contents() {
+  local var_name
+  var_name=&quot;$1&quot;
+  if ! [[ &quot;${var_name}&quot; =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then return 1; fi
+  printf &#39;%s\n&#39; &quot;${!var_name}&quot;
+}
+print_var_contents &#39;a[$(uname&gt;&amp;2)0]&#39; # prints nothing, exits 1</code></pre>
+<h1 id="loops">loops</h1>
+<h2 id="subshells_created_by_pipelines">subshells created by
+pipelines</h2>
+<p>Avoid piping data into a loop. This spawns a subshell even without
+using <code>$()</code> syntax. Bad code example:</p>
+<pre><code>str=&quot;abc
+def
+ghi&quot;
+line_count=0
+
+printf &#39;%s\n&#39; &quot;${str}&quot; | while IFS= read -r line; do
+  ((line_count += 1))
+done
+
+printf &#39;%s\n&#39; &quot;${line_count}&quot;
+
+## Expected result: 3
+## Actual result: 0</code></pre>
+<p>Instead, redirect command output into the loop. Good code
+example:</p>
+<pre><code>str=&quot;abc
+def
+ghi&quot;
+line_count=0
+
+while IFS= read -r line; do
+  ((line_count += 1))
+done &lt; &lt;(printf &#39;%s\n&#39; &quot;${str}&quot;)
+
+printf &#39;%s\n&#39; &quot;${line_count}&quot;
+
+## Result: 3</code></pre>
+<h2 id="stdin_stealing">stdin stealing</h2>
+<p>Commands that read from stdin can swallow data that was supposed to
+be processed by the <code>read</code> component of a
+<code>while read</code> loop. <code>qrexec-client-vm</code> is one
+example, and <code>vim</code> is another. Bad code example:</p>
+<pre><code>str=&quot;abc
+def
+ghi&quot;
+
+while IFS= read -r line; do
+  vim -- &quot;$line&quot;
+done &lt; &lt;(printf &#39;%s\n&#39; &quot;${str}&quot;)
+
+## Output:
+##
+## Vim: Warning: Input is not from a terminal
+## Vim: Error reading input, exiting...
+## Vim: preserving files...
+## Vim: Finished.</code></pre>
+<p>Work around this by using alternative file descriptors and
+redirection. Good code example:</p>
+<pre><code>str=&quot;abc
+def
+ghi&quot;
+
+while IFS= read -r line 0&lt;&amp;3; do
+  vim -- &quot;$line&quot;
+done 3&lt; &lt;(printf &#39;%s\n&#39; &quot;${str}&quot;)
+
+## Result: Opens &quot;abc&quot;, then &quot;def&quot;, then &quot;ghi&quot; in Vim.</code></pre>
+<h1 id="misc">misc</h1>
+<pre><code>base_name=&quot;${file_name##*/}&quot;
+file_extension=&quot;${base_name##*.}&quot;</code></pre>
+<h1 id="coding_style">coding style</h1>
+<ul>
+<li>no workarounds for older Bash versions. Assume the Bash version of
+Debian trixie.</li>
+<li>prefer explicit, readable, whitespace-safe code over compact shell
+tricks</li>
+<li>use long options rather than short options when sensible, for
+example use <code>cp --recursive</code> instead of
+<code>cp -r</code></li>
+<li>no trailing whitespaces allowed in source code files</li>
+<li>all source code files must have a newline at the end</li>
+<li>no git style symlinks (<a href="../../Git/#git_symlinks">git symlinks</a>) (text file without newline at the
+end) because of past <a href="https://security.snyk.io/vuln/SNYK-UNMANAGED-GITGIT-2372015">git
+symlink CVE</a></li>
+<li>avoid <a href="../../Unicode/">unicode</a> whenever
+possible. See also <a href="../../Unicode-show/">unicode-show</a>.</li>
+<li>use:
+<ul>
+<li><code>shellcheck</code></li>
+<li>avoid <code>rm</code> when <code>safe-rm</code> is appropriate
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li>avoid <code>wget</code> and <code>curl</code> in project code,
+prefer <code>scurl</code> (<a href="../../Secure_Downloads/">Secure Downloads</a>)</li>
+<li>avoid <code>grep</code> for simple string matching in project code,
+use <code>str_match</code></li>
+<li><code>str_replace</code></li>
+<li><code>append-once</code></li>
+<li><code>overwrite</code></li>
+</ul></li>
+<li>use <code>${variable}</code> style</li>
+<li>use shell options</li>
+</ul>
+<pre><code>set -o errexit
+set -o nounset
+set -o errtrace
+set -o pipefail</code></pre>
+<ul>
+<li>do not use:
+<ul>
+<li><code>which</code>, use <code>command -v</code> instead. This is
+because <code>which</code> is an external binary, whereas
+<code>command</code> is a shell built-in.</li>
+</ul></li>
+<li>file name extensions:
+<ul>
+<li>POSIX <code>sh</code> libraries: <code>.sh</code></li>
+<li>Bash libraries: <code>.bsh</code></li>
+<li>Executables: no file name extension</li>
+<li>(executables = scripts that can be run but cannot be sourced,
+libraries = scripts that can be sourced but may optionally be run as
+well)</li>
+</ul></li>
+</ul>
+<h1 id="pipefail_and_early-exiting_consumers">pipefail and early-exiting
+consumers</h1>
+<p>This combination can be an issue because the consumer may exit early
+and the producer may then receive <code>SIGPIPE</code> (broken
+pipe).</p>
+<pre><code>#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o errtrace
+set -o pipefail
+
+for i in {1..10000}; do
+  printf &#39;%s\n&#39; &quot;0&quot;
+done | grep --quiet -- &quot;0&quot;</code></pre>
+<p>This can fail even though <code>grep --quiet</code> finds a match.
+<code>grep --quiet</code> exits as soon as it has enough input, while
+the producer may still be writing. With <code>pipefail</code> enabled,
+the producer's non-zero exit status can then make the whole pipeline
+fail.</p>
+<p>Guideline:</p>
+<ul>
+<li>Avoid <code>producer | grep --quiet -- pattern</code> when
+<code>pipefail</code> is enabled.</li>
+<li>Prefer matching directly against a variable or file when
+possible.</li>
+<li>In project code, prefer helper functions such as
+<code>str_match</code> where they fit the use case.</li>
+<li>If an early-exit consumer is intentional, handle exit statuses
+explicitly instead of assuming the pipeline is harmless.</li>
+</ul>
+<h1 id="Improved_Error_Handler">Improved Error Handler</h1>
+<p>Inspired by <a href="https://github.com/pottmi/stringent.sh">stringent.sh</a></p>
+<p><span class="code-select">if (( "$BASH_SUBSHELL" &gt;= 1 )); then</p>
+<p><code>&#160;kill&#160;"$$"</code></p>
+<p>fi</span></p>
+<p>Usually not needed. When a subshell detects an error due to
+<code>errexit</code> and <code>errtrace</code>, it returns a non-zero
+exit status and the parent shell also sees the failure. Preventing the
+error handler from running twice is only useful in rare cases.</p>
+<h1 id="Resources">Resources</h1>
+<ul>
+<li><a href="https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md">shellharden:
+How to do things safely in bash</a></li>
+<li><a href="https://dwheeler.com/essays/fixing-unix-linux-filenames.html">David
+A. Wheeler: Fixing Unix/Linux/POSIX filenames</a></li>
+<li>use with care:
+<span class="video-link"><a class="indicator robots-nocontent" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DvDu8_A2uhs">
+<img src="../../../media/Video-general-icon.svg" alt="Videos general icon" />
+</a><a class="text" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DvDu8_A2uhs">Seat
+Belts and Airbags for
+bash</a><span class="icons"><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=DvDu8_A2uhs"><img src="../../../media/Youtube-logo.png.webp" alt="YouTube icon" /></a><a target="_blank" rel="noopener" href="https://inv.nadeko.net/watch?v=DvDu8_A2uhs"><img src="../../../media/Invidious-logo.png.webp" alt="Invidious icon" /></a><a target="_blank" rel="noopener" href="http://invidiousge2cq2qegp4vdzsfu6mvpqdf6dtcyzmqbv7yx2spvkkajad.onion/watch?v=DvDu8_A2uhs"><img src="../../../media/Iconfinder_tor_386502.png.webp" alt="Onion icon" /></a></span></span>
+<ul>
+<li>use with care: <a href="https://github.com/pottmi/stringent.sh">stringent.sh</a></li>
+</ul></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../coding_style/">Dev/coding
+style</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.gnu.org/software/bash/manual/html_node/Definitions.html">https://www.gnu.org/software/bash/manual/html_node/Definitions.html</a></li>
+<li id="cite_note-2">* <a href="https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/issues/123">https://github.com/MrMEEE/bumblebee-Old-and-abbandoned/issues/123</a>
+* <a href="https://github.com/valvesoftware/steam-for-linux/issues/3671">https://github.com/valvesoftware/steam-for-linux/issues/3671</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Licensing/" title="Dev/Licensing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Licensing</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../certification/" title="Dev/certification"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/certification</span></a><span class="info"><span class="prev">Previous
+page: Dev/Licensing</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/certification</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

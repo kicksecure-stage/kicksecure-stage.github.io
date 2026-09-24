@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/repository</title>
+<meta name="description" content="Considerations if it would be feasible to store the Debian Repository on the Blockchain.">
+<meta property="og:description" content="Considerations if it would be feasible to store the Debian Repository on the Blockchain.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/repository/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/repository/">
+<meta property="og:title" content="Debian APT Repository on the Blockchain?">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>repository</span></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../git/" title="Dev/git"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/git</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../APT_Repository/" title="Dev/APT Repository"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/APT
+Repository</span></a><span class="info"><span class="prev">Previous
+page: Dev/git</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/APT
+Repository</span></span></span>Debian APT Repository on the
+Blockchain?</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Considerations if it would be feasible to store the Debian Repository
+on the Blockchain.</p>
+<div class="post-intro-p">
+</div>
+<p>At time of writing in January 2023, as a starting point, cloning all
+of Debian's "normal" repository would require "only" approximately just
+under 5TB. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> "Normal" means that the repository
+contains only the most recent package versions which have been uploaded
+to the various suites (such as stable, testing, etc.).</p>
+<p>How much space would be needed if one was to archive all old
+versions? <a href="https://snapshot.debian.org">https://snapshot.debian.org</a> is a
+service that does that and publishes file sizes for the full archival
+repository. Here are the data points extracted from
+snapshot.debian.org's news.</p>
+<ul>
+<li>2012-09-23 16TB</li>
+<li>2014-06-01 24TB</li>
+<li>2018-02-13 60TB</li>
+<li>2019-09-29 90TB</li>
+<li>2022-09-28 135TB</li>
+</ul>
+<p>So in 10 years from 2012 to 2022 the size increased from 16TB to
+135TB. That's approximately 8TB per year. To be on the safe side we
+should probably round that up to 10TB per year.</p>
+<p>In other words, if snapshot.debian.org was blockchain based in 2012
+the size of their blockchain would have grown to 135 TB in 2022.</p>
+<p>Having all binary packages on the blockchain might be too much. A
+tremendous amount of disk space could be saved by storing only
+signatures/hashes/timestamps on the blockchain.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.debian.org/mirror/size">https://www.debian.org/mirror/size</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../git/" title="Dev/git"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/git</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../APT_Repository/" title="Dev/APT Repository"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/APT
+Repository</span></a><span class="info"><span class="prev">Previous
+page: Dev/git</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/APT
+Repository</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

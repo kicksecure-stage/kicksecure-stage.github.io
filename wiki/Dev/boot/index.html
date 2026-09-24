@@ -1,0 +1,1616 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/boot</title>
+<meta name="description" content="Boot Process Related Development Notes">
+<meta property="og:description" content="Boot Process Related Development Notes">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/boot/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/boot/">
+<meta property="og:title" content="Boot Process">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>boot</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GRUB_Slow_Upstream">GRUB Slow Upstream</a></li><li class="toc-l2"><a href="#GRUB_Feature_Richness">GRUB Feature Richness</a></li><li class="toc-l2"><a href="#GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</a></li><li class="toc-l2"><a href="#GRUB_Upstream_Contributions">GRUB Upstream Contributions</a></li><li class="toc-l2"><a href="#grub-install_command_responsibility">grub-install command
+responsibility</a></li><li class="toc-l2"><a href="#Core_Bootloader_Packages">Core Bootloader Packages</a></li><li class="toc-l3"><a href="#grub-cloud_package">grub-cloud package</a></li><li class="toc-l3"><a href="#grub-efi_and_grub-pc">grub-efi and grub-pc</a></li><li class="toc-l3"><a href="#live-config-dist">live-config-dist</a></li><li class="toc-l3"><a href="#dist-base-files">dist-base-files</a></li><li class="toc-l3"><a href="#grub-live">grub-live</a></li><li class="toc-l3"><a href="#serial-console-enable">serial-console-enable</a></li><li class="toc-l3"><a href="#security-misc">security-misc</a></li><li class="toc-l3"><a href="#usability-misc">usability-misc</a></li><li class="toc-l3"><a href="#debug-misc">debug-misc</a></li><li class="toc-l3"><a href="#kicksecure-base-files">kicksecure-base-files</a></li><li class="toc-l3"><a href="#user-sysmaint-split">user-sysmaint-split</a></li><li class="toc-l3"><a href="#whonix-base-files">whonix-base-files</a></li><li class="toc-l3"><a href="#anon-ws-base-files">anon-ws-base-files</a></li><li class="toc-l3"><a href="#anon-gw-base-files">anon-gw-base-files</a></li><li class="toc-l2"><a href="#Live_ISO_GRUB_configuration">Live ISO GRUB configuration</a></li><li class="toc-l2"><a href="#systemd-boot_-_Limited_Architecture_Support">systemd-boot -
+Limited Architecture Support</a></li><li class="toc-l2"><a href="#systemd-boot_-_random_seed">systemd-boot - random seed</a></li><li class="toc-l2"><a href="#systemd-boot_-_SecureBoot_Support">systemd-boot - SecureBoot
+Support</a></li><li class="toc-l2"><a href="#GRUB_-_File_Names">GRUB - File Names</a></li><li class="toc-l2"><a href="#/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</a></li><li class="toc-l2"><a href="#ARM_-_Generally">ARM - Generally</a></li><li class="toc-l2"><a href="#Raspberry_Pi_-_RPi">Raspberry Pi - RPi</a></li><li class="toc-l3"><a href="#Bootloader_Information_-_RPi">Bootloader Information - RPi</a></li><li class="toc-l3"><a href="#Debian_Support">Debian Support</a></li><li class="toc-l3"><a href="#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">Booting
+Debian Trixie with GRUB + u-boot on Raspberry Pi 4</a></li><li class="toc-l3"><a href="#Boot_Process_Design_-_RPi">Boot Process Design - RPi</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../user-sysmaint-split/" title="Dev/user-sysmaint-split"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/user-sysmaint-split</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../../Donation_systray/" title="Donation systray"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Donation
+systray</span></a><span class="info"><span class="prev">Previous page:
+Dev/user-sysmaint-split</span><span class="index">Index page:
+Design</span><span class="next">Next page: Donation
+systray</span></span></span>Boot Process</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../image_creation/">Image
+Creation</a></li>
+<li><a href="../image_formats/">Image Formats</a></li>
+<li><a href="./">Boot Process</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="../../Boot_firmware/">Boot Firmware</a></li>
+<li><a href="../../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../../Measured_boot/">Measured Boot</a></li>
+<li><a href="../../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="../../Open_Source_Hardware/">Open Source
+Hardware</a></li>
+<li><a href="../confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="../Stateless/">stateless (dev)</a></li>
+<li><a href="../immutable/">immutable (dev)</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Boot Process Related Development Notes</p>
+<div class="post-intro-p">
+</div>
+<h1 id="shim">shim</h1>
+<ul>
+<li>Debian shim feature request: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102680">Offer a
+shim-signed variant signed by Debian's Secure Boot key</a></li>
+<li>While it may be technically possible for an EFI binary such as
+Debian's <a href="https://packages.debian.org/trixie/shim-signed"><code>shim-signed</code></a>
+package to be signed by two public keys (Microsoft's key and Debian's
+key), this is unlikely to be implemented in Debian because it might
+break certain broken UEFI implementations, possibly on some
+motherboards.
+<ul>
+<li>In theory, it might be discovered that this issue does not occur in
+practice, which could be confirmed by researching a large number of UEFI
+implementations. However, it seems highly unlikely that such expensive
+research will be undertaken by any party.</li>
+</ul></li>
+<li>See also <a href="../../Verified_Boot/">Verified Boot</a>
+chapter <a href="../../Verified_Boot/#Keys">Keys</a>.</li>
+</ul>
+<h1 id="GRUB">GRUB</h1>
+<h2 id="GRUB_Slow_Upstream">GRUB Slow Upstream</h2>
+<p><blockquote><p>We all know and love GRUB2. It is a good boot loader. It is also big,
+complex, rich, massive and tends to move slow on the development
+side.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
+and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+their motivation to add support for systemd-boot</span></p></blockquote></p>
+<p><blockquote><p>The openSUSE package for this boot loader contains more than 200
+patches. Some of those patches are there for the last 5, 6 ... 10 years.
+That is both an indication of the talent of the maintainers, but also
+can signal an issue in how slow the upstream contribution process can
+be.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
+and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+their motivation to add support for systemd-boot</span></p></blockquote></p>
+<h2 id="GRUB_Feature_Richness">GRUB Feature Richness</h2>
+<p><blockquote><p>GRUB2 supports all the relevant systems, including mainframes, arm or
+powerpc. Multiple types of file systems, including btrfs or NTFS. It
+contains a full network stack, an USB stack, a terminal, can be scripted
+... In some sense, it is almost a mini OS by
+itself.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
+and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+their motivation to add support for systemd-boot</span></p></blockquote></p>
+<h2 id="GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</h2>
+<p><blockquote><p>Kicksecure doesn't use GRUB to unlock encrypted disks. This is
+because we use Debian's GRUB, and Debian's GRUB only has very bad LUKS
+support (only supports LUKS1, can't handle non-US keyboard layouts,
+ugly, slow, only gives you one shot to unlock the drive, and then the
+Linux kernel has to unlock the drive again once it boots). Instead, we
+use an unencrypted /boot partition and let the initramfs handle decrypt.
+This lets us use more secure encryption, provides a better user
+interface for decryption, works with multiple keyboard layouts, and
+works faster.<span class="blockquote-context"><a href="https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2">https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2</a></span></p></blockquote></p>
+<p>See also:</p>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/iso-change-to-unencrypted-boot-if-using-full-disk-encryption/420">ISO:
+Change to unencrypted /boot if using Full Disk Encryption</a></li>
+</ul>
+<h2 id="GRUB_Upstream_Contributions">GRUB Upstream Contributions</h2>
+<ul>
+<li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00000.html">Determining
+when paging is and isn't enabled in GRUB</a></li>
+<li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00050.html">DRAFT
+PATCH 0/1 - Add Xen command line parsing</a></li>
+<li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00051.html">DRAFT
+PATCH 1/1 - Add Xen command line parsing</a></li>
+<li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00247.html">PATCH
+0/1 - Add Xen command line parsing</a></li>
+<li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00248.html">PATCH
+1/1 - Add Xen command line parsing</a></li>
+</ul>
+<h2 id="grub-install_command_responsibility">grub-install command
+responsibility</h2>
+<p>Who should run the <code>grub-install</code> command?
+SystemBuildTools or Debian package maintainer scripts?</p>
+<p>As it is currently designed, it seems <a href="https://wiki.debian.org/SystemBuildTools">SystemBuildTools</a> are
+supposed to execute the <code>grub-install</code> command.</p>
+<p><code>calamares</code> installer runs <code>grub-install</code>.
+<code>live-build</code> has extensive code to set up GRUB and other
+bootloaders. <code>mkosi</code> uses <code>grub-mkimage</code>.</p>
+<p>It's the system build tool that is responsible for setting up the
+bootloader, which requires running bootloader installation commands.</p>
+<p><blockquote><p>Don't call grub-install on fresh install of grub-pc. It's the job of
+installers to do that after a fresh
+install.<span class="blockquote-context"><a href="https://metadata.ftp-master.debian.org/changelogs//main/g/grub2/grub2_2.12-5_changelog"><code>grub2</code>
+package, Debian changelog, Colin Watson Nov 2020</a></span></p></blockquote></p>
+<h2 id="Core_Bootloader_Packages">Core Bootloader Packages</h2>
+<p>Kicksecure uses different metapackages to provide the bootloader for
+different systems. grub-cloud is used on Kicksecure VMs, while grub-efi
+and grub-pc-bin are used by the ISO.</p>
+<h3 id="grub-cloud_package">grub-cloud package</h3>
+<p><blockquote><p>You don't want to use this package outside of cloud
+images.<span class="blockquote-context"><a href="https://packages.debian.org/trixie/grub-cloud-amd64"><code>grub-cloud-amd64</code>
+package, Debian</a></span></p></blockquote></p>
+<p><code>grub-cloud-amd64</code> package and
+<code>/etc/default/grub</code> file inclusion:</p>
+<p><blockquote><p><code>/etc/default/grub</code><span class="blockquote-context"><a href="https://packages.debian.org/trixie/amd64/grub-cloud-amd64/filelist">List
+of files</a></span></p></blockquote></p>
+<p><u>Non-issue:</u> <code>grub-cloud</code>, while it has "cloud" in
+its name, and while it may be suitable for installation on cloud
+servers, has no additional networking or cloud features not found in
+"standard" GRUB packages. <code>grub-cloud</code> does not "interact
+with the cloud". It does not boot from the cloud or have other
+problematic cloud features. Such features are not planned either. Its
+source code is minimal and consists only of Debian packaging files and a
+<code>/etc/default/grub</code> configuration file. The
+<code>grub-cloud</code> package is a workaround for the lack of
+<code>grub-pc</code> and <code>grub-efi</code> co-installability, a
+workaround for Debian bug <a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">grub-efi-amd64:
+Allow concurrent installation of grub-pc and grub-efi-amd64</a>.</p>
+<p>Source code references:</p>
+<ul>
+<li><a href="https://salsa.debian.org/cloud-team/grub-cloud">grub-cloud
+source code</a></li>
+<li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-amd64/grub?ref_type=heads">AMD64
+<code>/etc/default/grub</code></a></li>
+<li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-arm64/grub?ref_type=heads">ARM64
+<code>/etc/default/grub</code></a></li>
+<li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-amd64.postinst?ref_type=heads">AMD64
+<code>postinst</code></a></li>
+<li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-arm64.postinst?ref_type=heads">ARM64
+<code>postinst</code></a></li>
+</ul>
+<p>AMD64 <code>/etc/default/grub</code> contents:</p>
+<pre><code># If you change this file, run &#39;update-grub&#39; afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n &#39;Simple configuration&#39;
+
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2&gt; /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT=&quot;&quot;
+GRUB_CMDLINE_LINUX=&quot;console=tty0 console=ttyS0,115200 earlyprintk=ttyS0,115200 consoleblank=0&quot;
+GRUB_TERMINAL_OUTPUT=&quot;gfxterm serial&quot;
+GRUB_SERIAL_COMMAND=&quot;serial --speed=115200&quot;</code></pre>
+<ul>
+<li>Potential issues with <code>grub-cloud</code> managing
+<code>/etc/default/grub</code>:
+<ul>
+<li>Running <code>debsums --changed --config</code> would list
+<code>/etc/default/grub</code> as a changed configuration file.</li>
+<li>Setting
+<code>GRUB_CMDLINE_LINUX="console=tty0 console=ttyS0,115200 earlyprintk=ttyS0,115200 consoleblank=0"</code>
+can cause issues:
+<ul>
+<li>Security concerns?</li>
+<li>Systemd log spam inside VirtualBox:</li>
+</ul></li>
+</ul></li>
+</ul>
+<pre><code>serial-getty@ttyS0.service: Succeeded.
+serial-getty@ttyS0.service: Service RestartSec=100ms expired, scheduling restart.
+serial-getty@ttyS0.service: Scheduled restart job, restart counter is at 625.
+Stopped Serial Getty on ttyS0.
+Started Serial Getty on ttyS0.
+/dev/ttyS0: not a tty
+serial-getty@ttyS0.service: Succeeded.
+serial-getty@ttyS0.service: Service RestartSec=100ms expired, scheduling restart.
+serial-getty@ttyS0.service: Scheduled restart job, restart counter is at 626.
+Stopped Serial Getty on ttyS0.
+Started Serial Getty on ttyS0.
+/dev/ttyS0: not a tty</code></pre>
+<ul>
+<li>VirtualBox: Adding a virtual disconnected serial console does not
+help either. This causes:
+<ul>
+<li>GRUB boot menu becoming invisible.</li>
+<li>No console output for a long time.</li>
+<li>Extremely slow boot times.</li>
+</ul></li>
+</ul>
+<p>The serial console-related issues were encountered ~5 years ago when
+considering "why not enable a serial console by default inside VM
+images."</p>
+<ul>
+<li>Possible solution: If using a <code>grub-cloud</code>-based
+solution, it may be better to undo the serial console setup.</li>
+<li>Architectural limitations: <code>grub-cloud</code> currently
+supports only a limited set of architectures (Intel/AMD64 and ARM64 at
+the time of writing). Depending on your plans for multi-architecture
+support (as Debian is the universal operating system), this may be a
+limitation.</li>
+</ul>
+<p>Related Debian issues:</p>
+<ul>
+<li>bug report: <code>grub-pc</code> and <code>grub-efi</code>
+co-installability: <a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">grub-efi-amd64:
+Allow concurrent installation of grub-pc and grub-efi-amd64</a></li>
+<li>bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977">grub-cloud-amd64:
+Ships /etc/default/grub, which installers need to be able to
+modify</a></li>
+<li>bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977">grub-cloud-amd64:
+not co-installable with grub-pc due to incompatible /etc/default/grub
+handling</a></li>
+</ul>
+<p>Related Debian pull requests:</p>
+<ul>
+<li><a href="https://salsa.debian.org/grub-team/grub/-/merge_requests/76">Remove
+ucf conffile conflict between grub-pc and grub-efi-{amd64,ia32}</a></li>
+</ul>
+<h3 id="grub-efi_and_grub-pc">grub-efi and grub-pc</h3>
+<ul>
+<li>Debian for grub-pc with grub-efi co-install-ability feature request:
+<a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">Allow
+concurrent installation of grub-pc and grub-efi-amd64</a></li>
+</ul>
+<h1 id="Bootloader-related_Kicksecure_and_Whonix_packages">Bootloader-related
+Kicksecure and Whonix packages</h1>
+<p>The following packages directly affect the bootloader or bootloader
+configuration used by Kicksecure.</p>
+<h3 id="live-config-dist">live-config-dist</h3>
+<ul>
+<li>Purpose: Used to provide installer and live ISO configuration.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Sets the distro name and version shown on the boot menu of the live
+ISO.</li>
+<li>Ensures a menu entry for accessing UEFI firmware settings is added
+to the live ISO.</li>
+<li>Ensures the GRUB fallback bootloader is properly installed.</li>
+<li>Assists with initial bootloader installation on machines installed
+from the ISO.</li>
+</ul></li>
+</ul>
+<h3 id="dist-base-files">dist-base-files</h3>
+<ul>
+<li>Provides base configuration used by both Kicksecure and Whonix.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Provides customized versions of the grub-mkconfig scripts in order
+to reorganize the bootloader menu so that normal boot modes appear at
+the top, and "Advanced options" boot modes appear at the bottom.</li>
+<li>Provides common files for the Kicksecure and Whonix GRUB
+themes.</li>
+<li>For VM images (not ISO-installed systems), overrides non-ideal GRUB
+bootloader settings from grub-cloud, putting the kernel in quiet mode
+and disabling the serial console.</li>
+</ul></li>
+</ul>
+<h3 id="grub-live">grub-live</h3>
+<ul>
+<li>Provides a live boot mode. Changes made to the root filesystem in
+this mode are ephemeral and will be lost on reboot.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Adds entries to the boot menu for booting in live mode.</li>
+<li>Adds additional debugging info to the output of grub-mkconfig.</li>
+</ul></li>
+</ul>
+<h3 id="serial-console-enable">serial-console-enable</h3>
+<ul>
+<li>Adds a TTY that can be accessed via the serial console.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Enables GRUB bootloader serial console output.</li>
+<li>Adds kernel parameters to the Linux kernel command line to enable a
+TTY on the serial console.</li>
+</ul></li>
+</ul>
+<h3 id="security-misc">security-misc</h3>
+<ul>
+<li>Enables a plethora of hardening features to increase the security of
+Kicksecure and Whonix.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Enables strong CPU vulnerability mitigations via the kernel command
+line.</li>
+<li>Enables several general kernel hardening features via the kernel
+command line.</li>
+<li>Puts the kernel into quiet logging mode via kernel parameters to
+avoid leaking sensitive info on the console during boot.</li>
+<li>Disables Dracut-based recovery features via kernel parameters to
+make it more difficult to get a root shell improperly.</li>
+</ul></li>
+</ul>
+<h3 id="usability-misc">usability-misc</h3>
+<ul>
+<li>Provides miscellaneous usability improvements for Kicksecure.</li>
+<li>Effects on bootloader: Sets the default display resolution during
+early boot to 1024x768. (Note that this is NOT a hard limit; the
+end-user can set their resolution to whatever they want once the system
+is booted.)</li>
+</ul>
+<h3 id="debug-misc">debug-misc</h3>
+<ul>
+<li>Enables a wide variety of debugging features. Not installed by
+default and should NOT be installed on systems where security is a
+concern.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Removes kernel parameters that would otherwise disable message
+printing on the console during early boot.</li>
+<li>Enables verbose debugging output in initramfs-tools, dracut,
+systemd, and the Linux kernel via kernel parameters.</li>
+<li>Disables SELinux enforcement via a kernel parameter. Kicksecure
+itself doesn't use SELinux by default, but debug-misc may be used on
+some other distro or a user might enable SELinux later, which could
+interfere with debugging.</li>
+</ul></li>
+</ul>
+<h3 id="kicksecure-base-files">kicksecure-base-files</h3>
+<ul>
+<li>Provides base configuration specific to Kicksecure.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Sets the distro name shown on the boot menu of installed
+systems.</li>
+<li>Provides the Kicksecure-specific components of the GRUB theme.</li>
+<li>Sets the GRUB theme in GRUB itself.</li>
+<li>Sets the screen resolution for the GRUB menu to 1280x720 on EFI
+systems, and 1024x768 on BIOS systems.</li>
+</ul></li>
+</ul>
+<h3 id="user-sysmaint-split">user-sysmaint-split</h3>
+<ul>
+<li>Prevents standard user accounts from using privilege escalation
+tools to obtain root and provides a special sysmaint boot mode in which
+root access can be obtained.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Adds a boot entry for booting into sysmaint session.</li>
+<li>Adds a boot entry for uninstalling user-sysmaint-split quickly and
+with minimal effort.</li>
+</ul></li>
+</ul>
+<h3 id="whonix-base-files">whonix-base-files</h3>
+<ul>
+<li>Whonix-only. Provides base configuration specific to Whonix.</li>
+<li>Effects on bootloader: Sets the distro name shown on the boot menu
+of installed systems to a generic "Whonix" value. This is usually
+overridden by one of anon-ws-base-files or anon-gw-base-files.</li>
+</ul>
+<h3 id="anon-ws-base-files">anon-ws-base-files</h3>
+<ul>
+<li>Whonix-only. Provides base configuration specific to
+Whonix-Workstation.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Sets the distro name shown on the boot menu of installed
+systems.</li>
+<li>Provides the Whonix-Workstation-specific components of the GRUB
+theme.</li>
+<li>Sets the GRUB theme in GRUB itself.</li>
+<li>Sets the screen resolution for the GRUB menu to 1280x720 on EFI
+systems, and 1024x768 on BIOS systems.</li>
+</ul></li>
+</ul>
+<h3 id="anon-gw-base-files">anon-gw-base-files</h3>
+<ul>
+<li>Whonix-only. Provides base configuration specific to
+Whonix-Gateway.</li>
+<li>Effects on bootloader:
+<ul>
+<li>Sets the distro name shown on the boot menu of installed
+systems.</li>
+<li>Provides the Whonix-Gateway-specific components of the GRUB
+theme.</li>
+<li>Sets the GRUB theme in GRUB itself.</li>
+<li>Sets the screen resolution for the GRUB menu to 1280x720 on EFI
+systems, and 1024x768 on BIOS systems.</li>
+</ul></li>
+</ul>
+<h2 id="Live_ISO_GRUB_configuration">Live ISO GRUB configuration</h2>
+<p>derivative-maker sets a custom GRUB configuration for Kicksecure live
+ISOs. This configuration is stored under <a href="https://github.com/derivative-maker/derivative-maker/tree/master/live-build-data/grub-config">derivative-maker/live-build-data/grub-config</a>.
+The files in this directory are enumerated below, along with the job
+each one performs.</p>
+<ul>
+<li>config.cfg
+<ul>
+<li>Provides base GRUB config setup. Loads fonts, video drivers, and the
+theme for GRUB, among other things.</li>
+</ul></li>
+<li>grub.cfg
+<ul>
+<li>Template configuration file into which live-build inserts boot menu
+information. Provides menu entries for live boot, debian-installer (if
+applicable - currently this is not applicable to Kicksecure's ISOs), and
+launchers for utilities like memtest, firmware setup, and boot media
+checksumming.</li>
+</ul></li>
+<li>install_gui.cfg
+<ul>
+<li>Only applicable when debian-installer is enabled (currently it is
+not for Kicksecure). Provides boot modes that launch either the GUI or
+text-mode Debian installer when debian-installer is enabled and GUI mode
+is selected.</li>
+</ul></li>
+<li>install_start_gui.cfg
+<ul>
+<li>Vestigial, copied from the base live GRUB config in live-build.
+Unused by Kicksecure even if debian-installer is enabled.</li>
+</ul></li>
+<li>install_start_text.cfg
+<ul>
+<li>Vestigial, copied from the base live GRUB config in live-build.
+Unused by Kicksecure even if debian-installer is enabled.</li>
+</ul></li>
+<li>install_text.cfg
+<ul>
+<li>Only applicable when debian-installer is enabled (currently it is
+not for Kicksecure). Provides boot modes that launch the text-mode
+Debian installer when debian-installer is enabled and GUI mode is
+disabled.</li>
+</ul></li>
+<li>memtest.cfg
+<ul>
+<li>Provides boot modes for launching Memtest86+.</li>
+</ul></li>
+<li>splash.svg
+<ul>
+<li>Provides the background image for the GRUB splash screen used on the
+live ISO.</li>
+</ul></li>
+<li>theme.cfg
+<ul>
+<li>Loads the GRUB theme from live-theme/theme.txt. Also provides a
+fallback default theme if this fails for some reason.</li>
+</ul></li>
+<li>live-theme/theme.txt
+<ul>
+<li>Provides dynamic parts of the GRUB theme. Specifies the colors and
+positions of UI elements, and includes a progress bar indicating how
+much time the user has to react before GRUB automatically boots the
+first boot mode listed in the ISO's boot menu.</li>
+</ul></li>
+</ul>
+<h1 id="Calamares">Calamares</h1>
+<ul>
+<li><a href="https://github.com/calamares/calamares/pull/2422">Prototype
+implementation of BIOS+UEFI boot support</a></li>
+</ul>
+<h1 id="Multiple_Bootloader_Maintenance_Burden">Multiple Bootloader
+Maintenance Burden</h1>
+<p><blockquote><p>Supporting another boot loader comes with a
+cost.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
+and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+their motivation to add support for systemd-boot</span></p></blockquote></p>
+<h1 id="systemd-boot">systemd-boot</h1>
+<h2 id="systemd-boot_-_Limited_Architecture_Support">systemd-boot -
+Limited Architecture Support</h2>
+<p>At time of writing, systemd-boot as can be seen on <a href="https://packages.debian.org/testing/systemd-boot">https://packages.debian.org/testing/systemd-boot</a>
+supported only the following architectures: <code>amd64</code>
+<code>arm64</code> <code>armhf</code> <code>i386</code>
+<code>riscv64</code></p>
+<h2 id="systemd-boot_-_random_seed">systemd-boot - random seed</h2>
+<ul>
+<li><a href="https://uapi-group.org/specifications/specs/boot_loader_specification/">https://uapi-group.org/specifications/specs/boot_loader_specification/</a></li>
+<li><a href="https://systemd.io/BOOT_LOADER_INTERFACE/">https://systemd.io/BOOT_LOADER_INTERFACE/</a></li>
+<li><code>LoaderSystemToken</code></li>
+</ul>
+<h2 id="systemd-boot_-_SecureBoot_Support">systemd-boot - SecureBoot
+Support</h2>
+<ul>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725</a></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202</a></li>
+<li>TODO: What is the latest status? Does systemd-boot in Debian support
+SecureBoot yet?</li>
+</ul>
+<h1 id="RPi">RPi</h1>
+<ul>
+<li><a href="https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html">https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html</a></li>
+</ul>
+<h1 id="misc">misc</h1>
+<ul>
+<li><a href="https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout">https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout</a></li>
+<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a></li>
+</ul>
+<h1 id="keyboard_layout_issue">keyboard layout issue</h1>
+<ul>
+<li><a href="https://github.com/calamares/calamares/issues/1772">https://github.com/calamares/calamares/issues/1772</a></li>
+<li><a href="https://github.com/calamares/calamares/issues/1726">https://github.com/calamares/calamares/issues/1726</a></li>
+<li><a href="https://github.com/calamares/calamares/issues/1203">https://github.com/calamares/calamares/issues/1203</a></li>
+<li><a href="https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1">https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1</a></li>
+<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a></li>
+</ul>
+<h1 id="Kicksecure_Specific">Kicksecure Specific</h1>
+<h2 id="GRUB_-_File_Names">GRUB - File Names</h2>
+<ul>
+<li><span class="code-select inline-style">/etc/grub.d/10_00_linux_dist</span>
+<ul>
+<li><span class="code-select inline-style">/etc/grub.d/10_linux</span>
+has been forked by <a href="https://github.com/Kicksecure/dist-base-files"><code>dist-base-files</code></a>
+<ul>
+<li><a href="https://github.com/Kicksecure/dist-base-files/blob/master/etc/grub.d/10_00_linux_dist"><code>/etc/grub.d/10_00_linux_dist</code></a></li>
+</ul></li>
+</ul></li>
+<li><span class="code-select inline-style">/etc/grub.d/10_20_linux_live</span>
+<ul>
+<li>part of <a href="../../Grub-live/">grub-live</a>
+<ul>
+<li><a href="https://github.com/Kicksecure/grub-live"><code>grub-live</code></a></li>
+<li>legacy file name: <code>/etc/grub.d/11_linux_live</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</h2>
+<p>File
+<span class="code-select inline-style">/etc/default/grub.d/20_dist-base-files.cfg</span>
+is used to undo the opinionated default configuration set by the Debian
+package <a href="./#grub-cloud_package">grub-cloud package</a>.</p>
+<p>Why is the folder <code>/usr/share/derivative-base-files</code> used?
+Why is the file copied using derivative-maker during the build process?
+Why not simply ship the file as
+<code>/etc/default/grub.d/20_dist-base-files.cfg</code> as part of
+package <code>dist-base-files</code>? Because it is not applicable to
+all image creation and installation methods. This should only be done
+when building a VM image that uses grub-cloud (which is utilized by
+<code>grml-debootstrap</code>).</p>
+<p><u>VM images:</u></p>
+<p>File <a href="https://github.com/Kicksecure/dist-base-files/blob/master/usr/share/derivative-base-files/20_dist-base-files.cfg"><code>/usr/share/derivative-base-files/20_dist-base-files.cfg</code></a>
+is copied by derivative-maker during the build process to
+<code>/etc/default/grub.d/20_dist-base-files.cfg</code>.</p>
+<p><u>Kicksecure's ISO:</u></p>
+<p>The ISO does not need
+<code>/etc/default/grub.d/20_dist-base-files.cfg</code> because it does
+not use <code>grub-cloud</code>. (The ISO is build using
+<code>live-build</code>, not <code>grml-debootstrap</code>.)</p>
+<p><u>Calamares:</u></p>
+<p>The installer used by Kicksecure's ISO, Calamares, edits the file
+<code>/etc/default/grub</code> by adding <code>rd.luks.uuid</code> to
+<code>GRUB_CMDLINE_LINUX_DEFAULT</code>. For example:</p>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&#39;quiet rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e&#39;</code></pre>
+<p>If the file <code>/etc/default/grub.d/20_dist-base-files.cfg</code>
+were shipped unconditionally, it might break the boot process.</p>
+<h1 id="grub_config_file_-_calamares_-_grub_unlocks_full_disk_encrypted_hard_drive">grub
+config file - calamares - grub unlocks full disk encrypted hard
+drive</h1>
+<pre><code>#
+# DO NOT EDIT THIS FILE
+#
+# It is automatically generated by grub-mkconfig using templates
+# from /etc/grub.d and settings from /etc/default/grub
+#
+
+### BEGIN /etc/grub.d/00_header ###
+if [ -s $prefix/grubenv ]; then
+  set have_grubenv=true
+  load_env
+fi
+if [ &quot;${next_entry}&quot; ] ; then
+   set default=&quot;${next_entry}&quot;
+   set next_entry=
+   save_env next_entry
+   set boot_once=true
+else
+   set default=&quot;0&quot;
+fi
+
+if [ x&quot;${feature_menuentry_id}&quot; = xy ]; then
+  menuentry_id_option=&quot;--id&quot;
+else
+  menuentry_id_option=&quot;&quot;
+fi
+
+export menuentry_id_option
+
+if [ &quot;${prev_saved_entry}&quot; ]; then
+  set saved_entry=&quot;${prev_saved_entry}&quot;
+  save_env saved_entry
+  set prev_saved_entry=
+  save_env prev_saved_entry
+  set boot_once=true
+fi
+
+function savedefault {
+  if [ -z &quot;${boot_once}&quot; ]; then
+    saved_entry=&quot;${chosen}&quot;
+    save_env saved_entry
+  fi
+}
+function load_video {
+  if [ x$feature_all_video_module = xy ]; then
+    insmod all_video
+  else
+    insmod efi_gop
+    insmod efi_uga
+    insmod ieee1275_fb
+    insmod vbe
+    insmod vga
+    insmod video_bochs
+    insmod video_cirrus
+  fi
+}
+
+if [ x$feature_default_font_path = xy ] ; then
+   font=unicode
+else
+insmod part_msdos
+insmod cryptodisk
+insmod luks
+insmod gcry_rijndael
+insmod gcry_rijndael
+insmod gcry_sha256
+insmod ext2
+cryptomount -u bbbe98fd58fa4ab9ba3418f1c2e72c94
+set root=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;
+if [ x$feature_platform_search_hint = xy ]; then
+  search --no-floppy --fs-uuid --set=root --hint=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;  bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+else
+  search --no-floppy --fs-uuid --set=root bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+fi
+    font=&quot;/usr/share/grub/unicode.pf2&quot;
+fi
+
+if loadfont $font ; then
+  set gfxmode=auto
+  load_video
+  insmod gfxterm
+  set locale_dir=$prefix/locale
+  set lang=en_US
+  insmod gettext
+fi
+terminal_output gfxterm
+if [ &quot;${recordfail}&quot; = 1 ] ; then
+  set timeout=30
+else
+  if [ x$feature_timeout_style = xy ] ; then
+    set timeout_style=menu
+    set timeout=5
+  # Fallback normal timeout code in case the timeout_style feature is
+  # unavailable.
+  else
+    set timeout=5
+  fi
+fi
+### END /etc/grub.d/00_header ###
+
+### BEGIN /etc/grub.d/05_debian_theme ###
+insmod part_msdos
+insmod cryptodisk
+insmod luks
+insmod gcry_rijndael
+insmod gcry_rijndael
+insmod gcry_sha256
+insmod ext2
+cryptomount -u bbbe98fd58fa4ab9ba3418f1c2e72c94
+set root=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;
+if [ x$feature_platform_search_hint = xy ]; then
+  search --no-floppy --fs-uuid --set=root --hint=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;  bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+else
+  search --no-floppy --fs-uuid --set=root bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+fi
+insmod png
+if background_image /usr/share/desktop-base/emerald-theme/grub/grub-4x3.png; then
+  set color_normal=white/black
+  set color_highlight=black/white
+else
+  set menu_color_normal=cyan/blue
+  set menu_color_highlight=white/blue
+fi
+### END /etc/grub.d/05_debian_theme ###
+
+### BEGIN /etc/grub.d/10_linux ###
+function gfxmode {
+    set gfxpayload=&quot;${1}&quot;
+}
+set linux_gfx_mode=
+export linux_gfx_mode
+menuentry &#39;Debian GNU/Linux&#39; --class debian --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-simple-bdad388c-f3f2-4f53-9f70-04efe2bc60eb&#39; {
+    load_video
+    insmod gzio
+    if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+    insmod part_msdos
+    insmod cryptodisk
+    insmod luks
+    insmod gcry_rijndael
+    insmod gcry_rijndael
+    insmod gcry_sha256
+    insmod ext2
+    cryptomount -u bbbe98fd58fa4ab9ba3418f1c2e72c94
+    set root=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;
+    if [ x$feature_platform_search_hint = xy ]; then
+      search --no-floppy --fs-uuid --set=root --hint=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;  bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+    else
+      search --no-floppy --fs-uuid --set=root bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+    fi
+    echo    &#39;Loading Linux 6.1.0-9-amd64 ...&#39;
+    linux   /boot/vmlinuz-6.1.0-9-amd64 root=UUID=bdad388c-f3f2-4f53-9f70-04efe2bc60eb ro  quiet cryptdevice=UUID=bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94:luks-bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94 root=/dev/mapper/luks-bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94 splash resume=/dev/mapper/luks-e17af10a-e7fc-489c-943f-1713e5ad292a
+    echo    &#39;Loading initial ramdisk ...&#39;
+    initrd  /boot/initrd.img-6.1.0-9-amd64
+}
+submenu &#39;Advanced options for Debian GNU/Linux&#39; $menuentry_id_option &#39;gnulinux-advanced-bdad388c-f3f2-4f53-9f70-04efe2bc60eb&#39; {
+    menuentry &#39;Debian GNU/Linux, with Linux 6.1.0-9-amd64&#39; --class debian --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-9-amd64-advanced-bdad388c-f3f2-4f53-9f70-04efe2bc60eb&#39; {
+        load_video
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod cryptodisk
+        insmod luks
+        insmod gcry_rijndael
+        insmod gcry_rijndael
+        insmod gcry_sha256
+        insmod ext2
+        cryptomount -u bbbe98fd58fa4ab9ba3418f1c2e72c94
+        set root=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;
+        if [ x$feature_platform_search_hint = xy ]; then
+          search --no-floppy --fs-uuid --set=root --hint=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;  bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+        else
+          search --no-floppy --fs-uuid --set=root bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+        fi
+        echo    &#39;Loading Linux 6.1.0-9-amd64 ...&#39;
+        linux   /boot/vmlinuz-6.1.0-9-amd64 root=UUID=bdad388c-f3f2-4f53-9f70-04efe2bc60eb ro  quiet cryptdevice=UUID=bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94:luks-bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94 root=/dev/mapper/luks-bbbe98fd-58fa-4ab9-ba34-18f1c2e72c94 splash resume=/dev/mapper/luks-e17af10a-e7fc-489c-943f-1713e5ad292a
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /boot/initrd.img-6.1.0-9-amd64
+    }
+    menuentry &#39;Debian GNU/Linux, with Linux 6.1.0-9-amd64 (recovery mode)&#39; --class debian --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-9-amd64-recovery-bdad388c-f3f2-4f53-9f70-04efe2bc60eb&#39; {
+        load_video
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod cryptodisk
+        insmod luks
+        insmod gcry_rijndael
+        insmod gcry_rijndael
+        insmod gcry_sha256
+        insmod ext2
+        cryptomount -u bbbe98fd58fa4ab9ba3418f1c2e72c94
+        set root=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;
+        if [ x$feature_platform_search_hint = xy ]; then
+          search --no-floppy --fs-uuid --set=root --hint=&#39;cryptouuid/bbbe98fd58fa4ab9ba3418f1c2e72c94&#39;  bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+        else
+          search --no-floppy --fs-uuid --set=root bdad388c-f3f2-4f53-9f70-04efe2bc60eb
+        fi
+        echo    &#39;Loading Linux 6.1.0-9-amd64 ...&#39;
+        linux   /boot/vmlinuz-6.1.0-9-amd64 root=UUID=bdad388c-f3f2-4f53-9f70-04efe2bc60eb ro single
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /boot/initrd.img-6.1.0-9-amd64
+    }
+}
+
+### END /etc/grub.d/10_linux ###
+
+### BEGIN /etc/grub.d/20_linux_xen ###
+
+### END /etc/grub.d/20_linux_xen ###
+
+### BEGIN /etc/grub.d/30_os-prober ###
+### END /etc/grub.d/30_os-prober ###
+
+### BEGIN /etc/grub.d/30_uefi-firmware ###
+### END /etc/grub.d/30_uefi-firmware ###
+
+### BEGIN /etc/grub.d/40_custom ###
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the &#39;exec tail&#39; line above.
+### END /etc/grub.d/40_custom ###
+
+### BEGIN /etc/grub.d/41_custom ###
+if [ -f  ${config_directory}/custom.cfg ]; then
+  source ${config_directory}/custom.cfg
+elif [ -z &quot;${config_directory}&quot; -a -f  $prefix/custom.cfg ]; then
+  source $prefix/custom.cfg
+fi
+### END /etc/grub.d/41_custom ###</code></pre>
+<h1 id="uboot">uboot</h1>
+<p><a href="https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system">https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system</a></p>
+<h1 id="ARM">ARM</h1>
+<h2 id="ARM_-_Generally">ARM - Generally</h2>
+<p>The situation used to be, and for the most part still is, as
+follows:</p>
+<ul>
+<li>Each SBC (single-board computer) usually has a different boot
+process.</li>
+<li>Most SBCs require either Debian forks or Armbian.</li>
+<li>There was a Snapdragon X Elite dev board with EFI boot support, so
+standard Debian could in theory be run. No bootloader/image
+modifications required. However, the Snapdragon X Elite dev board was
+deprecated upstream. In any case, it likely would have had poor or no
+Linux support initially.</li>
+</ul>
+<p>The current situation may improve in the future, thanks to:</p>
+<ul>
+<li>Arm SystemReady Compliance Program</li>
+<li>Arm Base Boot Requirements (BBR)</li>
+<li>Arm Base Boot Security Requirements (BBSR)</li>
+<li>In the future, it might be useful to look for terminology such as
+"SystemReady IR compliant UEFI BIOS".</li>
+</ul>
+<p>This is only theoretical research.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong></p>
+<ul>
+<li>The Kicksecure project does not vet or endorse any of these
+services. No guarantees are made regarding their trustworthiness,
+reliability, or policies.</li>
+<li><a href="../../Unsupported/">Untested</a> by Kicksecure
+project.</li>
+<li>Use at your own risk.</li>
+<li><a href="../../Transparency/#Third-Party_Policies">Third-Party Policies</a> and <a href="../../Terms_of_Service/#Non-Endorsement">Non-Endorsement</a> apply! See also <a href="../../Transparency/">project transparency</a>.</li>
+</ul>
+</div>
+<p>Some <a href="https://libre.computer/">Libre Computer</a> boards
+support UEFI BIOS. In the <a href="https://libre.computer/products/">Libre Computer product
+finder</a>, check the "UEFI BIOS" filter button. Devices with UEFI BIOS
+and 4 GB RAM as of April 2025:</p>
+<ul>
+<li><a href="https://libre.computer/products/aml-s905d3-cc/">Solitude
+AML-S905D3-CC</a> (Amlogic)</li>
+<li><a href="https://libre.computer/products/aml-a311d-cc/">Alta
+AML-A311D-CC</a> (Amlogic)</li>
+<li><a href="https://libre.computer/products/roc-rk3399-pc/">Renegade
+Elite ROC-RK3399-PC</a> (Rockchip RK3399 SoC)</li>
+</ul>
+<p><blockquote><p><strong>Software Support</strong></p>
+<ul>
+<li>Upstream Linux</li>
+<li>Upstream u-boot</li>
+</ul>
+<p><strong>Lifecycle</strong></p>
+<ul>
+<li>10 Years Hardware</li>
+<li>15 Years Software</li>
+</ul></blockquote></p>
+<p>Instead of ARM64, Intel/AMD64 (sometimes referred to as x86) Mini-PCs
+might be a viable alternative, as these nowadays come with UEFI support
+by default, thus avoiding bootloader issues.</p>
+<p>Bootloader issues aside, whether the architecture is Intel/AMD64 or
+ARM64, if Linux and/or Debian is supported (can run on that hardware)
+must always be verified before purchase.</p>
+<h2 id="Raspberry_Pi_-_RPi">Raspberry Pi - RPi</h2>
+<h3 id="Bootloader_Information_-_RPi">Bootloader Information - RPi</h3>
+<h4 id="RPi_Bootloader">RPi Bootloader</h4>
+<p>The RPi has its own custom boot protocol, using an internal
+bootloader in the Broadcom GPU.</p>
+<ul>
+<li><a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-boot-eeprom">Raspberry
+Pi boot EEPROM</a></li>
+<li><a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#bootloader_update_stable">Update
+the bootloader</a></li>
+</ul>
+<p>Debian images use direct kernel boot via that bootloader.</p>
+<p><blockquote><p><code>rpi-eeprom</code><br />
+This repository contains the scripts and pre-compiled binaries used to
+create the <code>rpi-eeprom</code> package, which is used to update the
+Raspberry Pi 4 and Raspberry Pi 5 bootloader EEPROM
+images.<span class="blockquote-context"><a href="https://github.com/raspberrypi/rpi-eeprom">rpi-eeprom on
+GitHub</a></span></p></blockquote></p>
+<p>That boot protocol simply loads an <u>o</u>perating <u>s</u>ystem
+(OS) from a fixed location. The OS can be u-boot, UEFI EDK2, Linux, or
+anything else compatible.</p>
+<p>The RPi bootloader can be configured using <a href="https://www.raspberrypi.com/documentation/computers/config_txt.html"><code>/boot/firmware/config.txt</code></a>.</p>
+<p>The RPi bootloader is not the same as u-boot, but it can chainload
+u-boot.</p>
+<p><a href="https://raspberrypi.stackexchange.com/questions/124789/how-to-change-raspberry-pis-boot-mode-from-sd-card-to-usb-flash-drive">How
+to change Raspberry Pi's boot mode from SD Card to USB flash
+drive?</a></p>
+<h5 id="Raspberry_Pi_EEPROM_Manager_-_rpi-eeprom-mgr">Raspberry Pi
+EEPROM Manager - rpi-eeprom-mgr</h5>
+<p><img src="../../../media/Raspberry_Pi_EEPROM_Manager_(rpi-eeprom-mgr).png.webp" alt="Raspberry Pi EEPROM Manager (rpi-eeprom-mgr)" /></p>
+<p><blockquote><p><strong>Raspberry Pi EEPROM Manager</strong>
+(<code>rpi-eeprom-mgr</code>) is a menu-driven front-end for
+<code>rpi-eeprom-update</code>.</p>
+<p>Available actions include:</p>
+<ul>
+<li>Display EEPROM Status</li>
+<li>Update Bootloader EEPROM</li>
+<li>Edit Bootloader Configuration</li>
+<li>Update VL805 (USB) EEPROM</li>
+<li>Remove Pending Update</li>
+<li>Change Firmware Directory</li>
+<li>Disable Automatic EEPROM Updates</li>
+<li>Enable Automatic EEPROM Updates</li>
+<li>Automatic EEPROM Update Status</li>
+<li>Display/Change Boot Order</li>
+<li>Update <code>rpi-eeprom</code> Package</li>
+</ul>
+<p>All actions include a confirmation prompt before being
+executed.<span class="blockquote-context"><a href="https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347">https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347</a></span></p></blockquote></p>
+<h4 id="u-boot_on_RPi">u-boot on RPi</h4>
+<ul>
+<li><code>u-boot</code> is <u>not</u> a strict requirement to boot RPi.
+<ul>
+<li>It is possible to boot RPi <u>without</u> <code>u-boot</code>.</li>
+<li>RPi can directly boot the Linux kernel (or other compatible
+operating systems, if any) using its factory default RPi Bootloader, as
+mentioned above.</li>
+</ul></li>
+<li>It might be preferable to hide <code>u-boot</code> from the user to
+avoid the need for manual configuration, due to relatively low
+familiarity compared to GRUB.</li>
+<li><code>u-boot</code> is very likely required to enable (chainload) <a href="../../Grub/">GRUB</a>.
+<ul>
+<li>No version of GRUB that can be chainloaded directly by the factory
+default RPi Bootloader seems to exist.</li>
+<li>No documentation on how to chainload GRUB using the RPi Bootloader
+could be found by the author of this wiki page.</li>
+<li>See also <a href="#grub-uboot_on_RPi">#grub-uboot
+on RPi</a>.</li>
+</ul></li>
+<li>Miscellaneous on memory addresses:
+<ul>
+<li><a href="https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses">https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses</a></li>
+</ul></li>
+<li>PDF: <a href="https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/">UEFI
+on Top of U-Boot - Standardizing Boot Flow For ARM Boards</a></li>
+<li>Debian <a href="https://packages.debian.org/u-boot-rpi"><code>u-boot-rpi</code></a>
+package:
+<ul>
+<li><code>sudo apt-get install u-boot-rpi</code></li>
+</ul></li>
+</ul>
+<p><blockquote><pre><code>Installation
+
+The Raspberry Pi targets can be installed by copying u-boot.bin to the
+FAT partition of the Raspberry Pi boot firmware:
+
+  mkdir -p /boot/fat
+  mount /dev/mmcblk0p1 /boot/fat
+  cp -vb /usr/lib/u-boot/TARGET/u-boot.bin /boot/fat/
+
+Then specify the u-boot.bin as the kernel to load in config.txt on the
+FAT partition:
+
+  kernel u-boot.bin
+
+It should then support booting off of MMC and USB devices with serial
+console or HDMI with USB keyboard.</code></pre>
+<p><span class="blockquote-context">Debian Salsa: <a href="https://salsa.debian.org/debian/u-boot/-/blob/debian/latest/debian/u-boot-rpi.README.Debian?ref_type=heads">u-boot-rpi.README.Debian</a></span></p></blockquote></p>
+<ul>
+<li><a href="https://docs.u-boot.org/en/stable/develop/uefi/uefi.html">u-boot
+has UEFI-alike functionality</a> that can be used to chainload
+<code>grub-efi</code>.
+<ul>
+<li>Is this enabled by default in Debian? Yes.</li>
+</ul></li>
+</ul>
+<pre><code>CONFIG_EFI_LOADER=y</code></pre>
+<h4 id="GRUB_2">GRUB</h4>
+<h5 id="Rationale_for_using_GRUB_on_RPi">Rationale for using GRUB on
+RPi</h5>
+<ul>
+<li>Using GRUB may be desirable because standard Debian kernel upgrades
+will work out of the box.</li>
+<li>A familiar boot menu, kernel parameter editing, and configuration
+interface can be used.</li>
+<li>Kernel parameters in the folder <code>/etc/default/grub.d</code>
+would be supported.
+<ul>
+<li>Kernel parameters set by <a href="../../Security-misc/">security-misc</a> and <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a> would likely work out of
+the box.</li>
+</ul></li>
+<li>GRUB boot menu entries in the folder <code>/etc/grub.d</code> would
+be supported.
+<ul>
+<li><a href="../../Grub-live/">grub-live</a> and <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a> would likely work out of
+the box.</li>
+</ul></li>
+</ul>
+<h5 id="grub-uboot_on_RPi">grub-uboot on RPi</h5>
+<p><a href="https://packages.debian.org/grub-uboot">grub-uboot</a> is
+available only for the architectures <code>armel</code> and
+<code>armhf</code>. Therefore, it may not be usable on RPi 4 and RPi 5,
+which are <code>arm64</code>. These boards also support 32-bit ARM code,
+however this does not guarantee <code>grub-uboot</code> would work on
+them.</p>
+<p>There are few public discussions on using <code>grub-uboot</code>.
+Related: <a href="https://forum.odroid.com/viewtopic.php?t=26894">ODROID
+forum: HOWTO - Using GRUB as bootloader (second stage after
+U-Boot)</a></p>
+<p><blockquote><p>GRUB actually has an arm-uboot backend for 32-bit ARM. There are two
+problems with this, apart from not being implemented for arm64: 1) GRUB
+hardcodes the physical address of RAM, making the binary somewhat
+SoC-specific. 2) It relies on an optional API feature of U-Boot, which
+is disabled by default, therefore not build-tested for most targets and
+appeared to be in poor shape. A UEFI implementation could leverage
+U-Boot drivers, while allowing to boot a generic GRUB
+binary.<span class="blockquote-context">PDF: <a href="https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/">https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/</a></span></p></blockquote></p>
+<h5 id="grub-pc_on_RPi">grub-pc on RPi</h5>
+<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-pc"><code>grub-pc</code></a>? No,
+generally not, because <code>grub-pc</code> is for the <code>i386</code>
+architecture only.</p>
+<h5 id="grub-efi-arm64">grub-efi-arm64</h5>
+<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-efi-arm64"><code>grub-efi-arm64</code></a>?
+Yes, <code>grub-efi-arm64</code> can be chainloaded via
+<code>u-boot</code>. This is documented below.</p>
+<h4 id="Secure_Boot_on_RPi">Secure Boot on RPi</h4>
+<p>While RPi upstream does not support UEFI, RPi does support non-UEFI
+Secure Boot according to:</p>
+<ul>
+<li><a href="https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf">https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf</a></li>
+<li><a href="https://github.com/raspberrypi/usbboot#secure-boot">https://github.com/raspberrypi/usbboot#secure-boot</a></li>
+</ul>
+<h4 id="UEFI_on_RPi">UEFI on RPi</h4>
+<ul>
+<li>No EFI support by upstream RPi.</li>
+<li>Community firmware: <a href="https://github.com/pftf/RPi4">EDK2
+Raspberry Pi 4 UEFI firmware</a></li>
+<li>No commits in 2 months as of April 2025, with unmerged
+important-sounding pull requests:
+<ul>
+<li><a href="https://github.com/pftf/RPi4/pull/274">https://github.com/pftf/RPi4/pull/274</a></li>
+<li>This implies it may be broken by upstream changes.</li>
+</ul></li>
+</ul>
+<h3 id="Debian_Support">Debian Support</h3>
+<h4 id="Debian_RPi_Feature_Requests">Debian RPi Feature Requests</h4>
+<h5 id="Debian_RPi_-_use_GRUB_by_default_or_as_option">Debian RPi - use
+GRUB by default or as option</h5>
+<ul>
+<li>RPi: <a href="https://salsa.debian.org/raspi-team/image-specs/-/issues/78">Support
+U-Boot + grub-efi boot flow</a></li>
+<li>raspi-firmware: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102607">Add
+support for U-Boot + grub-arm64-efi boot flow</a></li>
+</ul>
+<h4 id="Debian_Support_-_Raspberry_Pi_5">Debian Support - Raspberry Pi
+5</h4>
+<p>Regarding "real", original Debian (from debian.org) support for RPi
+5:</p>
+<p><blockquote><p>/!\ Currently there is no support to Raspberry Pi 5 as it doesn't
+have enough support in upstream
+Linux.<span class="blockquote-context"><a href="https://wiki.debian.org/RaspberryPiImages">RaspberryPiImages -
+Debian Wiki</a> (April 2025)</span></p></blockquote></p>
+<p>RPi 5 might be supported by Raspberry Pi OS, Armbian, or Ubuntu, but
+that is of less interest in the context of Kicksecure. "Real" Debian
+support is required. Related: <a href="../Operating_System/#Original_Base_Distributions_Only">Original Base Distributions Only</a></p>
+<p><a href="https://salsa.debian.org/raspi-team/image-specs/-/issues/74">https://salsa.debian.org/raspi-team/image-specs/-/issues/74</a></p>
+<h3 id="Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">Booting
+Debian Trixie with GRUB + u-boot on Raspberry Pi 4</h3>
+<p>This is preliminary work towards implementing the boot process design
+laid out below.</p>
+<p><u>Note:</u> This is informational for developers only. Should RPi
+support for downloadable Kicksecure images or support for building from
+source code become available, users are not expected to read or apply
+any of the following.</p>
+<p>The process, briefly, looks like this:</p>
+<ol>
+<li>Flash a Debian Trixie RPi image to an SD card, and boot it.</li>
+<li>Install all upgrades.</li>
+<li>Install <code>u-boot-rpi</code> and
+<code>grub-efi-arm64</code>.</li>
+<li>Edit fstab and make it so that <code>/boot/firmware</code> is also
+mounted at <code>/boot/efi</code>.</li>
+<li>Mount <code>/boot/efi</code> and install the GRUB bootloader.</li>
+<li>Reconfigure the RPi bootloader to load <code>u-boot</code> rather
+than a Linux kernel.</li>
+<li>Reboot the Pi.</li>
+<li>Use GRUB to boot like normal.</li>
+</ol>
+<p>Much of the above was reverse-engineered from Fedora 41's Raspberry
+Pi image.</p>
+<h4 id="Obtaining_and_flashing_the_image">Obtaining and flashing the
+image</h4>
+<p>Semi-official Debian images for the Raspberry Pi can be downloaded
+from <a href="https://raspi.debian.net/daily-images/">https://raspi.debian.net/daily-images/</a>.
+Use the Debian Trixie image.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Download the image.</p>
+<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz">https://raspi.debian.net/daily/raspi_4_trixie.img.xz</a></span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Download the hashsum.</p>
+<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256">https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256</a></span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Verify the hashsum.</p>
+<p><span class="code-select">sha256sum -c
+raspi_4_trixie.img.xz.sha256</span></p>
+<p>Read the output and ensure the image passes verification. If
+verification passes, proceed. Otherwise, abort.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Flash the image to an SD card.</p>
+<p><code>Note:</code> Assuming the card is at
+<code>/dev/mmcblk0</code>:</p>
+<p><span class="code-select">xzcat raspi_4_trixie.img.xz | sudo dd
+of=/dev/mmcblk0 bs=4M</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Flush write cache buffers.</p>
+<p><span class="code-select">sync</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Eject the SD card.</p>
+<p>When complete, eject the card.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Install the SD card.</p>
+<p>Insert the SD card into the Raspberry Pi.</p>
+<h4 id="Preparing_the_image">Preparing the image</h4>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Ensure the Pi is <strong>NOT</strong> connected to power yet.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Connect the Pi to an HDMI monitor.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Attach a USB keyboard <strong>to the bottom USB 2.0 port</strong>.</p>
+<p><u>Note:</u> It is very important that you plug the keyboard into the
+correct port. Linux will be able to see the keyboard no matter which USB
+port you plug it into, but <u>u-boot</u> will not recognize it unless it
+is plugged into the bottom USB 2.0 port. The top USB 2.0 port will not
+work.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Connect the Pi to a network source via Ethernet.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Once all peripherals are connected, plug the power adapter into the Pi.
+It will automatically start booting.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+When presented with a login prompt, log in as user <code>root</code>. No
+password is required.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Check and wait for system clock synchronization. The Pi's clock will
+likely be inaccurate because the board lacks a real-time clock.
+systemd-timesyncd is preinstalled and should synchronize the clock
+automatically. Run the following and wait until the time is correct:</p>
+<p><span class="code-select">watch date</span></p>
+<p>Once the date and time are correct, press Ctrl+C.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Install all updates:</p>
+<p><span class="code-select">apt update &amp;&amp; apt -y
+full-upgrade</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+Reboot the Pi.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+After reboot, install <code>u-boot</code> and <code>GRUB</code>:</p>
+<p><span class="code-select">apt install u-boot-rpi
+grub-efi-arm64</span></p>
+<p>We are intentionally installing the EFI GRUB bootloader. u-boot has
+native EFI support built in, and will be able to directly execute this
+bootloader. Do NOT use <code>grub-uboot</code>; it has multiple
+shortcomings.</p>
+<h4 id="Configure_the_image">Configure the image</h4>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Reconfigure the boot firmware partition to be an EFI system
+partition.</p>
+<p>This is necessary for u-boot to persist UEFI variables. You
+<strong>can</strong> skip this step if you do not want persistent UEFI
+variables. However, this will probably cause problems if you ever
+configure a multiboot setup.</p>
+<p><code>Note:</code> Fedora's u-boot has a patch that likely makes this
+step unnecessary; Debian's u-boot does not.</p>
+<p><span class="code-select">fdisk /dev/mmcblk1</span></p>
+<p><span class="code-select"># Command (m for help): t</p>
+<ol>
+<li>Partition number (1,2, default 2):</li>
+</ol>
+<p>1</p>
+<ol>
+<li>Hex code or alias (type L to list all):</li>
+</ol>
+<p>ef</p>
+<ol>
+<li>Command (m for help):</li>
+</ol>
+<p>w</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Configure <code>fstab</code> so that the boot firmware partition is
+mounted under both <code>/boot/firmware</code> and
+<code>/boot/efi</code>.</p>
+<p>This is necessary because the boot firmware partition and ESP
+partition are the same partition in this setup.
+<code>raspi-firmware</code> expects the partition to be mounted at
+<code>/boot/firmware</code> (hardcoded), while <code>grub-install</code>
+expects it under <code>/boot/efi</code> (also appears to be
+hardcoded).</p>
+<p><span class="code-select">nano /etc/fstab</span></p>
+<p>Append the following line to the end of the file:</p>
+<p><span class="code-select">LABEL=RASPIFIRM /boot/efi vfat rw 0
+2</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Install GRUB.</p>
+<p><span class="code-select">mkdir /boot/efi</span></p>
+<p><span class="code-select">mount /boot/efi</span></p>
+<p><span class="code-select">grub-install
+--force-extra-removable</span></p>
+<p><span class="code-select">update-grub</span></p>
+<p><u>Note:</u> GRUB may complain about EFI variables not being
+supported and may tell you that you have to finish configuring GRUB
+manually. Ignore any such warnings. Before booting with u-boot, the
+system will not have EFI variables, so this is expected. Even after
+booting with u-boot, the system will not allow the booted operating
+system to modify its EFI variables, so this behavior will continue and
+is not a problem.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Copy the u-boot binary to the RPi boot firmware partition.</p>
+<p><span class="code-select">cp /usr/lib/u-boot/rpi_arm64/u-boot.bin
+/boot/firmware/u-boot-arm64.bin</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Back up the <code>cmdline.txt</code> and <code>config.txt</code>
+files.</p>
+<p><span class="code-select">cp /boot/firmware/cmdline.txt
+/boot/firmware/cmdline.txt.bak</span></p>
+<p><span class="code-select">cp /boot/firmware/config.txt
+/boot/firmware/config.txt.bak</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Edit <code>config.txt</code>.</p>
+<p><span class="code-select">nano /boot/firmware/config.txt</span></p>
+<p>Set the following options (mostly taken from Fedora's RPi4
+configuration):</p>
+<pre><code>arm_64bit=1
+kernel=u-boot-arm64.bin
+arm_boost=1
+enable_uart=1
+dtparam=audio=on
+camera_auto_detect=0
+display_auto_detect=1
+dtoverlay=vc4-kms-v3d
+max_framebuffers=2
+disable_fw_kms_setup=1
+hdmi_ignore_cec_init=1
+
+[pi4]
+dtoverlay=cma,cma-256</code></pre>
+<p><u>Note:</u> It is not yet known which exact options are required for
+proper operation. A more minimal working config is likely possible.
+However, all of these options might be desirable.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Edit <code>cmdline.txt</code>.</p>
+<p><span class="code-select">nano /boot/firmware/cmdline.txt</span></p>
+<p>Delete all content from the file, and then save it. (It may be safe
+to remove this file entirely, but this is not yet confirmed.)</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Reboot the system.</p>
+<p>You should see a u-boot screen, after which u-boot should
+automatically discover and load GRUB. You can then boot Debian as usual
+from the GRUB menu.</p>
+<h4 id="Load_GRUB_with_u-boot_manually">Load GRUB with u-boot
+manually</h4>
+<p><u>Note:</u> This should no longer be necessary with the above
+instructions. u-boot should automatically discover and start GRUB. This
+section is retained since it has a lot of valuable info about u-boot and
+may be useful for debugging.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Watch for the u-boot logo on screen during startup.</p>
+<p>Start pressing the Esc key repeatedly when the logo appears, until
+you see a <code>U-Boot&gt;</code> prompt.</p>
+<p><u>Note:</u> If this does not happen, your keyboard might be
+connected to the wrong USB port, or u-boot failed to recognize it.
+Ensure the keyboard is plugged into the bottom USB 2.0 port. Try a
+different keyboard if necessary; a wired USB keyboard is known to
+work.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Verify that u-boot can access the SD card:</p>
+<p><span class="code-select">ls mmc 1 /</span></p>
+<p>If this command fails, try:</p>
+<p><span class="code-select">ls mmc 0 /</span></p>
+<p>You should see the contents of the boot partition if it works.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Load the GRUB binary from the EFI directory and boot it:</p>
+<p><span class="code-select">fatload mmc 1 ${kernel_addr_r}
+/EFI/debian/grubaa64.efi</span></p>
+<p><span class="code-select">bootefi ${kernel_addr_r}
+${fdt_addr}</span></p>
+<p>Details on what's happening here:</p>
+<ul>
+<li>The <code>mmc</code> is the *interface* u-boot should look for a
+storage device on. This tells it to try to list files on (or load a file
+from) an MMC device somewhere.</li>
+<li>The <code>1</code> is the zero-indexed device number, so
+<code>mmc 1</code> is the second SD card on the system. (For some reason
+on the Pi used to test this, Debian's u-boot seem to detect the RPi 4's
+SD slot as being the second slot and don't see any first slot at all. I
+have no idea why this is the case.) You <em>can</em> also specify a
+partition here - not specifying a partition means the first partition on
+the device will be used. In our instance, the first partition on mmc 1
+is the boot firmware partition, which is where all the files we care
+about are, so we don't have to specify a partition explicitly.</li>
+<li><code>${kernel_addr_r}</code> is a pre-populated environment
+variable indicating the address at which the kernel should be loaded
+into RAM.</li>
+<li><code>/EFI/debian/grubaa64.efi</code> is the path to the GRUB binary
+on the boot firmware partition.</li>
+<li><code>${fdt_addr}</code> is a pre-populated environment variable
+specifying the address of the flattened device tree prepared by the
+RPi's built-in bootloader. This device tree contains the data needed by
+the kernel to properly identify and use the RPi's hardware.</li>
+<li>The <code>fatload</code> command loads the specified file into the
+specified address in RAM. We don't have to guess at the right address,
+because thankfully something lower in the boot stack gives us the right
+address out of the box.</li>
+<li>The <code>bootefi</code> command boots the executable at the
+specified address as a UEFI executable. The GRUB bootloader we installed
+is a UEFI executable, so this will execute GRUB the same way UEFI
+firmware would.</li>
+<li>Note that it is possible to load device trees manually, and the
+necessary files for doing so are present in the boot firmware partition.
+However, this should be avoided - the RPi's built-in bootloader already
+loads these for us, and loading them manually in an incorrect manner
+will result in hardware misbehaving. In particular, if all you load is
+the core RPi 4 device tree, the screen resolution may be incorrect once
+the system is fully booted. You can use <code>fatload</code> to load a
+device tree the same way you'd load a kernel, however you'll want to
+load it into <code>${fdt_addr_r}</code> rather than
+<code>${kernel_addr_r}</code>. When running the <code>bootefi</code>
+command, specify <code>${fdt_addr_r}</code> rather than
+<code>${fdt_addr}</code> as the device tree address. There is a way of
+manually loading device tree overlays as well, but this has not yet been
+investigated. Again, <strong>this should not be necessary in most
+instances, don't do this unless you absolutely have to and know what
+you're doing.</strong> Just use <code>${fdt_addr}</code> and you won't
+have to worry about device trees at all.</li>
+</ul>
+<p>After running the <code>bootefi</code> command, u-boot will appear to
+hang for some time, then a GRUB prompt will appear. At this point you
+can use GRUB the way you normally would.</p>
+<h4 id="Notes">Notes</h4>
+<ul>
+<li>The <code>raspi-firmware</code> package ships config at
+<code>/etc/kernel/postinst.d/z50-raspi-firmware</code>, which does
+roughly the following:
+<ul>
+<li>Finds and copies device tree files to <code>/boot/firmware</code>
+(necessary for the OS to function properly)</li>
+<li>Copies kernel and initramfs files from the <code>/boot</code>
+partition to <code>/boot/firmware</code> (unnecessary for our use case,
+takes up needless space in <code>/boot/firmware</code>)</li>
+<li>Generates the <code>/boot/firmware/config.txt</code> and
+<code>/boot/firmware/cmdline.txt</code> files (detrimental to our use
+case, will disable <code>u-boot</code> and override the configuration
+put in place earlier)</li>
+<li>Only one of these actions is essential; the other two should be
+avoided. Therefore, in an automated implementation of
+<code>u-boot</code>/<code>GRUB</code> support, this file should be
+displaced and replaced with something that only copies the device tree
+files and nothing else. This might be doable via <a href="../About_Debian_Packaging/#config-package-dev"><code>config-package-dev</code></a> action
+<code>displace</code>, but it may require manual <code>dpkg</code>
+diversion in order to fully remove the script from the
+<code>/etc/kernel/postinst.d</code> directory.</li>
+</ul></li>
+<li>The configuration options in <code>config.txt</code> do the
+following (information taken from the official Raspberry Pi
+documentation, Fedora's <code>config.txt</code> file, and Debian's
+<code>raspi-firmware</code> package):
+<ul>
+<li><code>arm_64bit=1</code> - Loads the bootloader in 64-bit mode.
+Likely necessary for the <code>rpi_arm64</code> <code>u-boot</code> used
+here to function.</li>
+<li><code>kernel=u-boot-arm64.bin</code> - Points the Raspberry Pi
+loader to the <code>u-boot</code> binary.</li>
+<li><code>arm_boost=1</code> - Allows the CPU to run faster.</li>
+<li><code>enable_uart=1</code> - Enables a serial console, which can be
+accessed via the GPIO header on the RPi with a USB-to-serial cable.
+<strong>The serial UART on the RPi (and therefore this console) only
+works when the GPU runs at a lowered speed.</strong> If you allow the
+GPU to run at full speed with this enabled, the serial output will be
+too fast and therefore unusable. <s>We might want to disable this.</s>
+<ul>
+<li>Further testing has shown that U-Boot in Trixie will hang seemingly
+forever rather than booting the system if this is set to 0. No output is
+shown on the screen like would normally happen, no disk access occurs,
+and it doesn't seem to come unstuck by waiting for a bit. Therefore this
+should be kept set to 1.</li>
+</ul></li>
+<li><code>dtparam=audio=on</code> - Enables audio.</li>
+<li><code>camera_auto_detect=0</code> - Prevents automatic loading of
+overlays for recognised CSI cameras. Fedora's <code>config.txt</code>
+includes a comment noting "Old FW camera" for this line. It's unclear
+whether we want this; perhaps we should set this to <code>1</code>, as
+Raspberry Pi OS does?</li>
+<li><code>display_auto_detect=1</code> - Automatically loads overlays
+for recognised DSI displays. Likely useful for users with a Raspberry Pi
+display connected to the "DISPLAY" ribbon connector near the SD card
+slot.</li>
+<li><code>dtoverlay=vc4-kms-v3d</code> - Fedora's
+<code>config.txt</code> notes "Enable DRM VC4 V3D driver" here. This is
+<em>probably</em> required to allow the GPU to support full display
+resolution, so likely important.</li>
+<li><code>max_framebuffers=2</code> - Allows use of two screens.</li>
+<li><code>disable_fw_kms_setup=1</code> - Fedora's
+<code>config.txt</code> notes "Don't have the firmware create an initial
+video= setting in <code>cmdline.txt</code>. Use the kernel's default
+instead." The official documentation indicates that this allows the
+Linux kernel to determine the monitor's parameters itself (instead of
+the firmware doing the determination). Likely best to keep.</li>
+<li><code>hdmi_ignore_cec_init=1</code> - According to the official
+documentation, this stops "the initial active source message being sent
+during bootup," preventing a CEC-enabled TV from waking and switching
+channels when rebooting the RPi. Fedora notes "Stop the RPi turning on
+HDMI monitors on reboot". Seems important. However, this is listed as a
+<em>legacy</em> (now unsupported) option in the documentation (see <a href="https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html">https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html</a>),
+so perhaps it should be omitted?</li>
+<li><code>dtoverlay=cma,cma-256</code> - Adjusts the CMA size. See <a href="https://forums.raspberrypi.com/viewtopic.php?t=355799">https://forums.raspberrypi.com/viewtopic.php?t=355799</a>
+for more. This seems related to GPU memory. Debian sets CMA to 64M by
+default and notes that this should typically not be set manually
+anymore. Possibly best to omit?</li>
+</ul></li>
+<li>Anything that can modify the boot firmware partition will most
+likely also be able to modify the EFI variables.
+<ul>
+<li>Potential concerns exist in the context of <a href="../../Secure_Boot/">Secure Boot</a> and <a href="../../Verified_Boot/">Verified Boot</a>, but RPi Secure Boot usage is not
+planned due to issues documented in chapter <a href="../../Verified_Boot/#Raspberry_Pi_RPi_Based">Verified_Boot#Raspberry_Pi_RPi_Based</a>.</li>
+</ul></li>
+<li><code>u-boot</code> is not hidden from the user. This is
+intentional, as it makes debugging and repairs easier without
+significantly affecting the user experience. It is best to leave it
+visible to avoid mystifying the boot process. (It might not even be
+possible to hide it.)</li>
+<li><strong>Under Bookworm, USB boot is not fully functional with this
+setup.</strong> U-Boot will load properly, but it will fail to load GRUB
+with <code>** Reading file would overwrite reserved memory **</code>.
+You can manually load and boot GRUB from the U-Boot command line, at
+which point you can boot Debian like normal. Trixie is not affected by
+this issue. This is probably related to insufficient reserved memory
+regions with U-Boot 2023.1, see <a href="https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4">https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4</a>.</li>
+</ul>
+<h3 id="Boot_Process_Design_-_RPi">Boot Process Design - RPi</h3>
+<ul>
+<li>GRUB should be the "main" bootloader from the user's
+perspective.</li>
+<li>The advantage is that kernel upgrades will be functional, with no
+manual user action required.</li>
+<li>Kernel parameters set by <a href="../../Security-misc/">security-misc</a>, <a href="../../Grub-live/">grub-live</a>, <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a> would likely work out of
+the box.</li>
+<li>Even <a href="../../Release_Upgrade/">Release Upgrades</a>
+should be possible.</li>
+<li>u-boot should be treated as part of the firmware and should not
+require updates or user interaction.</li>
+<li>The operating system should be fully contained either on the SD card
+or on the USB drive.</li>
+<li>Universal ARM64 images should be bootable on:
+<ul>
+<li>Standard (non-RPi) ARM64 hardware</li>
+<li>RPi non-UEFI</li>
+<li>RPi UEFI</li>
+</ul></li>
+</ul>
+<h1 id="depthcharge_bootloader_-_coreboot_payload_for_Google_Chromebook_Firmware">depthcharge
+bootloader - coreboot payload for Google Chromebook Firmware</h1>
+<ul>
+<li>This is the coreboot payload Google uses for Chromebook firmware.
+Feature set currently unknown; might be suitable for Verified Boot.</li>
+<li><a href="https://web.archive.org/web/20240119111142/https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware/#TOC-Depthcharge">https://web.archive.org/web/20240119111142/https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware/#TOC-Depthcharge</a></li>
+<li><a href="https://web.archive.org/web/20240408175558/https://www.chromium.org/chromium-os/2014-firmware-summit/ChromeOS%20firmware%20summit%20-%20Depthcharge.pdf">https://web.archive.org/web/20240408175558/https://www.chromium.org/chromium-os/2014-firmware-summit/ChromeOS%20firmware%20summit%20-%20Depthcharge.pdf</a></li>
+<li><a href="https://github.com/coreboot/vboot">https://github.com/coreboot/vboot</a></li>
+<li>Seems to be similar to but more complex than the Raspberry Pi's
+bootloader:
+<ul>
+<li>Runs in firmware as a coreboot payload</li>
+<li>Uses an existing vboot library from Google for verifying
+components</li>
+<li>Expects the kernel, initrd, and any applicable device trees to be
+packaged into a FIT image, which the firmware loads and extracts using
+heuristics to determine most likely which device tree is most compatible
+with the current hardware, then loads that</li>
+<li>Appears to have some A-B updates functionality built in, which could
+be a serious pain for us to use</li>
+</ul></li>
+<li>This is probably doing too much for our use case. The A-B updates
+mechanism makes sense for Google's client device architecture (e.g.,
+Android and Chrome OS) but doesn't really suit a server use case. The
+use of device trees seems to be fairly integral, which is non-ideal for
+hardware that supports ACPI (i.e., most amd64/x86_64 hardware). The FIT
+image concept is interesting, but it feels somewhat at odds with the UKI
+concept systemd is pursuing, and that's another aspect tied to the
+device tree-specific approach.</li>
+</ul>
+<h1 id="dracut_bug_log">dracut bug log</h1>
+<p>Debian bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1041614">unbootable
+system after installing dracut on a standard Debian installation</a></p>
+<pre><code>sudo dracut -f</code></pre>
+<pre><code>dracut: Executing: /usr/bin/dracut -f
+dracut: dracut module &#39;mksh&#39; will not be installed, because command &#39;mksh&#39; could not be found!
+dracut: dracut module &#39;systemd-coredump&#39; will not be installed, because command &#39;coredumpctl&#39; could not be found!
+dracut: dracut module &#39;systemd-coredump&#39; will not be installed, because command &#39;/usr/lib/systemd/systemd-coredump&#39; could not be found!
+dracut: dracut module &#39;systemd-portabled&#39; will not be installed, because command &#39;portablectl&#39; could not be found!
+dracut: dracut module &#39;systemd-portabled&#39; will not be installed, because command &#39;/usr/lib/systemd/systemd-portabled&#39; could not be found!
+dracut: dracut module &#39;systemd-resolved&#39; will not be installed, because command &#39;resolvectl&#39; could not be found!
+dracut: dracut module &#39;systemd-resolved&#39; will not be installed, because command &#39;/usr/lib/systemd/systemd-resolved&#39; could not be found!
+dracut: dracut module &#39;systemd-timesyncd&#39; will not be installed, because command &#39;/usr/lib/systemd/systemd-timesyncd&#39; could not be found!
+dracut: dracut module &#39;dbus-broker&#39; will not be installed, because command &#39;dbus-broker&#39; could not be found!
+dracut: dracut module &#39;rngd&#39; will not be installed, because command &#39;rngd&#39; could not be found!
+dracut: dracut module &#39;lvmmerge&#39; will not be installed, because command &#39;lvm&#39; could not be found!
+dracut: dracut module &#39;lvmthinpool-monitor&#39; will not be installed, because command &#39;lvm&#39; could not be found!
+dracut: dracut module &#39;dmraid&#39; will not be installed, because command &#39;dmraid&#39; could not be found!
+dracut: dracut module &#39;lvm&#39; will not be installed, because command &#39;lvm&#39; could not be found!
+dracut: dracut module &#39;mdraid&#39; will not be installed, because command &#39;mdadm&#39; could not be found!
+dracut: dracut module &#39;multipath&#39; will not be installed, because command &#39;multipath&#39; could not be found!
+dracut: dracut module &#39;pcsc&#39; will not be installed, because command &#39;pcscd&#39; could not be found!
+dracut: dracut module &#39;tpm2-tss&#39; will not be installed, because command &#39;tpm2&#39; could not be found!
+dracut: dracut module &#39;nvmf&#39; will not be installed, because command &#39;nvme&#39; could not be found!
+dracut: dracut module &#39;biosdevname&#39; will not be installed, because command &#39;biosdevname&#39; could not be found!
+dracut: dracut module &#39;memstrack&#39; will not be installed, because command &#39;memstrack&#39; could not be found!
+dracut: memstrack is not available
+dracut: If you need to use rd.memdebug&gt;=4, please install memstrack and procps-ng
+dracut: *** Including module: systemd ***
+dracut: *** Including module: systemd-initrd ***
+dracut: *** Including module: modsign ***
+dracut: *** Including module: console-setup ***
+dracut: *** Including module: i18n ***
+dracut: *** Including module: drm ***
+dracut: *** Including module: plymouth ***
+dracut: *** Including module: btrfs ***
+dracut: *** Including module: crypt ***
+dracut: *** Including module: dm ***
+dracut: Skipping udev rule: 10-dm.rules
+dracut: Skipping udev rule: 13-dm-disk.rules
+dracut: Skipping udev rule: 64-device-mapper.rules
+dracut: *** Including module: kernel-modules ***
+dracut: *** Including module: kernel-modules-extra ***
+dracut: *** Including module: nvdimm ***
+dracut: *** Including module: overlay-root ***
+dracut: *** Including module: qemu ***
+dracut: *** Including module: lunmask ***
+dracut: *** Including module: resume ***
+dracut: *** Including module: rootfs-block ***
+dracut: *** Including module: terminfo ***
+dracut: *** Including module: udev-rules ***
+dracut: Skipping udev rule: 40-redhat.rules
+dracut: Skipping udev rule: 91-permissions.rules
+dracut: Skipping udev rule: 80-drivers-modprobe.rules
+dracut: *** Including module: virtiofs ***
+dracut: *** Including module: dracut-systemd ***
+dracut: *** Including module: usrmount ***
+dracut: *** Including module: base ***
+dracut: *** Including module: fs-lib ***
+dracut: *** Including module: shutdown ***
+dracut: *** Including modules done ***
+dracut: *** Installing kernel module dependencies ***
+dracut: *** Installing kernel module dependencies done ***
+dracut: *** Resolving executable dependencies ***
+dracut: *** Resolving executable dependencies done ***
+dracut: *** Hardlinking files ***
+dracut: Mode:                     real
+dracut: Method:                   sha256
+dracut: Files:                    2226
+dracut: Linked:                   211 files
+dracut: Compared:                 0 xattrs
+dracut: Compared:                 3762 files
+dracut: Saved:                    18.82 MiB
+dracut: Duration:                 0.203010 seconds
+dracut: *** Hardlinking files done ***
+dracut: *** Generating early-microcode cpio image ***
+dracut: *** Constructing AuthenticAMD.bin ***
+dracut: *** Constructing GenuineIntel.bin ***
+dracut: *** Store current command line parameters ***
+dracut: *** Stripping files ***
+dracut: *** Stripping files done ***
+dracut: *** Creating image file &#39;/boot/initrd.img-6.1.0-10-amd64&#39; ***
+dracut: Using auto-determined compression method &#39;gzip&#39;
+dracut: *** Creating initramfs image file &#39;/boot/initrd.img-6.1.0-10-amd64&#39; done ***</code></pre>
+<h1 id="Footnotes">Footnotes</h1>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../user-sysmaint-split/" title="Dev/user-sysmaint-split"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/user-sysmaint-split</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../../Donation_systray/" title="Donation systray"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Donation
+systray</span></a><span class="info"><span class="prev">Previous page:
+Dev/user-sysmaint-split</span><span class="index">Index page:
+Design</span><span class="next">Next page: Donation
+systray</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Tuning</title>
+<meta name="description" content="Making Kicksecure Faster. Tuning Kicksecure.">
+<meta property="og:description" content="Making Kicksecure Faster. Tuning Kicksecure.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Tuning/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Tuning/">
+<meta property="og:title" content="Kicksecure Tuning">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Gear-192875640.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#VirtualBox">VirtualBox</a></li><li class="toc-l3"><a href="#KVM">KVM</a></li><li class="toc-l2"><a href="#Hardware-accelerated_Graphics">Hardware-accelerated
+Graphics</a></li><li class="toc-l2"><a href="#Renderer">Renderer</a></li><li class="toc-l3"><a href="#Disable_Softwarecontext_Renderer">Disable Softwarecontext
+Renderer</a></li><li class="toc-l3"><a href="#Technical_Information">Technical Information</a></li><li class="toc-l2"><a href="#Increase_Virtual_Machine_RAM">Increase Virtual Machine RAM</a></li><li class="toc-l3"><a href="#VirtualBox_2">VirtualBox</a></li><li class="toc-l3"><a href="#KVM_2">KVM</a></li><li class="toc-l2"><a href="#Additional_CPU_Cores">Additional CPU Cores</a></li><li class="toc-l3"><a href="#VirtualBox_3">VirtualBox</a></li><li class="toc-l3"><a href="#KVM_3">KVM</a></li><li class="toc-l2"><a href="#Disable_CPU_Mitigations">Disable CPU Mitigations</a></li><li class="toc-l2"><a href="#Nested_Paging_and_VPIDs">Nested Paging and VPIDs</a></li><li class="toc-l3"><a href="#VirtualBox_4">VirtualBox</a></li><li class="toc-l3"><a href="#KVM_4">KVM</a></li><li class="toc-l2"><a href="#Memory_Ballooning,_Page_Fusion_and_Memory_Overcommitment">Memory
+Ballooning, Page Fusion and Memory Overcommitment</a></li><li class="toc-l2"><a href="#Undocumented_Tuning_Settings">Undocumented Tuning Settings</a></li><li class="toc-l3"><a href="#VirtualBox_5">VirtualBox</a></li><li class="toc-l3"><a href="#KVM_5">KVM</a></li><li class="toc-l2"><a href="#PCI_Passthrough">PCI Passthrough</a></li><li class="toc-l3"><a href="#VirtualBox_6">VirtualBox</a></li><li class="toc-l3"><a href="#KVM_6">KVM</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Nested_Virtualization/" title="Nested Virtualization"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Nested
+Virtualization</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="../VirtualBox/Manual_VM_Import/" title="VirtualBox/Manual VM Import"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">VirtualBox/Manual
+VM Import</span></a><span class="info"><span class="prev">Previous page:
+Nested Virtualization</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: VirtualBox/Manual VM
+Import</span></span></span>Kicksecure Tuning</p>
+</div>
+<p><img src="../../media/Gear-192875640.jpg.webp" alt="Gear-192875640.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Making Kicksecure Faster. Tuning Kicksecure.</p>
+<p>Choose your platform to get started.</p>
+<div class="post-intro-p">
+</div>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>Virtualizer <a href="../VirtualBox/">VirtualBox</a> has
+been chosen.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>Virtualizer <a href="../KVM/">KVM</a> has been
+chosen.</p>
+</div>
+</div>
+</div>
+</div>
+<p>See below.</p>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Everything in this chapter is entirely optional.</p>
+</div>
+<p>Applying steps in this chapter can improve Kicksecure performance,
+but often at the cost of reduced security or an increased fingerprinting
+risk. Earlier entries in this chapter are easier to apply, while later
+tuning entries require a greater skill level.</p>
+<h1 id="Tested_Tuning_Steps">Tested Tuning Steps</h1>
+<p><span class="manually-placed-anchor " id="Hardware-accelerated_graphics"></span></p>
+<h2 id="Hardware-accelerated_Graphics">Hardware-accelerated
+Graphics</h2>
+<p>On Kicksecure 18, hardware-accelerated graphics under VirtualBox are
+broken when using the default <code>VMSVGA</code> graphics adapter.
+Under KVM, hardware-accelerated graphics are untested.</p>
+<p>Attempting to use graphics acceleration under VirtualBox may cause
+faulty behavior, including:<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<ul>
+<li>Kernel oopses/panics</li>
+<li>Display server (labwc) crashes</li>
+<li>Application crashes</li>
+<li>Failure to use GPU acceleration</li>
+</ul>
+<p>As such, this is <a href="../Unsupported/">Unsupported</a>.</p>
+<h2 id="Renderer">Renderer</h2>
+<p>In some situations, <code>softwarecontext renderer</code> is set by
+default in Kicksecure.</p>
+<p>Package <code>vm-config-dist</code> <sup class="reference"><a href="#cite_note-2">[2]</a></sup> sets
+<code>softwarecontext renderer</code> if hardware acceleration is
+unavailable. In technical terms, this means only if the
+<code>OpenGL renderer string</code> is <code>llvmpipe</code> according
+to <span class="code-select inline-style">glxinfo</span> , then the
+environment variable <code>QMLSCENE_DEVICE=softwarecontext</code> is
+set.</p>
+<p>This setting is particularly useful in cases where hardware
+acceleration is disabled (which is the default in Kicksecure VMs) for
+applications such as:</p>
+<ul>
+<li><a href="../Monero/">Monero</a> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+<li><a href="../Signal/"><code>signal</code></a><code>-desktop</code>, and
+potentially</li>
+<li><code>wire-desktop</code>, as well as</li>
+<li>other <code>electron</code>-based applications. (Note: This setting
+is unrelated to <a href="../Electrum/"><code>electrum</code></a>.)</li>
+</ul>
+<p>However, this configuration has been reported to cause issues
+with:</p>
+<ul>
+<li>shotcut</li>
+<li>kdenlive (<a href="https://forums.whonix.org/t/video-editing-software-fails-to-launch-on-whonix-virtualbox-kvm/17241">Video
+editing software fails to launch on Whonix (VirtualBox/KVM)</a>)</li>
+</ul>
+<p><strong>General information:</strong></p>
+<ul>
+<li>Does this setting have any security impact? No.</li>
+<li>When does it make sense to undo this setting? Likely when <a href="#Hardware-accelerated_Graphics">Hardware-accelerated Graphics</a> is enabled.</li>
+<li>Is the user encouraged to experiment with this setting? Yes.</li>
+</ul>
+<p><strong>Forum search:</strong></p>
+<ul>
+<li><a href="https://forums.whonix.org/search?expanded=true&amp;q=QMLSCENE_DEVICE"><code>QMLSCENE_DEVICE</code></a></li>
+</ul>
+<p><strong>How to test if issues are caused by
+<code>QMLSCENE_DEVICE=softwarecontext</code>?</strong></p>
+<p>Temporarily disable it.</p>
+<h3 id="Disable_Softwarecontext_Renderer">Disable Softwarecontext
+Renderer</h3>
+<p><strong>1.</strong> Notice.</p>
+<ul>
+<li><strong>A)</strong> <u>VM:</u> If intending starting application
+inside VM, change environment variables inside VM.</li>
+<li><strong>B)</strong> <u>host <u>o</u>perating <u>s</u>ystem (OS):</u>
+If intending starting application on host, change environment variables
+on the host.</li>
+</ul>
+<p><strong>2.</strong> Select a method.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h4 id="Command_Line_Method">Command Line Method</h4>
+</div>
+<div class="tcc-content">
+<p><strong>3.</strong> Temporarily unset the environment variable.</p>
+<p><span class="code-select">unset QMLSCENE_DEVICE</span></p>
+<p><strong>4.</strong> Launch the application from the command line.</p>
+<p><strong>5.</strong> Done.</p>
+<p><u>Notes:</u></p>
+<ul>
+<li>This method does not work if:
+<ul>
+<li>Applications are started from the start menu.</li>
+<li>The unset command was run in a different terminal than the one used
+to launch the application.</li>
+</ul></li>
+<li>This process needs to be repeated after a reboot.</li>
+</ul>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h4 id="Configuration_File_Deletion_Method">Configuration File Deletion
+Method</h4>
+</div>
+<div class="tcc-content">
+<p><strong>3.</strong> Delete the configuration file that sets this
+environment variable.</p>
+<p><span class="code-select">sudo safe-rm -f
+/etc/profile.d/20_software_rendering_in_vms.sh</span></p>
+<p><strong>4.</strong> Reboot the system.</p>
+<p><span class="code-select">sudo reboot</span></p>
+<p><strong>5.</strong> Done.</p>
+<p><strong>6.</strong> To undo this change (optional, see footnote).
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+</div>
+</div>
+</div>
+</div>
+<h3 id="Technical_Information">Technical Information</h3>
+<p><strong>Additional information for developers only:</strong></p>
+<ul>
+<li>Related source code file:
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/etc/profile.d/20_software_rendering_in_vms.sh">Kicksecure/vm-config-dist</a></span></li>
+</ul>
+<h2 id="Increase_Virtual_Machine_RAM">Increase Virtual Machine RAM</h2>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox_2">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>RAM available to Virtual Machines can be increased via VirtualBox
+settings.</p>
+<p>To check how much RAM is free, use <code>free -m</code> in a
+Terminal. Consider the example below:</p>
+<div class="info-box ">
+<ol>
+<li>Shutdown the VM.</li>
+<li>Assign more RAM: <code>VirtualBox</code> &#8594; <code>click a VM</code> &#8594;
+<code>Settings</code> &#8594; <code>System</code> &#8594; <i><code>Adjust</code></i>
+<code>Base Memory slider to 4096</code> &#8594;
+<i><code>Click:</code></i><code> OK</code></li>
+<li>Restart the VM.</li>
+</ol>
+</div>
+<p>See also: <a href="../RAM/">Advice for Systems with Low
+RAM</a>.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM_2">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="Additional_CPU_Cores">Additional CPU Cores</h2>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox_3">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> this procedure may increase fingerprinting
+risks.</p>
+</div>
+<p>Do not use the maximum since that could lead to system instability!
+Always leave at least one CPU unassigned; for example, if you have four
+CPUs then assign a maximum of three CPUs to the VM.
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<div class="info-box ">
+<ol>
+<li>Power off the VM.</li>
+<li><code>VirtualBox</code> &#8594; <code>click a VM</code> &#8594;
+<code>Settings</code> &#8594; <code>System</code> &#8594; <code>Processor</code> &#8594;
+<i><code>Adjust</code></i> <code>Number of CPUs to 3</code> &#8594;
+<i><code>Click:</code></i><code> OK</code></li>
+<li>Restart the VM.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM_3">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="Untested_Tuning_Steps">Untested Tuning Steps</h1>
+<h2 id="Disable_CPU_Mitigations">Disable CPU Mitigations</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> this procedure lessens security.</p>
+<p><a href="../Unsupported/">Untested</a>!</p>
+</div>
+<p>Consider disabling the <a href="../Spectre_Meltdown/">Spectre Meltdown</a> mitigations. (<a href="https://forums.whonix.org/t/whonix-vulerable-due-to-missing-processor-microcode-packages-spectre-meltdown-retpoline-l1-terminal-fault-l1tf/5739">Related
+forum discussion</a>.)</p>
+<p>This step should be performed in the VM intended for disabled CPU
+mitigations <u>and</u> on the host operating system if either <a href="../About/">Kicksecure</a> or <a href="../Security-misc/">security-misc</a> are in use.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Remove the relevant CPU mitigations file.</p>
+<p><span class="code-select">sudo rm
+/etc/default/grub.d/40_cpu_mitigations.cfg</span></p>
+<p><strong>2.</strong> Update grub.</p>
+<p><span class="code-select">sudo update-grub</span></p>
+<p><strong>3.</strong> Reboot.</p>
+<p><strong>4.</strong> Done.</p>
+</div>
+<h2 id="Nested_Paging_and_VPIDs">Nested Paging and VPIDs</h2>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox_4">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>It is possible to increase performance by using largepages and/or
+Virtual Processor Identifiers (VPIDs). It is unknown if this decreases
+security or stability. For further information refer to the VirtualBox
+manual: <a href="https://www.virtualbox.org/manual/ch10.html#nestedpaging">Nested
+Paging and VPIDs</a>.</p>
+<p><span class="code-select">vboxmanage modifyvm Kicksecure-LXQt
+--large-pages on</span></p>
+<p><span class="code-select">vboxmanage modifyvm Kicksecure-LXQt
+--vtx-vpid on</span></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM_4">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="Memory_Ballooning,_Page_Fusion_and_Memory_Overcommitment">Memory
+Ballooning, Page Fusion and Memory Overcommitment</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> this procedure lessens security.</p>
+</div>
+<p>Memory ballooning worsens security because it is a vector for side
+channel attacks on memory; see [Broken-ExtLink--no-url-was-provided] for
+further information. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p>For other security considerations, refer to the VirtualBox manual: <a href="https://www.virtualbox.org/manual/ch04.html#guestadd-memory-usage">Memory
+Overcommitment</a>.</p>
+<h2 id="Undocumented_Tuning_Settings">Undocumented Tuning Settings</h2>
+<p>There are probably more tuning-related settings, but these are
+currently <a href="../Unsupported/">undocumented</a> at
+Kicksecure. Interested readers can review the manual for relevant
+settings of their respective virtualizer, which are unlikely to be
+bundled under a "tuning" chapter.</p>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox_5">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>To view all settings, run.</p>
+<p><span class="code-select">vboxmanage showvminfo
+Kicksecure-LXQt</span></p>
+<p>Next, learn about all of these settings by reviewing the <a href="https://www.virtualbox.org/manual/">VirtualBox manual</a>.</p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM_5">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="PCI_Passthrough">PCI Passthrough</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> this procedure lessens security.</p>
+</div>
+<p>This setting can improve graphics performance dramatically, but it
+worsens security because VMs should not have direct access to physical
+hardware.</p>
+<p>In simple terms, this feature allows the direct use of physical PCI
+devices on the host by the guest even if the host does not have drivers
+for the particular device.</p>
+<div class="tab-content-controller " data-tcc-linkid="virtualbox">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section  special-look">
+<div class="tcc-image">
+<p><img src="../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="VirtualBox_6">
+<p>VirtualBox</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p>Unsupported. VirtualBox no longer offers a PCI passthrough feature.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Kvm-new-logo.png.webp" alt="Kvm-new-logo.png" /></p>
+</div>
+<div class="tcc-title">
+<div class="mw-heading mw-heading3 widget-headline ">
+<h3 role="heading" aria-level="3" id="KVM_6">
+<p>KVM</p>
+</h3>
+</div>
+</div>
+<div class="tcc-content">
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../RAM/">Advice for Systems with Low
+RAM</a></li>
+<li><a href="../Troubleshooting/">Troubleshooting</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://forums.kicksecure.com/t/3d-acceleration-for-kicksecure-vms/1393">https://forums.kicksecure.com/t/3d-acceleration-for-kicksecure-vms/1393</a></li>
+<li id="cite_note-2">version <code>3:11.1-1</code> and above</li>
+<li id="cite_note-3">* <a href="https://github.com/monero-project/monero-gui/issues/2878">https://github.com/monero-project/monero-gui/issues/2878</a>
+* <a href="https://github.com/monero-project/monero-gui/pull/4419">https://github.com/monero-project/monero-gui/pull/4419</a>
+* <a href="https://forums.whonix.org/t/monero-integration-in-whonix/5949/31">https://forums.whonix.org/t/monero-integration-in-whonix/5949/31</a></li>
+<li id="cite_note-4"><span class="code-select">sudo apt-get-reset vm-config-dist</span>
+(Refer to <a href="../Configuration_Files/#Reset_Configuration_Files_to_Vendor_Default">Reset Configuration Files to Vendor Default</a> for
+more information.)</li>
+<li id="cite_note-5">VirtualBox ticket: <a href="https://www.virtualbox.org/ticket/19500">VirtualBox should now
+prohibit assigning all physical CPUs to a VM and/or fix VirtualBox CPU
+assignment manual</a>.</li>
+<li id="cite_note-6">This entry relates to KVM but the research similarly applies to
+other virtualizers unless they have implemented and documented specific
+protections.</li>
+<li id="cite_note-7"><a href="https://www.virtualbox.org/wiki/Changelog-6.1">https://www.virtualbox.org/wiki/Changelog-6.1</a>
+Quote: "Linux host: Drop PCI passthrough, the current code is too
+incomplete (cannot handle PCIe devices at all), i.e. not useful
+enough"</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Nested_Virtualization/" title="Nested Virtualization"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Nested
+Virtualization</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="../VirtualBox/Manual_VM_Import/" title="VirtualBox/Manual VM Import"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">VirtualBox/Manual
+VM Import</span></a><span class="info"><span class="prev">Previous page:
+Nested Virtualization</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: VirtualBox/Manual VM
+Import</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

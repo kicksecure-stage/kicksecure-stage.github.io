@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>MAC Address</title>
+<meta name="description" content="MAC Address Spoofing and Tracking Threats">
+<meta property="og:description" content="MAC Address Spoofing and Tracking Threats">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/MAC_Address/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/MAC_Address/">
+<meta property="og:title" content="MAC Address">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/MACaddress2131.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Authentication_Fingerprinting_Techniques">Authentication
+Fingerprinting Techniques</a></li><li class="toc-l2"><a href="#Tor_Entry_Guard_Fingerprinting">Tor Entry Guard
+Fingerprinting</a></li><li class="toc-l2"><a href="#Home_Connections">Home Connections</a></li><li class="toc-l3"><a href="#Connectivity_Risk">Connectivity Risk</a></li><li class="toc-l2"><a href="#Public_Computers">Public Computers</a></li><li class="toc-l2"><a href="#Using_Personal_Computers_in_a_Public_Network">Using Personal
+Computers in a Public Network</a></li><li class="toc-l2"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l2"><a href="#Qubes_Hosts">Qubes Hosts</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">MAC Address</a></li>
+<li><a href="../Dev/MAC/">MAC address (developers)</a></li>
+</ul>
+</div>
+<p><img src="../../media/MACaddress2131.jpg.webp" alt="MACaddress2131.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>MAC Address Spoofing and Tracking Threats</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>All network cards, both wired and wireless, have a unique identifier
+called a <em><span>MAC
+address</span></em>. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> MAC addresses are stored in
+hardware and are used to assign an address to computers on the local
+network.</p>
+<p>The MAC address is <i>normally</i> not traceable because it is not
+passively sent to computers beyond the local router. <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+However, other computers on the local network can potentially log it,
+which would then provide proof that the user's computer connected to
+that specific network. If users intend to use an untrusted, public
+network, then <em><span>MAC
+spoofing</span></em> should be considered. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<h1 id="MAC_Spoofing_Warning">MAC Spoofing Warning</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> Reliable MAC hiding is difficult beyond
+practicality.</p>
+<p>MAC randomization might be unreliable. There are <a href="../Dev/MAC/#Leak-proof_MAC_Randomization_-_Technical_Implementation_Challenges">Leak-proof MAC Randomization - Technical Implementation
+Challenges</a>. <a href="../Whonix/">Whonix</a> might have
+[Broken-ExtLink--no-url-was-provided] but there is no similarly
+dedicated, actively maintained, well tested project equivalent focusing
+on MAC randomization.</p>
+<p>This is a general issue with all operating systems and <a href="../Unspecific/">unspecific to Kicksecure</a>.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> According to recent research, MAC address
+spoofing is not effective against advanced tracking techniques that can
+still enumerate the address by inspecting the physical characteristics
+of the Wi-Fi card. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>Unfortunately, a viable solution requires manufacturers to modify the
+drivers or firmware of their hardware products to implement
+privacy-preserving mitigations.</p>
+</div>
+<h1 id="Auto-connect_Risk">Auto-connect Risk</h1>
+<p>Beyond the challenge of generating an appropriate spoofed MAC
+address, there are technical hurdles related to preventing automatic
+network connections.</p>
+<p>A spoofed MAC address is ineffective if the computer automatically
+connects to a public network after booting, thereby exposing the real
+MAC address:</p>
+<ul>
+<li><u>Host:</u> Kicksecure automatically connects to Tor upon
+startup.</li>
+<li><u>USB Wi-Fi Device:</u> Automatic connections may occur depending
+on the configuration.</li>
+<li><u>VM Users:</u> The host operating system is likely to
+automatically connect to the internet for updates, time synchronization,
+or other background services.</li>
+</ul>
+<h1 id="Burner_Wi-Fi_USB_Sticks">Burner Wi-Fi USB Sticks</h1>
+<p>One immediate workaround for the Wi-Fi card profiling threat is to
+buy new "burner" Wi-Fi USB sticks from different manufacturers. Take
+care to disable the computer's native Wi-Fi functionality in the BIOS
+settings if pursuing this option -- otherwise, the computer's
+characteristics may have already been logged if it was ever used on an
+untrusted hotspot. Burner devices should <u>only</u> be enabled for
+connectivity at the intended public destination. If this advice is
+ignored and burner devices are used for network connections at locations
+tied to or regularly visited by the user, it will defeat the original
+purpose. A different burner stick should be used for each new location
+to avoid geographical profiling and tracking.</p>
+<h1 id="Random_MAC_Addresses">Random MAC Addresses</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> Using a completely random MAC address might
+introduce risks.</p>
+<p>While this technique might be sufficient to confuse lesser
+adversaries, it will not defeat skilled adversaries.</p>
+</div>
+<p>The problem with using a random MAC address is that the chosen vendor
+ID may be non-existent. Even if it exists, it is possible to end up with
+a vendor ID that has either never been used or has not been used for
+decades. When spoofing MAC addresses, it is critical to use a popular
+vendor ID. The initial, second part of the MAC address can safely be
+random or unique. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<p>Kicksecure cannot provide detailed instructions on how to create
+appropriate MAC addresses that fulfill the criteria above.</p>
+<h1 id="Other_Location_Tracking_Risks">Other Location Tracking
+Risks</h1>
+<h2 id="Authentication_Fingerprinting_Techniques">Authentication
+Fingerprinting Techniques</h2>
+<p>An authentication technique can fingerprint devices by observing
+inter-packet timings on a LAN's wire segment; one side effect is that
+user devices can be tracked. The timing effects result from how various
+components in a machine create packets. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> Fortunately,
+this technique cannot be used to identify devices across the Internet.
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
+<p>This technique can be defeated by introducing random delays in a
+machine's packet stream. Since there is no issue with impersonating
+other devices on the LAN, it does not matter that such an authentication
+system will classify these machines as "unknown." <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<p>Additionally, spectrum analyzers have been used to fingerprint the
+unique electromagnetic (EM) characteristics of a Wi-Fi card. The
+disposable USB Wi-Fi workaround described above would mitigate this
+attack. <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<h2 id="Tor_Entry_Guard_Fingerprinting">Tor Entry Guard
+Fingerprinting</h2>
+<p>Addressing MAC address concerns is only one part of a broader
+location tracking problem. Users must also consider how Tor entry guards
+are used across different locations to avoid guard fingerprinting. To
+mitigate this risk, follow <u>one</u> of the <a href="../Tor_Entry_Guards/#Mitigate_the_Threat_of_Guard_Fingerprinting">recommended configurations</a>:</p>
+<ol>
+<li><a href="../Tor_Entry_Guards/#Clone_Whonix-Gateway_(sys-whonix)_with_New_Entry_Guards">Clone Kicksecure (kicksecure) with New Entry
+Guards</a>.</li>
+<li><a href="../Tor_Entry_Guards/#Regenerate_the_Tor_State_After_Saving_the_Tor_State_Folder">Regenerate the Tor State File after Saving the Current
+Tor State</a>.</li>
+<li>Configure Tor to use <a href="../Tor_Entry_Guards/#Alternating_Bridges">Alternating Bridges</a>.</li>
+<li>If relocating permanently, create <a href="../Tor_Entry_Guards/#Fresh_Tor_Entry_Guards_by_Regenerating_the_Tor_State_File">Fresh Tor Entry Guards by Regenerating the Tor State
+File</a>.</li>
+</ol>
+<p>To fully mitigate this threat, entry guard changes must be applied to
+every Tor instance on both the host (e.g., apt-transport-tor) and guest
+systems.</p>
+<h1 id="MAC_Spoofing_on_Different_Networks">MAC Spoofing on Different
+Networks</h1>
+<h2 id="Home_Connections">Home Connections</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<strong>Tip:</strong> MAC address changes for home connections are not
+required.</p>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning:</strong> This recommendation comes with an important
+caveat. If a browser exploit is successfully used to reveal activities
+outside a VM, the physical MAC address might be discovered by the
+attacker. If a user is already under suspicion, this could eventually
+provide proof of identity. In this scenario, if the MAC address was
+changed beforehand, then root access would be required to discover the
+real physical address (this has <i>not</i> yet been tested).</p>
+</div>
+<h3 id="Connectivity_Risk">Connectivity Risk</h3>
+<p>If the user's home network relies on a cable modem internet
+connection, the ISP either provides the cable modem device as part of
+the service or requires pre-registration of the MAC address of a
+self-provided cable modem for service activation.</p>
+<p>If a user manages to hack or change the MAC address of the modem, the
+service will immediately cease functioning because the IP address
+assignment is bound to that specific MAC address. Consequently, when
+connecting from behind a cable modem/NAT router, MAC address spoofing of
+the computer's Ethernet adapter may be ineffective. If a user is traced,
+the trackable endpoint will be the MAC address of the cable modem
+device.</p>
+<h2 id="Public_Computers">Public Computers</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This refers to the use of computers in public places such as libraries
+and Internet caf&#233;s.</p>
+</div>
+<p>The MAC address should not be changed in this scenario, as it may
+attract unwanted administrator attention to the service/user or simply
+prevent access to the Internet.</p>
+<h2 id="Using_Personal_Computers_in_a_Public_Network">Using Personal
+Computers in a Public Network</h2>
+<p><span class="manually-placed-anchor " id="Public_Connections_such_as_WiFi_Hotspots"></span></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+This applies to using a personal laptop, desktop, or any other
+internet-facing device in a public network.</p>
+</div>
+<p>Is it a captive portal? Login required?</p>
+<p>Always new login with throw away accounts or bound to identity?</p>
+<p>For example, some WiFi hotspots require sign-up using passport number
+and/or, e-mail address, phone number, other identifiers. In that
+situation:</p>
+<ul>
+<li>Using a different MAC address every time might be suspicious and/or
+break connectivity.</li>
+<li>Using a dedicated spoofed MAC address might reduce tracking.</li>
+</ul>
+<p>Wired connection or WiFi?</p>
+<p>Administrator knows user or not?</p>
+<p>If administrator knows the user using a truly random MAC might be
+suspicious. A macciato MAC might reduce tracking.</p>
+<p>In this scenario, the MAC address changing might be useful.</p>
+<p>And a <a href="../Tor_Entry_Guards/#Mitigate_the_Threat_of_Guard_Fingerprinting">new set of Tor entry guards</a> should be considered.
+<sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
+<p>Additionally, efforts should be made to obscure Tor usage from the
+network administrator. Depending on the user's setup, this may involve
+using an <code>obfsproxy</code> bridge or tunneling traffic through SSH
+or a VPN before connecting to the Tor network.</p>
+<p>Depending on the threat model, changing the MAC address and using Tor
+may prevent revisiting the public network. If reuse is needed, the user
+must choose between keeping the same MAC address and Tor entry guards or
+generating new ones.</p>
+<p>If the network administrator is suspected of logging MAC addresses,
+changing the MAC may arouse suspicion. Conversely, if the network is
+sufficiently public and individual observation is unlikely, it may be
+safe to use a new MAC address each time -- one that features a popular
+vendor ID and a random second part.</p>
+<p>For further discussion on this complex topic, see <a href="../Dev/MAC/">Dev/MAC</a>.</p>
+<h1 id="Changing_MAC_Addresses">Changing MAC Addresses</h1>
+<h2 id="Kicksecure">Kicksecure</h2>
+<p>TODO: Please help test and improve these instructions.</p>
+<div class="info-box ">
+<p><strong>1.</strong> Edit the network interfaces file.</p>
+<ul>
+<li>Users: Edit <em>/etc/network/interfaces</em></li>
+</ul>
+<p><strong>2.</strong> Install macchanger.</p>
+<p>In a terminal, run:</p>
+<p><span class="code-select">su</span></p>
+<p><span class="code-select">apt update &amp;&amp; apt install
+macchanger</span></p>
+<p><strong>3.</strong> Change the MAC address.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+The following steps will manually change the MAC address for the device.
+An example is provided for a wireless device (<code>wlan0</code>).
+Replace <code>wlan0</code> with the appropriate device name, such as an
+Ethernet device (<code>eth0</code>).</p>
+</div>
+<p><span class="code-select">su</span></p>
+<p><span class="code-select">ifconfig wlan0 down</span></p>
+<p><span class="code-select">macchanger -a wlan0</span></p>
+<p><span class="code-select">ifconfig wlan0 up</span></p>
+<p>If the instructions in Step 1+ did not work, the following steps
+might work without macchanger. Replace <code>wlan0</code> with the
+appropriate device.</p>
+<p><span class="code-select">su</span></p>
+<p><span class="code-select">ifconfig wlan0 down</span></p>
+<p><span class="code-select">ifconfig wlan0 hw ether
+00:AA:BB:CC:DD:EE</span></p>
+<p><span class="code-select">ifconfig wlan0 up</span></p>
+<p>Alternatively, use iproute2 commands to change the MAC address.</p>
+<p><span class="code-select">ip link set down wlan0</span></p>
+<p><span class="code-select">ip link set wlan0 address
+00:AA:BB:CC:DD:EE</span></p>
+<p><span class="code-select">ip link set up wlan0</span></p>
+<p><strong>4.</strong> Complete the MAC address change.</p>
+<p>Below <code>iface eth0 inet dhcp</code>, add:</p>
+<p><span class="code-select">hwaddress ether 00:00....</span></p>
+<p><strong>5.</strong> <em>Optional:</em> Automatically randomize the
+MAC address on boot.</p>
+<p>If desired, add:</p>
+<p><span class="code-select">pre-up macchanger -e eth0</span></p>
+<p><strong>6.</strong> Modify network interface settings.</p>
+<p>To prevent new network interfaces from being brought up
+automatically, comment out the following line:</p>
+<p><span class="code-select">auto eth0</span></p>
+<p>Then, manually bring up the interface with:</p>
+<p><span class="code-select">sudo ifup eth0</span></p>
+</div>
+<h2 id="Qubes_Hosts">Qubes Hosts</h2>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Qubes OS does not currently "anonymize" or spoof the MAC address
+automatically in all cases.</p>
+</div>
+<p>Qubes users can manually change MAC addresses in the NetVM by
+following either the Network Manager or macchanger guides. <a href="https://github.com/QubesOS/qubes-issues/issues/938">MAC Address
+Randomization capability for Wi-Fi</a> has been implemented.</p>
+<p><a href="https://github.com/QubesOS/qubes-core-agent-linux/pull/297">Network:
+Enable MAC randomization for Wi-Fi connections by default</a> was
+implemented.</p>
+<p><blockquote><p>This is currently applied by Debian and Fedora templates
+only.<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1221605861">https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1221605861</a></span></p></blockquote></p>
+<p><blockquote><p>Ethernet MAC randomization by default was
+denied.<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1300587911">https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1300587911</a></span></p></blockquote></p>
+<p><blockquote><p>Consequently, users wanting Ethernet MAC randomization will need to
+modify their templates manually, including in all newly downloaded
+templates after OEL deprecation.<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1300587911">https://github.com/QubesOS/qubes-issues/issues/938#issuecomment-1300587911</a></span></p></blockquote></p>
+<p>Refer to the following Qubes documentation and related support items
+for further information and advice:</p>
+<ul>
+<li><a href="https://github.com/Qubes-Community/Contents/blob/master/docs/privacy/anonymizing-your-mac-address.md">Qubes
+Documentation: Anonymizing Your MAC Address</a></li>
+<li><a href="https://groups.google.com/g/qubes-users/c/gUPK-YqkC3E/m/WsarnjrddrsJ">Qubes-Users
+Forum: Instructions for Installing Macchanger Needed</a></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/2361">Explore Local
+Network Privacy Solutions Beyond MAC Address Randomization</a></li>
+</ul>
+<h1 id="MAC_Address_Leak_Testing">MAC Address Leak Testing</h1>
+<p><a href="../Unsupported/">Undocumented</a>.</p>
+<h1 id="Sources">Sources</h1>
+<p>See footnotes. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
+<h1 id="References">References</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://en.wikipedia.org/wiki/MAC_address">https://en.wikipedia.org/wiki/MAC_address</a></li>
+<li id="cite_note-2">Unless the computer is infected with <a href="https://en.wikipedia.org/wiki/Malware">malware</a> designed to
+disclose this identifier.</li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/MAC_spoofing">https://en.wikipedia.org/wiki/MAC_spoofing</a></li>
+<li id="cite_note-4"><a href="https://papers.mathyvanhoef.com/asiaccs2016.pdf">Why MAC
+Address Randomization is not Enough: An Analysis of Wi-Fi Network
+Discovery Mechanisms</a></li>
+<li id="cite_note-5">Also note that if MAC address changing is always enabled, it might
+cause connectivity problems on some networks.</li>
+<li id="cite_note-6"><a href="https://nweb.eng.fiu.edu/selcuk/papers/uluagac-gtid-cns-13.pdf">A
+Passive Technique for Fingerprinting Wireless Devices with Wired-side
+Observations</a></li>
+<li id="cite_note-7">The primary weakness of this technique is that it relies on
+fine-grained packet timing, which is lost due to buffering in switches
+and routers. Therefore, this technique and similar methods are not
+suited for identification across the Internet. Instead, it is
+well-suited for the significant challenge of local network access
+control and other local network activities like counterfeit
+detection.</li>
+<li id="cite_note-8">Figure 7(a) shows attackers that can vary their packet sizes, change
+their data rate, and tunnel their packets through another protocol.
+Figure 7(b) presents attackers that can introduce constant or random
+delays to the packet stream and load the CPU with intensive applications
+to overshadow normal behavior. Figure 7(c) shows an attacker that can
+modify or change its operating system. GTID (the passive fingerprinting
+method) detects these attacks and classifies all of these devices that
+generated attack traffic from previously seen devices as unknown.</li>
+<li id="cite_note-9">There have also been physical-layer approaches to fingerprinting
+wireless devices. Radio frequency (RF) emitter fingerprinting uses the
+distinct EM characteristics that arise from differences in circuit
+topology and manufacturing tolerances. This approach has a history of
+use in cellular systems and has more recently been applied to Wi-Fi and
+Bluetooth emitters. The EM properties fingerprint the unique transmitter
+of a signal, and these differ from emitter to emitter. This technique
+requires expensive signal analyzer hardware to be within RF range of the
+target.</li>
+<li id="cite_note-10">This process involves removing the <em>/var/lib/tor/state</em>
+file.</li>
+<li id="cite_note-11">* <a href="https://tails.boum.org/contribute/design/MAC_address/">https://tails.boum.org/contribute/design/MAC_address/</a>
+* <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5421">https://gitlab.tails.boum.org/tails/tails/-/issues/5421</a>
+* <a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/macchanger/">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/macchanger/</a>
+* Worth reading! Thanks to Tails! * <a href="../Dev/MAC/">Dev/MAC</a></li>
+</ol>
+</div>
+<h1 id="License">License</h1>
+<p><blockquote><p>Kicksecure MAC Address wiki page Copyright (C) Amnesia
+<br />
+Kicksecure MAC Address wiki page Copyright (C) 2012 - 2026 ENCRYPTED
+SUPPORT LLC
+&lt;<span class="antispam-email-tooltip"><span class="robots-nocontent" data-nosnippet=""><code>adrelanos(at)kicksecure.com</code>
+(Replace <code>(at)</code> with
+<code>@</code>.)<span class="tooltip"><span>Please <strong>DO
+NOT</strong> use e-mail for one of the following
+reasons:</span><span class="icon-bullet-list"><span><i class="fa-solid fa-lock cs-yellow"></i><span><u>Private
+Contact:</u> Please avoid e-mail whenever possible. (<a href="../Contact/#Private_Communications_Policy">Private
+Communications
+Policy</a>)</span></span><span><i class="fas fa-headset cs-red"></i><span><u>User
+Support Questions:</u> No. (See <a href="../Support/">Support</a>.)</span></span><span><i class="fa-solid fa-droplet cs-red"></i><span><u>Leaks
+Submissions:</u> No. (<a href="../Contact/#No_Leaks_Policy">No Leaks
+Policy</a>)</span></span><span><i class="fa-solid fa-ban cs-red"></i><span><u>Sponsored
+posts:</u>
+No.</span></span><span><i class="fa-solid fa-link cs-red"></i><span><u>Paid
+links:</u>
+No.</span></span><span><i class="fa-solid fa-chart-line cs-red"></i><span><u>SEO
+reviews:</u>
+No.</span></span><span><i class="fa-solid fa-bullhorn cs-red"></i><span><u>Advertisement
+deals:</u>
+No.</span></span><span><i class="fa-solid fa-box-open cs-red"></i><span><u>Default
+application installation:</u> No. (<a href="../Contact/#Default_Application_Policy">Default
+Application Policy</a>)</span></span></span></span></span>&gt;</p>
+<p>This program comes with ABSOLUTELY NO WARRANTY; for details see the
+wiki source code.<br />
+This is free software, and you are welcome to redistribute it under
+certain conditions; see the wiki source code for details.</p></blockquote></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

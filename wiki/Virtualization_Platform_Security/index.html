@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Virtualization Platform Security</title>
+<meta name="description" content="Deciding on a Virtualization Platform and Configuration, VirtualBox Hardening">
+<meta property="og:description" content="Deciding on a Virtualization Platform and Configuration, VirtualBox Hardening">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Virtualization_Platform_Security/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Virtualization_Platform_Security/">
+<meta property="og:title" content="Virtualization Platform Security">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Virtualizationsec2342342.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Best_Practice">Best Practice</a></li><li class="toc-l2"><a href="#Tools">Tools</a></li><li class="toc-l3"><a href="#SubVersioN_(SVN)_Backup_Tool">SubVersioN (SVN) Backup Tool</a></li><li class="toc-l3"><a href="#Complete_Operating_Environment_Backups">Complete Operating
+Environment Backups</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../System_Configuration_and_Access/">System
+Configuration and Access</a></li>
+<li><a href="../Protection_Against_Physical_Attacks/">Protection Against Physical Attacks</a></li>
+<li><a href="../Hardware_Threat_Minimization/">Hardware
+Threat Minimization</a></li>
+<li><a href="../Full_Disk_Encryption/">Full Disk
+Encryption</a></li>
+<li><a href="./">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<p><img src="../../media/Virtualizationsec2342342.jpg.webp" alt="Virtualizationsec2342342.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Deciding on a Virtualization Platform and Configuration, VirtualBox
+Hardening</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Host_Compromise_Can_Easily_Lead_to_VM_Compromise">Host
+Compromise Can Easily Lead to VM Compromise</h1>
+<p><span class="manually-placed-anchor " id="Host_Insecurity_leads_to_VM_Compromise"></span>
+<span class="manually-placed-anchor " id="Host_Insecurity_leads_VM_Compromise"></span></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+If the host <u>o</u>perating <u>s</u>ystem (OS) or host computer is ever
+compromised, this can easily lead to compromise of any VMs it hosts.
+This issue is <a href="../Unspecific/">unspecific to
+Kicksecure</a>.</p>
+<p>From a technical viewpoint, the host is at a "lower level", while a
+VM is at a "higher level". In computer security, lower levels can always
+override higher levels, which is why host security is of paramount
+importance. See also <a href="../Essential_Host_Security/">Essential Host Security</a>.</p>
+<p>With the current hardware commonly available to end-users, operating
+systems running inside a VM cannot protect themselves from the host.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+</div>
+<h1 id="Type_1_vs_Type_2_Hypervisors">Type 1 vs Type 2 Hypervisors</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+Do not install Qubes inside a virtual machine. Qubes uses its own
+bare-metal hypervisor (Xen). <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+</div>
+<p>Terminology: <u>o</u>perating <u>s</u>ystem (OS)</p>
+<p>According to qubes-os.org: <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
+<p><blockquote><p>Not all virtual machine software is equal when it comes to security.
+You may have used or heard of VMs in relation to software like
+VirtualBox or VMware Workstation. These are known as "Type 2" or
+"hosted" hypervisors. (The hypervisor is the software, firmware, or
+hardware that creates and runs virtual machines.) These programs are
+popular because they're designed primarily to be easy to use and run
+under popular OSes like Windows (which is called the host OS, since it
+"hosts" the VMs). However, the fact that Type 2 hypervisors run under
+the host OS means that they're really only as secure as the host OS
+itself. If the host OS is ever compromised, then any VMs it hosts are
+also effectively compromised.</p>
+<p>By contrast, Qubes uses a "Type 1" or "bare metal" hypervisor called
+Xen. Instead of running inside an OS, Type 1 hypervisors run directly on
+the "bare metal" of the hardware. This means that an attacker must be
+capable of subverting the hypervisor itself in order to compromise the
+entire system, which is vastly more difficult.</p></blockquote></p>
+<p>The take-home message is that <a href="../Qubes/">Kicksecure for Qubes</a> is more secure than the
+default Kicksecure configuration using a Type 2 hypervisor such as
+VirtualBox. Therefore, it is recommended to install Kicksecure for Qubes
+if users have suitably <a href="https://www.qubes-os.org/doc/system-requirements/">modern
+hardware</a>.</p>
+<h1 id="VM_Snapshots">VM Snapshots</h1>
+<p>Apart from offering protection against hardware serial leaks, VMs
+have another major advantage: the ability to quickly discard and restore
+a system. This is platform specific:</p>
+<ul>
+<li><a href="../Qubes/">Kicksecure-Qubes</a>: This process
+is easy in Kicksecure-Qubes, since every template-based AppVM used for
+activities is based on a Template which is only used for software
+installation and updates, and nothing else. AppVMs are easily discarded
+and recreated in a clean state whenever the user requires it.
+<sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
+<li><a href="../About/">Kicksecure</a>: In Kicksecure
+and other virtualizers, greater precaution is required. See below.</li>
+</ul>
+<h2 id="Best_Practice">Best Practice</h2>
+<p>It is <u>strongly recommended</u> to keep a master copy of the
+Kicksecure VM which is:</p>
+<ul>
+<li>Kept updated.</li>
+<li>Does not have any additional software installed.</li>
+<li>Does not have any default settings changed.</li>
+<li>Is not used directly for any activities.</li>
+</ul>
+<p>The correct method for the safest operation of Kicksecure is as
+follows:</p>
+<ol>
+<li>Import the VM into the virtualizer.</li>
+<li>Start the VM.</li>
+<li><a href="../Operating_System_Software_and_Updates/#Updates">Securely update</a> the VM.</li>
+<li>After the updates have finished, shut the VM down. <u>Do not</u>
+browse anywhere or open any unauthenticated communication channels to
+the internet.</li>
+<li>Create clones of the VM in its clean state.</li>
+<li>Only use the clones for browsing or initiating any external
+connections.</li>
+</ol>
+<p>Note: The only exception made is running <code>apt</code>, since it
+has a guaranteed way to securely download and verify packages.</p>
+<p>If this advice is disregarded and a master clean copy of Kicksecure
+is unavailable for cloning/snapshot purposes, possible workarounds
+include: <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<ol>
+<li>Renaming the existing Kicksecure and re-importing a new one.</li>
+<li>Renaming the new VM during the import wizard.</li>
+</ol>
+<h2 id="Tools">Tools</h2>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p><u>For important <a href="../VirtualBox/">VirtualBox</a>
+information</u>, please press Expand on the right.</p>
+<div class="mw-collapsible-content">
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<strong>Warning</strong>: VirtualBox's VM Snapshot feature is
+recommended against because <a href="https://forums.whonix.org/t/whonix-apparmor-profiles-development-discussion/108/136">data
+loss</a> has been experienced using it. Instead, use clones or other
+reliable methods outlined below.</p>
+</div>
+<p><span class="manually-placed-anchor " id="Reliable_Alternative_To_Virtualbox_VM_Snapshots"></span></p>
+<p>Although VirtualBox's snapshot feature is useful when making interim
+snapshots of live running systems, it is not recommended as a reliable
+method for backing up VMs. Data loss is possible, primarily in the form
+of corrupted virtual hard drives (VHDs). Following VHD corruption,
+reverting can be very painful or even impossible. Alternative methods
+include copy / paste, cloning, and exporting / importing. These methods
+reliably provide VM backups, but disk resources are used inefficiently
+and manual versioning is required.</p>
+<h3 id="SubVersioN_(SVN)_Backup_Tool">SubVersioN (SVN) Backup Tool</h3>
+<p><a href="https://en.wikipedia.org/wiki/Apache_Subversion">SubVersioN</a> is
+considered the best alternative tool for backing up VM operating
+environments. It is similar to VirtualBox's snapshot feature, but is
+much more reliable and efficient. Prior to using it, familiarize
+yourself with the tool's <a href="https://subversion.apache.org/docs/">documentation</a> and design.
+SVN <a href="https://en.wikipedia.org/wiki/Comparison_of_Subversion_clients">clients</a>
+are available for various platforms.</p>
+<p>SVN is a tool typically used by software developers to conduct
+collaborative configuration management, version control, and backup /
+restore of file sets under development by many people over an extended
+period of time. The basic functionality of versioning, backing up, and
+restoring changes to sets of files is available. However, SVN is
+considered superior to CVS, GIT and other options for VM backups,
+because it does not have file size limitations by design. Regardless of
+how big or small the files are, SVN handles them reliably and
+efficiently. See the following section: <a href="https://svn.apache.org/repos/asf/subversion/trunk/doc/user/svn-best-practices.html">"Be
+patient with large files"</a>.</p>
+<p>When versioning file sets, SVN employs <a href="https://en.wikipedia.org/wiki/Atomic_commit">"atomic commits"</a>.
+By way of comparison, <a href="https://en.wikipedia.org/wiki/Concurrent_Versions_System">Concurrent
+Versions System (CVS)</a> does not employ <a href="https://en.wikipedia.org/wiki/Atomic_commit">atomic commits</a>.
+Manual backup procedures are inherently not <a href="https://en.wikipedia.org/wiki/Atomic_commit">atomic functions</a>.
+Additionally, SVN also handles <a href="https://en.wikipedia.org/wiki/Sparse_file">sparse (dynamic)</a>
+virtual hard disk files, an option VirtualBox offers when <a href="https://www.virtualbox.org/manual/ch01.html#gui-createvm">instantiating
+new virtual disk drives</a>.</p>
+<p>Similar to VirtualBox's snapshot capability, SVN also takes into
+consideration differences in files -- both textual and binary -- from
+version to version. For instance, if a 50 GB virtual hard drive grows to
+60 GB over the course of a week, SVN's repository will not necessarily
+increase by an additional 60 GB when a new backup is performed. The
+outcome depends on how much of the original file changed since the
+previous backup. SVN will analyze differences between newer files
+against older files in its repository and only save the differences.
+Therefore, the repository may only grow as little as 10 GB+, making more
+efficient use of system resources.</p>
+<p>VirtualBox's snapshot feature provides <a href="https://forums.virtualbox.org/viewtopic.php?f=3&amp;p=123806">'branching'</a>
+capability. This means it is possible to revert to an earlier version of
+the VM and start a new branch / version of the VM from where you left
+off earlier. SVN also provides similar <a href="https://svnbook.red-bean.com/en/1.7/svn.branchmerge.html">branching</a>
+capability.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
+<strong>Tip:</strong> For backups and restores, configuration management
+tools like SVN require significant additional disk space over and above
+the size of the file.</p>
+</div>
+<p>For instance, a 50 GB file typically requires approximately 150 GB of
+disk space to manage that instance of the VM. The reason is that it
+requires: 50 GB for the original source file, 50 GB in SVN's database <a href="https://en.wikipedia.org/wiki/Apache_Subversion#Repository_types">repository</a>,
+and another 50 GB for SVN's <a href="https://svnbook.red-bean.com/en/1.6/svn.tour.initial.html">local
+workspace</a> working folder ('./.svn'). Although this overhead may seem
+inefficient, it is not when you consider SVN's functionality and
+reliability in comparison to manual backup methods outlined earlier.</p>
+<h3 id="Complete_Operating_Environment_Backups">Complete Operating
+Environment Backups</h3>
+<p>In addition to backing up the Kicksecure virtual hard drive files, it
+is also possible to back up the whole VirtualBox application and
+Kicksecure environment for a completely restorable solution. Cloning is
+another possible option, but that requires more advanced technical
+skills.</p>
+<p>Usually the VirtualBox application that is installed has been
+provided by <a href="https://www.virtualbox.org">VirtualBox.org</a>.
+However, a <a href="https://en.wikipedia.org/wiki/Portable_application">portable
+application</a> version of VirtualBox is available via a tool provided
+by <a href="https://www.vbox.me">VBox.me</a>. This application converts
+VirtualBox's "install application" into a "portable application",
+thereby providing the option to port VMs to other computers via external
+USB hard drives and/or USB sticks. By instantiating VMs under portable
+VirtualBox's <em>~/data/.VirtualBox/Machines</em> folder, it is possible
+to back up and restore the complete operating environment of not only
+Kicksecure, but also specific instances of VirtualBox and SVN for
+complete portability. This method captures the entire Kicksecure
+operating environment under one parent folder, rather than distributing
+it across various user and system folders.</p>
+<p><strong>Figure:</strong> <em>Complete Kicksecure OS Backup
+#1</em></p>
+<p><img src="../../media/2014-05-11_09_42_19.png.webp" alt="2014-05-11 09_42_19.png" /></p>
+<p><strong>Figure:</strong> <em>Complete Kicksecure OS Backup
+#2</em></p>
+<p><img src="../../media/2014-05-11_09_46_43.png.webp" alt="2014-05-11 09_46_43.png" /></p>
+<p><strong>Figure:</strong> <em>Complete Kicksecure OS Backup
+#3</em></p>
+<p><img src="../../media/2014-05-11_09_54_39.png.webp" alt="2014-05-11 09_54_39.png" /></p>
+</div>
+</div>
+<h1 id="VirtualBox_Hardening">VirtualBox Hardening</h1>
+<p>For an overview on VM security risks in general, see: <a href="https://security.stackexchange.com/questions/3056/how-secure-are-virtual-machines-really-false-sense-of-security">How
+secure are Virtual Machines really?</a></p>
+<p>The fewer features enabled, the smaller the <a href="https://en.wikipedia.org/wiki/Attack_surface">attack surface</a>.
+The following features can be removed or disabled without impacting core
+functionality:</p>
+<div>
+<ul>
+<li>Remove the virtual audio controller to prevent VMs from getting
+access to a <a href="../Hardware_Threat_Minimization/#Microphone">microphone (eavesdropping risk)</a> or <a href="../Hardware_Threat_Minimization/#Speakers">speaker</a> (<a href="../Hardware_Threat_Minimization/#Profiling_Threat">profiling threat</a>).</li>
+<li>Do not enable Shared Folders.</li>
+<li>Do not enable video acceleration.</li>
+<li>Do not enable 3D acceleration. <sup class="reference"><a href="#cite_note-6">[6]</a></sup>
+<sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
+<li>Do not enable the Serial Port.</li>
+<li>Remove the Floppy drive.</li>
+<li>Remove the CD/DVD drive.</li>
+<li>Do not enable the Remote Display server.</li>
+<li>Enable PAE/NX (NX is a security feature).</li>
+<li>Do not attach USB devices.</li>
+<li>Disable the USB controller which is enabled by default. Set the
+Pointing Device to "PS/2 Mouse" or the changes will revert.</li>
+</ul>
+</div>
+<p>It is unclear whether disabling or enabling ACPI, I/O APIC, EFI will
+provide additional protection; further investigation is required.
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup> <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="../System_Configuration_and_Access/">System
+Configuration and Access</a></li>
+<li><a href="../Protection_Against_Physical_Attacks/">Protection Against Physical Attacks</a></li>
+<li><a href="../Hardware_Threat_Minimization/">Hardware
+Threat Minimization</a></li>
+<li><a href="../Full_Disk_Encryption/">Full Disk
+Encryption</a></li>
+<li><a href="./">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">There might be specialized hardware for clouds that can guarantee
+integrity/attestation for the operating system running inside the VM. In
+such cases, users must trust that the proprietary hardware was
+implemented correctly or consider Homomorphic Encryption. See <a href="../Dev/confidential_computing/">Confidential
+Computing</a>. However, none of this is practically available for
+end-users.</li>
+<li id="cite_note-2"><a href="https://www.qubes-os.org/doc/system-requirements/">https://www.qubes-os.org/doc/system-requirements/</a></li>
+<li id="cite_note-3"><a href="https://www.qubes-os.org/intro/">https://www.qubes-os.org/intro/</a></li>
+<li id="cite_note-4"><a href="https://www.qubes-os.org/doc/templates/">https://www.qubes-os.org/doc/templates/</a></li>
+<li id="cite_note-5"><a href="https://forums.whonix.org/t/help-with-setting-up-multiple-workstations/12235">https://forums.whonix.org/t/help-with-setting-up-multiple-workstations/12235</a></li>
+<li id="cite_note-6">Quote <a href="https://www.virtualbox.org/manual/ch04.html#guestadd-3d">https://www.virtualbox.org/manual/ch04.html#guestadd-3d</a>
+<blockquote><p>Untrusted guest systems should not be allowed to use VirtualBox's 3D
+acceleration features, just as untrusted host software should not be
+allowed to use 3D acceleration. Drivers for 3D hardware are generally
+too complex to be made properly secure and any software which is allowed
+to access them may be able to compromise the operating system running
+them. In addition, enabling 3D acceleration gives the guest direct
+access to a large body of additional program code in the VirtualBox host
+process which it might conceivably be able to use to crash the virtual
+machine.</p></blockquote></li>
+<li id="cite_note-7">Quote <a href="https://hsmr.cc/palinopsia/">https://hsmr.cc/palinopsia/</a>
+<blockquote><p>If the "3D-Acceleration" feature of VirtualBox is activated, running
+the proof-of-concept code from inside the VM provides the ability to
+read framebuffers from the host system.</p></blockquote></li>
+<li id="cite_note-8">Advanced Configuration and Power Interface (ACPI)
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/derivative-maker/tree/master/build-steps.d/4600_create-vbox-vm">Kicksecure/derivative-maker</a></span>
+ACPI information is passed to the guest OS by default, which allows it
+to obtain battery status and manufacturer information. syntax:
+<pre><code> VBoxManage modifyvm &quot;vm-name&quot; --acpi off </code></pre>
+<p>Examples: <span class="code-select">VBoxManage modifyvm
+"Kicksecure-LXQt" --acpi off</span></p></li>
+<li id="cite_note-9">When attempting to disable I/O APIC, quote VirtualBox settings
+graphical user interface: <blockquote><p>The I/O APIC feature is not currently enabled in the Motherboard
+section of the System page. This is needed to support more than one
+virtual processor. It will be enabled automatically if you confirm your
+changes.</p></blockquote> Since 1 virtual processor is
+probably too slow nowadays, this might be a bit theoretical.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

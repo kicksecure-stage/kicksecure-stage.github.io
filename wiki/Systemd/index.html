@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Systemd</title>
+<meta name="description" content="systemd versus non-systemd / Miscellaneous / Find systemd dependency cycles.">
+<meta property="og:description" content="systemd versus non-systemd / Miscellaneous / Find systemd dependency cycles.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Systemd/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Systemd/">
+<meta property="og:title" content="systemd">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Donation_systray/" title="Donation systray"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Donation
+systray</span></a><a class="index internal" href="../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Seccomp/" title="seccomp"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">seccomp</span></a><span class="info"><span class="prev">Previous
+page: Donation systray</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+seccomp</span></span></span>systemd</p>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="./">systemd</a></li>
+<li><a href="../Seccomp/">seccomp</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>systemd versus non-systemd / Miscellaneous / Find systemd dependency
+cycles.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="systemd_security_features">systemd security features</h1>
+<div class="intro-like">
+<p>Systemd has a long list of security hardening features for systemd
+unit files.</p>
+<p>Non-exhaustive list. Written April 2026.</p>
+<p>The goal of the list isn't replacing systemd upstream documentation,
+completeness, or perfection. The purpose is to provide a rationale for
+using systemd.</p>
+</div>
+<p>This table intentionally uses short upstream verbatim excerpts that
+give a reader an initial clue why a directive can improve service
+isolation. For some settings, especially <code>DynamicUser=</code>
+together with the directory helpers, the security benefit is clearest
+when multiple directives are combined.</p>
+<table>
+<caption>systemd service hardening directives with upstream verbatim
+excerpts</caption>
+<thead>
+<tr class="header">
+<th><p>Directive</p></th>
+<th><p>Upstream excerpt</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><code>NoNewPrivileges=yes</code></p></td>
+<td><p><blockquote><p>can never gain new privileges through execve()</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>PrivateTmp=yes</code></p></td>
+<td><p><blockquote><p>private /tmp/ and /var/tmp/ directories</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>PrivateDevices=yes</code></p></td>
+<td><p><blockquote><p>turn off physical device access by the executed process</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ProtectSystem=strict</code></p></td>
+<td><p><blockquote><p>the entire file system hierarchy is mounted read-only</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ProtectHome=read-only</code></p></td>
+<td><p><blockquote><p>the three directories are made read-only instead</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ProtectControlGroups=yes</code></p></td>
+<td><p><blockquote><p>will be made read-only to all processes of the unit</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ProtectKernelTunables=yes</code></p></td>
+<td><p><blockquote><p>kernel variables accessible through /proc/sys/, /sys/,
+/proc/sysrq-trigger, /proc/latency_stats, /proc/acpi, /proc/timer_stats,
+/proc/fs and /proc/irq will be made read-only</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ProtectKernelModules=yes</code></p></td>
+<td><p><blockquote><p>explicit module loading will be denied</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ProtectKernelLogs=yes</code></p></td>
+<td><p><blockquote><p>access to the kernel log ring buffer will be denied</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ProtectClock=yes</code></p></td>
+<td><p><blockquote><p>writes to the hardware clock or system clock will be denied</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ProtectHostname=yes</code></p></td>
+<td><p><blockquote><p>changing hostname or domainname via sethostname() and setdomainname()
+system calls is prevented</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>LockPersonality=yes</code></p></td>
+<td><p><blockquote><p>locks down the personality(2) system call</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>MemoryDenyWriteExecute=yes</code></p></td>
+<td><p><blockquote><p>writable and executable at the same time</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>RestrictSUIDSGID=yes</code></p></td>
+<td><p><blockquote><p>set the set-user-ID (SUID) or set-group-ID (SGID) bits</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>RestrictRealtime=yes</code></p></td>
+<td><p><blockquote><p>any attempts to enable realtime scheduling in a process of the unit
+are refused</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>RestrictNamespaces=yes</code></p></td>
+<td><p><blockquote><p>Restricts access to Linux namespace functionality</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>SystemCallArchitectures=native</code></p></td>
+<td><p><blockquote><p>disabling non-native ABIs</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>SystemCallFilter=@system-service</code></p></td>
+<td><p><blockquote><p>relatively safe basic choice for the majority of system services</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>SystemCallErrorNumber=EPERM</code></p></td>
+<td><p><blockquote><p>to return when the system call filter configured with
+SystemCallFilter= is triggered, instead of terminating the process
+immediately</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>CapabilityBoundingSet=</code></p></td>
+<td><p><blockquote><p>Controls which capabilities to include in the capability bounding
+set</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>AmbientCapabilities=</code></p></td>
+<td><p><blockquote><p>Controls which capabilities to include in the ambient capability
+set</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>PrivateUsers=yes</code></p></td>
+<td><p><blockquote><p>new user namespace</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>PrivateMounts=yes</code></p></td>
+<td><p><blockquote><p>private file system (mount) namespace</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>PrivateIPC=yes</code></p></td>
+<td><p><blockquote><p>sets up a new IPC namespace</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>PrivatePIDs=yes</code></p></td>
+<td><p><blockquote><p>new PID namespace</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ProtectProc=invisible</code></p></td>
+<td><p><blockquote><p>When set to "invisible" processes owned by other users are hidden
+from /proc/.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ProcSubset=pid</code></p></td>
+<td><p><blockquote><p>If "pid", all files and directories not directly associated with
+process management and introspection are made invisible in the /proc/
+file system</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>RemoveIPC=yes</code></p></td>
+<td><p><blockquote><p>System V and POSIX IPC objects</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>UMask=0077</code></p></td>
+<td><p><blockquote><p>file mode creation mask</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>IPAddressDeny=any</code></p></td>
+<td><p><blockquote><p>implement an allow-listing IP firewall</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>IPAddressAllow=...</code></p></td>
+<td><p><blockquote><p>Access is granted</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6</code></p></td>
+<td><p><blockquote><p>address family names to allow-list, such as AF_UNIX, AF_INET or
+AF_INET6</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>SocketBindDeny=any</code></p></td>
+<td><p><blockquote><p>binding is denied when the socket address matches an entry in the
+SocketBindDeny= list</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>SocketBindAllow=...</code></p></td>
+<td><p><blockquote><p>Binding to a socket is allowed when a socket address matches an entry
+in the SocketBindAllow= list</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>ReadWritePaths=...</code></p></td>
+<td><p><blockquote><p>Use ReadWritePaths= in order to allow-list specific paths for write
+access if ProtectSystem=strict is used.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>ReadOnlyPaths=...</code></p></td>
+<td><p><blockquote><p>Paths listed in ReadOnlyPaths= are accessible for reading only,
+writing will be refused even if the usual file access controls would
+permit this.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>InaccessiblePaths=...</code></p></td>
+<td><p><blockquote><p>Paths listed in InaccessiblePaths= will be made inaccessible for
+processes inside the namespace along with everything below them in the
+file system hierarchy.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>TemporaryFileSystem=/var:ro</code></p></td>
+<td><p><blockquote><p>This is useful to hide files or directories not relevant to the
+processes invoked by the unit, while necessary files or directories can
+be still accessed by combining with BindPaths= or
+BindReadOnlyPaths=:</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>DevicePolicy=closed</code></p></td>
+<td><p><blockquote><p>closed in addition, allows access to standard pseudo devices
+including /dev/null, /dev/zero, /dev/full, /dev/random, and
+/dev/urandom.</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>DeviceAllow=...</code></p></td>
+<td><p><blockquote><p>Control access to specific device nodes by the executed processes.
+This functionality is implemented using eBPF filtering.</p></blockquote> <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>DynamicUser=yes</code></p></td>
+<td><p><blockquote><p>Setting DynamicUser=yes implies ProtectSystem=strict and
+ProtectHome=read-only.</p></blockquote> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>StateDirectory=...</code></p></td>
+<td><p><blockquote><p>If DynamicUser= is used, the logic for CacheDirectory=,
+LogsDirectory= and StateDirectory= is slightly altered: the directories
+are created below /var/cache/private, /var/log/private and
+/var/lib/private, respectively, which are host directories made
+inaccessible to unprivileged users, which ensures that access to these
+directories cannot be gained through dynamic user ID recycling.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>CacheDirectory=...</code></p></td>
+<td><p><blockquote><p>If DynamicUser= is used, the logic for CacheDirectory=,
+LogsDirectory= and StateDirectory= is slightly altered: the directories
+are created below /var/cache/private, /var/log/private and
+/var/lib/private, respectively, which are host directories made
+inaccessible to unprivileged users, which ensures that access to these
+directories cannot be gained through dynamic user ID recycling.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>LogsDirectory=...</code></p></td>
+<td><p><blockquote><p>If DynamicUser= is used, the logic for CacheDirectory=,
+LogsDirectory= and StateDirectory= is slightly altered: the directories
+are created below /var/cache/private, /var/log/private and
+/var/lib/private, respectively, which are host directories made
+inaccessible to unprivileged users, which ensures that access to these
+directories cannot be gained through dynamic user ID recycling.</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>RuntimeDirectory=...</code></p></td>
+<td><p><blockquote><p>If you set it to a directory name of your choice, it will be created
+below /run when the service is started, and removed in its entirety when
+it is terminated.</p></blockquote> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>PrivateNetwork=yes</code></p></td>
+<td><p><blockquote><p>turn off network access by the executed process</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>NetworkNamespacePath=...</code></p></td>
+<td><p><blockquote><p>Sets a file system path to a Linux network namespace pseudo-file</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p><code>RestrictFileSystems=...</code></p></td>
+<td><p><blockquote><p>Restricts the set of filesystems processes of this unit can open
+files on</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>KeyringMode=private</code></p></td>
+<td><p><blockquote><p>a new session keyring is allocated when a service process is invoked,
+and it is not linked up with any user keyring</p></blockquote> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="systemd_versus_non-systemd">systemd versus non-systemd</h1>
+<p>Kicksecure is a systemd-based distribution. Kicksecure is not
+anti-systemd.</p>
+<p><a href="https://forums.kicksecure.com/t/non-systemd-systemd-development-discussion/766/11">The
+Kicksecure lead developer isn't convinced by anti-systemd arguments
+justifying a move to a non-systemd distribution. (Elaborated in
+forums.)</a></p>
+<p>Non-systemd is <a href="../Unsupported/">unsupported</a>
+because no contributors support this use case.</p>
+<p>See also:</p>
+<ul>
+<li><a href="https://without-systemd.org/wiki/index_php/Arguments_against_systemd/">https://without-systemd.org/wiki/index_php/Arguments_against_systemd/</a></li>
+<li><a href="https://nosystemd.org/">https://nosystemd.org/</a></li>
+</ul>
+<h1 id="systemd_interface_opinion">systemd interface opinion</h1>
+<p><blockquote><p>TODO: expand</p>
+<p>The interfaces (the way packages and distributions can place
+configuration files there) of</p>
+<ul>
+<li><code>/usr/lib/systemd/system/unit-name.service(.d)</code>;
+<ul>
+<li>ability to easily use capabilities and syscall filters for security
+hardening</li>
+</ul></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd-tmpfiles-setup.service.html">systemd
+tmpfiles.d</a> / <code>/usr/lib/tmpfiles.d/</code>;</li>
+</ul>
+<p>are excellent.</p>
+<p>The <a href="https://systemd.io/BOOT_LOADER_INTERFACE/">The Boot
+Loader Interface</a> <code>LoaderSystemToken</code> feature sounds
+excellent.</p>
+<p>Bad things:</p>
+<ul>
+<li>journal log being binary</li>
+<li>adding <code>systemd</code> into the names of tools such as
+<code>systemd-resolved</code>, <code>systemd-networkd</code> and making
+these systemd-dependent</li>
+<li>systemd-boot only supporting Intel/AMD64
+architecture<span class="blockquote-context">Kicksecure lead developer
+opinion.</span></li>
+</ul></blockquote></p>
+<h1 id="Systemd_User_Environment_Variables_Configuration">Systemd User
+Environment Variables Configuration</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i></p>
+<p><span class="code-select">mkdir -p
+~/.config/environment.d/</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Open file <code>~/.config/environment.d/electrumx.conf</code> in a <a href="../Software/#Text_Editor">text editor</a> of your
+choice as a regular, non-root user.</p>
+<div class="info-box ">
+<p><u>If you are using a graphical environment</u>, run.
+<span class="code-select">featherpad
+~/.config/environment.d/electrumx.conf</span></p>
+<p><u>If you are using a terminal</u>, run.
+<span class="code-select">nano
+~/.config/environment.d/electrumx.conf</span></p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Paste the following contents.</p>
+<p><span class="code-select">COIN=Bitcoin DB_DIRECTORY=~/.electrumx
+DAEMON_URL=username:password@127.0.0.1 SERVICES=rpC://localhost
+PEER_DISCOVERY=self</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Save.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i></p>
+<p><span class="code-select">systemctl --user daemon-reload</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Done.</p>
+<p>The systemd user environment variables configuration has been created
+and reloaded.</p>
+<h1 id="systemd_age_API">systemd age API</h1>
+<ul>
+<li><a href="https://forum.qubes-os.org/t/how-much-do-we-gotta-worry-about-this-linux-age-verification-bs/39788/179">https://forum.qubes-os.org/t/how-much-do-we-gotta-worry-about-this-linux-age-verification-bs/39788/179</a></li>
+<li><a href="https://forum.qubes-os.org/t/how-much-do-we-gotta-worry-about-this-linux-age-verification-bs/39788/240">https://forum.qubes-os.org/t/how-much-do-we-gotta-worry-about-this-linux-age-verification-bs/39788/240</a></li>
+</ul>
+<h1 id="Interesting">Interesting</h1>
+<ul>
+<li><a href="https://github.com/jantman/misc-scripts/blob/master/dot_find_cycles.py">dot_find_cycles.py
+- uses Pydot and NetworkX to find cycles in a dot file directed
+graph.</a></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="https://forums.kicksecure.com/t/non-systemd-systemd-discussion/766">https://forums.kicksecure.com/t/non-systemd-systemd-discussion/766</a></li>
+<li><a href="https://forums.whonix.org/t/whonix-without-systemd/18426">https://forums.whonix.org/t/whonix-without-systemd/18426</a></li>
+<li><a href="https://forums.whonix.org/t/whonix-without-systemd/18426">Whonix
+without systemD</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html">systemd.exec(5)</a></li>
+<li id="cite_note-2"><a href="https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html">systemd.resource-control(5)</a></li>
+<li id="cite_note-3"><a href="https://0pointer.net/blog/dynamic-users-with-systemd.html">Dynamic
+Users with systemd</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Donation_systray/" title="Donation systray"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Donation
+systray</span></a><a class="index internal" href="../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Seccomp/" title="seccomp"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">seccomp</span></a><span class="info"><span class="prev">Previous
+page: Donation systray</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+seccomp</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

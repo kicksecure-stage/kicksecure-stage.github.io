@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>KVM</title>
+<meta name="description" content="Kicksecure for KVM">
+<meta property="og:description" content="Kicksecure for KVM">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/KVM/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/KVM/">
+<meta property="og:title" content="Kicksecure for KVM">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Download-kvm.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GUI">GUI</a></li><li class="toc-l3"><a href="#stable_LXQt">stable LXQt</a></li><li class="toc-l3"><a href="#testers_LXQt">testers LXQt</a></li><li class="toc-l2"><a href="#CLI">CLI</a></li><li class="toc-l3"><a href="#stable_CLI">stable CLI</a></li><li class="toc-l3"><a href="#testers_CLI">testers CLI</a></li><li class="toc-l3"><a href="#Moving_Kicksecure_Image_Files">Moving Kicksecure Image
+Files</a></li><li class="toc-l3"><a href="#Copying_Kicksecure_Image_Files">Copying Kicksecure Image
+Files</a></li><li class="toc-l2"><a href="#Start">Start</a></li><li class="toc-l3"><a href="#Virtual_Machine_Manager_(Virt-Manager)_GUI_default_is_qemu:///system_not_qemu:///session">Virtual
+Machine Manager (Virt-Manager) GUI default is
+qemu:///system not qemu:///session</a></li><li class="toc-l3"><a href="#Using_Kicksecure_with_LXQt_as_Graphical_User_Interface_(GUI)_Desktop">Using
+Kicksecure with LXQt as Graphical User Interface (GUI) Desktop</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../VirtualBox/" title="VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Qubes/" title="Qubes"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Qubes</span></a><span class="info"><span class="prev">Previous
+page: VirtualBox</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Qubes</span></span></span>Kicksecure for KVM</p>
+</div>
+<p><span class="manually-placed-anchor " id="support_status"></span></p>
+<div>
+<table>
+<thead>
+<tr class="header">
+<th><p><strong>About this KVM Page</strong><br />
+Contributor maintained wiki page.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Support Status</p></td>
+</tr>
+<tr class="even">
+<td><p>Difficulty</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="../Contribute/#Contributor">Contributor</a></p></td>
+</tr>
+<tr class="even">
+<td><p>Support</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="Download-kvm.jpg" title="unofficial logo re-design for the KVM virtualizer + Kicksecure|thumb" alt="unofficial logo re-design for the KVM virtualizer + Kicksecure|thumb" />
+<img src="Kvm-new-logo.png" title="KVM virtualizer (unofficial <sup class="reference"><a href="#cite_note-1">[1]</a></sup>) logo|thumb" width="200" alt="KVM virtualizer (unofficial <sup class="reference"><a href="#cite_note-1">[1]</a></sup>) logo|thumb" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This is the KVM flavor of the Kicksecure project.</p>
+<div class="post-intro-p">
+</div>
+<p><span class="manually-placed-anchor " id="Community_Support"></span></p>
+<div class="info-box community-support-info csi-page has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="80" alt="Info" /></span>
+<strong>COMMUNITY SUPPORT ONLY</strong> : <strong>THIS WHOLE WIKI
+<u>PAGE</u></strong> is only supported by the community. Kicksecure
+developers are <strong>very unlikely</strong> to provide free support
+for this content. See <a href="../Community_Support/">Community Support</a> for further information,
+including implications and possible alternatives.</p>
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Much of the warnings and use case instructions from Whonix KVM, such
+as running the OS <a href="https://www.whonix.org/wiki/KVM#Command_Line_Interface_(CLI)">headlessly</a>
+or using <a href="https://www.whonix.org/wiki/KVM#Shared_Folder">shared
+folders</a>, are applicable.</p>
+<p>For more details about Kicksecure, check <a href="../About/">Kicksecure pages</a>.</p>
+<p>Support tickets should be forwarded to the <a href="https://forums.kicksecure.com/c/kvm">KVM subforum</a>.</p>
+<h1 id="Install_KVM">Install KVM</h1>
+<p>For <strong>Kicksecure</strong> on Intel / AMD, install:</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+qemu-system-x86 qemu-system-gui qemu-system-modules-spice qemu-utils
+libvirt-daemon libvirt-daemon-driver-qemu libvirt-daemon-driver-storage
+libvirt-clients virt-manager gir1.2-spiceclientgtk-3.0 passt ovmf swtpm
+swtpm-tools safe-rm xz-utils</span></p>
+<p>For <strong>Kicksecure</strong> on PowerPC, install:</p>
+<p><span class="code-select">sudo apt install --no-install-recommends
+qemu-system-ppc qemu-system-gui qemu-system-modules-spice qemu-utils
+libvirt-daemon-system libvirt-daemon-driver-qemu
+libvirt-daemon-driver-storage libvirt-clients virt-manager
+gir1.2-spiceclientgtk-3.0 passt swtpm swtpm-tools safe-rm
+xz-utils</span></p>
+<h1 id="Build_from_Scratch">Build from Scratch</h1>
+<p>Advanced users are encouraged to <a href="../Dev/Build_Documentation/">build</a> Kicksecure images for high security
+assurance.</p>
+<h1 id="Download_Kicksecure">Download Kicksecure</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+<u><strong>By downloading, you acknowledge that you have read,
+understood and agreed to our <a href="../Terms_of_Service/"><span>Terms of
+Service</span></a> and <a href="../Copyright/"><span>License
+Agreement</span></a>.</strong></u></p>
+</div>
+<p><strong><a href="../Reasons_for_Freedom_Software/" class="freelink" aria-label="Link to: Reasons for Freedom Software">FREE</a></strong></p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/Clipart-gui.svg" alt="Symbol representing GUI" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="GUI">GUI</h2>
+</div>
+<div class="tcc-content">
+<div class="tab-content-controller margin-top-10">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/Rg1024_brick_tile.png.webp" alt="Rg1024_brick_tile.png" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="stable_LXQt">stable LXQt</h3>
+</div>
+<div class="tcc-content">
+<div class="download-wrapper">
+<p><a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-LXQt-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz" class="download-button-v2 dlbtn-modal"><span class="dbutton"><i class="fa fa-download" title="Download icon"></i><span>Download
+Kicksecure LXQt (KVM) (stable)
+(FREE!)</span></span><span class="op-sys"><img src="../../media/Logo-kvm.png.webp" alt="KVM" title="KVM" class="kvm" /></span></a></p>
+</div>
+<div class="toccolours mw-collapsible mw-collapsed" data-expandtext="Learn More" data-collapsetext="Show Less">
+<p><u>Optional:</u> Digital signature verification.</p>
+<div class="mw-collapsible-content">
+<p><big>Version (<u>stable</u>):
+<span>18.2.1.9</span></big></p>
+<p><u>Only experienced users:</u> This step is only useful and
+recommended for very experienced users. All other users please skip this
+step.</p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<div class="info-box download-unified-table">
+<div class="margin-bottom-20 margin-top-10">
+<p><span class="manually-placed-anchor " id="signature"></span>
+<strong>Choose your verification method below</strong>. This step
+requires that you have already downloaded
+[Broken-ExtLink--no-url-was-provided].</p>
+</div>
+<div class="info-box cs-gray-light">
+<div class="tab-content-controller " data-tcc-linkid="link1">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/GnuPG-Logo.svg" width="25" alt="GnuPG-Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="OpenPGP_LXQt_stable">OpenPGP LXQt stable</h4>
+</div>
+<div class="tcc-content">
+<div class="margin-top-20">
+<p><img src="../../media/Icon-openpgp.png.webp" width="40" alt="Icon-openpgp.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-LXQt-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>OpenPGP
+Signature</span></span></a></p>
+</div>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure OpenPGP Key</span></span></a></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Signify_Logo.svg" width="25" alt="Signify_Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="signify_LXQt_stable">signify LXQt stable</h4>
+</div>
+<div class="tcc-content">
+<p><img src="../../media/Icon-sha512.png.webp" width="40" alt="Icon-sha512.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-LXQt-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.sha512sums" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-sha512signify.png.webp" width="40" alt="Icon-sha512signify.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-LXQt-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.sha512sums.sig" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file signify signature</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.pub" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure signify Key</span></span></a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="vspacer-20">
+</div>
+<p><i class="padded-content-icon     fa-solid fa-info cs-yellow"></i>
+Read <a href="../Verify_the_images/">Verify the images</a>
+to learn more about the verification process for the images.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Cornues.png.webp" alt="Cornues.png" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="testers_LXQt">testers LXQt</h3>
+</div>
+<div class="tcc-content">
+<div class="download-wrapper">
+<p><a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-LXQt-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz" class="download-button-v2 dlbtn-modal"><span class="dbutton"><i class="fa fa-download" title="Download icon"></i><span>Download
+Kicksecure LXQt (KVM) (testers)
+(FREE!)</span></span><span class="op-sys"><img src="../../media/Logo-kvm.png.webp" alt="KVM" title="KVM" class="kvm" /></span></a></p>
+</div>
+<div class="toccolours mw-collapsible mw-collapsed" data-expandtext="Learn More" data-collapsetext="Show Less">
+<p><u>Optional:</u> Digital signature verification.</p>
+<div class="mw-collapsible-content">
+<p><big>Version (<u>testers</u>):
+<span>18.1.4.2</span></big></p>
+<p><u>Only experienced users:</u> This step is only useful and
+recommended for very experienced users. All other users please skip this
+step.</p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<div class="info-box download-unified-table">
+<div class="margin-bottom-20 margin-top-10">
+<p><span class="manually-placed-anchor " id="signature"></span>
+<strong>Choose your verification method below</strong>. This step
+requires that you have already downloaded
+[Broken-ExtLink--no-url-was-provided].</p>
+</div>
+<div class="info-box cs-gray-light">
+<div class="tab-content-controller " data-tcc-linkid="link1">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/GnuPG-Logo.svg" width="25" alt="GnuPG-Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="OpenPGP_LXQt_testers">OpenPGP LXQt testers</h4>
+</div>
+<div class="tcc-content">
+<div class="margin-top-20">
+<p><img src="../../media/Icon-openpgp.png.webp" width="40" alt="Icon-openpgp.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-LXQt-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>OpenPGP
+Signature</span></span></a></p>
+</div>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure OpenPGP Key</span></span></a></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Signify_Logo.svg" width="25" alt="Signify_Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="signify_LXQt_testers">signify LXQt testers</h4>
+</div>
+<div class="tcc-content">
+<p><img src="../../media/Icon-sha512.png.webp" width="40" alt="Icon-sha512.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-LXQt-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.sha512sums" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-sha512signify.png.webp" width="40" alt="Icon-sha512signify.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-LXQt-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.sha512sums.sig" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file signify signature</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.pub" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure signify Key</span></span></a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="vspacer-20">
+</div>
+<p><i class="padded-content-icon     fa-solid fa-info cs-yellow"></i>
+Read <a href="../Verify_the_images/">Verify the images</a>
+to learn more about the verification process for the images.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Utilities-terminal.png.webp" width="50" alt="Symbol representing CLI" /></p>
+</div>
+<div class="tcc-title">
+<h2 id="CLI">CLI</h2>
+</div>
+<div class="tcc-content">
+<div class="tab-content-controller margin-top-10">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/Rg1024_brick_tile.png.webp" alt="Rg1024_brick_tile.png" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="stable_CLI">stable CLI</h3>
+</div>
+<div class="tcc-content">
+<div class="download-wrapper">
+<p><a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-CLI-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz" class="download-button-v2 dlbtn-modal"><span class="dbutton"><i class="fa fa-download" title="Download icon"></i><span>Download
+Kicksecure CLI (KVM) (stable)
+(FREE!)</span></span><span class="op-sys"><img src="../../media/Logo-kvm.png.webp" alt="KVM" title="KVM" class="kvm" /></span></a></p>
+</div>
+<div class="toccolours mw-collapsible mw-collapsed" data-expandtext="Learn More" data-collapsetext="Show Less">
+<p><u>Optional:</u> Digital signature verification.</p>
+<div class="mw-collapsible-content">
+<p><big>Version (<u>stable</u>):
+<span>18.2.1.9</span></big></p>
+<p><u>Only experienced users:</u> This step is only useful and
+recommended for very experienced users. All other users please skip this
+step.</p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<div class="info-box download-unified-table">
+<div class="margin-bottom-20 margin-top-10">
+<p><span class="manually-placed-anchor " id="signature"></span>
+<strong>Choose your verification method below</strong>. This step
+requires that you have already downloaded
+[Broken-ExtLink--no-url-was-provided].</p>
+</div>
+<div class="info-box cs-gray-light">
+<div class="tab-content-controller " data-tcc-linkid="link1">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/GnuPG-Logo.svg" width="25" alt="GnuPG-Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="OpenPGP_CLI_stable">OpenPGP CLI stable</h4>
+</div>
+<div class="tcc-content">
+<div class="margin-top-20">
+<p><img src="../../media/Icon-openpgp.png.webp" width="40" alt="Icon-openpgp.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-CLI-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>OpenPGP
+Signature</span></span></a></p>
+</div>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure OpenPGP Key</span></span></a></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Signify_Logo.svg" width="25" alt="Signify_Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="signify_CLI_stable">signify CLI stable</h4>
+</div>
+<div class="tcc-content">
+<p><img src="../../media/Icon-sha512.png.webp" width="40" alt="Icon-sha512.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-CLI-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.sha512sums" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-sha512signify.png.webp" width="40" alt="Icon-sha512signify.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.2.1.9/Kicksecure-CLI-18.2.1.9.Intel_AMD64.qcow2.libvirt.xz.sha512sums.sig" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file signify signature</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.pub" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure signify Key</span></span></a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="vspacer-20">
+</div>
+<p><i class="padded-content-icon     fa-solid fa-info cs-yellow"></i>
+Read <a href="../Verify_the_images/">Verify the images</a>
+to learn more about the verification process for the images.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Cornues.png.webp" alt="Cornues.png" /></p>
+</div>
+<div class="tcc-title">
+<h3 id="testers_CLI">testers CLI</h3>
+</div>
+<div class="tcc-content">
+<div class="download-wrapper">
+<p><a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-CLI-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz" class="download-button-v2 dlbtn-modal"><span class="dbutton"><i class="fa fa-download" title="Download icon"></i><span>Download
+Kicksecure CLI (KVM) (testers)
+(FREE!)</span></span><span class="op-sys"><img src="../../media/Logo-kvm.png.webp" alt="KVM" title="KVM" class="kvm" /></span></a></p>
+</div>
+<div class="toccolours mw-collapsible mw-collapsed" data-expandtext="Learn More" data-collapsetext="Show Less">
+<p><u>Optional:</u> Digital signature verification.</p>
+<div class="mw-collapsible-content">
+<p><big>Version (<u>testers</u>):
+<span>18.1.4.2</span></big></p>
+<p><u>Only experienced users:</u> This step is only useful and
+recommended for very experienced users. All other users please skip this
+step.</p>
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<div class="info-box download-unified-table">
+<div class="margin-bottom-20 margin-top-10">
+<p><span class="manually-placed-anchor " id="signature"></span>
+<strong>Choose your verification method below</strong>. This step
+requires that you have already downloaded
+[Broken-ExtLink--no-url-was-provided].</p>
+</div>
+<div class="info-box cs-gray-light">
+<div class="tab-content-controller " data-tcc-linkid="link1">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+<p><img src="../../media/GnuPG-Logo.svg" width="25" alt="GnuPG-Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="OpenPGP_CLI_testers">OpenPGP CLI testers</h4>
+</div>
+<div class="tcc-content">
+<div class="margin-top-20">
+<p><img src="../../media/Icon-openpgp.png.webp" width="40" alt="Icon-openpgp.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-CLI-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>OpenPGP
+Signature</span></span></a></p>
+</div>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure OpenPGP Key</span></span></a></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+<p><img src="../../media/Signify_Logo.svg" width="25" alt="Signify_Logo.svg" /></p>
+</div>
+<div class="tcc-title">
+<h4 id="signify_CLI_testers">signify CLI testers</h4>
+</div>
+<div class="tcc-content">
+<p><img src="../../media/Icon-sha512.png.webp" width="40" alt="Icon-sha512.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-CLI-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.sha512sums" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-sha512signify.png.webp" width="40" alt="Icon-sha512signify.png" />
+<a rel="noreferrer" data-no-instant="" href="../../download/libvirt/18.1.4.2/Kicksecure-CLI-18.1.4.2.Intel_AMD64.qcow2.libvirt.xz.sha512sums.sig" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-feather" title="Signature icon"></i><span>SHA-512
+checksum file signify signature</span></span></a></p>
+<hr />
+<p><img src="../../media/Icon-key.png.webp" width="40" alt="Icon-key.png" />
+<a rel="noreferrer" data-no-instant="" href="../../keys/derivative.pub" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
+Kicksecure signify Key</span></span></a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="vspacer-20">
+</div>
+<p><i class="padded-content-icon     fa-solid fa-info cs-yellow"></i>
+Read <a href="../Verify_the_images/">Verify the images</a>
+to learn more about the verification process for the images.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="info-box cs-yellow-light has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-exclamation cs-red"></i></span>
+<strong>Note:</strong> Save your download to your usual
+<code>~/Downloads</code> folder.</p>
+</div>
+<h1 id="Decompress">Decompress</h1>
+<p><strong>1.</strong> Change directory.</p>
+<p>The decompression command below must be run from within the folder
+where you downloaded the archive (most likely in
+<code>~/Downloads</code> or <code>~/</code> (home) folder).</p>
+<p><u>Note:</u> Adjust the folder if you stored the archive
+elsewhere.</p>
+<p><span class="code-select">cd ~/Downloads</span></p>
+<p><strong>2.</strong> Do not use <code>unxz</code>! Extract the images
+using GNU <code>tar</code>.</p>
+<p><strong>3.</strong> Make sure the <code>xz-utils</code> package is
+installed on your system. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>If you followed the installation instructions above, this should
+already be the case.</p>
+<p><strong>4.</strong> Decompress.</p>
+<p>If your filesystem <u>does</u> support <a href="../Sparse_files/">Sparse Files</a> <sup class="reference"><a href="#cite_note-3">[3]</a></sup>:</p>
+<p><span class="code-select">tar -xSvf Kicksecure*.libvirt.xz</span></p>
+<p>If your filesystem does <u>not</u> support sparse files:</p>
+<p><span class="code-select">tar -xvf Kicksecure*.libvirt.xz</span></p>
+<p><strong>5.</strong> Wait.</p>
+<p>Be aware that the extraction process may take an exceptionally long
+time to complete. It is recommended to allow the terminal to run
+uninterrupted after executing the command to ensure successful
+decompression.</p>
+<p><strong>6.</strong> Done.</p>
+<h1 id="Importing_Kicksecure_VM_Template">Importing Kicksecure VM
+Template</h1>
+<p>The supplied XML files serve as a description for libvirt and define
+the properties of a Kicksecure VM and the networking it should have.</p>
+<ul>
+<li>Define the properties of Kicksecure VM</li>
+</ul>
+<p><span class="code-select">virsh -c qemu:///session define
+Kicksecure*.xml</span></p>
+<h1 id="Tell_libvirt_to_stop_trying_to_adjust_resources_limits_and_force_libvirt_to_skip_it">Tell
+libvirt to stop trying to adjust resources limits and force libvirt to
+skip it</h1>
+<p>Libvirt tries to set the VM process maximum core dump file size to
+"unlimited", but the system will blocks it because unprivileged users
+not allowed to raise their own hard resource limits (setrlimit).</p>
+<p>Since there is no root access to modify system-wide limits, then we
+need to tell libvirt to stop trying to adjust this limit by forcing
+libvirt to skip resource limits.</p>
+<p>So to override the memory/core limits for QEMU inside user
+configuration directory:</p>
+<ul>
+<li>Create new directory:</li>
+</ul>
+<p><span class="code-select">mkdir -p ~/.config/libvirt/</span></p>
+<ul>
+<li>Make and edit new file:</li>
+</ul>
+<p><span class="code-select">nano ~/.config/libvirt/qemu.conf</span></p>
+<ul>
+<li>Copy and Paste:</li>
+</ul>
+<pre><code>max_core = 0
+max_processes = 0
+max_files = 0</code></pre>
+<ul>
+<li>Save and exit
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">x</i></span>
+then
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">y</i></span>
+then
+<span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Enter</i></span>.</li>
+</ul>
+<ul>
+<li>Reboot your system so the changes can take effect.</li>
+</ul>
+<ul>
+<li>Done</li>
+</ul>
+<h1 id="Image_File_Installation">Image File Installation</h1>
+<p>The XML files are configured to use newly created user level path
+<code>~/.local/share/images</code> instead of the default storage
+location of <code>/var/lib/libvirt/images</code>. The image files can be
+moved or copied, depending on storage constraints.</p>
+<p><u>Notes:</u></p>
+<ul>
+<li>The directory must be created before copying or moving the images.
+To create the path <sup class="reference"><a href="#cite_note-4">[4]</a></sup>:</li>
+</ul>
+<p><span class="code-select">mkdir -p ~/.local/share/images</span></p>
+<ul>
+<li>The following steps move or copy the images so the virtual machines
+can boot.</li>
+</ul>
+<p>Either move <u>or</u> copy.</p>
+<div class="tab-content-controller ">
+<div class="mininav">
+</div>
+<div class="tcc-content">
+<div class="tcc-section active ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Moving_Kicksecure_Image_Files">Moving Kicksecure Image
+Files</h3>
+</div>
+<div class="tcc-content">
+<p>Move the image files.</p>
+<p><span class="code-select">mv Kicksecure*.qcow2
+~/.local/share/images/Kicksecure.qcow2</span></p>
+</div>
+</div>
+<div class="tcc-section  ">
+<div class="tcc-image">
+</div>
+<div class="tcc-title">
+<h3 id="Copying_Kicksecure_Image_Files">Copying Kicksecure Image
+Files</h3>
+</div>
+<div class="tcc-content">
+<p>Copy the image files.
+<span class="manually-placed-anchor " id="sparse_files"></span></p>
+<p>Kicksecure disk images are <a href="../Sparse_files/">sparse files</a>, meaning they expand as data is
+written rather than allocating their entire size (100GB) outright.
+Sparse files require special commands when they are copied to ensure
+they retain this property; otherwise, they will occupy the full disk
+space.</p>
+<p><span class="code-select">cp --sparse=always Kicksecure*.qcow2
+~/.local/share/images/Kicksecure.qcow2</span></p>
+</div>
+</div>
+</div>
+</div>
+<h2 id="Start">Start</h2>
+<h3 id="Virtual_Machine_Manager_(Virt-Manager)_GUI_default_is_qemu:///system_not_qemu:///session">Virtual
+Machine Manager (Virt-Manager) GUI default is
+<code>qemu:///system</code> not <code>qemu:///session</code></h3>
+<p>If Kicksecure VM not shown in the default opening of Virt-Manager,
+Then this is because it assumes your VMs on default
+<code>qemu:///system</code>, so you need to change that to
+<code>qemu:///session</code>:</p>
+<p>Go to <code>Virtual Machine Manager</code> &#8594; <code>File</code> &#8594;
+<code>Add Connection...</code> &#8594; Switch Hypervisor from
+<code>QEMU/KVM</code> to <code>QEMU/KVM user session</code> &#8594; Tick
+<code>Autoconnect</code> &#8594; <code>Connect</code>.</p>
+<p>Images:</p>
+<p><img src="../../media/Enable-qemu-session-1.png.webp" width="500" alt="enable-qemu-session-1.png" /></p>
+<p><img src="../../media/Enable-qemu-session-2.png.webp" width="500" alt="enable-qemu-session-2.png" /></p>
+<p><img src="../../media/Enable-qemu-session-3.png.webp" width="500" alt="enable-qemu-session-3.png" /></p>
+<p><img src="../../media/Enable-qemu-session-4.png.webp" width="500" alt="enable-qemu-session-4.png" /></p>
+<p>After that start Kicksecure VM.</p>
+<hr />
+<p>If the virt-manager always going to show <code>qemu:///system</code>
+whenever you start the virt-manager, then to solve this run:</p>
+<p><span class="code-select">echo "export
+LIBVIRT_DEFAULT_URI='qemu:///session'" &gt;&gt; ~/.zshrc</span>
+<span class="code-select">source ~/.zshrc</span></p>
+<p>(If someone is using Bash instead of Zsh, change <code>.zshrc</code>
+to <code>.bashrc</code>, This tells your entire user profile including
+the GUI to always target your local user session by default).</p>
+<h3 id="Using_Kicksecure_with_LXQt_as_Graphical_User_Interface_(GUI)_Desktop">Using
+Kicksecure with LXQt as Graphical User Interface (GUI) Desktop</h3>
+<p>Start Virtual Machine Manager:</p>
+<p><code>Start Menu</code> &#8594; <code>System Tools</code> &#8594;
+<code>Virtual Machine Manager</code></p>
+<p>Start Kicksecure:</p>
+<p><code>click on Kicksecure</code> &#8594; <code>click Open</code> &#8594;
+<code>click the play symbol</code></p>
+<h1 id="Uninstall">Uninstall</h1>
+<div class="toccolours mw-collapsible mw-collapsed">
+<p>If you want to remove Kicksecure KVM VM, the Kicksecure network, and
+Kicksecure image, click Expand on the right.</p>
+<div class="mw-collapsible-content">
+<div class="info-box ">
+<p><strong>1.</strong> Power off the VM you want to Remove (If not
+already).</p>
+<p><span class="code-select">virsh -c qemu:///session destroy
+Kicksecure</span></p>
+<p><strong>2.</strong> Remove the KVM VM settings.</p>
+<p><span class="code-select">virsh -c qemu:///session undefine
+Kicksecure</span></p>
+<p><strong>3.</strong> Delete the images.</p>
+<p><u>Note:</u> All data will be lost unless it is backed up first.
+Adjust the paths to the images as appropriate.</p>
+<p><span class="code-select">safe-rm
+~/.local/share/images/Kicksecure.qcow2</span></p>
+</div>
+</div>
+</div>
+<h1 id="Shared_Folders">Shared Folders</h1>
+<p>See [Broken-ExtLink--no-url-was-provided].</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1">re-creation</li>
+<li id="cite_note-2"><a href="https://forums.whonix.org/t/tar-child-xz-cannot-exec-no-such-file-or-directory-install-xz-utils-package/16708/7">https://forums.whonix.org/t/tar-child-xz-cannot-exec-no-such-file-or-directory-install-xz-utils-package/16708/7</a></li>
+<li id="cite_note-3">tar --extract --sparse --verbose --file=Kicksecure*.libvirt.xz</li>
+<li id="cite_note-4">Another less practical and not guaranteed method could be used by
+running <code>virt-manager -c qemu:///session</code>. This will open
+virt-manager, triggering the default storage path, and the user will see
+the Kicksecure image there. However, if the user tries to run it, it
+will not work because the image has not yet been transferred to the
+storage path (so it has a practical issue if the user is not aware of
+this). Also, there is no guarantee that it will work in every case on
+every distribution.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../VirtualBox/" title="VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Qubes/" title="Qubes"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Qubes</span></a><span class="info"><span class="prev">Previous
+page: VirtualBox</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+Qubes</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

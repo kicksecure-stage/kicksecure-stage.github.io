@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Linux Installer</title>
+<meta name="description" content="Information about the Kicksecure Linux Installer for Testers and Developers.">
+<meta property="og:description" content="Information about the Kicksecure Linux Installer for Testers and Developers.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Linux_Installer/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Linux_Installer/">
+<meta property="og:title" content="Kicksecure Linux Installer - Design Documentation">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Linux Installer</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Soon">Soon</a></li><li class="toc-l3"><a href="#Priority">Priority</a></li><li class="toc-l3"><a href="#Misc">Misc</a></li><li class="toc-l2"><a href="#Future">Future</a></li><li class="toc-l2"><a href="#Recently_rejected">Recently rejected</a></li><li class="toc-l2"><a href="#How_to_add_support_for_a_different_host_operating_system?">How to
+add support for a different host operating system?</a></li><li class="toc-l2"><a href="#Exit_Codes">Exit Codes</a></li><li class="toc-l2"><a href="#General">General</a></li><li class="toc-l2"><a href="#VirtualBox_Installer">VirtualBox Installer</a></li><li class="toc-l2"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l2"><a href="#Whonix">Whonix</a></li><li class="toc-l2"><a href="#toolkit_ideas">toolkit ideas</a></li><li class="toc-l2"><a href="#requirements">requirements</a></li><li class="toc-l2"><a href="#info">info</a></li><li class="toc-l2"><a href="#implementation_details">implementation details</a></li><li class="toc-l2"><a href="#Root">Root</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><img src="../../../media/Windows_logo_-_2012.svg.png.webp" width="25" alt="Windows logo - 2012.svg.png" />
+<a href="../Windows_Installer/">Dev/Windows
+Installer</a></li>
+<li><img src="../../../media/Windows_logo_-_2012.svg.png.webp" width="25" alt="Windows logo - 2012.svg.png" />
+<a href="../Windows_Starter/">Dev/Windows
+Starter</a></li>
+<li><img src="../../../media/Tux.png.webp" width="25" alt="Tux.png" /> <a href="./">Dev/Linux Installer</a></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Information about the Kicksecure Linux Installer for Testers and
+Developers. User documentation for the Installer can be found on the <a href="../../Linux/">Kicksecure for Linux download</a> or <a href="../../VirtualBox/Installer/">VirtualBox/Installer</a>
+page</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Design">Design</h1>
+<p>There are several different options available for installing
+VirtualBox:</p>
+<ul>
+<li><strong>A)</strong> Manually follow upstream instructions.</li>
+<li><strong>B)</strong> Manually follow derivative instructions.
+(Documented for some distributions <a href="https://www.kicksecure.com/wiki/VirtualBox/Recommended_Version">here</a>.)</li>
+<li><strong>C)</strong> Use an installer. (Such as this installer.)</li>
+<li><strong>D)</strong> Install simplified by a derivative (such as
+Kicksecure) using APT. In Kicksecure, backports/fasttrack is enabled by
+default, and kernel headers are installed by default, making the
+installation of VirtualBox simpler. The primary command is simplified to
+<code>sudo apt install --no-install-recommends virtualbox-qt</code>.</li>
+<li><strong>E)</strong> Install simplified from a third-party
+repository.</li>
+</ul>
+<p>Regarding option <strong>E)</strong>, there are at least two
+sub-options:</p>
+<ul>
+<li><strong>1)</strong> We could have forked the VirtualBox package and
+made minor modifications where upstream (Debian, Oracle) decisions
+impact usability. All missing dependencies, such as kernel headers,
+could be added to the package. For Debian, adding kernel headers
+requires a one-line change to the <code>debian/control</code> file,
+specifically <code>Depends: linux-headers-amd64</code>. This is more
+challenging for Ubuntu-based systems, where the name is
+<code>linux-headers-generic</code>.</li>
+<li><strong>2)</strong> Ship the installer in a Debian package. (This
+has actually been done; <code>dist-installer-cli</code> is part of the
+<code>usability-misc</code> package.) This is not the main documented
+method. Adding a repository, installing the package, and running the
+installer necessitates multiple manual steps by the user. By creating a
+downloadable installer, we were able to reduce the process to only two
+command-line commands. This was also easier to develop than option
+<strong>1)</strong> since there's no need to host multiple repositories
+for various distributions, such as one for Debian-based, Ubuntu-based,
+and one for Fedora-based systems.</li>
+</ul>
+<h1 id="Development_Todo">Development Todo</h1>
+<h2 id="Soon">Soon</h2>
+<h3 id="Priority">Priority</h3>
+<h3 id="Misc">Misc</h3>
+<h2 id="Future">Future</h2>
+<ul>
+<li>signed version numbers instead of querying API
+<ul>
+<li>no need to distrust the source if we are verifying its
+signature.</li>
+<li>the API is for HTTP (curl) not for rsync.</li>
+</ul></li>
+<li><a href="#Graphical_Installer">#Graphical
+Installer</a></li>
+</ul>
+<h2 id="Recently_rejected">Recently rejected</h2>
+<p>Recently rejected ideas are here, soon to be excluded.</p>
+<ul>
+<li>Uninstall Guests, Hypervisor</li>
+</ul>
+<p><span class="code-select">--uninstall-vms --uninstall-gateway-lxqt
+--uninstall-workstation-lxqt --uninstall-virtualizer
+--uninstall-all</span></p>
+<h1 id="Testers_Wanted">Testers Wanted</h1>
+<p>Here are some ideas for testing.</p>
+<p>Do not use <em>--no-show-errors</em> and <em>--allow-errors</em> when
+debugging, unless you explicitly want that behavior.</p>
+<p>Use <em>--testers</em> to download testers version and <em>--dev</em>
+to download empty Whonix-LXQt for VirtualBox.</p>
+<p>If you want to try to find bugs, mix the options, miss some, add
+some, check the result, try other options not mentioned here.</p>
+<p>These are raw tests and you still should read the script logs.</p>
+<p>Common options and testing if option parsing is working:</p>
+<p><span class="code-select">dist-installer-cli --non-interactive
+--no-boot --dry-run --guest kicksecure --hypervisor=kvm -i cli
+-u=17.0.3.4 --onion --socks-proxy 127.0.0.1:9050 -l info</span></p>
+<p>Check that the correct version is being printed and only it is being
+printed, nothing more:</p>
+<p><span class="code-select">dist-installer-cli --version</span></p>
+<p>Download Kicksecure-CLI for KVM:
+<span class="code-select">dist-installer-cli -k -n -g kicksecure -i cli
+-m kvm --mirror 1</span></p>
+<p>Download whonix from specified mirror and do signature verification
+but do not import anything:</p>
+<p><span class="code-select">dist-installer-cli -k -n -g whonix --mirror
+1 --no-import</span></p>
+<p>Redownload whonix and import only the gateway (check if files were
+redownloaded/synced and if only gateway was imported):</p>
+<p><span class="code-select">dist-installer-cli -k -n -g whonix
+--import-only gateway --redownload</span></p>
+<p>Reimport only the gateway (check that only the gateway was imported
+and it overwrote only the previous gateway):</p>
+<p><span class="code-select">dist-installer-cli -k -n -g whonix
+--import-only gateway --reimport --destroy-existing-guest</span></p>
+<p>Import only the workstation (check that only the workstation was
+imported):</p>
+<p><span class="code-select">dist-installer-cli -k -n -g whonix
+--import-only workstation</span></p>
+<h1 id="Developer_Information">Developer Information</h1>
+<h2 id="How_to_add_support_for_a_different_host_operating_system?">How to
+add support for a different host operating system?</h2>
+<p>This can only be done if you are a developer and are committed to
+test and report about the wanted operating system. This is because the
+Kicksecure Team does not have all resources to test under all
+umbrellas.</p>
+<p>If you want to add support, please open an issue in the forum
+mentioning your interest.</p>
+<p>You will face the following challenges:</p>
+<ul>
+<li>Add commands that your package manager uses to
+<ul>
+<li>test if packages were installed</li>
+<li>install command</li>
+<li>update command</li>
+</ul></li>
+</ul>
+<ul>
+<li>Handle programs that changed the upstream name to another name, such
+as Debian's "signify-openbsd", should be called universally simply
+"signify".</li>
+</ul>
+<ul>
+<li>Handle installing the hypervisor from the package manager itself,
+even if the package is not present in the main branch, but on Debian's
+"fasttrack" for example.</li>
+</ul>
+<h1 id="Notes">Notes</h1>
+<h2 id="Exit_Codes">Exit Codes</h2>
+<p>Exit code 0 does not guarantee that the script did what was expected
+to be done, it just means it didn't find any errors along the way. Let's
+take import-only for example, it may not fail, but did it actually
+import only the specified VM? If combined with reimport, did it reimport
+only the specified VM?</p>
+<h1 id="Naming">Naming</h1>
+<h2 id="General">General</h2>
+<ul>
+<li><code>dist-installer-gui</code></li>
+<li><code>dist-installer-cli</code></li>
+</ul>
+<h2 id="VirtualBox_Installer">VirtualBox Installer</h2>
+<ul>
+<li><code>virtualbox-installer-gui</code></li>
+<li><code>virtualbox-installer-cli</code></li>
+</ul>
+<h2 id="Kicksecure">Kicksecure</h2>
+<ul>
+<li><code>kicksecure-lxqt-installer-gui</code></li>
+<li><code>kicksecure-cli-installer-gui</code></li>
+<li><code>kicksecure-lxqt-installer-cli</code></li>
+<li><code>kicksecure-cli-installer-cli</code></li>
+</ul>
+<h2 id="Whonix">Whonix</h2>
+<ul>
+<li><code>whonix-cli-installer-gui</code></li>
+<li><code>whonix-lxqt-installer-gui</code></li>
+<li><code>whonix-cli-installer-cli</code></li>
+<li><code>whonix-lxqt-installer-cli</code></li>
+</ul>
+<h1 id="Graphical_Installer">Graphical Installer</h1>
+<h2 id="toolkit_ideas">toolkit ideas</h2>
+<ul>
+<li>makeself - in Debian</li>
+<li>AppImage - build dependencies not in Debian - <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=854902">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=854902</a></li>
+<li>Nuitka - Python compiler - only in Debian unstable, will be in
+testing, long term candidate</li>
+<li><a href="https://packages.debian.org/bookworm/pex">https://packages.debian.org/bookworm/pex</a>
+- Python compiler</li>
+<li><a href="https://github.com/icculus/mojosetup">https://github.com/icculus/mojosetup</a>
+- not in Debian</li>
+<li>freepascal</li>
+</ul>
+<h2 id="requirements">requirements</h2>
+<ul>
+<li>all build dependencies available from packages.debian.org (but this
+can be discussed if impossible to do so)</li>
+<li>standalone installer, this means:
+<ul>
+<li>self-contained</li>
+<li>no dependency installation such as "sudo apt install zenity"
+required by the user</li>
+</ul></li>
+<li>compatible with the most popular stable Linux distributions such as
+Debian, Ubuntu and Fedora
+<ul>
+<li>no need to be compatible with oldstable, old Linux
+distributions</li>
+</ul></li>
+<li>do not re-invent <code>dist-installer-cli</code></li>
+<li>a GUI wrapper around <code>dist-installer-cli</code> (CLI)</li>
+</ul>
+<h2 id="info">info</h2>
+<ul>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/bin/dist-installer-cli">Kicksecure/usability-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/man/dist-installer-cli.1.ronn">Kicksecure/usability-misc</a></span></li>
+</ul>
+<h2 id="implementation_details">implementation details</h2>
+<ul>
+<li>look at param(0) to find out the script's own name
+<ul>
+<li>Script Name Verification: The installer checks for valid script
+names,
+<ul>
+<li><code>dist-installer-cli-gui</code></li>
+<li><a href="../../VirtualBox/Installer/"><code>virtualbox-installer-cli</code></a></li>
+<li><code>kicksecure-cli-installer-cli</code>: --guest=kicksecure
+--interface=cli</li>
+<li><code>kicksecure-lxqt-installer-cli</code>: --guest=kicksecure
+--interface=lxqt</li>
+<li><code>whonix-cli-installer-cli</code>: --guest=kicksecure=whonix
+--interface=cli</li>
+<li><code>whonix-lxqt-installer-cli</code>: --guest=kicksecure=whonix
+--interface=lxqt</li>
+</ul></li>
+</ul></li>
+<li>show a logo (similar to Whonix Windows Installer)
+<ul>
+<li>Kicksecure</li>
+<li>Whonix</li>
+<li>VirtualBox Installer (placeholder, logo does not exist yet)</li>
+</ul></li>
+<li>parse man page, if possible
+<ul>
+<li>or parse <code>--help</code></li>
+<li>in case of man page or <code>--help</code> issues: Fix or discuss
+the underlying issues at the root cause of the issue. Do not add
+workarounds to the installer GUI. Not need for workarounds as man page /
+<code>--help</code> can be adjusted as needed as long as that makes
+sense.</li>
+<li>man page and/or <code>--help</code> can be modified for a machine
+(freepascal) readable format</li>
+<li>Why? To avoid installer GUI "learning" all the same options.</li>
+<li>use long option names such as <code>--log-level=info</code> instead
+of <code>-l</code></li>
+<li>Parse what?
+<ul>
+<li>option name such as</li>
+<li>option type:
+<ul>
+<li>checkbox
+<ul>
+<li>example: <code>--onion</code></li>
+</ul></li>
+<li>radio option
+<ul>
+<li>example: <code>--log-level=debug</code>, <code>info</code>,
+<code>notice</code> (default), <code>warn</code>,
+<code>error</code></li>
+</ul></li>
+<li>free text option
+<ul>
+<li>example: <code>--socks-proxy=</code></li>
+</ul></li>
+</ul></li>
+<li>parse help text for option</li>
+</ul></li>
+</ul></li>
+<li>if dist-installer-cli-gui is given a command line option such as
+<code>dist-installer-cli-gui --dev</code> then preselect that option in
+the GUI and pass it on to <code>dist-installer-cli</code>.</li>
+<li>pages:
+<ul>
+<li>page 1: welcome screen -&gt; next button</li>
+<li>page 2: select options -&gt; next button
+<ul>
+<li>page 2: also has a drop-down menu with advanced options</li>
+</ul></li>
+<li>page 3: show the CLI output of <code>dist-installer-cli</code>
+<ul>
+<li>show either a success icon and success message or a failure icon and
+failure message, depending on the exit code of installer
+<code>dist-installer-cli</code></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="Root">Root</h2>
+<p>The installer GUI should be executed as a normal user, not as root.
+This is in adherence to the native Wayland protocol, which makes it more
+difficult to run GUI applications as root (specific environment
+variables must be passed to allow the application to connect to the
+proper Wayland compositor).</p>
+<p>It might be prudent for the installer to invoke the <code>sudo</code>
+command directly. This seems plausible.</p>
+<p>Should <code>sudo</code> be absent, an error message should be
+displayed.</p>
+<p><blockquote><p><code>sudo</code> is unavailable, aborting the installer. Consider
+utilizing the CLI version of this installer, which accommodates
+<code>sudo</code>, <code>su</code>, and <code>doas</code>. Refer to: <a href="https://www.kicksecure.com/wiki/Dev/Linux_Installer#sudo">https://www.kicksecure.com/wiki/Dev/Linux_Installer#sudo</a></p></blockquote> If feasible, initiate a terminal window within the
+GUI and execute the script below.</p>
+<pre><code>#!/bin/bash
+
+## Copyright (C) 2023 - 2025 ENCRYPTED SUPPORT LLC &lt;adrelanos@whonix.org&gt;
+## See the file COPYING for copying conditions.
+
+## This script assists in prompting sudo authorization for the user.
+## It ensures sudo credential caching is enabled on the system.
+## This script assumes that dist-installer-gui has already
+## verified the installation of sudo.
+## To avoid redundancy, code from dist-installer-cli is utilized.
+
+## NOTE: This script may exit with a non-zero exit code upon failure.
+
+#set -x
+set -e
+
+true &quot;$0: START&quot;
+
+## TODO: Modify path
+source usr/bin/dist-installer-cli
+
+set_default
+get_su_cmd
+
+if [ &quot;$credential_caching_status&quot; != &quot;yes&quot; ]; then
+  log error &quot;Sudo credential caching is essential for this graphical installer.&quot;
+  exit 1
+fi
+
+true &quot;$0: TERMINATED: SUCCESS.&quot;</code></pre>
+<p>Upon successful sudo authorization via this (child) script, the GUI
+(parent) should automatically inherit the authorization status, courtesy
+of <code>sudo</code>'s default credential caching mechanism.</p>
+<p>For users who have configured sudo to employ alternative
+authentication methods, such as fingerprint recognition, leveraging
+<code>sudo</code> directly for root access should ensure
+compatibility.</p>
+<p>If the sudo authorization script fails (by exiting with a non-zero
+exit code) the dist-installer-gui should show an error message.</p>
+<p><blockquote><p><code>sudo</code> authorization failed. You can always re-run this
+installer. Refer to: <a href="https://www.kicksecure.com/wiki/Dev/Linux_Installer#sudo">https://www.kicksecure.com/wiki/Dev/Linux_Installer#sudo</a></p></blockquote></p>
+<h1 id="Forum_Discussion">Forum Discussion</h1>
+<p><a href="https://forums.whonix.org/t/whonix-linux-installer/15917">Forum
+discussion</a></p>
+<h1 id="Debug_Log">Debug Log</h1>
+<p>Debug logs are located in the directory:</p>
+<p><span class="code-select">~/dist-installer-cli-download/logs/</span></p>
+<p>Within this directory, you might find numerous sub-folders, each
+represented by a unique number. These numbers act as counters,
+indicating how many times the installer has been initiated by the user.
+Typically, the log with the highest number (i.e., the most recent one)
+will be of primary interest.</p>
+<p>When the installer is in operation, it will produce an output
+containing a line akin to:</p>
+<p><blockquote><p>lxqt-installer-cli: [NOTICE]: Saving debug log to:
+'/home/user/dist-installer-cli-download/logs/115/debug.log'</p></blockquote></p>
+<p>In the aforementioned example, the number <code>115</code> is
+showcased. Do note, this number will vary with each installation.</p>
+<p>Within these numbered directories, you can expect to find the
+following three files:</p>
+<ul>
+<li><code>debug.log</code></li>
+<li><code>user.log</code></li>
+<li>A copy of the installer executed during that particular
+session.</li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

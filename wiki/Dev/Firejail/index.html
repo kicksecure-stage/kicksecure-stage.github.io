@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Firejail</title>
+<meta name="description" content="development notes on Firejail and other security isolation frameworks in Kicksecure">
+<meta property="og:description" content="development notes on Firejail and other security isolation frameworks in Kicksecure">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Firejail/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Firejail/">
+<meta property="og:title" content="Dev/Firejail">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Firejail</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#General_Topics">General Topics</a></li><li class="toc-l3"><a href="#Integration_Roadmap">Integration Roadmap</a></li><li class="toc-l2"><a href="#See_Also">See Also</a></li><li class="toc-l2"><a href="#Comments">Comments</a></li><li class="toc-l2"><a href="#Other_Isolation_Frameworks">Other Isolation Frameworks</a></li><li class="toc-l2"><a href="#Generally">Generally</a></li><li class="toc-l2"><a href="#CVE_Annotated">CVE Annotated</a></li><li class="toc-l2"><a href="#CVE-2019-12589">CVE-2019-12589</a></li><li class="toc-l2"><a href="#CVE-2019-12499">CVE-2019-12499</a></li><li class="toc-l2"><a href="#CVE-2017-5940">CVE-2017-5940</a></li><li class="toc-l2"><a href="#CVE-2017-5206">CVE-2017-5206</a></li><li class="toc-l2"><a href="#CVE-2017-5180">CVE-2017-5180</a></li><li class="toc-l2"><a href="#CVE-2016-9016">CVE-2016-9016</a></li><li class="toc-l2"><a href="#Misc">Misc</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Firewall_Refactoring/" title="Dev/Firewall Refactoring"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Firewall
+Refactoring</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Special_Keys/" title="Dev/Special Keys"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Special
+Keys</span></a><span class="info"><span class="prev">Previous page:
+Dev/Firewall Refactoring</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Special
+Keys</span></span></span>Dev/Firejail</p>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>development notes on Firejail and other security isolation frameworks
+in Kicksecure</p>
+<div class="post-intro-p">
+</div>
+<h2 id="General_Topics">General Topics</h2>
+<p>General notes about Firejail settings:</p>
+<ul>
+<li>The master firejail.profile contains global settings.</li>
+</ul>
+<ul>
+<li>New profiles or tweaked ones that override the default ones go under
+~/.config/firejail (path configurable if needed). The default ones exist
+under /etc/firejail</li>
+</ul>
+<ul>
+<li>Arch guide: <a href="https://wiki.archlinux.org/index.php/Firejail#Using_Firejail_by_Default">https://wiki.archlinux.org/index.php/Firejail#Using_Firejail_by_Default</a></li>
+</ul>
+<p>specifies the ways to set programs to automatically start
+contained.</p>
+<ul>
+<li>Xpra is not a hard-coded dependency out of consideration for
+headless systems. TODO: Decide which anon-shared package to add it
+to.</li>
+</ul>
+<ul>
+<li>Creating symlinks to start programs automatically under firejail is
+as simple as running <code>sudo firecfg</code>. This covers all software
+on the system that has a firejail profile. <sup class="reference"><a href="#cite_note-1">[1]</a></sup> To list
+all symlinks: <code>firecfg --list</code> and to reverse this action:
+<code>firecfg --clean</code></li>
+</ul>
+<ul>
+<li>Tor Browser
+<ul>
+<li><s>To integrate with Firejail, the
+"https://git.schwanenlied.me/yawning/tor-firejail/src/master/start-tor-browser"
+script developed by Yawning is meant to replace the one in this path:
+/home/user/.tb/tor-browser/Browser/start-tor-browser</s>
+<sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li>While the profile can reside under ~/.config/firejail
+<sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup>
+<ul>
+<li><a href="../../About/">Kicksecure</a>: Would probably
+work. But why not use /etc/firejail? That way there can be cleanly
+packages. Packages writing to ~/ home anything is considered a grave
+packaging but (and really problematic indeed).</li>
+<li><a href="../../Qubes/">Kicksecure for Qubes</a>: One
+~/.config/firejail modification per AppVM would not be great. Also
+modifications to /etc/firejail in Template would be much better so these
+are shared among all AppVMs.</li>
+</ul></li>
+</ul></li>
+</ul>
+<ul>
+<li><s>A short term workaround until the proposed upstreaming of
+start-tor-browser <sup class="reference"><a href="#cite_note-5">[5]</a></sup> happens: is to append Firejail to
+all launcher commands under: /usr/share/applications. Reasoning: Tor
+Browser folder not visible to users. For a user to accidentally execute
+Tor Browser without protection, they have to go out of their way to find
+and launch the start-tor-browser script in the hidden Tor Browser
+folder. In Tor Browser's use-model we don't have to worry about command
+line users because Tor Browser is a GUI app first and foremost. Visual
+indicators further help warn against accidental execution in the
+unlikely event it happens. If they use command line the might as well
+put Firejail before the script name. This solution is tested and working
+and survives Tor Browser upgrades.</s> (That solution however does not
+survive tb-updater upgrades.)</li>
+</ul>
+<h3 id="Integration_Roadmap">Integration Roadmap</h3>
+<ul>
+<li>Firejail should probably get its own Kicksecure helper package to
+include custom profiles (Yawning's Tor Browser). Xpra dependency should
+be coded there.</li>
+</ul>
+<ul>
+<li>Wait for version newer than 0.9.40 to hit Debian backport repos
+because it resolves Firefox-ESR profile problems.</li>
+</ul>
+<ul>
+<li>Decide if firecfg should be scripted to enable all profiles by
+default.</li>
+</ul>
+<h2 id="See_Also">See Also</h2>
+<ul>
+<li><a href="https://forums.whonix.org/t/firejail-seccomp-more-options-for-program-containment/1030">https://forums.whonix.org/t/firejail-seccomp-more-options-for-program-containment/1030</a></li>
+</ul>
+<h2 id="Comments">Comments</h2>
+<p>Add discussion points here.</p>
+<p>Deprecated ideas:</p>
+<ul>
+<li>Changes to Tor Browser launchers required.</li>
+</ul>
+<ul>
+<li>Decide on application launcher paths. Documentation in Arch is
+contradictory to Debian:</li>
+</ul>
+<p>"Some applications use non standard paths. For these you will want to
+copy the .desktop launchers from /usr/share/applications/*.desktop to
+~/.local/share/applications/ and then proceed to include firejail (and
+possibly seccomp) on the EXEC line. Some applications use non standard
+paths. For these you will want to copy the .desktop launchers from
+/usr/share/applications/*.desktop to ~/.local/share/applications/ and
+then proceed to include firejail (and possibly seccomp) on the EXEC
+line." <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p>There is no ~/.local/share/applications/ folder in Debian AFAIK. What
+is the difference between both paths? Shouldn't bother if the workaround
+works equally well.</p>
+<p><strong>tb-starter is the place where such changes belong. Playing
+with application launchers will break things.</strong></p>
+<ul>
+<li>Decide on whether to introduce pinned packages and sid repos by
+default to access the newer version ASAP. Firetools is in sid and
+stretch only but its dependencies will create a mess even with pinning.
+Firejail sid is standalone and installs well on stable.</li>
+</ul>
+<p><strong>Won't work. Terrible idea as per Debian dev comments. Stick
+to version in Backports</strong></p>
+<h2 id="Other_Isolation_Frameworks">Other Isolation Frameworks</h2>
+<p>XDG-App sandboxing pioneered in the GNOME camp is renamed to Flatpak
+now. Its cross-DE and cross-distro compatible. <sup class="reference"><a href="#cite_note-7">[7]</a></sup>
+<sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
+<pre><code>&quot;Is Flatpak tied to GNOME?
+
+No. While Flatpak has been developed by people with a long involvement in the GNOME community it is not tied to any desktop. In fact, it was designed with the explicit goal of allowing it to build applications using any library stack or programming language an application author might want.&quot;</code></pre>
+<p><a href="https://github.com/flatpak/flatpak/wiki">Dev wiki</a> <a href="https://github.com/flatpak/flatpak">Git</a></p>
+<p>Asked if multiple frameworks stackable and the answer is no. You
+can't run a setuid binary containment app under an unprivileged sandbox.
+Shipping flatpak by default does not imply running every app as a
+flatpak. Flatpak can be turned off if we choose. <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
+<p><strong>Verdict:</strong> I like how Firejail can contain any program
+arbitrarily without changes needed to be made to it unlike Flatpak. It
+does not need any support from upstream software developers to support
+isolation - it remains the preferred framework for us IMO for that
+reason. Still, its good that DE developers are now going in the right
+direction to bring more security to users.</p>
+<p>If flatpak is adopted and enabled by default in Debian upstream we
+can remove Firejail profiles that cover apps already supported by the
+former - might be complicated but increases protection coverage of
+system programs as its likely they will cover different sets of software
+with some overlap. Or we can disable Flatpak and stick with Firejail
+only.</p>
+<h1 id="Security">Security</h1>
+<h2 id="Generally">Generally</h2>
+<p><a href="https://github.com/netblue30/firejail/issues/3046#issuecomment-555244990">Vincent43</a>:
+<blockquote><p><blockquote><p>There are two distinct scenarios:</p>
+<ul>
+<li>1. app/service runs inside firejail sandbox</li>
+<li>2. app/service runs outside firejail sandbox</li>
+</ul>
+<p>Firejail significantly reduces attack surface for 1 (it may vary
+across different profiles) and increases attack surface for 2 (more or
+less). Everyone have to decide themselves what net attack surface impact
+is for them.</p></blockquote></p></blockquote></p>
+<p><blockquote><p><blockquote><p>Granting access to firejail for untrusted local unprivileged user may
+be not good idea (this is scenario for which most of past cve were
+applicable).</p></blockquote></p></blockquote></p>
+<p><blockquote><p><blockquote><p>The question is if today's desktop linux systems are multi-user
+focused (with some of them being untrusted). I heard many opinions from
+developers of projects like kernel or systemd stating that's not the
+case.</p></blockquote></p></blockquote></p>
+<p><blockquote><p><blockquote><p>Yes, bublewrap has less additional attack surface for scenario 2 but
+merely installing bubblewrap does nothing for scenario 1 unless someone
+write special wrapper for it with profiles for many specific apps.
+Something like that, let's call it Firewrap or Bubblejail would be
+interesting, perhaps more secure solution than firejail but for now it
+doesn't exist.</p></blockquote></p></blockquote></p>
+<p>madaidan: <blockquote><p>If you want full priv esc, then the attacker could have exploited one
+of the sandbox escape vulnerabilities I listed above and then exploited
+another priv esc vulnerability in firejail once they're outside the
+sandbox.</p></blockquote></p>
+<p>Patrick paraphrasing madaidan (posted only here):
+<blockquote><p>Care about scenario 2. Because an attacker could use a sandbox escape
+vulnerability. Then once outside the sandbox, follow-up with a privilege
+escalation vulnerability in firejail to gain root.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>Yes, however I consider scenario when malware author writes script
+that will compromise some app and then go for firejail as rather
+unlikely. 95+ systems won't have firejail installed. The situation would
+be different when they have unlimited time and tries like local users
+have. Also when someone gets arbitrary code execution then they already
+won even without root access. Most things that matter will be available
+freely inside home.</p></blockquote></p></blockquote></p>
+<p><a href="https://github.com/netblue30/firejail/issues/3046#issuecomment-555326127">netblue30</a>:
+<blockquote><p><blockquote><p>The attack surface visible to somebody outside the sandbox is
+large.</p></blockquote></p></blockquote></p>
+<p><blockquote><p><blockquote><p>Don't use this on enterprise servers, or any other multiuser system.
+Firejail was built for single-user desktops.</p></blockquote></p></blockquote></p>
+<p>Patrick (posted only here): <blockquote><p>Would firejail have helped against past attacks against users in the
+wild? Is that a useful question to ask?</p>
+<p>How likely is it that firejail gets specifically targeted?</p></blockquote></p>
+<p><a href="https://github.com/netblue30/firejail/issues/3046#issuecomment-555326127">netblue30</a>:
+<strong>recommends AppArmor over firejail</strong> for Whonix.</p>
+<h2 id="CVE_Annotated">CVE Annotated</h2>
+<p><a href="https://www.cvedetails.com/vulnerability-list.php?vendor_id=16191&amp;product_id=0&amp;version_id=0&amp;page=1&amp;hasexp=0&amp;opdos=0&amp;opec=0&amp;opov=0&amp;opcsrf=0&amp;opgpriv=0&amp;opsqli=0&amp;opxss=0&amp;opdirt=0&amp;opmemc=0&amp;ophttprs=0&amp;opbyp=0&amp;opfileinc=0&amp;opginf=0&amp;cvssscoremin=0&amp;cvssscoremax=0&amp;year=0&amp;cweid=0&amp;order=1&amp;trc=14&amp;sha=d244c5262e26dc2a9f709379c88db8695f3f5318">source
+cvedetails</a> / <a href="https://github.com/netblue30/firejail/issues/3046#issuecomment-555266364">github
+discussion</a></p>
+<p><u>underline</u> added by Kicksecure.</p>
+<h2 id="CVE-2019-12589">CVE-2019-12589</h2>
+<p>cvedetails.com: <blockquote><p>In Firejail before 0.9.60, seccomp filters are writable inside the
+jail, leading to a lack of intended seccomp restrictions for a process
+that is joined to the jail after a filter has been modified by an
+attacker.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>It makes seccomp ineffective in certain, rare circumstances. It
+doesn't add additional attack surface on system.</p></blockquote></p></blockquote></p>
+<h2 id="CVE-2019-12499">CVE-2019-12499</h2>
+<p>cvedetails.com <blockquote><p>Firejail before 0.9.60 allows truncation (resizing to length 0) of
+the firejail binary on the host by running exploit code inside a
+firejail sandbox and having the sandbox terminated. To succeed, certain
+conditions need to be fulfilled: The jail (with the exploit code inside)
+needs to be started as root, and it also needs to be terminated as root
+from the host (either by stopping it ungracefully (e.g., SIGKILL), or by
+using the --shutdown control command). This is similar to
+CVE-2019-5736.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>It works only when firejail is run as root, again it doesn't add
+additional attack surface on system.</p></blockquote></p></blockquote></p>
+<h2 id="CVE-2017-5940">CVE-2017-5940</h2>
+<p>cvedetails.com <blockquote><p>Firejail before 0.9.44.6 and 0.9.38.x LTS before 0.9.38.10 LTS does
+not comprehensively address dotfile cases during its attempt to prevent
+accessing user files with an euid of zero, which <u>allows local users
+to conduct sandbox-escape attacks</u> via vectors involving a symlink
+and the --private option. NOTE: this vulnerability exists because of an
+incomplete fix for CVE-2017-5180.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>Exploit need to be run outside sandbox</p></blockquote></p></blockquote></p>
+<h2 id="CVE-2017-5206">CVE-2017-5206</h2>
+<p>cvedetails.com <blockquote><p>Firejail before 0.9.44.4, when running on a Linux kernel before 4.8,
+allows context-dependent attackers to bypass a seccomp-based sandbox
+protection mechanism via the --allow-debuggers argument.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>It makes seccomp ineffective in certain, rare circumstances. It
+doesn't add additional attack surface on system.</p></blockquote></p></blockquote></p>
+<h2 id="CVE-2017-5180">CVE-2017-5180</h2>
+<p>cvedetails.com <blockquote><p>Firejail before 0.9.44.4 and 0.9.38.x LTS before 0.9.38.8 LTS does
+not consider the .Xauthority case during its attempt to prevent
+accessing user files with an euid of zero, which <u>allows local users
+to conduct sandbox-escape</u> attacks via vectors involving a symlink
+and the --private option.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>Exploit need to be run outside sandbox</p></blockquote></p></blockquote></p>
+<h2 id="CVE-2016-9016">CVE-2016-9016</h2>
+<p>cvedetails.com <blockquote><p>Firejail 0.9.38.4 allows local users to execute arbitrary commands
+outside of the sandbox via a crafted TIOCSTI ioctl call.</p></blockquote></p>
+<p>Vincent43: <blockquote><p><blockquote><p>This is sandbox escape but It doesn't add additional attack surface
+on system. Bubblewrap was also affected and <a href="https://github.com/containers/bubblewrap/commit/d7fc532c42f0e9bf427923bab85433282b3e5117">fixed
+it couple of months after firejail did</a>.</p></blockquote></p></blockquote></p>
+<h2 id="Misc">Misc</h2>
+<p><a href="https://github.com/netblue30/firejail/issues/3046#issuecomment-555269503">smitsohu</a>:
+<blockquote><p><blockquote><p>The descriptions are misleading, unfortunately. You need to read the
+code and understand the vulnerabilities. There is no sandbox escape
+there (from the running sandbox), the primary problem is the privesc
+(edited).</p></blockquote></p></blockquote></p>
+<p><blockquote><p><blockquote><p>Anyway, the thing is that there is little point to discuss Firejail
+version 0.9.38 or 0.9.44.</p>
+<p>Firejail changes very fast, and what will be upcoming 0.9.62 has not
+so much to do with the early versions that were hit by these
+vulnerabilities. It would be very cool if we could discuss the present
+and not the past.</p></blockquote></p></blockquote></p>
+<h1 id="Status_of_Firejail_in_Kicksecure">Status of Firejail in
+Kicksecure</h1>
+<p><a href="https://forums.whonix.org/t/tor-browser-hardening-hardened-malloc-firejail-apparmor-vs-web-fingerprint/7851/54">https://forums.whonix.org/t/tor-browser-hardening-hardened-malloc-firejail-apparmor-vs-web-fingerprint/7851/54</a></p>
+<p>Written by Kicksecure developer Patrick.</p>
+<p><strong>summary</strong></p>
+<ul>
+<li>I am not fully convinced, that firejail is bad.</li>
+<li>Decided to no longer install firejail by default in Kicksecure
+anyhow.</li>
+</ul>
+<hr />
+<p><strong>firejail security</strong></p>
+<p>Can't rely too much on Daniel Micay as security expert because he's
+(often justified...) critical on "everything"... Could as well as give
+up and go home following that sentiment. Reference: <a href="https://forums.whonix.org/t/daniel-micay-quotes/8509">https://forums.whonix.org/t/daniel-micay-quotes/8509</a></p>
+<p><blockquote><p>Obviously asking on the firejail github repo will get biased
+responses.</p></blockquote></p>
+<p>Firejail developers <strong>might</strong> be bias towards
+firejail.</p>
+<p><blockquote><p>Simon McVittie (Debian, bubblewrap, dbus, flatpak maintainer):</p>
+<p><a href="https://github.com/containers/bubblewrap/issues/266#issuecomment-386867656">https://github.com/containers/bubblewrap/issues/266#issuecomment-386867656</a></p></blockquote></p>
+<p>Bubblewrap developers <strong>might</strong> be bias towards
+bubblewrap.</p>
+<p>Under the bias thesis, both candidates aren't ideal expert opinions
+here on judging the security of each tool vs each other. Their input is
+valued nonetheless.</p>
+<p>Tried to wrap my head around this issue. Made some notes here: <a href="https://www.whonix.org/wiki/Dev/Firejail#Security">https://www.whonix.org/wiki/Dev/Firejail#Security</a></p>
+<p>Trying to come up with essential questions.</p>
+<ul>
+<li>Would firejail have helped against
+[Broken-ExtLink--no-url-was-provided]? Is that a useful question to
+ask?</li>
+<li>How likely is it that firejail gets specifically targeted?</li>
+</ul>
+<p>Please keep expert opinions pro/contra firejail / bubblewrap /
+apparmor / etc. coming.</p>
+<hr />
+<p><strong>installation by default</strong></p>
+<p><code>Kicksecure&#160;doesn't&#160;enable&#160;any&#160;firejail&#160;/&#160;bubblewrap&#160;profiles&#160;for&#160;anything&#160;by&#160;default&#160;yet.&#160;All&#160;such&#160;profiles&#160;are&#160;opt-in.</code><br />
+<code>Kicksecure&#160;comes&#160;with&#160;some&#160;apparmor&#160;profiles&#160;by&#160;default.&#160;Those&#160;for&#160;its&#160;own&#160;software&#160;and&#160;those&#160;profiles&#160;maintained&#160;by&#160;Debian.&#160;Other&#160;profiles&#160;are&#160;opt-in.</code></p>
+<p>Decided to no longer install firejail by default due to</p>
+<ul>
+<li>the controversy,</li>
+<li>higher attack surface without other advantage by default (no
+profiles enabled by default).</li>
+</ul>
+<p>Currently Kicksecure has a by default a higher attack surface (due to
+firejail installed by default) but no security advantages (not making
+use by default of any firejail profiles).</p>
+<p>Firejail was only installed decided to become installed by default
+for better usability. To make writing firejail profiles easier. This
+could be undone since we did not get any new profiles anyhow.</p>
+<p>At the moment, major attack surface realistically is the browser, Tor
+Browser. If hypothetically upstream, The Tor Project maintained a
+firejail profile, then I would think that the security advantages
+outweight the security disadvantages of it. Until in-the-wild attacks
+proof otherwise. That would be a reason to keep firejail installed by
+default.</p>
+<hr />
+<p><strong>future reconsideration for re-installation of
+firejail</strong></p>
+<ul>
+<li>Anyone maintaining firejail profiles in Kicksecure for software not
+developed by Kicksecure wouldn't be installed by default - same as for
+apparmor profiles.</li>
+<li>Anyone maintaining firejail profiles in Kicksecure for software
+developed by Whonix, and re-installation for firejail by default would
+be reconsidered.</li>
+<li>Anyone maintaining firejail profiles in Debian, and re-installation
+for firejail by default would be reconsidered.</li>
+</ul>
+<h1 id="TODO">TODO</h1>
+<p>man firejail-users</p>
+<p>/etc/firejail/firejail.users</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=822693">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=822693</a></li>
+<li id="cite_note-2">This script is no longer available.</li>
+<li id="cite_note-3">https://git.schwanenlied.me/yawning/tor-firejail</li>
+<li id="cite_note-4"><a href="https://lists.torproject.org/pipermail/tor-dev/2016-May/010947.html">https://lists.torproject.org/pipermail/tor-dev/2016-May/010947.html</a></li>
+<li id="cite_note-5"><a href="https://gitlab.torproject.org/legacy/trac/-/issues/19055">https://gitlab.torproject.org/legacy/trac/-/issues/19055</a></li>
+<li id="cite_note-6"><a href="https://wiki.archlinux.org/title/Firejail">https://wiki.archlinux.org/title/Firejail</a></li>
+<li id="cite_note-7"><a href="https://www.phoronix.com/news/KDE-XDG-App-Experimenting">https://www.phoronix.com/news/KDE-XDG-App-Experimenting</a></li>
+<li id="cite_note-8"><a href="https://flatpak.org/faq/">https://flatpak.org/faq/</a></li>
+<li id="cite_note-9"><a href="https://github.com/flatpak/flatpak/issues/66#issuecomment-223213288">https://github.com/flatpak/flatpak/issues/66#issuecomment-223213288</a></li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Firewall_Refactoring/" title="Dev/Firewall Refactoring"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Firewall
+Refactoring</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Special_Keys/" title="Dev/Special Keys"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Special
+Keys</span></a><span class="info"><span class="prev">Previous page:
+Dev/Firewall Refactoring</span><span class="index">Index page:
+Design</span><span class="next">Next page: Dev/Special
+Keys</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>

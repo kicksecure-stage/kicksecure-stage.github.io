@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Reasonable Security</title>
+<meta name="description" content="Definition of &quot;reasonable security&quot;. What does the mean?">
+<meta property="og:description" content="Definition of &quot;reasonable security&quot;. What does the mean?">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Reasonable_Security/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Reasonable_Security/">
+<meta property="og:title" content="Reasonable Security">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="mininav">
+<p>This group of pages centers around all maintainability aspects of
+Kicksecure.</p>
+<ul>
+<li><a href="../Dev/maintainability/">Maintainability</a></li>
+<li><a href="../Dev/Relationship_With_Upstream/">Relationship With Upstream</a></li>
+<li><a href="../Stable_Version_User_Experience/">Stable
+Version User Experience</a></li>
+<li><a href="../Dev/Stable_vs_Rolling_Distributions/">Stable vs Rolling Distributions</a></li>
+<li><a href="./">Reasonable
+Security</a></li>
+<li><a href="../Practical_Security/">Practical
+Security</a></li>
+<li><a href="../Enterprise_Security/">Enterprise
+Security</a></li>
+<li><a href="../Maximum_Security/">Maximum
+Security</a></li>
+<li><a href="../Perfect_Security/">Perfect
+Security</a></li>
+<li><a href="../Privacy/">Privacy Goals and
+Non-Goals</a></li>
+<li><a href="../Project_Policies/">Project
+Policies</a></li>
+</ul>
+</div><div class="robots-nocontent" data-nosnippet="">
+</div>
+
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>A discussion of the definition of "reasonable security". What does
+the mean?</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Security is a series of trade-offs (usability, performance, cost,
+functionality) and context matters. The right question is when something
+is "secure enough" for your goals or <a href="../Threat_Modeling/">threat model</a>.</p>
+<h1 id="Miscellaneous_Viewpoints">Miscellaneous Viewpoints</h1>
+<p><blockquote><p>When is a program secure enough?</p>
+<ul>
+<li>Security is all about tradeoffs
+<ul>
+<li>Performance</li>
+<li>Cost</li>
+<li>Usability</li>
+<li>Functionality</li>
+</ul></li>
+<li>The right question is: how do you know when something is secure
+enough?
+<ul>
+<li>Still a hard question</li>
+<li>Requires understanding of the tradeoffs involved</li>
+</ul></li>
+<li>Is Internet Explorer secure enough?
+<ul>
+<li>Depends on context<span class="blockquote-context"><a href="https://scholar.google.com/citations?user=19kNRU0AAAAJ">Steve
+Zdancewic, Professor of Computer and Information Science, University of
+Pennsylvania</a>: <a href="https://www.cis.upenn.edu/~stevez/cis551/2006/web/lectures/CIS551-01.pdf">Computer
+and Network Security</a></span></li>
+</ul></li>
+</ul></blockquote></p>
+<p><blockquote><p>Security is meant to prevent bad things from happening; one
+side-effect is often to prevent useful things from happening. Typically,
+a tradeoff is necessary between security and other important project
+goals: functionality, usability, efficiency, time-to-market, and
+simplicity<span class="blockquote-context">Dr. Bill Young, Department of
+Computer Sciences, University of Texas at Austin: <a href="https://www.cs.utexas.edu/~byoung/cs361/lecture2.pdf">Foundations
+of Computer Security, Lecture 2: Why Security is Hard</a></span></p></blockquote></p>
+<p>Coined "practical security" instead of "reasonable security" but a
+similar concept.</p>
+<p><blockquote><p>Practical security balances the cost of protection and the risk of
+loss, which is the cost of recovering from a loss times its
+probability.<span class="blockquote-context">2000: <a href="https://en.wikipedia.org/wiki/Butler_Lampson">Butler W.
+Lampson</a>, Microsoft, <a href="https://www.cs.cornell.edu/courses/cs5430/2023fa/NL02.Lampson.pdf">Computer
+Security in the Real World</a> <sup class="reference"><a href="#cite_note-1">[1]</a></sup></span></p></blockquote></p>
+<p><blockquote><p>As secure as reasonably practicable means that an incremental
+improvement in security would require a disproportionate deterioration
+of meeting other system cost, schedule, or performance objectives; would
+violate system constraints; or would require unacceptable concessions
+such as an unacceptable change in the way operations are
+performed.<span class="blockquote-context"><a href="https://en.wikipedia.org/wiki/National_Institute_of_Standards_and_Technology">National
+Institute of Standards and Technology (NIST)</a>: <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-160v1r1.pdf">Engineering
+Trustworthy Secure Systems</a></span></p></blockquote></p>
+<h1 id="Qubes_Viewpoint_on_Reasonable_Security">Qubes Viewpoint on
+Reasonable Security</h1>
+<p><blockquote><p>Creating Qubes OS has been a great challenge, especially for such a
+small team as ours, but ultimately, I'm very glad with the final outcome
+- it really is a stable and reasonably secure desktop OS. In fact I
+cannot think of any more secure alternative...</p>
+<p>I use the term "reasonably secure", because when it comes to
+defensive security it's difficult to use definite statements ("secure",
+"unbreakable", etc), unless one can formally prove the whole design and
+implementation to be 100%
+secure.<span class="blockquote-context">Security researcher and Qubes
+founder, Joanna Rutkowska, <a href="https://theinvisiblethings.blogspot.com/2012/09/introducing-qubes-10.html">Introducing
+Qubes 1.0!</a></span></p></blockquote></p>
+<p><blockquote><p>In Qubes OS we took a practical approach and we have tried to focus
+on all those sensitive parts of the OS, and to make them reasonably
+secure. And, of course, in the first place, we tried to minimize the
+amount of those trusted parts, in which Qubes really stands out, I
+think.</p>
+<p>So, we believe Qubes OS represents a reasonably secure OS. In fact
+I'm not aware of any other solution currently on the market that would
+come close when it comes to secure desktop environment. But then again,
+I'm biased, of course ;)</p></blockquote></p>
+<p><blockquote><p>I wouldn't call Qubes OS "safe", however, at least not at this stage.
+By "safe" I mean a product that is "safe to use", which also implies
+"easy to use", "not requiring special skills", and thus harmless in the
+hands of an inexperienced user. I think that Apple iOS is a good example
+of such a "safe" OS - it automatically puts each application into its
+own sandbox, essentially not relaying on the user to make any security
+decisions. However, the isolation that each such sandbox provides is far
+from being secure, as various practical attacks have proven, and which
+is mostly a result of exposing too fat APIs to each sandbox, as I
+understand.</p></blockquote></p>
+<p><blockquote><p>Finally, even though Qubes has been created by a reasonably skilled
+team of people, it should not be considered bug free.</p></blockquote></p>
+<p><blockquote><p>"We don't make empty promises to our users that we know no one can
+deliver on," he said. "We do, however, find it amusing that many
+security experts around the world have deemed a 'reasonably secure'
+operating system to be the most secure operating system
+available."<span class="blockquote-context">Andrew David Wong (@adw),
+interview in Hosting Advice: <a href="https://www.hostingadvice.com/blog/qubes-offers-security-by-compartmentalization/">Security
+by Compartmentalization: Qubes is an Open-Source OS Tackling the Most
+Sophisticated Modern Threats</a></span></p></blockquote></p>
+<p><blockquote><p>... for years we have been, similarly, assuming the underlying
+hardware, together with all the firmware that runs on it, such as the
+BIOS/UEFI and the SMM, GPU/NIC/SATA/HDD/EC firmware, etc., is all...
+trusted.<br />
+But isn't that a rational assumption, after
+all?<span class="blockquote-context">Security researcher and Qubes
+founder, Joanna Rutkowska: <a href="https://blog.invisiblethings.org/papers/2015/x86_harmful.pdf">Intel
+x86 considered harmful</a></span></p></blockquote></p>
+<p>Her answer, simplified: "No". Long answer:</p>
+<p><blockquote><p>Well, not quite: today we know it is rather unwise to assume all
+hardware and firmware is trusted. Various research from the last ten
+years, as discussed below, has provided enough evidence for that, in the
+author's opinion. We should thus revisit this assumption. And given
+what's at stake, the sooner we do this, the better.</p></blockquote></p>
+<p>This topic is elaborated on the <a href="../Open_Source_Hardware/">Open Source Hardware</a> wiki page.</p>
+<p><blockquote><p>Defensive security is a difficult game, because one doesn't
+immediately see whether a given solution works or not. This is in stark
+contrast to other engineering disciplines (and to offensive security)
+where one usually have immediate feedback on whether something works
+well or not.<span class="blockquote-context">Security researcher and
+Qubes founder, Joanna Rutkowska: <a href="https://blog.invisiblethings.org/2012/06/27/some-comments-on-operation-high-roller.html">Some
+comments on "Operation High Roller"</a></span></p></blockquote></p>
+<p><blockquote><p>Occasionally fuckups happen, even with <a href="https://www.qubes-os.org/security/bulletins/">Qubes</a> (although
+not as <a href="https://www.qubes-os.org/security/xsa/">often</a> as
+some think).</p>
+<p>What should we - users or admins - do in such a situation? Patch,
+obviously. But is that really enough? What good is patching your system
+if it might have already been compromised a week earlier, before the
+patch was released, when an adversary may have learned of the bug and
+exploited it?</p>
+<p>That's an inconvenient question for many of us - computer security
+professionals - to answer. Usually we would mutter something about
+Raising the Bar(TM), the high costs of targeted attacks, attackers not
+wanting to burn 0-days, or only nation state actors being able to afford
+such attacks, and that in case one is on their list of targets, the game
+is over anyway and no point in fighting. Plus some classic <a href="https://xkcd.com/538/">cartoon</a>.</p>
+<p>While the above line of defense might work (temporarily), it really
+doesn't provide for much comfort, long term, I think. We need better
+answers and better solutions. This post, together with a recently
+introduced feature in Qubes OS 3.2 and (upcoming) 4.0, is an attempt to
+offer such a solution.<span class="blockquote-context">Security
+researcher and Qubes founder, Joanna Rutkowska: <a href="https://blog.invisiblethings.org/2017/04/26/qubes-compromise-recovery.html">Compromise
+recovery on Qubes OS: individual VMs &amp; full system
+cases</a></span></p></blockquote></p>
+<p>"Solution" is a somewhat non-ideal wording in this context. What is
+offered is not a full solution but rather a mitigation. Specifically, a
+compromise recovery method using Qubes backup restoration in paranoid
+mode. This mitigation does not fundamentally alter the broader
+situation, where attackers generally retain an advantage over
+defenders.</p>
+<p><blockquote><p>The inconvenient and somehow embarrassing truth for us - the malware
+experts - is that there does not exist any reliable method to determine
+if a given system is not compromised. True, there is a number of
+conditions that can warn us that the system is compromised, but there is
+no limit on the number of checks that a system must pass in order to be
+deemed "clean".</p></blockquote></p>
+<p>Qubes does not (yet?) come with a <a href="https://github.com/QubesOS/qubes-issues/issues/9332">a more secure
+(hardened) <u>o</u>perating <u>s</u>ystem (OS) as default template for
+app qubes</a>.</p>
+<ul>
+<li>Related Qubes FAQ: <a href="https://www.qubes-os.org/faq/#what-is-qubes-attitude-toward-changing-guest-distros">What
+is Qubes' attitude toward changing guest distros?</a></li>
+<li>Related Qubes forums discussion: <a href="https://forum.qubes-os.org/t/is-firefox-really-an-appropriate-default-browser-for-qubes/26042">Is
+Firefox really an appropriate default browser for Qubes?</a></li>
+</ul>
+<p>However, <a href="../Qubes/">Kicksecure for Qubes
+Template</a> and [Broken-ExtLink--no-url-was-provided] is available from
+Qubes community repository.</p>
+<p><blockquote><p>So computer and network security in practice starts at the hardware
+and firmware underneath the
+endpoints.<span class="blockquote-context">Security researcher and Qubes
+founder, Joanna Rutkowska: <a href="https://blog.invisiblethings.org/papers/2015/x86_harmful.pdf">Intel
+x86 considered harmful</a></span></p></blockquote></p>
+<p><blockquote><p>The question we will try to answer is: can modern Intel x86-based
+platforms be used as trustworthy computing platforms?</p></blockquote></p>
+<p><blockquote><p>Moving now to the subject of this article: for years we have been,
+similarly, assuming the underlying hardware, together with all the
+firmware that runs on it, such as the BIOS/UEFI and the SMM,
+GPU/NIC/SATA/HDD/EC firmware, etc., is all. . . trusted. But isn't that
+a rational assumption, after all? Well, not quite: today we know it is
+rather unwise to assume all hardware and firmware is trusted. Various
+research from the last ten years, as discussed below, has provided
+enough evidence for that, in the author's opinion. We should thus
+revisit this assumption. And given what's at stake, the sooner we do
+this, the better.</p></blockquote></p>
+<p><blockquote><p>This raises an interesting question: once we realize firmware, and
+(some) hardware, should be treated as untrusted, can we still build
+secure, trustworthy computer sys- tems? This consideration will be the
+topic of the previously mentioned upcoming article.</p></blockquote></p>
+<p><blockquote><p>...<span class="blockquote-context">Security researcher and Qubes
+founder, Joanna Rutkowska: <a href="https://blog.invisiblethings.org/papers/2015/state_harmful.pdf">State
+considered harmful, A proposal for a stateless laptop</a></span></p></blockquote></p>
+<h1 id="User_Perspectives">User Perspectives</h1>
+<p>Qubes forum discussion: <a href="https://forum.qubes-os.org/t/qubes-os-a-reasonably-secure-operating-system/31799">Qubes
+OS A reasonably secure operating system?</a></p>
+<p><blockquote><p>I think the idea behind using 'reasonable' is to eliminate the false
+promise of 'ultimate security' - As that is simply not exist.</p>
+<p>Even 'security' alone is not a well defined term, but a process to
+address your threat model. As that should describe your goals and the
+things you want to 'protect' from different kind of threat actors. [...]
+So it is reasonable secure, as there is no ultimate security. And
+because it is provides you the best available and feasible soultion to
+address a lot of security concers related to a desktop computer - but
+surely not all of them.<span class="blockquote-context"><a href="https://forum.qubes-os.org/t/qubes-os-a-reasonably-secure-operating-system/31799/11">https://forum.qubes-os.org/t/qubes-os-a-reasonably-secure-operating-system/31799/11</a></span></p></blockquote></p>
+<p><blockquote><p>Yes and no, depending on whose language you use when using the word
+"prove".</p>
+<p>If you're a mathematician, you might say yes (as in a mathematical
+proof).</p>
+<p>In the epistomological sense, no. There's no way in hard science to
+prove you are secure. You can only prove you are reasonably secure,
+having migitated all the known flaws.</p>
+<p>I assume this is why Qubes OS makes claims that it is a "reasonably
+secure OS" - not that it is a "secure OS".</p>
+<p>It is the unknown flaws that may one day still threaten you, and
+there is no way to prove there are zero flaws
+left.<span class="blockquote-context"><a href="https://forum.qubes-os.org/t/building-a-fully-immutable-linux-os-image-fully-verified-with-your-own-secure-boot-key/34412/19">https://forum.qubes-os.org/t/building-a-fully-immutable-linux-os-image-fully-verified-with-your-own-secure-boot-key/34412/19</a></span></p></blockquote></p>
+<p><blockquote><p>[..] Note that Qubes OS is a reasonably secure OS, not maximally
+secure OS. [...]<span class="blockquote-context"><a href="https://forum.qubes-os.org/t/more-practical-security-for-qubes-and-more-realistic-threat-model/7349/17">https://forum.qubes-os.org/t/more-practical-security-for-qubes-and-more-realistic-threat-model/7349/17</a></span></p></blockquote></p>
+<h1 id="misc">misc</h1>
+<p>todo: notes</p>
+<p>Targeted attacks</p>
+<p>Physical access tempest laser microphones miniature cameras</p>
+<p>Untrustworthy hardware</p>
+<p>reports in the wild are non existing or rare</p>
+<p>billions of dollars tens of thousands of employees</p>
+<h1 id="Conclusion">Conclusion</h1>
+<p>Reasonable security means balancing protection cost versus expected
+loss and as secure as reasonably practicable. Further security gains
+would require disproportionate sacrifice elsewhere.</p>
+<p>There's no <a href="../Perfect_Security/">Perfect
+Security</a>. One needs to target a threat model and aim for reasonable
+security, acknowledging unknown flaws may remain.</p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.acsac.org/2000/papers/lampson.pdf">https://www.acsac.org/2000/papers/lampson.pdf</a></li>
+</ol>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a> <a href="../Category:Design/">Design</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Bitcoin Core</title>
+<meta name="description" content="Using Bitcoin Core in Kicksecure. Fully verifying a Bitcoin wallet. Based on the original reference code by Satoshi Nakamoto.">
+<meta property="og:description" content="Using Bitcoin Core in Kicksecure. Fully verifying a Bitcoin wallet. Based on the original reference code by Satoshi Nakamoto.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Bitcoin_Core/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Bitcoin_Core/">
+<meta property="og:title" content="Bitcoin Core">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Bitcoin234234234.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Software_Origin">Software Origin</a></li><li class="toc-l2"><a href="#Bitcoin_Wallet_Recommendation">Bitcoin Wallet
+Recommendation</a></li><li class="toc-l2"><a href="#Bitcoin_Core_Usability">Bitcoin Core Usability</a></li><li class="toc-l2"><a href="#Installation">Installation</a></li><li class="toc-l2"><a href="#Add_a_bitcoin-qt_Start_Menu_Entry">Add a bitcoin-qt Start Menu
+Entry</a></li><li class="toc-l2"><a href="#Autostart_bitcoin-qt">Autostart bitcoin-qt</a></li><li class="toc-l2"><a href="#Start_from_Command_Line">Start from Command Line</a></li><li class="toc-l2"><a href="#Creating_a_Watch-Only_Wallet">Creating a Watch-Only Wallet</a></li><li class="toc-l2"><a href="#Backup">Backup</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<p><img src="../../media/120px-Bitcoin.png.webp" width="200" alt="120px-Bitcoin.png" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Using Bitcoin Core in Kicksecure. Fully verifying a Bitcoin wallet.
+Based on the original reference code by Satoshi Nakamoto.</p>
+<div class="post-intro-p">
+</div>
+<p><img src="../../media/Bitcoin-core.png.webp" alt="Bitcoin Core Logo" />
+<img src="../../media/BC_Logo_.png.webp" width="200" alt="Bitcoin Logo" /></p>
+<h1 id="Introduction">Introduction</h1>
+<div class="info-box ib-for-thumb has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
+Documentation for this is incomplete. Contributions are happily
+considered! See <a href="../Unsupported/">this</a> for
+potential alternatives.</p>
+</div>
+<h2 id="Software_Origin">Software Origin</h2>
+<p>Bitcoin Core is the client software directly descended from the
+original Bitcoin software client first released by Satoshi Nakamoto.
+Bitcoin Core consists of both "full-node" software which can fully
+validate the blockchain, as well as a Bitcoin wallet. <sup class="reference"><a href="#cite_note-1">[1]</a></sup>
+The official open source project that maintains and releases the
+software can be found <a href="https://bitcoincore.org/">here</a> (<a href="http://6hasakffvppilxgehrswmffqurlcjjjhd76jgvaqmsg6ul25s7t3rzyd.onion/">.onion</a>).
+The project also maintains related software such as cryptographic
+libraries on GitHub.</p>
+<h2 id="Bitcoin_Wallet_Recommendation">Bitcoin Wallet
+Recommendation</h2>
+<p>It is impossible to provide a blanket recommendation regarding which
+Bitcoin wallet to use. This is an individual decision that depends
+upon:</p>
+<ul>
+<li>technical skill</li>
+<li>personal risk assignment</li>
+<li>financial value in Bitcoin</li>
+<li>available time</li>
+<li>various other factors</li>
+</ul>
+<p>Other bitcoin wallets like <a href="../Electrum/">Electrum</a> may have better usability, but they also
+come with their own issues; see <a href="../Electrum/#Warnings">Electrum Warnings</a> for example. Despite Bitcoin Core
+limitations it should be seriously considered for security reasons
+because it is the official Bitcoin client, particularly if transacting
+with Bitcoin accounts of significant financial value. Relative strengths
+include:</p>
+<div>
+<ul>
+<li>developed by the Bitcoin Core development team</li>
+<li>most peer reviewed</li>
+<li>most conservative, security-focused development</li>
+<li>reproducible builds <sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
+<li>full validating node
+<ul>
+<li>transactions are validated against the complete blockchain - this
+lowers the probability of servers 'lying' to the client (the client has
+a higher probability of seeing its true Bitcoin balance)</li>
+</ul></li>
+<li>higher privacy
+<ul>
+<li>all blocks are downloaded - the locally running node will not tell
+servers which wallet addresses belong to the node</li>
+</ul></li>
+</ul>
+</div>
+<p>Unfortunately, it takes a very long time to download and verify the
+blockchain. A large amount of disk space is also required, which may or
+may not be more manageable by using Bitcoin pruning mode.</p>
+<h2 id="Bitcoin_Core_Usability">Bitcoin Core Usability</h2>
+<p>Compared to Electrum, some things are more difficult in Bitcoin Core
+such as:</p>
+<ul>
+<li>Simple backups - unfortunately Bitcoin Core does not support
+mnemonic phrase backup. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
+<li>Wallet configuration - it is not easy to set up a split offline
+wallet (cold storage) and online watch only wallet.</li>
+</ul>
+<p>These activities are likely possible, but are <a href="../Unsupported/">undocumented</a> here; refer to the footnotes for
+possible information sources. <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<h1 id="Bitcoin_Core_Setup">Bitcoin Core Setup</h1>
+<h2 id="Installation">Installation</h2>
+<p>Perform these steps inside Kicksecure (or Kicksecure for Qubes: App
+Qube).</p>
+<div class="info-box ">
+<p><strong>1.</strong> Retrieve, verify and add the signing key.</p>
+<div class="info-box ">
+<ul>
+<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
+signatures</b> are a tool enhancing download security. They are commonly
+used across the internet and nothing special to worry about.</span></li>
+<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
+not required:</b> Digital signatures are optional and not mandatory for
+using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+never used them before, it might be overwhelming to look into them at
+this stage. Just ignore them for now.</span></li>
+<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
+Curious? If you are interested in becoming more familiar with advanced
+computer security concepts, you can learn more about digital signatures
+here: <a href="../Verifying_Software_Signatures/">Verifying
+Software Signatures</a></span></li>
+</ul>
+<p><a href="../Secure_Downloads/">Securely download</a> the
+signing key.</p>
+<p><span class="code-select">scurl-download <a href="https://bitcoin.org/laanwj-releases.asc">https://bitcoin.org/laanwj-releases.asc</a></span></p>
+<p>Display the key's fingerprint.</p>
+<p><span class="code-select">gpg --keyid-format long --import
+--import-options show-only --with-fingerprint
+laanwj-releases.asc</span></p>
+<p>Verify the fingerprint. It should show.</p>
+<p><u>Note</u>: Key fingerprints provided on the Kicksecure website are
+for convenience only. The Kicksecure project does not have the
+authorization or the resources to function as a certificate authority,
+and therefore cannot verify the identity or authenticity of key
+fingerprints. The ultimate responsibility for verifying the authenticity
+of the key fingerprint and correctness of the verification instructions
+rests with the user.</p>
+<p><blockquote><p>Key fingerprint = 01EA 5486 DE18 A882 D4C2 6845 90C8 019E 36C2
+E964</p></blockquote></p>
+<p>The most important check is confirming the key fingerprint
+<u>exactly</u> matches the output above. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="warning" /></span>
+<strong>Warning:</strong></p>
+<p>Do not continue if the fingerprint does not match! This risks using
+infected or erroneous files! The whole point of verification is to
+confirm file integrity.</p>
+</div>
+<p>Add the signing key.</p>
+<p><span class="code-select">gpg --import laanwj-releases.asc</span></p>
+</div>
+<p><strong>2.</strong> Download the signed hash sum verification
+file.</p>
+<p><span class="code-select">scurl-download <a href="https://bitcoin.org/bin/bitcoin-core-0.21.1/SHA256SUMS.asc">https://bitcoin.org/bin/bitcoin-core-0.21.1/SHA256SUMS.asc</a></span></p>
+<p><strong>3.</strong> Download Bitcoin.</p>
+<p><span class="code-select">scurl-download <a href="https://bitcoin.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-x86_64-linux-gnu.tar.gz">https://bitcoin.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-x86_64-linux-gnu.tar.gz</a></span></p>
+<p><strong>4.</strong> Verify the hash sum digital signature.</p>
+<p><span class="code-select">gpg --verify SHA256SUMS.asc</span></p>
+<p><u>If the virtual machine image is correct</u>, the output will
+include a statement the signature is good:</p>
+<pre><code>Good signature</code></pre>
+<p>This output might be followed by a warning as follows.</p>
+<pre><code>gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.</code></pre>
+<p>This message does not alter the validity of the signature related to
+the downloaded key. Rather, this warning refers to the level of trust
+placed in the Kicksecure signing key and the <a href="../OpenPGP/#The_OpenPGP_Web_of_Trust">web of
+trust</a>. To remove this warning, the Kicksecure signing key must be
+personally signed with your own key.</p>
+<p><strong>5.</strong> De-armor the hash sum file.
+<sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
+<p><span class="code-select">gpg --decrypt SHA256SUMS.asc &gt;
+SHA256SUMS</span></p>
+<p><strong>6.</strong> Perform a hash sum check.</p>
+<p><span class="code-select">sha256sum --check --ignore-missing
+SHA256SUMS</span></p>
+<p>Expected output.</p>
+<pre><code>bitcoin-0.21.1-x86_64-linux-gnu.tar.gz: OK</code></pre>
+<p><strong>7.</strong> Extract the tar file.</p>
+<p><span class="code-select">tar xzf
+bitcoin-0.21.1-x86_64-linux-gnu.tar.gz</span></p>
+<p><strong>8.</strong> Done.</p>
+<p>Download, digital signature verification and extraction of Bitcoin
+Core is complete.</p>
+</div>
+<h2 id="Add_a_bitcoin-qt_Start_Menu_Entry">Add a bitcoin-qt Start Menu
+Entry</h2>
+<p>Perform the following steps to create a <code>bitcoin-qt</code> start
+menu entry; this procedure is optional.</p>
+<p><strong>1.</strong> Create folder
+<code>~/.local/share/applications</code>.</p>
+<p><span class="code-select">mkdir -p
+~/.local/share/applications</span></p>
+<p><strong>2.</strong> Open file
+<code>~/.local/share/applications/bitcoin.desktop</code> in an editor as
+a regular, non-root user.</p>
+<p><span class="code-select">mousepad
+~/.local/share/applications/bitcoin.desktop</span></p>
+<p><strong>3.</strong> Paste the following contents.</p>
+<p><span class="code-select">[Desktop Entry] Name=bitcoin-qt
+Comment=bitcoin-qt Exec=bash -c '~/bitcoin-*/bin/bitcoin-qt'
+Terminal=false Type=Application Icon=money-manager-ex
+StartupWMClass=bitcoin MimeType=x-scheme-handler/bitcoin;
+Categories=Finance;</span></p>
+<p><strong>4.</strong> Save.</p>
+<p><strong>5.</strong> Kicksecure-Qubes: perform platform-specific
+steps.</p>
+<p>In <code>dom0</code>, refresh Qubes' appmenu:
+<code>VM settings</code> &#8594; <code>Applications</code> &#8594;
+<code>Refresh Applications</code> &#8594;
+<code>Add desktop shortcut</code>.</p>
+<p><strong>6.</strong> Done.</p>
+<p>The <code>bitcoin-qt</code> start menu entry should now be
+available.</p>
+<h2 id="Autostart_bitcoin-qt">Autostart bitcoin-qt</h2>
+<p>Perform these steps to automatically start <code>bitcoin-qt</code>;
+this step is optional.</p>
+<p><strong>1.</strong> Apply the <a href="#Add_a_bitcoin-qt_Start_Menu_Entry">Add a
+bitcoin-qt Start Menu Entry</a> instructions first.</p>
+<p><strong>2.</strong> Create folder
+<code>~/.config/autostart</code>.</p>
+<p><span class="code-select">mkdir -p ~/.config/autostart</span></p>
+<p><strong>3.</strong> Create a symlink from
+<code>~/.local/share/applications/bitcoin.desktop</code> to
+<code>~/.config/autostart/bitcoin.desktop</code>.</p>
+<p><span class="code-select">ln -s
+~/.local/share/applications/bitcoin.desktop
+~/.config/autostart/bitcoin.desktop</span></p>
+<p><strong>4.</strong> Done.</p>
+<p><code>bitcoin-qt</code> will now automatically start the next time
+the VM is booted.</p>
+<h2 id="Start_from_Command_Line">Start from Command Line</h2>
+<p>To start <code>bitcoin-qt</code> (part of Bitcoin Core) from the
+command line, run.</p>
+<p><span class="code-select">~/bitcoin-*/bin/bitcoin-qt</span></p>
+<h2 id="Creating_a_Watch-Only_Wallet">Creating a Watch-Only Wallet</h2>
+<ol>
+<li>Start <code>bitcoin-qt</code>.</li>
+<li><code>Window</code> &#8594; <code>Console</code></li>
+<li>Import address.</li>
+</ol>
+<p>Note: replace <code>address</code> with the actual address to be
+watched.</p>
+<p><span class="code-select">importaddress address</span></p>
+<h2 id="Backup">Backup</h2>
+<p>TODO: research
+<span class="code-select inline-style">dumpwallet</span> (see
+<code>hdseed=1</code> and
+<span class="code-select inline-style">sethdseed</span></p>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Bitcoin/">Bitcoin</a></li>
+</ul>
+<h1 id="Donations">Donations</h1>
+<p>After installing a Bitcoin client, please consider making a <a href="../Donate/">donation</a> to Kicksecure to help keep
+it running for many years to come.</p>
+<div class="intro-like">
+<p><img src="../../media/BC_Logo_.png.webp" width="25" alt="Bitcoin accepted here" />
+Donate Bitcoin (BTC) to Kicksecure.</p>
+</div>
+<p><span class="code-select">3DaJWfHyLv4RVnvMD7K2Mz2AX2r3fwiQwV</span></p>
+<p><img src="../../media/Kicksecure_donate_bitcoin.png.webp" width="100" alt="Kicksecure_donate_bitcoin.png" /></p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://bitcoincore.org/en/about/">https://bitcoincore.org/en/about/</a></li>
+<li id="cite_note-2"><a href="https://bitcoinbinary.org/"><code>https://bitcoinbinary.org/</code></a>
+- a repository of Reproducible Build Proofs for Bitcoin Projects.</li>
+<li id="cite_note-3">* <a href="https://github.com/bitcoin/bitcoin/issues/19151">https://github.com/bitcoin/bitcoin/issues/19151</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/33165">https://github.com/bitcoin/bitcoin/issues/33165</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/16393">https://github.com/bitcoin/bitcoin/issues/16393</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/19151">https://github.com/bitcoin/bitcoin/issues/19151</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/1666">https://github.com/bitcoin/bitcoin/issues/1666</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/3212">https://github.com/bitcoin/bitcoin/issues/3212</a>
+* <a href="https://github.com/bitcoin/bitcoin/issues/2692">https://github.com/bitcoin/bitcoin/issues/2692</a>
+* <a href="https://github.com/bitcoin/bips/blob/master/bip-0093.mediawiki">https://github.com/bitcoin/bips/blob/master/bip-0093.mediawiki</a>
+* <a href="https://github.com/bitcoin/bitcoin/pull/27351">https://github.com/bitcoin/bitcoin/pull/27351</a>
+* <a href="https://github.com/bitcoin/bitcoin/pull/33043">https://github.com/bitcoin/bitcoin/pull/33043</a>
+* <a href="https://github.com/bitcoin/bitcoin/pull/32652">https://github.com/bitcoin/bitcoin/pull/32652</a>
+* <a href="https://github.com/bitcoin/bitcoin/pull/33043">https://github.com/bitcoin/bitcoin/pull/33043</a></li>
+<li id="cite_note-4"><a href="../Terms_of_Service/#Non-Endorsement">Non-Endorsement</a>: these links have not been audited
+by Kicksecure, but are worthy of further investigation: * <a href="https://github.com/JWWeatherman/yeticold">https://github.com/JWWeatherman/yeticold</a>
+* <a href="https://github.com/BenWestgate/yeti.Bash">https://github.com/BenWestgate/yeti.Bash</a>
+* <a href="https://github.com/BlockchainCommons/Airgapped-Wallet-Community/discussions/39">https://github.com/BlockchainCommons/Airgapped-Wallet-Community/discussions/39</a>
+* <a href="https://github.com/JWWeatherman/yeticold/blob/master/utils/formating.py">https://github.com/JWWeatherman/yeticold/blob/master/utils/formating.py</a></li>
+<li id="cite_note-5">Minor changes in the output such as new uids (email addresses) or
+newer expiration dates are inconsequential.</li>
+<li id="cite_note-6">To avoid the following confusing output.
+<pre><code> sha256sum --check --ignore-missing SHA256SUMS.asc bitcoin-0.21.1-x86_64-linux-gnu.tar.gz: OK sha256sum: WARNING: 20 lines are improperly formatted </code></pre></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../Trademark_Policy/">Trademark Policy</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

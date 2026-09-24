@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/immutable</title>
+<meta name="description" content="Explains how different Linux distributions use the term &quot;immutable&quot; and why the definition varies, including distinctions between read-only systems, image based models, and related concepts.">
+<meta property="og:description" content="Explains how different Linux distributions use the term &quot;immutable&quot; and why the definition varies, including distinctions between read-only systems, image based models, and related concepts.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/immutable/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/immutable/">
+<meta property="og:title" content="Dev/immutable">
+<link rel="stylesheet" href="../../../style.css">
+<link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
+<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>immutable</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Immutable_as_defined_by_other_projects">Immutable as defined by
+other projects</a></li><li class="toc-l2"><a href="#Other_uses_of_the_Word_Immutable">Other uses of the Word
+Immutable</a></li><li class="toc-l2"><a href="#Word_Reference">Word Reference</a></li><li class="toc-l2"><a href="#What_Immutable_Does_Not_Mean">What Immutable Does Not Mean</a></li><li class="toc-l2"><a href="#Conclusion">Conclusion</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="mininav">
+<ul>
+<li><a href="../../Firmware_Security_and_Updates/">Firmware
+Security and Updates</a></li>
+<li><a href="../../Boot_firmware/">Boot Firmware</a></li>
+<li><a href="../../Secure_Boot/">Secure Boot</a></li>
+<li><a href="../Secure_Boot/">Secure Boot
+(<u>dev</u>elopers)</a></li>
+<li><a href="../../Verified_Boot/">Verified Boot</a></li>
+<li><a href="../../Measured_boot/">Measured Boot</a></li>
+<li><a href="../../Sovereign_Boot/">Sovereign Boot</a></li>
+<li><a href="../../Out-of-band_Management_Technology/">Out-of-band Management Technology</a></li>
+<li><a href="../../Open_Source_Hardware/">Open Source
+Hardware</a></li>
+<li><a href="../confidential_computing/">Confidential
+Computing (dev)</a></li>
+<li><a href="../bootstrappable_builds/">Bootstrappable
+Builds (dev)</a></li>
+<li><a href="../Stateless/">stateless (dev)</a></li>
+<li><a href="./">immutable (dev)</a></li>
+</ul>
+</div>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../../../media/Preferences_system.png.webp" width="40" alt="Developers only!" /></span>
+<img src="../../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" />
+<strong>Warning:</strong> This is for
+<u><strong>developers-only</strong></u>!</p>
+</div>
+<p><u><strong>This wiki page is a work in progress.</strong></u></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>There is no single agreed upon definition of the word immutable in
+the Linux ecosystem. Different distributions use this term in different
+ways, and it is often combined with or confused with other concepts such
+as image based systems or stateless designs. This page clarifies how the
+term is used and how these related ideas differ. This is a general wiki
+page on the topic of immutability. <a href="../../Unspecific/">Unspecific to Kicksecure</a>. For Kicksecure specific
+information on immutability see <a href="../../Immutable/">Kicksecure Immutable</a>.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p>Do you mean <code>immutable</code> or <code>image based</code>?</p>
+<p><blockquote><p>Usually instead of talking about an "immutable" system that allows in
+place updates, it'd be more useful and accurate to say "image
+based".<span class="blockquote-context"><a href="https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/">"Immutable"
+&#8594; reprovisionable, anti-hysteresis</a></span></p></blockquote></p>
+<p>For anti-hysteresis, see also <a href="../Stateless/">Dev/Stateless</a>.</p>
+<p><blockquote><p>Why not "immutable"/"read-only"?</p>
+<p>Because it's very misleading. These system as a whole is not
+immutable, or read-only, or stateless - there are writable, persistent
+data areas. And more importantly, those writable data areas allow
+persistently storing privileged code. They have to because these OSes
+need to support:</p>
+<ul>
+<li>the user being root on their own computer</li>
+<li>In place OS updates<span class="blockquote-context"><a href="https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/">"Immutable"
+&#8594; reprovisionable, anti-hysteresis</a></span></li>
+</ul></blockquote></p>
+<h1 id="Definition_of_Immutable">Definition of Immutable</h1>
+<h2 id="Immutable_as_defined_by_other_projects">Immutable as defined by
+other projects</h2>
+<p><blockquote><p>Immutable Linux operating systems are aimed to introduce reliable,
+more secure approach to Linux. For such systems, the core components
+like kernel, system libraries or critical system files are read-only and
+cannot be modified permanently. Any changes made to the core system
+components are lost when system reboots, but many of immutable systems
+preserve user information, yet it is not
+obligatory.<span class="blockquote-context"><a href="https://github.com/3mdeb/verified-boot/blob/55df31bf0645767e18c4dac7e19bf62d788e9df8/verified_boot_main.md?plain=1#L867">3mdeb
+Verified Boot research</a></span></p></blockquote></p>
+<p><blockquote><p>Differently from RHEL images, RHEL for Edge is an immutable operating
+system, that is, it contains a read-only root directory with the
+following characteristics:<span class="blockquote-context"><a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/pdf/composing_installing_and_managing_rhel_for_edge_images/Red_Hat_Enterprise_Linux-10-Composing_installing_and_managing_RHEL_for_Edge_images-en-US.pdf">RHEL
+for Edge documentation</a></span></p></blockquote></p>
+<p><blockquote><p>Ubuntu Core is immutable and strictly confined. There is a clean
+separation between the kernel, OS image and applications, each updated
+independently and protected against
+corruption.<span class="blockquote-context"><a href="https://ubuntu.com/core">Ubuntu Core</a></span></p></blockquote></p>
+<p><blockquote><p>MicroOS is a distribution aimed at providing an immutable base OS for
+containerized applications. It is based on Tumbleweed package versions,
+but uses a btrfs snapshot-based system so that updates only apply on
+reboot. This avoids any chance of an update breaking a running system,
+and allows for easy automated rollback. References to "MicroOS" by
+itself typically point to its use as a server or container-host OS, with
+no graphical environment.<span class="blockquote-context"><a href="https://en.opensuse.org/openSUSE%3AFAQ">openSUSE:FAQ</a></span></p></blockquote></p>
+<p><blockquote><p>Bootc systems follow the concept of an immutable operating system.
+Apart from the following two exceptions, /etc and /var, all directories
+are mounted read-only once deployed on a physical or virtual machine.
+However, during a container build the entire file-system is
+writable.<span class="blockquote-context"><a href="https://docs.fedoraproject.org/en-US/bootc/getting-started/">Fedora
+Bootc documentation</a></span></p></blockquote></p>
+<p><blockquote><p>Silverblue is immutable and it uses the 'image mode' update model
+managed by rpm-ostree.<span class="blockquote-context"><a href="https://docs.fedoraproject.org/en-US/dei/brand-framework/resource-pack/">Fedora
+Silverblue documentation</a></span></p></blockquote></p>
+<p><blockquote><p>Immutable - a file or directory is immutable if it cannot be modified
+or deleted by the user directly.<span class="blockquote-context"><a href="https://abroot.vanillaos.org/">VanillaOS ABRoot</a></span></p></blockquote></p>
+<p><blockquote><p>An immutable file system is a file system that cannot be changed once
+it has been installed. It is accessed
+read-only.<span class="blockquote-context"><a href="https://documentation.suse.com/sle-micro/6.0/html/Micro-sudo-configure-superuser-privileges/index.html">SUSE
+Micro documentation</a></span></p></blockquote></p>
+<p><blockquote><p>Main features of the openSUSE MicroOS is:</p>
+<ul>
+<li>Read-only root filesystem to avoid accidental modifications of the
+OS</li>
+<li>The Transactional Updates technology leverages btrfs snapshots to
+apply package updates without interfering with the running
+system<span class="blockquote-context"><a href="https://en.opensuse.org/Portal:MicroOS">openSUSE MicroOS
+Portal</a></span></li>
+</ul></blockquote></p>
+<p><blockquote><p>Read-only: The primary characteristic of an immutable OS is that the
+running system cannot be directly modified by users or
+applications.<span class="blockquote-context"><a href="https://ubuntu.com/blog/ubuntu-core-an-immutable-linux-desktop">Ubuntu
+Core as an immutable Linux Desktop base</a></span></p></blockquote></p>
+<p><blockquote><p>What is an immutable operating system? Before we can discuss what
+differentiates Ubuntu Core from other immutable operating systems, we
+must first define the properties that make an OS immutable:</p>
+<ol>
+<li>Read-only: The primary characteristic of an immutable OS is that the
+running system cannot be directly modified by users or
+applications.</li>
+<li>Atomic updates: Updates are applied atomically; meaning they're
+successfully applied all at once or not at all.</li>
+<li>Predictable: Because the core operating system doesn't change, its
+behaviour is predictable across devices.</li>
+<li>Isolated Applications: Applications are isolated from the core
+operating system and from each other, usually through containerisation.
+This ensures that changes made by an application don't affect the core
+system or other applications.<span class="blockquote-context"><a href="https://ubuntu.com/blog/ubuntu-core-an-immutable-linux-desktop">Ubuntu
+Core as an immutable Linux Desktop base</a></span></li>
+</ol></blockquote></p>
+<p><blockquote><p>RHEL for Edge is an immutable operating system that contains a
+read-only root directory, and has following
+characteristics:<span class="blockquote-context"><a href="https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/8/pdf/composing_installing_and_managing_rhel_for_edge_images/Red_Hat_Enterprise_Linux-8-Composing_installing_and_managing_RHEL_for_Edge_images-en-US.pdf">RHEL
+for Edge documentation (RHEL 8)</a></span></p></blockquote></p>
+<p><blockquote><p>By making the system partition read-only, Flatcar Container Linux
+eliminates a whole class of high-impact security
+vulnerabilities.<span class="blockquote-context"><a href="https://www.flatcar.org/">Flatcar Container Linux</a></span></p></blockquote></p>
+<h2 id="Other_uses_of_the_Word_Immutable">Other uses of the Word
+Immutable</h2>
+<p>VirtualBox has a setting called <code>Immutable</code>. It is
+documented on the <a href="../../Read-only/">read-only</a>
+wiki page.</p>
+<h2 id="Word_Reference">Word Reference</h2>
+<ul>
+<li><a href="https://www.wordreference.com/definition/immutable">https://www.wordreference.com/definition/immutable</a>
+- allowing change</li>
+<li><a href="https://www.wordreference.com/definition/mutable">https://www.wordreference.com/definition/mutable</a>
+- unchangeable</li>
+</ul>
+<h2 id="What_Immutable_Does_Not_Mean">What Immutable Does Not Mean</h2>
+<table>
+<thead>
+<tr class="header">
+<th><p>Misconception</p></th>
+<th><p>Clarification</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Immutable operating systems much be image-based.</p></td>
+<td><p>Immutable and image-based are different things, not synonyms. An
+immutable system is one where the core of the operating system cannot be
+modified though traditional means due to mount option (read-only) and/or
+filesystem based (ISO; SquashFS) restrictions. This can be accomplished
+without being image-based.</p></td>
+</tr>
+<tr class="even">
+<td><p>Image-based operating systems are always immutable.</p></td>
+<td><p>No, not neccessarily. If the image used a read/write filesystem
+such as ext4 rather than a read-only filesystem, then it's image-based
+but not immutable.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>The OS can never change.</p></td>
+<td><p>You are not completely blocked from installing packages. For
+instance, Fedora's rpm-ostree allows installing packages.
+<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Root is permanently disabled.</p></td>
+<td><p>Many immutable Linux distributions still permit root
+access.</p></td>
+</tr>
+<tr class="even">
+<td><p>Updates are impossible.</p></td>
+<td><p>Most immutable distributions do allow system updates, they just
+manage them differently.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Ephemeral (temporary, RAM-only) changes are forbidden.</p></td>
+<td><p>In Vanilla OS (December 2025), running
+<code>host-shell pkexec</code> opens a <code>root@vanilla</code> shell
+(if authentication succeded). Checking <code>ls -la /boot</code> shows
+that there is a real kernel image file (<code>vmlinuz</code>),
+indicating that this is the host operating system. When deleting an
+important file, the system will fail to boot. See footnote to see which
+command exactly. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Confusion of host root shell versus container root
+shell.</p></td>
+<td><p>In Vanilla OS (December 2025), it was possible to use
+<code>su</code> to become <code>root</code>, then create a test file
+(e.g., <code>touch /etc/testfile</code>). Listing it with
+<code>ls -la /etc/testfile</code>. But what's happening here is that
+this happens inside a container, not on the host operating system. When
+running <code>host-shell</code>, the output will be "can't run
+host-shell as root". The same happens when running
+<code>reboot</code>.</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Conclusion">Conclusion</h2>
+<p>Each distribution defines "immutable" differently. Some refer only to
+a read-only system partition. Others refer to an atomic A/B update
+model. Because of this, comparing immutability across systems requires
+examining the actual runtime mutability.</p>
+<p>Some might mean "image-based + atomic updates + easy rollback" or
+perhaps <a href="../Stateless/">anti-hysteresis /
+stateless</a> when they say "immutable".</p>
+<p>See also <a href="../../Immutable/#Introduction">Kicksecure
+Immutable, Introduction</a>.</p>
+<h1 id="Immutability_Security">Immutability Security</h1>
+<p>TODO: expand</p>
+<p>On the <a href="../../Grub-live/#Security_Considerations">grub-live wiki page, in chapter Security
+Considerations</a> the case is being made that ISO images are the
+closest to being fully read-only / immutable. But, <a href="../../Perfect_Security/">nothing is perfectly
+secure</a>.</p>
+<p><blockquote><p>It's hard to modify an ISO read/write. There is no public software
+available to really mount an ISO read/write. But it's possible in
+theory. The ISO should be considered read-write for attackers but
+read-only for the public. There is the Open Source
+<code>growisofs</code> tool. Also, other attacks are conceivable. Since
+<a href="https://wiki.debian.org/RepackBootableISO">Repacking an ISO</a>
+is documented in the Debian wiki, this can be used for both legitimate
+and malicious purposes and is much easier than mounting an ISO
+read/write.<span class="blockquote-context"><a href="../../Verified_Boot/#ISO_Considerations">Verified Boot
+wiki page, chapter ISO Considerations</a></span></p></blockquote></p>
+<p>Maybe it is a valid consideration if there an ephemeral (temporary,
+in RAM) read-write overlay such as overlayfs that privileged users (such
+as root) can write to or is the image fully read-only without ephemeral
+overlay?</p>
+<p>Immutability, a read-only filesystem may not be as secure as <a href="../../Verified_Boot/#Write_Protection">Write
+Protection</a>.</p>
+<h1 id="Updating_Immutable_Operating_Systems">Updating Immutable
+Operating Systems</h1>
+<p>There's always the possibility for updates. But different
+implementation details.</p>
+<h1 id="Resources">Resources</h1>
+<ul>
+<li><a href="https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/">https://blog.verbum.org/2020/08/22/immutable-%E2%86%92-reprovisionable-anti-hysteresis/</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><blockquote><p>Add a layered package with the <code>rpm-ostree install</code>
+command<span class="blockquote-context"><a href="https://docs.fedoraproject.org/en-US/iot/add-layered/">https://docs.fedoraproject.org/en-US/iot/add-layered/</a></span></p></blockquote></li>
+<li id="cite_note-2">Danger! The following commands will make your system unbootable! *
+<code>host-shell pkexec</code> * Dangerous! <code>rm /etc/passwd</code>
+* <code>reboot</code></li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../../Category:Design/">Design</a> <a href="../../Category:Development/">Development</a></div></main>
+<footer class="site-footer"><p class="tagline">Security-hardened Linux</p><nav class="footer-links"><ul><li><a href="../../Terms_of_Service/">Terms of Service</a></li><li><a href="../../Privacy_Policy/">Privacy Policy</a></li><li><a href="../../Cookie_Policy/">Cookie Policy</a></li><li><a href="../../Trademark_Policy/">Trademark Policy</a></li><li><a href="../../Imprint/">Imprint</a></li></ul></nav><a class="darkmode-toggle" href="#" data-darkmode>Toggle dark mode</a><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../../Privacy_Policy/">Privacy Policy</a>, <a href="../../Cookie_Policy/">Cookie Policy</a>, <a href="../../Terms_of_Service/">Terms of Service</a>, and <a href="../../E-Sign_Consent/">E-Sign Consent</a>.</span><span class="consent-storage"><a href="../../Special:BrowserStorage/">Browser Storage</a> -- view or clear the data this site keeps in your browser. (Informational only; not part of this agreement.)</span><button type="button" class="consent-dismiss" data-consent-dismiss>Got it</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../../Donate/">11 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../../search-index.js" defer></script>
+<script src="../../../page-previews.js" defer></script>
+<script src="../../../app.js" defer></script>
+</body>
+</html>
