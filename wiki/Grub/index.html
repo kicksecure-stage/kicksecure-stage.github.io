@@ -21,21 +21,13 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GRUB_Bootloader_Authentication_Password_Prompt">GRUB Bootloader
-Authentication Password Prompt</a></li><li class="toc-l2"><a href="#Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">Legacy
-BIOS - GRUB Bootloader Disk Decryption Password Prompt</a></li><li class="toc-l2"><a href="#EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">EFI -
-GRUB Bootloader Disk Decryption Password Prompt</a></li><li class="toc-l2"><a href="#EFI_-_SecureBoot_-_Boot_Error_Message">EFI - SecureBoot - Boot
-Error Message</a></li><li class="toc-l2"><a href="#Initial_Ramdisk_Based_Encryption_Password_Prompt">Initial
-Ramdisk Based Encryption Password Prompt</a></li><li class="toc-l2"><a href="#Screenshots">Screenshots</a></li><li class="toc-l2"><a href="#/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Grub-live/" title="grub-live"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">grub-live</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
 Documentation</span></a><a class="next internal" href="../Dracut/" title="dracut"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">dracut</span></a><span class="info"><span class="prev">Previous
 page: grub-live</span><span class="index">Index page: Advanced
 Documentation</span><span class="next">Next page:
 dracut</span></span></span>grub bootloader Configuration Changes</p>
-</div>
-<div class="mininav">
+</div><div class="mininav">
 <ul>
 <li><a href="../Troubleshooting/#General_Troubleshooting">General Troubleshooting</a></li>
 <li><a href="../Troubleshooting/#Connectivity_Troubleshooting">Connectivity Troubleshooting</a></li>
@@ -48,7 +40,18 @@ Troubleshooting</a></li>
 <li><a href="../Factory_Reset/">Factory Reset</a></li>
 <li><a href="../Download_Issues/">Download Issues</a></li>
 </ul>
+</div><div class="intro-like">
+<p>Follow these steps to temporarily add and/or remove kernel boot
+parameters.</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GRUB_Bootloader_Authentication_Password_Prompt">GRUB Bootloader
+Authentication Password Prompt</a></li><li class="toc-l2"><a href="#Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">Legacy
+BIOS - GRUB Bootloader Disk Decryption Password Prompt</a></li><li class="toc-l2"><a href="#EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">EFI -
+GRUB Bootloader Disk Decryption Password Prompt</a></li><li class="toc-l2"><a href="#EFI_-_SecureBoot_-_Boot_Error_Message">EFI - SecureBoot - Boot
+Error Message</a></li><li class="toc-l2"><a href="#Initial_Ramdisk_Based_Encryption_Password_Prompt">Initial
+Ramdisk Based Encryption Password Prompt</a></li><li class="toc-l2"><a href="#Screenshots">Screenshots</a></li><li class="toc-l2"><a href="#/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
+
 <p><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="GRUB boot menu" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -93,10 +96,7 @@ values, are silently ignored and do not result in an error message.</li>
 <h1 id="Temporary_Kernel_Boot_Parameter_Change">Temporary Kernel Boot
 Parameter Change</h1>
 <p><span class="manually-placed-anchor " id="Kernel_Boot_Parameter_Change"></span></p>
-<div class="intro-like">
-<p>Follow these steps to temporarily add and/or remove kernel boot
-parameters.</p>
-</div>
+
 <p>Example use cases include:</p>
 <ul>
 <li><i class="padded-content-icon    pci-text fa-solid cs-gray iconset-h4">A</i>
@@ -236,23 +236,7 @@ with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
 <div class="info-box ">
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
 Select your platform.</p>
-<div class="tab-content-controller ">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Kicksecure">
-<p>Kicksecure</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure">Kicksecure</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
@@ -264,22 +248,8 @@ editor) before running the <code>sudoedit</code> command.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
 <p><span class="code-select">sudoedit
-/etc/default/grub.d/50_user.cfg</span></p>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
-<p>Kicksecure-Qubes</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+/etc/default/grub.d/50_user.cfg</span></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Sudoedit guidance:</u> See <a href="../Software/#Open_File_with_Root_Rights">Open File
@@ -305,22 +275,8 @@ to be restarted if they were already running.</li>
 <li><u>General procedure:</u> This is a general procedure required for
 Qubes and is <a href="../Unspecific/">unspecific to
 Kicksecure-Qubes</a>.</li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
-<p>Others and Alternatives</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+</ul></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Others_and_Alternatives">Others and Alternatives</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Example only:</u> This is just an example. Other tools could
@@ -332,11 +288,7 @@ with Root Rights</a>.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
 <p><span class="code-select">sudoedit
-/etc/default/grub.d/50_user.cfg</span></p>
-</div>
-</div>
-</div>
-</div>
+/etc/default/grub.d/50_user.cfg</span></p></div></div></p></div></div></p>
 </div>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Paste the required GRUB configuration change, such as adding or removing
@@ -495,16 +447,16 @@ Done.</p>
 <p>The current kernel command line has been inspected.</p>
 <h1 id="Goodies">Goodies</h1>
 <ul>
-<li><a href="https://packages.debian.org/trixie/grub-image-boot">https://packages.debian.org/trixie/grub-image-boot</a></li>
-<li><a href="https://packages.debian.org/trixie/grub-customizer">https://packages.debian.org/trixie/grub-customizer</a></li>
+<li><a href="https://packages.debian.org/trixie/grub-image-boot">https://packages.debian.org/trixie/grub-image-boot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/grub-image-boot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://packages.debian.org/trixie/grub-customizer">https://packages.debian.org/trixie/grub-customizer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/grub-customizer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Boot_with_Manual_Commands">Boot with Manual Commands</h1>
 <p>TODO: document</p>
-<p><a href="https://forums.kicksecure.com/t/kicksecure-no-password-prompt-on-gnu-grub/483/3">https://forums.kicksecure.com/t/kicksecure-no-password-prompt-on-gnu-grub/483/3</a></p>
+<p><a href="https://forums.kicksecure.com/t/kicksecure-no-password-prompt-on-gnu-grub/483/3">https://forums.kicksecure.com/t/kicksecure-no-password-prompt-on-gnu-grub/483/3</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/kicksecure-no-password-prompt-on-gnu-grub/483/3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Boot_Related_Screenshots">Boot Related Screenshots</h1>
 <p>TODO: document</p>
 <h2 id="GRUB_Bootloader_Authentication_Password_Prompt">GRUB Bootloader
-Authentication Password Prompt</h2>
+Authentication Password Prompt</h2><span class="share-tooltip" data-anchor="GRUB_Bootloader_Authentication_Password_Prompt"><a class="headline-anchor" href="#GRUB_Bootloader_Authentication_Password_Prompt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#GRUB_Bootloader_Authentication_Password_Prompt">https://www.kicksecure.com/wiki/Grub/#GRUB_Bootloader_Authentication_Password_Prompt</span></span></span></span>
 <p><u>Notes:</u></p>
 <ul>
 <li>This is an authentication password for the GRUB bootloader,
@@ -523,24 +475,24 @@ changes.</li>
 Prompt</em></p>
 <p><img src="../../media/Grub_bootloader_password.jpg.webp" alt="grub_bootloader_password.jpg" /></p>
 <h2 id="Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">Legacy
-BIOS - GRUB Bootloader Disk Decryption Password Prompt</h2>
+BIOS - GRUB Bootloader Disk Decryption Password Prompt</h2><span class="share-tooltip" data-anchor="Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt"><a class="headline-anchor" href="#Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">https://www.kicksecure.com/wiki/Grub/#Legacy_BIOS_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt</span></span></span></span>
 <p><strong>Figure:</strong> <em>GRUB Bootloader Disk Decryption Password
 Prompt for (Legacy BIOS)</em></p>
 <p><img src="../../media/Grubpass.png.webp" width="600" alt="Grubpass.png" /></p>
 <h2 id="EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">EFI -
-GRUB Bootloader Disk Decryption Password Prompt</h2>
+GRUB Bootloader Disk Decryption Password Prompt</h2><span class="share-tooltip" data-anchor="EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt"><a class="headline-anchor" href="#EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt">https://www.kicksecure.com/wiki/Grub/#EFI_-_GRUB_Bootloader_Disk_Decryption_Password_Prompt</span></span></span></span>
 <p><strong>Figure:</strong> <em>GRUB Bootloader Disk Decryption Password
 Prompt (EFI)</em></p>
 <p><img src="../../media/EFIGrubpass.png.webp" width="600" alt="EFIGrubpass.png" /></p>
 <h2 id="EFI_-_SecureBoot_-_Boot_Error_Message">EFI - SecureBoot - Boot
-Error Message</h2>
+Error Message</h2><span class="share-tooltip" data-anchor="EFI_-_SecureBoot_-_Boot_Error_Message"><a class="headline-anchor" href="#EFI_-_SecureBoot_-_Boot_Error_Message" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#EFI_-_SecureBoot_-_Boot_Error_Message">https://www.kicksecure.com/wiki/Grub/#EFI_-_SecureBoot_-_Boot_Error_Message</span></span></span></span>
 <p>This is a known issue. No bug report is required.</p>
 <p><strong>Figure:</strong> <em>EFI SecureBoot Boot Error
 Message</em></p>
 <p><img src="../../media/EFIDracutpass.png.webp" width="600" alt="EFIDracutpass.png" /></p>
 <p>To resolve this issue, refer to <a href="../Secure_Boot/">Secure Boot</a>.</p>
 <h2 id="Initial_Ramdisk_Based_Encryption_Password_Prompt">Initial
-Ramdisk Based Encryption Password Prompt</h2>
+Ramdisk Based Encryption Password Prompt</h2><span class="share-tooltip" data-anchor="Initial_Ramdisk_Based_Encryption_Password_Prompt"><a class="headline-anchor" href="#Initial_Ramdisk_Based_Encryption_Password_Prompt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#Initial_Ramdisk_Based_Encryption_Password_Prompt">https://www.kicksecure.com/wiki/Grub/#Initial_Ramdisk_Based_Encryption_Password_Prompt</span></span></span></span>
 <p><span class="manually-placed-anchor " id="initramfs_(initramfs-tools_or_dracut)_Based_Encryption_Password_Prompt"></span></p>
 <p>Initial ramdisk (<a href="../Dracut/#initrd">"<code>initrd</code>"</a>) based encryption password
 prompts are not directly related to GRUB. They are created by the initrd
@@ -563,13 +515,13 @@ passphrase when you're on the "Partitions" screen. Whatever passphrase
 you set at that point, type that in and press "Enter". If you don't
 remember entering a passphrase, but do remember entering a password at
 some point, type in that password.<span class="blockquote-context"><a href="https://forums.kicksecure.com/t/please-enter-passphrase-for-disk-rootfs-message/984">"Please
-enter passphrase for disk rootfs" message</a></span></p></blockquote></p>
+enter passphrase for disk rootfs" message</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/please-enter-passphrase-for-disk-rootfs-message/984" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <h1 id="Kicksecure_Specific">Kicksecure Specific</h1>
-<h2 id="Screenshots">Screenshots</h2>
+<h2 id="Screenshots">Screenshots</h2><span class="share-tooltip" data-anchor="Screenshots"><a class="headline-anchor" href="#Screenshots" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#Screenshots">https://www.kicksecure.com/wiki/Grub/#Screenshots</span></span></span></span>
 <div class="gallery">
 <p><span class="gallery-item"><img src="../../media/Kicksecure-live-mode-sysmaint-session.png.webp" alt="kicksecure-live-mode-sysmaint-session.png" loading="lazy" /></span><span class="gallery-item"><img src="../../media/Kicksecure-live-mode-user-session.png.webp" alt="kicksecure-live-mode-user-session.png" loading="lazy" /></span><span class="gallery-item"><img src="../../media/Kicksecure-persistent-mode-sysmaint-session.png.webp" alt="kicksecure-persistent-mode-sysmaint-session.png" loading="lazy" /></span><span class="gallery-item"><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="kicksecure-persistent-mode-user-session.png" loading="lazy" /></span><span class="gallery-item"><img src="../../media/Kicksecure-remove-user-sysmaint-split.png.webp" alt="kicksecure-remove-user-sysmaint-split.png" loading="lazy" /></span></p>
 </div>
-<h2 id="/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</h2>
+<h2 id="/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</h2><span class="share-tooltip" data-anchor="/etc/default/grub.d/20_dist-base-files.cfg"><a class="headline-anchor" href="#/etc/default/grub.d/20_dist-base-files.cfg" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub/#/etc/default/grub.d/20_dist-base-files.cfg">https://www.kicksecure.com/wiki/Grub/#/etc/default/grub.d/20_dist-base-files.cfg</span></span></span></span>
 <p>File
 <span class="code-select inline-style">/etc/default/grub.d/20_dist-base-files.cfg</span></p>
 <p><u>Technical information:</u></p>
@@ -585,7 +537,7 @@ Files</a></li>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">https://wiki.ubuntu.com/Kernel/KernelBootParameters</a></li>
+<li id="cite_note-1"><a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">https://wiki.ubuntu.com/Kernel/KernelBootParameters</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.ubuntu.com/Kernel/KernelBootParameters" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2">Or shut it down and power it on again.</li>
 <li id="cite_note-3">If the menu does not appear, repeatedly press the
 <i class="padded-content-icon pci-style-rounded pci-border pci-text fa-solid cs-white iconset-keyboard">ESC</i>

@@ -20,15 +20,15 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>secureblue</span></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="first-heading">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>secureblue</span></nav><div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Debian/" title="Dev/Debian"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Debian</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Chromium/" title="Dev/Chromium"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Chromium</span></a><span class="info"><span class="prev">Previous
 page: Dev/Debian</span><span class="index">Index page:
 Design</span><span class="next">Next page:
 Dev/Chromium</span></span></span>Comparison of secureblue with
 Kicksecure and Development Notes</p>
+</div><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <div class="pre-intro-p ">
 </div>
 <div class="hidden-thumbnail">
@@ -44,26 +44,26 @@ cutting-edge OS security practices.</p>
 </div>
 <p><u>Quick, preliminary analysis version 0.1</u>, only based on a quote
 from <a href="https://github.com/secureblue/secureblue">secureblue
-GitHub repository</a> <code>README.md</code> as of November, 2024,
-commit hash <a href="https://github.com/secureblue/secureblue/blob/e40b70df06a30c3a2d99f337f3cbfe3d5a54aa83/docs/README.md">e40b70df06a30c3a2d99f337f3cbfe3d5a54aa83</a>
+GitHub repository</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> <code>README.md</code> as of November, 2024,
+commit hash <a href="https://github.com/secureblue/secureblue/blob/e40b70df06a30c3a2d99f337f3cbfe3d5a54aa83/docs/README.md">e40b70df06a30c3a2d99f337f3cbfe3d5a54aa83</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/e40b70df06a30c3a2d99f337f3cbfe3d5a54aa83/docs/README.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 and related linked files, plus a comment on <a href="#Unprivileged_User_Namespaces">#Unprivileged User
 Namespaces</a> as of secureblue release 4.3.0.</p>
 <p><u>Quick update:</u> January 2026: Updated to reflect Kicksecure
 18.</p>
 <h1 id="Lineage">Lineage</h1>
-<p>Based on Fedora, which comes with its own issues. See:
-[Broken-ExtLink--no-url-was-provided]</p>
+<p>Based on Fedora, which comes with its own issues. See: Whonix wiki,
+Dev/Operating System, chapter Fedora</p>
 <h1 id="Hardening">Hardening</h1>
 <p><blockquote><p>Hardening</p></blockquote></p>
 <p><blockquote><ul>
-<li>Installing and enabling <a href="https://github.com/GrapheneOS/hardened_malloc">hardened_malloc</a>
+<li>Installing and enabling <a href="https://github.com/GrapheneOS/hardened_malloc">hardened_malloc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/hardened_malloc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 globally, including for Flatpaks. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></li>
 </ul></blockquote></p>
 <p>Kicksecure is no longer using hardened_malloc for reasons elaborated
 in chapter <a href="../../Hardened_Malloc/#Deprecation_in_Kicksecure">Hardened Malloc, Deprecation in Kicksecure</a>.</p>
 <p><blockquote><ul>
-<li>Installing <a href="https://github.com/secureblue/Trivalent">Trivalent</a>, which is
-inspired by <a href="https://github.com/GrapheneOS/Vanadium">Vanadium</a>.
+<li>Installing <a href="https://github.com/secureblue/Trivalent">Trivalent</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/Trivalent" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, which is
+inspired by <a href="https://github.com/GrapheneOS/Vanadium">Vanadium</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/Vanadium" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 <sup class="reference"><a href="#cite_note-2">[2]</a></sup> <sup class="reference"><a href="#cite_note-3">[3]</a></sup></li>
 </ul></blockquote></p>
 <p>Unavailable in Kicksecure at time of writing. See <a href="../Default_Browser/">Kicksecure Default Browser -
@@ -73,35 +73,35 @@ specifically.</p>
 <li>Setting numerous hardened sysctl values <sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
 </ul></blockquote></p>
 <p>secureblue <code>/etc/sysctl.d/hardening.conf</code> file as of
-commit <a href="https://github.com/secureblue/secureblue/blob/cb11fbcaaed34c92d0993fb1f4395824f28d3742/config/files/usr/etc/sysctl.d/hardening.conf#L43">cb11fbcaaed34c92d0993fb1f4395824f28d3742</a>
+commit <a href="https://github.com/secureblue/secureblue/blob/cb11fbcaaed34c92d0993fb1f4395824f28d3742/config/files/usr/etc/sysctl.d/hardening.conf#L43">cb11fbcaaed34c92d0993fb1f4395824f28d3742</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/cb11fbcaaed34c92d0993fb1f4395824f28d3742/config/files/usr/etc/sysctl.d/hardening.conf#L43" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 was inspired by, more or less copied and pasted from Kicksecure as can
 be seen from the following comment found in that file.</p>
 <pre><code>## Prevent kernel info leaks in console during boot.
 ## https://phabricator.whonix.org/T950
 kernel.printk = 3 3 3 3</code></pre>
 <p>Past attribution as of <a href="https://github.com/secureblue/secureblue/blob/c824e7e37b8a09d827458a8dac12df0b96e42f37/POSTINSTALL-README.md#create-a-separate-wheel-account-for-admin-purposes"><code>POSTINSTALL-README.md</code>
-git commit </code>c824e7e37b8a09d827458a8dac12df0b96e42f37</code></a>
+git commit </code>c824e7e37b8a09d827458a8dac12df0b96e42f37</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/c824e7e37b8a09d827458a8dac12df0b96e42f37/POSTINSTALL-README.md#create-a-separate-wheel-account-for-admin-purposes" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 was.</p>
 <p><blockquote><p>- Setting numerous hardened sysctl values (Inspired by but not the
 same as Kicksecure's)</p></blockquote></p>
-<p>Attribution was removed in git commit <a href="https://github.com/secureblue/secureblue/commit/9e11ed2f8e33f2280046808b70317ecf5f5336e6">9e11ed2f8e33f2280046808b70317ecf5f5336e6</a>.</p>
+<p>Attribution was removed in git commit <a href="https://github.com/secureblue/secureblue/commit/9e11ed2f8e33f2280046808b70317ecf5f5336e6">9e11ed2f8e33f2280046808b70317ecf5f5336e6</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/commit/9e11ed2f8e33f2280046808b70317ecf5f5336e6" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Therefore, Kicksecure has mostly the same settings. These can be
-found in package <a href="https://github.com/Kicksecure/security-misc">security-misc</a>,
-specifically in folder <a href="https://github.com/Kicksecure/security-misc/tree/master/usr/lib/sysctl.d"><code>/usr/lib/sysctl.d</code></a>.</p>
+found in package <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
+specifically in folder <a href="https://github.com/Kicksecure/security-misc/tree/master/usr/lib/sysctl.d"><code>/usr/lib/sysctl.d</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/tree/master/usr/lib/sysctl.d" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>If there are any differences, these can be discovered during ticket
 <a href="https://github.com/Kicksecure/security-misc/issues/283">review
-secureblue sysctl</a>.</p>
+secureblue sysctl</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/283" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Kicksecure might have more complete sysctl settings as per:</p>
 <p><blockquote><p>This section is inspired by the Kernel Self Protection Project
 (KSPP). It attempts to implement all recommended Linux kernel settings
 by the KSPP and many more sources.</p>
-<p><a href="https://kspp.github.io/Recommended_Settings">https://kspp.github.io/Recommended_Settings</a><br />
-<a href="https://github.com/KSPP/kspp.github.io">https://github.com/KSPP/kspp.github.io</a><span class="blockquote-context">security-misc
+<p><a href="https://kspp.github.io/Recommended_Settings">https://kspp.github.io/Recommended_Settings</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://kspp.github.io/Recommended_Settings" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><br />
+<a href="https://github.com/KSPP/kspp.github.io">https://github.com/KSPP/kspp.github.io</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/KSPP/kspp.github.io" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><span class="blockquote-context">security-misc
 readme</span></p></blockquote></p>
 <p><blockquote><ul>
 <li>Remove SUID-root from <a href="https://github.com/secureblue/secureblue/blob/live/files/scripts/removesuid.sh">numerous
-binaries</a> and replace functionality <a href="https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries">using
-capabilities</a></li>
+binaries</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/scripts/removesuid.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and replace functionality <a href="https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries">using
+capabilities</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></blockquote></p>
 <p>Kicksecure has <a href="../../SUID_Disabler_and_Permission_Hardener/">SUID Disabler and Permission Hardener</a>. See also
 chapter <a href="#capabilities">capabilities</a>.</p>
@@ -119,7 +119,7 @@ GNOME and KDE are unsuitable for Kicksecure.</p>
 <li>GNOME due to security and privacy concerns elaborated on <a href="../GNOME/">Dev/GNOME</a>.</li>
 <li>In the past <a href="https://forums.whonix.org/t/user-poll-xfce-vs-kde-kde-deprecation-considered/6235">KDE
 was Whonix's default desktop environment but then ported to Xfce due to
-performance issues</a>. See also <a href="../KDE/">Dev/KDE</a>.</li>
+performance issues</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/user-poll-xfce-vs-kde-kde-deprecation-considered/6235" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. See also <a href="../KDE/">Dev/KDE</a>.</li>
 <li>Xfce was not suitable for general use under Wayland in Debian
 Trixie. It was missing essential desktop features. LXQt was the only
 desktop environment researched that was suitable for Kicksecure and
@@ -128,7 +128,7 @@ Trixie.<sup class="reference"><a href="#cite_note-6">[6]</a></sup></li>
 </ul>
 <p><blockquote><ul>
 <li>Mitigation of <a href="https://github.com/Aishou/wayland-keylogger">LD_PRELOAD
-attacks</a> via <code>ujust toggle-bash-environment-lockdown</code></li>
+attacks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Aishou/wayland-keylogger" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> via <code>ujust toggle-bash-environment-lockdown</code></li>
 </ul></blockquote></p>
 <p>TODO Kicksecure: research</p>
 <p><blockquote><ul>
@@ -147,7 +147,7 @@ Randomization has technical implementation challenges. For references,
 see <a href="../MAC/">Dev/MAC</a> wiki page.</p>
 <p>TODO Kicksecure:</p>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/184">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/184">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/184" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li>See also <a href="../../MAC_Address/">MAC
 Address</a>.</li>
 </ul>
@@ -155,12 +155,12 @@ Address</a>.</li>
 <li>Blacklisting numerous unused kernel modules to reduce attack surface
 <sup class="reference"><a href="#cite_note-7">[7]</a></sup></li>
 </ul></blockquote></p>
-<p>secureblue <a href="https://github.com/secureblue/secureblue/commits/live/files/system/etc/modprobe.d/blacklist.conf"><code>/etc/modprobe.d/blacklist.conf</code></a>
-as of git commit <a href="https://github.com/secureblue/secureblue/blob/c8eff2ca0bc9f7f2db9e1e172dc70942e6983912/files/system/etc/modprobe.d/blacklist.conf">c8eff2ca0bc9f7f2db9e1e172dc70942e6983912</a></p>
-<p>looks similar, might be inspired/forked from Kicksecure <a href="https://github.com/Kicksecure/security-misc/tree/master/etc/modprobe.d"><code>/etc/modprobe.d</code></a>
+<p>secureblue <a href="https://github.com/secureblue/secureblue/commits/live/files/system/etc/modprobe.d/blacklist.conf"><code>/etc/modprobe.d/blacklist.conf</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/commits/live/files/system/etc/modprobe.d/blacklist.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+as of git commit <a href="https://github.com/secureblue/secureblue/blob/c8eff2ca0bc9f7f2db9e1e172dc70942e6983912/files/system/etc/modprobe.d/blacklist.conf">c8eff2ca0bc9f7f2db9e1e172dc70942e6983912</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/c8eff2ca0bc9f7f2db9e1e172dc70942e6983912/files/system/etc/modprobe.d/blacklist.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p>looks similar, might be inspired/forked from Kicksecure <a href="https://github.com/Kicksecure/security-misc/tree/master/etc/modprobe.d"><code>/etc/modprobe.d</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/tree/master/etc/modprobe.d" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 files but probably adjusted for secureblue. <sup class="reference"><a href="#cite_note-8">[8]</a></sup></p>
 <p><blockquote><ul>
-<li>Enabling only the <a href="https://flathub.org/apps/collection/verified/1">flathub-verified</a>
+<li>Enabling only the <a href="https://flathub.org/apps/collection/verified/1">flathub-verified</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://flathub.org/apps/collection/verified/1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 remote by default</li>
 </ul></blockquote></p>
 <p>Quote <a href="../../Install_Software/#Kicksecure_Flathub_Repository_Default_Settings">Kicksecure Flathub Repository Default Settings</a>:</p>
@@ -172,7 +172,7 @@ can be installed that are both <code>verified</code> apps and
 <code>floss</code> (Freedom Software)."</p>
 <p><blockquote><ul>
 <li>Sets numerous hardening kernel arguments (Inspired by <a href="https://madaidans-insecurities.github.io/guides/linux-hardening.html">Madaidan's
-Hardening Guide</a>) <sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
+Hardening Guide</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://madaidans-insecurities.github.io/guides/linux-hardening.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>) <sup class="reference"><a href="#cite_note-9">[9]</a></sup></li>
 </ul></blockquote></p>
 <p>Kicksecure has the same because Madaidan contributed to Kicksecure.
 Also see KSPP as mentioned above.</p>
@@ -184,10 +184,10 @@ Also see KSPP as mentioned above.</p>
 <p><blockquote><p>Creating a dedicated wheel user and removing wheel from your primary
 user helps prevent certain attack vectors, like:</p>
 <ul>
-<li><a href="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#LD_PRELOAD">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#LD_PRELOAD</a></li>
-<li><a href="https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password">https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password</a><span class="blockquote-context"><a href="https://github.com/secureblue/secureblue/blob/c824e7e37b8a09d827458a8dac12df0b96e42f37/POSTINSTALL-README.md#create-a-separate-wheel-account-for-admin-purposes">secureblue
+<li><a href="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#LD_PRELOAD">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#LD_PRELOAD</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation#LD_PRELOAD" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password">https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><span class="blockquote-context"><a href="https://github.com/secureblue/secureblue/blob/c824e7e37b8a09d827458a8dac12df0b96e42f37/POSTINSTALL-README.md#create-a-separate-wheel-account-for-admin-purposes">secureblue
 <code>POSTINSTALL-README.md</code> as of git commit
-<code>c824e7e37b8a09d827458a8dac12df0b96e42f37</code></a></span></li>
+<code>c824e7e37b8a09d827458a8dac12df0b96e42f37</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/c824e7e37b8a09d827458a8dac12df0b96e42f37/POSTINSTALL-README.md#create-a-separate-wheel-account-for-admin-purposes" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul></blockquote></p>
 <p>Implemented differently in Kicksecure. User documentation: <a href="../../Root/">root</a>; <a href="../../Sysmaint/">sysmaint</a>. Developer documentation: <a href="../user-sysmaint-split/">user-sysmaint-split</a>;
 <a href="../Strong_Linux_User_Account_Isolation/">Strong Linux User Account Isolation</a></p>
@@ -198,8 +198,8 @@ quality suggestions</li>
 </ul></blockquote></p>
 <p><blockquote><p>User accounts are locked after 50 failed login attempts using
 <code>pam_faillock</code>.</p>
-<p><a href="https://kspp.github.io/Recommended_Settings">https://kspp.github.io/Recommended_Settings</a><br />
-<a href="https://github.com/KSPP/kspp.github.io">https://github.com/KSPP/kspp.github.io</a><span class="blockquote-context">security-misc
+<p><a href="https://kspp.github.io/Recommended_Settings">https://kspp.github.io/Recommended_Settings</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://kspp.github.io/Recommended_Settings" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><br />
+<a href="https://github.com/KSPP/kspp.github.io">https://github.com/KSPP/kspp.github.io</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/KSPP/kspp.github.io" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><span class="blockquote-context">security-misc
 readme</span></p></blockquote></p>
 <ul>
 <li>Developer documentation: <a href="../Strong_Linux_User_Account_Isolation/#Bruteforcing_Linux_User_Account_Passwords_Protection">Bruteforcing Linux User Account Passwords
@@ -224,7 +224,7 @@ the user is using it. TODO Kicksecure: <a href="../../Vm-app-manager/">sandbox-a
 <p>Kicksecure does not use <code>systemd-resolved</code> by default due
 to <code>systemd-resolved</code> security issues, see <a href="../systemd-resolved/">Dev/systemd-resolved</a>.</p>
 <p>DNS security requires further development work. TODO Kicksecure: <a href="../../DNS_Security/">DNS Security</a> / <a href="https://forums.whonix.org/t/use-dnscrypt-by-default-in-kicksecure-not-whonix/8117/1">Use
-DNSCrypt by default in Kicksecure?</a></p>
+DNSCrypt by default in Kicksecure?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/use-dnscrypt-by-default-in-kicksecure-not-whonix/8117/1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><ul>
 <li>Configure chronyd to use Network Time Security (NTS)
 <sup class="reference"><a href="#cite_note-11">[11]</a></sup></li>
@@ -245,7 +245,7 @@ it does not use GNOME by default.</p>
 <p><blockquote><ul>
 <li>Use HTTPS for all RPM mirrors</li>
 </ul></blockquote></p>
-<p>Kicksecure uses <code>tor+https</code> for APT as configured in <a href="https://github.com/Kicksecure/anon-apt-sources-list">anon-apt-sources-list</a>
+<p>Kicksecure uses <code>tor+https</code> for APT as configured in <a href="https://github.com/Kicksecure/anon-apt-sources-list">anon-apt-sources-list</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/anon-apt-sources-list" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 and documented on the <a href="../../About/">About</a> wiki
 page.</p>
 <p><blockquote><ul>
@@ -255,13 +255,13 @@ page.</p>
 <p>Not applicable to Kicksecure since it is not a container focused
 operating system at time of writing. Probably useful for secureblue if
 using <a href="https://github.com/containers/image">containers'
-images</a>.</p>
+images</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/containers/image" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p><blockquote><ul>
 <li>Disable a variety of services by default (including cups, geoclue,
 passim, and others)</li>
 </ul></blockquote></p>
 <p>Kicksecure does not install these by default and comes with <a href="https://github.com/Kicksecure/security-misc?tab=readme-ov-file#application-specific-hardening">Application-specific
-hardening</a>.</p>
+hardening</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc?tab=readme-ov-file#application-specific-hardening" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p><blockquote><ul>
 <li>Removal of the unmaintained and suid-root fuse2 by default</li>
 </ul></blockquote></p>
@@ -269,8 +269,8 @@ hardening</a>.</p>
 <h1 id="capabilities">capabilities</h1>
 <p><blockquote><ul>
 <li>Remove SUID-root from <a href="https://github.com/secureblue/secureblue/blob/live/files/scripts/removesuid.sh">numerous
-binaries</a> and replace functionality <a href="https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries">using
-capabilities</a></li>
+binaries</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/scripts/removesuid.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and replace functionality <a href="https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries">using
+capabilities</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/system/usr/bin/setcapsforunsuidbinaries" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></blockquote></p>
 <p>Kicksecure has <a href="../../SUID_Disabler_and_Permission_Hardener/">SUID Disabler and Permission Hardener</a>. As for
 capabilities, these can be useful but adding capabilities can also
@@ -282,7 +282,7 @@ increase attack surface.</p>
 user computers. If you need any of this, you are better off using
 root.</p>
 <ul>
-<li><code>chage</code> <a href="https://manpages.debian.org/chage">man</a> (change user password
+<li><code>chage</code> <a href="https://manpages.debian.org/chage">man</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org/chage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (change user password
 expiry information)<span class="blockquote-context"><a href="../../SUID_Disabler_and_Permission_Hardener/#SUID_SGID_Hardening_Issues">Kicksecure, SUID Disabler and Permission Hardener, SUID
 SGID Hardening Issues</a></span></li>
 </ul></blockquote></p>
@@ -298,7 +298,7 @@ surface) for non-root user.</p>
 <p><blockquote><p>CAP_DAC_READ_SEARCH</p>
 <ul>
 <li>Bypass file read permission checks and directory read and execute
-permission checks;<span class="blockquote-context"><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html">https://man7.org/linux/man-pages/man7/capabilities.7.html</a></span></li>
+permission checks;<span class="blockquote-context"><a href="https://man7.org/linux/man-pages/man7/capabilities.7.html">https://man7.org/linux/man-pages/man7/capabilities.7.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man7.org/linux/man-pages/man7/capabilities.7.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul></blockquote></p>
 <p><blockquote><pre><code>set_caps_if_present &quot;cap_dac_read_search=ep&quot; &quot;/usr/libexec/openssh/ssh-keysign&quot;</code></pre></blockquote></p>
 <p>TODO: Kicksecure: While <code>cap_dac_read_search</code> is still
@@ -311,7 +311,7 @@ only accessible during <a href="../../Sysmaint/">sysmaint</a>
 session by account <code>sysmaint</code>.</li>
 <li>secureblue sets <code>cap_sys_admin</code> for
 <code>fusermount</code>, which is dangerous. <a href="https://lwn.net/Articles/486306/">CAP_SYS_ADMIN: the new
-root</a></li>
+root</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/486306/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Most other Linux desktop distributions: Neither SUID nor
 capabilities hardening.</li>
 </ul>
@@ -320,7 +320,7 @@ capabilities hardening.</li>
 domain and the container domain</p></blockquote></p>
 <ul>
 <li><a href="https://github.com/secureblue/secureblue/releases/tag/v4.3.0">SecureBlue
-v4.3.0 Release Notes</a></li>
+v4.3.0 Release Notes</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/releases/tag/v4.3.0" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>This is probably useful.</p>
 <p><blockquote><p>Without this security hardening, all locally running applications
@@ -330,13 +330,13 @@ them for user-to-root escalation. With this hardening,
 Chromium that explicitly require it.<span class="blockquote-context"><a href="../../User_Namespace/">Kicksecure Unprivileged User
 Namespace wiki page</a></span></p></blockquote></p>
 <p>Quote <a href="https://github.com/secureblue/secureblue/blob/live/docs/USERNS.md">SecureBlue
-documentation on SELinux-based USERNS restrictions</a></p>
+documentation on SELinux-based USERNS restrictions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/docs/USERNS.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>Since user namespaces are now restricted via selinux, we no longer
 need separate <code>userns</code> images.</p></blockquote></p>
 <p>Separate <code>userns</code> enabled versus <code>userns</code>
 disabled images or setting would still be useful.</p>
 <p><blockquote><p>However, even with all of this hardening in place, as described in <a href="https://ading.dev/blog/posts/chrome_sandbox_escape.html">Chrome
-sandbox escape</a>, if the browser gets exploited, the browser is
+sandbox escape</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ading.dev/blog/posts/chrome_sandbox_escape.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, if the browser gets exploited, the browser is
 allowed to use <code>userns</code> and the system remains vulnerable to
 <code>userns</code>-based attacks.</p>
 <p>Given that browsers are evolving into operating systems where users
@@ -359,8 +359,8 @@ functionality without suid-root, notably even for non-wheel users (by
 prompting for the wheel user's password). In addition, suid-root has
 been removed from numerous other binaries that don't require
 it.<span class="blockquote-context">secureblue release announcement: <a href="https://github.com/secureblue/secureblue/releases/tag/v4.2.0">v4.2.0
-- secureblue goes sudoless!</a></span></p></blockquote></p>
-<p>Kicksecure does not use <a href="https://www.freedesktop.org/software/systemd/man/256/run0.html"><code>run0</code></a>
+- secureblue goes sudoless!</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/releases/tag/v4.2.0" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p>Kicksecure does not use <a href="https://www.freedesktop.org/software/systemd/man/256/run0.html"><code>run0</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/software/systemd/man/256/run0.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 at time of writing due to security concerns, quote:</p>
 <p><blockquote><p>It's larger than doas. Way larger. run0 (really systemd-run) is 2642
 lines long (including newlines and whatnot), and is heavily tied into
@@ -371,7 +371,7 @@ only library it uses beyond the C standard library is PAM), and is only
 1,850 lines long. Ergo, less attack
 surface.<span class="blockquote-context">Kicksecure developer, Aaron
 Rainbolt, <a href="https://forums.whonix.org/t/replace-sudo-with-doas/17482/28">forum
-post</a></span></p></blockquote></p>
+post</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/replace-sudo-with-doas/17482/28" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>Instead, Kicksecure has <a href="../user-sysmaint-split/">user-sysmaint-split (Role-Based Boot Modes for Enhanced
 Security)</a>, where privilege escalation tools such as
 <code>sudo</code>, <code>su</code>, and <code>pkexec</code> are
@@ -381,7 +381,7 @@ account <code>sysmaint</code>.</p>
 <h1 id="See_Also">See Also</h1>
 <ul>
 <li><a href="https://www.kicksecure.com/#security">Kicksecure Security
-Features</a></li>
+Features</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/#security" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="../../Comparison_with_Others/">Comparison with
 Others</a></li>
 <li><a href="../../About/">About</a></li>
@@ -389,35 +389,35 @@ Others</a></li>
 <h1 id="Discussions">Discussions</h1>
 <p>For reference only.</p>
 <ul>
-<li><a href="https://github.com/secureblue/secureblue/issues/67">https://github.com/secureblue/secureblue/issues/67</a></li>
-<li><a href="https://github.com/secureblue/secureblue/pull/90">https://github.com/secureblue/secureblue/pull/90</a></li>
-<li><a href="https://github.com/secureblue/secureblue/issues/173">https://github.com/secureblue/secureblue/issues/173</a></li>
-<li><a href="https://github.com/secureblue/secureblue/issues/814">https://github.com/secureblue/secureblue/issues/814</a>
+<li><a href="https://github.com/secureblue/secureblue/issues/67">https://github.com/secureblue/secureblue/issues/67</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/issues/67" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/secureblue/secureblue/pull/90">https://github.com/secureblue/secureblue/pull/90</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/pull/90" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/secureblue/secureblue/issues/173">https://github.com/secureblue/secureblue/issues/173</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/issues/173" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/secureblue/secureblue/issues/814">https://github.com/secureblue/secureblue/issues/814</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/issues/814" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 (security-misc licensing discuss (keyword: legal))</li>
 </ul>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
 <li id="cite_note-1"><a href="https://github.com/rusty-snake/fedora-extras">Thanks to
-rusty-snake's spec</a></li>
+rusty-snake's spec</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rusty-snake/fedora-extras" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2"><a href="https://grapheneos.org/usage#web-browsing">Why
-chromium?</a></li>
+chromium?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://grapheneos.org/usage#web-browsing" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-3"><a href="https://forum.vivaldi.net/post/669805">Why not flatpak
-chromium?</a></li>
-<li id="cite_note-4"><a href="https://github.com/secureblue/secureblue/blob/live/files/system/etc/sysctl.d/hardening.conf">details</a></li>
+chromium?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forum.vivaldi.net/post/669805" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-4"><a href="https://github.com/secureblue/secureblue/blob/live/files/system/etc/sysctl.d/hardening.conf">details</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/system/etc/sysctl.d/hardening.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-5"><a href="https://forums.kicksecure.com/t/wayland-only-or-noland/1170/7">forum
-post</a></li>
+post</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/wayland-only-or-noland/1170/7" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-6"><a href="https://forums.kicksecure.com/t/wayland-only-or-noland/1170/5">forum
-post</a></li>
-<li id="cite_note-7"><a href="https://github.com/secureblue/secureblue/blob/live/files/system/etc/modprobe.d/blacklist.conf">details</a></li>
+post</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/wayland-only-or-noland/1170/5" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-7"><a href="https://github.com/secureblue/secureblue/blob/live/files/system/etc/modprobe.d/blacklist.conf">details</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/files/system/etc/modprobe.d/blacklist.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-8">For example, if secureblue does not provide an ISO with squashfs,
 then secureblue can disable the module.
 <pre><code> install squashfs /bin/false </code></pre></li>
-<li id="cite_note-9"><a href="https://github.com/secureblue/secureblue/blob/live/KARGS.md">details</a></li>
-<li id="cite_note-10"><a href="https://github.com/rohanssrao/silverblue-privesc">why?</a></li>
+<li id="cite_note-9"><a href="https://github.com/secureblue/secureblue/blob/live/KARGS.md">details</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/secureblue/secureblue/blob/live/KARGS.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-10"><a href="https://github.com/rohanssrao/silverblue-privesc">why?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rohanssrao/silverblue-privesc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-11"><a href="https://github.com/GrapheneOS/infrastructure/blob/main/chrony.conf">using
-chrony config from GrapheneOS</a></li>
-<li id="cite_note-12"><a href="https://blog.davidedmundson.co.uk/blog/kde-store-content">why?</a></li>
+chrony config from GrapheneOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/infrastructure/blob/main/chrony.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-12"><a href="https://blog.davidedmundson.co.uk/blog/kde-store-content">why?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.davidedmundson.co.uk/blog/kde-store-content" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Debian/" title="Dev/Debian"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Debian</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../Chromium/" title="Dev/Chromium"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Chromium</span></a><span class="info"><span class="prev">Previous

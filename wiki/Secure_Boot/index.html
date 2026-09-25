@@ -21,14 +21,6 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">module
-verification failed: signature and/or required key missing - tainting
-kernel</a></li><li class="toc-l2"><a href="#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">systemd-modules-load
-- Failed to insert module module name - Key was rejected by service</a></li><li class="toc-l2"><a href="#Disable_Secure_Boot">Disable Secure Boot</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_using_update-secureboot-policy">Disable
-Secure Boot using update-secureboot-policy</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
-BIOS/UEFI</a></li><li class="toc-l2"><a href="#Enable_Secure_Boot">Enable Secure Boot</a></li><li class="toc-l2"><a href="#EFI_variables_are_not_supported_on_this_system">EFI variables
-are not supported on this system</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="mininav">
 <ul>
 <li><a href="../Firmware_Security_and_Updates/">Firmware
@@ -50,7 +42,15 @@ Builds (dev)</a></li>
 <li><a href="../Dev/Stateless/">stateless (dev)</a></li>
 <li><a href="../Dev/immutable/">immutable (dev)</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">module
+verification failed: signature and/or required key missing - tainting
+kernel</a></li><li class="toc-l2"><a href="#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">systemd-modules-load
+- Failed to insert module module name - Key was rejected by service</a></li><li class="toc-l2"><a href="#Disable_Secure_Boot">Disable Secure Boot</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_using_update-secureboot-policy">Disable
+Secure Boot using update-secureboot-policy</a></li><li class="toc-l3"><a href="#Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
+BIOS/UEFI</a></li><li class="toc-l2"><a href="#Enable_Secure_Boot">Enable Secure Boot</a></li><li class="toc-l2"><a href="#EFI_variables_are_not_supported_on_this_system">EFI variables
+are not supported on this system</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../media/Secureboot12312.png.webp" width="50" alt="Secureboot12312.png" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -88,7 +88,7 @@ Signing Key Enrollment</h1>
 will be broken:</p>
 <ul>
 <li><a href="https://www.kicksecure.com/?#explain-tirdad">tirdad - CPU
-Information Leak Protection (TCP ISN)</a> is implemented through a
+Information Leak Protection (TCP ISN)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/?#explain-tirdad" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is implemented through a
 custom <a href="../Kernel_module/">kernel module</a>.</li>
 <li>VirtualBox host operating system software.</li>
 <li>Any other kernel modules not acquired from
@@ -99,7 +99,7 @@ Linux) kernel modules are rejected by the Linux kernel.</p>
 <h1 id="Symptoms">Symptoms</h1>
 <h2 id="module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">module
 verification failed: signature and/or required key missing - tainting
-kernel</h2>
+kernel</h2><span class="share-tooltip" data-anchor="module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel"><a class="headline-anchor" href="#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel">https://www.kicksecure.com/wiki/Secure_Boot/#module_verification_failed:_signature_and/or_required_key_missing_-_tainting_kernel</span></span></span></span>
 <p>This message appears in Linux systems when you load a kernel module
 that is either unsigned or signed with a key the running kernel doesn't
 recognize. It usually looks like this:</p>
@@ -135,7 +135,7 @@ work normally.</li>
 <p>This message can only happen if Secure Boot is disabled. If Secure
 Boot were enabled, the kernel module load would be rejected.</p>
 <h2 id="systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">systemd-modules-load
-- Failed to insert module module name - Key was rejected by service</h2>
+- Failed to insert module module name - Key was rejected by service</h2><span class="share-tooltip" data-anchor="systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service"><a class="headline-anchor" href="#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service">https://www.kicksecure.com/wiki/Secure_Boot/#systemd-modules-load_-_Failed_to_insert_module_module_name_-_Key_was_rejected_by_service</span></span></span></span>
 <p>This message appears when a kernel module fails to load because its
 signature could not be verified under Secure Boot policies.
 Examples:</p>
@@ -297,24 +297,13 @@ system:</p>
 Done.</p>
 <p>The module can now be loaded without issues.</p>
 <p>Credits: Based on <a href="https://github.com/dell/dkms?tab=readme-ov-file#secure-boot">Dell
-dkms Secure Boot documentation</a></p>
+dkms Secure Boot documentation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dell/dkms?tab=readme-ov-file#secure-boot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Enable_or_Disable_Secure_Boot">Enable or Disable Secure
 Boot</h1>
-<h2 id="Disable_Secure_Boot">Disable Secure Boot</h2>
+<h2 id="Disable_Secure_Boot">Disable Secure Boot</h2><span class="share-tooltip" data-anchor="Disable_Secure_Boot"><a class="headline-anchor" href="#Disable_Secure_Boot" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot">https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot</span></span></span></span>
 <p>Choose an option.</p>
-<div class="tab-content-controller ">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h3 id="Disable_Secure_Boot_using_update-secureboot-policy">Disable
-Secure Boot using update-secureboot-policy</h3>
-</div>
-<div class="tcc-content">
-<p>Secure Boot can be disabled using
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h3 id="Disable_Secure_Boot_using_update-secureboot-policy">Disable
+Secure Boot using update-secureboot-policy</h3><span class="share-tooltip" data-anchor="Disable_Secure_Boot_using_update-secureboot-policy"><a class="headline-anchor" href="#Disable_Secure_Boot_using_update-secureboot-policy" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot_using_update-secureboot-policy">https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot_using_update-secureboot-policy</span></span></span></span></div><div class="tcc-content"><p>Secure Boot can be disabled using
 <code>update-secureboot-policy</code>.</p>
 <p>This tool is available only for Debian-based distributions, such as
 Kicksecure and Whonix. For other Linux distributions, see the
@@ -345,18 +334,9 @@ Choose one of these methods:</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Reboot your system.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
-Done.</p>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h3 id="Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
-BIOS/UEFI</h3>
-</div>
-<div class="tcc-content">
-<p>Alternatively, Secure Boot can be disabled using the firmware setup
+Done.</p></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h3 id="Disable_Secure_Boot_in_BIOS/UEFI">Disable Secure Boot in
+BIOS/UEFI</h3><span class="share-tooltip" data-anchor="Disable_Secure_Boot_in_BIOS/UEFI"><a class="headline-anchor" href="#Disable_Secure_Boot_in_BIOS/UEFI" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot_in_BIOS/UEFI">https://www.kicksecure.com/wiki/Secure_Boot/#Disable_Secure_Boot_in_BIOS/UEFI</span></span></span></span></div><div class="tcc-content"><p>Alternatively, Secure Boot can be disabled using the firmware setup
 (BIOS/UEFI).</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Restart your computer and enter the BIOS/UEFI settings.</p>
@@ -365,12 +345,8 @@ Locate the Secure Boot option and disable it.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Save changes and exit.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
-Done.</p>
-</div>
-</div>
-</div>
-</div>
-<h2 id="Enable_Secure_Boot">Enable Secure Boot</h2>
+Done.</p></div></div></p></div></div></p>
+<h2 id="Enable_Secure_Boot">Enable Secure Boot</h2><span class="share-tooltip" data-anchor="Enable_Secure_Boot"><a class="headline-anchor" href="#Enable_Secure_Boot" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#Enable_Secure_Boot">https://www.kicksecure.com/wiki/Secure_Boot/#Enable_Secure_Boot</span></span></span></span>
 <p>If the user wishes to use Secure Boot, it must be enabled using the
 firmware setup (BIOS/UEFI).</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
@@ -415,7 +391,7 @@ Reboot your system.</p>
 Done.</p>
 <h1 id="Errors">Errors</h1>
 <h2 id="EFI_variables_are_not_supported_on_this_system">EFI variables
-are not supported on this system</h2>
+are not supported on this system</h2><span class="share-tooltip" data-anchor="EFI_variables_are_not_supported_on_this_system"><a class="headline-anchor" href="#EFI_variables_are_not_supported_on_this_system" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Secure_Boot/#EFI_variables_are_not_supported_on_this_system">https://www.kicksecure.com/wiki/Secure_Boot/#EFI_variables_are_not_supported_on_this_system</span></span></span></span>
 <p>If you see the following error message:</p>
 <pre><code>EFI variables are not supported on this system</code></pre>
 <p>In this case, EFI is not enabled, which by extension means that
@@ -425,18 +401,18 @@ DKMS MOK key to be imported. No further user action is required.</p>
 <ul>
 <li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/5241">enable Linux
 kernel gpg verification in grub and/or enable EFI Secure Boot for Qubes
-/ Xen guests</a></li>
+/ Xen guests</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/5241" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Development">Development</h1>
 <ul>
 <li><a href="https://github.com/dell/dkms/issues/429">automate running
-"<code>sudo mokutil --import /var/lib/dkms/mok.pub</code>"</a></li>
+"<code>sudo mokutil --import /var/lib/dkms/mok.pub</code>"</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dell/dkms/issues/429" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Other_Projects_on_Secure_Boot">Other Projects on Secure
 Boot</h1>
 <ul>
 <li><a href="https://www.qubes-os.org/faq/#is-secure-boot-supported">Qubes OS
-FAQ: Is Secure Boot supported?</a></li>
+FAQ: Is Secure Boot supported?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.qubes-os.org/faq/#is-secure-boot-supported" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Tools">Tools</h1>
 <p>Coming up in the next version.</p>

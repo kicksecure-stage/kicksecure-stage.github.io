@@ -21,7 +21,12 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>VirtualBox</span> / <span>Guest Additions</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l3"><a href="#Whonix">Whonix</a></li><li class="toc-l3"><a href="#Other_Operating_Systems">Other Operating Systems</a></li><li class="toc-l3"><a href="#Generic_VirtualBox_Method">Generic VirtualBox Method</a></li><li class="toc-l2"><a href="#Shared_Folder_in_Live_Mode">Shared Folder in Live Mode</a></li><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#VirtualBox_Guest_Additions_Installation_Sources">VirtualBox
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>VirtualBox</span> / <span>Guest Additions</span></nav><div class="intro-like">
+<p>Clipboard sharing allows you to copy and paste text between the host
+and a <u>v</u>irtual <u>m</u>achine (VM).</p>
+<p>This documentation explains the status of clipboard sharing in
+Kicksecure and its derivatives such as <a href="../../Whonix/">Whonix</a>.</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Kicksecure">Kicksecure</a></li><li class="toc-l3"><a href="#Whonix">Whonix</a></li><li class="toc-l3"><a href="#Other_Operating_Systems">Other Operating Systems</a></li><li class="toc-l3"><a href="#Generic_VirtualBox_Method">Generic VirtualBox Method</a></li><li class="toc-l2"><a href="#Shared_Folder_in_Live_Mode">Shared Folder in Live Mode</a></li><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#VirtualBox_Guest_Additions_Installation_Sources">VirtualBox
 Guest Additions Installation Sources</a></li><li class="toc-l2"><a href="#vbox-guest-installer">vbox-guest-installer</a></li><li class="toc-l2"><a href="#VirtualBox_Guest_Additions_CD">VirtualBox Guest Additions
 CD</a></li><li class="toc-l2"><a href="#Migration_to_Oracle_Style_VirtualBox_Guest_Additions">Migration
 to Oracle Style VirtualBox Guest Additions</a></li><li class="toc-l2"><a href="#Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages">Migration
@@ -50,12 +55,7 @@ Kicksecure 18</strong>. See <a href="#Clipboard_Sharing">Clipboard Sharing</a> f
 <div class="post-intro-p">
 </div>
 <h1 id="Clipboard_Sharing">Clipboard Sharing</h1>
-<div class="intro-like">
-<p>Clipboard sharing allows you to copy and paste text between the host
-and a <u>v</u>irtual <u>m</u>achine (VM).</p>
-<p>This documentation explains the status of clipboard sharing in
-Kicksecure and its derivatives such as <a href="../../Whonix/">Whonix</a>.</p>
-</div>
+
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><img src="../../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span></p>
 <ul>
@@ -64,14 +64,14 @@ Kicksecure and its derivatives such as <a href="../../Whonix/">Whonix</a>.</p>
 <li><u>Alternative:</u> Use a text file inside the <a href="./#Shared_Folder">Shared
 Folder</a> to exchange text between the host and VM.</li>
 <li><u>Reason for breakage:</u> <a href="https://forums.whonix.org/t/port-to-wayland/17380">Port from X11
-to Wayland</a> (security enhancement). Clipboard is not synced with
+to Wayland</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/port-to-wayland/17380" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (security enhancement). Clipboard is not synced with
 Wayland or Xwayland so <code>wl-clipboard</code> cannot be used to
 circumvent the issue.</li>
 <li><u>VirtualBox upstream bug report:</u> <a href="https://github.com/VirtualBox/virtualbox/issues/33">Clipboard
-sharing with Wayland guest not working</a></li>
+sharing with Wayland guest not working</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/VirtualBox/virtualbox/issues/33" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><u>Forum discussion:</u> <a href="https://forums.whonix.org/t/how-to-enable-shared-clipboard-drag-and-drop-features-inside-virtualbox-with-whonix-lxqt-18-0-8-7/22588">How
 to enable Shared Clipboard &amp; Drag-and-Drop features inside
-VirtualBox with Whonix-LXQt-18.0.8.7 ?</a></li>
+VirtualBox with Whonix-LXQt-18.0.8.7 ?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/how-to-enable-shared-clipboard-drag-and-drop-features-inside-virtualbox-with-whonix-lxqt-18-0-8-7/22588" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 </div>
 <p><span class="manually-placed-anchor " id="Clipboard_Sharing_Security_Considerations"></span></p>
@@ -102,7 +102,7 @@ user to decide whether to enable clipboard sharing.</p>
 <li>Power on the virtual machine again.</li>
 </ol>
 <p>To learn more, see: <a href="https://www.virtualbox.org/manual/ch03.html#generalsettings">VirtualBox
-Manual - Chapter 3. Configuring Virtual Machines</a>.</p>
+Manual - Chapter 3. Configuring Virtual Machines</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch03.html#generalsettings" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 </div>
 </div>
 <h1 id="Shared_Folder">Shared Folder</h1>
@@ -157,7 +157,7 @@ accessible inside the VM.</li>
 not editing them.</li>
 </ul>
 <p>To learn more about VirtualBox shared folder, see: <a href="https://www.virtualbox.org/manual/ch04.html#sharedfolders">VirtualBox
-Manual - Chapter 4. Guest Additions</a>.</p>
+Manual - Chapter 4. Guest Additions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch04.html#sharedfolders" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 </div>
 </div>
 <div class="toccolours mw-collapsible mw-collapsed">
@@ -174,25 +174,13 @@ additional features in other virtualizers or general applications will
 similarly lead to fewer code paths being utilized and arguably increase
 security. VirtualBox software is not special in this regard.</p>
 <p>Forum discussion: <a href="https://forums.whonix.org/t/security-risks-of-virtualbox-shared-folders/10119">Security
-Risks of VirtualBox Shared Folders?</a></p>
+Risks of VirtualBox Shared Folders?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/security-risks-of-virtualbox-shared-folders/10119" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 </div>
 </div>
 <p><strong>Select</strong> the system you're using inside the
 <u>v</u>irtual <u>m</u>achine (VM), and follow the matching
 instructions.</p>
-<div class="tab-content-controller ">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Kicksecure">Kicksecure</h3>
-</div>
-<div class="tcc-content">
-<p><u>If you are using Kicksecure (or a derivative such as Whonix)</u>,
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></div><div class="tcc-title"><h3 id="Kicksecure">Kicksecure</h3><span class="share-tooltip" data-anchor="Kicksecure"><a class="headline-anchor" href="#Kicksecure" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Kicksecure">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Kicksecure</span></span></span></span></div><div class="tcc-content"><p><u>If you are using Kicksecure (or a derivative such as Whonix)</u>,
 follow the steps below.</p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-green iconset-true">X</i>
 <strong>Sysmaint Notice</strong></p>
@@ -286,30 +274,10 @@ Settings Screenshot</em></p>
 <p>The shared folder will be accessible via <code>/mnt/shared</code>
 inside the VM. <sup class="reference"><a href="#cite_note-7">[7]</a></sup> The folder can be opened using a <a href="../../Software/#File_Manager">file manager</a> such as
 Thunar, for example. To open it using the command line, run:</p>
-<p><span class="code-select inline-style">cd /mnt/shared</span></p>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Whonix-logo-icon.svg" width="25" alt="Whonix-logo-icon.svg" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Whonix">Whonix</h3>
-</div>
-<div class="tcc-content">
-<p>Same as Kicksecure. Follow the same instructions as for
-Kicksecure.</p>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Any12312.png.webp" alt="any12312.png" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Other_Operating_Systems">Other Operating Systems</h3>
-</div>
-<div class="tcc-content">
-<p><u>If you are using <a href="../../Other_Operating_Systems/">other operating systems</a></u> (not using Kicksecure
+<p><span class="code-select inline-style">cd /mnt/shared</span></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Whonix-logo-icon.svg" width="25" alt="Whonix-logo-icon.svg" /></div><div class="tcc-title"><h3 id="Whonix">Whonix</h3><span class="share-tooltip" data-anchor="Whonix"><a class="headline-anchor" href="#Whonix" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Whonix">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Whonix</span></span></span></span></div><div class="tcc-content">Same as Kicksecure. Follow the same instructions as for
+Kicksecure.</div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Any12312.png.webp" alt="any12312.png" /></div><div class="tcc-title"><h3 id="Other_Operating_Systems">Other Operating Systems</h3><span class="share-tooltip" data-anchor="Other_Operating_Systems"><a class="headline-anchor" href="#Other_Operating_Systems" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Other_Operating_Systems">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Other_Operating_Systems</span></span></span></span></div><div class="tcc-content"><p><u>If you are using <a href="../../Other_Operating_Systems/">other operating systems</a></u> (not using Kicksecure
 or a derivative such as <a href="../../Whonix/">Whonix</a>)
 inside the VM, additional steps are required.</p>
 <p>Two options exist:</p>
@@ -321,7 +289,7 @@ manual mounting.</li>
 </ul>
 <p>The automatic mounting method is described below. For additional
 information on shared folders, refer to the <a href="https://www.virtualbox.org/manual/ch04.html#sharedfolders">VirtualBox
-manual</a>. Any additional questions are unspecific to Kicksecure and
+manual</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch04.html#sharedfolders" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Any additional questions are unspecific to Kicksecure and
 should be addressed as per the <a href="../../Self_Support_First_Policy/">Self Support First Policy</a>.</p>
 <ol>
 <li>Install VirtualBox Guest Additions inside the VM.
@@ -339,33 +307,19 @@ vboxsf</span></li>
 <li>Follow the instructions for <a href="#Kicksecure">Kicksecure</a>, but check the <code>Auto-mount</code>
 checkbox when adding the shared folder. The folder will be made
 available in the VM under <code>/mnt/shared</code>.</li>
-</ol>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Generic_VirtualBox_Method">Generic VirtualBox Method</h3>
-</div>
-<div class="tcc-content">
-<p>Shared folders are a generic VirtualBox feature. They are used the
+</ol></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Virtualbox_logo.png.webp" alt="Virtualbox_logo.png" /></div><div class="tcc-title"><h3 id="Generic_VirtualBox_Method">Generic VirtualBox Method</h3><span class="share-tooltip" data-anchor="Generic_VirtualBox_Method"><a class="headline-anchor" href="#Generic_VirtualBox_Method" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Generic_VirtualBox_Method">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Generic_VirtualBox_Method</span></span></span></span></div><div class="tcc-content"><p>Shared folders are a generic VirtualBox feature. They are used the
 same way across most Linux distributions, including Debian. In case of
 issues, everything written on this wiki can be disregarded. For context,
 see also <a href="../../Introduction/">Introduction</a>.</p>
 <p>All steps can be followed using the <a href="https://www.virtualbox.org/manual/ch04.html#sharedfolders">VirtualBox
-manual</a>.</p>
+manual</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch04.html#sharedfolders" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>This is <a href="../../Unspecific/">unspecific</a> to
 Kicksecure or Whonix. For support, refer to general Linux or VirtualBox
-resources. See also: <a href="../../Self_Support_First_Policy/">Self Support First Policy</a>.</p>
-</div>
-</div>
-</div>
-</div>
+resources. See also: <a href="../../Self_Support_First_Policy/">Self Support First Policy</a>.</p></div></div></p></div></div></p>
 <p><span class="manually-placed-anchor " id="issue"></span></p>
 <p><sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
-<h2 id="Shared_Folder_in_Live_Mode">Shared Folder in Live Mode</h2>
+<h2 id="Shared_Folder_in_Live_Mode">Shared Folder in Live Mode</h2><span class="share-tooltip" data-anchor="Shared_Folder_in_Live_Mode"><a class="headline-anchor" href="#Shared_Folder_in_Live_Mode" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Shared_Folder_in_Live_Mode">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Shared_Folder_in_Live_Mode</span></span></span></span>
 <p>In <a href="../../Live_Mode/">Live Mode</a>, the shared
 folder will not be mounted by default. (This behavior was introduced in
 version <code>17.4.4.6</code> and might change in a future release.)
@@ -403,23 +357,7 @@ in an editor with administrative ("<a href="../../Root/"><code>root</code></a>")
 <div class="info-box ">
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
 Select your platform.</p>
-<div class="tab-content-controller ">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Kicksecure_2">
-<p>Kicksecure</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure_2">Kicksecure</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
@@ -431,22 +369,8 @@ editor) before running the <code>sudoedit</code> command.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
 <p><span class="code-select">sudoedit
-/usr/lib/systemd/system/mnt-shared-vbox.service.d/50_user.conf</span></p>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Kicksecure-Qubes">
-<p>Kicksecure-Qubes</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+/usr/lib/systemd/system/mnt-shared-vbox.service.d/50_user.conf</span></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Sudoedit guidance:</u> See <a href="../../Software/#Open_File_with_Root_Rights">Open File
@@ -472,22 +396,8 @@ to be restarted if they were already running.</li>
 <li><u>General procedure:</u> This is a general procedure required for
 Qubes and is <a href="../../Unspecific/">unspecific to
 Kicksecure-Qubes</a>.</li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  info-box">
-<div class="tcc-image">
-<p><img src="../../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></p>
-</div>
-<div class="tcc-title">
-<div class="mw-heading mw-heading5 widget-headline ">
-<h5 role="heading" aria-level="5" id="Others_and_Alternatives">
-<p>Others and Alternatives</p>
-</h5>
-</div>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+</ul></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Any12312.png.webp" width="25" alt="Any12312.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Others_and_Alternatives">Others and Alternatives</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
 <li><u>Example only:</u> This is just an example. Other tools could
@@ -499,11 +409,7 @@ with Root Rights</a>.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
 <p><span class="code-select">sudoedit
-/usr/lib/systemd/system/mnt-shared-vbox.service.d/50_user.conf</span></p>
-</div>
-</div>
-</div>
-</div>
+/usr/lib/systemd/system/mnt-shared-vbox.service.d/50_user.conf</span></p></div></div></p></div></div></p>
 </div>
 <p><i class="padded-content-icon    pci-text fa-solid cs-green iconset-true">4</i>
 <strong>Paste:</strong></p>
@@ -518,9 +424,9 @@ ConditionKernelCommandLine=</span></p>
 <p>The shared folder should now also be available with read-write access
 after booting into live mode.</p>
 <p>Forum discussion: <a href="https://forums.whonix.org/t/shared-folder-blank-running-in-live-mode-after-update/22056">Shared
-folder blank running in live mode after update</a></p>
+folder blank running in live mode after update</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/shared-folder-blank-running-in-live-mode-after-update/22056" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="VirtualBox_Guest_Additions">VirtualBox Guest Additions</h1>
-<h2 id="Introduction">Introduction</h2>
+<h2 id="Introduction">Introduction</h2><span class="share-tooltip" data-anchor="Introduction"><a class="headline-anchor" href="#Introduction" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Introduction">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Introduction</span></span></span></span>
 <p>In Kicksecure, VirtualBox guest additions are installed by default.
 <sup class="reference"><a href="#cite_note-12">[12]</a></sup></p>
 <p>To avoid issues with the guest additions, users are strongly
@@ -538,7 +444,7 @@ do not report odd messages as per the <a href="../../Reporting_Bugs/#Support_Req
 Request Policy</a>.</p>
 <p>In case of issues, see also <a href="../Troubleshooting/">VirtualBox troubleshooting</a> and consider a <a href="../../Reporting_Bugs/">bug report</a>.</p>
 <h2 id="VirtualBox_Guest_Additions_Installation_Sources">VirtualBox
-Guest Additions Installation Sources</h2>
+Guest Additions Installation Sources</h2><span class="share-tooltip" data-anchor="VirtualBox_Guest_Additions_Installation_Sources"><a class="headline-anchor" href="#VirtualBox_Guest_Additions_Installation_Sources" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_Installation_Sources">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_Installation_Sources</span></span></span></span>
 <p>There are multiple sources to install
 <em><span>VirtualBox guest
 additions</span></em> from. It is possible to switch from one
@@ -594,7 +500,7 @@ table.</li>
 <li>To actually install VirtualBox guest additions from this source, the
 user must mount or extract the ISO and run the setup installer as per
 the instructions on the <a href="https://www.virtualbox.org/manual/ch04.html#additions-linux">VirtualBox
-website</a>.</li>
+website</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch04.html#additions-linux" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 </ul></td>
 <td><p>No</p></td>
 <td><p>No</p></td>
@@ -602,7 +508,7 @@ website</a>.</li>
 <tr class="odd">
 <td><p>C</p></td>
 <td><p>Oracle Style</p></td>
-<td><p>From Debian's (<code>packages.debian.org</code>) package <a href="https://packages.debian.org/sid/virtualbox-guest-additions-iso"><code>virtualbox-guest-additions-iso</code></a>.</p></td>
+<td><p>From Debian's (<code>packages.debian.org</code>) package <a href="https://packages.debian.org/sid/virtualbox-guest-additions-iso"><code>virtualbox-guest-additions-iso</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/sid/virtualbox-guest-additions-iso" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p></td>
 <td><ul>
 <li>Similar to above.</li>
 <li>A Debian maintainer has built the VirtualBox guest additions ISO and
@@ -640,13 +546,13 @@ additions</span></em> (from packages
 <code>virtualbox-guest-utils</code>, <code>virtualbox-guest-x11</code>)
 are installed by default and should be preferred over
 <code>virtualbox-guest-additions-iso</code>. <sup class="reference"><a href="#cite_note-13">[13]</a></sup></p>
-<h2 id="vbox-guest-installer">vbox-guest-installer</h2>
-<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/bin/vbox-guest-installer">Kicksecure/vm-config-dist</a></span>
+<h2 id="vbox-guest-installer">vbox-guest-installer</h2><span class="share-tooltip" data-anchor="vbox-guest-installer"><a class="headline-anchor" href="#vbox-guest-installer" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#vbox-guest-installer">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#vbox-guest-installer</span></span></span></span>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/bin/vbox-guest-installer">Kicksecure/vm-config-dist</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist/blob/master/usr/bin/vbox-guest-installer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 is an installation helper created by Kicksecure developers. It is a
 utility that improves usability by allowing installation of
 <em><span>VirtualBox guest
 additions</span></em> from Debian's (<code>packages.debian.org</code>)
-package <a href="https://packages.debian.org/sid/virtualbox-guest-additions-iso"><code>virtualbox-guest-additions-iso</code></a>.</p>
+package <a href="https://packages.debian.org/sid/virtualbox-guest-additions-iso"><code>virtualbox-guest-additions-iso</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/sid/virtualbox-guest-additions-iso" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <ul>
 <li>Not enabled by default.</li>
 <li>Usually no user action required.</li>
@@ -666,7 +572,7 @@ Sources</a>.</p>
 <p>To use <code>vbox-guest-installer</code>, see <a href="./#Migration_to_Oracle_Style_VirtualBox_Guest_Additions">Migration to <u>Oracle Style</u> VirtualBox Guest
 Additions</a>.</p>
 <h2 id="VirtualBox_Guest_Additions_CD">VirtualBox Guest Additions
-CD</h2>
+CD</h2><span class="share-tooltip" data-anchor="VirtualBox_Guest_Additions_CD"><a class="headline-anchor" href="#VirtualBox_Guest_Additions_CD" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_CD">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_CD</span></span></span></span>
 <p>Depending on the VM where you intend to use VirtualBox Guest
 Additions, see instructions for either A) <u>or</u> B).</p>
 <ul>
@@ -696,7 +602,7 @@ Using VirtualBox Guest Additions CD is acceptable. In that case, issues
 should be resolved as per the <a href="../../Self_Support_First_Policy/">Self Support First Policy</a> because they would be <a href="../../Unspecific/">unspecific to Kicksecure</a>.</li>
 </ul>
 <h2 id="Migration_to_Oracle_Style_VirtualBox_Guest_Additions">Migration
-to Oracle Style VirtualBox Guest Additions</h2>
+to Oracle Style VirtualBox Guest Additions</h2><span class="share-tooltip" data-anchor="Migration_to_Oracle_Style_VirtualBox_Guest_Additions"><a class="headline-anchor" href="#Migration_to_Oracle_Style_VirtualBox_Guest_Additions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Migration_to_Oracle_Style_VirtualBox_Guest_Additions">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Migration_to_Oracle_Style_VirtualBox_Guest_Additions</span></span></span></span>
 <p>If you are currently using VirtualBox packages
 <code>virtualbox-guest-utils</code> and
 <code>virtualbox-guest-x11</code> (Debian style) and wish to migrate to
@@ -756,7 +662,7 @@ Done.</p>
 VirtualBox Guest Additions ISO (Oracle style) has been completed.</p>
 <p><span class="manually-placed-anchor " id="Migration_to_Guest_Additions_Packages"></span></p>
 <h2 id="Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages">Migration
-to Debian Style VirtualBox Guest Additions Packages</h2>
+to Debian Style VirtualBox Guest Additions Packages</h2><span class="share-tooltip" data-anchor="Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages"><a class="headline-anchor" href="#Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Migration_to_Debian_Style_VirtualBox_Guest_Additions_Packages</span></span></span></span>
 <p>If you are currently using VirtualBox Guest Additions from
 <code>virtualbox-guest-additions-iso</code> and/or ISO / CD (Oracle
 style) and wish to migrate to VirtualBox packages
@@ -809,12 +715,12 @@ complete.</p>
 VirtualBox Guest Additions (Debian style) packages has been
 completed.</p>
 <h2 id="VirtualBox_Guest_Additions_Security">VirtualBox Guest Additions
-Security</h2>
+Security</h2><span class="share-tooltip" data-anchor="VirtualBox_Guest_Additions_Security"><a class="headline-anchor" href="#VirtualBox_Guest_Additions_Security" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_Security">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#VirtualBox_Guest_Additions_Security</span></span></span></span>
 <p>General concerns have been raised about the security of VirtualBox.
 For example, see the article <a href="https://www.phoronix.com/news/OTk5Mw">The VirtualBox Kernel Driver
-Is Tainted Crap</a>. However, this refers to the kernel driver (on the
-host), not guest additions. For opposite viewpoints, see <a href="https://lists.debian.org/debian-devel/2013/08/msg00112.html">here</a>
-and <a href="https://lists.debian.org/debian-devel/2013/08/msg00116.html">here</a>.</p>
+Is Tainted Crap</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/OTk5Mw" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. However, this refers to the kernel driver (on the
+host), not guest additions. For opposite viewpoints, see <a href="https://lists.debian.org/debian-devel/2013/08/msg00112.html">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-devel/2013/08/msg00112.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+and <a href="https://lists.debian.org/debian-devel/2013/08/msg00116.html">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-devel/2013/08/msg00116.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>The situation might have improved since some kernel modules have been
 upstreamed (integrated) into the Linux mainline kernel.
 <sup class="reference"><a href="#cite_note-16">[16]</a></sup></p>
@@ -833,7 +739,7 @@ requires adding a USB controller to VirtualBox. (<code>VirtualBox</code>
 </ul>
 <h1 id="Miscellaneous">Miscellaneous</h1>
 <h2 id="Uninstall_virtualbox-guest-additions-iso">Uninstall
-virtualbox-guest-additions-iso</h2>
+virtualbox-guest-additions-iso</h2><span class="share-tooltip" data-anchor="Uninstall_virtualbox-guest-additions-iso"><a class="headline-anchor" href="#Uninstall_virtualbox-guest-additions-iso" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Uninstall_virtualbox-guest-additions-iso">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Uninstall_virtualbox-guest-additions-iso</span></span></span></span>
 <p>This is discouraged and should not normally be required. However, if
 you wish to uninstall VirtualBox guest additions installed by
 <code>vbox-guest-installer</code> (created by Kicksecure developers),
@@ -853,7 +759,7 @@ VirtualBox guest additions uninstaller provided by the VirtualBox
 developers:</p>
 <p><span class="code-select">sudo
 /usr/sbin/vbox-uninstall-guest-additions</span></p>
-<h2 id="Debugging">Debugging</h2>
+<h2 id="Debugging">Debugging</h2><span class="share-tooltip" data-anchor="Debugging"><a class="headline-anchor" href="#Debugging" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Debugging">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Debugging</span></span></span></span>
 <p>To help debug issues, inspect the following logs and services:</p>
 <p><span class="code-select">cat /var/log/vboxadd-install.log</span></p>
 <p><span class="code-select">sudo systemctl status vboxadd</span></p>
@@ -861,7 +767,7 @@ developers:</p>
 vboxadd-service.service</span></p>
 <p><span class="code-select">ls -la
 /opt/VBoxGuestAdditions-*/init/</span></p>
-<h3 id="Kernel_Upgrades">Kernel Upgrades</h3>
+<h3 id="Kernel_Upgrades">Kernel Upgrades</h3><span class="share-tooltip" data-anchor="Kernel_Upgrades"><a class="headline-anchor" href="#Kernel_Upgrades" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Kernel_Upgrades">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Kernel_Upgrades</span></span></span></span>
 <p>The following issue may occur during kernel <a href="../../Operating_System_Software_and_Updates/">upgrades</a>.</p>
 <p>This issue should be rare. It is only known to happen when using
 <code>initramfs-tools</code>. At time of writing, Kicksecure switched
@@ -871,7 +777,7 @@ VirtualBox Guest Additions: Building the modules for kernel 5.6.0-0.bpo.2-amd64.
 Failed to rename process, ignoring: Operation not permitted
 update-initramfs terminated by signal TERM.</code></pre>
 <p>Workaround: Two (2) reboots are required. <sup class="reference"><a href="#cite_note-17">[17]</a></sup></p>
-<h2 id="Non-Issues">Non-Issues</h2>
+<h2 id="Non-Issues">Non-Issues</h2><span class="share-tooltip" data-anchor="Non-Issues"><a class="headline-anchor" href="#Non-Issues" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Non-Issues">https://www.kicksecure.com/wiki/VirtualBox/Guest_Additions/#Non-Issues</span></span></span></span>
 <p><s>If the following message appears during a kernel upgrade, it is a
 non-issue.</s></p>
 <p>None.</p>
@@ -888,26 +794,26 @@ Non-Freedom</a></li>
 <div class="references">
 <ol>
 <li id="cite_note-1"><a href="https://forums.whonix.org/t/host-whonix-gateway-clipboard-sharing-enable-by-default/894">Host
--&gt; Whonix-Gateway clipboard sharing enabled by default?</a></li>
+-&gt; Whonix-Gateway clipboard sharing enabled by default?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/host-whonix-gateway-clipboard-sharing-enable-by-default/894" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2">Because otherwise you cannot change VirtualBox VM settings.</li>
 <li id="cite_note-3">The script only mounts folders named <code>shared</code>. See
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a></span>.</li>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.</li>
 <li id="cite_note-4">Do <u>not</u> use <code>share</code> (without the trailing
 <code>d</code>)!</li>
 <li id="cite_note-5">If you do not wish to write to that folder from within the VM, you
 are free to check/enable this setting.</li>
-<li id="cite_note-6">For better usability, the pre-installed Kicksecure package <a href="https://github.com/Kicksecure/vm-config-dist">vm-config-dist</a>
+<li id="cite_note-6">For better usability, the pre-installed Kicksecure package <a href="https://github.com/Kicksecure/vm-config-dist">vm-config-dist</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 has already added the account <code>user</code> to the group
 <code>vboxsf</code>. This is implemented in
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a></span>,
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>,
 which runs automatically on boot.</li>
 <li id="cite_note-7">This is hardcoded in
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a></span>.
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared">Kicksecure/vm-config-dist</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist/blob/master/usr/libexec/vm-config-dist/mount-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.
 Previously, VirtualBox's built-in shared folder mounting was used, but
 it is no longer used because it sometimes silently fails to mount a
 shared folder and has very inflexible permissions.</li>
 <li id="cite_note-8">This step is required. Quote <a href="https://www.virtualbox.org/manual/ch04.html#sharedfolders">VirtualBox
-Manual - Chapter 4. Guest Additions</a>: <blockquote><p>With the shared folders feature of Oracle VM VirtualBox, you can
+Manual - Chapter 4. Guest Additions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch04.html#sharedfolders" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: <blockquote><p>With the shared folders feature of Oracle VM VirtualBox, you can
 access files of your host system from within the guest system. This is
 similar to how you would use network shares in Windows networks, except
 that shared folders do not require networking, only the Guest
@@ -971,7 +877,7 @@ a reboot that does not involve a full shutdown).</p></li>
 <li id="cite_note-11">Because Kicksecure does not use the
 <code>mnt-shared-vbox.service</code> systemd unit.</li>
 <li id="cite_note-12">* <a href="https://forums.whonix.org/t/installing-virtualbox-guest-addition-by-default/700">Installing
-VirtualBox Guest Addition by Default?</a></li>
+VirtualBox Guest Addition by Default?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/installing-virtualbox-guest-addition-by-default/700" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-13"><code>virtualbox-guest-additions-iso</code> is still installed by
 default. Should there be issues with
 <code>virtualbox-guest-utils</code>, <code>virtualbox-guest-x11</code>
@@ -981,11 +887,11 @@ created by Kicksecure developers) is also still installed by default for
 the same purpose.</li>
 <li id="cite_note-14"><code>debian/vm-config-dist.triggers</code></li>
 <li id="cite_note-15"><a href="https://forums.whonix.org/t/virtualbox-guest-additions/8998/3">Installation
-of VirtualBox guest additions from CD might also cause issues.</a></li>
-<li id="cite_note-16">* <a href="https://www.phoronix.com/news/VirtualBox-Guest-V2-Continues">https://www.phoronix.com/news/VirtualBox-Guest-V2-Continues</a>
-* <a href="https://www.phoronix.com/news/Linux-4.16-vboxguest">https://www.phoronix.com/news/Linux-4.16-vboxguest</a>
-* <code>vboxguest</code>: <a href="https://www.phoronix.com/news/Linux-4.16-Three-New-Subsystems">https://www.phoronix.com/news/Linux-4.16-Three-New-Subsystems</a>
-* <code>vboxsf</code>: <a href="https://www.phoronix.com/news/VBOXSF-VirtualBox-Staging">https://www.phoronix.com/news/VBOXSF-VirtualBox-Staging</a>
+of VirtualBox guest additions from CD might also cause issues.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/virtualbox-guest-additions/8998/3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-16">* <a href="https://www.phoronix.com/news/VirtualBox-Guest-V2-Continues">https://www.phoronix.com/news/VirtualBox-Guest-V2-Continues</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/VirtualBox-Guest-V2-Continues" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+* <a href="https://www.phoronix.com/news/Linux-4.16-vboxguest">https://www.phoronix.com/news/Linux-4.16-vboxguest</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/Linux-4.16-vboxguest" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+* <code>vboxguest</code>: <a href="https://www.phoronix.com/news/Linux-4.16-Three-New-Subsystems">https://www.phoronix.com/news/Linux-4.16-Three-New-Subsystems</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/Linux-4.16-Three-New-Subsystems" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+* <code>vboxsf</code>: <a href="https://www.phoronix.com/news/VBOXSF-VirtualBox-Staging">https://www.phoronix.com/news/VBOXSF-VirtualBox-Staging</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/VBOXSF-VirtualBox-Staging" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 * search term: <span class="code-select">site:kernel.org
 vbox</span></li>
 <li id="cite_note-17">This results in guest additions being non-functional after the next

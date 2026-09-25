@@ -21,7 +21,12 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>remount-secure</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#initrd_based_mount_options_hardening">initrd based mount options
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>remount-secure</span></nav><div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../project-news/" title="Dev/project-news"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/project-news</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../reviewer/" title="Dev/reviewer"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/reviewer</span></a><span class="info"><span class="prev">Previous
+page: Dev/project-news</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/reviewer</span></span></span>Remount Secure</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#initrd_based_mount_options_hardening">initrd based mount options
 hardening</a></li><li class="toc-l2"><a href="#Systemd_drop-in_mount_options_for_units_that_already_exist">Systemd
 drop-in mount options for units that already exist</a></li><li class="toc-l2"><a href="#Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist">Systemd
 drop-in mount units for units that normally do not exist</a></li><li class="toc-l2"><a href="#systemd_kernel_parameter_based_mount_options_hardening">systemd
@@ -30,12 +35,7 @@ kernel parameter based mount options hardening</a></li><li class="toc-l2"><a hre
 file based mount options hardening</a></li><li class="toc-l2"><a href="#/etc/fstab_file_based_mount_options_hardening">/etc/fstab file
 based mount options hardening</a></li><li class="toc-l2"><a href="#remount-secure_daemon">remount-secure daemon</a></li><li class="toc-l2"><a href="#/run/user/1000_bypass">/run/user/1000 bypass</a></li><li class="toc-l2"><a href="#Resources">Resources</a></li><li class="toc-l2"><a href="#CLIP_OS">CLIP OS</a></li><li class="toc-l2"><a href="#RedHat">RedHat</a></li><li class="toc-l2"><a href="#CentOS">CentOS</a></li><li class="toc-l2"><a href="#Arch_Linux">Arch Linux</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
-<div class="first-heading">
-<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../project-news/" title="Dev/project-news"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/project-news</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../reviewer/" title="Dev/reviewer"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/reviewer</span></a><span class="info"><span class="prev">Previous
-page: Dev/project-news</span><span class="index">Index page:
-Design</span><span class="next">Next page:
-Dev/reviewer</span></span></span>Remount Secure</p>
-</div>
+
 <div class="pre-intro-p ">
 </div>
 <div class="hidden-thumbnail">
@@ -95,20 +95,20 @@ creates <code>/etc/fstab</code>.</li>
 <li><strong>Qubes:</strong> <a href="../../Qubes/">Kicksecure
 for Qubes</a> Template is created by Qubes builder.
 <ul>
-<li><a href="https://github.com/QubesOS/qubes-core-agent-linux/blob/main/filesystem/fstab">https://github.com/QubesOS/qubes-core-agent-linux/blob/main/filesystem/fstab</a></li>
+<li><a href="https://github.com/QubesOS/qubes-core-agent-linux/blob/main/filesystem/fstab">https://github.com/QubesOS/qubes-core-agent-linux/blob/main/filesystem/fstab</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-core-agent-linux/blob/main/filesystem/fstab" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><strong>Others:</strong> <a href="../../Chroot/">chroot</a> and <a href="../../Distribution_Morphing/">Distribution Morphing</a>.</li>
 </ul>
 <h1 id="Approaches">Approaches</h1>
 <h2 id="initrd_based_mount_options_hardening">initrd based mount options
-hardening</h2>
+hardening</h2><span class="share-tooltip" data-anchor="initrd_based_mount_options_hardening"><a class="headline-anchor" href="#initrd_based_mount_options_hardening" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#initrd_based_mount_options_hardening">https://www.kicksecure.com/wiki/Dev/remount-secure/#initrd_based_mount_options_hardening</span></span></span></span>
 <p>This approach hardens mount options inside the initrd (initramfs).
 That means it runs very early during boot, before the system switches
 into the real root file system.</p>
 <ul>
 <li>initramfs-tools: <code>/usr/share/initramfs-tools/init</code></li>
 <li><a href="https://forums.whonix.org/t/replacing-initramfs-tools-with-dracut/4487">dracut:
-used by Kicksecure by default at time of writing.</a>
+used by Kicksecure by default at time of writing.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/replacing-initramfs-tools-with-dracut/4487" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>There is an implementation in <code>security-misc</code> currently
 disabled by default.
@@ -144,7 +144,7 @@ Needs different way to customize.</li>
 security-misc)</li>
 </ul>
 <h2 id="Systemd_drop-in_mount_options_for_units_that_already_exist">Systemd
-drop-in mount options for units that already exist</h2>
+drop-in mount options for units that already exist</h2><span class="share-tooltip" data-anchor="Systemd_drop-in_mount_options_for_units_that_already_exist"><a class="headline-anchor" href="#Systemd_drop-in_mount_options_for_units_that_already_exist" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#Systemd_drop-in_mount_options_for_units_that_already_exist">https://www.kicksecure.com/wiki/Dev/remount-secure/#Systemd_drop-in_mount_options_for_units_that_already_exist</span></span></span></span>
 <p>This approach does not create new mounts. Instead, it adds extra
 settings ("drop-ins") to mount units that already exist, so the existing
 mount is hardened without changing the original unit file.</p>
@@ -191,11 +191,11 @@ Needs different way to customize.</li>
 </ul>
 <p>See also:</p>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/195#issuecomment-1938716410">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/165" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/195#issuecomment-1938716410">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/195#issuecomment-1938716410" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <h2 id="Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist">Systemd
-drop-in mount units for units that normally do not exist</h2>
+drop-in mount units for units that normally do not exist</h2><span class="share-tooltip" data-anchor="Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist"><a class="headline-anchor" href="#Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist">https://www.kicksecure.com/wiki/Dev/remount-secure/#Systemd_drop-in_mount_units_for_units_that_normally_do_not_exist</span></span></span></span>
 <p>This approach can create a mount unit even when the system normally
 would not have one. The idea is to harden a directory by bind-mounting
 it to itself, so mount options like <code>noexec</code>,
@@ -257,13 +257,13 @@ breakage.</li>
 bind mount, untested.</li>
 </ul>
 <h2 id="systemd_kernel_parameter_based_mount_options_hardening">systemd
-kernel parameter based mount options hardening</h2>
+kernel parameter based mount options hardening</h2><span class="share-tooltip" data-anchor="systemd_kernel_parameter_based_mount_options_hardening"><a class="headline-anchor" href="#systemd_kernel_parameter_based_mount_options_hardening" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#systemd_kernel_parameter_based_mount_options_hardening">https://www.kicksecure.com/wiki/Dev/remount-secure/#systemd_kernel_parameter_based_mount_options_hardening</span></span></span></span>
 <p>This approach passes extra mount instructions to systemd using kernel
 parameters (usually configured via GRUB). This allows systemd to mount
 file systems with hardened options from the start, without editing
 <code>/etc/fstab</code>.</p>
 <p><code>/etc/default/grub.d/40_secure-mount.cfg</code> as suggested in
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/195">Kicksecure/security-misc</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/195">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/195" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 thanks to monsieuremre!</p>
 <pre><code># tmp and api file systems
 GRUB_CMDLINE_LINUX=&quot;$GRUB_CMDLINE_LINUX systemd.mount-extra=tmpfs:/tmp:[:tmpfs[:defaults,nodev,nosuid,noexec]]&quot;
@@ -280,9 +280,9 @@ systemd.mount-extra=tmpfs:/tmp:tmpfs:defaults,nosuid,noexec,nodev</code></pre>
 to our alternative fstab file. Lines in this file would be parsed in
 addition to the usual fstab.</p>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1817934219">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/157#issuecomment-1869080721">Kicksecure/security-misc</a></span></li>
-<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html">https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html</a></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1817934219">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1817934219" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/157#issuecomment-1869080721">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/157#issuecomment-1869080721" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html">https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/software/systemd/man/latest/systemd-fstab-generator.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Advantages:</p>
 <ul>
@@ -302,12 +302,12 @@ kernel command line.</li>
 Needs different way to customize.</li>
 </ul>
 <h2 id="Autogenerated_alternative_/etc/fstab">Autogenerated alternative
-/etc/fstab</h2>
+/etc/fstab</h2><span class="share-tooltip" data-anchor="Autogenerated_alternative_/etc/fstab"><a class="headline-anchor" href="#Autogenerated_alternative_/etc/fstab" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#Autogenerated_alternative_/etc/fstab">https://www.kicksecure.com/wiki/Dev/remount-secure/#Autogenerated_alternative_/etc/fstab</span></span></span></span>
 <p>This approach tells the system to use an alternative
 <code>/etc/fstab</code> file at boot. The alternative file is generated
 from the original, but with hardened options.</p>
 <pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;LIBMOUNT_FSTAB=/etc/something SYSTEMD_SYSROOT_FSTAB=/etc/something SYSTEMD_FSTAB=/etc/something&quot;</code></pre>
-<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1827922062">Kicksecure/security-misc</a></span></p>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1827922062">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/165#issuecomment-1827922062" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Advantages:</p>
 <ul>
 <li>Not touching /etc/fstab.</li>
@@ -342,16 +342,16 @@ configured to respect simple config files)</li>
 <li>Might be confusing for the unaware user.</li>
 </ul>
 <h2 id="systemd_unit_file_based_mount_options_hardening">systemd unit
-file based mount options hardening</h2>
+file based mount options hardening</h2><span class="share-tooltip" data-anchor="systemd_unit_file_based_mount_options_hardening"><a class="headline-anchor" href="#systemd_unit_file_based_mount_options_hardening" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#systemd_unit_file_based_mount_options_hardening">https://www.kicksecure.com/wiki/Dev/remount-secure/#systemd_unit_file_based_mount_options_hardening</span></span></span></span>
 <p>This approach uses a standard systemd service (Type=oneshot) that
 runs early during boot and remounts file systems with hardened
 options.</p>
 <ul>
 <li>A "normal" systemd unit file (Type=oneshot) that runs early during
 the boot process and remounts.</li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/bin/remount-secure">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/remount-secure.service">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/sysinit-post.target">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/bin/remount-secure">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/bin/remount-secure" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/remount-secure.service">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/remount-secure.service" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/sysinit-post.target">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/lib/systemd/system/sysinit-post.target" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <p>Advantages:</p>
 <ul>
@@ -366,7 +366,7 @@ Needs different way to customize.</li>
 <li>...?</li>
 </ul>
 <h2 id="/etc/fstab_file_based_mount_options_hardening">/etc/fstab file
-based mount options hardening</h2>
+based mount options hardening</h2><span class="share-tooltip" data-anchor="/etc/fstab_file_based_mount_options_hardening"><a class="headline-anchor" href="#/etc/fstab_file_based_mount_options_hardening" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#/etc/fstab_file_based_mount_options_hardening">https://www.kicksecure.com/wiki/Dev/remount-secure/#/etc/fstab_file_based_mount_options_hardening</span></span></span></span>
 <p>This approach ships a hardened <code>/etc/fstab</code> by default
 (for new builds and installers). This is the traditional location where
 sysadmins expect mount options to be configured.</p>
@@ -375,8 +375,8 @@ sysadmins expect mount options to be configured.</p>
 builds.</li>
 <li>Upgrading existing Kicksecure builds is possible too, can be
 considered later.</li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/doc/security-misc/fstab-vm">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/157">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/doc/security-misc/fstab-vm">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/doc/security-misc/fstab-vm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/157">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/157" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <p>Advantages:</p>
 <ul>
@@ -392,14 +392,14 @@ place to configure this.</li>
 <li>Tailored for Kicksecure such as for VM builds or installations from
 <a href="../../ISO/">ISO</a> using Calamares installer.</li>
 <li>Not a generic solution for security-misc.</li>
-<li>Needs to be contributed separately to Qubes: <a href="https://github.com/QubesOS/qubes-issues/issues/5329">https://github.com/QubesOS/qubes-issues/issues/5329</a></li>
+<li>Needs to be contributed separately to Qubes: <a href="https://github.com/QubesOS/qubes-issues/issues/5329">https://github.com/QubesOS/qubes-issues/issues/5329</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/5329" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Plan:</p>
 <ul>
 <li>If and only if needed: Combine this with <a href="#systemd_kernel_parameter_based_mount_options_hardening">#systemd kernel parameter based mount options
 hardening</a> for the API file systems.</li>
 </ul>
-<h2 id="remount-secure_daemon">remount-secure daemon</h2>
+<h2 id="remount-secure_daemon">remount-secure daemon</h2><span class="share-tooltip" data-anchor="remount-secure_daemon"><a class="headline-anchor" href="#remount-secure_daemon" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#remount-secure_daemon">https://www.kicksecure.com/wiki/Dev/remount-secure/#remount-secure_daemon</span></span></span></span>
 <p>Implement remount-secure as a daemon that runs before
 <code>sysinit.target</code> and after <code>local-fs.target</code>. It
 will do an initial scan of file systems and remount applicable file
@@ -467,30 +467,30 @@ configure default mount options
 </ul>
 <h1 id="Issues">Issues</h1>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/198">Kicksecure/security-misc</a></span>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/198">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/198" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 (no longer using initramfs-tools by default, using <a href="../../Dracut/">dracut</a> nowadays)</li>
 </ul>
 <h1 id="Miscellaneous">Miscellaneous</h1>
-<h2 id="/run/user/1000_bypass">/run/user/1000 bypass</h2>
+<h2 id="/run/user/1000_bypass">/run/user/1000 bypass</h2><span class="share-tooltip" data-anchor="/run/user/1000_bypass"><a class="headline-anchor" href="#/run/user/1000_bypass" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#/run/user/1000_bypass">https://www.kicksecure.com/wiki/Dev/remount-secure/#/run/user/1000_bypass</span></span></span></span>
 <p>Quote madaidan:</p>
 <p><blockquote><p>/run/user/1000 bypasses /run's <code>noexec</code> as it is its own
 mount point. We might want to look into restricting that too.</p></blockquote></p>
-<h2 id="Resources">Resources</h2>
+<h2 id="Resources">Resources</h2><span class="share-tooltip" data-anchor="Resources"><a class="headline-anchor" href="#Resources" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#Resources">https://www.kicksecure.com/wiki/Dev/remount-secure/#Resources</span></span></span></span>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/68">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/69">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/68">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/68" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/69">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/69" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li><a href="https://phabricator.whonix.org/T941">lock down interpreters
-/ compilers (interpreter lock) (compiler lock)</a></li>
-<li><a href="https://seifried.org/lasg/installation/">https://seifried.org/lasg/installation/</a></li>
+/ compilers (interpreter lock) (compiler lock)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T941" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://seifried.org/lasg/installation/">https://seifried.org/lasg/installation/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://seifried.org/lasg/installation/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Implementations_by_Other_Operating_Systems">Implementations by
 Other Operating Systems</h1>
-<h2 id="CLIP_OS">CLIP OS</h2>
-<p><a href="https://github.com/clipos/products_clipos/blob/master/core/configure.d/40_fstab.sh">https://github.com/clipos/products_clipos/blob/master/core/configure.d/40_fstab.sh</a></p>
-<h2 id="RedHat">RedHat</h2>
+<h2 id="CLIP_OS">CLIP OS</h2><span class="share-tooltip" data-anchor="CLIP_OS"><a class="headline-anchor" href="#CLIP_OS" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#CLIP_OS">https://www.kicksecure.com/wiki/Dev/remount-secure/#CLIP_OS</span></span></span></span>
+<p><a href="https://github.com/clipos/products_clipos/blob/master/core/configure.d/40_fstab.sh">https://github.com/clipos/products_clipos/blob/master/core/configure.d/40_fstab.sh</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/clipos/products_clipos/blob/master/core/configure.d/40_fstab.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h2 id="RedHat">RedHat</h2><span class="share-tooltip" data-anchor="RedHat"><a class="headline-anchor" href="#RedHat" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#RedHat">https://www.kicksecure.com/wiki/Dev/remount-secure/#RedHat</span></span></span></span>
 <p>Note: Extremely outdated and no more valid or relevant, but still is
 a good point of reference to understand the underlying concept.</p>
-<p>Quote <a href="https://people.redhat.com/sgrubb/files/hardening-rhel5.pdf">https://people.redhat.com/sgrubb/files/hardening-rhel5.pdf</a></p>
+<p>Quote <a href="https://people.redhat.com/sgrubb/files/hardening-rhel5.pdf">https://people.redhat.com/sgrubb/files/hardening-rhel5.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://people.redhat.com/sgrubb/files/hardening-rhel5.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>Partitioning</p>
 <p>Allow minimal privileges via mount options</p>
 <ul>
@@ -513,8 +513,8 @@ devpts                /dev/pts        devpts  gid=5,mode=620                0 0
 sysfs                 /sys            sysfs   defaults                      0 0
 proc                  /proc           proc    defaults                      0 0
 LABEL=SWAP-sda6       swap            swap    defaults                      0 0</code></pre></blockquote></p>
-<h2 id="CentOS">CentOS</h2>
-<p>Quote <a href="https://wiki.centos.org/HowTos/OS_Protection#Modifying_fstab">https://wiki.centos.org/HowTos/OS_Protection#Modifying_fstab</a></p>
+<h2 id="CentOS">CentOS</h2><span class="share-tooltip" data-anchor="CentOS"><a class="headline-anchor" href="#CentOS" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#CentOS">https://www.kicksecure.com/wiki/Dev/remount-secure/#CentOS</span></span></span></span>
+<p>Quote <a href="https://wiki.centos.org/HowTos/OS_Protection#Modifying_fstab">https://wiki.centos.org/HowTos/OS_Protection#Modifying_fstab</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.centos.org/HowTos/OS_Protection#Modifying_fstab" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>Modifying fstab</p>
 <p>Once you have your partitions broken out and sized accordingly, you
 can begin to restrict the various mount points as much as possible. You
@@ -540,7 +540,7 @@ cgi based applications, as well as server side includes which rely on
 the execute bit hack. If you're not using cgi applications, I would
 recommend at least testing noexec and using it if there are no negative
 side-effects.</p></blockquote></p>
-<h2 id="Arch_Linux">Arch Linux</h2>
+<h2 id="Arch_Linux">Arch Linux</h2><span class="share-tooltip" data-anchor="Arch_Linux"><a class="headline-anchor" href="#Arch_Linux" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/remount-secure/#Arch_Linux">https://www.kicksecure.com/wiki/Dev/remount-secure/#Arch_Linux</span></span></span></span>
 <p><blockquote><p>Mount options</p>
 <p>Following the principle of least privilege, file systems should be
 mounted with the most restrictive mount options possible (without losing
@@ -575,7 +575,7 @@ nosuid and noexec.</p>
 <li>/boot</li>
 </ul></blockquote></p>
 <h1 id="Forum_Discussion">Forum Discussion</h1>
-<p><a href="https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707">https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707</a></p>
+<p><a href="https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707">https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/re-mount-home-and-other-with-noexec-and-nosuid-among-other-useful-mount-options-for-better-security/7707" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Attribution">Attribution</h1>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -584,7 +584,7 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s10.en.html">Mounting
 partitions the right
-way</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+way</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s10.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <h1 id="Footnotes">Footnotes</h1>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../project-news/" title="Dev/project-news"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/project-news</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../reviewer/" title="Dev/reviewer"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/reviewer</span></a><span class="info"><span class="prev">Previous

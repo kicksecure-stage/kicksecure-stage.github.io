@@ -21,9 +21,7 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>RAM Wipe</span></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="mininav">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>RAM Wipe</span></nav><div class="mininav">
 <ul>
 <li><a href="../../Full_Disk_Encryption/">Full Disk
 Encryption</a></li>
@@ -36,7 +34,9 @@ Defense</a></li>
 <li><a href="../../Encrypted_Images/">Encrypted VM
 Images</a></li>
 </ul>
+</div><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../../media/Ram-wipe-developer.png.webp" width="200" alt="ram-wipe logo (development)" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -48,9 +48,9 @@ mechanism.</p>
 <div class="post-intro-p">
 </div>
 <h1 id="Design">Design</h1>
-<h2 id="ram-wipe">ram-wipe</h2>
+<h2 id="ram-wipe">ram-wipe</h2><span class="share-tooltip" data-anchor="ram-wipe"><a class="headline-anchor" href="#ram-wipe" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/RAM_Wipe/#ram-wipe">https://www.kicksecure.com/wiki/Dev/RAM_Wipe/#ram-wipe</span></span></span></span>
 <p>Implemented by dracut module
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/tree/master/usr/lib/dracut/modules.d/">Kicksecure/ram-wipe</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/tree/master/usr/lib/dracut/modules.d/">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/tree/master/usr/lib/dracut/modules.d/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 (by <a href="../../Ram-wipe/">ram-wipe</a>).</p>
 <ol>
 <li><code>/usr/lib/dracut/modules.d/90crypt/cryptroot-ask.sh</code> runs
@@ -58,14 +58,14 @@ mechanism.</p>
 <li><a href="https://github.com/dracut-ng/dracut-ng/pull/293"><code>dracut-ng</code>
 <code>dm-shutdown.sh</code> runs <code>cryptsetup close</code> to
 release the full disk encryption key during the shutdown
-process.</a></li>
+process.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracut-ng/dracut-ng/pull/293" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>A dracut <code>cleanup</code> hook is declared in
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/module-setup.sh">Kicksecure/ram-wipe</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/module-setup.sh">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/module-setup.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 (by ram-wipe):
 <code>inst_hook cleanup 80 "$moddir/wipe-ram-needshutdown.sh"</code>.
 Priority is <code>80</code>.</li>
 <li>During boot, that dracut <code>cleanup</code> hook
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram-needshutdown.sh">Kicksecure/ram-wipe</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram-needshutdown.sh">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram-needshutdown.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 (by ram-wipe) is calling dracut API function <code>need_shutdown</code>
 which results in file <code>/run/initramfs/.need_shutdown</code> being
 created.</li>
@@ -80,11 +80,11 @@ unmounting the root (main) drive.</li>
 dracut modules.</li>
 <li>At the time of writing, there were no other dracut modules using the
 dracut shutdown hook known to the author of this website.</li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram.sh">Kicksecure/ram-wipe</a></span>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram.sh">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/blob/master/usr/lib/dracut/modules.d/40ram-wipe/wipe-ram.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 (by ram-wipe) is the dracut shutdown hook.</li>
 <li>An alternative description of the mechanism of dropping back to the
 initramfs during shutdown can be found under <a href="https://systemd.io/INITRD_INTERFACE/">The initrd Interface of
-systemd</a>.</li>
+systemd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/INITRD_INTERFACE/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 <li>At a very late stage during the shutdown process, when all disks
 have already been unmounted by dracut, the <code>wipe-ram.sh</code>
 dracut shutdown hook is executed.</li>
@@ -110,14 +110,14 @@ output. Otherwise, it shows a warning.</li>
 </ul></li>
 </ul>
 <p>Quote <a href="https://tails.boum.org/contribute/design/memory_erasure/">Tails'
-Memory erasure</a>:</p>
+Memory erasure</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/memory_erasure/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>First, most memory is erased at the end of a normal shutdown/reboot
 sequence. This is implemented by the <a href="https://tails.boum.org/contribute/design/kernel_hardening/">Linux
-kernel's freed memory poisoning feature</a>, more specifically
+kernel's freed memory poisoning feature</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/kernel_hardening/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, more specifically
 <code>init_on_free=1</code>.</p></blockquote></p>
 <p>Additional kernel parameters shared with the <a href="https://tails.net/contribute/design/kernel_hardening/">Tails
-kernel hardening setup</a> are implemented in the <a href="../../Security-misc/">security-misc</a> file
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/default/grub.d/40_kernel_hardening.cfg">Kicksecure/security-misc</a></span>:</p>
+kernel hardening setup</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.net/contribute/design/kernel_hardening/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> are implemented in the <a href="../../Security-misc/">security-misc</a> file
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/default/grub.d/40_kernel_hardening.cfg">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/etc/default/grub.d/40_kernel_hardening.cfg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>:</p>
 <ul>
 <li>disabling merging of slabs with similar size
 (<code>slab_nomerge</code>)</li>
@@ -134,8 +134,8 @@ disable RAM wiping at shutdown, which can be useful to speed up shutdown
 or in case any issues arise.</p>
 <p>For potential limitations, the same limitations described under the
 "Limitations" chapter of <a href="https://tails.boum.org/contribute/design/memory_erasure/">Tails'
-Memory erasure</a> apply.</p>
-<h2 id="ram-wipe-exit">ram-wipe-exit</h2>
+Memory erasure</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/memory_erasure/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> apply.</p>
+<h2 id="ram-wipe-exit">ram-wipe-exit</h2><span class="share-tooltip" data-anchor="ram-wipe-exit"><a class="headline-anchor" href="#ram-wipe-exit" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/RAM_Wipe/#ram-wipe-exit">https://www.kicksecure.com/wiki/Dev/RAM_Wipe/#ram-wipe-exit</span></span></span></span>
 <p>dracut module <code>ram-wipe-exit</code>:</p>
 <ul>
 <li>The other dracut module <code>ram-wipe</code> is independent.
@@ -155,26 +155,26 @@ of ram-wipe versus Tails Memory Erasure</h1>
 <li>Requires <code>initramfs-tools</code></li>
 <li>Based on <code>systemd-shutdown</code>
 <code>/lib/systemd/system-shutdown</code></li>
-<li>Requires Tails-specific hook scripts such as <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore"><code>/usr/local/lib/initramfs-restore</code></a>
+<li>Requires Tails-specific hook scripts such as <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore"><code>/usr/local/lib/initramfs-restore</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 / <code>/usr/local/lib/udev-watchdog-wrapper</code></li>
 <li>ISO-specific / Live boot-specific / squashfs-specific
 <ul>
-<li><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/udev-watchdog-wrapper">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/udev-watchdog-wrapper</a></li>
-<li><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook</a></li>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/udev-watchdog-wrapper">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/udev-watchdog-wrapper</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/udev-watchdog-wrapper" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li>Mixes the panic button / emergency shutdown / ISO removal trigger
 into the same scripts</li>
 <li>Blueprints:
 <ul>
-<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe</a></li>
-<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/grub">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/grub</a></li>
-<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/memtest86plus">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/memtest86plus</a></li>
+<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/grub">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/grub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/grub" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/memtest86plus">https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/memtest86plus</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/blueprints/-/wikis/more_efficient_memory_wipe/memtest86plus" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <p>ram-wipe:</p>
 <ul>
 <li>Based on Linux <a href="https://lore.kernel.org/kernel-hardening/20190626121943.131390-1-glider@google.com/"><code>init_on_free</code>
-mechanism</a></li>
+mechanism</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/kernel-hardening/20190626121943.131390-1-glider@google.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Requires <code>dracut</code></li>
 <li>More generic</li>
 <li>Should work on any Debian</li>
@@ -183,7 +183,7 @@ is implemented as a <code>dracut</code> module</li>
 <li>Should work equally for persistent boot from hard drive, <a href="../../Grub-live/">live boot from hard drive</a>, or ISO
 live boot</li>
 <li>A <a href="https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755">panic
-button / panic shutdown / USB kill cord for your laptop</a> feature is
+button / panic shutdown / USB kill cord for your laptop</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> feature is
 not mixed with this feature. It should be implemented separately as a
 standalone feature.</li>
 </ul>
@@ -194,14 +194,14 @@ standalone feature.</li>
 documentation on how to set that up), as this can display and persist
 <code>echo</code> messages even after the VM has already been powered
 off or rebooted.</li>
-<li>In Kicksecure / Whonix, the package <a href="https://github.com/Kicksecure/debug-misc">debug-misc</a> might be
+<li>In Kicksecure / Whonix, the package <a href="https://github.com/Kicksecure/debug-misc">debug-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/debug-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> might be
 useful
 (<code>sudo apt update &amp;&amp; sudo apt install debug-misc</code>)
 due to:
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/default/grub.d/45_debug-misc.cfg">Kicksecure/debug-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/sysctl.d/40_debug-misc.conf">Kicksecure/debug-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/dracut.conf.d/40_debug-misc.conf">Kicksecure/debug-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/default/grub.d/45_debug-misc.cfg">Kicksecure/debug-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/debug-misc/blob/master/etc/default/grub.d/45_debug-misc.cfg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/sysctl.d/40_debug-misc.conf">Kicksecure/debug-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/debug-misc/blob/master/etc/sysctl.d/40_debug-misc.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/debug-misc/blob/master/etc/dracut.conf.d/40_debug-misc.conf">Kicksecure/debug-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/debug-misc/blob/master/etc/dracut.conf.d/40_debug-misc.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li>(These files can be used standalone, manually installed, or "bulk"
 installed by installing the debug-misc package.)</li>
 </ul></li>
@@ -213,7 +213,7 @@ development / debugging.)</p>
 <li><code>grep -r pre-udev --color /usr/lib/dracut</code></li>
 </ul>
 <p>A <a href="https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755">panic
-button / panic shutdown / USB kill cord for your laptop</a> feature is
+button / panic shutdown / USB kill cord for your laptop</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> feature is
 not integrated with this feature. It should be implemented separately as
 a standalone feature.</p>
 <h1 id="Status_of_initramfs-tools_Support">Status of initramfs-tools
@@ -229,13 +229,13 @@ supports <code>initrd</code> (initial ramdisk), it does not support
 ramdisk at boot time) as well as <code>exitrd</code> (dropping back to
 the initial ramdisk at shutdown time). A feature request has been posted
 against the <a href="https://packages.debian.org/search?keywords=initramfs-tools">Debian
-initramfs-tools</a> package: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778849">Support
-restoring initrd on shutdown and pivoting into it</a>.</p>
+initramfs-tools</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/search?keywords=initramfs-tools" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> package: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778849">Support
+restoring initrd on shutdown and pivoting into it</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778849" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Contributors wishing to add <code>initramfs-tools</code> support to
 <a href="../../Ram-wipe/">ram-wipe</a> should first add
 <code>exitrd</code> support to upstream, original
 <code>initramfs-tools</code>.</p>
-<p>As a starting point, Tails has implemented <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore"><code>initramfs-restore</code></a>,
+<p>As a starting point, Tails has implemented <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore"><code>initramfs-restore</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-restore" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 which might be helpful to examine and use as inspiration when developing
 <code>exitrd</code> functionality for <code>initramfs-tools</code>. The
 Tails <code>initramfs-tools</code> <code>exitrd</code> implementation
@@ -319,10 +319,10 @@ messages can be shown before they disappear. This is useful to confirm
 that dracut executed the ram-wipe module.</p>
 <p>Through testing of ram-wipe has been performed by 3MDEB.</p>
 <ul>
-<li><i class="fas fa-check-square"></i> <a href="https://github.com/zarhus/ram-dump-efi"><code>ram-dump-efi</code></a>
-- Minimalistic application to dump RAM from EFI, based on Dasharo <a href="https://github.com/Dasharo/ram-remanence-tester"><code>ram-remanence-tester</code></a>
+<li><i class="fas fa-check-square"></i> <a href="https://github.com/zarhus/ram-dump-efi"><code>ram-dump-efi</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/zarhus/ram-dump-efi" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- Minimalistic application to dump RAM from EFI, based on Dasharo <a href="https://github.com/Dasharo/ram-remanence-tester"><code>ram-remanence-tester</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Dasharo/ram-remanence-tester" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <i class="fas fa-check-square"></i></li>
-<li><i class="fas fa-check-square"></i> <a href="https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/">https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/</a>
+<li><i class="fas fa-check-square"></i> <a href="https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/">https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.3mdeb.com/2025/2025-08-27-ram-wipe-further-analysis/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <i class="fas fa-check-square"></i></li>
 </ul>
 <h1 id="ram-wipe_improvements">ram-wipe improvements</h1>
@@ -333,12 +333,12 @@ there has been at least one case where shutdown was blocked due to a
 "kernel locked up" error. Writing to RAM until it fills up and
 <code>sdmem</code> gets OOM-killed is not a robust design. We should
 either replace <code>sdmem</code> or drop it entirely. It seems feasible
-to drop it.</s> Done. sdmem no longer required. Removed: <a href="https://github.com/Kicksecure/ram-wipe/pull/4">https://github.com/Kicksecure/ram-wipe/pull/4</a>
+to drop it.</s> Done. sdmem no longer required. Removed: <a href="https://github.com/Kicksecure/ram-wipe/pull/4">https://github.com/Kicksecure/ram-wipe/pull/4</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/pull/4" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <i class="fas fa-check-square"></i></li>
 <li><i class="fas fa-check-square"></i> <s>Review
 how Tails handles memory erasure: <a href="https://tails.net/contribute/design/memory_erasure/">Tails memory
-erasure design</a>. They primarily rely on the kernel parameter
-<code>init_on_free=1</code>.</s> Done. Testing was done by 3MDEB: <a href="https://blog.3mdeb.com/2025/2025-08-12-ram-wipe-further-analysis/">https://blog.3mdeb.com/2025/2025-08-12-ram-wipe-further-analysis/</a>
+erasure design</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.net/contribute/design/memory_erasure/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. They primarily rely on the kernel parameter
+<code>init_on_free=1</code>.</s> Done. Testing was done by 3MDEB: <a href="https://blog.3mdeb.com/2025/2025-08-12-ram-wipe-further-analysis/">https://blog.3mdeb.com/2025/2025-08-12-ram-wipe-further-analysis/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.3mdeb.com/2025/2025-08-12-ram-wipe-further-analysis/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <i class="fas fa-check-square"></i></li>
 <li><i class="fas fa-check-square"></i> <s>The
 second RAM wipe pass might be completely unnecessary. It can cause
@@ -370,7 +370,7 @@ Done. <i class="fas fa-check-square"></i></li>
 </ul></li>
 </ul>
 <h1 id="Forum_Discussion">Forum Discussion</h1>
-<p><a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596</a></p>
+<p><a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix-cold-boot-attack-defense/5596" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="See_Also">See Also</h1>
 <ul>
 <li><a href="../RAM_Wipe_Old_Notes/">RAM Wipe Archived
@@ -379,15 +379,15 @@ Development Notes</a></li>
 Defense</a></li>
 <li><a href="../../Ram-wipe/"><code>ram-wipe</code> User
 Documentation</a></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe">Kicksecure/ram-wipe</a></span></li>
-<li><a href="https://github.com/memtest86plus/memtest86plus/discussions/266">https://github.com/memtest86plus/memtest86plus/discussions/266</a></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><a href="https://github.com/memtest86plus/memtest86plus/discussions/266">https://github.com/memtest86plus/memtest86plus/discussions/266</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/memtest86plus/memtest86plus/discussions/266" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1">Inspired by Tails. <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook</a></li>
+<li id="cite_note-1">Inspired by Tails. <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/usr/local/lib/initramfs-pre-shutdown-hook" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2"><a href="https://github.com/QubesOS/qubes-issues/issues/1562">Wipe
-RAM on shutdown #1562</a></li>
+RAM on shutdown #1562</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/1562" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <div class="robots-nocontent" data-nosnippet="">

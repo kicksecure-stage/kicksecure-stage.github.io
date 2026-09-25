@@ -20,10 +20,6 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Signing_Key_Download">Signing Key Download</a></li><li class="toc-l2"><a href="#Download">Download</a></li><li class="toc-l2"><a href="#Digital_Software_Signature_Verification">Digital Software
-Signature Verification</a></li><li class="toc-l2"><a href="#Make_Executable">Make Executable</a></li><li class="toc-l2"><a href="#Setting_up_Trezor_Bridge_service_in_sys-usb">Setting up Trezor
-Bridge service in sys-usb</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="mininav">
 <ul>
 <li><a href="../Cryptocurrency_Security_Threats/">Cryptocurrency Security Threats</a></li>
@@ -37,20 +33,24 @@ Wallet</a></li>
 <li><a href="./">Trezor Hardware
 Wallet</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Signing_Key_Download">Signing Key Download</a></li><li class="toc-l2"><a href="#Download">Download</a></li><li class="toc-l2"><a href="#Digital_Software_Signature_Verification">Digital Software
+Signature Verification</a></li><li class="toc-l2"><a href="#Make_Executable">Make Executable</a></li><li class="toc-l2"><a href="#Setting_up_Trezor_Bridge_service_in_sys-usb">Setting up Trezor
+Bridge service in sys-usb</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <h1 id="Introduction">Introduction</h1>
-<p><a href="https://trezor.io/">Trezor</a> is a hardware cryptocurrency
-wallet created by SatoshiLabs. Its <a href="https://github.com/trezor/trezor-firmware">firmware</a> and <a href="https://github.com/trezor/trezor-hardware">PCB design</a> are open
+<p><a href="https://trezor.io/">Trezor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is a hardware cryptocurrency
+wallet created by SatoshiLabs. Its <a href="https://github.com/trezor/trezor-firmware">firmware</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/trezor/trezor-firmware" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="https://github.com/trezor/trezor-hardware">PCB design</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/trezor/trezor-hardware" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> are open
 source. Its <a href="https://github.com/trezor/trezor-suite">client
-software</a> source code is source-available, but under a restrictive
+software</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/trezor/trezor-suite" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> source code is source-available, but under a restrictive
 license.</p>
 <p>Trezor Safe&#8239;3 and Safe&#8239;5 incorporate a secure element known as
-OPTIGA&#8239;Trust&#8239;M (V3) <sup class="reference"><a href="#cite_note-1">[1]</a></sup>; although its <a href="https://github.com/Infineon/linux-optiga-trust-m">documentation</a>
+OPTIGA&#8239;Trust&#8239;M (V3) <sup class="reference"><a href="#cite_note-1">[1]</a></sup>; although its <a href="https://github.com/Infineon/linux-optiga-trust-m">documentation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Infineon/linux-optiga-trust-m" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 is source-available, its internal state remains proprietary.</p>
 <p>Trezor&#8239;7 employs a dual&#8209;secure&#8209;element architecture: one element is
-the Optiga&#8239;Trust&#8239;M, while the other is the <a href="https://github.com/tropicsquare/TROPIC01">TROPIC01</a>, an
-auditable secure element with open source <a href="https://github.com/tropicsquare/tropic01-rtl">circuit design</a>
-and <a href="https://github.com/tropicsquare/ts-tr01-app">firmware</a>.
+the Optiga&#8239;Trust&#8239;M, while the other is the <a href="https://github.com/tropicsquare/TROPIC01">TROPIC01</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/tropicsquare/TROPIC01" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, an
+auditable secure element with open source <a href="https://github.com/tropicsquare/tropic01-rtl">circuit design</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/tropicsquare/tropic01-rtl" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+and <a href="https://github.com/tropicsquare/ts-tr01-app">firmware</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/tropicsquare/ts-tr01-app" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 According to Trezor, each secure element contributes a portion of the
 secret, and together they form the final key used for seed decryption
 <sup class="reference"><a href="#cite_note-2">[2]</a></sup>.</p>
@@ -97,31 +97,24 @@ Done.</p>
 <p>The procedure of installing package(s)
 <code>trezor python3-hid</code> is complete.</p>
 </div>
-<h2 id="Signing_Key_Download">Signing Key Download</h2>
+<h2 id="Signing_Key_Download">Signing Key Download</h2><span class="share-tooltip" data-anchor="Signing_Key_Download"><a class="headline-anchor" href="#Signing_Key_Download" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Signing_Key_Download">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Signing_Key_Download</span></span></span></span>
 <p>Platform specific.</p>
 <ul>
 <li>Kicksecure: No special notice.</li>
 <li>Kicksecure for Qubes: In the <code>kicksecure</code> App Qube.</li>
 </ul>
 <div class="info-box ">
-<ul>
-<li><i class="fa-solid fa-key cs-green"></i><span><b>Digital
-signatures</b> are a tool enhancing download security. They are commonly
-used across the internet and nothing special to worry about.</span></li>
-<li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional,
-not required:</b> Digital signatures are optional and not mandatory for
-using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
+<p><ul class="icon-bullet-list ibl-fs-17"><li><i class="fa-solid fa-key cs-green"></i><span><b>Digital signatures</b> are a tool enhancing download security.
+They are commonly used across the internet and nothing special to worry
+about.</span></li><li><i class="fa-solid fa-toggle-off cs-green"></i><span><b>Optional, not required:</b> Digital signatures are optional and
+not mandatory for using Kicksecure, but an extra security measure for <a href="../Advanced_Users/">advanced users</a>. If you've
 never used them before, it might be overwhelming to look into them at
-this stage. Just ignore them for now.</span></li>
-<li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b>
-Curious? If you are interested in becoming more familiar with advanced
-computer security concepts, you can learn more about digital signatures
-here: <a href="../Verifying_Software_Signatures/">Verifying
-Software Signatures</a></span></li>
-</ul>
+this stage. Just ignore them for now.</span></li><li><i class="fa-solid fa-lightbulb"></i><span><b>Learn more:</b> Curious? If you are interested in becoming more
+familiar with advanced computer security concepts, you can learn more
+about digital signatures here: <a href="../Verifying_Software_Signatures/">Verifying Software Signatures</a></span></li></ul></p>
 <p><a href="../Secure_Downloads/">Securely download</a> the
 signing key.</p>
-<p><span class="code-select">scurl-download <a href="https://trezor.io/security/satoshilabs-2021-signing-key.asc">https://trezor.io/security/satoshilabs-2021-signing-key.asc</a></span></p>
+<p><span class="code-select">scurl-download <a href="https://trezor.io/security/satoshilabs-2021-signing-key.asc">https://trezor.io/security/satoshilabs-2021-signing-key.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/security/satoshilabs-2021-signing-key.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Display the key's fingerprint.</p>
 <p><span class="code-select">gpg --keyid-format long --import
 --import-options show-only --with-fingerprint
@@ -149,19 +142,19 @@ confirm file integrity.</p>
 <p><span class="code-select">gpg --import
 satoshilabs-2021-signing-key.asc</span></p>
 </div>
-<h2 id="Download">Download</h2>
+<h2 id="Download">Download</h2><span class="share-tooltip" data-anchor="Download"><a class="headline-anchor" href="#Download" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download</span></span></span></span>
 <p>Platform specific.</p>
 <ul>
 <li>Kicksecure: No special notice.</li>
 <li>Kicksecure for Qubes: In the <code>kicksecure</code> App Qube.</li>
 </ul>
-<p>Check the latest version number and read the release notes on the <a href="https://suite.trezor.io/">Trezor Suite website</a>.</p>
+<p>Check the latest version number and read the release notes on the <a href="https://suite.trezor.io/">Trezor Suite website</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Download the Trezor Suite AppImage.</p>
-<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage</a></span></p>
+<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Download the OpenPGP signature.</p>
-<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</a></span></p>
+<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <h2 id="Digital_Software_Signature_Verification">Digital Software
-Signature Verification</h2>
+Signature Verification</h2><span class="share-tooltip" data-anchor="Digital_Software_Signature_Verification"><a class="headline-anchor" href="#Digital_Software_Signature_Verification" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification</span></span></span></span>
 <p>Platform specific.</p>
 <ul>
 <li>Kicksecure: No special notice.</li>
@@ -180,7 +173,7 @@ the downloaded key. Rather, this warning refers to the level of trust
 placed in the Kicksecure signing key and the <a href="../OpenPGP/#The_OpenPGP_Web_of_Trust">web of
 trust</a>. To remove this warning, the Kicksecure signing key must be
 personally signed with your own key.</p>
-<h2 id="Make_Executable">Make Executable</h2>
+<h2 id="Make_Executable">Make Executable</h2><span class="share-tooltip" data-anchor="Make_Executable"><a class="headline-anchor" href="#Make_Executable" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Make_Executable">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Make_Executable</span></span></span></span>
 <p>Platform specific.</p>
 <ul>
 <li>Kicksecure: No special notice.</li>
@@ -203,14 +196,14 @@ Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
 <pre><code>kernel: vhci_hcd: vhci_device speed not set
 kernel: usb usb1-port1: Cannot enable. Maybe the USB cable is bad</code></pre>
 <ul>
-<li><a href="https://github.com/trezor/trezor-suite/issues/4173">https://github.com/trezor/trezor-suite/issues/4173</a></li>
-<li><a href="https://github.com/QubesOS/qubes-issues/issues/4173">https://github.com/QubesOS/qubes-issues/issues/4173</a></li>
-<li><a href="https://github.com/QubesOS/qubes-issues/issues/3778">https://github.com/QubesOS/qubes-issues/issues/3778</a></li>
-<li><a href="https://github.com/trezor/trezor-core/issues/167">https://github.com/trezor/trezor-core/issues/167</a></li>
-<li><a href="https://marc.info/?l=linux-usb&amp;m=156423432111134">https://marc.info/?l=linux-usb&amp;m=156423432111134</a></li>
+<li><a href="https://github.com/trezor/trezor-suite/issues/4173">https://github.com/trezor/trezor-suite/issues/4173</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/trezor/trezor-suite/issues/4173" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/4173">https://github.com/QubesOS/qubes-issues/issues/4173</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/4173" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/3778">https://github.com/QubesOS/qubes-issues/issues/3778</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/3778" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/trezor/trezor-core/issues/167">https://github.com/trezor/trezor-core/issues/167</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/trezor/trezor-core/issues/167" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://marc.info/?l=linux-usb&amp;m=156423432111134">https://marc.info/?l=linux-usb&amp;m=156423432111134</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://marc.info/?l=linux-usb&amp;m=156423432111134" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>The <a href="https://wiki.trezor.io/Qubes_OS">official instructions
-by Trezor for Qubes OS</a> reduce security because they require running
+by Trezor for Qubes OS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.trezor.io/Qubes_OS" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> reduce security because they require running
 third party software inside the USBVM.</p>
 <p>Ideas:</p>
 <ul>
@@ -219,7 +212,7 @@ controller exclusively attached to that App Qube. An HVM App Qube with
 PCI passthrough. <u>And/or</u></li>
 <li><strong>B)</strong> Switch off <code>sys-usb</code> altogether, for
 example if the system has only one USB controller, and switch between
-using USBVM and not using USBVM. -&gt; security issue <a href="https://github.com/QubesOS/qubes-issues/issues/6368">https://github.com/QubesOS/qubes-issues/issues/6368</a></li>
+using USBVM and not using USBVM. -&gt; security issue <a href="https://github.com/QubesOS/qubes-issues/issues/6368">https://github.com/QubesOS/qubes-issues/issues/6368</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/6368" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Use_trezor_in_qubes_VM_without_usb_access">Use trezor in qubes
 VM without usb access</h1>
@@ -234,7 +227,7 @@ USB access.</p>
 <p>Since the Trezor Bridge service is just a webpage, we can run any
 number of wallets at the same time on one or multiple VMs.</p>
 <h2 id="Setting_up_Trezor_Bridge_service_in_sys-usb">Setting up Trezor
-Bridge service in sys-usb</h2>
+Bridge service in sys-usb</h2><span class="share-tooltip" data-anchor="Setting_up_Trezor_Bridge_service_in_sys-usb"><a class="headline-anchor" href="#Setting_up_Trezor_Bridge_service_in_sys-usb" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Setting_up_Trezor_Bridge_service_in_sys-usb">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Setting_up_Trezor_Bridge_service_in_sys-usb</span></span></span></span>
 <p>At present, the Trezor Suite bundles the Trezor Bridge, allowing us
 to launch the bridge service via the Trezor Suite AppImage directly.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
@@ -274,8 +267,8 @@ Bridge service is running.</p>
 <div class="references">
 <ol>
 <li id="cite_note-1"><a href="https://trezor.io/learn/security-privacy/how-trezor-keeps-you-safe/secure-elements-in-trezor-safe-devices">Secure
-Elements in Trezor Safe devices</a></li>
-<li id="cite_note-2"><a href="https://trezor.io/guides/trezor-devices/trezor-safe-7/dual-secure-elements-in-trezor-safe-7">https://trezor.io/guides/trezor-devices/trezor-safe-7/dual-secure-elements-in-trezor-safe-7</a></li>
+Elements in Trezor Safe devices</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/learn/security-privacy/how-trezor-keeps-you-safe/secure-elements-in-trezor-safe-devices" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-2"><a href="https://trezor.io/guides/trezor-devices/trezor-safe-7/dual-secure-elements-in-trezor-safe-7">https://trezor.io/guides/trezor-devices/trezor-safe-7/dual-secure-elements-in-trezor-safe-7</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/guides/trezor-devices/trezor-safe-7/dual-secure-elements-in-trezor-safe-7" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-3">Required, otherwise Trezor Suite will show the error "Trezor Bridge
 is not running". <code>python3-hid</code> may be superfluous in some use
 cases. The package <code>trezor</code> <code>Recommends:</code> it.</li>

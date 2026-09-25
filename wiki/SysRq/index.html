@@ -21,9 +21,6 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#System_Recovery">System Recovery</a></li><li class="toc-l2"><a href="#Malware">Malware</a></li><li class="toc-l2"><a href="#Qubes">Qubes</a></li><li class="toc-l2"><a href="#Security_Discussion">Security Discussion</a></li><li class="toc-l2"><a href="#Virtual_Console_Handling">Virtual Console Handling</a></li><li class="toc-l2"><a href="#Attacks_from_Lesser_Adversaries_with_Physical_Access">Attacks
-from Lesser Adversaries with Physical Access</a></li><li class="toc-l2"><a href="#Development_Discussion">Development Discussion</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Disaster_Recovery/" title="Disaster Recovery"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Disaster
 Recovery</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Broken_Boot/" title="Broken Boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Broken
@@ -31,7 +28,10 @@ Boot</span></a><span class="info"><span class="prev">Previous page:
 Disaster Recovery</span><span class="index">Index page:
 Documentation</span><span class="next">Next page: Broken
 Boot</span></span></span>System Recovery using SysRq Key</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#System_Recovery">System Recovery</a></li><li class="toc-l2"><a href="#Malware">Malware</a></li><li class="toc-l2"><a href="#Qubes">Qubes</a></li><li class="toc-l2"><a href="#Security_Discussion">Security Discussion</a></li><li class="toc-l2"><a href="#Virtual_Console_Handling">Virtual Console Handling</a></li><li class="toc-l2"><a href="#Attacks_from_Lesser_Adversaries_with_Physical_Access">Attacks
+from Lesser Adversaries with Physical Access</a></li><li class="toc-l2"><a href="#Development_Discussion">Development Discussion</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../media/Sysrq12312d21.jpg.webp" alt="Sysrq12312d21.jpg" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -46,7 +46,7 @@ recovery and to prevent malware from sniffing the root password.</p>
 </div>
 <h1 id="Use_Cases">Use Cases</h1>
 <p>The SysRq (a.k.a <a href="https://www.hashbangcode.com/article/raising-skinny-elephants-utterly-boring">Raising
-Skinny Elephants Is Utterly Boring</a>) or "Security Keys" (<a href="https://en.wikipedia.org/wiki/Secure_attention_key">SAK</a>)
+Skinny Elephants Is Utterly Boring</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.hashbangcode.com/article/raising-skinny-elephants-utterly-boring" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>) or "Security Keys" (<a href="https://en.wikipedia.org/wiki/Secure_attention_key">SAK</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Secure_attention_key" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 function in Linux is equivalent to the well-known
 <span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Del</i></span>
 (Control-Alt-Delete) function in Windows, otherwise referred to as the
@@ -66,35 +66,35 @@ or <code>kill -s sigkill</code>. When the whole machine appears frozen,
 <span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">C</i></span>
 often will not have any effect. SysRq has a higher chance of being
 processed by the kernel, except if the kernel itself is locked up.</p>
-<h2 id="System_Recovery">System Recovery</h2>
-<p><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Wikipedia</a>
-notes: <blockquote><p>The magic SysRq key is a key combination understood by the <a href="https://en.wikipedia.org/wiki/Linux_kernel">Linux kernel</a>,
+<h2 id="System_Recovery">System Recovery</h2><span class="share-tooltip" data-anchor="System_Recovery"><a class="headline-anchor" href="#System_Recovery" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#System_Recovery">https://www.kicksecure.com/wiki/SysRq/#System_Recovery</span></span></span></span>
+<p><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Wikipedia</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Magic_SysRq_key" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+notes: <blockquote><p>The magic SysRq key is a key combination understood by the <a href="https://en.wikipedia.org/wiki/Linux_kernel">Linux kernel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Linux_kernel" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 which allows the user to perform various low-level commands regardless
-of the system's state. It is often used to recover from <a href="https://en.wikipedia.org/wiki/Freeze_(computing)">freezes</a>, or
-to <a href="https://en.wikipedia.org/wiki/Booting">reboot</a> a computer
-without corrupting the <a href="https://en.wikipedia.org/wiki/Filesystem">filesystem</a>. Its
-effect is similar to the computer's hardware <a href="https://en.wikipedia.org/wiki/Reset_button">reset button</a> (or
+of the system's state. It is often used to recover from <a href="https://en.wikipedia.org/wiki/Freeze_(computing)">freezes</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Freeze_(computing)" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, or
+to <a href="https://en.wikipedia.org/wiki/Booting">reboot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Booting" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> a computer
+without corrupting the <a href="https://en.wikipedia.org/wiki/Filesystem">filesystem</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Filesystem" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Its
+effect is similar to the computer's hardware <a href="https://en.wikipedia.org/wiki/Reset_button">reset button</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Reset_button" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (or
 power switch) but with many more options and much more control.</p>
 <p>This key combination provides access to powerful features for
 software development and disaster recovery. In this sense, it can be
 considered a form of <a href="https://en.wikipedia.org/wiki/Escape_sequence">escape
-sequence</a>. Principal among the offered commands are means to forcibly
+sequence</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Escape_sequence" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Principal among the offered commands are means to forcibly
 unmount file systems, kill processes, recover keyboard state, and write
 unwritten data to disk. With respect to these tasks, this feature serves
 as a tool of last resort.</p>
 <p>The magic SysRq key cannot work under certain conditions, such as a
-<a href="https://en.wikipedia.org/wiki/Kernel_panic">kernel panic</a> or
+<a href="https://en.wikipedia.org/wiki/Kernel_panic">kernel panic</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Kernel_panic" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> or
 a hardware failure preventing the kernel from running properly.</p></blockquote></p>
 <p>In the Kicksecure case, magic SysRq keys are useful when the guest is
 unresponsive, especially in cases where VMs are running headless and a
 GUI console is not available for forcing them to shut off on the
 host.</p>
-<h2 id="Malware">Malware</h2>
+<h2 id="Malware">Malware</h2><span class="share-tooltip" data-anchor="Malware"><a class="headline-anchor" href="#Malware" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Malware">https://www.kicksecure.com/wiki/SysRq/#Malware</span></span></span></span>
 <p>SysRq can be used to <a href="../Login_spoofing/">defeat
 login spoofing</a>, i.e. malware masquerading as a login prompt and
 stealing passwords.</p>
 <p><a href="https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html#okay-so-what-can-i-use-them-for">Quote
-from Linux Kernel Documentation</a>:</p>
+from Linux Kernel Documentation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html#okay-so-what-can-i-use-them-for" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>SAK (Secure Access Key) is useful when you want to be sure there is
 no trojan program running at the console which could grab your password
 when you try to login. It will kill all programs on the given console,
@@ -104,7 +104,7 @@ one from init, not some trojan program.</p></blockquote></p>
 Configuration</h1>
 <p>SysRq is disabled by default in Kicksecure for security reasons. This
 has been discussed in pull request <a href="https://github.com/Kicksecure/security-misc/pull/150">Disable
-SysRq by default</a>.</p>
+SysRq by default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/150" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>This is implemented in the package <em>security-misc</em> in the file
 <code>/usr/lib/sysctl.d/990-security-misc.conf</code>.</p>
 <h1 id="Enable_SysRq">Enable SysRq</h1>
@@ -159,31 +159,31 @@ force-fb(V) show-blocked-tasks(w) dump-ftrace-buffer(z)</p></blockquote></p>
 <code>/proc/sysrq-trigger</code>.</p>
 <p><span class="code-select">sudo -u root bash</span></p>
 <p><span class="code-select">echo h &gt; /proc/sysrq-trigger</span></p>
-<h2 id="Qubes">Qubes</h2>
+<h2 id="Qubes">Qubes</h2><span class="share-tooltip" data-anchor="Qubes"><a class="headline-anchor" href="#Qubes" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Qubes">https://www.kicksecure.com/wiki/SysRq/#Qubes</span></span></span></span>
 <p>See: <a href="https://github.com/QubesOS/qubes-issues/issues/5492">add Qubes
 host key to allow switching virtual console
 <span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F1</i></span>
-for SysRq for HVM</a>.</p>
+for SysRq for HVM</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/5492" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p><span class="manually-placed-anchor " id="security"></span></p>
 <h1 id="Development">Development</h1>
 <ul>
 <li><a href="https://superuser.com/questions/375816/how-to-check-which-sysrq-functions-are-enabled">How
-to check which SysRq functions are enabled?</a></li>
+to check which SysRq functions are enabled?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/questions/375816/how-to-check-which-sysrq-functions-are-enabled" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>sysctl is set to <code>kernel.sysrq=0</code> at time of writing.
 <ul>
-<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/60">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/sysctl.d/990-security-misc.conf%23security-misc-shared">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/60">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/60" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/lib/sysctl.d/990-security-misc.conf%23security-misc-shared">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/lib/sysctl.d/990-security-misc.conf%23security-misc-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul></li>
 <li><a href="https://fedoraproject.org/wiki/QA/Sysrq">Fedora wiki:
-QA/Sysrq</a></li>
+QA/Sysrq</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://fedoraproject.org/wiki/QA/Sysrq" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="Security_Discussion">Security Discussion</h2>
+<h2 id="Security_Discussion">Security Discussion</h2><span class="share-tooltip" data-anchor="Security_Discussion"><a class="headline-anchor" href="#Security_Discussion" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Security_Discussion">https://www.kicksecure.com/wiki/SysRq/#Security_Discussion</span></span></span></span>
 <p>Several security concerns and unanswered questions about SysRq
 require further investigation.</p>
 <hr />
 <p><strong>Possible privilege escalation</strong></p>
 <p><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/20">SysRq
-security concern raised by madaidan</a>:</p>
+security concern raised by madaidan</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/20" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>Being able to run a bunch of commands that would normally require
 root (such as killing every process, remounting all filesystems
 read-only, etc.) as an unprivileged user doesn't look very good. Sounds
@@ -203,17 +203,17 @@ usually only accessible by root?</li>
 <hr />
 <p><strong>Screensavers</strong></p>
 <p><a href="https://www.jwz.org/xscreensaver/faq.html">Quote from
-screensaver FAQ</a>:</p>
+screensaver FAQ</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.jwz.org/xscreensaver/faq.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>Backdoor #3:
 <span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">SysRq</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F</i></span></p>
 <p><code>&#160;&#160;&#160;This&#160;is&#160;the&#160;Linux&#160;kernel&#160;"OOM-killer"&#160;keystroke.&#160;It&#160;shoots&#160;down&#160;random&#160;long-running&#160;programs&#160;of&#160;its&#160;choosing,&#160;and&#160;so&#160;might&#160;target&#160;and&#160;kill&#160;xscreensaver,&#160;and&#160;there's&#160;no&#160;way&#160;for&#160;xscreensaver&#160;to&#160;protect&#160;itself&#160;from&#160;that.&#160;You&#160;can&#160;disable&#160;it&#160;globally&#160;with:&#160;sudo&#160;'echo&#160;176&#160;&gt;&#160;/proc/sys/kernel/sysrq'</code></p>
 <p><code>&#160;&#160;&#160;(As&#160;of&#160;version&#160;5.41,&#160;if&#160;xscreensaver&#160;is&#160;setuid,&#160;and&#160;you&#160;are&#160;running&#160;Linux&#160;2.6.37&#160;or&#160;newer,&#160;xscreensaver&#160;attempts&#160;to&#160;request&#160;that&#160;the&#160;kernel's&#160;out-of-memory&#160;assassin&#160;not&#160;randomly&#160;unlock&#160;the&#160;screen&#160;on&#160;you,&#160;but&#160;it's&#160;only&#160;a&#160;request.)</code></p></blockquote></p>
 <p>Related: <a href="https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128">Screen
-Locker (In)Security - Can we disable these at least 4 backdoors?</a></p>
+Locker (In)Security - Can we disable these at least 4 backdoors?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <hr />
 <p><strong>Keyboard events</strong></p>
 <p>Quote <a href="https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html">Linux
-Magic System Request Key Hacks</a>:</p>
+Magic System Request Key Hacks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kernel.org/doc/html/v4.14/admin-guide/sysrq.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>Note that the value of <code>/proc/sys/kernel/sysrq</code> influences
 only the invocation via a keyboard.</p></blockquote></p>
 <p><blockquote><p>Invocation of any operation via <code>/proc/sysrq-trigger</code> is
@@ -221,39 +221,39 @@ always allowed (by a user with admin privileges).</p></blockquote></p>
 <p>This raises the question:</p>
 <ul>
 <li>Could a compromised non-root user generate the keyboard event and
-thereby use SysRq? <a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/22">Quote</a>:</li>
+thereby use SysRq? <a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/22">Quote</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/22" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</li>
 </ul>
 <p><blockquote><p>Things such as xdotool won't work as the SysRq key isn't handled by
 Xorg, and things like /dev/uinput or /proc/sysrq-trigger require root
 access already.</p></blockquote></p>
 <hr />
 <p><strong>Remote SysRq use</strong></p>
-<p>SysRq can be triggered remotely, see: <a href="https://github.com/xairy/unlockdown">unlockdown</a>.</p>
-<h2 id="Virtual_Console_Handling">Virtual Console Handling</h2>
+<p>SysRq can be triggered remotely, see: <a href="https://github.com/xairy/unlockdown">unlockdown</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/xairy/unlockdown" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<h2 id="Virtual_Console_Handling">Virtual Console Handling</h2><span class="share-tooltip" data-anchor="Virtual_Console_Handling"><a class="headline-anchor" href="#Virtual_Console_Handling" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Virtual_Console_Handling">https://www.kicksecure.com/wiki/SysRq/#Virtual_Console_Handling</span></span></span></span>
 <p>It is unclear whether control is reserved to users performing
 <span class="template-keypress"><i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Alt</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">Ctrl</i>+<i class="padded-content-icon pci-style-rounded pci-border  pci-text fa-solid cs-white iconset-keyboard">F1</i></span>,
 see:</p>
 <ul>
 <li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/25">Not
-(a)getty.</a></li>
-<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26</a></li>
-<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38</a></li>
+(a)getty.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/25" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/26" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38">https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079/38" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h2 id="Attacks_from_Lesser_Adversaries_with_Physical_Access">Attacks
-from Lesser Adversaries with Physical Access</h2>
+from Lesser Adversaries with Physical Access</h2><span class="share-tooltip" data-anchor="Attacks_from_Lesser_Adversaries_with_Physical_Access"><a class="headline-anchor" href="#Attacks_from_Lesser_Adversaries_with_Physical_Access" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Attacks_from_Lesser_Adversaries_with_Physical_Access">https://www.kicksecure.com/wiki/SysRq/#Attacks_from_Lesser_Adversaries_with_Physical_Access</span></span></span></span>
 <p>See: <a href="https://forums.whonix.org/t/should-lesser-adversaries-with-physical-access-be-part-of-the-threat-model-of-whonix-whonix-host-kicksecure/7997">Should
 (lesser) adversaries with physical access be part of the threat model of
-Whonix / Whonix-Host / Kicksecure?</a></p>
-<h2 id="Development_Discussion">Development Discussion</h2>
+Whonix / Whonix-Host / Kicksecure?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/should-lesser-adversaries-with-physical-access-be-part-of-the-threat-model-of-whonix-whonix-host-kicksecure/7997" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h2 id="Development_Discussion">Development Discussion</h2><span class="share-tooltip" data-anchor="Development_Discussion"><a class="headline-anchor" href="#Development_Discussion" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SysRq/#Development_Discussion">https://www.kicksecure.com/wiki/SysRq/#Development_Discussion</span></span></span></span>
 <p>Forum development discussion: <a href="https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079">SysRq
-(Magic SysRq key)</a></p>
+(Magic SysRq key)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sysrq-magic-sysrq-key/8079" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="See_Also">See Also</h1>
 <ul>
 <li><a href="../Login_spoofing/">Login Spoofing</a></li>
 <li><a href="https://www.whonix.org/wiki/KVM#Magic_SysRq_Keys">KVM
-SysRq</a></li>
+SysRq</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/KVM#Magic_SysRq_Keys" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Wikipedia:
-Magic SysRq key</a></li>
+Magic SysRq key</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Magic_SysRq_key" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Attribution">Attribution</h1>
 <div class="info-box has-icon">
@@ -263,12 +263,12 @@ is an <a href="../About/#Implementation_of_the_Securing_Debian_Manual">Implement
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/restrict-sysrq.en.html">Restricting
 the use of the Magic SysRq
-key</a><img src="../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+key</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/restrict-sysrq.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><a href="https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key">https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key</a></li>
+<li id="cite_note-1"><a href="https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key">https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/debian-reference/ch09.en.html#_alt_sysrq_key" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Disaster_Recovery/" title="Disaster Recovery"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Disaster

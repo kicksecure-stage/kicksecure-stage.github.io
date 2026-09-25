@@ -21,17 +21,12 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Sequoia-PGP_automation">Sequoia-PGP automation</a></li><li class="toc-l3"><a href="#sqop_parsing">sqop parsing</a></li><li class="toc-l3"><a href="#sqop_vs_sq_for_automations">sqop vs sq for automations</a></li><li class="toc-l2"><a href="#In_English_Language">In English Language</a></li><li class="toc-l2"><a href="#In_German_Language">In German Language</a></li><li class="toc-l2"><a href="#Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</a></li><li class="toc-l2"><a href="#Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</a></li><li class="toc-l2"><a href="#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a></li><li class="toc-l2"><a href="#Bootstrapping_OpenPGP_Keys_from_the_Internet">Bootstrapping
-OpenPGP Keys from the Internet</a></li><li class="toc-l2"><a href="#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key
-Encryption vs OpenPGP Hardware Protection</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../PQCrypto/" title="PQCrypto"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">PQCrypto</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Software/" title="Software"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Software</span></a><span class="info"><span class="prev">Previous
 page: PQCrypto</span><span class="index">Index page:
 Documentation</span><span class="next">Next page:
 Software</span></span></span>OpenPGP</p>
-</div>
-<div class="mininav">
+</div><div class="mininav">
 <ul>
 <li><a href="../Verifying_Software_Signatures/">Verifying
 Software Signatures</a></li>
@@ -44,7 +39,12 @@ Key</a></li>
 <li><a href="../Digital_Signature_Policy/">Kicksecure
 Digital Signature Policy</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Sequoia-PGP_automation">Sequoia-PGP automation</a></li><li class="toc-l3"><a href="#sqop_parsing">sqop parsing</a></li><li class="toc-l3"><a href="#sqop_vs_sq_for_automations">sqop vs sq for automations</a></li><li class="toc-l2"><a href="#In_English_Language">In English Language</a></li><li class="toc-l2"><a href="#In_German_Language">In German Language</a></li><li class="toc-l2"><a href="#Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</a></li><li class="toc-l2"><a href="#Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</a></li><li class="toc-l2"><a href="#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a></li><li class="toc-l2"><a href="#Bootstrapping_OpenPGP_Keys_from_the_Internet">Bootstrapping
+OpenPGP Keys from the Internet</a></li><li class="toc-l2"><a href="#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key
+Encryption vs OpenPGP Hardware Protection</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
+
 <p><img src="../../media/GnuPG-Logo.svg" width="100" alt="GnuPG logo" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -56,13 +56,13 @@ of Trust, Bootstrapping OpenPGP keys from the web</p>
 </div>
 <figure>
 <img src="hauke_laging_gepruefter_artikel.en.png" title="Hauke Laging&#x27;s clearsigned version of this text can be found here: OpenPGP_Certified.  The certification image (hauke_laging_gepruefter_artikel.en.png) is copyrighted by Hauke Laging.|thumb" width="400" />
-<figcaption><a href="https://www.hauke-laging.de/">Hauke Laging</a>'s
+<figcaption><a href="https://www.hauke-laging.de/">Hauke Laging</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.hauke-laging.de/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>'s
 clearsigned version of this text can be found here: <a href="../OpenPGP_Certified/">OpenPGP_Certified</a>.<br />
 <br />
-The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a>
-image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a>)
+The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.openpgp-schulungen.de/fuer/webautoren/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 is copyrighted by <a href="https://www.hauke-laging.de/">Hauke
-Laging</a>.|thumb</figcaption>
+Laging</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.hauke-laging.de/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.|thumb</figcaption>
 </figure>
 <h1 id="Introduction">Introduction</h1>
 <p>OpenPGP is: <sup class="reference"><a href="#cite_note-1">[1]</a></sup> <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
@@ -73,7 +73,7 @@ for encrypted messages, signatures, and certificates for exchanging
 public keys.</p></blockquote></p>
 <p><blockquote><p>OpenPGP is the most widely used email encryption standard. ...
 OpenPGP was originally derived from the PGP software, created by <a href="https://philzimmermann.com/EN/background/index.html">Phil
-Zimmermann</a>.</p></blockquote></p>
+Zimmermann</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://philzimmermann.com/EN/background/index.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p></blockquote></p>
 <p>The primary purpose of OpenPGP relates to end-to-end encrypted email
 communication, but it is also utilized for encrypted messaging, password
 managers and other use cases. OpenPGP provides support for all major
@@ -88,33 +88,33 @@ standard either directly or with additional software. Applicable domains
 include:</p>
 <ul>
 <li><u><a href="https://www.openpgp.org/software/">Email
-encryption</a></u>: for various platforms, browser plugins, webmail
+encryption</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/software/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></u>: for various platforms, browser plugins, webmail
 providers with browser plugins, and webmail providers with in-browser
 cryptography</li>
 <li><u><a href="https://www.openpgp.org/software/server/">Server
-software</a></u>: webmail clients, keyservers, mailing list software and
+software</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/software/server/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></u>: webmail clients, keyservers, mailing list software and
 password managers</li>
 <li><u><a href="https://www.openpgp.org/software/developer/">Developer
-libraries</a></u>: various OpenPGP libraries, libraries supporting
+libraries</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/software/developer/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></u>: various OpenPGP libraries, libraries supporting
 OpenPGP smartcards, and developer tools</li>
 <li><u><a href="https://www.openpgp.org/software/misc/">Miscellaneous
-tools</a></u>: web-based tools and other applications</li>
+tools</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/software/misc/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></u>: web-based tools and other applications</li>
 </ul>
 <p><strong>Figure:</strong> <em>How PGP Works</em>
 <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
 <p><img src="../../media/HowPGPworks.png.webp" alt="HowPGPworks.png" /></p>
 <p>To learn more about this topic, refer to the following resources:</p>
 <ul>
-<li><a href="https://www.openpgp.org/">OpenPGP website</a></li>
-<li><a href="https://github.com/openpgp">OpenPGP on GitHub</a></li>
+<li><a href="https://www.openpgp.org/">OpenPGP website</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/openpgp">OpenPGP on GitHub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/openpgp" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy">Pretty
-Good Privacy on Wikipedia</a></li>
+Good Privacy on Wikipedia</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Pretty_Good_Privacy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="../Verifying_Software_Signatures/">Verifying
 Software Signatures</a></li>
 </ul>
 <p>To search for keys by email address, Key ID or Fingerprint, visit the
 <a href="https://keys.openpgp.org/"><code>keys.openpgpg.org</code>
-server</a> (<a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/">.onion</a>).
+server</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://keys.openpgp.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (<a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/">.onion</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>).
 This publicly available service ("keyserver") enables the uploading,
 discovery, distribution and management of OpenPGP-compatible keys.</p>
 <h1 id="Common_Misconceptions">Common Misconceptions</h1>
@@ -144,16 +144,16 @@ model.</p>
 <p><strong>3.</strong> If a keyserver is required, utilize the onion
 address for <code>keys.openpgp.org</code>.</p>
 <p>At the time of writing, the following onion address is consistently
-functional: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a></p>
+functional: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><strong>4.</strong> Learn more about gpg configuration basics for use
 with <code>keys.openpgp.org</code>.</p>
-<p>Instructions are available <a href="https://keys.openpgp.org/about/usage">here</a> <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/about/usage">(.onion)</a>.</p>
+<p>Instructions are available <a href="https://keys.openpgp.org/about/usage">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://keys.openpgp.org/about/usage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/about/usage">(.onion)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion/about/usage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Also see:</p>
 <ul>
 <li><a href="https://forums.whonix.org/t/gpg-recv-keys-fails-no-longer-use-keyservers-for-anything/5607">gpg
---recv-keys fails / no longer use keyservers for anything</a></li>
+--recv-keys fails / no longer use keyservers for anything</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/gpg-recv-keys-fails-no-longer-use-keyservers-for-anything/5607" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.whonix.org/t/new-fixed-keyserver-keys-openpgp-org/11761">new,
-fixed keyserver - keys.openpgp.org</a></li>
+fixed keyserver - keys.openpgp.org</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/new-fixed-keyserver-keys-openpgp-org/11761" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 </div>
 <h1 id="Related_Tools">Related Tools</h1>
@@ -165,27 +165,27 @@ as GnuPG are also not very secure. Thus, it is recommended against by
 many cryptography experts.</p>
 <ul>
 <li><a href="https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/">What's
-the matter with PGP?</a></li>
+the matter with PGP?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://latacora.micro.blog/2019/07/16/the-pgp-problem.html">The
-PGP Problem</a></li>
+PGP Problem</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://latacora.micro.blog/2019/07/16/the-pgp-problem.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://words.filippo.io/giving-up-on-long-term-pgp/">I'm
-giving up on PGP</a></li>
+giving up on PGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://words.filippo.io/giving-up-on-long-term-pgp/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://moxie.org/2015/02/24/gpg-and-me.html">GPG And
-Me</a></li>
+Me</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://moxie.org/2015/02/24/gpg-and-me.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://secushare.org/PGP">15 reasons not to start using
-PGP</a></li>
+PGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://secushare.org/PGP" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://buttondown.email/cryptography-dispatches/archive/505a859e-964d-4d15-9ad8-7ad0f45e1345">Cryptography
-Dispatches: Replace PGP With an HTTPS Form</a></li>
+Dispatches: Replace PGP With an HTTPS Form</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://buttondown.email/cryptography-dispatches/archive/505a859e-964d-4d15-9ad8-7ad0f45e1345" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.openbsd.org/papers/bsdcan-signify.html">signify:
-Securing OpenBSD From Us To You</a></li>
+Securing OpenBSD From Us To You</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openbsd.org/papers/bsdcan-signify.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<p>Not yet reviewed: <s> Better alternatives are <a href="https://github.com/FiloSottile/age">age</a> for file encryption
-and <a href="https://man.openbsd.org/signify">signify</a> for signing.
+<p>Not yet reviewed: <s> Better alternatives are <a href="https://github.com/FiloSottile/age">age</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/FiloSottile/age" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for file encryption
+and <a href="https://man.openbsd.org/signify">signify</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man.openbsd.org/signify" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for signing.
 </s></p>
 <h1 id="GnuPG_Usability_Security_Issues">GnuPG Usability Security
 Issues</h1>
 <p>Security issue:</p>
-<p><a href="https://gpg.fail/">https://gpg.fail/</a></p>
+<p><a href="https://gpg.fail/">https://gpg.fail/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gpg.fail/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p>Automation issues:</p>
 <p>Using <code>gpg</code> with scripts and automation is difficult and
 potentially insecure.</p>
@@ -221,11 +221,11 @@ future changes of gpg. To enable this interface use the options
 "info" pages as well as the PDF version of the GnuPG manual features a
 chapter on unattended use of GnuPG. As an alternative the library GPGME
 can be used as a high-level abstraction on top of that
-interface.<span class="blockquote-context"><a href="https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html">https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html</a></span></p></blockquote></p>
+interface.<span class="blockquote-context"><a href="https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html">https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.gnupg.org/documentation/manuals/gnupg/GPG-Input-and-Output.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>This might get easier with Sequoia.</p>
 <h1 id="Sequoia">Sequoia</h1>
 <p><img src="../../media/Sequoia.svg" width="100" alt="Sequoia logo" /></p>
-<p><a href="https://sequoia-pgp.org/">Sequoia</a> might be a suitable
+<p><a href="https://sequoia-pgp.org/">Sequoia</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> might be a suitable
 replacement for GnuPG.</p>
 <div class="info-box ">
 <p>Install package(s) <code>sq</code> following these instructions:</p>
@@ -263,22 +263,22 @@ complete.</p>
 <p>forum discussions:</p>
 <ul>
 <li><a href="https://forums.kicksecure.com/t/sequoia-pgp-gpg-replacement-openpgp/260">Sequoia-PGP
-(gpg replacement) - OpenPGP</a></li>
+(gpg replacement) - OpenPGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/sequoia-pgp-gpg-replacement-openpgp/260" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.kicksecure.com/t/sequoia-git-sq-git/1638">Sequoia
-git ("<code>sq-git</code>")</a></li>
+git ("<code>sq-git</code>")</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/sequoia-git-sq-git/1638" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="Sequoia-PGP_automation">Sequoia-PGP automation</h2>
-<h3 id="sqop_parsing">sqop parsing</h3>
+<h2 id="Sequoia-PGP_automation">Sequoia-PGP automation</h2><span class="share-tooltip" data-anchor="Sequoia-PGP_automation"><a class="headline-anchor" href="#Sequoia-PGP_automation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#Sequoia-PGP_automation">https://www.kicksecure.com/wiki/OpenPGP/#Sequoia-PGP_automation</span></span></span></span>
+<h3 id="sqop_parsing">sqop parsing</h3><span class="share-tooltip" data-anchor="sqop_parsing"><a class="headline-anchor" href="#sqop_parsing" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#sqop_parsing">https://www.kicksecure.com/wiki/OpenPGP/#sqop_parsing</span></span></span></span>
 <p><code>sqop</code> is Sequoia-PGP's implementation of the Stateless
 OpenPGP (SOP) interface.</p>
 <p>The SOP specification says:</p>
 <p><blockquote><p>When sop succeeds, it will return 0 (OK) and emit nothing to Standard
 Error.<span class="blockquote-context"><a href="https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/">Stateless
-OpenPGP Command Line Interface</a>, "Failure Modes"</span></p></blockquote></p>
+OpenPGP Command Line Interface</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, "Failure Modes"</span></p></blockquote></p>
 <p><blockquote><p>When sop fails, it fails with a non-zero return code, and emits one
 or more warning messages on Standard
 Error.<span class="blockquote-context"><a href="https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/">Stateless
-OpenPGP Command Line Interface</a>, "Failure Modes"</span></p></blockquote></p>
+OpenPGP Command Line Interface</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://datatracker.ietf.org/doc/draft-dkg-openpgp-stateless-cli/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, "Failure Modes"</span></p></blockquote></p>
 <p>The same specification also says that, when <code>--debug</code> is
 present, <code>sop</code> may emit implementation-specific debugging
 information to standard error.</p>
@@ -289,7 +289,7 @@ data.</p>
 <p>In normal successful operation, that means <code>sqop</code> should
 not emit <code>stderr</code>. On failure, <code>stderr</code> is the
 right place to look for a user-facing error message.</p>
-<h3 id="sqop_vs_sq_for_automations">sqop vs sq for automations</h3>
+<h3 id="sqop_vs_sq_for_automations">sqop vs sq for automations</h3><span class="share-tooltip" data-anchor="sqop_vs_sq_for_automations"><a class="headline-anchor" href="#sqop_vs_sq_for_automations" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#sqop_vs_sq_for_automations">https://www.kicksecure.com/wiki/OpenPGP/#sqop_vs_sq_for_automations</span></span></span></span>
 <p>For automated used in programs or scripts use <code>sqop</code> not
 <code>sq</code>!</p>
 <p>Do <strong>not</strong> parse <code>sq verify</code>'s human-readable
@@ -300,7 +300,7 @@ machine readable", and recommended JSON output modes to avoid "common
 security-sensitive bugs" from manual parsing.
 <ul>
 <li>Source: <a href="https://sequoia-pgp.org/blog/2021/01/26/202101-sq-release/">Sequoia
-PGP release notes</a></li>
+PGP release notes</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.org/blog/2021/01/26/202101-sq-release/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><code>sq verify</code> applies authentication rules that depend on
 OpenPGP data, not on a stable machine-readable text format. In
@@ -317,14 +317,14 @@ confused by signature contents and policy decisions.
 </dd>
 </dl></li>
 <li>Source: <a href="https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html"><code>sq</code>
-manual page</a></li>
+manual page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq.1.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><code>sq sign</code> supports signature notations, and Sequoia
 documents them as "human readable". Free-text signature metadata is
 therefore a bad input source for a security-sensitive parser.
 <ul>
 <li>Source: <a href="https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq-sign.1.html"><code>sq sign</code>
-manual page</a></li>
+manual page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.gitlab.io/sequoia-sq/man/sq-sign.1.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ol>
 <p>Therefore,</p>
@@ -340,47 +340,47 @@ provides a documented stable machine-readable format.</li>
 <h1 id="PGPainless">PGPainless</h1>
 <p>Another potential replacement for GnuPG.</p>
 <ul>
-<li><a href="https://gh.pgpainless.org/">https://gh.pgpainless.org/</a></li>
-<li><a href="https://packages.debian.org/source/bookworm/all/pgpainless">https://packages.debian.org/source/bookworm/all/pgpainless</a></li>
+<li><a href="https://gh.pgpainless.org/">https://gh.pgpainless.org/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gh.pgpainless.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://packages.debian.org/source/bookworm/all/pgpainless">https://packages.debian.org/source/bookworm/all/pgpainless</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/source/bookworm/all/pgpainless" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Links">Links</h1>
-<h2 id="In_English_Language">In English Language</h2>
+<h2 id="In_English_Language">In English Language</h2><span class="share-tooltip" data-anchor="In_English_Language"><a class="headline-anchor" href="#In_English_Language" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#In_English_Language">https://www.kicksecure.com/wiki/OpenPGP/#In_English_Language</span></span></span></span>
 <ul>
 <li><a href="https://emailselfdefense.fsf.org/en/">Email
-Self-Defense</a></li>
+Self-Defense</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://emailselfdefense.fsf.org/en/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://userbase.kde.org/Concepts/OpenPGP_For_Beginners">OpenPGP
-For Beginners</a></li>
+For Beginners</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://userbase.kde.org/Concepts/OpenPGP_For_Beginners" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://userbase.kde.org/Concepts/OpenPGP_Getting_Started">OpenPGP
-Getting Started</a></li>
+Getting Started</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://userbase.kde.org/Concepts/OpenPGP_Getting_Started" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://userbase.kde.org/Concepts/OpenPGP_Help_Spread">OpenPGP
-Help Spread</a></li>
+Help Spread</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://userbase.kde.org/Concepts/OpenPGP_Help_Spread" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.elstel.org/software/GnuPG-usage.html.en">How to
-use GnuPG securely</a></li>
-<li>See also if there are any <a href="https://www.cryptoparty.in/location">crypto parties</a> in your
+use GnuPG securely</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.elstel.org/software/GnuPG-usage.html.en" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>See also if there are any <a href="https://www.cryptoparty.in/location">crypto parties</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cryptoparty.in/location" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> in your
 vicinity.</li>
 <li>Try typing "crypto party" followed by the nearest city in a search
 engine of your choice.</li>
-<li><a href="https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md">https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md</a></li>
+<li><a href="https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md">https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/lfit/itpol/blob/master/protecting-code-integrity.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="In_German_Language">In German Language</h2>
+<h2 id="In_German_Language">In German Language</h2><span class="share-tooltip" data-anchor="In_German_Language"><a class="headline-anchor" href="#In_German_Language" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#In_German_Language">https://www.kicksecure.com/wiki/OpenPGP/#In_German_Language</span></span></span></span>
 <ul>
 <li><a href="http://www.openpgp-schulungen.de/fuer/alle/">Informationen
-&#252;ber OpenPGP</a></li>
+&#252;ber OpenPGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.openpgp-schulungen.de/fuer/alle/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.cryptoparty.in/location#germany">kostenlose
-Schulungsangebote</a></li>
+Schulungsangebote</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cryptoparty.in/location#germany" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="http://www.openpgp-schulungen.de/fuer/unterstuetzer/">F&#246;rderung
-von OpenPGP</a></li>
+von OpenPGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.openpgp-schulungen.de/fuer/unterstuetzer/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.elstel.org/software/GnuPG-usage.html.de">Wie
-man GnuPG sicher verwenden kann</a></li>
+man GnuPG sicher verwenden kann</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.elstel.org/software/GnuPG-usage.html.de" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Advanced_Topics">Advanced Topics</h1>
-<h2 id="Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</h2>
+<h2 id="Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP Key</h2><span class="share-tooltip" data-anchor="Air_Gapped_OpenPGP_Key"><a class="headline-anchor" href="#Air_Gapped_OpenPGP_Key" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#Air_Gapped_OpenPGP_Key">https://www.kicksecure.com/wiki/OpenPGP/#Air_Gapped_OpenPGP_Key</span></span></span></span>
 <p>See <a href="../Air_Gapped_OpenPGP_Key/">Air Gapped
 OpenPGP Key</a>.</p>
-<h2 id="Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</h2>
+<h2 id="Clearsign_with_Multiple_Keys">Clearsign with Multiple Keys</h2><span class="share-tooltip" data-anchor="Clearsign_with_Multiple_Keys"><a class="headline-anchor" href="#Clearsign_with_Multiple_Keys" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#Clearsign_with_Multiple_Keys">https://www.kicksecure.com/wiki/OpenPGP/#Clearsign_with_Multiple_Keys</span></span></span></span>
 <p><a href="https://lists.gnupg.org/pipermail/gnupg-users/2013-July/047118.html">Clearsign
-text document with multiple keys?</a></p>
-<h2 id="The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</h2>
+text document with multiple keys?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnupg.org/pipermail/gnupg-users/2013-July/047118.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h2 id="The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</h2><span class="share-tooltip" data-anchor="The_OpenPGP_Web_of_Trust"><a class="headline-anchor" href="#The_OpenPGP_Web_of_Trust" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#The_OpenPGP_Web_of_Trust">https://www.kicksecure.com/wiki/OpenPGP/#The_OpenPGP_Web_of_Trust</span></span></span></span>
 <div class="info-box ">
 <p>If you want to be extra cautious and really authenticate a OpenPGP
 key in a stronger way than what standard HTTPS offers you, you could use
@@ -395,7 +395,7 @@ page</a>.</p>
 trusting a website, and that designation of trust should be done on the
 basis of human interaction.</p>
 <p>The OpenPGP <a href="https://en.wikipedia.org/wiki/Web_of_trust">Web
-of Trust</a> is a decentralized trust model based on OpenPGP keys. Let's
+of Trust</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Web_of_trust" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is a decentralized trust model based on OpenPGP keys. Let's
 see that with an example.</p>
 <p><em>You're a friend of Alice and really trust her way of managing
 OpenPGP keys. You've validated Alice's key.</em></p>
@@ -413,12 +413,12 @@ trust path since it based on a network of direct human relationships and
 the knowledge of quite complex tools such as GnuPG.</p>
 </div>
 <ul>
-<li><a href="https://book.sequoia-pgp.org/bckgrnd_wot.html">https://book.sequoia-pgp.org/bckgrnd_wot.html</a></li>
-<li><a href="https://sequoia-pgp.gitlab.io/sequoia-wot/">https://sequoia-pgp.gitlab.io/sequoia-wot/</a></li>
-<li><a href="https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/">https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/</a></li>
+<li><a href="https://book.sequoia-pgp.org/bckgrnd_wot.html">https://book.sequoia-pgp.org/bckgrnd_wot.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://book.sequoia-pgp.org/bckgrnd_wot.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://sequoia-pgp.gitlab.io/sequoia-wot/">https://sequoia-pgp.gitlab.io/sequoia-wot/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.gitlab.io/sequoia-wot/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/">https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://sequoia-pgp.org/blog/2023/03/29/202303-pretty-graphics-for-the-web-of-trust/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h2 id="Bootstrapping_OpenPGP_Keys_from_the_Internet">Bootstrapping
-OpenPGP Keys from the Internet</h2>
+OpenPGP Keys from the Internet</h2><span class="share-tooltip" data-anchor="Bootstrapping_OpenPGP_Keys_from_the_Internet"><a class="headline-anchor" href="#Bootstrapping_OpenPGP_Keys_from_the_Internet" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#Bootstrapping_OpenPGP_Keys_from_the_Internet">https://www.kicksecure.com/wiki/OpenPGP/#Bootstrapping_OpenPGP_Keys_from_the_Internet</span></span></span></span>
 <p>Some OpenPGP users are unsure how to stay totally anonymous or what
 steps to take if there is no trusted path to an OpenPGP key.</p>
 <p>Some people just write an unencrypted mail to the recipient and ask
@@ -436,8 +436,8 @@ and key signing is recommended in the first place.</p>
 <p>As an alternative, some people also publish their OpenPGP fingerprint
 or their OpenPGP public key on their personal or other websites. This
 method is more secure if the website is accessible over TLS -- even more
-so when both server and client are using <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a>
-(and <a href="https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions">DNSSEC</a>)
+so when both server and client are using <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+(and <a href="https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions">DNSSEC</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 -- and/or as an <a href="../Onion_Services/#How_Onion_Services_Connections_Work">onion service</a> with a <code>.onion</code> domain. Of
 course, this presupposes the visitor is aware what kind of
 transportation mechanism is provided. In this case, the adversary would
@@ -464,11 +464,11 @@ successfully spoof all these information avenues. Spreading the
 fingerprint and/or key in various domains is only helpful if the person
 searching is either aware of that fact or has undertaken research on
 their own initiative.</p>
-<p><a href="https://api.github.com/users/">https://api.github.com/users/</a>/gpg_keys</p>
-<p>example: <a href="https://api.github.com/users/adrelanos/gpg_keys">https://api.github.com/users/adrelanos/gpg_keys</a></p>
+<p><a href="https://api.github.com/users/">https://api.github.com/users/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://api.github.com/users/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>/gpg_keys</p>
+<p>example: <a href="https://api.github.com/users/adrelanos/gpg_keys">https://api.github.com/users/adrelanos/gpg_keys</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://api.github.com/users/adrelanos/gpg_keys" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><span class="manually-placed-anchor " id="Hardware_Protection_vs_gpg_key_encryption"></span></p>
 <h2 id="GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">GnuPG Key
-Encryption vs OpenPGP Hardware Protection</h2>
+Encryption vs OpenPGP Hardware Protection</h2><span class="share-tooltip" data-anchor="GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection"><a class="headline-anchor" href="#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/OpenPGP/#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection">https://www.kicksecure.com/wiki/OpenPGP/#GnuPG_Key_Encryption_vs_OpenPGP_Hardware_Protection</span></span></span></span>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span>
 This comparison is incomplete.</p>
@@ -531,7 +531,7 @@ extract the key from the device's storage</p></td>
 <tr class="even">
 <td><p>Wipes
 OpenPGP private key once physical tampering is detected (<a href="https://en.wikipedia.org/wiki/FIPS_140-2#Level_3">FIPS 140-2 Level
-3</a>)</p></td>
+3</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/FIPS_140-2#Level_3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)</p></td>
 <td><p>No</p></td>
 <td><p>No
 (?) <sup class="reference"><a href="#cite_note-18">[18]</a></sup></p></td>
@@ -653,12 +653,12 @@ critical vulnerability was discovered which allows certificates to be
 spammed using a flaw in the OpenPGP protocol itself. Future releases of
 OpenPGP software will likely mitigate this flaw, but high profile
 contributors to the protocol suggest that data should not be retrieved
-form the network at present if possible. For more details, see <a href="https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f">here</a>.
+form the network at present if possible. For more details, see <a href="https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gist.github.com/rjhansen/67ab921ffb4084c865b3618d6955275f" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 <sup class="reference"><a href="#cite_note-45">[45]</a></sup> <sup class="reference"><a href="#cite_note-46">[46]</a></sup></p>
 <hr />
 <p><strong>Is the OpenPGP keyserver part of the SKS pool?</strong></p>
 <p>The <a href="https://keys.openpgp.org/about/faq">OpenPGP keyserver
-FAQ</a> notes: <blockquote><p>No. The federation model of the SKS pool has various problems in
+FAQ</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://keys.openpgp.org/about/faq" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> notes: <blockquote><p>No. The federation model of the SKS pool has various problems in
 terms of reliability, abuse-resistance, privacy, and usability. We might
 do something similar to it, but keys.openpgp.org will never be part of
 the SKS pool itself.</p></blockquote></p>
@@ -674,7 +674,7 @@ either:</p>
 <li>Securely download the key from a source outside the keyserver model;
 or</li>
 <li>If that is not possible, utilize the keyserver v3 onion address
-instead: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a></li>
+instead: <a href="http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion"><code>http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://zkaan2xfbuxia2wpf7ofnkbz6r5zdbbvxbunvp5g2iebopbfc4iqmbad.onion" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="See_Also">See Also</h1>
 <ul>
@@ -691,12 +691,12 @@ Proposed Solutions</a></li>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><a href="https://www.openpgp.org/about/">https://www.openpgp.org/about/</a></li>
-<li id="cite_note-2"><a href="https://www.openpgp.org/">https://www.openpgp.org/</a></li>
-<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP">https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP</a></li>
-<li id="cite_note-4"><a href="https://en.wikipedia.org/wiki/File:PGP_diagram.svg">https://en.wikipedia.org/wiki/File:PGP_diagram.svg</a></li>
-<li id="cite_note-5">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a></li>
-<li id="cite_note-6"><a href="https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html">https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html</a></li>
+<li id="cite_note-1"><a href="https://www.openpgp.org/about/">https://www.openpgp.org/about/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/about/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-2"><a href="https://www.openpgp.org/">https://www.openpgp.org/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openpgp.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-3"><a href="https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP">https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Pretty_Good_Privacy#OpenPGP" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-4"><a href="https://en.wikipedia.org/wiki/File:PGP_diagram.svg">https://en.wikipedia.org/wiki/File:PGP_diagram.svg</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/File:PGP_diagram.svg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-5">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://theupdateframework.io/security/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-6"><a href="https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html">https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnupg.org/pipermail/gnupg-users/2015-January/052185.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-7">Token or smartcard.</li>
 <li id="cite_note-8">If a secure password has been chosen to protect the OpenPGP private
 key.</li>
@@ -706,7 +706,7 @@ smartcard or token.</li>
 <li id="cite_note-11">Stored on the memory chip of the smartcard or token.</li>
 <li id="cite_note-12">Source:<br />
 * gnupg-users mailing list: <a href="https://lists.gnupg.org/pipermail/gnupg-users/2013-December/048576.html">Possible
-to combine smartcard PIN with key password?</a><br />
+to combine smartcard PIN with key password?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnupg.org/pipermail/gnupg-users/2013-December/048576.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><br />
 * Patrick Schleizer specifically asked Werner Koch about this at c3c1.
 This is neither possible nor a planned or likely future feature.</li>
 <li id="cite_note-13">The specification may be Freedom Software, but currently there are
@@ -761,7 +761,7 @@ key vs token or smartcard has been lost or stolen.</li>
 GnuPG.</li>
 <li id="cite_note-31">No vulnerabilities in GnuPG's private OpenPGP key encryption has
 ever been reported.</li>
-<li id="cite_note-32">Quote <a href="https://en.wikipedia.org/wiki/Smart_card#Security">Wikipedia</a>:
+<li id="cite_note-32">Quote <a href="https://en.wikipedia.org/wiki/Smart_card#Security">Wikipedia</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Smart_card#Security" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:
 <blockquote><p>Smart cards can be physically disassembled by using acid, abrasives,
 or some other technique to obtain unrestricted access to the on-board
 microprocessor. Although such techniques involve a fairly high risk of
@@ -770,8 +770,8 @@ therein, they permit much more detailed information (e.g.
 photomicrographs of encryption hardware) to be extracted.</p></blockquote></li>
 <li id="cite_note-33">Other, non-OpenPGP smartcards have been cracked in the past using
 ultra-expensive electron-scanning microscopes. Source: theguardian, <a href="https://www.theguardian.com/technology/2002/mar/13/media.citynews">How
-codebreakers cracked the secrets of the smart card</a></li>
-<li id="cite_note-34"><a href="https://www.cl.cam.ac.uk/~sps32/mcu_lock.html">https://www.cl.cam.ac.uk/~sps32/mcu_lock.html</a></li>
+codebreakers cracked the secrets of the smart card</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.theguardian.com/technology/2002/mar/13/media.citynews" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-34"><a href="https://www.cl.cam.ac.uk/~sps32/mcu_lock.html">https://www.cl.cam.ac.uk/~sps32/mcu_lock.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cl.cam.ac.uk/~sps32/mcu_lock.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-35">More information is required on how realistic, difficult and
 expensive these attacks are. Additional reader contributions on this
 issue are most welcome.</li>
@@ -799,7 +799,7 @@ can also intercept this and make it "decrypt mail Y and X".</li>
 <li id="cite_note-42">Users could attach their smartcard to other computers, perhaps
 non-compromised, perhaps offline machines and check the signature
 counter. For example output, see: <a href="https://spin.atomicobject.com/2014/02/09/gnupg-openpgp-smartcard/">Using
-an OpenPGP Smartcard with GnuPG</a>.</li>
+an OpenPGP Smartcard with GnuPG</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://spin.atomicobject.com/2014/02/09/gnupg-openpgp-smartcard/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 <li id="cite_note-43">Once malware is running on a machine, nothing the machine displays
 can be trusted. It could be manipulated by the malware.</li>
 <li id="cite_note-44">Assumption: The token or card reader has not been compromised by
@@ -818,10 +818,10 @@ other certificates. * We do not even know the scope of the damage.</li>
 </ol>
 </div>
 <h1 id="License">License</h1>
-<p>The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a>
-image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a>)
+<p>The <a href="http://www.openpgp-schulungen.de/fuer/webautoren/">certification</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.openpgp-schulungen.de/fuer/webautoren/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+image (<a href="https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png">hauke_laging_gepruefter_artikel.en.png</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/File:Hauke_laging_gepruefter_artikel.en.png" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 is copyrighted by <a href="https://www.hauke-laging.de/">Hauke
-Laging</a>.</p>
+Laging</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.hauke-laging.de/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>The rest of this page is under the following license.</p>
 <p><blockquote><p>Kicksecure OpenPGP wiki page Copyright (C) Amnesia
  Kicksecure OpenPGP wiki page Copyright (C)

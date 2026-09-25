@@ -21,9 +21,6 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Disabling_Swap_for_an_Entire_System">Disabling Swap for an
-Entire System</a></li><li class="toc-l2"><a href="#Host">Host</a></li><li class="toc-l2"><a href="#KVM">KVM</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="mininav">
 <ul>
 <li><a href="../Live_Mode/">Live Mode</a></li>
@@ -37,7 +34,10 @@ Protection</a></li>
 USB</a></li>
 <li><a href="../Persistent_Mode/">Persistent Mode</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Disabling_Swap_for_an_Entire_System">Disabling Swap for an
+Entire System</a></li><li class="toc-l2"><a href="#Host">Host</a></li><li class="toc-l2"><a href="#KVM">KVM</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <div class="mininav">
 <ul>
 <li><a href="../Read-only/">read-only</a></li>
@@ -64,8 +64,8 @@ in Live Mode.</p>
 option of booting into <a href="../Live_Mode/">Live
 Mode</a>. When using this feature in a Kicksecure VM, precautions should
 still be taken on trusted systems (like GNU/Linux hosts) to prevent
-leaving traces -- proprietary operating systems such as <a href="../Windows_Hosts/">Windows</a> and
-[Broken-ExtLink--no-url-was-provided] are a lost cause.</p>
+leaving traces -- proprietary operating systems such as <a href="../Windows_Hosts/">Windows</a> and macOS are a lost
+cause.</p>
 <p>At the moment, there is only one advantage of this configuration
 compared to using <a href="../Live_Mode/">Live Mode</a> as
 HOST -- achieving selective amnesia for some virtual machines (VM) while
@@ -100,13 +100,13 @@ Host swapping may be the biggest threat to anti-forensics on Linux when
 running in a VM. <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
 </div>
 <h2 id="Disabling_Swap_for_an_Entire_System">Disabling Swap for an
-Entire System</h2>
+Entire System</h2><span class="share-tooltip" data-anchor="Disabling_Swap_for_an_Entire_System"><a class="headline-anchor" href="#Disabling_Swap_for_an_Entire_System" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#Disabling_Swap_for_an_Entire_System">https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#Disabling_Swap_for_an_Entire_System</span></span></span></span>
 <p>Turning off swap for the whole system may cause system instability or
 crashes if the RAM hard limit is reached. However, the ample RAM in new
 systems makes this unlikely and it is worth the tradeoff.
 <sup class="reference"><a href="#cite_note-8">[8]</a></sup> Disabling swap also disables the hibernation
 functionality.</p>
-<h2 id="Host">Host</h2>
+<h2 id="Host">Host</h2><span class="share-tooltip" data-anchor="Host"><a class="headline-anchor" href="#Host" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#Host">https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#Host</span></span></span></span>
 <p><u>On the host</u></p>
 <div class="info-box ">
 <p><strong>1.</strong> Disable swap either temporarily or
@@ -127,7 +127,7 @@ should show zeros.</p>
 <p>TODO: the existing swap partition should be securely wiped since
 sensitive information like encryption keys might have already leaked
 there.</p>
-<h2 id="KVM">KVM</h2>
+<h2 id="KVM">KVM</h2><span class="share-tooltip" data-anchor="KVM"><a class="headline-anchor" href="#KVM" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#KVM">https://www.kicksecure.com/wiki/Anti-Forensics_Precautions/#KVM</span></span></span></span>
 <p><u>Disabling swapping selectively for KVM VM</u></p>
 <p>An alternative KVM-only solution is to set guest memory pages as
 'locked'. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
@@ -177,7 +177,7 @@ changes you made. <span class="code-select">sysctl -p</span></p>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1">[Broken-ExtLink--no-url-was-provided]</li>
+<li id="cite_note-1">Forensics</li>
 <li id="cite_note-2"><a href="../Warning/#Kicksecure_Persistence_vs_Live_vs_Amnesic">Kicksecure Persistence vs Live vs Amnesic</a></li>
 <li id="cite_note-3"><a href="../Encrypted_Images/#Other_Security_Considerations">Encrypted Guest Images: Other Security
 Considerations</a></li>
@@ -187,13 +187,13 @@ Considerations</a></li>
 <code>init_on_free</code>) and/or your firmware reset attack mitigation
 can kick in</li>
 <li id="cite_note-6">And/or the memory should be wiped upon shutdown. This is a
-theoretical mechanism at present because it is <a href="../Unsupported/">undocumented</a>. <a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596</a></li>
+theoretical mechanism at present because it is <a href="../Unsupported/">undocumented</a>. <a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-7">Linux also uses swapping despite having apparent "free" memory. The
 kernel tends to swap out long-inactive and memory-consuming processes.
 This frees up RAM for caches and therefore improves responsiveness.</li>
-<li id="cite_note-8"><a href="https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping">https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping</a></li>
-<li id="cite_note-9"><a href="https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap">https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap</a></li>
-<li id="cite_note-10"><a href="https://libvirt.org/formatdomain.html#memory-backing">https://libvirt.org/formatdomain.html#memory-backing</a></li>
+<li id="cite_note-8"><a href="https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping">https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/questions/243357/how-to-prevent-a-specific-program-from-swapping" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-9"><a href="https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap">https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://serverfault.com/questions/561446/how-can-i-keep-important-vms-in-memory-without-disabling-swap" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-10"><a href="https://libvirt.org/formatdomain.html#memory-backing">https://libvirt.org/formatdomain.html#memory-backing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libvirt.org/formatdomain.html#memory-backing" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-11">When set and supported by the hypervisor, memory pages belonging to
 the domain will be locked in the host's memory and the host will not be
 allowed to swap them out, which might be required for some workloads
@@ -208,12 +208,12 @@ memory could cause a denial-of-service attack on the host. Due to the
 risk, this option is discouraged unless your workload demands it. Even
 then, to mitigate these risks it is strongly recommended to set a
 `hard_limit` (see <a href="https://libvirt.org/formatdomain.html#memory-tuning">memory
-tuning</a>) on memory allocation suitable for the specific environment
+tuning</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libvirt.org/formatdomain.html#memory-tuning" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>) on memory allocation suitable for the specific environment
 at the same time.</li>
-<li id="cite_note-12"><a href="https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0">https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0</a></li>
-<li id="cite_note-13"><a href="https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie">https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie</a></li>
-<li id="cite_note-14"><a href="https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/">https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/</a></li>
-<li id="cite_note-15"><a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps">https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps</a></li>
+<li id="cite_note-12"><a href="https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0">https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/questions/760102/why-do-i-get-swapping-even-if-i-set-vm-swappiness-to-0" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-13"><a href="https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie">https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bentasker.co.uk/documentation/linux/312-installing-and-configuring-kdump-on-debian-jessie" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-14"><a href="https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/">https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://nanxiao.me/en/enable-generating-core-dump-file-on-debian-linux/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-15"><a href="https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps">https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://linux-audit.com/understand-and-configure-core-dumps-work-on-linux/#linux-and-core-dumps" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <div class="robots-nocontent" data-nosnippet="">

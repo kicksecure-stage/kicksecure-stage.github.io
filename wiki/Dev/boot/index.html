@@ -20,27 +20,27 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>boot</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GRUB_Slow_Upstream">GRUB Slow Upstream</a></li><li class="toc-l2"><a href="#GRUB_Feature_Richness">GRUB Feature Richness</a></li><li class="toc-l2"><a href="#GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</a></li><li class="toc-l2"><a href="#GRUB_Upstream_Contributions">GRUB Upstream Contributions</a></li><li class="toc-l2"><a href="#grub-install_command_responsibility">grub-install command
-responsibility</a></li><li class="toc-l2"><a href="#Core_Bootloader_Packages">Core Bootloader Packages</a></li><li class="toc-l3"><a href="#grub-cloud_package">grub-cloud package</a></li><li class="toc-l3"><a href="#grub-efi_and_grub-pc">grub-efi and grub-pc</a></li><li class="toc-l3"><a href="#live-config-dist">live-config-dist</a></li><li class="toc-l3"><a href="#dist-base-files">dist-base-files</a></li><li class="toc-l3"><a href="#grub-live">grub-live</a></li><li class="toc-l3"><a href="#serial-console-enable">serial-console-enable</a></li><li class="toc-l3"><a href="#security-misc">security-misc</a></li><li class="toc-l3"><a href="#usability-misc">usability-misc</a></li><li class="toc-l3"><a href="#debug-misc">debug-misc</a></li><li class="toc-l3"><a href="#kicksecure-base-files">kicksecure-base-files</a></li><li class="toc-l3"><a href="#user-sysmaint-split">user-sysmaint-split</a></li><li class="toc-l3"><a href="#whonix-base-files">whonix-base-files</a></li><li class="toc-l3"><a href="#anon-ws-base-files">anon-ws-base-files</a></li><li class="toc-l3"><a href="#anon-gw-base-files">anon-gw-base-files</a></li><li class="toc-l2"><a href="#Live_ISO_GRUB_configuration">Live ISO GRUB configuration</a></li><li class="toc-l2"><a href="#systemd-boot_-_Limited_Architecture_Support">systemd-boot -
-Limited Architecture Support</a></li><li class="toc-l2"><a href="#systemd-boot_-_random_seed">systemd-boot - random seed</a></li><li class="toc-l2"><a href="#systemd-boot_-_SecureBoot_Support">systemd-boot - SecureBoot
-Support</a></li><li class="toc-l2"><a href="#GRUB_-_File_Names">GRUB - File Names</a></li><li class="toc-l2"><a href="#/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</a></li><li class="toc-l2"><a href="#ARM_-_Generally">ARM - Generally</a></li><li class="toc-l2"><a href="#Raspberry_Pi_-_RPi">Raspberry Pi - RPi</a></li><li class="toc-l3"><a href="#Bootloader_Information_-_RPi">Bootloader Information - RPi</a></li><li class="toc-l3"><a href="#Debian_Support">Debian Support</a></li><li class="toc-l3"><a href="#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">Booting
-Debian Trixie with GRUB + u-boot on Raspberry Pi 4</a></li><li class="toc-l3"><a href="#Boot_Process_Design_-_RPi">Boot Process Design - RPi</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="first-heading">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>boot</span></nav><div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../user-sysmaint-split/" title="Dev/user-sysmaint-split"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/user-sysmaint-split</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../../Donation_systray/" title="Donation systray"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Donation
 systray</span></a><span class="info"><span class="prev">Previous page:
 Dev/user-sysmaint-split</span><span class="index">Index page:
 Design</span><span class="next">Next page: Donation
 systray</span></span></span>Boot Process</p>
-</div>
-<div class="mininav">
+</div><div class="mininav">
 <ul>
 <li><a href="../image_creation/">Image
 Creation</a></li>
 <li><a href="../image_formats/">Image Formats</a></li>
 <li><a href="./">Boot Process</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#GRUB_Slow_Upstream">GRUB Slow Upstream</a></li><li class="toc-l2"><a href="#GRUB_Feature_Richness">GRUB Feature Richness</a></li><li class="toc-l2"><a href="#GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</a></li><li class="toc-l2"><a href="#GRUB_Upstream_Contributions">GRUB Upstream Contributions</a></li><li class="toc-l2"><a href="#grub-install_command_responsibility">grub-install command
+responsibility</a></li><li class="toc-l2"><a href="#Core_Bootloader_Packages">Core Bootloader Packages</a></li><li class="toc-l3"><a href="#grub-cloud_package">grub-cloud package</a></li><li class="toc-l3"><a href="#grub-efi_and_grub-pc">grub-efi and grub-pc</a></li><li class="toc-l3"><a href="#live-config-dist">live-config-dist</a></li><li class="toc-l3"><a href="#dist-base-files">dist-base-files</a></li><li class="toc-l3"><a href="#grub-live">grub-live</a></li><li class="toc-l3"><a href="#serial-console-enable">serial-console-enable</a></li><li class="toc-l3"><a href="#security-misc">security-misc</a></li><li class="toc-l3"><a href="#usability-misc">usability-misc</a></li><li class="toc-l3"><a href="#debug-misc">debug-misc</a></li><li class="toc-l3"><a href="#kicksecure-base-files">kicksecure-base-files</a></li><li class="toc-l3"><a href="#user-sysmaint-split">user-sysmaint-split</a></li><li class="toc-l3"><a href="#whonix-base-files">whonix-base-files</a></li><li class="toc-l3"><a href="#anon-ws-base-files">anon-ws-base-files</a></li><li class="toc-l3"><a href="#anon-gw-base-files">anon-gw-base-files</a></li><li class="toc-l2"><a href="#Live_ISO_GRUB_configuration">Live ISO GRUB configuration</a></li><li class="toc-l2"><a href="#systemd-boot_-_Limited_Architecture_Support">systemd-boot -
+Limited Architecture Support</a></li><li class="toc-l2"><a href="#systemd-boot_-_random_seed">systemd-boot - random seed</a></li><li class="toc-l2"><a href="#systemd-boot_-_SecureBoot_Support">systemd-boot - SecureBoot
+Support</a></li><li class="toc-l2"><a href="#GRUB_-_File_Names">GRUB - File Names</a></li><li class="toc-l2"><a href="#/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</a></li><li class="toc-l2"><a href="#ARM_-_Generally">ARM - Generally</a></li><li class="toc-l2"><a href="#Raspberry_Pi_-_RPi">Raspberry Pi - RPi</a></li><li class="toc-l3"><a href="#Bootloader_Information_-_RPi">Bootloader Information - RPi</a></li><li class="toc-l3"><a href="#Debian_Support">Debian Support</a></li><li class="toc-l3"><a href="#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">Booting
+Debian Trixie with GRUB + u-boot on Raspberry Pi 4</a></li><li class="toc-l3"><a href="#Boot_Process_Design_-_RPi">Boot Process Design - RPi</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
+
 <div class="mininav">
 <ul>
 <li><a href="../../Firmware_Security_and_Updates/">Firmware
@@ -73,9 +73,9 @@ Builds (dev)</a></li>
 <h1 id="shim">shim</h1>
 <ul>
 <li>Debian shim feature request: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102680">Offer a
-shim-signed variant signed by Debian's Secure Boot key</a></li>
+shim-signed variant signed by Debian's Secure Boot key</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102680" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>While it may be technically possible for an EFI binary such as
-Debian's <a href="https://packages.debian.org/trixie/shim-signed"><code>shim-signed</code></a>
+Debian's <a href="https://packages.debian.org/trixie/shim-signed"><code>shim-signed</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/shim-signed" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 package to be signed by two public keys (Microsoft's key and Debian's
 key), this is unlikely to be implemented in Debian because it might
 break certain broken UEFI implementations, possibly on some
@@ -90,28 +90,28 @@ research will be undertaken by any party.</li>
 chapter <a href="../../Verified_Boot/#Keys">Keys</a>.</li>
 </ul>
 <h1 id="GRUB">GRUB</h1>
-<h2 id="GRUB_Slow_Upstream">GRUB Slow Upstream</h2>
+<h2 id="GRUB_Slow_Upstream">GRUB Slow Upstream</h2><span class="share-tooltip" data-anchor="GRUB_Slow_Upstream"><a class="headline-anchor" href="#GRUB_Slow_Upstream" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Slow_Upstream">https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Slow_Upstream</span></span></span></span>
 <p><blockquote><p>We all know and love GRUB2. It is a good boot loader. It is also big,
 complex, rich, massive and tends to move slow on the development
 side.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
-and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+and Full Disk Encryption in Tumbleweed and MicroOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://news.opensuse.org/2023/12/20/systemd-fde/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> talking about
 their motivation to add support for systemd-boot</span></p></blockquote></p>
 <p><blockquote><p>The openSUSE package for this boot loader contains more than 200
 patches. Some of those patches are there for the last 5, 6 ... 10 years.
 That is both an indication of the talent of the maintainers, but also
 can signal an issue in how slow the upstream contribution process can
 be.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
-and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+and Full Disk Encryption in Tumbleweed and MicroOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://news.opensuse.org/2023/12/20/systemd-fde/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> talking about
 their motivation to add support for systemd-boot</span></p></blockquote></p>
-<h2 id="GRUB_Feature_Richness">GRUB Feature Richness</h2>
+<h2 id="GRUB_Feature_Richness">GRUB Feature Richness</h2><span class="share-tooltip" data-anchor="GRUB_Feature_Richness"><a class="headline-anchor" href="#GRUB_Feature_Richness" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Feature_Richness">https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Feature_Richness</span></span></span></span>
 <p><blockquote><p>GRUB2 supports all the relevant systems, including mainframes, arm or
 powerpc. Multiple types of file systems, including btrfs or NTFS. It
 contains a full network stack, an USB stack, a terminal, can be scripted
 ... In some sense, it is almost a mini OS by
 itself.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
-and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+and Full Disk Encryption in Tumbleweed and MicroOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://news.opensuse.org/2023/12/20/systemd-fde/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> talking about
 their motivation to add support for systemd-boot</span></p></blockquote></p>
-<h2 id="GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</h2>
+<h2 id="GRUB_Full_Disk_Encryption">GRUB Full Disk Encryption</h2><span class="share-tooltip" data-anchor="GRUB_Full_Disk_Encryption"><a class="headline-anchor" href="#GRUB_Full_Disk_Encryption" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Full_Disk_Encryption">https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Full_Disk_Encryption</span></span></span></span>
 <p><blockquote><p>Kicksecure doesn't use GRUB to unlock encrypted disks. This is
 because we use Debian's GRUB, and Debian's GRUB only has very bad LUKS
 support (only supports LUKS1, can't handle non-US keyboard layouts,
@@ -120,30 +120,30 @@ Linux kernel has to unlock the drive again once it boots). Instead, we
 use an unencrypted /boot partition and let the initramfs handle decrypt.
 This lets us use more secure encryption, provides a better user
 interface for decryption, works with multiple keyboard layouts, and
-works faster.<span class="blockquote-context"><a href="https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2">https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2</a></span></p></blockquote></p>
+works faster.<span class="blockquote-context"><a href="https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2">https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/installing-fde-luks-with-detached-luks-header-option/907/2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>See also:</p>
 <ul>
 <li><a href="https://forums.kicksecure.com/t/iso-change-to-unencrypted-boot-if-using-full-disk-encryption/420">ISO:
-Change to unencrypted /boot if using Full Disk Encryption</a></li>
+Change to unencrypted /boot if using Full Disk Encryption</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/iso-change-to-unencrypted-boot-if-using-full-disk-encryption/420" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="GRUB_Upstream_Contributions">GRUB Upstream Contributions</h2>
+<h2 id="GRUB_Upstream_Contributions">GRUB Upstream Contributions</h2><span class="share-tooltip" data-anchor="GRUB_Upstream_Contributions"><a class="headline-anchor" href="#GRUB_Upstream_Contributions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Upstream_Contributions">https://www.kicksecure.com/wiki/Dev/boot/#GRUB_Upstream_Contributions</span></span></span></span>
 <ul>
 <li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00000.html">Determining
-when paging is and isn't enabled in GRUB</a></li>
+when paging is and isn't enabled in GRUB</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00000.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00050.html">DRAFT
-PATCH 0/1 - Add Xen command line parsing</a></li>
+PATCH 0/1 - Add Xen command line parsing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00050.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00051.html">DRAFT
-PATCH 1/1 - Add Xen command line parsing</a></li>
+PATCH 1/1 - Add Xen command line parsing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00051.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00247.html">PATCH
-0/1 - Add Xen command line parsing</a></li>
+0/1 - Add Xen command line parsing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00247.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00248.html">PATCH
-1/1 - Add Xen command line parsing</a></li>
+1/1 - Add Xen command line parsing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.gnu.org/archive/html/grub-devel/2025-04/msg00248.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h2 id="grub-install_command_responsibility">grub-install command
-responsibility</h2>
+responsibility</h2><span class="share-tooltip" data-anchor="grub-install_command_responsibility"><a class="headline-anchor" href="#grub-install_command_responsibility" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#grub-install_command_responsibility">https://www.kicksecure.com/wiki/Dev/boot/#grub-install_command_responsibility</span></span></span></span>
 <p>Who should run the <code>grub-install</code> command?
 SystemBuildTools or Debian package maintainer scripts?</p>
-<p>As it is currently designed, it seems <a href="https://wiki.debian.org/SystemBuildTools">SystemBuildTools</a> are
+<p>As it is currently designed, it seems <a href="https://wiki.debian.org/SystemBuildTools">SystemBuildTools</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/SystemBuildTools" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> are
 supposed to execute the <code>grub-install</code> command.</p>
 <p><code>calamares</code> installer runs <code>grub-install</code>.
 <code>live-build</code> has extensive code to set up GRUB and other
@@ -153,19 +153,19 @@ bootloader, which requires running bootloader installation commands.</p>
 <p><blockquote><p>Don't call grub-install on fresh install of grub-pc. It's the job of
 installers to do that after a fresh
 install.<span class="blockquote-context"><a href="https://metadata.ftp-master.debian.org/changelogs//main/g/grub2/grub2_2.12-5_changelog"><code>grub2</code>
-package, Debian changelog, Colin Watson Nov 2020</a></span></p></blockquote></p>
-<h2 id="Core_Bootloader_Packages">Core Bootloader Packages</h2>
+package, Debian changelog, Colin Watson Nov 2020</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://metadata.ftp-master.debian.org/changelogs//main/g/grub2/grub2_2.12-5_changelog" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<h2 id="Core_Bootloader_Packages">Core Bootloader Packages</h2><span class="share-tooltip" data-anchor="Core_Bootloader_Packages"><a class="headline-anchor" href="#Core_Bootloader_Packages" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Core_Bootloader_Packages">https://www.kicksecure.com/wiki/Dev/boot/#Core_Bootloader_Packages</span></span></span></span>
 <p>Kicksecure uses different metapackages to provide the bootloader for
 different systems. grub-cloud is used on Kicksecure VMs, while grub-efi
 and grub-pc-bin are used by the ISO.</p>
-<h3 id="grub-cloud_package">grub-cloud package</h3>
+<h3 id="grub-cloud_package">grub-cloud package</h3><span class="share-tooltip" data-anchor="grub-cloud_package"><a class="headline-anchor" href="#grub-cloud_package" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#grub-cloud_package">https://www.kicksecure.com/wiki/Dev/boot/#grub-cloud_package</span></span></span></span>
 <p><blockquote><p>You don't want to use this package outside of cloud
 images.<span class="blockquote-context"><a href="https://packages.debian.org/trixie/grub-cloud-amd64"><code>grub-cloud-amd64</code>
-package, Debian</a></span></p></blockquote></p>
+package, Debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/grub-cloud-amd64" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p><code>grub-cloud-amd64</code> package and
 <code>/etc/default/grub</code> file inclusion:</p>
 <p><blockquote><p><code>/etc/default/grub</code><span class="blockquote-context"><a href="https://packages.debian.org/trixie/amd64/grub-cloud-amd64/filelist">List
-of files</a></span></p></blockquote></p>
+of files</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/amd64/grub-cloud-amd64/filelist" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p><u>Non-issue:</u> <code>grub-cloud</code>, while it has "cloud" in
 its name, and while it may be suitable for installation on cloud
 servers, has no additional networking or cloud features not found in
@@ -177,19 +177,19 @@ source code is minimal and consists only of Debian packaging files and a
 <code>grub-cloud</code> package is a workaround for the lack of
 <code>grub-pc</code> and <code>grub-efi</code> co-installability, a
 workaround for Debian bug <a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">grub-efi-amd64:
-Allow concurrent installation of grub-pc and grub-efi-amd64</a>.</p>
+Allow concurrent installation of grub-pc and grub-efi-amd64</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Source code references:</p>
 <ul>
 <li><a href="https://salsa.debian.org/cloud-team/grub-cloud">grub-cloud
-source code</a></li>
+source code</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/cloud-team/grub-cloud" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-amd64/grub?ref_type=heads">AMD64
-<code>/etc/default/grub</code></a></li>
+<code>/etc/default/grub</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-amd64/grub?ref_type=heads" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-arm64/grub?ref_type=heads">ARM64
-<code>/etc/default/grub</code></a></li>
+<code>/etc/default/grub</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/etc-default-arm64/grub?ref_type=heads" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-amd64.postinst?ref_type=heads">AMD64
-<code>postinst</code></a></li>
+<code>postinst</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-amd64.postinst?ref_type=heads" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-arm64.postinst?ref_type=heads">ARM64
-<code>postinst</code></a></li>
+<code>postinst</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/cloud-team/grub-cloud/-/blob/main/debian/grub-cloud-arm64.postinst?ref_type=heads" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>AMD64 <code>/etc/default/grub</code> contents:</p>
 <pre><code># If you change this file, run &#39;update-grub&#39; afterwards to update
@@ -256,30 +256,30 @@ limitation.</li>
 <ul>
 <li>bug report: <code>grub-pc</code> and <code>grub-efi</code>
 co-installability: <a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">grub-efi-amd64:
-Allow concurrent installation of grub-pc and grub-efi-amd64</a></li>
+Allow concurrent installation of grub-pc and grub-efi-amd64</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977">grub-cloud-amd64:
 Ships /etc/default/grub, which installers need to be able to
-modify</a></li>
+modify</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977">grub-cloud-amd64:
 not co-installable with grub-pc due to incompatible /etc/default/grub
-handling</a></li>
+handling</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1094977" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Related Debian pull requests:</p>
 <ul>
 <li><a href="https://salsa.debian.org/grub-team/grub/-/merge_requests/76">Remove
-ucf conffile conflict between grub-pc and grub-efi-{amd64,ia32}</a></li>
+ucf conffile conflict between grub-pc and grub-efi-{amd64,ia32}</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/grub-team/grub/-/merge_requests/76" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h3 id="grub-efi_and_grub-pc">grub-efi and grub-pc</h3>
+<h3 id="grub-efi_and_grub-pc">grub-efi and grub-pc</h3><span class="share-tooltip" data-anchor="grub-efi_and_grub-pc"><a class="headline-anchor" href="#grub-efi_and_grub-pc" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#grub-efi_and_grub-pc">https://www.kicksecure.com/wiki/Dev/boot/#grub-efi_and_grub-pc</span></span></span></span>
 <ul>
 <li>Debian for grub-pc with grub-efi co-install-ability feature request:
 <a href="https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062">Allow
-concurrent installation of grub-pc and grub-efi-amd64</a></li>
+concurrent installation of grub-pc and grub-efi-amd64</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs-devel.debian.org/cgi-bin/bugreport.cgi?bug=904062" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Bootloader-related_Kicksecure_and_Whonix_packages">Bootloader-related
 Kicksecure and Whonix packages</h1>
 <p>The following packages directly affect the bootloader or bootloader
 configuration used by Kicksecure.</p>
-<h3 id="live-config-dist">live-config-dist</h3>
+<h3 id="live-config-dist">live-config-dist</h3><span class="share-tooltip" data-anchor="live-config-dist"><a class="headline-anchor" href="#live-config-dist" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#live-config-dist">https://www.kicksecure.com/wiki/Dev/boot/#live-config-dist</span></span></span></span>
 <ul>
 <li>Purpose: Used to provide installer and live ISO configuration.</li>
 <li>Effects on bootloader:
@@ -293,7 +293,7 @@ to the live ISO.</li>
 from the ISO.</li>
 </ul></li>
 </ul>
-<h3 id="dist-base-files">dist-base-files</h3>
+<h3 id="dist-base-files">dist-base-files</h3><span class="share-tooltip" data-anchor="dist-base-files"><a class="headline-anchor" href="#dist-base-files" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#dist-base-files">https://www.kicksecure.com/wiki/Dev/boot/#dist-base-files</span></span></span></span>
 <ul>
 <li>Provides base configuration used by both Kicksecure and Whonix.</li>
 <li>Effects on bootloader:
@@ -308,7 +308,7 @@ bootloader settings from grub-cloud, putting the kernel in quiet mode
 and disabling the serial console.</li>
 </ul></li>
 </ul>
-<h3 id="grub-live">grub-live</h3>
+<h3 id="grub-live">grub-live</h3><span class="share-tooltip" data-anchor="grub-live"><a class="headline-anchor" href="#grub-live" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#grub-live">https://www.kicksecure.com/wiki/Dev/boot/#grub-live</span></span></span></span>
 <ul>
 <li>Provides a live boot mode. Changes made to the root filesystem in
 this mode are ephemeral and will be lost on reboot.</li>
@@ -318,7 +318,7 @@ this mode are ephemeral and will be lost on reboot.</li>
 <li>Adds additional debugging info to the output of grub-mkconfig.</li>
 </ul></li>
 </ul>
-<h3 id="serial-console-enable">serial-console-enable</h3>
+<h3 id="serial-console-enable">serial-console-enable</h3><span class="share-tooltip" data-anchor="serial-console-enable"><a class="headline-anchor" href="#serial-console-enable" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#serial-console-enable">https://www.kicksecure.com/wiki/Dev/boot/#serial-console-enable</span></span></span></span>
 <ul>
 <li>Adds a TTY that can be accessed via the serial console.</li>
 <li>Effects on bootloader:
@@ -328,7 +328,7 @@ this mode are ephemeral and will be lost on reboot.</li>
 TTY on the serial console.</li>
 </ul></li>
 </ul>
-<h3 id="security-misc">security-misc</h3>
+<h3 id="security-misc">security-misc</h3><span class="share-tooltip" data-anchor="security-misc"><a class="headline-anchor" href="#security-misc" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#security-misc">https://www.kicksecure.com/wiki/Dev/boot/#security-misc</span></span></span></span>
 <ul>
 <li>Enables a plethora of hardening features to increase the security of
 Kicksecure and Whonix.</li>
@@ -344,7 +344,7 @@ avoid leaking sensitive info on the console during boot.</li>
 make it more difficult to get a root shell improperly.</li>
 </ul></li>
 </ul>
-<h3 id="usability-misc">usability-misc</h3>
+<h3 id="usability-misc">usability-misc</h3><span class="share-tooltip" data-anchor="usability-misc"><a class="headline-anchor" href="#usability-misc" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#usability-misc">https://www.kicksecure.com/wiki/Dev/boot/#usability-misc</span></span></span></span>
 <ul>
 <li>Provides miscellaneous usability improvements for Kicksecure.</li>
 <li>Effects on bootloader: Sets the default display resolution during
@@ -352,7 +352,7 @@ early boot to 1024x768. (Note that this is NOT a hard limit; the
 end-user can set their resolution to whatever they want once the system
 is booted.)</li>
 </ul>
-<h3 id="debug-misc">debug-misc</h3>
+<h3 id="debug-misc">debug-misc</h3><span class="share-tooltip" data-anchor="debug-misc"><a class="headline-anchor" href="#debug-misc" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#debug-misc">https://www.kicksecure.com/wiki/Dev/boot/#debug-misc</span></span></span></span>
 <ul>
 <li>Enables a wide variety of debugging features. Not installed by
 default and should NOT be installed on systems where security is a
@@ -369,7 +369,7 @@ some other distro or a user might enable SELinux later, which could
 interfere with debugging.</li>
 </ul></li>
 </ul>
-<h3 id="kicksecure-base-files">kicksecure-base-files</h3>
+<h3 id="kicksecure-base-files">kicksecure-base-files</h3><span class="share-tooltip" data-anchor="kicksecure-base-files"><a class="headline-anchor" href="#kicksecure-base-files" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#kicksecure-base-files">https://www.kicksecure.com/wiki/Dev/boot/#kicksecure-base-files</span></span></span></span>
 <ul>
 <li>Provides base configuration specific to Kicksecure.</li>
 <li>Effects on bootloader:
@@ -382,7 +382,7 @@ systems.</li>
 systems, and 1024x768 on BIOS systems.</li>
 </ul></li>
 </ul>
-<h3 id="user-sysmaint-split">user-sysmaint-split</h3>
+<h3 id="user-sysmaint-split">user-sysmaint-split</h3><span class="share-tooltip" data-anchor="user-sysmaint-split"><a class="headline-anchor" href="#user-sysmaint-split" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#user-sysmaint-split">https://www.kicksecure.com/wiki/Dev/boot/#user-sysmaint-split</span></span></span></span>
 <ul>
 <li>Prevents standard user accounts from using privilege escalation
 tools to obtain root and provides a special sysmaint boot mode in which
@@ -394,14 +394,14 @@ root access can be obtained.</li>
 with minimal effort.</li>
 </ul></li>
 </ul>
-<h3 id="whonix-base-files">whonix-base-files</h3>
+<h3 id="whonix-base-files">whonix-base-files</h3><span class="share-tooltip" data-anchor="whonix-base-files"><a class="headline-anchor" href="#whonix-base-files" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#whonix-base-files">https://www.kicksecure.com/wiki/Dev/boot/#whonix-base-files</span></span></span></span>
 <ul>
 <li>Whonix-only. Provides base configuration specific to Whonix.</li>
 <li>Effects on bootloader: Sets the distro name shown on the boot menu
 of installed systems to a generic "Whonix" value. This is usually
 overridden by one of anon-ws-base-files or anon-gw-base-files.</li>
 </ul>
-<h3 id="anon-ws-base-files">anon-ws-base-files</h3>
+<h3 id="anon-ws-base-files">anon-ws-base-files</h3><span class="share-tooltip" data-anchor="anon-ws-base-files"><a class="headline-anchor" href="#anon-ws-base-files" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#anon-ws-base-files">https://www.kicksecure.com/wiki/Dev/boot/#anon-ws-base-files</span></span></span></span>
 <ul>
 <li>Whonix-only. Provides base configuration specific to
 Whonix-Workstation.</li>
@@ -416,7 +416,7 @@ theme.</li>
 systems, and 1024x768 on BIOS systems.</li>
 </ul></li>
 </ul>
-<h3 id="anon-gw-base-files">anon-gw-base-files</h3>
+<h3 id="anon-gw-base-files">anon-gw-base-files</h3><span class="share-tooltip" data-anchor="anon-gw-base-files"><a class="headline-anchor" href="#anon-gw-base-files" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#anon-gw-base-files">https://www.kicksecure.com/wiki/Dev/boot/#anon-gw-base-files</span></span></span></span>
 <ul>
 <li>Whonix-only. Provides base configuration specific to
 Whonix-Gateway.</li>
@@ -431,9 +431,9 @@ theme.</li>
 systems, and 1024x768 on BIOS systems.</li>
 </ul></li>
 </ul>
-<h2 id="Live_ISO_GRUB_configuration">Live ISO GRUB configuration</h2>
+<h2 id="Live_ISO_GRUB_configuration">Live ISO GRUB configuration</h2><span class="share-tooltip" data-anchor="Live_ISO_GRUB_configuration"><a class="headline-anchor" href="#Live_ISO_GRUB_configuration" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Live_ISO_GRUB_configuration">https://www.kicksecure.com/wiki/Dev/boot/#Live_ISO_GRUB_configuration</span></span></span></span>
 <p>derivative-maker sets a custom GRUB configuration for Kicksecure live
-ISOs. This configuration is stored under <a href="https://github.com/derivative-maker/derivative-maker/tree/master/live-build-data/grub-config">derivative-maker/live-build-data/grub-config</a>.
+ISOs. This configuration is stored under <a href="https://github.com/derivative-maker/derivative-maker/tree/master/live-build-data/grub-config">derivative-maker/live-build-data/grub-config</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/derivative-maker/derivative-maker/tree/master/live-build-data/grub-config" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 The files in this directory are enumerated below, along with the job
 each one performs.</p>
 <ul>
@@ -499,73 +499,73 @@ first boot mode listed in the ISO's boot menu.</li>
 <h1 id="Calamares">Calamares</h1>
 <ul>
 <li><a href="https://github.com/calamares/calamares/pull/2422">Prototype
-implementation of BIOS+UEFI boot support</a></li>
+implementation of BIOS+UEFI boot support</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/calamares/calamares/pull/2422" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Multiple_Bootloader_Maintenance_Burden">Multiple Bootloader
 Maintenance Burden</h1>
 <p><blockquote><p>Supporting another boot loader comes with a
 cost.<span class="blockquote-context">openSUSE blog post <a href="https://news.opensuse.org/2023/12/20/systemd-fde/">Systemd-boot
-and Full Disk Encryption in Tumbleweed and MicroOS</a> talking about
+and Full Disk Encryption in Tumbleweed and MicroOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://news.opensuse.org/2023/12/20/systemd-fde/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> talking about
 their motivation to add support for systemd-boot</span></p></blockquote></p>
 <h1 id="systemd-boot">systemd-boot</h1>
 <h2 id="systemd-boot_-_Limited_Architecture_Support">systemd-boot -
-Limited Architecture Support</h2>
-<p>At time of writing, systemd-boot as can be seen on <a href="https://packages.debian.org/testing/systemd-boot">https://packages.debian.org/testing/systemd-boot</a>
+Limited Architecture Support</h2><span class="share-tooltip" data-anchor="systemd-boot_-_Limited_Architecture_Support"><a class="headline-anchor" href="#systemd-boot_-_Limited_Architecture_Support" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_Limited_Architecture_Support">https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_Limited_Architecture_Support</span></span></span></span>
+<p>At time of writing, systemd-boot as can be seen on <a href="https://packages.debian.org/testing/systemd-boot">https://packages.debian.org/testing/systemd-boot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/testing/systemd-boot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 supported only the following architectures: <code>amd64</code>
 <code>arm64</code> <code>armhf</code> <code>i386</code>
 <code>riscv64</code></p>
-<h2 id="systemd-boot_-_random_seed">systemd-boot - random seed</h2>
+<h2 id="systemd-boot_-_random_seed">systemd-boot - random seed</h2><span class="share-tooltip" data-anchor="systemd-boot_-_random_seed"><a class="headline-anchor" href="#systemd-boot_-_random_seed" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_random_seed">https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_random_seed</span></span></span></span>
 <ul>
-<li><a href="https://uapi-group.org/specifications/specs/boot_loader_specification/">https://uapi-group.org/specifications/specs/boot_loader_specification/</a></li>
-<li><a href="https://systemd.io/BOOT_LOADER_INTERFACE/">https://systemd.io/BOOT_LOADER_INTERFACE/</a></li>
+<li><a href="https://uapi-group.org/specifications/specs/boot_loader_specification/">https://uapi-group.org/specifications/specs/boot_loader_specification/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://uapi-group.org/specifications/specs/boot_loader_specification/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://systemd.io/BOOT_LOADER_INTERFACE/">https://systemd.io/BOOT_LOADER_INTERFACE/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/BOOT_LOADER_INTERFACE/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><code>LoaderSystemToken</code></li>
 </ul>
 <h2 id="systemd-boot_-_SecureBoot_Support">systemd-boot - SecureBoot
-Support</h2>
+Support</h2><span class="share-tooltip" data-anchor="systemd-boot_-_SecureBoot_Support"><a class="headline-anchor" href="#systemd-boot_-_SecureBoot_Support" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_SecureBoot_Support">https://www.kicksecure.com/wiki/Dev/boot/#systemd-boot_-_SecureBoot_Support</span></span></span></span>
 <ul>
-<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725</a></li>
-<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202</a></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1033725" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=996202" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>TODO: What is the latest status? Does systemd-boot in Debian support
 SecureBoot yet?</li>
 </ul>
 <h1 id="RPi">RPi</h1>
 <ul>
-<li><a href="https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html">https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html</a></li>
+<li><a href="https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html">https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pete.akeo.ie/2019/07/installing-debian-arm64-on-raspberry-pi.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="misc">misc</h1>
 <ul>
-<li><a href="https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout">https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout</a></li>
-<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a></li>
+<li><a href="https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout">https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.archlinux.org/title/Talk:GRUB#Custom_keyboard_layout" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="keyboard_layout_issue">keyboard layout issue</h1>
 <ul>
-<li><a href="https://github.com/calamares/calamares/issues/1772">https://github.com/calamares/calamares/issues/1772</a></li>
-<li><a href="https://github.com/calamares/calamares/issues/1726">https://github.com/calamares/calamares/issues/1726</a></li>
-<li><a href="https://github.com/calamares/calamares/issues/1203">https://github.com/calamares/calamares/issues/1203</a></li>
-<li><a href="https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1">https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1</a></li>
-<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a></li>
+<li><a href="https://github.com/calamares/calamares/issues/1772">https://github.com/calamares/calamares/issues/1772</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/calamares/calamares/issues/1772" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/calamares/calamares/issues/1726">https://github.com/calamares/calamares/issues/1726</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/calamares/calamares/issues/1726" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/calamares/calamares/issues/1203">https://github.com/calamares/calamares/issues/1203</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/calamares/calamares/issues/1203" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1">https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/questions/974833/change-the-keyboard-layout-of-grub-in-stage-1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html">https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cryptsetup-team.pages.debian.net/cryptsetup/encrypted-boot.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Kicksecure_Specific">Kicksecure Specific</h1>
-<h2 id="GRUB_-_File_Names">GRUB - File Names</h2>
+<h2 id="GRUB_-_File_Names">GRUB - File Names</h2><span class="share-tooltip" data-anchor="GRUB_-_File_Names"><a class="headline-anchor" href="#GRUB_-_File_Names" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#GRUB_-_File_Names">https://www.kicksecure.com/wiki/Dev/boot/#GRUB_-_File_Names</span></span></span></span>
 <ul>
 <li><span class="code-select inline-style">/etc/grub.d/10_00_linux_dist</span>
 <ul>
 <li><span class="code-select inline-style">/etc/grub.d/10_linux</span>
-has been forked by <a href="https://github.com/Kicksecure/dist-base-files"><code>dist-base-files</code></a>
+has been forked by <a href="https://github.com/Kicksecure/dist-base-files"><code>dist-base-files</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
-<li><a href="https://github.com/Kicksecure/dist-base-files/blob/master/etc/grub.d/10_00_linux_dist"><code>/etc/grub.d/10_00_linux_dist</code></a></li>
+<li><a href="https://github.com/Kicksecure/dist-base-files/blob/master/etc/grub.d/10_00_linux_dist"><code>/etc/grub.d/10_00_linux_dist</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/etc/grub.d/10_00_linux_dist" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul></li>
 <li><span class="code-select inline-style">/etc/grub.d/10_20_linux_live</span>
 <ul>
 <li>part of <a href="../../Grub-live/">grub-live</a>
 <ul>
-<li><a href="https://github.com/Kicksecure/grub-live"><code>grub-live</code></a></li>
+<li><a href="https://github.com/Kicksecure/grub-live"><code>grub-live</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>legacy file name: <code>/etc/grub.d/11_linux_live</code></li>
 </ul></li>
 </ul></li>
 </ul>
-<h2 id="/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</h2>
+<h2 id="/etc/default/grub.d/20_dist-base-files.cfg">/etc/default/grub.d/20_dist-base-files.cfg</h2><span class="share-tooltip" data-anchor="/etc/default/grub.d/20_dist-base-files.cfg"><a class="headline-anchor" href="#/etc/default/grub.d/20_dist-base-files.cfg" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#/etc/default/grub.d/20_dist-base-files.cfg">https://www.kicksecure.com/wiki/Dev/boot/#/etc/default/grub.d/20_dist-base-files.cfg</span></span></span></span>
 <p>File
 <span class="code-select inline-style">/etc/default/grub.d/20_dist-base-files.cfg</span>
 is used to undo the opinionated default configuration set by the Debian
@@ -579,7 +579,7 @@ all image creation and installation methods. This should only be done
 when building a VM image that uses grub-cloud (which is utilized by
 <code>grml-debootstrap</code>).</p>
 <p><u>VM images:</u></p>
-<p>File <a href="https://github.com/Kicksecure/dist-base-files/blob/master/usr/share/derivative-base-files/20_dist-base-files.cfg"><code>/usr/share/derivative-base-files/20_dist-base-files.cfg</code></a>
+<p>File <a href="https://github.com/Kicksecure/dist-base-files/blob/master/usr/share/derivative-base-files/20_dist-base-files.cfg"><code>/usr/share/derivative-base-files/20_dist-base-files.cfg</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/usr/share/derivative-base-files/20_dist-base-files.cfg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 is copied by derivative-maker during the build process to
 <code>/etc/default/grub.d/20_dist-base-files.cfg</code>.</p>
 <p><u>Kicksecure's ISO:</u></p>
@@ -826,9 +826,9 @@ elif [ -z &quot;${config_directory}&quot; -a -f  $prefix/custom.cfg ]; then
 fi
 ### END /etc/grub.d/41_custom ###</code></pre>
 <h1 id="uboot">uboot</h1>
-<p><a href="https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system">https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system</a></p>
+<p><a href="https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system">https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://community.arm.com/support-forums/f/embedded-and-microcontrollers-forum/7016/uefi-on-arm-v8-based-linux-embedded-system" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="ARM">ARM</h1>
-<h2 id="ARM_-_Generally">ARM - Generally</h2>
+<h2 id="ARM_-_Generally">ARM - Generally</h2><span class="share-tooltip" data-anchor="ARM_-_Generally"><a class="headline-anchor" href="#ARM_-_Generally" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#ARM_-_Generally">https://www.kicksecure.com/wiki/Dev/boot/#ARM_-_Generally</span></span></span></span>
 <p>The situation used to be, and for the most part still is, as
 follows:</p>
 <ul>
@@ -863,17 +863,17 @@ project.</li>
 <li><a href="../../Transparency/#Third-Party_Policies">Third-Party Policies</a> and <a href="../../Terms_of_Service/#Non-Endorsement">Non-Endorsement</a> apply! See also <a href="../../Transparency/">project transparency</a>.</li>
 </ul>
 </div>
-<p>Some <a href="https://libre.computer/">Libre Computer</a> boards
+<p>Some <a href="https://libre.computer/">Libre Computer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libre.computer/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> boards
 support UEFI BIOS. In the <a href="https://libre.computer/products/">Libre Computer product
-finder</a>, check the "UEFI BIOS" filter button. Devices with UEFI BIOS
+finder</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libre.computer/products/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, check the "UEFI BIOS" filter button. Devices with UEFI BIOS
 and 4 GB RAM as of April 2025:</p>
 <ul>
 <li><a href="https://libre.computer/products/aml-s905d3-cc/">Solitude
-AML-S905D3-CC</a> (Amlogic)</li>
+AML-S905D3-CC</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libre.computer/products/aml-s905d3-cc/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (Amlogic)</li>
 <li><a href="https://libre.computer/products/aml-a311d-cc/">Alta
-AML-A311D-CC</a> (Amlogic)</li>
+AML-A311D-CC</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libre.computer/products/aml-a311d-cc/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (Amlogic)</li>
 <li><a href="https://libre.computer/products/roc-rk3399-pc/">Renegade
-Elite ROC-RK3399-PC</a> (Rockchip RK3399 SoC)</li>
+Elite ROC-RK3399-PC</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://libre.computer/products/roc-rk3399-pc/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (Rockchip RK3399 SoC)</li>
 </ul>
 <p><blockquote><p><strong>Software Support</strong></p>
 <ul>
@@ -891,16 +891,16 @@ by default, thus avoiding bootloader issues.</p>
 <p>Bootloader issues aside, whether the architecture is Intel/AMD64 or
 ARM64, if Linux and/or Debian is supported (can run on that hardware)
 must always be verified before purchase.</p>
-<h2 id="Raspberry_Pi_-_RPi">Raspberry Pi - RPi</h2>
-<h3 id="Bootloader_Information_-_RPi">Bootloader Information - RPi</h3>
+<h2 id="Raspberry_Pi_-_RPi">Raspberry Pi - RPi</h2><span class="share-tooltip" data-anchor="Raspberry_Pi_-_RPi"><a class="headline-anchor" href="#Raspberry_Pi_-_RPi" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Raspberry_Pi_-_RPi">https://www.kicksecure.com/wiki/Dev/boot/#Raspberry_Pi_-_RPi</span></span></span></span>
+<h3 id="Bootloader_Information_-_RPi">Bootloader Information - RPi</h3><span class="share-tooltip" data-anchor="Bootloader_Information_-_RPi"><a class="headline-anchor" href="#Bootloader_Information_-_RPi" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Bootloader_Information_-_RPi">https://www.kicksecure.com/wiki/Dev/boot/#Bootloader_Information_-_RPi</span></span></span></span>
 <h4 id="RPi_Bootloader">RPi Bootloader</h4>
 <p>The RPi has its own custom boot protocol, using an internal
 bootloader in the Broadcom GPU.</p>
 <ul>
 <li><a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-boot-eeprom">Raspberry
-Pi boot EEPROM</a></li>
+Pi boot EEPROM</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#raspberry-pi-boot-eeprom" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#bootloader_update_stable">Update
-the bootloader</a></li>
+the bootloader</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#bootloader_update_stable" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Debian images use direct kernel boot via that bootloader.</p>
 <p><blockquote><p><code>rpi-eeprom</code><br />
@@ -908,16 +908,16 @@ This repository contains the scripts and pre-compiled binaries used to
 create the <code>rpi-eeprom</code> package, which is used to update the
 Raspberry Pi 4 and Raspberry Pi 5 bootloader EEPROM
 images.<span class="blockquote-context"><a href="https://github.com/raspberrypi/rpi-eeprom">rpi-eeprom on
-GitHub</a></span></p></blockquote></p>
+GitHub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/raspberrypi/rpi-eeprom" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>That boot protocol simply loads an <u>o</u>perating <u>s</u>ystem
 (OS) from a fixed location. The OS can be u-boot, UEFI EDK2, Linux, or
 anything else compatible.</p>
-<p>The RPi bootloader can be configured using <a href="https://www.raspberrypi.com/documentation/computers/config_txt.html"><code>/boot/firmware/config.txt</code></a>.</p>
+<p>The RPi bootloader can be configured using <a href="https://www.raspberrypi.com/documentation/computers/config_txt.html"><code>/boot/firmware/config.txt</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raspberrypi.com/documentation/computers/config_txt.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>The RPi bootloader is not the same as u-boot, but it can chainload
 u-boot.</p>
 <p><a href="https://raspberrypi.stackexchange.com/questions/124789/how-to-change-raspberry-pis-boot-mode-from-sd-card-to-usb-flash-drive">How
 to change Raspberry Pi's boot mode from SD Card to USB flash
-drive?</a></p>
+drive?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://raspberrypi.stackexchange.com/questions/124789/how-to-change-raspberry-pis-boot-mode-from-sd-card-to-usb-flash-drive" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h5 id="Raspberry_Pi_EEPROM_Manager_-_rpi-eeprom-mgr">Raspberry Pi
 EEPROM Manager - rpi-eeprom-mgr</h5>
 <p><img src="../../../media/Raspberry_Pi_EEPROM_Manager_(rpi-eeprom-mgr).png.webp" alt="Raspberry Pi EEPROM Manager (rpi-eeprom-mgr)" /></p>
@@ -939,7 +939,7 @@ EEPROM Manager - rpi-eeprom-mgr</h5>
 <li>Update <code>rpi-eeprom</code> Package</li>
 </ul>
 <p>All actions include a confirmation prompt before being
-executed.<span class="blockquote-context"><a href="https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347">https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347</a></span></p></blockquote></p>
+executed.<span class="blockquote-context"><a href="https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347">https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.raspberrypi.com/viewtopic.php?f=29&amp;t=283347" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <h4 id="u-boot_on_RPi">u-boot on RPi</h4>
 <ul>
 <li><code>u-boot</code> is <u>not</u> a strict requirement to boot RPi.
@@ -963,11 +963,11 @@ on RPi</a>.</li>
 </ul></li>
 <li>Miscellaneous on memory addresses:
 <ul>
-<li><a href="https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses">https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses</a></li>
+<li><a href="https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses">https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://people.kernel.org/linusw/how-the-arm32-linux-kernel-decompresses" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li>PDF: <a href="https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/">UEFI
-on Top of U-Boot - Standardizing Boot Flow For ARM Boards</a></li>
-<li>Debian <a href="https://packages.debian.org/u-boot-rpi"><code>u-boot-rpi</code></a>
+on Top of U-Boot - Standardizing Boot Flow For ARM Boards</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Debian <a href="https://packages.debian.org/u-boot-rpi"><code>u-boot-rpi</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/u-boot-rpi" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 package:
 <ul>
 <li><code>sudo apt-get install u-boot-rpi</code></li>
@@ -989,10 +989,10 @@ FAT partition:
 
 It should then support booting off of MMC and USB devices with serial
 console or HDMI with USB keyboard.</code></pre>
-<p><span class="blockquote-context">Debian Salsa: <a href="https://salsa.debian.org/debian/u-boot/-/blob/debian/latest/debian/u-boot-rpi.README.Debian?ref_type=heads">u-boot-rpi.README.Debian</a></span></p></blockquote></p>
+<p><span class="blockquote-context">Debian Salsa: <a href="https://salsa.debian.org/debian/u-boot/-/blob/debian/latest/debian/u-boot-rpi.README.Debian?ref_type=heads">u-boot-rpi.README.Debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/debian/u-boot/-/blob/debian/latest/debian/u-boot-rpi.README.Debian?ref_type=heads" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
 <li><a href="https://docs.u-boot.org/en/stable/develop/uefi/uefi.html">u-boot
-has UEFI-alike functionality</a> that can be used to chainload
+has UEFI-alike functionality</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.u-boot.org/en/stable/develop/uefi/uefi.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> that can be used to chainload
 <code>grub-efi</code>.
 <ul>
 <li>Is this enabled by default in Debian? Yes.</li>
@@ -1021,7 +1021,7 @@ the box.</li>
 </ul></li>
 </ul>
 <h5 id="grub-uboot_on_RPi">grub-uboot on RPi</h5>
-<p><a href="https://packages.debian.org/grub-uboot">grub-uboot</a> is
+<p><a href="https://packages.debian.org/grub-uboot">grub-uboot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/grub-uboot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is
 available only for the architectures <code>armel</code> and
 <code>armhf</code>. Therefore, it may not be usable on RPi 4 and RPi 5,
 which are <code>arm64</code>. These boards also support 32-bit ARM code,
@@ -1030,7 +1030,7 @@ them.</p>
 <p>There are few public discussions on using <code>grub-uboot</code>.
 Related: <a href="https://forum.odroid.com/viewtopic.php?t=26894">ODROID
 forum: HOWTO - Using GRUB as bootloader (second stage after
-U-Boot)</a></p>
+U-Boot)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forum.odroid.com/viewtopic.php?t=26894" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>GRUB actually has an arm-uboot backend for 32-bit ARM. There are two
 problems with this, apart from not being implemented for arm64: 1) GRUB
 hardcodes the physical address of RAM, making the binary somewhat
@@ -1038,43 +1038,43 @@ SoC-specific. 2) It relies on an optional API feature of U-Boot, which
 is disabled by default, therefore not build-tested for most targets and
 appeared to be in poor shape. A UEFI implementation could leverage
 U-Boot drivers, while allowing to boot a generic GRUB
-binary.<span class="blockquote-context">PDF: <a href="https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/">https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/</a></span></p></blockquote></p>
+binary.<span class="blockquote-context">PDF: <a href="https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/">https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bsdforen.de/attachments/uefi-on-top-of-u-boot-pdf.4528/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <h5 id="grub-pc_on_RPi">grub-pc on RPi</h5>
-<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-pc"><code>grub-pc</code></a>? No,
+<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-pc"><code>grub-pc</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/grub-pc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>? No,
 generally not, because <code>grub-pc</code> is for the <code>i386</code>
 architecture only.</p>
 <h5 id="grub-efi-arm64">grub-efi-arm64</h5>
-<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-efi-arm64"><code>grub-efi-arm64</code></a>?
+<p>Is it possible to (chainload) use <a href="https://packages.debian.org/grub-efi-arm64"><code>grub-efi-arm64</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/grub-efi-arm64" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>?
 Yes, <code>grub-efi-arm64</code> can be chainloaded via
 <code>u-boot</code>. This is documented below.</p>
 <h4 id="Secure_Boot_on_RPi">Secure Boot on RPi</h4>
 <p>While RPi upstream does not support UEFI, RPi does support non-UEFI
 Secure Boot according to:</p>
 <ul>
-<li><a href="https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf">https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf</a></li>
-<li><a href="https://github.com/raspberrypi/usbboot#secure-boot">https://github.com/raspberrypi/usbboot#secure-boot</a></li>
+<li><a href="https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf">https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pip.raspberrypi.com/categories/685-app-notes-guides-whitepapers/documents/RP-003466-WP/Boot-Security-Howto.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/raspberrypi/usbboot#secure-boot">https://github.com/raspberrypi/usbboot#secure-boot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/raspberrypi/usbboot#secure-boot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="UEFI_on_RPi">UEFI on RPi</h4>
 <ul>
 <li>No EFI support by upstream RPi.</li>
 <li>Community firmware: <a href="https://github.com/pftf/RPi4">EDK2
-Raspberry Pi 4 UEFI firmware</a></li>
+Raspberry Pi 4 UEFI firmware</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/pftf/RPi4" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>No commits in 2 months as of April 2025, with unmerged
 important-sounding pull requests:
 <ul>
-<li><a href="https://github.com/pftf/RPi4/pull/274">https://github.com/pftf/RPi4/pull/274</a></li>
+<li><a href="https://github.com/pftf/RPi4/pull/274">https://github.com/pftf/RPi4/pull/274</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/pftf/RPi4/pull/274" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>This implies it may be broken by upstream changes.</li>
 </ul></li>
 </ul>
-<h3 id="Debian_Support">Debian Support</h3>
+<h3 id="Debian_Support">Debian Support</h3><span class="share-tooltip" data-anchor="Debian_Support"><a class="headline-anchor" href="#Debian_Support" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Debian_Support">https://www.kicksecure.com/wiki/Dev/boot/#Debian_Support</span></span></span></span>
 <h4 id="Debian_RPi_Feature_Requests">Debian RPi Feature Requests</h4>
 <h5 id="Debian_RPi_-_use_GRUB_by_default_or_as_option">Debian RPi - use
 GRUB by default or as option</h5>
 <ul>
 <li>RPi: <a href="https://salsa.debian.org/raspi-team/image-specs/-/issues/78">Support
-U-Boot + grub-efi boot flow</a></li>
+U-Boot + grub-efi boot flow</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/raspi-team/image-specs/-/issues/78" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>raspi-firmware: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102607">Add
-support for U-Boot + grub-arm64-efi boot flow</a></li>
+support for U-Boot + grub-arm64-efi boot flow</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1102607" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="Debian_Support_-_Raspberry_Pi_5">Debian Support - Raspberry Pi
 5</h4>
@@ -1083,13 +1083,13 @@ support for U-Boot + grub-arm64-efi boot flow</a></li>
 <p><blockquote><p>/!\ Currently there is no support to Raspberry Pi 5 as it doesn't
 have enough support in upstream
 Linux.<span class="blockquote-context"><a href="https://wiki.debian.org/RaspberryPiImages">RaspberryPiImages -
-Debian Wiki</a> (April 2025)</span></p></blockquote></p>
+Debian Wiki</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/RaspberryPiImages" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (April 2025)</span></p></blockquote></p>
 <p>RPi 5 might be supported by Raspberry Pi OS, Armbian, or Ubuntu, but
 that is of less interest in the context of Kicksecure. "Real" Debian
 support is required. Related: <a href="../Operating_System/#Original_Base_Distributions_Only">Original Base Distributions Only</a></p>
-<p><a href="https://salsa.debian.org/raspi-team/image-specs/-/issues/74">https://salsa.debian.org/raspi-team/image-specs/-/issues/74</a></p>
+<p><a href="https://salsa.debian.org/raspi-team/image-specs/-/issues/74">https://salsa.debian.org/raspi-team/image-specs/-/issues/74</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/raspi-team/image-specs/-/issues/74" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h3 id="Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">Booting
-Debian Trixie with GRUB + u-boot on Raspberry Pi 4</h3>
+Debian Trixie with GRUB + u-boot on Raspberry Pi 4</h3><span class="share-tooltip" data-anchor="Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4"><a class="headline-anchor" href="#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4">https://www.kicksecure.com/wiki/Dev/boot/#Booting_Debian_Trixie_with_GRUB_+_u-boot_on_Raspberry_Pi_4</span></span></span></span>
 <p>This is preliminary work towards implementing the boot process design
 laid out below.</p>
 <p><u>Note:</u> This is informational for developers only. Should RPi
@@ -1115,14 +1115,14 @@ Pi image.</p>
 <h4 id="Obtaining_and_flashing_the_image">Obtaining and flashing the
 image</h4>
 <p>Semi-official Debian images for the Raspberry Pi can be downloaded
-from <a href="https://raspi.debian.net/daily-images/">https://raspi.debian.net/daily-images/</a>.
+from <a href="https://raspi.debian.net/daily-images/">https://raspi.debian.net/daily-images/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://raspi.debian.net/daily-images/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 Use the Debian Trixie image.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Download the image.</p>
-<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz">https://raspi.debian.net/daily/raspi_4_trixie.img.xz</a></span></p>
+<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz">https://raspi.debian.net/daily/raspi_4_trixie.img.xz</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://raspi.debian.net/daily/raspi_4_trixie.img.xz" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Download the hashsum.</p>
-<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256">https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256</a></span></p>
+<p><span class="code-select">wget <a href="https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256">https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://raspi.debian.net/daily/raspi_4_trixie.img.xz.sha256" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Verify the hashsum.</p>
 <p><span class="code-select">sha256sum -c
@@ -1433,9 +1433,9 @@ documentation, this stops "the initial active source message being sent
 during bootup," preventing a CEC-enabled TV from waking and switching
 channels when rebooting the RPi. Fedora notes "Stop the RPi turning on
 HDMI monitors on reboot". Seems important. However, this is listed as a
-<em>legacy</em> (now unsupported) option in the documentation (see <a href="https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html">https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html</a>),
+<em>legacy</em> (now unsupported) option in the documentation (see <a href="https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html">https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raspberrypi.com/documentation/computers/legacy_config_txt.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>),
 so perhaps it should be omitted?</li>
-<li><code>dtoverlay=cma,cma-256</code> - Adjusts the CMA size. See <a href="https://forums.raspberrypi.com/viewtopic.php?t=355799">https://forums.raspberrypi.com/viewtopic.php?t=355799</a>
+<li><code>dtoverlay=cma,cma-256</code> - Adjusts the CMA size. See <a href="https://forums.raspberrypi.com/viewtopic.php?t=355799">https://forums.raspberrypi.com/viewtopic.php?t=355799</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.raspberrypi.com/viewtopic.php?t=355799" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 for more. This seems related to GPU memory. Debian sets CMA to 64M by
 default and notes that this should typically not be set manually
 anymore. Possibly best to omit?</li>
@@ -1457,9 +1457,9 @@ with <code>** Reading file would overwrite reserved memory **</code>.
 You can manually load and boot GRUB from the U-Boot command line, at
 which point you can boot Debian like normal. Trixie is not affected by
 this issue. This is probably related to insufficient reserved memory
-regions with U-Boot 2023.1, see <a href="https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4">https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4</a>.</li>
+regions with U-Boot 2023.1, see <a href="https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4">https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://stackoverflow.com/questions/75232382/u-boot-fails-with-reading-file-would-overwrite-reserve-memory-on-raspberry-cm4" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 </ul>
-<h3 id="Boot_Process_Design_-_RPi">Boot Process Design - RPi</h3>
+<h3 id="Boot_Process_Design_-_RPi">Boot Process Design - RPi</h3><span class="share-tooltip" data-anchor="Boot_Process_Design_-_RPi"><a class="headline-anchor" href="#Boot_Process_Design_-_RPi" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/boot/#Boot_Process_Design_-_RPi">https://www.kicksecure.com/wiki/Dev/boot/#Boot_Process_Design_-_RPi</span></span></span></span>
 <ul>
 <li>GRUB should be the "main" bootloader from the user's
 perspective.</li>
@@ -1487,7 +1487,7 @@ bootloader - coreboot payload for Google Chromebook Firmware</h1>
 Feature set currently unknown; might be suitable for Verified Boot.</li>
 <li><a href="https://web.archive.org/web/20240119111142/https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware/#TOC-Depthcharge">https://web.archive.org/web/20240119111142/https://www.chromium.org/chromium-os/developer-information-for-chrome-os-devices/custom-firmware/#TOC-Depthcharge</a></li>
 <li><a href="https://web.archive.org/web/20240408175558/https://www.chromium.org/chromium-os/2014-firmware-summit/ChromeOS%20firmware%20summit%20-%20Depthcharge.pdf">https://web.archive.org/web/20240408175558/https://www.chromium.org/chromium-os/2014-firmware-summit/ChromeOS%20firmware%20summit%20-%20Depthcharge.pdf</a></li>
-<li><a href="https://github.com/coreboot/vboot">https://github.com/coreboot/vboot</a></li>
+<li><a href="https://github.com/coreboot/vboot">https://github.com/coreboot/vboot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/coreboot/vboot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Seems to be similar to but more complex than the Raspberry Pi's
 bootloader:
 <ul>
@@ -1512,7 +1512,7 @@ device tree-specific approach.</li>
 </ul>
 <h1 id="dracut_bug_log">dracut bug log</h1>
 <p>Debian bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1041614">unbootable
-system after installing dracut on a standard Debian installation</a></p>
+system after installing dracut on a standard Debian installation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1041614" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <pre><code>sudo dracut -f</code></pre>
 <pre><code>dracut: Executing: /usr/bin/dracut -f
 dracut: dracut module &#39;mksh&#39; will not be installed, because command &#39;mksh&#39; could not be found!

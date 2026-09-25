@@ -21,12 +21,7 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Entropy</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Source_Code_Comments">Source Code Comments</a></li><li class="toc-l2"><a href="#struct_file_operations">struct file_operations</a></li><li class="toc-l2"><a href="#read_iter">read_iter</a></li><li class="toc-l2"><a href="#Conclusion">Conclusion</a></li><li class="toc-l3"><a href="#Introduction_3">Introduction</a></li><li class="toc-l3"><a href="#early-rng-init-tools">early-rng-init-tools</a></li><li class="toc-l3"><a href="#use_kernel_command_line_as_a_source_of_randomness">use kernel
-command line as a source of randomness</a></li><li class="toc-l3"><a href="#timer_entropyd">timer_entropyd</a></li><li class="toc-l3"><a href="#sound_based">sound based</a></li><li class="toc-l3"><a href="#video-entropyd">video-entropyd</a></li><li class="toc-l3"><a href="#TrueRand_Based">TrueRand Based</a></li><li class="toc-l3"><a href="#EGD_-_The_Entropy_Gathering_Daemon">EGD - The Entropy Gathering
-Daemon</a></li><li class="toc-l3"><a href="#PRNGD_-_Pseudo_Random_Number_Generator_Daemon">PRNGD - Pseudo
-Random Number Generator Daemon</a></li><li class="toc-l3"><a href="#jitter_based">jitter based</a></li><li class="toc-l3"><a href="#Motherboard_Integrated">Motherboard Integrated</a></li><li class="toc-l3"><a href="#Remote_Server_Based">Remote Server Based</a></li><li class="toc-l3"><a href="#Linux_kernel_GCC_Plugins">Linux kernel GCC Plugins</a></li><li class="toc-l3"><a href="#virtio-rng">virtio-rng</a></li><li class="toc-l2"><a href="#Entropy_Key">Entropy Key</a></li><li class="toc-l2"><a href="#OneRNG">OneRNG</a></li><li class="toc-l2"><a href="#List">List</a></li><li class="toc-l2"><a href="#Software">Software</a></li><li class="toc-l2"><a href="#Opinion">Opinion</a></li><li class="toc-l2"><a href="#ent">ent</a></li><li class="toc-l2"><a href="#rngtest">rngtest</a></li><li class="toc-l2"><a href="#dieharder">dieharder</a></li><li class="toc-l2"><a href="#PractRand">PractRand</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="first-heading">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Entropy</span></nav><div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Qubes/" title="Dev/Qubes"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Qubes</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../../Security_Reviews_and_Feedback/" title="Security Reviews and Feedback"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Security
 Reviews and
 Feedback</span></a><span class="info"><span class="prev">Previous page:
@@ -34,7 +29,12 @@ Dev/Qubes</span><span class="index">Index page:
 Design</span><span class="next">Next page: Security Reviews and
 Feedback</span></span></span>Entropy, Randomness, /dev/random vs
 /dev/urandom, Entropy Sources, Entropy Gathering Daemons, RDRAND</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Introduction_2">Introduction</a></li><li class="toc-l2"><a href="#Source_Code_Comments">Source Code Comments</a></li><li class="toc-l2"><a href="#struct_file_operations">struct file_operations</a></li><li class="toc-l2"><a href="#read_iter">read_iter</a></li><li class="toc-l2"><a href="#Conclusion">Conclusion</a></li><li class="toc-l3"><a href="#Introduction_3">Introduction</a></li><li class="toc-l3"><a href="#early-rng-init-tools">early-rng-init-tools</a></li><li class="toc-l3"><a href="#use_kernel_command_line_as_a_source_of_randomness">use kernel
+command line as a source of randomness</a></li><li class="toc-l3"><a href="#timer_entropyd">timer_entropyd</a></li><li class="toc-l3"><a href="#sound_based">sound based</a></li><li class="toc-l3"><a href="#video-entropyd">video-entropyd</a></li><li class="toc-l3"><a href="#TrueRand_Based">TrueRand Based</a></li><li class="toc-l3"><a href="#EGD_-_The_Entropy_Gathering_Daemon">EGD - The Entropy Gathering
+Daemon</a></li><li class="toc-l3"><a href="#PRNGD_-_Pseudo_Random_Number_Generator_Daemon">PRNGD - Pseudo
+Random Number Generator Daemon</a></li><li class="toc-l3"><a href="#jitter_based">jitter based</a></li><li class="toc-l3"><a href="#Motherboard_Integrated">Motherboard Integrated</a></li><li class="toc-l3"><a href="#Remote_Server_Based">Remote Server Based</a></li><li class="toc-l3"><a href="#Linux_kernel_GCC_Plugins">Linux kernel GCC Plugins</a></li><li class="toc-l3"><a href="#virtio-rng">virtio-rng</a></li><li class="toc-l2"><a href="#Entropy_Key">Entropy Key</a></li><li class="toc-l2"><a href="#OneRNG">OneRNG</a></li><li class="toc-l2"><a href="#List">List</a></li><li class="toc-l2"><a href="#Software">Software</a></li><li class="toc-l2"><a href="#Opinion">Opinion</a></li><li class="toc-l2"><a href="#ent">ent</a></li><li class="toc-l2"><a href="#rngtest">rngtest</a></li><li class="toc-l2"><a href="#dieharder">dieharder</a></li><li class="toc-l2"><a href="#PractRand">PractRand</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../../media/Random_entropy.png.webp" alt="Random_entropy.png" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -45,10 +45,10 @@ Feedback</span></span></span>Entropy, Randomness, /dev/random vs
 </div>
 <h1 id="Introduction">Introduction</h1>
 <p>The <a href="https://man7.org/linux/man-pages/man4/random.4.html">Linux Kernel
-man page</a> says: "<em>[...] /dev/random should be suitable for uses
+man page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man7.org/linux/man-pages/man4/random.4.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> says: "<em>[...] /dev/random should be suitable for uses
 that need very high quality randomness</em> [...]".</p>
 <p>Quoted from the <a href="https://we.riseup.net/riseup+tech/entropy">riseup.net page about
-entropy</a>: "<em>[...] entropy-estimation is a black-art and not very
+entropy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://we.riseup.net/riseup+tech/entropy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: "<em>[...] entropy-estimation is a black-art and not very
 well understood [...]</em>".</p>
 <p>While it would be good to be cautious, i.e. learning about the
 entropy quality in Virtual Machines and, if required, learning about
@@ -56,15 +56,15 @@ methods to improve it, it is not a critical problem. Successful entropy
 estimation attacks have never been reported for any software.</p>
 <p>User space (not kernel space) entropy failures:</p>
 <ul>
-<li><a href="https://lists.debian.org/debian-security-announce/2008/msg00152.html">https://lists.debian.org/debian-security-announce/2008/msg00152.html</a></li>
+<li><a href="https://lists.debian.org/debian-security-announce/2008/msg00152.html">https://lists.debian.org/debian-security-announce/2008/msg00152.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-security-announce/2008/msg00152.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://research.swtch.com/openssl">Lessons from the
-Debian/OpenSSL Fiasco</a> / <a href="https://www.schneier.com/blog/archives/2008/05/random_number_b.html">Random
-Number Bug in Debian Linux</a></li>
+Debian/OpenSSL Fiasco</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://research.swtch.com/openssl" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> / <a href="https://www.schneier.com/blog/archives/2008/05/random_number_b.html">Random
+Number Bug in Debian Linux</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.schneier.com/blog/archives/2008/05/random_number_b.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Kernel entropy failures:</p>
 <ul>
 <li>Quote <a href="https://factorable.net/">Widespread Weak Keys in
-Network Devices - factorable.net</a>:</li>
+Network Devices - factorable.net</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://factorable.net/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</li>
 </ul>
 <p><blockquote><p>We performed a large-scale study of RSA and DSA cryptographic keys in
 use on the Internet and discovered that significant numbers of keys are
@@ -72,10 +72,10 @@ insecure due to insufficient randomness.</p></blockquote></p>
 <p><blockquote><p>Most critically, we found that the Linux random number generator can
 produce predictable output at boot under certain conditions,</p></blockquote></p>
 <ul>
-<li><a href="https://factorable.net/faq.html">https://factorable.net/faq.html</a></li>
+<li><a href="https://factorable.net/faq.html">https://factorable.net/faq.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://factorable.net/faq.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <ul>
-<li>Quote <a href="https://factorable.net/weakkeys12.extended.pdf">https://factorable.net/weakkeys12.extended.pdf</a></li>
+<li>Quote <a href="https://factorable.net/weakkeys12.extended.pdf">https://factorable.net/weakkeys12.extended.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://factorable.net/weakkeys12.extended.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><blockquote><p>Every software package we examined relies on /dev/urandom to generate
 cryptographic keys; however, we find that Linux's random number
@@ -84,18 +84,18 @@ to produce deterministic output under conditions likely to occur in
 headless and embedded devices</p></blockquote></p>
 <ul>
 <li><a href="https://forums.raspberrypi.com/viewtopic.php?f=66&amp;t=126892">Predictable
-SSH host keys</a></li>
+SSH host keys</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.raspberrypi.com/viewtopic.php?f=66&amp;t=126892" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Interesting:</p>
-<p><a href="https://blog.cr.yp.to/20140205-entropy.html">https://blog.cr.yp.to/20140205-entropy.html</a></p>
-<p><a href="https://cseweb.ucsd.edu/~nadiah/">https://cseweb.ucsd.edu/~nadiah/</a></p>
+<p><a href="https://blog.cr.yp.to/20140205-entropy.html">https://blog.cr.yp.to/20140205-entropy.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20140205-entropy.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p><a href="https://cseweb.ucsd.edu/~nadiah/">https://cseweb.ucsd.edu/~nadiah/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cseweb.ucsd.edu/~nadiah/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Quality">Quality</h1>
 <p>As long as one entropy source of many is high quality, this foils
 attempts by adversaries to predict output and rescues the RNG.
 <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
 <h1 id="RDRAND">RDRAND</h1>
 <p>Debian trusts RDRAND by default since Debian <code>buster</code>.</p>
-<p>Quote <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-information.en.html#entropy-starvation">https://www.debian.org/releases/buster/amd64/release-notes/ch-information.en.html#entropy-starvation</a></p>
+<p>Quote <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-information.en.html#entropy-starvation">https://www.debian.org/releases/buster/amd64/release-notes/ch-information.en.html#entropy-starvation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/releases/buster/amd64/release-notes/ch-information.en.html#entropy-starvation" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>Due to systemd needing entropy during boot and the kernel treating
 such calls as blocking when available entropy is low, the system may
 hang for minutes to hours until the randomness subsystem is sufficiently
@@ -113,9 +113,9 @@ system on the network continuously as this adds entropy to the
 randomness pool and the system will eventually be reachable by ssh
 again.</p>
 <p>See <a href="https://wiki.debian.org/BoottimeEntropyStarvation">the
-wiki</a> and <a href="https://daniel-lange.com/archives/152-hello-buster.html">DLange's
-overview of the issue</a> for other options.</p></blockquote></p>
-<p><a href="https://github.com/Kicksecure/security-misc">security-misc</a>
+wiki</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/BoottimeEntropyStarvation" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="https://daniel-lange.com/archives/152-hello-buster.html">DLange's
+overview of the issue</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://daniel-lange.com/archives/152-hello-buster.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for other options.</p></blockquote></p>
+<p><a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 (installed by default in Kicksecure) distrusts the CPU for initial
 entropy at boot as it is not possible to audit, may contain a bug,
 weaknesses, or a backdoor.</p>
@@ -125,23 +125,23 @@ weaknesses, or a backdoor.</p>
 <li><a href="https://web.archive.org/web/20180320163305/https://plus.google.com/+TheodoreTso/posts/SDcoemc9V3J">Linux
 kernel developer Theodore Ts'o warning against RDRAND</a></li>
 <li><a href="https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566">entropy
-CONFIG_RANDOM_TRUST_CPU yes or no? / rng_core.default_quality</a></li>
-<li><a href="https://en.wikipedia.org/wiki/RDRAND#Reception">https://en.wikipedia.org/wiki/RDRAND#Reception</a></li>
-<li><a href="https://twitter.com/pid_eins/status/1149649806056280069">https://twitter.com/pid_eins/status/1149649806056280069</a></li>
-<li><a href="https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html">https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html</a></li>
-<li><a href="https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566">https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023349.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023349.html</a></li>
-<li><a href="https://www.lvh.io/posts/2013/10/thoughts-on-rdrand-in-linux/">https://www.lvh.io/posts/2013/10/thoughts-on-rdrand-in-linux/</a></li>
+CONFIG_RANDOM_TRUST_CPU yes or no? / rng_core.default_quality</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://en.wikipedia.org/wiki/RDRAND#Reception">https://en.wikipedia.org/wiki/RDRAND#Reception</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/RDRAND#Reception" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://twitter.com/pid_eins/status/1149649806056280069">https://twitter.com/pid_eins/status/1149649806056280069</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://twitter.com/pid_eins/status/1149649806056280069" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html">https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://archive.nytimes.com/www.nytimes.com/interactive/2013/09/05/us/documents-reveal-nsa-campaign-against-encryption.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566">https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/entropy-config-random-trust-cpu-yes-or-no-rng-core-default-quality/8566" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023349.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023349.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-October/023349.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.lvh.io/posts/2013/10/thoughts-on-rdrand-in-linux/">https://www.lvh.io/posts/2013/10/thoughts-on-rdrand-in-linux/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.lvh.io/posts/2013/10/thoughts-on-rdrand-in-linux/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://arstechnica.com/gadgets/2019/10/how-a-months-old-amd-microcode-bug-destroyed-my-weekend/">Ars
 Technica: AMD shipped Ryzen 3000 with a serious microcode bug in its
-random number generator.</a></li>
+random number generator.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://arstechnica.com/gadgets/2019/10/how-a-months-old-amd-microcode-bug-destroyed-my-weekend/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://bugzilla.kernel.org/show_bug.cgi?id=85911">Kernel
 bug report from 2014: rdrand instruction fails after resume on AMD
-family 22 CPU</a></li>
+family 22 CPU</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugzilla.kernel.org/show_bug.cgi?id=85911" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<p><a href="https://www.phoronix.com/news/Linux-RdRand-Sanity-Check">https://www.phoronix.com/news/Linux-RdRand-Sanity-Check</a></p>
-<p><a href="https://www.phoronix.com/review/crosstalk-srbds-vulnerability">https://www.phoronix.com/review/crosstalk-srbds-vulnerability</a></p>
-<p>In <a href="https://phabricator.whonix.org/T727#16542">T727#16542</a>,
+<p><a href="https://www.phoronix.com/news/Linux-RdRand-Sanity-Check">https://www.phoronix.com/news/Linux-RdRand-Sanity-Check</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/Linux-RdRand-Sanity-Check" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p><a href="https://www.phoronix.com/review/crosstalk-srbds-vulnerability">https://www.phoronix.com/review/crosstalk-srbds-vulnerability</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/review/crosstalk-srbds-vulnerability" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p>In <a href="https://phabricator.whonix.org/T727#16542">T727#16542</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T727#16542" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 @HulaHoopWhonix wrote:</p>
 <p><blockquote><p>Playing devil's advocate here: Ted Ts'o [0] expresses strong
 skepticism about the efficacy of RNGs that rely on CPU jitter. Summary:
@@ -152,7 +152,7 @@ idea.</p></blockquote></p>
 <p>[0] He's the main developer behind Linux's RNG and staunchly resisted
 relying only on Intel's RDRAND. His opinions carry weight with good
 reason.</p>
-<p>[1] <a href="https://lwn.net/Articles/586427/">https://lwn.net/Articles/586427/</a></p>
+<p>[1] <a href="https://lwn.net/Articles/586427/">https://lwn.net/Articles/586427/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/586427/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>It may be that there is some very complex state which is hidden
 inside the the CPU execution pipeline, the L1 cache, etc., etc. But just
 because *you* can't figure it out, and just because *I* can't figure it
@@ -161,10 +161,10 @@ NSA analyst working in Fort Meade can't figure out. (Or heck, a really
 clever Intel engineer who has full visibility into the internal design
 of an Intel CPU....)</p></blockquote></p>
 <ul>
-<li>D. J. Bernstein: <a href="https://groups.google.com/g/randomness-generation/c/z3Uid45DV34">https://groups.google.com/g/randomness-generation/c/z3Uid45DV34</a></li>
-<li><a href="https://spideroak.com/browse/share/UTwente/RNG/Tests/NIST-STS/">https://spideroak.com/browse/share/UTwente/RNG/Tests/NIST-STS/</a></li>
-<li><a href="https://spideroak.com/share/KVKHOZLOORSQ/RNG/home/quantum/SpiderOak%20Hive/Tests/NIST-STS/SP800-22rev1a.pdf">https://spideroak.com/share/KVKHOZLOORSQ/RNG/home/quantum/SpiderOak%20Hive/Tests/NIST-STS/SP800-22rev1a.pdf</a></li>
-<li><a href="https://github.com/QubesOS/qubes-issues/issues/6941">https://github.com/QubesOS/qubes-issues/issues/6941</a></li>
+<li>D. J. Bernstein: <a href="https://groups.google.com/g/randomness-generation/c/z3Uid45DV34">https://groups.google.com/g/randomness-generation/c/z3Uid45DV34</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://groups.google.com/g/randomness-generation/c/z3Uid45DV34" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://spideroak.com/browse/share/UTwente/RNG/Tests/NIST-STS/">https://spideroak.com/browse/share/UTwente/RNG/Tests/NIST-STS/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://spideroak.com/browse/share/UTwente/RNG/Tests/NIST-STS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://spideroak.com/share/KVKHOZLOORSQ/RNG/home/quantum/SpiderOak%20Hive/Tests/NIST-STS/SP800-22rev1a.pdf">https://spideroak.com/share/KVKHOZLOORSQ/RNG/home/quantum/SpiderOak%20Hive/Tests/NIST-STS/SP800-22rev1a.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://spideroak.com/share/KVKHOZLOORSQ/RNG/home/quantum/SpiderOak%20Hive/Tests/NIST-STS/SP800-22rev1a.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/6941">https://github.com/QubesOS/qubes-issues/issues/6941</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/6941" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Write_to_/dev/random">Write to /dev/random</h1>
 <p>Quote Wikipedia:</p>
@@ -189,9 +189,9 @@ was credited using ioctl.</p>
 <p>Patrick:</p>
 <p><blockquote><p>Mixing even fully compromised entropy sources is considered secure in
 the current Linux kernel implementation. <a href="https://blog.cr.yp.to/20140205-entropy.html">Though, D. J.
-Bernstein disagrees with that.</a></p></blockquote></p>
-<p><a href="https://github.com/QubesOS/qubes-issues/issues/6941#issuecomment-939260649">Quote</a>
-<a href="https://github.com/3hhh">3hhh</a>:</p>
+Bernstein disagrees with that.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20140205-entropy.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p></blockquote></p>
+<p><a href="https://github.com/QubesOS/qubes-issues/issues/6941#issuecomment-939260649">Quote</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/6941#issuecomment-939260649" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<a href="https://github.com/3hhh">3hhh</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/3hhh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>Bernstein assumes that you have entropy sources that you trust and
 some that are less trustworthy. If that's true, his statement on "stick
 with the single one you trust and ditch all other input" is correct (and
@@ -202,16 +202,16 @@ to make the decision) and thus live with a few potential attacks.</p>
 <p>I believe the latter is a more realistic view atm (Linux runs on many
 "suboptimal" devices). If you build your own hardware RNG and use that,
 Bernstein's view is more accurate.</p></blockquote></p>
-<p><a href="https://forums.whonix.org/t/risks-of-writing-to-dev-random-crediting-entropy-rndaddentropy-related-to-untrusted-root/8976">https://forums.whonix.org/t/risks-of-writing-to-dev-random-crediting-entropy-rndaddentropy-related-to-untrusted-root/8976</a></p>
+<p><a href="https://forums.whonix.org/t/risks-of-writing-to-dev-random-crediting-entropy-rndaddentropy-related-to-untrusted-root/8976">https://forums.whonix.org/t/risks-of-writing-to-dev-random-crediting-entropy-rndaddentropy-related-to-untrusted-root/8976</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/risks-of-writing-to-dev-random-crediting-entropy-rndaddentropy-related-to-untrusted-root/8976" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Credit_Entropy">Credit Entropy</h1>
 <ul>
 <li><a href="https://web.archive.org/web/20191031233802/https://systemd.io/RANDOM_SEEDS.html">https://web.archive.org/web/20191031233802/https://systemd.io/RANDOM_SEEDS.html</a></li>
-<li><a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html">https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html">https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><code>$SYSTEMD_RANDOM_SEED_CREDIT</code></li>
 </ul>
 <p>refers to this as "credit the entropy" vs "not credit the
 entropy".</p>
-<p>Quote <a href="https://man7.org/linux/man-pages/man4/random.4.html">https://man7.org/linux/man-pages/man4/random.4.html</a></p>
+<p>Quote <a href="https://man7.org/linux/man-pages/man4/random.4.html">https://man7.org/linux/man-pages/man4/random.4.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man7.org/linux/man-pages/man4/random.4.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>ioctl</p></blockquote></p>
 <p><blockquote><p>RNDADDTOENTCNT</p>
 <p>Increment or decrement the entropy count of the input pool by the
@@ -258,10 +258,10 @@ anymore: goal</li>
 <li>Price to pay: slightly increased boot time / system load</li>
 </ul>
 <h1 id="/dev/random_vs._/dev/urandom">/dev/random vs. /dev/urandom</h1>
-<p>Update: this will improve in the future. See: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=2ad310f93ec3d7062bdb73f06743aa56879a0a28">https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=2ad310f93ec3d7062bdb73f06743aa56879a0a28</a>
+<p>Update: this will improve in the future. See: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=2ad310f93ec3d7062bdb73f06743aa56879a0a28">https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=2ad310f93ec3d7062bdb73f06743aa56879a0a28</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://git.kernel.org/pub/scm/linux/kernel/git/crng/random.git/commit/?id=2ad310f93ec3d7062bdb73f06743aa56879a0a28" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 - Update: Got reverted.</p>
 <p>Still applies to Debian bullseye stable kernels:</p>
-<p><a href="https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-939110351">https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-939110351</a></p>
+<p><a href="https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-939110351">https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-939110351</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-939110351" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><span class="manually-placed-anchor " id="Viewpoint:_/dev/random_is_obsolete"></span></p>
 <p>Viewpoint: "/dev/random is obsolete" has been deprecated. It's still
 available as a footnote. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
@@ -295,7 +295,7 @@ randomness pool has never been initialized; BSD
 configuration bug by blocking, but Linux
 <code>/dev/</code><u><code>u</code></u><code>random</code> (unlike Linux
 <code>/dev/random</code>) spews predictable data, causing (e.g.) the
-widespread RSA security failures documented on <a href="https://factorable.net">factorable.net</a>. But fixing this
+widespread RSA security failures documented on <a href="https://factorable.net">factorable.net</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://factorable.net" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. But fixing this
 configuration bug has nothing to do with the <code>/dev/random</code>
 superstitions.</p></blockquote></p>
 <p>Interpretation:</p>
@@ -314,7 +314,7 @@ cases:</p>
 <li>golden images coming with published, shared (among all users of the
 golden image) random seeds</li>
 </ul>
-<p>The issue of randomness pool initialization is well explained at <a href="https://systemd.io/RANDOM_SEEDS/">systemd Random Seeds</a>.</p>
+<p>The issue of randomness pool initialization is well explained at <a href="https://systemd.io/RANDOM_SEEDS/">systemd Random Seeds</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/RANDOM_SEEDS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Finally, I need to address what my interpretation is of what he means
 by "superstitions". Quote:</p>
 <p><blockquote><p>the <code>/dev/random</code> superstitions.</p></blockquote></p>
@@ -336,13 +336,13 @@ argument. The problem is that it is non-trivial to know the status of
 randomness pool initialization. Therefore that is a rather theoretical
 consideration.</p>
 <p>Quote <a href="https://systemd.io/RANDOM_SEEDS/">systemd Random
-Seeds</a>:</p>
+Seeds</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/RANDOM_SEEDS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p>(Strictly speaking there are more APIs, for example
 <code>/dev/random</code>, but these should not be used by almost any
 application and hence aren't mentioned here.)</p></blockquote></p>
 <p>This could use some elaboration. Hence, asked, see systemd feature
 request: <a href="https://github.com/systemd/systemd/issues/14199">systemd.io/RANDOM_SEEDS
-- elaborate on /dev/random</a></p>
+- elaborate on /dev/random</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/systemd/systemd/issues/14199" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p>My conclusion is:</p>
 <ul>
 <li>Prefer using <code>/dev/random</code> whenever security is
@@ -386,12 +386,12 @@ it is "really the same", one is not just a symlink to the other.</li>
 <code>/dev/</code><u><code>u</code></u><code>random</code>? Why have
 this distinction in the first place?</li>
 </ul>
-<p>Kernel developer Theodore Y. Ts'o in 2019: <a href="https://lore.kernel.org/linux-ext4/20190915052242.GG19710@mit.edu/">https://lore.kernel.org/linux-ext4/20190915052242.GG19710@mit.edu/</a></p>
+<p>Kernel developer Theodore Y. Ts'o in 2019: <a href="https://lore.kernel.org/linux-ext4/20190915052242.GG19710@mit.edu/">https://lore.kernel.org/linux-ext4/20190915052242.GG19710@mit.edu/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/linux-ext4/20190915052242.GG19710@mit.edu/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <hr />
 <p><a href="https://speakerd.s3.amazonaws.com/presentations/81e3194277914b21b7bc92425975ee9c/Entropy_32c3_16-9.pdf">The
 plain simple reality of entropy - Or how I learned to stop worrying and
 love urandom by Filippo Valsorda - @FiloSo, Cryptography and systems
-engineering at CloudFlare, <code>Entropy_32c3_16-9.pdf</code></a>
+engineering at CloudFlare, <code>Entropy_32c3_16-9.pdf</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://speakerd.s3.amazonaws.com/presentations/81e3194277914b21b7bc92425975ee9c/Entropy_32c3_16-9.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 should, according to Patrick Schleizer, not be used to dismiss entropy
 quality considerations. The pdf mentions "The early boot problem",
 quote:</p>
@@ -399,15 +399,15 @@ quote:</p>
 predictable. This is a Linux shortcoming. The OS must save the entropy
 pool at poweroff. Your distribution probably does already.</p></blockquote></p>
 <p>Exactly such mechanisms need to be scrutinized. For example, <a href="https://github.com/QubesOS/qubes-issues/issues/1752">Qubes OS does
-not persist random seed files (entropy) in App Qubes #1752</a>, reported
+not persist random seed files (entropy) in App Qubes #1752</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/1752" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, reported
 in 2016, was unfixed at the time of writing in October 2021.</p>
 <h1 id="Code_Comparison_-_/dev/random_vs._/dev/urandom">Code Comparison -
 /dev/random vs. /dev/urandom</h1>
-<h2 id="Introduction_2">Introduction</h2>
+<h2 id="Introduction_2">Introduction</h2><span class="share-tooltip" data-anchor="Introduction_2"><a class="headline-anchor" href="#Introduction_2" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Introduction_2">https://www.kicksecure.com/wiki/Dev/Entropy/#Introduction_2</span></span></span></span>
 <p>From <a href="https://github.com/torvalds/linux/blob/master/drivers/char/random.c">Linux
-source code <code>random.c</code></a>. (At the time of git commit <a href="https://github.com/torvalds/linux/blob/78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508/drivers/char/random.c"><code>78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508</code></a>.)
+source code <code>random.c</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/torvalds/linux/blob/master/drivers/char/random.c" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. (At the time of git commit <a href="https://github.com/torvalds/linux/blob/78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508/drivers/char/random.c"><code>78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/torvalds/linux/blob/78eb4ea25cd5fdbdae7eb9fdf87b99195ff67508/drivers/char/random.c" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.)
 Code from the end of July 2024.</p>
-<h2 id="Source_Code_Comments">Source Code Comments</h2>
+<h2 id="Source_Code_Comments">Source Code Comments</h2><span class="share-tooltip" data-anchor="Source_Code_Comments"><a class="headline-anchor" href="#Source_Code_Comments" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Source_Code_Comments">https://www.kicksecure.com/wiki/Dev/Entropy/#Source_Code_Comments</span></span></span></span>
 <pre><code> * Reading from /dev/random has the same functionality as calling
  * getrandom(2) with flags=0. In earlier versions, however, it had
  * vastly different semantics and should therefore be avoided, to
@@ -416,7 +416,7 @@ Code from the end of July 2024.</p>
  * Reading from /dev/urandom has the same functionality as calling
  * getrandom(2) with flags=GRND_INSECURE. Because it does not block
  * waiting for the RNG to be ready, it should not be used.</code></pre>
-<h2 id="struct_file_operations">struct file_operations</h2>
+<h2 id="struct_file_operations">struct file_operations</h2><span class="share-tooltip" data-anchor="struct_file_operations"><a class="headline-anchor" href="#struct_file_operations" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#struct_file_operations">https://www.kicksecure.com/wiki/Dev/Entropy/#struct_file_operations</span></span></span></span>
 <p>Note the difference, random vs urandom.</p>
 <p>A)</p>
 <pre><code>const struct file_operations random_fops = {
@@ -424,7 +424,7 @@ Code from the end of July 2024.</p>
 <p>B)</p>
 <pre><code>const struct file_operations urandom_fops = {
     .read_iter = urandom_read_iter,</code></pre>
-<h2 id="read_iter">read_iter</h2>
+<h2 id="read_iter">read_iter</h2><span class="share-tooltip" data-anchor="read_iter"><a class="headline-anchor" href="#read_iter" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#read_iter">https://www.kicksecure.com/wiki/Dev/Entropy/#read_iter</span></span></span></span>
 <p>A)</p>
 <pre><code>static ssize_t random_read_iter(struct kiocb *kiocb, struct iov_iter *iter)
 {
@@ -464,32 +464,32 @@ Code from the end of July 2024.</p>
 
     return get_random_bytes_user(iter);
 }</code></pre>
-<h2 id="Conclusion">Conclusion</h2>
+<h2 id="Conclusion">Conclusion</h2><span class="share-tooltip" data-anchor="Conclusion"><a class="headline-anchor" href="#Conclusion" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Conclusion">https://www.kicksecure.com/wiki/Dev/Entropy/#Conclusion</span></span></span></span>
 <p>This is not a comprehensive comparison. This is only to show that
 there are code path differences.</p>
 <h1 id="Entropy_Sources">Entropy Sources</h1>
-<h3 id="Introduction_3">Introduction</h3>
+<h3 id="Introduction_3">Introduction</h3><span class="share-tooltip" data-anchor="Introduction_3"><a class="headline-anchor" href="#Introduction_3" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Introduction_3">https://www.kicksecure.com/wiki/Dev/Entropy/#Introduction_3</span></span></span></span>
 <p>It has to be researched whether they work well inside Virtual
 Machines. Simply installing all of them may not be wise.</p>
-<h3 id="early-rng-init-tools">early-rng-init-tools</h3>
+<h3 id="early-rng-init-tools">early-rng-init-tools</h3><span class="share-tooltip" data-anchor="early-rng-init-tools"><a class="headline-anchor" href="#early-rng-init-tools" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#early-rng-init-tools">https://www.kicksecure.com/wiki/Dev/Entropy/#early-rng-init-tools</span></span></span></span>
 <ul>
-<li><a href="https://lists.debian.org/debian-devel/2019/02/msg00383.html">https://lists.debian.org/debian-devel/2019/02/msg00383.html</a></li>
-<li><a href="https://lists.debian.org/debian-devel/2019/02/threads.html#00327">https://lists.debian.org/debian-devel/2019/02/threads.html#00327</a></li>
-<li><a href="http://fish.mirbsd.org/~tg/Debs/dists/sid/wtf/Pkgs/early-rng-init-tools/">http://fish.mirbsd.org/~tg/Debs/dists/sid/wtf/Pkgs/early-rng-init-tools/</a></li>
-<li><a href="https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=alioth/early-rng-init-tools.git;a=tree">https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=alioth/early-rng-init-tools.git;a=tree</a></li>
-<li><a href="https://forums.whonix.org/t/early-rng-init-tools-for-better-entropy/8579">https://forums.whonix.org/t/early-rng-init-tools-for-better-entropy/8579</a></li>
+<li><a href="https://lists.debian.org/debian-devel/2019/02/msg00383.html">https://lists.debian.org/debian-devel/2019/02/msg00383.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-devel/2019/02/msg00383.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lists.debian.org/debian-devel/2019/02/threads.html#00327">https://lists.debian.org/debian-devel/2019/02/threads.html#00327</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-devel/2019/02/threads.html#00327" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="http://fish.mirbsd.org/~tg/Debs/dists/sid/wtf/Pkgs/early-rng-init-tools/">http://fish.mirbsd.org/~tg/Debs/dists/sid/wtf/Pkgs/early-rng-init-tools/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://fish.mirbsd.org/~tg/Debs/dists/sid/wtf/Pkgs/early-rng-init-tools/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=alioth/early-rng-init-tools.git;a=tree">https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=alioth/early-rng-init-tools.git;a=tree</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://evolvis.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=alioth/early-rng-init-tools.git;a=tree" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/early-rng-init-tools-for-better-entropy/8579">https://forums.whonix.org/t/early-rng-init-tools-for-better-entropy/8579</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/early-rng-init-tools-for-better-entropy/8579" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h3 id="use_kernel_command_line_as_a_source_of_randomness">use kernel
-command line as a source of randomness</h3>
+command line as a source of randomness</h3><span class="share-tooltip" data-anchor="use_kernel_command_line_as_a_source_of_randomness"><a class="headline-anchor" href="#use_kernel_command_line_as_a_source_of_randomness" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#use_kernel_command_line_as_a_source_of_randomness">https://www.kicksecure.com/wiki/Dev/Entropy/#use_kernel_command_line_as_a_source_of_randomness</span></span></span></span>
 <p><strong>Introduction</strong></p>
 <p>[1] Kernel will use the kernel command line as a source of randomness
 in any case - whether a random seed is added to the kernel command line
 or not. Sources:</p>
 <ul>
-<li><a href="https://www.openwall.com/lists/kernel-hardening/2017/08/16/15">https://www.openwall.com/lists/kernel-hardening/2017/08/16/15</a></li>
-<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-1-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-1-labbott@redhat.com/</a></li>
-<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-2-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-2-labbott@redhat.com/</a></li>
-<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-3-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-3-labbott@redhat.com/</a></li>
+<li><a href="https://www.openwall.com/lists/kernel-hardening/2017/08/16/15">https://www.openwall.com/lists/kernel-hardening/2017/08/16/15</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openwall.com/lists/kernel-hardening/2017/08/16/15" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-1-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-1-labbott@redhat.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/lkml/20170816231458.2299-1-labbott@redhat.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-2-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-2-labbott@redhat.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/lkml/20170816231458.2299-2-labbott@redhat.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lore.kernel.org/lkml/20170816231458.2299-3-labbott@redhat.com/">https://lore.kernel.org/lkml/20170816231458.2299-3-labbott@redhat.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/lkml/20170816231458.2299-3-labbott@redhat.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><strong>adding a random seed to kernel command line</strong></p>
 <p>Goal: see <a href="#Goal">goal</a>.</p>
@@ -498,7 +498,7 @@ or not. Sources:</p>
 <li>Do not <a href="#Credit_Entropy">credit entropy</a>
 since this might be dangerous if something goes wrong.</li>
 <li>Non-goal: Fixing performance related <a href="#Early_Entropy_Issue">early entropy issue</a> since there is none.</li>
-<li>systemd unit file drop-in for <a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html"><code>systemd-random-seed.service</code></a>
+<li>systemd unit file drop-in for <a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html"><code>systemd-random-seed.service</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 by adding
 <ul>
 <li><code>ExecStartPost</code> to refresh the seed early at boot to
@@ -519,7 +519,7 @@ being done.</li>
 <p>Similar to:</p>
 <ul>
 <li>Adding a random seed to the kernel command line would be similar to
-<a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html"><code>systemd-random-seed.service</code></a>
+<a href="https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html"><code>systemd-random-seed.service</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 (enabled by systemd and Debian by default) but happening earlier already
 at the boot stage of the initial ramdisk.
 <code>systemd-random-seed.service</code> by default also does not credit
@@ -539,15 +539,15 @@ security issues since not crediting entropy.</li>
 available at the initial ramdisk boot stage.</li>
 </ul>
 <p><a href="https://forums.whonix.org/t/use-kernel-command-line-as-a-source-of-randomness/8945">forum
-discussion</a></p>
-<h3 id="timer_entropyd">timer_entropyd</h3>
+discussion</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/use-kernel-command-line-as-a-source-of-randomness/8945" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h3 id="timer_entropyd">timer_entropyd</h3><span class="share-tooltip" data-anchor="timer_entropyd"><a class="headline-anchor" href="#timer_entropyd" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#timer_entropyd">https://www.kicksecure.com/wiki/Dev/Entropy/#timer_entropyd</span></span></span></span>
 <ul>
 <li><a href="https://web.archive.org/web/20200105225652/https://www.vanheusden.com/te/">https://web.archive.org/web/20200105225652/https://www.vanheusden.com/te/</a></li>
 <li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=575614">Not in
-Debian.</a></li>
-<li><a href="https://github.com/adrelanos/timer-entropyd">https://github.com/adrelanos/timer-entropyd</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a></li>
-<li>Quote <a href="https://www.kernel.org/doc/ols/2014/ols2014-harris.pdf">https://www.kernel.org/doc/ols/2014/ols2014-harris.pdf</a>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=575614" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/adrelanos/timer-entropyd">https://github.com/adrelanos/timer-entropyd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/adrelanos/timer-entropyd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Quote <a href="https://www.kernel.org/doc/ols/2014/ols2014-harris.pdf">https://www.kernel.org/doc/ols/2014/ols2014-harris.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kernel.org/doc/ols/2014/ols2014-harris.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li><blockquote><p>I have written a daemon program which I believe solves this problem.
 I wanted a name distinct from the existing"Timer entropy daemon" [2],
@@ -561,7 +561,7 @@ through a calculation to estimate the entropy, then pushes the whole
 load of buffered data into random(4). My program does none of those
 things.</p></blockquote></li>
 </ul></li>
-<li>Quote <a href="https://metacpan.org/release/DANAJ/Crypt-Random-TESHA2-0.01/view/lib/Crypt/Random/TESHA2.pm">https://metacpan.org/release/DANAJ/Crypt-Random-TESHA2-0.01/view/lib/Crypt/Random/TESHA2.pm</a>
+<li>Quote <a href="https://metacpan.org/release/DANAJ/Crypt-Random-TESHA2-0.01/view/lib/Crypt/Random/TESHA2.pm">https://metacpan.org/release/DANAJ/Crypt-Random-TESHA2-0.01/view/lib/Crypt/Random/TESHA2.pm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://metacpan.org/release/DANAJ/Crypt-Random-TESHA2-0.01/view/lib/Crypt/Random/TESHA2.pm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li><blockquote><p>Uses a related method (jitter in timing data between usleeps) as this
 module, but inefficient and only suitable for bulk feeding of an entropy
@@ -570,12 +570,12 @@ and at most 0.5 bits of entropy per output bit. HAVEGE is a superior
 overall solution. However, note a number of other links at the site for
 other sources as well as links to hardware RNGs.</p></blockquote></li>
 </ul></li>
-<li>Quote <a href="https://github.com/infinity0/rngutils/blob/master/README.md">https://github.com/infinity0/rngutils/blob/master/README.md</a>
+<li>Quote <a href="https://github.com/infinity0/rngutils/blob/master/README.md">https://github.com/infinity0/rngutils/blob/master/README.md</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/infinity0/rngutils/blob/master/README.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li><blockquote><p>(This was inspired by timer entropy daemon^TED, which generates
 entropy in an inefficient way, and whose output fails FIPS 140-2.)</p></blockquote></li>
 </ul></li>
-<li>Quote <a href="https://www.freepatentsonline.com/y2019/0050202.html">https://www.freepatentsonline.com/y2019/0050202.html</a>
+<li>Quote <a href="https://www.freepatentsonline.com/y2019/0050202.html">https://www.freepatentsonline.com/y2019/0050202.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freepatentsonline.com/y2019/0050202.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li><blockquote><p>The timer entropy daemon uses timing jitters over sleeps to produce
 entropy, much like MAXWELL. This demon is even more lightweight than
@@ -584,61 +584,61 @@ calculations, rather it only uses a 100 s sleep wrapped by
 gettimeofday(2) sampling.</p></blockquote></li>
 </ul></li>
 </ul>
-<h3 id="sound_based">sound based</h3>
+<h3 id="sound_based">sound based</h3><span class="share-tooltip" data-anchor="sound_based"><a class="headline-anchor" href="#sound_based" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#sound_based">https://www.kicksecure.com/wiki/Dev/Entropy/#sound_based</span></span></span></span>
 <h4 id="randomsound">randomsound</h4>
 <ul>
 <li><a href="https://packages.debian.org/trixie/randomsound">In
-Debian.</a></li>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/randomsound" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html">randomsound
-is being discouraged nowadays by its author</a>.</li>
-<li><a href="https://forums.whonix.org/t/moar-entropy-sources/8543">https://forums.whonix.org/t/moar-entropy-sources/8543</a></li>
+is being discouraged nowadays by its author</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li><a href="https://forums.whonix.org/t/moar-entropy-sources/8543">https://forums.whonix.org/t/moar-entropy-sources/8543</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/moar-entropy-sources/8543" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001509.html">revive
-randomsound?</a></li>
+randomsound?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001509.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001513.html">reply
-to above</a></li>
+to above</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001513.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="audio-entropyd">audio-entropyd</h4>
 <ul>
 <li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=526470">Not in
-Debian.</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2019-April/001361.html">asked</a>:
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=526470" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2019-April/001361.html">asked</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2019-April/001361.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:
 <a href="https://www.whonix.org/pipermail/whonix-devel/2019-April/001363.html">Confirmed
-by author to not cache audio input, same for video.</a></li>
+by author to not cache audio input, same for video.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2019-April/001363.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Might not be advisable due to the same reasons <a href="https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html">randomsound
-is being discouraged nowadays by its author</a>?
+is being discouraged nowadays by its author</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>?
 <ul>
-<li>asked: <a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a></li>
+<li>asked: <a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <h4 id="turbid_-_High-Entropy_Symbol_Generator">turbid - High-Entropy
 Symbol Generator</h4>
 <ul>
-<li><a href="https://www.av8n.com/turbid/">https://www.av8n.com/turbid/</a></li>
-<li><a href="https://www.av8n.com/turbid/paper/turbid.htm">https://www.av8n.com/turbid/paper/turbid.htm</a></li>
+<li><a href="https://www.av8n.com/turbid/">https://www.av8n.com/turbid/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.av8n.com/turbid/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.av8n.com/turbid/paper/turbid.htm">https://www.av8n.com/turbid/paper/turbid.htm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.av8n.com/turbid/paper/turbid.htm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=591472">Not in
-Debian.</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023417.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023417.html</a></li>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=591472" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023417.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023417.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-October/023417.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h3 id="video-entropyd">video-entropyd</h3>
+<h3 id="video-entropyd">video-entropyd</h3><span class="share-tooltip" data-anchor="video-entropyd"><a class="headline-anchor" href="#video-entropyd" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#video-entropyd">https://www.kicksecure.com/wiki/Dev/Entropy/#video-entropyd</span></span></span></span>
 <ul>
 <li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=672347">Not in
-Debian.</a></li>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=672347" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Do reasons that made <a href="https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html">randomsound
-author discourage use of randomsound nowadays</a> also similarly apply
+author discourage use of randomsound nowadays</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2019-November/001479.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> also similarly apply
 to video-entropyd?
 <ul>
-<li>asked: <a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a></li>
+<li>asked: <a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001500.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><blockquote><p>VideoEntropyd is like timer-entropyd for a 'video-4-linux'-compatible
 device. E.g. a tv-card or a webcam.</p></blockquote></li>
 </ul>
-<h3 id="TrueRand_Based">TrueRand Based</h3>
+<h3 id="TrueRand_Based">TrueRand Based</h3><span class="share-tooltip" data-anchor="TrueRand_Based"><a class="headline-anchor" href="#TrueRand_Based" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#TrueRand_Based">https://www.kicksecure.com/wiki/Dev/Entropy/#TrueRand_Based</span></span></span></span>
 <h4 id="clrngd_-_clock_randomness_gathering_daemon">clrngd - clock
 randomness gathering daemon</h4>
 <ul>
 <li>Not in Debian.</li>
 <li><a href="https://web.archive.org/web/20190212183108/http://freshmeat.sourceforge.net/projects/clrngd/">https://web.archive.org/web/20190212183108/http://freshmeat.sourceforge.net/projects/clrngd/</a></li>
-<li><a href="https://packages.gentoo.org/packages/sys-apps/clrngd">https://packages.gentoo.org/packages/sys-apps/clrngd</a></li>
+<li><a href="https://packages.gentoo.org/packages/sys-apps/clrngd">https://packages.gentoo.org/packages/sys-apps/clrngd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.gentoo.org/packages/sys-apps/clrngd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Quote <a href="https://web.archive.org/web/20200513214521/https://vanheusden.com/Linux/">https://web.archive.org/web/20200513214521/https://vanheusden.com/Linux/</a>
 <ul>
 <li><blockquote><p>clrngd.tar.gz - this patch adds code to clrngd so that it will fork
@@ -648,14 +648,14 @@ original distribution did not).</p></blockquote></li>
 entropy-driver-buffers which it creates by looking at the differences
 between several clocks in your workstation/server</p></blockquote></li>
 </ul></li>
-<li>added clrngd.tar.gz to github <a href="https://github.com/adrelanos/clrngd">https://github.com/adrelanos/clrngd</a>
+<li>added clrngd.tar.gz to github <a href="https://github.com/adrelanos/clrngd">https://github.com/adrelanos/clrngd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/adrelanos/clrngd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 for better publication and easier readability
 <ul>
 <li>licensing issue? BSD license with advertising clause.
 <ul>
-<li><a href="https://www.gnu.org/licenses/bsd.html">https://www.gnu.org/licenses/bsd.html</a>
+<li><a href="https://www.gnu.org/licenses/bsd.html">https://www.gnu.org/licenses/bsd.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.gnu.org/licenses/bsd.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
-<li>contacted author <a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001508.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001508.html</a></li>
+<li>contacted author <a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001508.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001508.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001508.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul></li>
 </ul></li>
@@ -668,43 +668,43 @@ systemd)</li>
 <h4 id="twuewand_-_a_truerand_algorithm_for_generating_entropy">twuewand
 - a truerand algorithm for generating entropy</h4>
 <ul>
-<li><a href="https://www.finnie.org/software/twuewand/">https://www.finnie.org/software/twuewand/</a></li>
-<li><a href="https://github.com/rfinnie/twuewand">https://github.com/rfinnie/twuewand</a></li>
-<li><a href="https://www.finnie.org/2011/09/25/introducing-twuewand/">https://www.finnie.org/2011/09/25/introducing-twuewand/</a></li>
-<li><a href="https://www.finnie.org/2012/08/14/twuewand-2-0-released/">https://www.finnie.org/2012/08/14/twuewand-2-0-released/</a></li>
-<li><a href="https://forums.whonix.org/t/twuewand-a-truerand-algorithm-for-generating-entropy-whonix-integration/8880">https://forums.whonix.org/t/twuewand-a-truerand-algorithm-for-generating-entropy-whonix-integration/8880</a></li>
+<li><a href="https://www.finnie.org/software/twuewand/">https://www.finnie.org/software/twuewand/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.finnie.org/software/twuewand/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rfinnie/twuewand">https://github.com/rfinnie/twuewand</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.finnie.org/2011/09/25/introducing-twuewand/">https://www.finnie.org/2011/09/25/introducing-twuewand/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.finnie.org/2011/09/25/introducing-twuewand/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.finnie.org/2012/08/14/twuewand-2-0-released/">https://www.finnie.org/2012/08/14/twuewand-2-0-released/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.finnie.org/2012/08/14/twuewand-2-0-released/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/twuewand-a-truerand-algorithm-for-generating-entropy-whonix-integration/8880">https://forums.whonix.org/t/twuewand-a-truerand-algorithm-for-generating-entropy-whonix-integration/8880</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/twuewand-a-truerand-algorithm-for-generating-entropy-whonix-integration/8880" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h3 id="EGD_-_The_Entropy_Gathering_Daemon">EGD - The Entropy Gathering
-Daemon</h3>
+Daemon</h3><span class="share-tooltip" data-anchor="EGD_-_The_Entropy_Gathering_Daemon"><a class="headline-anchor" href="#EGD_-_The_Entropy_Gathering_Daemon" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#EGD_-_The_Entropy_Gathering_Daemon">https://www.kicksecure.com/wiki/Dev/Entropy/#EGD_-_The_Entropy_Gathering_Daemon</span></span></span></span>
 <ul>
-<li><a href="https://egd.sourceforge.net/">https://egd.sourceforge.net/</a></li>
+<li><a href="https://egd.sourceforge.net/">https://egd.sourceforge.net/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://egd.sourceforge.net/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Discouraged by its author nowadays.</li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001502.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001502.html</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001504.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001504.html</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001505.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001505.html</a></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001502.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001502.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001502.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001504.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001504.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001504.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001505.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001505.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001505.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h3 id="PRNGD_-_Pseudo_Random_Number_Generator_Daemon">PRNGD - Pseudo
-Random Number Generator Daemon</h3>
+Random Number Generator Daemon</h3><span class="share-tooltip" data-anchor="PRNGD_-_Pseudo_Random_Number_Generator_Daemon"><a class="headline-anchor" href="#PRNGD_-_Pseudo_Random_Number_Generator_Daemon" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#PRNGD_-_Pseudo_Random_Number_Generator_Daemon">https://www.kicksecure.com/wiki/Dev/Entropy/#PRNGD_-_Pseudo_Random_Number_Generator_Daemon</span></span></span></span>
 <ul>
-<li><a href="https://prngd.sourceforge.net/">https://prngd.sourceforge.net/</a></li>
-<li><a href="https://prngd.sourceforge.net/00README">https://prngd.sourceforge.net/00README</a></li>
-<li><a href="https://prngd.sourceforge.net/00DESIGN">https://prngd.sourceforge.net/00DESIGN</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001506.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001506.html</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001507.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001507.html</a></li>
+<li><a href="https://prngd.sourceforge.net/">https://prngd.sourceforge.net/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://prngd.sourceforge.net/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://prngd.sourceforge.net/00README">https://prngd.sourceforge.net/00README</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://prngd.sourceforge.net/00README" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://prngd.sourceforge.net/00DESIGN">https://prngd.sourceforge.net/00DESIGN</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://prngd.sourceforge.net/00DESIGN" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001506.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001506.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001506.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001507.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001507.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001507.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h3 id="jitter_based">jitter based</h3>
+<h3 id="jitter_based">jitter based</h3><span class="share-tooltip" data-anchor="jitter_based"><a class="headline-anchor" href="#jitter_based" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#jitter_based">https://www.kicksecure.com/wiki/Dev/Entropy/#jitter_based</span></span></span></span>
 <h4 id="haveged">haveged</h4>
 <p>Haveged is an entropy gathering daemon.</p>
 <p>Quoted from the <a href="https://www.issihosts.com/haveged/ais31.html">haveged testing
-page</a>: "<em>[...] will behave similarly in a virtual environment is a
+page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.issihosts.com/haveged/ais31.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: "<em>[...] will behave similarly in a virtual environment is a
 more risky proposition [...] there have been reports of VM that
 implement the processor time stamp counter as a constant and there are
 known differences in cpuid operation in others. [...]</em>"</p>
 <p>Will haveged create sufficient entropy in VirtualBox? Fortunately,
 haveged comes with tools to check if the entropy it creates is
 sufficient.</p>
-<p>The README in the haveged source folder and the <a href="https://www.issihosts.com/haveged/index.html">haveged website</a>
-contain <a href="https://www.issihosts.com/haveged/ais31.html">instructions</a> for
+<p>The README in the haveged source folder and the <a href="https://www.issihosts.com/haveged/index.html">haveged website</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.issihosts.com/haveged/index.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+contain <a href="https://www.issihosts.com/haveged/ais31.html">instructions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.issihosts.com/haveged/ais31.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for
 testing haveged.</p>
 <p>It makes sense to test entropy while haveged is disabled.</p>
 <p><span class="code-select">sudo service haveged stop</span></p>
@@ -736,7 +736,7 @@ haveged running.</li>
 <li>This was successfully tested in Qubes with haveged running.</li>
 </ul>
 <p>Haveged is installed by default in Kicksecure.</p>
-<p>forum discussion: <a href="https://forums.whonix.org/t/haveged-entropy-daemon/17158">https://forums.whonix.org/t/haveged-entropy-daemon/17158</a></p>
+<p>forum discussion: <a href="https://forums.whonix.org/t/haveged-entropy-daemon/17158">https://forums.whonix.org/t/haveged-entropy-daemon/17158</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/haveged-entropy-daemon/17158" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h4 id="jitterentropy">jitterentropy</h4>
 <p>jitterentropy is a RNG designed in the spirit of haveged (using CPU
 timer jitter as entropy source) except it is made up of a kernel module
@@ -755,11 +755,11 @@ Buster and has been available since Kicksecure 15. <sup class="reference"><a hre
 <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
 <p>Links:</p>
 <ul>
-<li><a href="https://www.chronox.de/jent/index.html">https://www.chronox.de/jent/index.html</a></li>
-<li><a href="https://www.chronox.de/jent/index.html#documentation">https://www.chronox.de/jent/index.html#documentation</a></li>
-<li><a href="https://www.chronox.de/jent/doc/CPU-Jitter-NPTRNG.pdf">https://www.chronox.de/jent/doc/CPU-Jitter-NPTRNG.pdf</a></li>
+<li><a href="https://www.chronox.de/jent/index.html">https://www.chronox.de/jent/index.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.chronox.de/jent/index.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.chronox.de/jent/index.html#documentation">https://www.chronox.de/jent/index.html#documentation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.chronox.de/jent/index.html#documentation" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.chronox.de/jent/doc/CPU-Jitter-NPTRNG.pdf">https://www.chronox.de/jent/doc/CPU-Jitter-NPTRNG.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.chronox.de/jent/doc/CPU-Jitter-NPTRNG.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://web.archive.org/web/20220702110325/https://pthree.org/2016/05/24/cpu-jitter-entropy-for-the-linux-kernel/">https://web.archive.org/web/20220702110325/https://pthree.org/2016/05/24/cpu-jitter-entropy-for-the-linux-kernel/</a></li>
-<li><a href="https://packages.debian.org/sid/jitterentropy-rngd">https://packages.debian.org/sid/jitterentropy-rngd</a></li>
+<li><a href="https://packages.debian.org/sid/jitterentropy-rngd">https://packages.debian.org/sid/jitterentropy-rngd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/sid/jitterentropy-rngd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Playing devil's advocate here: Ted Ts'o <sup class="reference"><a href="#cite_note-7">[7]</a></sup> expresses
 strong skepticism about the efficacy of RNGs that rely on CPU jitter.
@@ -775,39 +775,39 @@ NSA analyst working in Fort Meade can't figure out. (Or heck, a really
 clever Intel engineer who has full visibility into the internal design
 of an Intel CPU....)</p></blockquote></p>
 <ul>
-<li><a href="https://forums.whonix.org/t/jitterentropy-rngd/7204">https://forums.whonix.org/t/jitterentropy-rngd/7204</a></li>
+<li><a href="https://forums.whonix.org/t/jitterentropy-rngd/7204">https://forums.whonix.org/t/jitterentropy-rngd/7204</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/jitterentropy-rngd/7204" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Debian bug report: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=927972">set
-jitterentropy_rng.ko to built-in</a></li>
+jitterentropy_rng.ko to built-in</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=927972" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://github.com/QubesOS/qubes-issues/issues/4174">ask
-Xen developers about Efficacy of jitterentropy RNG in Xen</a></li>
+Xen developers about Efficacy of jitterentropy RNG in Xen</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/4174" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.xen.org/archives/html/xen-users/2019-04/msg00017.html">Xen-users
-- Efficacy of jitterentropy RNG in Xen</a></li>
+- Efficacy of jitterentropy RNG in Xen</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.xen.org/archives/html/xen-users/2019-04/msg00017.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://lists.nongnu.org/archive/html/qemu-devel/2018-08/msg00368.html">Qemu-devel
 - Efficacy of jitterentropy RNG on qemu-kvm Guests (asks about Xen
-too)</a></li>
+too)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.nongnu.org/archive/html/qemu-devel/2018-08/msg00368.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/4169">consider
-installing jitterentropy-rngd to improve entropy collection</a></li>
+installing jitterentropy-rngd to improve entropy collection</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/4169" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-483191719">Answer
-by jitterentropy developer</a></li>
+by jitterentropy developer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-483191719" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-489428226">Efficacy
-test results for VirtualBox, KVM, Xen</a></li>
-<li><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-939093055">https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-939093055</a></li>
+test results for VirtualBox, KVM, Xen</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-rngd/issues/6#issuecomment-489428226" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-939093055">https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-939093055</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-939093055" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>kernel module added (Kicksecure 15.0.0.7.2) and above:</p>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/commit/fe1f1b73a77d11c136cedcdb3efcb57f4c68c6af">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/commit/fe1f1b73a77d11c136cedcdb3efcb57f4c68c6af">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/commit/fe1f1b73a77d11c136cedcdb3efcb57f4c68c6af" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <h4 id="Combining_Multiple_Jitter_Based_Entropy_Gathering_Daemons">Combining
 Multiple Jitter Based Entropy Gathering Daemons</h4>
-<p><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16">https://github.com/smuellerDD/jitterentropy-library/issues/16</a></p>
-<h3 id="Motherboard_Integrated">Motherboard Integrated</h3>
+<p><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16">https://github.com/smuellerDD/jitterentropy-library/issues/16</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-library/issues/16" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h3 id="Motherboard_Integrated">Motherboard Integrated</h3><span class="share-tooltip" data-anchor="Motherboard_Integrated"><a class="headline-anchor" href="#Motherboard_Integrated" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Motherboard_Integrated">https://www.kicksecure.com/wiki/Dev/Entropy/#Motherboard_Integrated</span></span></span></span>
 <p>"such as some Intel/AMD/VIA chipsets"</p>
 <h4 id="rng-tools">rng-tools</h4>
 <p><a href="https://packages.debian.org/trixie/rng-tools">In
-Debian.</a></p>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/rng-tools" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p>Requires a Hardware RNG device. Will result in a failed systemd unit
 file if none is available. Can be hacked to use <a href="https://calomel.org/entropy_random_number_generators.html">its own
-entropy pool to gain entropy</a>, but this is probably a bad idea.
+entropy pool to gain entropy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://calomel.org/entropy_random_number_generators.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, but this is probably a bad idea.
 <sup class="reference"><a href="#cite_note-9">[9]</a></sup></p>
 <p>Useful nonetheless to install on the host for those who are lucky
 enough to have a hardware random device? RDRAND can be found on every
@@ -815,32 +815,32 @@ AMD64 processor since 2015 <sup class="reference"><a href="#cite_note-10">[10]</
 the Raspberry Pi also have an RNG. <sup class="reference"><a href="#cite_note-11">[11]</a></sup></p>
 <h4 id="rng-tools-debian">rng-tools-debian</h4>
 <p><a href="https://packages.debian.org/trixie/rng-tools-debian">In
-Debian.</a></p>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/rng-tools-debian" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h4 id="rng-tools5">rng-tools5</h4>
 <p><a href="https://packages.debian.org/trixie/rng-tools5">In
-Debian.</a></p>
-<h3 id="Remote_Server_Based">Remote Server Based</h3>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/rng-tools5" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h3 id="Remote_Server_Based">Remote Server Based</h3><span class="share-tooltip" data-anchor="Remote_Server_Based"><a class="headline-anchor" href="#Remote_Server_Based" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Remote_Server_Based">https://www.kicksecure.com/wiki/Dev/Entropy/#Remote_Server_Based</span></span></span></span>
 <ul>
 <li>added attack surface
 <ul>
-<li><a href="https://forums.whonix.org/t/dev-random-vs-dev-urandom/8571/20">https://forums.whonix.org/t/dev-random-vs-dev-urandom/8571/20</a></li>
+<li><a href="https://forums.whonix.org/t/dev-random-vs-dev-urandom/8571/20">https://forums.whonix.org/t/dev-random-vs-dev-urandom/8571/20</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/dev-random-vs-dev-urandom/8571/20" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <h4 id="GUChaos">GUChaos</h4>
 <ul>
 <li><a href="https://web.archive.org/web/20210514073022/https://vladz.devzero.fr/guchaos.html">https://web.archive.org/web/20210514073022/https://vladz.devzero.fr/guchaos.html</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001501.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001501.html</a></li>
-<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001510.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001510.html</a></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-January/001501.html">https://www.whonix.org/pipermail/whonix-devel/2020-January/001501.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-January/001501.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.whonix.org/pipermail/whonix-devel/2020-February/001510.html">https://www.whonix.org/pipermail/whonix-devel/2020-February/001510.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/pipermail/whonix-devel/2020-February/001510.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="pollinate">pollinate</h4>
 <ul>
-<li><a href="https://packages.debian.org/trixie/pollinate">https://packages.debian.org/trixie/pollinate</a></li>
-<li><a href="https://launchpad.net/pollinate">https://launchpad.net/pollinate</a></li>
+<li><a href="https://packages.debian.org/trixie/pollinate">https://packages.debian.org/trixie/pollinate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/pollinate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://launchpad.net/pollinate">https://launchpad.net/pollinate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://launchpad.net/pollinate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h3 id="Linux_kernel_GCC_Plugins">Linux kernel GCC Plugins</h3>
+<h3 id="Linux_kernel_GCC_Plugins">Linux kernel GCC Plugins</h3><span class="share-tooltip" data-anchor="Linux_kernel_GCC_Plugins"><a class="headline-anchor" href="#Linux_kernel_GCC_Plugins" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Linux_kernel_GCC_Plugins">https://www.kicksecure.com/wiki/Dev/Entropy/#Linux_kernel_GCC_Plugins</span></span></span></span>
 <h4 id="latent_entropy">latent_entropy</h4>
 <p>Linux has the latent_entropy GCC plugin to gather more entropy.</p>
-<p>Quote <a href="https://github.com/torvalds/linux/blob/master/scripts/gcc-plugins/Kconfig">https://github.com/torvalds/linux/blob/master/scripts/gcc-plugins/Kconfig</a></p>
+<p>Quote <a href="https://github.com/torvalds/linux/blob/master/scripts/gcc-plugins/Kconfig">https://github.com/torvalds/linux/blob/master/scripts/gcc-plugins/Kconfig</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/torvalds/linux/blob/master/scripts/gcc-plugins/Kconfig" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>By saying Y here the kernel will instrument some kernel code to
 extract some entropy from both original and artificially created program
 state. This will help especially embedded systems where there is little
@@ -849,21 +849,21 @@ boot process (about 0.5%) and fork and irq processing.</p>
 <p>Note that entropy extracted this way is not cryptographically
 secure!</p></blockquote></p>
 <p><code>CONFIG_GCC_PLUGIN_LATENT_ENTROPY</code> is disabled by default
-in the Debian kernel but <a href="https://www.whonix.org/wiki/Hardened-kernel">hardened-kernel</a>
+in the Debian kernel but <a href="https://www.whonix.org/wiki/Hardened-kernel">hardened-kernel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/Hardened-kernel" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 enables it.</p>
-<p>The <a href="https://github.com/anthraxx/linux-hardened">linux-hardened</a>
+<p>The <a href="https://github.com/anthraxx/linux-hardened">linux-hardened</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/anthraxx/linux-hardened" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 kernel patch improves latent_entropy by adding a
 <code>extra_latent_entropy</code> boot parameter <sup class="reference"><a href="#cite_note-12">[12]</a></sup>
 which security-misc enables.</p>
-<h3 id="virtio-rng">virtio-rng</h3>
+<h3 id="virtio-rng">virtio-rng</h3><span class="share-tooltip" data-anchor="virtio-rng"><a class="headline-anchor" href="#virtio-rng" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#virtio-rng">https://www.kicksecure.com/wiki/Dev/Entropy/#virtio-rng</span></span></span></span>
 <p>virtio-rng</p>
 <ul>
 <li><a href="https://github.com/smuellerDD/jitterentropy-rngd/issues/28">Should
 Xen, VirtualBox implement something similar to QEMU / KVM's virtio-rng?
-Keep feeding the host's /dev/random into the VM?</a></li>
+Keep feeding the host's /dev/random into the VM?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-rngd/issues/28" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Hardware_Entropy_Keys">Hardware Entropy Keys</h1>
-<h2 id="Entropy_Key">Entropy Key</h2>
+<h2 id="Entropy_Key">Entropy Key</h2><span class="share-tooltip" data-anchor="Entropy_Key"><a class="headline-anchor" href="#Entropy_Key" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Entropy_Key">https://www.kicksecure.com/wiki/Dev/Entropy/#Entropy_Key</span></span></span></span>
 <p><a href="https://web.archive.org/web/20160324165421/http://www.entropykey.co.uk/">Entropy
 Key</a>; Hardware not fully open source. Some resources say it is okay
 as an additional source of entropy. Where to add it? Since Kicksecure
@@ -871,8 +871,8 @@ depends on a host operating system, the Kicksecure and the Kicksecure,
 where does it make the most sense to add it? Perhaps adding it to the
 host and using an entropy broker could be the most effective method.
 Better than buying three entropy keys.</p>
-<h2 id="OneRNG">OneRNG</h2>
-<p><a href="https://www.kickstarter.com/projects/moonbaseotago/onerng-an-open-source-entropy-generator">OneRNG</a>;
+<h2 id="OneRNG">OneRNG</h2><span class="share-tooltip" data-anchor="OneRNG"><a class="headline-anchor" href="#OneRNG" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#OneRNG">https://www.kicksecure.com/wiki/Dev/Entropy/#OneRNG</span></span></span></span>
+<p><a href="https://www.kickstarter.com/projects/moonbaseotago/onerng-an-open-source-entropy-generator">OneRNG</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kickstarter.com/projects/moonbaseotago/onerng-an-open-source-entropy-generator" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>;
 Hardware and Firmware fully open source. Firmware is cryptographically
 signed to ensure it hasn't been tampered with. Board has a removable tin
 RF Shield so you can verify the circuits match the diagrams provided by
@@ -881,46 +881,46 @@ software+cable (must be bought separately). Where to add it? Where does
 it make the most sense to add it? Perhaps adding it to the host and
 using an entropy broker could be the most effective method.</p>
 <ul>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023948.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023948.html</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html</a></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023948.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023948.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-December/023948.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="List">List</h2>
+<h2 id="List">List</h2><span class="share-tooltip" data-anchor="List"><a class="headline-anchor" href="#List" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#List">https://www.kicksecure.com/wiki/Dev/Entropy/#List</span></span></span></span>
 <ul>
-<li><a href="https://noosphere.princeton.edu/reg.html">https://noosphere.princeton.edu/reg.html</a></li>
-<li><a href="https://en.m.wikipedia.org/wiki/Noosphere">https://en.m.wikipedia.org/wiki/Noosphere</a></li>
-<li><a href="https://www.idquantique.com/random-number-generators/products/quantis-usb.html">https://www.idquantique.com/random-number-generators/products/quantis-usb.html</a></li>
-<li><a href="https://onerng.info">https://onerng.info</a></li>
+<li><a href="https://noosphere.princeton.edu/reg.html">https://noosphere.princeton.edu/reg.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://noosphere.princeton.edu/reg.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://en.m.wikipedia.org/wiki/Noosphere">https://en.m.wikipedia.org/wiki/Noosphere</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.m.wikipedia.org/wiki/Noosphere" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.idquantique.com/random-number-generators/products/quantis-usb.html">https://www.idquantique.com/random-number-generators/products/quantis-usb.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.idquantique.com/random-number-generators/products/quantis-usb.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://onerng.info">https://onerng.info</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://onerng.info" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://web.archive.org/web/20160324165421/http://www.entropykey.co.uk/">https://web.archive.org/web/20160324165421/http://www.entropykey.co.uk/</a>
 <ul>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023988.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023988.html</a></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023988.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023988.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-December/023988.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><a href="https://web.archive.org/web/20170206101950/https://en.wikipedia.org/wiki/Comparison_of_hardware_random_number_generators">https://web.archive.org/web/20170206101950/https://en.wikipedia.org/wiki/Comparison_of_hardware_random_number_generators</a></li>
-<li><a href="https://wiki.seeedstudio.com/FST-01/">https://wiki.seeedstudio.com/FST-01/</a></li>
-<li><a href="https://packages.debian.org/sid/bit-babbler">https://packages.debian.org/sid/bit-babbler</a></li>
-<li>Simtec Electronics Entropy Key - ekeyd - <a href="https://packages.debian.org/ekeyd">In Debian.</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023335.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023335.html</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023522.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023522.html</a></li>
+<li><a href="https://wiki.seeedstudio.com/FST-01/">https://wiki.seeedstudio.com/FST-01/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.seeedstudio.com/FST-01/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://packages.debian.org/sid/bit-babbler">https://packages.debian.org/sid/bit-babbler</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/sid/bit-babbler" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Simtec Electronics Entropy Key - ekeyd - <a href="https://packages.debian.org/ekeyd">In Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/ekeyd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-October/023335.html">https://www.metzdowd.com/pipermail/cryptography/2014-October/023335.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-October/023335.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023522.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023522.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-November/023522.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>XR232USB - True Random Number Generator @ USB
 <ul>
-<li><a href="http://www.jtxp.org/tech/xr232usb_en.htm">http://www.jtxp.org/tech/xr232usb_en.htm</a></li>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023694.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023694.html</a></li>
+<li><a href="http://www.jtxp.org/tech/xr232usb_en.htm">http://www.jtxp.org/tech/xr232usb_en.htm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.jtxp.org/tech/xr232usb_en.htm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023694.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023694.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-November/023694.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li>TrueRNG
 <ul>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html</a></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html">https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-November/023534.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li>Atmel ATSHA204A
 <ul>
-<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html</a></li>
+<li><a href="https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html">https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2014-December/023816.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <h1 id="rndaddentropy_-_An_RNDADDENTROPY_ioctl_wrapper">rndaddentropy -
 An RNDADDENTROPY ioctl wrapper</h1>
-<h2 id="Software">Software</h2>
+<h2 id="Software">Software</h2><span class="share-tooltip" data-anchor="Software"><a class="headline-anchor" href="#Software" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Software">https://www.kicksecure.com/wiki/Dev/Entropy/#Software</span></span></span></span>
 <pre><code>$ENTROPY_GENERATOR | rndaddentropy</code></pre>
 <p>Quote <a href="https://github.com/rfinnie/twuewand/blob/main/doc/rndaddentropy.1"><code>rndaddentropy</code>
-man page</a>:</p>
+man page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/blob/main/doc/rndaddentropy.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
 <p><blockquote><p><code>rndaddentropy</code> is used to pipe entropy directly into
 Linux's primary entropy pool. This requires superuser privileges.</p>
 <p>Adding entropy directly to the primary entropy pool can be very
@@ -929,17 +929,17 @@ resulting data from <code>/dev/random</code> and
 <code>/dev/urandom</code>. Be sure the entropy is generated from a truly
 random source, and is properly debiased.</p></blockquote></p>
 <ul>
-<li><a href="https://github.com/rfinnie/twuewand/tree/master/rndaddentropy">https://github.com/rfinnie/twuewand/tree/master/rndaddentropy</a></li>
-<li><a href="https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/Makefile">https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/Makefile</a></li>
-<li><a href="https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/rndaddentropy.c">https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/rndaddentropy.c</a></li>
-<li><a href="https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.1">https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.1</a></li>
-<li><a href="https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.md">https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.md</a></li>
+<li><a href="https://github.com/rfinnie/twuewand/tree/master/rndaddentropy">https://github.com/rfinnie/twuewand/tree/master/rndaddentropy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/tree/master/rndaddentropy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/Makefile">https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/Makefile</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/Makefile" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/rndaddentropy.c">https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/rndaddentropy.c</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/blob/master/rndaddentropy/rndaddentropy.c" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.1">https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.md">https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.md</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rfinnie/twuewand/blob/master/doc/rndaddentropy.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="Opinion">Opinion</h2>
+<h2 id="Opinion">Opinion</h2><span class="share-tooltip" data-anchor="Opinion"><a class="headline-anchor" href="#Opinion" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#Opinion">https://www.kicksecure.com/wiki/Dev/Entropy/#Opinion</span></span></span></span>
 <p>Probably not needed and hard to use in a secure way. See <a href="#Write_to_/dev/random">#Write to /dev/random</a>
 and <a href="#Credit_Entropy">#Credit Entropy</a>.</p>
 <h1 id="Debiasing_and_Whitening">Debiasing and Whitening</h1>
-<p><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-581901851">https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-581901851</a></p>
+<p><a href="https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-581901851">https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-581901851</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/smuellerDD/jitterentropy-library/issues/16#issuecomment-581901851" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Early_Entropy_Issue">Early Entropy Issue</h1>
 <p>TODO: update</p>
 <p>This is described here: <a href="https://web.archive.org/web/20191031233802/https://systemd.io/RANDOM_SEEDS.html">https://web.archive.org/web/20191031233802/https://systemd.io/RANDOM_SEEDS.html</a></p>
@@ -953,9 +953,9 @@ issue due to entropy starvation.</p>
 <h1 id="VirtualBox_Bug_Reports">VirtualBox Bug Reports</h1>
 <ul>
 <li><a href="https://www.virtualbox.org/ticket/11296">entropy
-quality</a></li>
+quality</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/ticket/11296" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.virtualbox.org/ticket/11297">poor entropy
-performance</a></li>
+performance</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/ticket/11297" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Entropy_Broker">Entropy Broker</h1>
 <p>Entropy Broker is an infrastructure for distributing
@@ -965,23 +965,23 @@ servers to one or more clients.</p>
 <li><a href="https://web.archive.org/web/20210307015626/https://www.vanheusden.com/entropybroker/">entropy
 broker</a></li>
 <li><a href="https://packages.debian.org/source/stable/entropybroker">In
-Debian.</a></li>
+Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/source/stable/entropybroker" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Entropy_Tests">Entropy Tests</h1>
-<h2 id="ent">ent</h2>
+<h2 id="ent">ent</h2><span class="share-tooltip" data-anchor="ent"><a class="headline-anchor" href="#ent" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#ent">https://www.kicksecure.com/wiki/Dev/Entropy/#ent</span></span></span></span>
 <p><span class="code-select">sudo apt install ent</span></p>
 <p><span class="code-select">ent file_name</span></p>
-<h2 id="rngtest">rngtest</h2>
+<h2 id="rngtest">rngtest</h2><span class="share-tooltip" data-anchor="rngtest"><a class="headline-anchor" href="#rngtest" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest">https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest</span></span></span></span>
 <p><span class="code-select">sudo apt install rng-tools5</span></p>
 <p><span class="code-select">cat file_name | rngtest</span></p>
-<h2 id="dieharder">dieharder</h2>
+<h2 id="dieharder">dieharder</h2><span class="share-tooltip" data-anchor="dieharder"><a class="headline-anchor" href="#dieharder" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder">https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder</span></span></span></span>
 <p><span class="code-select">sudo apt install dieharder</span></p>
 <p><span class="code-select">dieharder -a -f file_name</span></p>
-<h2 id="PractRand">PractRand</h2>
-<p><a href="https://pracrand.sourceforge.net">https://pracrand.sourceforge.net</a></p>
+<h2 id="PractRand">PractRand</h2><span class="share-tooltip" data-anchor="PractRand"><a class="headline-anchor" href="#PractRand" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand">https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand</span></span></span></span>
+<p><a href="https://pracrand.sourceforge.net">https://pracrand.sourceforge.net</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pracrand.sourceforge.net" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Implementation">Implementation</h1>
 <p>Once we can come up with a design for a new entropy gathering daemon
-(and perhaps a proof of concept in script language / rapid prototype) <a href="https://github.com/0xsirus">0xsirus</a> might help implement the
+(and perhaps a proof of concept in script language / rapid prototype) <a href="https://github.com/0xsirus">0xsirus</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/0xsirus" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> might help implement the
 performance-critical part in the C programming language depending on
 complexity.</p>
 <h1 id="Goal">Goal</h1>
@@ -1003,43 +1003,43 @@ turns out to be flawed, the quality of system entropy should still be
 excellent.</p>
 <h1 id="Resources">Resources</h1>
 <ul>
-<li><a href="https://randombytes.cr.yp.to/">https://randombytes.cr.yp.to/</a>
+<li><a href="https://randombytes.cr.yp.to/">https://randombytes.cr.yp.to/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://randombytes.cr.yp.to/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
-<li><a href="https://randombytes.cr.yp.to/security.html">https://randombytes.cr.yp.to/security.html</a></li>
+<li><a href="https://randombytes.cr.yp.to/security.html">https://randombytes.cr.yp.to/security.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://randombytes.cr.yp.to/security.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li><a href="https://web.archive.org/web/20190204050251/https://tls.mbed.org/tech-updates/security-advisories/polarssl-security-advisory-2011-02">HAVEGE:
 PolarSSL Security Advisory 2011-02</a></li>
 <li><a href="https://wiki.qemu.org/Features/VirtIORNG">Qemu: virtio-rng,
-virtual random generator</a></li>
+virtual random generator</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.qemu.org/Features/VirtIORNG" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="http://holdenc.altervista.org/avalanche/">Random Sequence
-Generator based on Avalanche Noise</a></li>
-<li><a href="https://groups.google.com/g/randomness-generation">https://groups.google.com/g/randomness-generation</a></li>
-<li><a href="https://groups.google.com/g/randomness-generation/c/pIdFa3iarhI">https://groups.google.com/g/randomness-generation/c/pIdFa3iarhI</a></li>
-<li>On Linux entropy issues generally. Must read. - <a href="https://www.av8n.com/computer/htm/secure-random.htm">https://www.av8n.com/computer/htm/secure-random.htm</a></li>
+Generator based on Avalanche Noise</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://holdenc.altervista.org/avalanche/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://groups.google.com/g/randomness-generation">https://groups.google.com/g/randomness-generation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://groups.google.com/g/randomness-generation" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://groups.google.com/g/randomness-generation/c/pIdFa3iarhI">https://groups.google.com/g/randomness-generation/c/pIdFa3iarhI</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://groups.google.com/g/randomness-generation/c/pIdFa3iarhI" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>On Linux entropy issues generally. Must read. - <a href="https://www.av8n.com/computer/htm/secure-random.htm">https://www.av8n.com/computer/htm/secure-random.htm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.av8n.com/computer/htm/secure-random.htm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://systemd.io/RANDOM_SEEDS/">systemd Random
-Seeds</a></li>
-<li><a href="https://wiki.debian.org/Entropy">https://wiki.debian.org/Entropy</a></li>
-<li><a href="https://www.phoronix.com/news/Linux-5.4-Actively-Gen-Entropy">https://www.phoronix.com/news/Linux-5.4-Actively-Gen-Entropy</a></li>
+Seeds</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/RANDOM_SEEDS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://wiki.debian.org/Entropy">https://wiki.debian.org/Entropy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/Entropy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.phoronix.com/news/Linux-5.4-Actively-Gen-Entropy">https://www.phoronix.com/news/Linux-5.4-Actively-Gen-Entropy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/Linux-5.4-Actively-Gen-Entropy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://web.archive.org/web/20220314163715/https://volumeintegration.com/best-entropy-generation-software-for-linux/">https://web.archive.org/web/20220314163715/https://volumeintegration.com/best-entropy-generation-software-for-linux/</a></li>
-<li><a href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Studies/LinuxRNG/LinuxRNG_EN.pdf">https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Studies/LinuxRNG/LinuxRNG_EN.pdf</a></li>
-<li><a href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Studien/ZufallinVMS/Randomness-in-VMs.pdf">https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Studien/ZufallinVMS/Randomness-in-VMs.pdf</a></li>
-<li><a href="https://www.av8n.com/computer/htm/fixup-live-cd.htm">https://www.av8n.com/computer/htm/fixup-live-cd.htm</a></li>
-<li><a href="https://lwn.net/Articles/525459/">https://lwn.net/Articles/525459/</a></li>
-<li><a href="https://daniel-lange.com/archives/152-hello-buster.html">https://daniel-lange.com/archives/152-hello-buster.html</a></li>
+<li><a href="https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Studies/LinuxRNG/LinuxRNG_EN.pdf">https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Studies/LinuxRNG/LinuxRNG_EN.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Publications/Studies/LinuxRNG/LinuxRNG_EN.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Studien/ZufallinVMS/Randomness-in-VMs.pdf">https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Studien/ZufallinVMS/Randomness-in-VMs.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Studien/ZufallinVMS/Randomness-in-VMs.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.av8n.com/computer/htm/fixup-live-cd.htm">https://www.av8n.com/computer/htm/fixup-live-cd.htm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.av8n.com/computer/htm/fixup-live-cd.htm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lwn.net/Articles/525459/">https://lwn.net/Articles/525459/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/525459/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://daniel-lange.com/archives/152-hello-buster.html">https://daniel-lange.com/archives/152-hello-buster.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://daniel-lange.com/archives/152-hello-buster.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://x.com/raw_avocado/status/1445024873382809604">How
-does Bitcoin Core generate entropy for private keys?</a></li>
-<li><a href="https://github.com/intel/pailliercryptolib/issues/2">https://github.com/intel/pailliercryptolib/issues/2</a></li>
-<li><a href="https://blog.cryptographyengineering.com/2014/03/19/how-do-you-know-if-rng-is-working/">https://blog.cryptographyengineering.com/2014/03/19/how-do-you-know-if-rng-is-working/</a></li>
+does Bitcoin Core generate entropy for private keys?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://x.com/raw_avocado/status/1445024873382809604" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/intel/pailliercryptolib/issues/2">https://github.com/intel/pailliercryptolib/issues/2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/intel/pailliercryptolib/issues/2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://blog.cryptographyengineering.com/2014/03/19/how-do-you-know-if-rng-is-working/">https://blog.cryptographyengineering.com/2014/03/19/how-do-you-know-if-rng-is-working/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cryptographyengineering.com/2014/03/19/how-do-you-know-if-rng-is-working/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Comics">Comics</h1>
 <ul>
 <li><a href="https://web.archive.org/web/20221220032125/https://dilbert.com/strip/2001-10-25">https://web.archive.org/web/20221220032125/https://dilbert.com/strip/2001-10-25</a></li>
-<li><a href="https://xkcd.com/221/">https://xkcd.com/221/</a></li>
+<li><a href="https://xkcd.com/221/">https://xkcd.com/221/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xkcd.com/221/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1">Peter Gutmann of secure erasure fame <a href="https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html">https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html</a></li>
+<li id="cite_note-1">Peter Gutmann of secure erasure fame <a href="https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html">https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2">The following viewpoint "/dev/random is obsolete" has been
 deprecated. <blockquote><p>This debate comes from a misconception by the Linux manual writer. <a href="https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/">https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/</a>
 The fact is both APIs use the same CSPRNG. The issue happens when the
@@ -1047,14 +1047,14 @@ randomness pool has not been properly initialized and entropy is
 requested early at boot. Otherwise the blocking behavior of
 <code>/dev/random</code> during normal system running is an annoying bug
 rather than a useful safety feature. A well-seeded pool should be able
-to provide sufficient, endless randomness from a single seed. <a href="https://news.ycombinator.com/item?id=11561340">https://news.ycombinator.com/item?id=11561340</a>
-Comments by tptacek <a href="https://www.2uo.de/myths-about-urandom">https://www.2uo.de/myths-about-urandom</a>
+to provide sufficient, endless randomness from a single seed. <a href="https://news.ycombinator.com/item?id=11561340">https://news.ycombinator.com/item?id=11561340</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://news.ycombinator.com/item?id=11561340" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+Comments by tptacek <a href="https://www.2uo.de/myths-about-urandom">https://www.2uo.de/myths-about-urandom</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.2uo.de/myths-about-urandom" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 There is no concept of entropy being used up when urandom is used,
 unlike random that nonsensically calculates leftover entropy and blocks
-despite a properly initialized pool. <a href="https://unix.stackexchange.com/questions/94206/how-to-determine-which-processes-are-using-how-much-entropy-from-dev-urandom">https://unix.stackexchange.com/questions/94206/how-to-determine-which-processes-are-using-how-much-entropy-from-dev-urandom</a>
+despite a properly initialized pool. <a href="https://unix.stackexchange.com/questions/94206/how-to-determine-which-processes-are-using-how-much-entropy-from-dev-urandom">https://unix.stackexchange.com/questions/94206/how-to-determine-which-processes-are-using-how-much-entropy-from-dev-urandom</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://unix.stackexchange.com/questions/94206/how-to-determine-which-processes-are-using-how-much-entropy-from-dev-urandom" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Therefore rate limiting virtio-rng is unnecessary when using urandom as
 a backend. Here is what renowned cryptographer Dr. Daniel J. Bernstein
-has to say on the matter: <a href="https://www.mail-archive.com/cryptography@randombit.net/msg04763.html">https://www.mail-archive.com/cryptography@randombit.net/msg04763.html</a>
+has to say on the matter: <a href="https://www.mail-archive.com/cryptography@randombit.net/msg04763.html">https://www.mail-archive.com/cryptography@randombit.net/msg04763.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.mail-archive.com/cryptography@randombit.net/msg04763.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <blockquote><p>Cryptographers are certainly not responsible for this superstitious
 nonsense. Think about this for a moment: whoever wrote the /dev/random
 manual page seems to simultaneously believe that (1) we can't figure out
@@ -1067,21 +1067,21 @@ cryptographer this doesn't even pass the laugh test. I'm not saying that
 to deploy devices where the randomness pool has never been initialized;
 BSD /dev/urandom catches this configuration bug by blocking, but Linux
 /dev/urandom (unlike Linux /dev/random) spews predictable data, causing
-(e.g.) the widespread RSA security failures documented on <a href="https://factorable.net">factorable.net</a>. But fixing this
+(e.g.) the widespread RSA security failures documented on <a href="https://factorable.net">factorable.net</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://factorable.net" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. But fixing this
 configuration bug has nothing to do with the /dev/random
 superstitions.</p></blockquote></p></blockquote></li>
-<li id="cite_note-3"><a href="https://www.mail-archive.com/cryptography@randombit.net/msg04763.html">https://www.mail-archive.com/cryptography@randombit.net/msg04763.html</a></li>
-<li id="cite_note-4"><a href="https://phabricator.whonix.org/T32">https://phabricator.whonix.org/T32</a></li>
-<li id="cite_note-5"><a href="https://phabricator.whonix.org/T817">https://phabricator.whonix.org/T817</a></li>
-<li id="cite_note-6"><a href="https://phabricator.whonix.org/T727">https://phabricator.whonix.org/T727</a></li>
+<li id="cite_note-3"><a href="https://www.mail-archive.com/cryptography@randombit.net/msg04763.html">https://www.mail-archive.com/cryptography@randombit.net/msg04763.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.mail-archive.com/cryptography@randombit.net/msg04763.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-4"><a href="https://phabricator.whonix.org/T32">https://phabricator.whonix.org/T32</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T32" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-5"><a href="https://phabricator.whonix.org/T817">https://phabricator.whonix.org/T817</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T817" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-6"><a href="https://phabricator.whonix.org/T727">https://phabricator.whonix.org/T727</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T727" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-7">He's the main developer behind Linux's RNG and staunchly resisted
 relying only on Intel's RDRAND. His opinions carry weight with good
 reason.</li>
-<li id="cite_note-8"><a href="https://lwn.net/Articles/586427/">https://lwn.net/Articles/586427/</a></li>
+<li id="cite_note-8"><a href="https://lwn.net/Articles/586427/">https://lwn.net/Articles/586427/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/586427/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-9"><pre><code> Setting up rng-tools (2-unofficial-mt.14-1+b2) ... Job for rng-tools.service failed because the control process exited with error code. See &quot;systemctl status rng-tools.service&quot; and &quot;journalctl -xe&quot; for details. invoke-rc.d: initscript rng-tools, action &quot;start&quot; failed. \u25cf rng-tools.service Loaded: loaded (/etc/init.d/rng-tools; generated) Active: failed (Result: exit-code) since Fri 2020-01-31 10:56:20 UTC; 7ms ago Docs: man:systemd-sysv-generator(8) Process: 32118 ExecStart=/etc/init.d/rng-tools start (code=exited, status=1/FAILURE) Jan 31 10:56:20 host systemd[1]: Starting rng-tools.service... Jan 31 10:56:20 host rng-tools[32118]: Starting Hardware RNG entropy gatherer daemon: (Hardware RNG device inode not found) Jan 31 10:56:20 host rng-tools[32118]: /etc/init.d/rng-tools: Cannot find a hardware RNG device to use. Jan 31 10:56:20 host systemd[1]: rng-tools.service: Control process exited, code=exited, status=1/FAILURE Jan 31 10:56:20 host systemd[1]: rng-tools.service: Failed with result &#39;exit-code&#39;. Jan 31 10:56:20 host systemd[1]: Failed to start rng-tools.service. </code></pre></li>
-<li id="cite_note-10"><a href="https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf">https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf</a></li>
-<li id="cite_note-11"><a href="https://wiki.archlinux.org/index.php/Rng-tools">https://wiki.archlinux.org/index.php/Rng-tools</a></li>
-<li id="cite_note-12"><a href="https://github.com/anthraxx/linux-hardened/commit/0ca98c2ffe1ee5b4580c4d2aa797bc793164fc94">https://github.com/anthraxx/linux-hardened/commit/0ca98c2ffe1ee5b4580c4d2aa797bc793164fc94</a></li>
+<li id="cite_note-10"><a href="https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf">https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-11"><a href="https://wiki.archlinux.org/index.php/Rng-tools">https://wiki.archlinux.org/index.php/Rng-tools</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.archlinux.org/index.php/Rng-tools" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-12"><a href="https://github.com/anthraxx/linux-hardened/commit/0ca98c2ffe1ee5b4580c4d2aa797bc793164fc94">https://github.com/anthraxx/linux-hardened/commit/0ca98c2ffe1ee5b4580c4d2aa797bc793164fc94</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/anthraxx/linux-hardened/commit/0ca98c2ffe1ee5b4580c4d2aa797bc793164fc94" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Qubes/" title="Dev/Qubes"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/Qubes</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../../Security_Reviews_and_Feedback/" title="Security Reviews and Feedback"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Security

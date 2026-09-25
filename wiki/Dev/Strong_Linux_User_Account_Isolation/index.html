@@ -21,22 +21,7 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Strong Linux User Account Isolation</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#History">History</a></li><li class="toc-l2"><a href="#Isolation_Rationale_and_Benefits">Isolation Rationale and
-Benefits</a></li><li class="toc-l2"><a href="#Non-Hardened_Linux_Distributions">Non-Hardened Linux
-Distributions</a></li><li class="toc-l2"><a href="#Kicksecure_Hardened_Linux_Distributions">Kicksecure Hardened
-Linux Distributions</a></li><li class="toc-l2"><a href="#Console_Lockdown">Console Lockdown</a></li><li class="toc-l2"><a href="#Bruteforcing_Linux_Account_Passwords_Protection">Bruteforcing
-Linux Account Passwords Protection</a></li><li class="toc-l2"><a href="#Online_Password_Cracking_Restrictions">Online Password Cracking
-Restrictions</a></li><li class="toc-l2"><a href="#/etc/securetty">/etc/securetty</a></li><li class="toc-l2"><a href="#Root_Account_Locked">Root Account Locked</a></li><li class="toc-l2"><a href="#su_restrictions">su restrictions</a></li><li class="toc-l3"><a href="#su_success_sample_log">su success sample log</a></li><li class="toc-l3"><a href="#unix_chkpwd_error">unix_chkpwd error</a></li><li class="toc-l3"><a href="#su_failure_sample_log">su failure sample log</a></li><li class="toc-l2"><a href="#Console_Login_Attacks">Console Login Attacks</a></li><li class="toc-l2"><a href="#sudo_restrictions">sudo restrictions</a></li><li class="toc-l2"><a href="#Permission_Lockdown">Permission Lockdown</a></li><li class="toc-l2"><a href="#umask_hardening">umask hardening</a></li><li class="toc-l2"><a href="#libpam-tmpdir">libpam-tmpdir</a></li><li class="toc-l2"><a href="#user-sysmaint-split">user-sysmaint-split</a></li><li class="toc-l2"><a href="#Polkit">Polkit</a></li><li class="toc-l2"><a href="#run0">run0</a></li><li class="toc-l2"><a href="#SSH">SSH</a></li><li class="toc-l2"><a href="#Block_Unsafe_Logins">Block Unsafe Logins</a></li><li class="toc-l2"><a href="#Physical_Security_Check">Physical Security Check</a></li><li class="toc-l2"><a href="#sudo_password_sniffing">sudo password sniffing</a></li><li class="toc-l2"><a href="#X_Windows_System">X Windows System</a></li><li class="toc-l2"><a href="#Wayland_application_isolation">Wayland application
-isolation</a></li><li class="toc-l2"><a href="#/proc/pid/sched_spy_on_keystrokes">/proc/pid/sched spy on
-keystrokes</a></li><li class="toc-l2"><a href="#LD_PRELOAD">LD_PRELOAD</a></li><li class="toc-l2"><a href="#Setting_up_a_fake_sudo">Setting up a fake sudo</a></li><li class="toc-l2"><a href="#Device_timing_sidechannels">Device timing sidechannels</a></li><li class="toc-l2"><a href="#SUID_SGID">SUID SGID</a></li><li class="toc-l2"><a href="#Login_Spoofing">Login Spoofing</a></li><li class="toc-l2"><a href="#Kernel">Kernel</a></li><li class="toc-l2"><a href="#libvirt/KVM">libvirt/KVM</a></li><li class="toc-l2"><a href="#Qubes_-_/dev/xen_libxenvchan_issue">Qubes - /dev/xen libxenvchan
-issue</a></li><li class="toc-l2"><a href="#Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue">Qubes
-- Automate vm sudo authorization setup versus SUID issue</a></li><li class="toc-l2"><a href="#Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation">Qubes
-- Strong Linux User Account Isolation - Motivation</a></li><li class="toc-l2"><a href="#Default_Empty_Password_Security_Impact">Default Empty Password
-Security Impact</a></li><li class="toc-l2"><a href="#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password">Rationale
-for Change from Default Password changeme to Empty Default Password</a></li><li class="toc-l2"><a href="#Default_Password_Implementation_Level">Default Password
-Implementation Level</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="mininav">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>Strong Linux User Account Isolation</span></nav><div class="mininav">
 <ul>
 <li><a href="../../Default_Passwords/">Default
 Passwords</a></li>
@@ -60,7 +45,22 @@ Admin Mode</a></li>
 <li><a href="../../Privleap/">privleap /
 <code>leaprun</code></a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#History">History</a></li><li class="toc-l2"><a href="#Isolation_Rationale_and_Benefits">Isolation Rationale and
+Benefits</a></li><li class="toc-l2"><a href="#Non-Hardened_Linux_Distributions">Non-Hardened Linux
+Distributions</a></li><li class="toc-l2"><a href="#Kicksecure_Hardened_Linux_Distributions">Kicksecure Hardened
+Linux Distributions</a></li><li class="toc-l2"><a href="#Console_Lockdown">Console Lockdown</a></li><li class="toc-l2"><a href="#Bruteforcing_Linux_Account_Passwords_Protection">Bruteforcing
+Linux Account Passwords Protection</a></li><li class="toc-l2"><a href="#Online_Password_Cracking_Restrictions">Online Password Cracking
+Restrictions</a></li><li class="toc-l2"><a href="#/etc/securetty">/etc/securetty</a></li><li class="toc-l2"><a href="#Root_Account_Locked">Root Account Locked</a></li><li class="toc-l2"><a href="#su_restrictions">su restrictions</a></li><li class="toc-l3"><a href="#su_success_sample_log">su success sample log</a></li><li class="toc-l3"><a href="#unix_chkpwd_error">unix_chkpwd error</a></li><li class="toc-l3"><a href="#su_failure_sample_log">su failure sample log</a></li><li class="toc-l2"><a href="#Console_Login_Attacks">Console Login Attacks</a></li><li class="toc-l2"><a href="#sudo_restrictions">sudo restrictions</a></li><li class="toc-l2"><a href="#Permission_Lockdown">Permission Lockdown</a></li><li class="toc-l2"><a href="#umask_hardening">umask hardening</a></li><li class="toc-l2"><a href="#libpam-tmpdir">libpam-tmpdir</a></li><li class="toc-l2"><a href="#user-sysmaint-split">user-sysmaint-split</a></li><li class="toc-l2"><a href="#Polkit">Polkit</a></li><li class="toc-l2"><a href="#run0">run0</a></li><li class="toc-l2"><a href="#SSH">SSH</a></li><li class="toc-l2"><a href="#Block_Unsafe_Logins">Block Unsafe Logins</a></li><li class="toc-l2"><a href="#Physical_Security_Check">Physical Security Check</a></li><li class="toc-l2"><a href="#sudo_password_sniffing">sudo password sniffing</a></li><li class="toc-l2"><a href="#X_Windows_System">X Windows System</a></li><li class="toc-l2"><a href="#Wayland_application_isolation">Wayland application
+isolation</a></li><li class="toc-l2"><a href="#/proc/pid/sched_spy_on_keystrokes">/proc/pid/sched spy on
+keystrokes</a></li><li class="toc-l2"><a href="#LD_PRELOAD">LD_PRELOAD</a></li><li class="toc-l2"><a href="#Setting_up_a_fake_sudo">Setting up a fake sudo</a></li><li class="toc-l2"><a href="#Device_timing_sidechannels">Device timing sidechannels</a></li><li class="toc-l2"><a href="#SUID_SGID">SUID SGID</a></li><li class="toc-l2"><a href="#Login_Spoofing">Login Spoofing</a></li><li class="toc-l2"><a href="#Kernel">Kernel</a></li><li class="toc-l2"><a href="#libvirt/KVM">libvirt/KVM</a></li><li class="toc-l2"><a href="#Qubes_-_/dev/xen_libxenvchan_issue">Qubes - /dev/xen libxenvchan
+issue</a></li><li class="toc-l2"><a href="#Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue">Qubes
+- Automate vm sudo authorization setup versus SUID issue</a></li><li class="toc-l2"><a href="#Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation">Qubes
+- Strong Linux User Account Isolation - Motivation</a></li><li class="toc-l2"><a href="#Default_Empty_Password_Security_Impact">Default Empty Password
+Security Impact</a></li><li class="toc-l2"><a href="#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password">Rationale
+for Change from Default Password changeme to Empty Default Password</a></li><li class="toc-l2"><a href="#Default_Password_Implementation_Level">Default Password
+Implementation Level</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../../media/Useraccountisolatiom123123.jpg.webp" width="200" alt="Useraccountisolatiom123123.jpg" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -94,7 +94,7 @@ Proper Unix hygiene dictates that you should log in as yourself, and su
 to root as necessary. People who spend their day logged in as root are
 just begging for disaster.<span class="blockquote-context">XScreenSaver
 FAQ, answer to "<a href="https://www.jwz.org/xscreensaver/faq.html#root-lock">When I'm
-logged in as root, XScreenSaver won't lock my screen!</a>"</span></p></blockquote></p>
+logged in as root, XScreenSaver won't lock my screen!</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.jwz.org/xscreensaver/faq.html#root-lock" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>"</span></p></blockquote></p>
 <p>Sounds quite important, right? Is it? What kind of disaster awaits if
 being logged in as root? No automatic security disaster. Many
 applications (such as Kate; Wayland) refuse to run as root. Due to this
@@ -182,7 +182,7 @@ risky -- it's better to use a cryptographic key instead.</li>
 <h1 id="Essentials">Essentials</h1>
 <p>In this chapter we would like to introduce the topic of user account
 isolation more broadly.</p>
-<h2 id="History">History</h2>
+<h2 id="History">History</h2><span class="share-tooltip" data-anchor="History"><a class="headline-anchor" href="#History" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#History">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#History</span></span></span></span>
 <ul>
 <li><strong>Root password sharing issues:</strong> Historically, sharing
 the root password was problematic when one computer was shared by
@@ -207,10 +207,10 @@ was 'su' which required everyone share a single password. Had a calamity
 occurred it would have been difficult or impossible to sift through the
 forensics ...<span class="blockquote-context">Bob Coggeshall, co-author
 of sudo <sup class="reference"><a href="#cite_note-1">[1]</a></sup>, <a href="https://security.stackexchange.com/a/233042">complete answer
-here</a></span></p></blockquote></li>
+here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security.stackexchange.com/a/233042" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></li>
 </ul>
 <h2 id="Isolation_Rationale_and_Benefits">Isolation Rationale and
-Benefits</h2>
+Benefits</h2><span class="share-tooltip" data-anchor="Isolation_Rationale_and_Benefits"><a class="headline-anchor" href="#Isolation_Rationale_and_Benefits" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Isolation_Rationale_and_Benefits">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Isolation_Rationale_and_Benefits</span></span></span></span>
 <p>Oftentimes, when we think of a user account, we think of an account
 on the system that someone is intended to log into. However, most
 systems have a large number of user accounts, even if they are only
@@ -268,7 +268,7 @@ exploits</h1>
 Distributions and discuss various defense strategies implemented by
 Kicksecure.</p>
 <h2 id="Non-Hardened_Linux_Distributions">Non-Hardened Linux
-Distributions</h2>
+Distributions</h2><span class="share-tooltip" data-anchor="Non-Hardened_Linux_Distributions"><a class="headline-anchor" href="#Non-Hardened_Linux_Distributions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Non-Hardened_Linux_Distributions">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Non-Hardened_Linux_Distributions</span></span></span></span>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-arrow-down cs-red"></i></span>
 Defenses: low - for most if not all Linux desktop operating systems</p>
@@ -318,13 +318,13 @@ can exfiltrate all private user data.</li>
 <ul>
 <li><strong>Temporary folder attack surface:</strong>
 <ul>
-<li><strong>Shared temporary folder:</strong> Command <a href="http://manpages.debian.org/mktemp"><code>mktemp</code></a> creates
+<li><strong>Shared temporary folder:</strong> Command <a href="http://manpages.debian.org/mktemp"><code>mktemp</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://manpages.debian.org/mktemp" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> creates
 a directory in folder <code>/tmp</code>, which is shared among all Linux
 user accounts.</li>
 </ul></li>
 </ul>
 <h2 id="Kicksecure_Hardened_Linux_Distributions">Kicksecure Hardened
-Linux Distributions</h2>
+Linux Distributions</h2><span class="share-tooltip" data-anchor="Kicksecure_Hardened_Linux_Distributions"><a class="headline-anchor" href="#Kicksecure_Hardened_Linux_Distributions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Kicksecure_Hardened_Linux_Distributions">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Kicksecure_Hardened_Linux_Distributions</span></span></span></span>
 <p><img src="../../../media/Kicksecure-seal.png.webp" width="200" alt="Kicksecure seal" /></p>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-arrow-up cs-green"></i></span>
@@ -365,23 +365,23 @@ separate their limited (everyday use) account (<code>user</code>) and
 administrative account (<code>sysmaint</code>). This would result in a
 robust <a href="../../Root/#Prevent_Malware_from_Sniffing_the_Root_Password">Prevention of Malware Sniffing the Root
 Password</a>.</p>
-<h2 id="Console_Lockdown">Console Lockdown</h2>
+<h2 id="Console_Lockdown">Console Lockdown</h2><span class="share-tooltip" data-anchor="Console_Lockdown"><a class="headline-anchor" href="#Console_Lockdown" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Console_Lockdown">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Console_Lockdown</span></span></span></span>
 <p><img src="../../../media/Console-lockdown.jpg.webp" alt="Console-lockdown.jpg" /></p>
 <p>Console lockdown restricts console access to members of the group
 <code>console</code>. Everyone else, except members of the group
 <code>console-unrestricted</code>, is restricted from using the console.
 This includes blocking access via ancient, unpopular login methods such
-as <code>/bin/login</code> over networks, which might be exploitable (<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-0797">CVE-2001-0797</a>).
+as <code>/bin/login</code> over networks, which might be exploitable (<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-0797">CVE-2001-0797</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2001-0797" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>).
 This is implemented using <code>pam_access</code> for the PAM service
 <code>login</code> (<code>/etc/pam.d/login</code>), and is part of the
-package <a href="https://github.com/Kicksecure/security-misc">security-misc</a>.</p>
-<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info">Kicksecure/security-misc</a></span>
+package <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 Attempts to log in to the console by users who are not members of the
 group <code>console</code> result in an error message.</p>
 <p>By Kicksecure default:</p>
 <ul>
 <li>Console lockdown is
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst">Kicksecure/dist-base-files</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst">Kicksecure/dist-base-files</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 default in Kicksecure version <code>15.0.0.8.7</code> and above.</li>
 <li>Only the account <code>user</code> is a member of the group
 <code>console</code> by default.</li>
@@ -390,11 +390,11 @@ default in Kicksecure version <code>15.0.0.8.7</code> and above.</li>
 </ul>
 <p><strong>Related files:</strong></p>
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/console-lockdown-security-misc">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam_only_if_login">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/security/access-security-misc.conf">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/console-lockdown-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/console-lockdown-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam_only_if_login">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam_only_if_login" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/security/access-security-misc.conf">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/etc/security/access-security-misc.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li><a href="https://forums.whonix.org/t/etc-security-hardening-console-lockdown-pam-access-access-conf/8592">Forum
-discussion on console lockdown and PAM access configuration</a></li>
+discussion on console lockdown and PAM access configuration</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/etc-security-hardening-console-lockdown-pam-access-access-conf/8592" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -403,7 +403,7 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch03.en.html#bios-passwd">Choose
 a BIOS
-password</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+password</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch03.en.html#bios-passwd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -412,7 +412,7 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#pam-rootaccess">User
 access control in
-PAM</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+PAM</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#pam-rootaccess" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -421,24 +421,24 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1397">Disallow
 remote administrative
-access</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+access</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1397" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <h2 id="Bruteforcing_Linux_Account_Passwords_Protection">Bruteforcing
-Linux Account Passwords Protection</h2>
+Linux Account Passwords Protection</h2><span class="share-tooltip" data-anchor="Bruteforcing_Linux_Account_Passwords_Protection"><a class="headline-anchor" href="#Bruteforcing_Linux_Account_Passwords_Protection" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Bruteforcing_Linux_Account_Passwords_Protection">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Bruteforcing_Linux_Account_Passwords_Protection</span></span></span></span>
 <p><span class="manually-placed-anchor " id="Bruteforcing_Linux_User_Account_Passwords_Protection"></span>
 <img src="../../../media/Franck-v-_E1PQXKUkMw-unsplash.jpg.webp" width="200" alt="Franck-v-_E1PQXKUkMw-unsplash.jpg" /></p>
 <p>Bruteforcing into Linux user accounts is severely limited by the
-package <a href="https://github.com/Kicksecure/security-misc">security-misc</a>.</p>
+package <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <ul>
 <li><strong>Account lockout policy</strong>: Accounts are locked after
 50 failed login attempts using <code>faillock</code>, requiring the <a href="../../Root/#Unlock_User_Account:_Excessive_Wrong_Password_Entry_Attempts">password unlock procedure</a>.</li>
 <li><strong>Configuration details</strong>:
 <ul>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/faillock-preauth-security-misc">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/unix-faillock-security-misc">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/faillock-preauth-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/faillock-preauth-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/unix-faillock-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/unix-faillock-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul></li>
 <li><strong>Usability enhancement</strong>:
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info">Kicksecure/security-misc</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-info" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 by security-misc:
 <ul>
 <li><strong>Login attempts feedback</strong>: Displays the number of
@@ -448,22 +448,22 @@ documentation on performing the <a href="../../Root/#unlock">unlock procedure</a
 </ul></li>
 </ul>
 <p>Forum discussion: <a href="https://forums.whonix.org/t/protect-linux-user-accounts-against-brute-force-attacks">protect
-Linux accounts against brute force attacks</a></p>
+Linux accounts against brute force attacks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/protect-linux-user-accounts-against-brute-force-attacks" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><strong>Issues:</strong></p>
 <ul>
 <li><strong>PAM issue</strong>: <a href="https://github.com/linux-pam/linux-pam/issues/842">pam_faillock
 tally and lockout status is reset by running a command with a NOPASSWD
-exception using sudo</a></li>
+exception using sudo</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/linux-pam/linux-pam/issues/842" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><strong>sudo issue</strong>: <a href="https://github.com/sudo-project/sudo/issues/415">NOPASSWD
 exceptions in /etc/sudoers(.d) interact poorly with pam_faillock; no
 configuration option exists to allow sudo to tell PAM when a NOPASSWD
-command is being run</a>
+command is being run</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/sudo-project/sudo/issues/415" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Solution for these two issues: <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a></li>
 </ul></li>
 </ul>
 <h2 id="Online_Password_Cracking_Restrictions">Online Password Cracking
-Restrictions</h2>
+Restrictions</h2><span class="share-tooltip" data-anchor="Online_Password_Cracking_Restrictions"><a class="headline-anchor" href="#Online_Password_Cracking_Restrictions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Online_Password_Cracking_Restrictions">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Online_Password_Cracking_Restrictions</span></span></span></span>
 <p>A secure password for root/user accounts does not necessarily have to
 follow the rationale explained on the <a href="../../Passwords/">Passwords</a> page. Offline attacks against the
 password (parallelization, password cracking attempts limited only by
@@ -478,15 +478,15 @@ password unlock procedure, are required.</p>
 Protection</a></p>
 <p>Relevant discussion: <a href="https://security.stackexchange.com/questions/213084/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encry">How
 strong do Linux user account passwords need to be when using full-disk
-encryption?</a></p>
-<h2 id="/etc/securetty">/etc/securetty</h2>
-<p>The package <a href="https://github.com/Kicksecure/security-misc">security-misc</a>
+encryption?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security.stackexchange.com/questions/213084/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encry" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h2 id="/etc/securetty">/etc/securetty</h2><span class="share-tooltip" data-anchor="/etc/securetty"><a class="headline-anchor" href="#/etc/securetty" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#/etc/securetty">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#/etc/securetty</span></span></span></span>
+<p>The package <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 removes all non-comment lines from <code>/etc/securetty</code>. As a
 result, root login and ancient console-based root login attempts are
 effectively disabled.</p>
 <ul>
 <li>Configuration details:
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/securetty.security-misc">Kicksecure/security-misc</a></span></li>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/securetty.security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/etc/securetty.security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -495,9 +495,9 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#pam-rootaccess">User
 access control in
-PAM</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+PAM</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#pam-rootaccess" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
-<h2 id="Root_Account_Locked">Root Account Locked</h2>
+<h2 id="Root_Account_Locked">Root Account Locked</h2><span class="share-tooltip" data-anchor="Root_Account_Locked"><a class="headline-anchor" href="#Root_Account_Locked" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Root_Account_Locked">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Root_Account_Locked</span></span></span></span>
 <p><span class="manually-placed-anchor " id="Root_Login_Disabled"></span></p>
 <ul>
 <li><strong>Root account locked:</strong> The <code>root</code> account
@@ -540,28 +540,28 @@ attempts, thanks to the <code>faillock</code> implementation by <a href="../../S
 </ul>
 <p><strong>Implementation:</strong></p>
 <ul>
-<li>This is implemented in package <a href="https://github.com/Kicksecure/dist-base-files">dist-base-files</a>
+<li>This is implemented in package <a href="https://github.com/Kicksecure/dist-base-files">dist-base-files</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst"><code>debian/postinst</code>
-maintainer script</a> in function <code>lock_root_account</code>. The
+maintainer script</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> in function <code>lock_root_account</code>. The
 effectively executed command is
 <span class="code-select inline-style">passwd --lock root</span> .</li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/pam-abort-on-locked-password-security-misc">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-abort-on-locked-password">Kicksecure/security-misc</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/pam-abort-on-locked-password-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/pam-abort-on-locked-password-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-abort-on-locked-password">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-abort-on-locked-password" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <p><strong>Documentation:</strong></p>
 <ul>
 <li><a href="../../Root/">Safely Use Root Commands</a></li>
 </ul>
-<h2 id="su_restrictions">su restrictions</h2>
+<h2 id="su_restrictions">su restrictions</h2><span class="share-tooltip" data-anchor="su_restrictions"><a class="headline-anchor" href="#su_restrictions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_restrictions">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_restrictions</span></span></span></span>
 <p>By default in Debian, any user account can attempt to use
 <code>su</code> to switch to the root user or another user account. This
 means any user can attempt to bruteforce switching to another account.
-<a href="../../About/">Kicksecure</a> / <a href="../../Whonix/">Whonix</a> (via the package <a href="https://github.com/Kicksecure/security-misc">security-misc</a>)
+<a href="../../About/">Kicksecure</a> / <a href="../../Whonix/">Whonix</a> (via the package <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 restricts this behavior by requiring group <code>sudo</code> membership
-to use <code>su</code>, utilizing <a href="https://manpages.debian.org/pam_wheel">pam_wheel</a>.</p>
+to use <code>su</code>, utilizing <a href="https://manpages.debian.org/pam_wheel">pam_wheel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org/pam_wheel" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <ul>
 <li>Configuration details:
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/wheel-security-misc">Kicksecure/security-misc</a></span></li>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/wheel-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/wheel-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <p>Additionally, <a href="../../Security-misc/#SUID_Disabling_and_Permission_Hardening">SUID Disabling and Permission Hardening</a> by
 security-misc removes SUID from <code>su</code> and many other binaries
@@ -574,7 +574,7 @@ Command</a></li>
 <p><strong>Related development discussion:</strong></p>
 <ul>
 <li><a href="https://forums.whonix.org/t/restrict-root-access/7658">Restrict
-root access</a></li>
+root access</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/restrict-root-access/7658" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -582,9 +582,9 @@ root access</a></li>
 is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1382">Using
-su</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+su</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1382" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
-<h3 id="su_success_sample_log">su success sample log</h3>
+<h3 id="su_success_sample_log">su success sample log</h3><span class="share-tooltip" data-anchor="su_success_sample_log"><a class="headline-anchor" href="#su_success_sample_log" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_success_sample_log">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_success_sample_log</span></span></span></span>
 <pre><code>Jan 06 05:28:43 work-main su[51364]: pam_exec(su:auth): /usr/libexec/security-misc/pam_only_if_su failed: exit code 1
 Jan 06 05:28:43 work-main su[51364]: pam_wheel(su:auth): Ignoring access request &#39;user2&#39; for &#39;root&#39;
 Jan 06 05:28:43 work-main su[51366]: pam_exec(su:auth): Calling /usr/libexec/security-misc/pam-info ...
@@ -604,12 +604,12 @@ comments.</p>
 <p><code>su</code> access of <code>user2</code> for <code>root</code>
 was permitted because <code>user2</code> was a member of group
 <code>sudo</code>.</p>
-<h3 id="unix_chkpwd_error">unix_chkpwd error</h3>
+<h3 id="unix_chkpwd_error">unix_chkpwd error</h3><span class="share-tooltip" data-anchor="unix_chkpwd_error"><a class="headline-anchor" href="#unix_chkpwd_error" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#unix_chkpwd_error">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#unix_chkpwd_error</span></span></span></span>
 <pre><code>Jan 06 05:25:43 work-main unix_chkpwd[50748]: check pass; user unknown</code></pre>
 <pre><code>chmod +s /usr/bin/su</code></pre>
 <p>Should not be required:</p>
 <pre><code>chmod +s /usr/sbin/unix_chkpwd</code></pre>
-<h3 id="su_failure_sample_log">su failure sample log</h3>
+<h3 id="su_failure_sample_log">su failure sample log</h3><span class="share-tooltip" data-anchor="su_failure_sample_log"><a class="headline-anchor" href="#su_failure_sample_log" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_failure_sample_log">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#su_failure_sample_log</span></span></span></span>
 <pre><code>Jan 06 05:17:22 work-main su[49202]: pam_exec(su:auth): /usr/libexec/security-misc/pam_only_if_su failed: exit code 1
 Jan 06 05:17:22 work-main su[49202]: pam_wheel(su:auth): Access denied to &#39;user3&#39; for &#39;root&#39;
 Jan 06 05:17:22 work-main su[49202]: FAILED SU (to root) user3 on pts/9</code></pre>
@@ -622,7 +622,7 @@ comments.</p>
 <p><code>su</code> access of <code>user3</code> for <code>root</code>
 failed because <code>user3</code> was a member of group
 <code>sudo</code>.</p>
-<h2 id="Console_Login_Attacks">Console Login Attacks</h2>
+<h2 id="Console_Login_Attacks">Console Login Attacks</h2><span class="share-tooltip" data-anchor="Console_Login_Attacks"><a class="headline-anchor" href="#Console_Login_Attacks" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Console_Login_Attacks">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Console_Login_Attacks</span></span></span></span>
 <p>Blocking access to <code>su</code> would be ineffective if a
 compromised user account could log into another user account by
 switching to a virtual terminal and bruteforcing the password. However,
@@ -670,7 +670,7 @@ login process will not set the permissions, so you won't have access.
 This does assume kernel enforced permissions are effective, but as we
 are talking here about in-VM account isolation only, it's a reasonable
 assumption.<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366">Comment
-by Marek Marczykowski-G&#243;recki, Qubes lead developer</a></span></p></blockquote></p>
+by Marek Marczykowski-G&#243;recki, Qubes lead developer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>This raises the question of how it is possible to switch between
 virtual consoles using a keypress such as Ctrl+Alt+Fn, or by using a
 command such as <code>chvt</code>. Virtual console switching is done by
@@ -733,13 +733,13 @@ into Wayland if it can connect to the Wayland server.</p>
 terminals by accessing TTY devices directly, but users without
 sufficient privilege will fail to switch virtual terminals regardless of
 the presence of the command.</p>
-<h2 id="sudo_restrictions">sudo restrictions</h2>
+<h2 id="sudo_restrictions">sudo restrictions</h2><span class="share-tooltip" data-anchor="sudo_restrictions"><a class="headline-anchor" href="#sudo_restrictions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#sudo_restrictions">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#sudo_restrictions</span></span></span></span>
 <p>By Debian default, users who are not members of the group
 <code>sudo</code> cannot use <code>sudo</code>. Therefore limited user
 accounts (for example user <code>sdwdate</code>) cannot use
 <code>sudo</code> to attempt to crack other user account passwords to
 run under these users.</p>
-<h2 id="Permission_Lockdown">Permission Lockdown</h2>
+<h2 id="Permission_Lockdown">Permission Lockdown</h2><span class="share-tooltip" data-anchor="Permission_Lockdown"><a class="headline-anchor" href="#Permission_Lockdown" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Permission_Lockdown">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Permission_Lockdown</span></span></span></span>
 <p><span class="manually-placed-anchor " id="access_rights_restrictions"></span>
 <img src="../../../media/Homelock-hp-promo.jpg.webp" alt="Homelock-hp-promo.jpg" />
 Strong Linux User Account Separation. Access rights restrictions.</p>
@@ -767,9 +767,9 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1560">Limiting
 access to other user's
-information</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+information</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1560" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
-<h2 id="umask_hardening">umask hardening</h2>
+<h2 id="umask_hardening">umask hardening</h2><span class="share-tooltip" data-anchor="umask_hardening"><a class="headline-anchor" href="#umask_hardening" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#umask_hardening">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#umask_hardening</span></span></span></span>
 <p><img src="../../../media/Umask-clipart.svg" alt="Umask-clipart.svg" /></p>
 <p>Complements Permission Hardening for folders outside of
 <code>/home</code>.</p>
@@ -793,7 +793,7 @@ this configuration provides additional safeguards for directories like
 <p><code>group</code> read permissions are retained, which is safe due
 to Debian's implementation of User Private Groups (UPGs). For further
 details, refer to: <a href="https://wiki.debian.org/UserPrivateGroups">User Private
-Groups</a>.</p>
+Groups</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/UserPrivateGroups" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>The root <code>umask</code> remains unchanged because system
 configuration files in <code>/etc</code> require "others" read access to
 avoid breaking applications. Examples of such files include
@@ -806,10 +806,10 @@ root remain world-readable. This includes actions like
 <p>User documentation: <a href="../../Umask/">umask</a></p>
 <p>Discussions:</p>
 <ul>
-<li><a href="https://forums.whonix.org/t/change-default-umask/7416">https://forums.whonix.org/t/change-default-umask/7416</a></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/185">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/194">Kicksecure/security-misc</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/282">Kicksecure/security-misc</a></span></li>
+<li><a href="https://forums.whonix.org/t/change-default-umask/7416">https://forums.whonix.org/t/change-default-umask/7416</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/change-default-umask/7416" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/issues/185">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/issues/185" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/194">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/194" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/pull/282">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/pull/282" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
@@ -818,14 +818,14 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1514">Setting
 users
-umasks</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+umasks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html#idm1514" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
-<h2 id="libpam-tmpdir">libpam-tmpdir</h2>
+<h2 id="libpam-tmpdir">libpam-tmpdir</h2><span class="share-tooltip" data-anchor="libpam-tmpdir"><a class="headline-anchor" href="#libpam-tmpdir" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#libpam-tmpdir">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#libpam-tmpdir</span></span></span></span>
 <p><img src="../../../media/Tmpdir-hp-promo.jpg.webp" alt="Tmpdir-hp-promo.jpg" /></p>
 <p><u>Temporary files based attacks:</u></p>
 <ul>
-<li><a href="https://unix.stackexchange.com/questions/235985/how-can-i-safely-create-and-access-temp-files-from-shell-scripts">https://unix.stackexchange.com/questions/235985/how-can-i-safely-create-and-access-temp-files-from-shell-scripts</a></li>
-<li><a href="https://security.stackexchange.com/questions/11606/what-are-the-dangers-of-storing-webserver-temp-files-in-the-tmp-folder">https://security.stackexchange.com/questions/11606/what-are-the-dangers-of-storing-webserver-temp-files-in-the-tmp-folder</a></li>
+<li><a href="https://unix.stackexchange.com/questions/235985/how-can-i-safely-create-and-access-temp-files-from-shell-scripts">https://unix.stackexchange.com/questions/235985/how-can-i-safely-create-and-access-temp-files-from-shell-scripts</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://unix.stackexchange.com/questions/235985/how-can-i-safely-create-and-access-temp-files-from-shell-scripts" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://security.stackexchange.com/questions/11606/what-are-the-dangers-of-storing-webserver-temp-files-in-the-tmp-folder">https://security.stackexchange.com/questions/11606/what-are-the-dangers-of-storing-webserver-temp-files-in-the-tmp-folder</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security.stackexchange.com/questions/11606/what-are-the-dangers-of-storing-webserver-temp-files-in-the-tmp-folder" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><u>Defense:</u></p>
 <ul>
@@ -837,14 +837,14 @@ sets $TMPDIR and $TMP for PAM sessions and sets the permissions quite
 tight. This helps system security by having an extra layer of security,
 making such symlink attacks and other /tmp based attacks harder or
 impossible<span class="blockquote-context">Debian package <a href="https://packages.debian.org/libpam-tmpdir">libpam-tmpdir -
-automatic per-user temporary directories</a></span></p></blockquote></p>
+automatic per-user temporary directories</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/libpam-tmpdir" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p><u>Discussion:</u></p>
 <ul>
 <li><a href="https://forums.whonix.org/t/make-symlink-attacks-and-other-tmp-based-attacks-harder-or-impossible-using-libpam-tmpdir/8488">make
 symlink attacks and other /tmp based attacks harder or impossible using
-libpam-tmpdir</a></li>
+libpam-tmpdir</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/make-symlink-attacks-and-other-tmp-based-attacks-harder-or-impossible-using-libpam-tmpdir/8488" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="user-sysmaint-split">user-sysmaint-split</h2>
+<h2 id="user-sysmaint-split">user-sysmaint-split</h2><span class="share-tooltip" data-anchor="user-sysmaint-split"><a class="headline-anchor" href="#user-sysmaint-split" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#user-sysmaint-split">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#user-sysmaint-split</span></span></span></span>
 <p><img src="../../../media/Usersysmaint-clipart.svg" width="200" alt="Usersysmaint-clipart.svg" /></p>
 <p>Thanks to <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a> / <a href="../../Sysmaint/">sysmaint</a> attack surface from privilege escalation
 tools such as <code>sudo</code> should be completely mitigated.</p>
@@ -866,7 +866,7 @@ Accounts</a>)</li>
 <p>Example error message.</p>
 <pre><code>zsh: permission denied: sudo
 zsh: exit 126   sudo nano</code></pre>
-<h2 id="Polkit">Polkit</h2>
+<h2 id="Polkit">Polkit</h2><span class="share-tooltip" data-anchor="Polkit"><a class="headline-anchor" href="#Polkit" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Polkit">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Polkit</span></span></span></span>
 <p><code>Polkit</code> (formally <code>PolicyKit</code>).</p>
 <p><code>pkexec</code>:</p>
 <ul>
@@ -890,14 +890,14 @@ so it avoids asking <code>polkitd</code></li>
 </ul>
 <p><u><code>polkitd</code> and <code>policykit</code> libraries:</u></p>
 <ul>
-<li><a href="https://forums.kicksecure.com/t/investigate-security-suid-impact-of-polkitd-and-policykit-libraries/1075">https://forums.kicksecure.com/t/investigate-security-suid-impact-of-polkitd-and-policykit-libraries/1075</a></li>
+<li><a href="https://forums.kicksecure.com/t/investigate-security-suid-impact-of-polkitd-and-policykit-libraries/1075">https://forums.kicksecure.com/t/investigate-security-suid-impact-of-polkitd-and-policykit-libraries/1075</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/investigate-security-suid-impact-of-polkitd-and-policykit-libraries/1075" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><u>user documentation:</u></p>
 <ul>
 <li><a href="../../Polkit/">Polkit (formally PolicyKit) /
 <code>pkexec</code></a></li>
 </ul>
-<h2 id="run0">run0</h2>
+<h2 id="run0">run0</h2><span class="share-tooltip" data-anchor="run0"><a class="headline-anchor" href="#run0" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#run0">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#run0</span></span></span></span>
 <ul>
 <li><u>Overview:</u> <code>run0</code> is a utility included with
 systemd that is similar to <code>sudo</code> and aims to avoid some of
@@ -957,9 +957,9 @@ SUID binaries in general still apply.</li>
 account, as otherwise significant extra attack surface inside the VM is
 exposed (dynamic linker, libc startup, portions of Linux kernel
 including ELF loader, etc.)<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-301320361">comment
-on Qubes ticket Automate vm sudo authorization setup</a> by security
+on Qubes ticket Automate vm sudo authorization setup</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-301320361" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> by security
 researcher <a href="https://en.wikipedia.org/wiki/Solar_Designer">Solar
-Designer</a></span></p></blockquote></p>
+Designer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Solar_Designer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
 <li><u>Kicksecure default behavior:</u> In Kicksecure, <code>run0</code>
 is not usable in user sessions by default, because
@@ -974,22 +974,22 @@ accounts other than <code>sysmaint</code> when
 <ul>
 <li><u>Kicksecure development discussion</u>: <a href="https://forums.whonix.org/t/replace-sudo-with-doas-run0-privleap/17482">replace
 <code>sudo</code> with <code>doas</code>, <code>run0</code> and/or
-<code>privleap</code></a></li>
+<code>privleap</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/replace-sudo-with-doas-run0-privleap/17482" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><u>Qubes development ticket:</u> <a href="https://github.com/QubesOS/qubes-issues/issues/10780">Consider
-deprecating sudo in favor of run0 #10780</a></li>
+deprecating sudo in favor of run0 #10780</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/10780" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><u>run0</u>: <a href="https://github.com/systemd/systemd/issues/39676">run0: improve
-polkit integration to replace sudo #39676</a></li>
+polkit integration to replace sudo #39676</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/systemd/systemd/issues/39676" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="SSH">SSH</h2>
+<h2 id="SSH">SSH</h2><span class="share-tooltip" data-anchor="SSH"><a class="headline-anchor" href="#SSH" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#SSH">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#SSH</span></span></span></span>
 <ul>
 <li>todo: document</li>
 <li><a href="../../SSH/">SSH</a></li>
 <li><a href="../../SSH/#SSH_Login_Comparison_Table">SSH Login
 Comparison Table</a></li>
-<li><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/sshd_config.d/30_security-misc.conf%23security-misc-shared">https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/sshd_config.d/30_security-misc.conf%23security-misc-shared</a></li>
-<li><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared">https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared</a></li>
+<li><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/sshd_config.d/30_security-misc.conf%23security-misc-shared">https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/sshd_config.d/30_security-misc.conf%23security-misc-shared</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/sshd_config.d/30_security-misc.conf%23security-misc-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared">https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/etc/ssh/ssh_config.d/30_security-misc.conf%23security-misc-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="Block_Unsafe_Logins">Block Unsafe Logins</h2>
+<h2 id="Block_Unsafe_Logins">Block Unsafe Logins</h2><span class="share-tooltip" data-anchor="Block_Unsafe_Logins"><a class="headline-anchor" href="#Block_Unsafe_Logins" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Block_Unsafe_Logins">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Block_Unsafe_Logins</span></span></span></span>
 <p><strong>Threat model:</strong> If a legitimate privilege escalation
 executable exists on the system that uses <code>PAM</code>, and we have
 not yet restricted its access using <a href="../../SUID_Disabler_and_Permission_Hardener/">SUID
@@ -1027,11 +1027,11 @@ intended to function as expected, even for sensitive accounts.</li>
 </ul>
 <p><strong>Source code:</strong></p>
 <ul>
-<li><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/block-unsafe-logins-security-misc%23security-misc-shared"><code>/usr/share/pam-configs/block-unsafe-logins-security-misc</code></a></li>
-<li><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/block-unsafe-logins%23security-misc-shared"><code>/usr/libexec/security-misc/block-unsafe-logins</code></a></li>
+<li><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/block-unsafe-logins-security-misc%23security-misc-shared"><code>/usr/share/pam-configs/block-unsafe-logins-security-misc</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/block-unsafe-logins-security-misc%23security-misc-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/block-unsafe-logins%23security-misc-shared"><code>/usr/libexec/security-misc/block-unsafe-logins</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/block-unsafe-logins%23security-misc-shared" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Related: <a href="./#Default_Empty_Password_Security_Impact">Default Empty Password Security Impact</a></li>
 </ul>
-<h2 id="Physical_Security_Check">Physical Security Check</h2>
+<h2 id="Physical_Security_Check">Physical Security Check</h2><span class="share-tooltip" data-anchor="Physical_Security_Check"><a class="headline-anchor" href="#Physical_Security_Check" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Physical_Security_Check">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Physical_Security_Check</span></span></span></span>
 <p><strong>Figure:</strong> <em>systemcheck - Physical Security
 Check</em></p>
 <p><img src="../../../media/Physical-security-check.png.webp" width="600" alt="physical-security-check.png" /></p>
@@ -1043,7 +1043,7 @@ Security Check</a>.</p>
 discussed</strong>. These issues are <a href="../../Unspecific/">unspecific to Kicksecure</a>. Most if not all Freedom
 Software Linux desktop distributions are affected by one or multiple of
 these issues.</p>
-<h2 id="sudo_password_sniffing">sudo password sniffing</h2>
+<h2 id="sudo_password_sniffing">sudo password sniffing</h2><span class="share-tooltip" data-anchor="sudo_password_sniffing"><a class="headline-anchor" href="#sudo_password_sniffing" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#sudo_password_sniffing">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#sudo_password_sniffing</span></span></span></span>
 <p>On Linux distributions other than those based on Kicksecure with <a href="../../Sysmaint/">user-sysmaint-split</a>, a compromised
 account <code>user</code> could be infected with a keylogger (which
 unfortunately does not even require <code>root</code> access) that could
@@ -1078,7 +1078,7 @@ privilege escalation.</li>
 <li><strong>Local privilege escalation vulnerabilities</strong>: Malware
 requires a local privilege escalation (LPE) exploit to gain root.</li>
 </ul>
-<h2 id="X_Windows_System">X Windows System</h2>
+<h2 id="X_Windows_System">X Windows System</h2><span class="share-tooltip" data-anchor="X_Windows_System"><a class="headline-anchor" href="#X_Windows_System" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#X_Windows_System">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#X_Windows_System</span></span></span></span>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><img src="../../../media/Ambox_notice.png.webp" width="40" alt="Info" /></span></p>
 <ul>
@@ -1106,10 +1106,10 @@ security issues with GUI isolation related to X Windows System (X11).
 <a href="../../Sysmaint/">sysmaint - System Maintenance
 User</a> / <a href="../user-sysmaint-split/">user-sysmaint-split</a> during the version 17
 development cycle.</li>
-<li><u>Further reading:</u> <a href="https://forums.whonix.org/t/what-makes-wayland-more-secure/22672">https://forums.whonix.org/t/what-makes-wayland-more-secure/22672</a></li>
+<li><u>Further reading:</u> <a href="https://forums.whonix.org/t/what-makes-wayland-more-secure/22672">https://forums.whonix.org/t/what-makes-wayland-more-secure/22672</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/what-makes-wayland-more-secure/22672" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h2 id="Wayland_application_isolation">Wayland application
-isolation</h2>
+isolation</h2><span class="share-tooltip" data-anchor="Wayland_application_isolation"><a class="headline-anchor" href="#Wayland_application_isolation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Wayland_application_isolation">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Wayland_application_isolation</span></span></span></span>
 <p>Wayland is designed to provide good isolation between simultaneously
 running graphical applications, while still allowing those applications
 to communicate with each other in controlled ways. In the base Wayland
@@ -1119,7 +1119,7 @@ access to the contents, events, or even positions of other windows. This
 is intended to prevent things such as logging other applications'
 keystrokes, reading other applications' screen information, etc. This is
 mostly documented in the <a href="https://wayland.freedesktop.org/docs/html/ch04.html">Wayland
-Documentation</a>.</p>
+Documentation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wayland.freedesktop.org/docs/html/ch04.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>While the base protocol places severe restrictions on what windows
 know, Wayland compositors in general will allow some additional info to
 be shared with windows, depending on the particular compositor. For
@@ -1135,7 +1135,7 @@ their screen contents, even under Wayland.</p>
 <p>Keylogging is still a concern with many Wayland compositors,
 specifically those based upon wlroots such as labwc. See "<a href="https://github.com/labwc/labwc/discussions/2698">Allow restricting
 layer-shell and emulated input protocol access to whitelisted
-applications</a>". These compositors provide emulated input
+applications</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/discussions/2698" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>". These compositors provide emulated input
 functionality that can be used to forward keystrokes sent to the wrong
 window, to the window they were originally intended for. If combined
 with a full-screen transparent window (or a layer-shell surface), this
@@ -1143,22 +1143,22 @@ can likely be used to implement a rootless keylogger for Wayland. labwc
 has some features in place that will eventually allow preventing
 sandboxed apps (such as Flatpaks) from being able to do this, but these
 features are not fully developed yet. See "<a href="https://github.com/labwc/labwc/pull/2398">Block privileged
-protocols for sandboxed clients</a>". Similar techniques may be usable
+protocols for sandboxed clients</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/pull/2398" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>". Similar techniques may be usable
 for implementing a rootless mouse tracker as well. In general,
 applications should not assume that other applications will not be able
 to snoop on keystrokes and mouse events sent to them.</p>
 <p>TODO:</p>
 <ul>
-<li><a href="https://github.com/labwc/labwc/discussions/2392">https://github.com/labwc/labwc/discussions/2392</a></li>
-<li><a href="https://github.com/labwc/labwc/issues/1897">https://github.com/labwc/labwc/issues/1897</a></li>
-<li><a href="https://github.com/labwc/labwc/pull/1817">https://github.com/labwc/labwc/pull/1817</a></li>
-<li><a href="https://github.com/labwc/labwc/discussions/1002">https://github.com/labwc/labwc/discussions/1002</a></li>
-<li><a href="https://github.com/labwc/labwc/pull/1004">https://github.com/labwc/labwc/pull/1004</a></li>
-<li><a href="https://github.com/labwc/labwc/pull/3089">https://github.com/labwc/labwc/pull/3089</a></li>
+<li><a href="https://github.com/labwc/labwc/discussions/2392">https://github.com/labwc/labwc/discussions/2392</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/discussions/2392" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/labwc/labwc/issues/1897">https://github.com/labwc/labwc/issues/1897</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/issues/1897" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/labwc/labwc/pull/1817">https://github.com/labwc/labwc/pull/1817</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/pull/1817" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/labwc/labwc/discussions/1002">https://github.com/labwc/labwc/discussions/1002</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/discussions/1002" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/labwc/labwc/pull/1004">https://github.com/labwc/labwc/pull/1004</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/pull/1004" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/labwc/labwc/pull/3089">https://github.com/labwc/labwc/pull/3089</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/labwc/labwc/pull/3089" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<p>Forum discuss: <a href="https://forums.whonix.org/t/what-makes-wayland-more-secure/22672">https://forums.whonix.org/t/what-makes-wayland-more-secure/22672</a></p>
+<p>Forum discuss: <a href="https://forums.whonix.org/t/what-makes-wayland-more-secure/22672">https://forums.whonix.org/t/what-makes-wayland-more-secure/22672</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/what-makes-wayland-more-secure/22672" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h2 id="/proc/pid/sched_spy_on_keystrokes">/proc/pid/sched spy on
-keystrokes</h2>
+keystrokes</h2><span class="share-tooltip" data-anchor="/proc/pid/sched_spy_on_keystrokes"><a class="headline-anchor" href="#/proc/pid/sched_spy_on_keystrokes" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#/proc/pid/sched_spy_on_keystrokes">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#/proc/pid/sched_spy_on_keystrokes</span></span></span></span>
 <p>The <code>/proc</code> filesystem leaks a significant amount of
 information about other processes, allowing attackers to spy on certain
 processes extensively. One example is <code>/proc/pid/sched</code>,
@@ -1166,11 +1166,11 @@ which enables attackers to spy on keystrokes. However, the information
 leakage extends far beyond just that.</p>
 <ul>
 <li><a href="https://forums.whonix.org/t/proc-pid-sched-spy-on-keystrokes-proof-of-concept-spy-gksu/8225">Whonix
-Forums: Proof of Concept - Spy on Keystrokes</a></li>
+Forums: Proof of Concept - Spy on Keystrokes</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/proc-pid-sched-spy-on-keystrokes-proof-of-concept-spy-gksu/8225" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://www.openwall.com/lists/oss-security/2011/11/05/3">Openwall
-Security Discussion</a></li>
+Security Discussion</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openwall.com/lists/oss-security/2011/11/05/3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.whonix.org/t/apparmor-for-complete-system-including-init-pid1-systemd-everything-full-system-mac-policy/8339/363">Whonix
-Forums: Full-System MAC Policy Discussion</a></li>
+Forums: Full-System MAC Policy Discussion</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/apparmor-for-complete-system-including-init-pid1-systemd-everything-full-system-mac-policy/8339/363" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><strong>Potential solutions:</strong></p>
 <ul>
@@ -1181,12 +1181,12 @@ used, as most users run most applications under the same account.</li>
 <li><strong>PID namespaces</strong>: These hide processes from outside
 the namespace and can be used for sandboxing apps, effectively
 preventing spying on processes outside of the sandbox.</li>
-<li><strong><a href="https://github.com/roddhjav/apparmor.d">apparmor.d</a>
+<li><strong><a href="https://github.com/roddhjav/apparmor.d">apparmor.d</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/roddhjav/apparmor.d" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 profiles</strong>: This provides fine-grained restrictions over
 <code>/proc</code>, offering a more targeted approach to mitigating
 information leakage.</li>
 </ul>
-<h2 id="LD_PRELOAD">LD_PRELOAD</h2>
+<h2 id="LD_PRELOAD">LD_PRELOAD</h2><span class="share-tooltip" data-anchor="LD_PRELOAD"><a class="headline-anchor" href="#LD_PRELOAD" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#LD_PRELOAD">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#LD_PRELOAD</span></span></span></span>
 <p><code>LD_PRELOAD</code> is an environment variable that specifies
 certain libraries to preload for an application. An attacker can exploit
 this by preloading their malicious library globally to log keystrokes
@@ -1194,14 +1194,14 @@ or, even worse, hijack the program.</p>
 <p>There are numerous examples of <code>LD_PRELOAD</code> rootkits in
 Linux. One example is:</p>
 <ul>
-<li><a href="https://github.com/Aishou/wayland-keylogger">wayland-keylogger</a></li>
+<li><a href="https://github.com/Aishou/wayland-keylogger">wayland-keylogger</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Aishou/wayland-keylogger" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><strong>Potential solutions:</strong></p>
 <ul>
 <li>Use environment scrubbing for everything in
 <code>apparmor.d</code>.</li>
 </ul>
-<h2 id="Setting_up_a_fake_sudo">Setting up a fake sudo</h2>
+<h2 id="Setting_up_a_fake_sudo">Setting up a fake sudo</h2><span class="share-tooltip" data-anchor="Setting_up_a_fake_sudo"><a class="headline-anchor" href="#Setting_up_a_fake_sudo" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Setting_up_a_fake_sudo">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Setting_up_a_fake_sudo</span></span></span></span>
 <p>An attacker can set up a fake <code>sudo</code> binary to trick the
 user into providing their password. Below is a simple example attack
 implementation demonstrating how this could be accomplished:</p>
@@ -1231,7 +1231,7 @@ Mounting all user-writeable places such as <code>/home</code> and
 <code>/tmp</code> as non-executable is not a viable solution because an
 attacker can bypass these restrictions by using the bash interpreter,
 for example: <code>bash /path/to/script</code>. Would <a href="https://forums.whonix.org/t/lock-down-interpreters-compilers-interpreter-lock-compiler-lock/18499">interpreter
-lock</a> help?</li>
+lock</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/lock-down-interpreters-compilers-interpreter-lock-compiler-lock/18499" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> help?</li>
 </ul>
 <p><strong>Potential solutions:</strong></p>
 <ul>
@@ -1239,10 +1239,10 @@ lock</a> help?</li>
 planned <a href="../../Sysmaint/">sysmaint - System
 Maintenance User</a> / <a href="../user-sysmaint-split/">user-sysmaint-split</a>.</li>
 </ul>
-<h2 id="Device_timing_sidechannels">Device timing sidechannels</h2>
+<h2 id="Device_timing_sidechannels">Device timing sidechannels</h2><span class="share-tooltip" data-anchor="Device_timing_sidechannels"><a class="headline-anchor" href="#Device_timing_sidechannels" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Device_timing_sidechannels">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Device_timing_sidechannels</span></span></span></span>
 <p>Device timing sidechannels <i>may</i> allow keylogging but more
 research needs to be done on this.</p>
-<p><a href="https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Eliminate_stat/notify-based_device_sidechannels">https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Eliminate_stat/notify-based_device_sidechannels</a></p>
+<p><a href="https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Eliminate_stat/notify-based_device_sidechannels">https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Eliminate_stat/notify-based_device_sidechannels</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options#Eliminate_stat/notify-based_device_sidechannels" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>If you say Y here, timing analyses on block or character devices like
 /dev/ptmx using stat or inotify/dnotify/fanotify will be thwarted for
 unprivileged users. If a process without CAP_MKNOD stats such a device,
@@ -1256,25 +1256,25 @@ administrator's password length.</p></blockquote></p>
 <li>linux-hardened fixes this by restricting it to CAP_MKNOD
 <sup class="reference"><a href="#cite_note-8">[8]</a></sup></li>
 </ul>
-<h2 id="SUID_SGID">SUID SGID</h2>
-<p><a href="https://en.wikipedia.org/wiki/Setuid">https://en.wikipedia.org/wiki/Setuid</a></p>
+<h2 id="SUID_SGID">SUID SGID</h2><span class="share-tooltip" data-anchor="SUID_SGID"><a class="headline-anchor" href="#SUID_SGID" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#SUID_SGID">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#SUID_SGID</span></span></span></span>
+<p><a href="https://en.wikipedia.org/wiki/Setuid">https://en.wikipedia.org/wiki/Setuid</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Setuid" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><blockquote><p>Ideally, there should be no SUID binaries reachable from the user
 account, as otherwise significant extra attack surface inside the VM is
 exposed (dynamic linker, libc startup, portions of Linux kernel
 including ELF loader, etc.)<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-301320361">comment
-on Qubes ticket Automate vm sudo authorization setup</a> by security
+on Qubes ticket Automate vm sudo authorization setup</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-301320361" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> by security
 researcher <a href="https://en.wikipedia.org/wiki/Solar_Designer">Solar
-Designer</a></span></p></blockquote></p>
+Designer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Solar_Designer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>To address this issue, <a href="../../SUID_Disabler_and_Permission_Hardener/">SUID
 Disabler and Permission Hardener</a> has been created.</p>
-<h2 id="Login_Spoofing">Login Spoofing</h2>
+<h2 id="Login_Spoofing">Login Spoofing</h2><span class="share-tooltip" data-anchor="Login_Spoofing"><a class="headline-anchor" href="#Login_Spoofing" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Login_Spoofing">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Login_Spoofing</span></span></span></span>
 <p>See <a href="../../Login_spoofing/">login spoofing</a>.</p>
-<h2 id="Kernel">Kernel</h2>
+<h2 id="Kernel">Kernel</h2><span class="share-tooltip" data-anchor="Kernel"><a class="headline-anchor" href="#Kernel" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Kernel">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Kernel</span></span></span></span>
 <p>The Linux kernel can have security issues. A kernel exploit that can
 be run from user space and does not require root can be used for LPE
 (local privilege escalation).</p>
 <p>TODO: elaborate</p>
-<h2 id="libvirt/KVM">libvirt/KVM</h2>
+<h2 id="libvirt/KVM">libvirt/KVM</h2><span class="share-tooltip" data-anchor="libvirt/KVM"><a class="headline-anchor" href="#libvirt/KVM" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#libvirt/KVM">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#libvirt/KVM</span></span></span></span>
 <p>Many people who use KVM to run virtual machines do so via libvirt.
 libvirt is an abstraction layer that allows users to create, destroy,
 and manage virtual machines without having to worry as much about the
@@ -1292,19 +1292,19 @@ privileged, run-as-root Linux containers. Users who are members of the
 authentication, and both of these features can be abused to create
 arbitrary SUID-root executables on the host. These can then be executed
 on the host to escalate privileges to root.</p>
-<p>User documentation: [Broken-ExtLink--no-url-was-provided]</p>
+<p>User documentation: KVM: Shared Folder</p>
 <h1 id="Qubes_Specific_Issues">Qubes Specific Issues</h1>
 <h2 id="Qubes_-_/dev/xen_libxenvchan_issue">Qubes - /dev/xen libxenvchan
-issue</h2>
+issue</h2><span class="share-tooltip" data-anchor="Qubes_-_/dev/xen_libxenvchan_issue"><a class="headline-anchor" href="#Qubes_-_/dev/xen_libxenvchan_issue" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_/dev/xen_libxenvchan_issue">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_/dev/xen_libxenvchan_issue</span></span></span></span>
 <p><code>/dev/xen</code> folder permissions are an issue inside Qubes.
 See Qubes bug report: <a href="https://github.com/QubesOS/qubes-issues/issues/9717">harden
 insecure permissions inside <code>/dev/xen</code> folder / research
 security impact of the Qubes <code>/dev/xen</code> folder
-permissions</a> and <a href="../Qubes/#Root_Privilege_Isolation_and_libxenvchan">Root Privilege Isolation and libxenvchan</a>.</p>
+permissions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9717" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="../Qubes/#Root_Privilege_Isolation_and_libxenvchan">Root Privilege Isolation and libxenvchan</a>.</p>
 <h2 id="Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue">Qubes
-- Automate vm sudo authorization setup versus SUID issue</h2>
+- Automate vm sudo authorization setup versus SUID issue</h2><span class="share-tooltip" data-anchor="Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue"><a class="headline-anchor" href="#Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_Automate_vm_sudo_authorization_setup_versus_SUID_issue</span></span></span></span>
 <p>Would Qubes feature request <a href="https://github.com/QubesOS/qubes-issues/issues/2695">Automate vm
-sudo authorization setup #2695</a> if implemented require
+sudo authorization setup #2695</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> if implemented require
 <code>sudo</code> to retain the SUID bit (security-risk) by default and
 be world executable?</p>
 <p>An implementation where <code>sudo</code> and other privilege
@@ -1313,7 +1313,7 @@ primarily limited to user account "<code>sysmaint</code>", such as how
 <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a> implements this, would be
 more secure.</p>
 <h2 id="Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation">Qubes
-- Strong Linux User Account Isolation - Motivation</h2>
+- Strong Linux User Account Isolation - Motivation</h2><span class="share-tooltip" data-anchor="Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation"><a class="headline-anchor" href="#Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Qubes_-_Strong_Linux_User_Account_Isolation_-_Motivation</span></span></span></span>
 <p>Motivation of user/root isolation in Qubes? In the past, there have
 been Xen vulnerabilities that required root access. (Actually a kernel
 module, but root has the permission to load kernel modules.)</p>
@@ -1323,22 +1323,22 @@ order to exploit this vulnerability, an attacker would need to be
 running code in kernel mode of one or more VMs on the system. Any system
 that allows untrusted users to run arbitrary kernels will be
 particularly vulnerable.<span class="blockquote-context">Xen Project: <a href="https://xenproject.org/blog/updates-on-xsa-213-xsa-214-and-xsa-215/">Updates
-on XSA-213, XSA-214 and XSA-215</a></span></p></blockquote></p>
+on XSA-213, XSA-214 and XSA-215</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xenproject.org/blog/updates-on-xsa-213-xsa-214-and-xsa-215/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p><a href="https://github.com/QubesOS/qubes-secpack/blob/master/QSBs/qsb-030-2017.txt">Qubes
-Security Bulletin #30</a></p>
+Security Bulletin #30</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-secpack/blob/master/QSBs/qsb-030-2017.txt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p>At that time, the inability to escalate to administrative ("root")
 rights, thereby preventing the loading of a malicious kernel modules
 would have mitigated these vulnerabilities.</p>
 <h1 id="Passwords">Passwords</h1>
 <h2 id="Default_Empty_Password_Security_Impact">Default Empty Password
-Security Impact</h2>
+Security Impact</h2><span class="share-tooltip" data-anchor="Default_Empty_Password_Security_Impact"><a class="headline-anchor" href="#Default_Empty_Password_Security_Impact" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Default_Empty_Password_Security_Impact">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Default_Empty_Password_Security_Impact</span></span></span></span>
 <p>Does a default password such as <code>changeme</code> provide better
 security than an empty by default password? No, because malware could
-easily use <a href="https://forums.whonix.org/t/dsudo-default-password-sudo/8766"><code>dsudo</code></a>
+easily use <a href="https://forums.whonix.org/t/dsudo-default-password-sudo/8766"><code>dsudo</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/dsudo-default-password-sudo/8766" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 (or similarly trivial tools) to enter <code>changeme</code> into the
 sudo prompt.</p>
 <h2 id="Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password">Rationale
-for Change from Default Password changeme to Empty Default Password</h2>
+for Change from Default Password changeme to Empty Default Password</h2><span class="share-tooltip" data-anchor="Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password"><a class="headline-anchor" href="#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Rationale_for_Change_from_Default_Password_changeme_to_Empty_Default_Password</span></span></span></span>
 <ul>
 <li><strong>Usability:</strong> Better usability.</li>
 <li><strong>No impact on security:</strong> See <a href="./#Default_Empty_Password_Security_Impact">Default Empty Password Security Impact</a>.</li>
@@ -1379,15 +1379,15 @@ solve this issue? By having developed different graphical interfaces and
 user freedom restrictions where <a href="../../Miscellaneous_Threats_to_User_Freedom/#Administrative_Rights">the user is being refused administrative
 rights</a>.</li>
 <li>Forum discussion: <a href="https://forums.whonix.org/t/whonix-default-password-changeme-impact/13115">default
-password (changeme) impact</a></li>
+password (changeme) impact</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/whonix-default-password-changeme-impact/13115" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h2 id="Default_Password_Implementation_Level">Default Password
-Implementation Level</h2>
+Implementation Level</h2><span class="share-tooltip" data-anchor="Default_Password_Implementation_Level"><a class="headline-anchor" href="#Default_Password_Implementation_Level" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Default_Password_Implementation_Level">https://www.kicksecure.com/wiki/Dev/Strong_Linux_User_Account_Isolation/#Default_Password_Implementation_Level</span></span></span></span>
 <p>What technically changed.</p>
 <p>Instead of running
 <code>printf '%s\n' "${user_to_be_created}:${password}" | chpasswd --encrypted</code>,
 now <code>passwd --delete user</code> is run during the build process in
-dist-base-files <a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst"><code>debian/dist-base-files.postinst</code></a>.</p>
+dist-base-files <a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst"><code>debian/dist-base-files.postinst</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Related <code>/etc/shadow</code> entry, before <code>17.2.0.1</code>
 and earlier:</p>
 <pre><code>user:aTayYxVyw5kDo:19935:0:99999:7:::</code></pre>
@@ -1450,13 +1450,13 @@ escalate to <code>root</code> if account <code>user</code> was
 compromised?
 <ul>
 <li>If using procedure <a href="https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password">Prevent
-Malware from Sniffing the Root Password</a>: no</li>
+Malware from Sniffing the Root Password</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Root#Prevent_Malware_from_Sniffing_the_Root_Password" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: no</li>
 <li>If not using procedure Prevent Malware from Sniffing the Root
 Password: yes, due to <a href="#Issues">issues</a>.</li>
 </ul></li>
 <li><u><a href="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks">Protection
-against Physical Attacks</a></u>: This is a mostly unrelated issue. A <a href="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Screen_Lock">screen
-lock</a> might be sufficient protection from lesser adversaries. In that
+against Physical Attacks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></u>: This is a mostly unrelated issue. A <a href="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Screen_Lock">screen
+lock</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Screen_Lock" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> might be sufficient protection from lesser adversaries. In that
 case, a host screen locker and a better, non-default Linux account
 password on the host operating system might help, as the login password
 will also be used for the screen lock.</li>
@@ -1504,29 +1504,29 @@ clear error message rather than an authentication failure message.</li>
 <h1 id="Related_Topics">Related Topics</h1>
 <p><span class="manually-placed-anchor " id="Related"></span></p>
 <ul>
-<li><a href="https://forums.whonix.org/t/restrict-root-access/7658">https://forums.whonix.org/t/restrict-root-access/7658</a></li>
-<li><a href="https://forums.whonix.org/t/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encryption-fde-too/7698/8">https://forums.whonix.org/t/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encryption-fde-too/7698/8</a></li>
-<li><a href="https://forums.whonix.org/t/is-it-safe-to-install-keepassxc-on-gateway/16391">https://forums.whonix.org/t/is-it-safe-to-install-keepassxc-on-gateway/16391</a></li>
+<li><a href="https://forums.whonix.org/t/restrict-root-access/7658">https://forums.whonix.org/t/restrict-root-access/7658</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/restrict-root-access/7658" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encryption-fde-too/7698/8">https://forums.whonix.org/t/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encryption-fde-too/7698/8</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/how-strong-do-linux-user-account-passwords-have-to-be-when-using-full-disk-encryption-fde-too/7698/8" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/is-it-safe-to-install-keepassxc-on-gateway/16391">https://forums.whonix.org/t/is-it-safe-to-install-keepassxc-on-gateway/16391</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/is-it-safe-to-install-keepassxc-on-gateway/16391" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="../VirusForget/">VirusForget</a>: about
 problematic files such as ~/.bashrc and other folders which malware can
 use to fake or sudo prompt and/or to persist after boot</li>
 <li><a href="https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-root-persistent-noroot-live-root-live-noroot/7708">multiple
 boot modes for better security: persistent + root | persistent + noroot
-| live + root | live + noroot</a></li>
+| live + root | live + noroot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-root-persistent-noroot-live-root-live-noroot/7708" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.whonix.org/t/walled-garden-firewall-whitelisting-application-whitelisting-sudo-lockdown-superuser-mode-protected-mode/5725">walled
 garden, firewall whitelisting, application whitelisting, sudo lockdown,
-superuser mode, protected mode</a></li>
+superuser mode, protected mode</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/walled-garden-firewall-whitelisting-application-whitelisting-sudo-lockdown-superuser-mode-protected-mode/5725" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="../../Root/">root</a></li>
 </ul>
 <h1 id="Resources">Resources</h1>
 <ul>
-<li><a href="https://serverfault.com/questions/57962/whats-wrong-with-always-being-root">https://serverfault.com/questions/57962/whats-wrong-with-always-being-root</a></li>
-<li><a href="https://www.howtogeek.com/124950/htg-explains-why-you-shouldnt-log-into-your-linux-system-as-root/">https://www.howtogeek.com/124950/htg-explains-why-you-shouldnt-log-into-your-linux-system-as-root/</a></li>
-<li><a href="https://unix.stackexchange.com/questions/244124/why-does-turnkey-linux-not-have-sudo-installed-by-default-if-youre-never-suppo">https://unix.stackexchange.com/questions/244124/why-does-turnkey-linux-not-have-sudo-installed-by-default-if-youre-never-suppo</a></li>
-<li><a href="https://unix.stackexchange.com/questions/106529/why-is-sudo-not-installed-by-default-in-debian">https://unix.stackexchange.com/questions/106529/why-is-sudo-not-installed-by-default-in-debian</a></li>
+<li><a href="https://serverfault.com/questions/57962/whats-wrong-with-always-being-root">https://serverfault.com/questions/57962/whats-wrong-with-always-being-root</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://serverfault.com/questions/57962/whats-wrong-with-always-being-root" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.howtogeek.com/124950/htg-explains-why-you-shouldnt-log-into-your-linux-system-as-root/">https://www.howtogeek.com/124950/htg-explains-why-you-shouldnt-log-into-your-linux-system-as-root/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.howtogeek.com/124950/htg-explains-why-you-shouldnt-log-into-your-linux-system-as-root/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://unix.stackexchange.com/questions/244124/why-does-turnkey-linux-not-have-sudo-installed-by-default-if-youre-never-suppo">https://unix.stackexchange.com/questions/244124/why-does-turnkey-linux-not-have-sudo-installed-by-default-if-youre-never-suppo</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://unix.stackexchange.com/questions/244124/why-does-turnkey-linux-not-have-sudo-installed-by-default-if-youre-never-suppo" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://unix.stackexchange.com/questions/106529/why-is-sudo-not-installed-by-default-in-debian">https://unix.stackexchange.com/questions/106529/why-is-sudo-not-installed-by-default-in-debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://unix.stackexchange.com/questions/106529/why-is-sudo-not-installed-by-default-in-debian" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="User_Freedom">User Freedom</h1>
-<p><a href="../../About/">Kicksecure</a> / <a href="../../Whonix/">Whonix</a> / <a href="https://github.com/Kicksecure/security-misc">security-misc</a>
+<p><a href="../../About/">Kicksecure</a> / <a href="../../Whonix/">Whonix</a> / <a href="https://github.com/Kicksecure/security-misc">security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 does not restrict user freedom. All default settings can be undone.
 Everything is configurable and documented on page <a href="../../Root/">Root</a>.</p>
 <h1 id="See_also">See also</h1>
@@ -1562,7 +1562,7 @@ Roadmap</a></li>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1">Bob Coggeshall is mentioned on <a href="https://www.sudo.ws/about/history/">sudo history</a>.</li>
+<li id="cite_note-1">Bob Coggeshall is mentioned on <a href="https://www.sudo.ws/about/history/">sudo history</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.sudo.ws/about/history/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 <li id="cite_note-2">On the flip-side, if the <a href="#Prevent_Malware_from_Sniffing_the_Root_Password">Prevent Malware from Sniffing the Root Password</a>
 steps are followed, two secure passwords are required for the account
 <code>user</code> and user <code>sysmaint</code> accounts.</li>
@@ -1575,23 +1575,23 @@ only library it uses beyond the C standard library is PAM), and is only
 1,850 lines long. Ergo, less attack
 surface.<span class="blockquote-context">Kicksecure developer, Aaron
 Rainbolt, <a href="https://forums.whonix.org/t/replace-sudo-with-doas/17482/28">forum
-post</a></span></p></blockquote></li>
+post</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/replace-sudo-with-doas/17482/28" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></li>
 <li id="cite_note-4"><a href="https://github.com/QubesOS/qubes-issues/issues/10780#issuecomment-4139112072">GitHub
-issue comment</a></li>
+issue comment</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/10780#issuecomment-4139112072" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-5"><code>run0</code> creates "transient units" for running commands.
 These units may have any name chosen by the end user. systemd exposes
 the name of the unit being managed and the desired action to Polkit (see
-<a href="https://github.com/systemd/systemd/commit/88ced61bf9673407f4b15bf51b1b408fd78c149d"><code>core: pass details to polkit for some unit actions</code></a>),
+<a href="https://github.com/systemd/systemd/commit/88ced61bf9673407f4b15bf51b1b408fd78c149d"><code>core: pass details to polkit for some unit actions</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/systemd/systemd/commit/88ced61bf9673407f4b15bf51b1b408fd78c149d" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>),
 which allows writing Polkit rules that only permit certain unit names to
 be used. However, because <code>run0</code> can run any command with any
 unit name, this likely cannot be used for command whitelisting.</li>
-<li id="cite_note-6"><a href="https://blog.invisiblethings.org/2011/04/23/linux-security-circus-on-gui-isolation.html">Quote</a>
+<li id="cite_note-6"><a href="https://blog.invisiblethings.org/2011/04/23/linux-security-circus-on-gui-isolation.html">Quote</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.invisiblethings.org/2011/04/23/linux-security-circus-on-gui-isolation.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Joanna Rutkowska, security researcher, founder and advisor (formerly
 architecture, security, and development) of Qubes OS:
 <blockquote><p>One application can sniff or inject keystrokes to another one, can
 take snapshots of the screen occupied by windows belonging to another
 one, etc.</p></blockquote></li>
-<li id="cite_note-7">Note: Rewrote "user" to "account" for clarity. <a href="https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366">https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366</a>
+<li id="cite_note-7">Note: Rewrote "user" to "account" for clarity. <a href="https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366">https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695#issuecomment-521646366" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 @Patrick <blockquote><p>Why "I" can do it but account "man" cannot? What makes "me" and
 account "man" different? On non-Qubes Debian I am always wondering if I
 can switch a virtual console using ctrl + alt + F1, why can account
@@ -1609,11 +1609,11 @@ to interact with <code>/dev/hvc0</code> and specifically run commands
 connected to it. If you don't login there, login process will not set
 the permissions, so you won't have access. &gt; This does assume kernel
 enforced permissions are effective, but as we are talking here about
-in-VM account isolation only, it's a reasonable assumption.</p></blockquote> <a href="https://github.com/marmarek">marmarek</a> <blockquote><p>(lets forget about X11 breaking all this assumptions</p></blockquote>
-@Patrick <blockquote><p>Indeed. While <a href="https://forums.whonix.org/t/enforce-kernel-module-software-signature-verification-module-signing-disallow-kernel-module-loading-by-default/7880/40">experimenting</a>
+in-VM account isolation only, it's a reasonable assumption.</p></blockquote> <a href="https://github.com/marmarek">marmarek</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/marmarek" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> <blockquote><p>(lets forget about X11 breaking all this assumptions</p></blockquote>
+@Patrick <blockquote><p>Indeed. While <a href="https://forums.whonix.org/t/enforce-kernel-module-software-signature-verification-module-signing-disallow-kernel-module-loading-by-default/7880/40">experimenting</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/enforce-kernel-module-software-signature-verification-module-signing-disallow-kernel-module-loading-by-default/7880/40" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 with module loading disabling, I experienced that broken X can block
 switching to <a href="https://www.whonix.org/wiki/Desktop#Virtual_Consoles">virtual
-console</a>. Needless to say (for other readers), if X can do, also
+console</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/Desktop#Virtual_Consoles" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Needless to say (for other readers), if X can do, also
 malware could do. "SysRq + r" can take away control from X. After that,
 switching to another virtual console was possible.</p></blockquote> @marmarek <blockquote><p>Yes, X (or other process with access to input device) can grab it for
 exclusive access, disabling Alt+Ctrl+F1 or similar combos. This still is
@@ -1621,7 +1621,7 @@ independent of what is happening on other terminals. Especially, input
 devices grabbed in this mode are handled by X server (or other process
 that grabbed them). As long as X server doesn't have access to other
 terminals, it still can't influence them.</p></blockquote></li>
-<li id="cite_note-8"><a href="https://github.com/anthraxx/linux-hardened/commit/72b66e85807fd92b0c8ee53df59492806a6234aa">https://github.com/anthraxx/linux-hardened/commit/72b66e85807fd92b0c8ee53df59492806a6234aa</a></li>
+<li id="cite_note-8"><a href="https://github.com/anthraxx/linux-hardened/commit/72b66e85807fd92b0c8ee53df59492806a6234aa">https://github.com/anthraxx/linux-hardened/commit/72b66e85807fd92b0c8ee53df59492806a6234aa</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/anthraxx/linux-hardened/commit/72b66e85807fd92b0c8ee53df59492806a6234aa" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <div class="robots-nocontent" data-nosnippet="">

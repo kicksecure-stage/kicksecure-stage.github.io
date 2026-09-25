@@ -21,18 +21,12 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>user-sysmaint-split</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Limited_Environment">Limited Environment</a></li><li class="toc-l2"><a href="#Implementation">Implementation</a></li><li class="toc-l3"><a href="#Minimal_Services">Minimal Services</a></li><li class="toc-l3"><a href="#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">No
-SUID Security Risk originating from Privilege Escalation Tools</a></li><li class="toc-l3"><a href="#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No
-Access to Privilege Escalation Tools for Limited Accounts</a></li><li class="toc-l3"><a href="#user_group_sudo_membership">user group sudo membership</a></li><li class="toc-l2"><a href="#Qubes_Support">Qubes Support</a></li><li class="toc-l3"><a href="#Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</a></li><li class="toc-l3"><a href="#Qubes_R4.3_and_later">Qubes R4.3 and later</a></li><li class="toc-l3"><a href="#Qubes_Security_Known_Issue">Qubes Security Known Issue</a></li><li class="toc-l2"><a href="#Fast_User_Switching">Fast User Switching</a></li><li class="toc-l2"><a href="#Server_Support">Server Support</a></li><li class="toc-l2"><a href="#Usability">Usability</a></li><li class="toc-l2"><a href="#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">Fast
-User Switching - Anti Login Spoofing - Anti Phishing Code</a></li><li class="toc-l3"><a href="#Mode_First_Ordering">Mode First Ordering</a></li><li class="toc-l3"><a href="#Session_First_Ordering">Session First Ordering</a></li><li class="toc-l2"><a href="#/etc/grub.d">/etc/grub.d</a></li><li class="toc-l2"><a href="#BootEntries">BootEntries</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="first-heading">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>user-sysmaint-split</span></nav><div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../VirusForget/" title="Dev/VirusForget"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirusForget</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../boot/" title="Dev/boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/boot</span></a><span class="info"><span class="prev">Previous
 page: Dev/VirusForget</span><span class="index">Index page:
 Design</span><span class="next">Next page:
 Dev/boot</span></span></span>user-sysmaint-split</p>
-</div>
-<div class="mininav">
+</div><div class="mininav">
 <ul>
 <li><a href="../../Default_Passwords/">Default
 Passwords</a></li>
@@ -56,7 +50,13 @@ Admin Mode</a></li>
 <li><a href="../../Privleap/">privleap /
 <code>leaprun</code></a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Limited_Environment">Limited Environment</a></li><li class="toc-l2"><a href="#Implementation">Implementation</a></li><li class="toc-l3"><a href="#Minimal_Services">Minimal Services</a></li><li class="toc-l3"><a href="#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">No
+SUID Security Risk originating from Privilege Escalation Tools</a></li><li class="toc-l3"><a href="#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No
+Access to Privilege Escalation Tools for Limited Accounts</a></li><li class="toc-l3"><a href="#user_group_sudo_membership">user group sudo membership</a></li><li class="toc-l2"><a href="#Qubes_Support">Qubes Support</a></li><li class="toc-l3"><a href="#Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</a></li><li class="toc-l3"><a href="#Qubes_R4.3_and_later">Qubes R4.3 and later</a></li><li class="toc-l3"><a href="#Qubes_Security_Known_Issue">Qubes Security Known Issue</a></li><li class="toc-l2"><a href="#Fast_User_Switching">Fast User Switching</a></li><li class="toc-l2"><a href="#Server_Support">Server Support</a></li><li class="toc-l2"><a href="#Usability">Usability</a></li><li class="toc-l2"><a href="#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">Fast
+User Switching - Anti Login Spoofing - Anti Phishing Code</a></li><li class="toc-l3"><a href="#Mode_First_Ordering">Mode First Ordering</a></li><li class="toc-l3"><a href="#Session_First_Ordering">Session First Ordering</a></li><li class="toc-l2"><a href="#/etc/grub.d">/etc/grub.d</a></li><li class="toc-l2"><a href="#BootEntries">BootEntries</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
+
 <p><img src="../../../media/Grub-boot-sysmaint-icon.jpg.webp" width="250" alt="Grub-boot-sysmaint-icon.jpg" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -258,7 +258,7 @@ the</p>
 removal</a>.)</p>
 <p>This is documented on the <a href="../../Unrestricted_admin_mode/">unrestricted admin mode</a> wiki page.</p>
 <h1 id="Design">Design</h1>
-<h2 id="Limited_Environment">Limited Environment</h2>
+<h2 id="Limited_Environment">Limited Environment</h2><span class="share-tooltip" data-anchor="Limited_Environment"><a class="headline-anchor" href="#Limited_Environment" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Limited_Environment">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Limited_Environment</span></span></span></span>
 <ul>
 <li><strong>Question:</strong> Why log in to a limited environment
 instead of a full desktop?</li>
@@ -273,26 +273,26 @@ trivial access to high-risk applications such as web browsers, which
 could increase risk.</li>
 </ul></li>
 </ul>
-<h2 id="Implementation">Implementation</h2>
+<h2 id="Implementation">Implementation</h2><span class="share-tooltip" data-anchor="Implementation"><a class="headline-anchor" href="#Implementation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Implementation">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Implementation</span></span></span></span>
 <ul>
 <li><strong>Systemd target:</strong>
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a></span>,
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>,
 a systemd target similar to single user mode (kernel parameter
 <code>single</code>).</li>
 <li><strong>Minimal services:</strong> Start only <a href="#Minimal_services">minimal services</a> when
 booting into sysmaint session (<code>sysmaint-boot.target</code>).</li>
-<li><strong>Systemd unit:</strong> <a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.service">sysmaint-boot.service</a>,
+<li><strong>Systemd unit:</strong> <a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.service">sysmaint-boot.service</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.service" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 handles system reconfiguration when switching between modes.</li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split">Kicksecure/user-sysmaint-split</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sysmaint-panel">Kicksecure/sysmaint-panel</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split">Kicksecure/user-sysmaint-split</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/user-sysmaint-split" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sysmaint-panel">Kicksecure/sysmaint-panel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sysmaint-panel" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
-<h3 id="Minimal_Services">Minimal Services</h3>
+<h3 id="Minimal_Services">Minimal Services</h3><span class="share-tooltip" data-anchor="Minimal_Services"><a class="headline-anchor" href="#Minimal_Services" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Minimal_Services">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Minimal_Services</span></span></span></span>
 <p>When booting into sysmaint session, only minimal, hand-picked
 services will be started. In other words, far fewer systemd units
-(long-running background processes also called <a href="https://en.wikipedia.org/wiki/Daemon_(computing)">daemons</a>)
+(long-running background processes also called <a href="https://en.wikipedia.org/wiki/Daemon_(computing)">daemons</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Daemon_(computing)" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
 will be started. This is because when booting into sysmaint session,
 only
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target">Kicksecure/user-sysmaint-split</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/user-sysmaint-split/blob/master/usr/lib/systemd/system/sysmaint-boot.target" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 will be started. This is similar to systemd target single user mode
 (kernel parameter <code>single</code>).</p>
 <p>Potentially vulnerable daemons (automatically started as systemd
@@ -310,16 +310,16 @@ installed.</p>
 <code>multi-user.target</code> will be started, where all enabled
 systemd units are started as per systemd/Debian upstream default.</p>
 <h3 id="No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">No
-SUID Security Risk originating from Privilege Escalation Tools</h3>
+SUID Security Risk originating from Privilege Escalation Tools</h3><span class="share-tooltip" data-anchor="No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools"><a class="headline-anchor" href="#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#No_SUID_Security_Risk_originating_from_Privilege_Escalation_Tools</span></span></span></span>
 <p>Privilege Escalation Tools are SUID applications, which can be a
 security risk for local privilege escalation (such as from account
 <code>user</code> to <code>root</code>).</p>
 <p><blockquote><p>Ideally, there should be no SUID binaries reachable from the user
 account, as otherwise significant extra attack surface inside the VM is
 exposed (dynamic linker, libc startup, portions of Linux kernel
-including ELF loader, etc.)<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695">Quote</a>
+including ELF loader, etc.)<span class="blockquote-context"><a href="https://github.com/QubesOS/qubes-issues/issues/2695">Quote</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/2695" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 security researcher <a href="https://en.wikipedia.org/wiki/Solar_Designer">Solar
-Designer</a></span></p></blockquote></p>
+Designer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Solar_Designer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>SUID related risks are elaborated on the <a href="../../SUID_Disabler_and_Permission_Hardener/">SUID
 Disabler and Permission Hardener</a> wiki page.</p>
 <p>This is implemented through <a href="./#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No Access to Privilege Escalation Tools for Limited
@@ -327,7 +327,7 @@ Accounts</a>. (Note: Not all SUID-root executables have been restricted
 yet, however several critical ones such as <code>sudo</code> and
 <code>pkexec</code> have been.)</p>
 <h3 id="No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No
-Access to Privilege Escalation Tools for Limited Accounts</h3>
+Access to Privilege Escalation Tools for Limited Accounts</h3><span class="share-tooltip" data-anchor="No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts"><a class="headline-anchor" href="#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts</span></span></span></span>
 <p><span class="manually-placed-anchor " id="No_Access_to_Privilege_Escalation_Tools_for_Limited_Users"></span></p>
 <p>There are conceptually two groups of accounts, privileged accounts
 and limited accounts.</p>
@@ -413,7 +413,7 @@ Public     No     No     No</code></pre>
 <p>Applications may no longer internally use passwordless
 <code>sudo</code> exceptions (e.g., <code>/etc/sudoers.d</code>). This
 is further detailed on the <a href="../sudo/">Dev/sudo</a> page.</p>
-<h3 id="user_group_sudo_membership">user group sudo membership</h3>
+<h3 id="user_group_sudo_membership">user group sudo membership</h3><span class="share-tooltip" data-anchor="user_group_sudo_membership"><a class="headline-anchor" href="#user_group_sudo_membership" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#user_group_sudo_membership">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#user_group_sudo_membership</span></span></span></span>
 <p>Should <code>user-sysmaint-split</code> postinst
 "<code>run_once</code>" <code>sudo delgroup user sudo</code>? No, not
 needed.</p>
@@ -421,10 +421,10 @@ needed.</p>
 of group <code>sudo</code> by default thanks to <a href="./#No_Access_to_Privilege_Escalation_Tools_for_Limited_Accounts">No Access to Privilege Escalation Tools for Limited
 Accounts</a>. This simplifies testing and the process of users wishing
 to go back to <a href="../../Unrestricted_admin_mode/">unrestricted admin mode</a>.</p>
-<h2 id="Qubes_Support">Qubes Support</h2>
+<h2 id="Qubes_Support">Qubes Support</h2><span class="share-tooltip" data-anchor="Qubes_Support"><a class="headline-anchor" href="#Qubes_Support" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_Support">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_Support</span></span></span></span>
 <p>Package <code>qubes-core-agent-passwordless-root</code> will be no
 longer installed by default in <a href="../../Qubes/">Kicksecure for Qubes</a>.</p>
-<h3 id="Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</h3>
+<h3 id="Qubes_R4.2_and_earlier">Qubes R4.2 and earlier</h3><span class="share-tooltip" data-anchor="Qubes_R4.2_and_earlier"><a class="headline-anchor" href="#Qubes_R4.2_and_earlier" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_R4.2_and_earlier">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_R4.2_and_earlier</span></span></span></span>
 <p>Exiting Templates: <code>user-sysmaint-split</code> is NOT installed
 by default for Kicksecure, Whonix-Gateway, or Whonix-Workstation.</p>
 <p>New Templates: If <code>user-sysmaint-split</code> is installed into
@@ -432,7 +432,7 @@ a template, both the template and AppVMs based on it will only boot into
 <code>PERSISTENT mode | USER session</code>. Other boot modes are
 inaccessible. For administrative actions, users can use a <a href="../../Root/#Qubes_Root_Console">Qubes Root
 Console</a>.</p>
-<h3 id="Qubes_R4.3_and_later">Qubes R4.3 and later</h3>
+<h3 id="Qubes_R4.3_and_later">Qubes R4.3 and later</h3><span class="share-tooltip" data-anchor="Qubes_R4.3_and_later"><a class="headline-anchor" href="#Qubes_R4.3_and_later" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_R4.3_and_later">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_R4.3_and_later</span></span></span></span>
 <p><code>user-sysmaint-split</code> is installed by default for
 Kicksecure and Whonix-Workstation. It will NOT be installed on
 Whonix-Gateway by default.</p>
@@ -445,18 +445,18 @@ Users can configure this behavior as they desire by <a href="../../Sysmaint/#Usa
 boot modes.</a> <code>LIVE mode | USER session</code> and
 <code>LIVE mode | SYSMAINT session</code> are both currently
 unsupported, but may be supported later.</p>
-<h3 id="Qubes_Security_Known_Issue">Qubes Security Known Issue</h3>
+<h3 id="Qubes_Security_Known_Issue">Qubes Security Known Issue</h3><span class="share-tooltip" data-anchor="Qubes_Security_Known_Issue"><a class="headline-anchor" href="#Qubes_Security_Known_Issue" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_Security_Known_Issue">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Qubes_Security_Known_Issue</span></span></span></span>
 <ul>
 <li>Qubes has potential local privilege escalation issue: <a href="https://github.com/QubesOS/qubes-issues/issues/9717">harden
 insecure permissions inside <code>/dev/xen</code> folder / research
 security impact of the Qubes <code>/dev/xen</code> folder permissions
-#9717</a> -- This issue is <a href="../../Unspecific/">unspecific to Kicksecure</a> and is entirely unrelated
+#9717</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9717" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> -- This issue is <a href="../../Unspecific/">unspecific to Kicksecure</a> and is entirely unrelated
 to Kicksecure. It equally applies to App Qubes that are not using
 <code>qubes-core-agent-passwordless-root</code> such as Qubes Debian
 minimal Template.</li>
 </ul>
 <h1 id="Remaining_Issues">Remaining Issues</h1>
-<h2 id="Fast_User_Switching">Fast User Switching</h2>
+<h2 id="Fast_User_Switching">Fast User Switching</h2><span class="share-tooltip" data-anchor="Fast_User_Switching"><a class="headline-anchor" href="#Fast_User_Switching" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Fast_User_Switching">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Fast_User_Switching</span></span></span></span>
 <p><a href="../../Sysmaint/">sysmaint - System Maintenance
 User</a> documentation chapter <a href="../../Sysmaint/#Fast_User_Switching">Fast User Switching</a> explains that</p>
 <p><blockquote><p>It is not possible to switch from account <code>user</code> to
@@ -503,7 +503,7 @@ Resume the <code>user</code> session.</p>
 <code>sysmaint</code> or vice versa would be less secure because when
 booting into sysmaint session (<code>sysmaint-boot.target</code>), only
 <a href="./#Minimal_Services">Minimal Services</a> are started.</p>
-<h2 id="Server_Support">Server Support</h2>
+<h2 id="Server_Support">Server Support</h2><span class="share-tooltip" data-anchor="Server_Support"><a class="headline-anchor" href="#Server_Support" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Server_Support">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Server_Support</span></span></span></span>
 <p>GRUB boot menus aren't easily accessible on many servers. A solution
 for making these boot modes available on servers is yet to be
 determined. Booting a server into sysmaint session with minimal services
@@ -514,7 +514,7 @@ servers. No meta package will depend on it, and derivative-maker will
 not install it on server builds.</p>
 <p>Future work ideas:</p>
 <ul>
-<li>See the forum discussion: <a href="https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50">https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50</a></li>
+<li>See the forum discussion: <a href="https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50">https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/multiple-boot-modes-for-better-security-persistent-user-live-user-persistent-admin-persistent-superadmin-persistent-recovery-mode/7708/50" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>A) User could create a file that requests booting into sysmaint
 session next time.
 <ul>
@@ -529,7 +529,7 @@ Only <code>user</code>?</li>
 <li>B) Sysmaint mode would use a systemd unit drop-in to disable most
 systemd units, except SSH, etc.</li>
 </ul>
-<h2 id="Usability">Usability</h2>
+<h2 id="Usability">Usability</h2><span class="share-tooltip" data-anchor="Usability"><a class="headline-anchor" href="#Usability" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Usability">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Usability</span></span></span></span>
 <ul>
 <li><strong>Terminal application risks:</strong>
 <ul>
@@ -575,7 +575,7 @@ images, enhancing safety.</li>
 <h1 id="Potential_Future_Improvements">Potential Future
 Improvements</h1>
 <h2 id="Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">Fast
-User Switching - Anti Login Spoofing - Anti Phishing Code</h2>
+User Switching - Anti Login Spoofing - Anti Phishing Code</h2><span class="share-tooltip" data-anchor="Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code"><a class="headline-anchor" href="#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Fast_User_Switching_-_Anti_Login_Spoofing_-_Anti_Phishing_Code</span></span></span></span>
 <ul>
 <li><u>Desktop background as anti-phishing code:</u> The
 <code>sysmaint</code> desktop background could include a
@@ -623,7 +623,7 @@ is difficult.</li>
 <ul>
 <li><strong>Policy-rcd solutions:</strong>
 <ul>
-<li>See: <a href="https://packages.debian.org/policy-rcd-declarative-deny-all">policy-rcd-declarative-deny-all</a>.</li>
+<li>See: <a href="https://packages.debian.org/policy-rcd-declarative-deny-all">policy-rcd-declarative-deny-all</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/policy-rcd-declarative-deny-all" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
 </ul></li>
 </ul>
 <ul>
@@ -650,21 +650,21 @@ to avoid browsing the internet unless absolutely necessary.</li>
 </ul></li>
 </ul>
 <h1 id="Boot_Menu_Names_and_Ordering">Boot Menu Names and Ordering</h1>
-<h3 id="Mode_First_Ordering">Mode First Ordering</h3>
+<h3 id="Mode_First_Ordering">Mode First Ordering</h3><span class="share-tooltip" data-anchor="Mode_First_Ordering"><a class="headline-anchor" href="#Mode_First_Ordering" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Mode_First_Ordering">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Mode_First_Ordering</span></span></span></span>
 <p>Initial implementation.</p>
 <pre><code>PERSISTENT Mode | USER Session | For daily activities
 LIVE Mode | USER Session | For disposable use
 PERSISTENT Mode | SYSMAINT Session | For maintenance tasks
 LIVE Mode | SYSMAINT Session | For maintenance testing
 REMOVE sysmaint-user-split | Enable unrestricted admin mode</code></pre>
-<h3 id="Session_First_Ordering">Session First Ordering</h3>
+<h3 id="Session_First_Ordering">Session First Ordering</h3><span class="share-tooltip" data-anchor="Session_First_Ordering"><a class="headline-anchor" href="#Session_First_Ordering" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Session_First_Ordering">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#Session_First_Ordering</span></span></span></span>
 <p>Potential future implementation based on user feedback.</p>
 <pre><code>USER Session | PERSISTENT Mode | For daily activities
 USER Session | LIVE Mode | For disposable use
 SYSMAINT Session | PERSISTENT Mode | For maintenance tasks
 SYSMAINT Session | LIVE Mode | For maintenance testing
 REMOVE sysmaint-user-split | Enable unrestricted admin mode</code></pre>
-<h2 id="/etc/grub.d">/etc/grub.d</h2>
+<h2 id="/etc/grub.d">/etc/grub.d</h2><span class="share-tooltip" data-anchor="/etc/grub.d"><a class="headline-anchor" href="#/etc/grub.d" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#/etc/grub.d">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#/etc/grub.d</span></span></span></span>
 <p><span class="code-select">ls -1 /etc/grub.d</span></p>
 <pre><code>00_header
 05_debian_theme
@@ -710,7 +710,7 @@ Users wanting custom entries can add them directly to the
 Using GRUB boot menu editing (key <code>e</code>) at boot, kernel
 parameters can be adjusted for any combination.</p>
 <h1 id="Wiki">Wiki</h1>
-<h2 id="BootEntries">BootEntries</h2>
+<h2 id="BootEntries">BootEntries</h2><span class="share-tooltip" data-anchor="BootEntries"><a class="headline-anchor" href="#BootEntries" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#BootEntries">https://www.kicksecure.com/wiki/Dev/user-sysmaint-split/#BootEntries</span></span></span></span>
 <p><a href="../../Template:BootEntries/">Template:BootEntries</a></p>
 <table>
 <thead>
@@ -752,29 +752,29 @@ parameters can be adjusted for any combination.</p>
 </table>
 <h1 id="Prior_Versions">Prior Versions</h1>
 <p><a href="https://www.kicksecure.com/w/index.php?title=Dev/user-sysmaint-split&amp;oldid=87353">Older
-concept version still containing "SUPERADMIN" and "SECUREADMIN".</a></p>
+concept version still containing "SUPERADMIN" and "SECUREADMIN".</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/w/index.php?title=Dev/user-sysmaint-split&amp;oldid=87353" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Tickets">Tickets</h1>
 <ul>
 <li><a href="https://github.com/QubesOS/qubes-issues/issues/9519">Create
 user admin by default and add user admin to group sudo by
-default</a></li>
+default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9519" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://github.com/QubesOS/qubes-issues/issues/9512">Selective
 sudo Access Enabling in VMs Without qubes-core-agent-passwordless-root
-via qvm-service</a></li>
+via qvm-service</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9512" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Related">Related</h1>
 <ul>
 <li><a href="https://forums.whonix.org/t/disable-newly-all-installed-services-by-default/9381/2">Disable
-newly (all) installed services by default</a></li>
+newly (all) installed services by default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/disable-newly-all-installed-services-by-default/9381/2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="../../Verified_Boot/">Verified Boot</a></li>
 <li><s>Forum discussion: <a href="https://forums.whonix.org/t/apparmor-for-complete-system-including-init-pid1-systemd-everything-full-system-mac-policy/8339">AppArmor
 for Complete System - Including init, PID1, Systemd, Everything! - Full
-System MAC policy</a></s></li>
+System MAC policy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/apparmor-for-complete-system-including-init-pid1-systemd-everything-full-system-mac-policy/8339" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></s></li>
 <li><s><a href="https://github.com/Kicksecure/apparmor-profile-everything">AppArmor
 for everything: APT, systemd, init, all systemd units, all applications.
-Mandatory Access Control. Security Hardening.</a></s></li>
+Mandatory Access Control. Security Hardening.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/apparmor-profile-everything" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></s></li>
 <li><s><a href="https://forums.whonix.org/t/untrusted-root-improve-security-by-restricting-root/7998">Untrusted
-Root - Improve Security by Restricting Root</a></s></li>
+Root - Improve Security by Restricting Root</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/untrusted-root-improve-security-by-restricting-root/7998" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></s></li>
 <li><a href="../../SUID_Disabler_and_Permission_Hardener/">SUID Disabler and Permission Hardener</a></li>
 <li><a href="../../SUID_Disabler_and_Permission_Hardener/#Search_for_SUID_SGID">Search for SUID SGID</a></li>
 </ul>
@@ -786,7 +786,7 @@ is an <a href="../../About/#Implementation_of_the_Securing_Debian_Manual">Implem
 Specifically the feature you're reading about here is inspired by this
 chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html">Providing
 secure user
-access</a><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+access</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04s11.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../VirusForget/" title="Dev/VirusForget"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirusForget</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../boot/" title="Dev/boot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/boot</span></a><span class="info"><span class="prev">Previous
 page: Dev/VirusForget</span><span class="index">Index page:

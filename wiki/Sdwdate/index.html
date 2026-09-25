@@ -21,21 +21,13 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Kicksecure_USER_Session">Kicksecure USER Session</a></li><li class="toc-l3"><a href="#Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</a></li><li class="toc-l3"><a href="#Kicksecure-Qubes">Kicksecure-Qubes</a></li><li class="toc-l2"><a href="#Qubes_Template">Qubes Template</a></li><li class="toc-l2"><a href="#Server_Authentication">Server Authentication</a></li><li class="toc-l2"><a href="#sdwdate_Source_Pools">sdwdate Source Pools</a></li><li class="toc-l2"><a href="#sdwdate_Time_Sources_Criteria">sdwdate Time Sources
-Criteria</a></li><li class="toc-l3"><a href="#Current_Implementation_1.0">Current Implementation 1.0</a></li><li class="toc-l3"><a href="#Contributor_Proposed_Version_2.0">Contributor Proposed Version
-2.0</a></li><li class="toc-l2"><a href="#Tor_Consensus_Time_Sanity_Check">Tor Consensus Time Sanity
-Check</a></li><li class="toc-l2"><a href="#sdwdate_Time_Replay_Protection">sdwdate Time Replay
-Protection</a></li><li class="toc-l2"><a href="#sdwdate_Clock_Randomization">sdwdate Clock Randomization</a></li><li class="toc-l2"><a href="#Onion_Time_Sources_Candidates_List">Onion Time Sources
-Candidates List</a></li><li class="toc-l2"><a href="#Demonstration">Demonstration</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Time_Attacks/" title="Time Attacks"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Time
 Attacks</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Sdwdate-gui/" title="sdwdate-gui"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">sdwdate-gui</span></a><span class="info"><span class="prev">Previous
 page: Time Attacks</span><span class="index">Index page:
 Documentation</span><span class="next">Next page:
 sdwdate-gui</span></span></span>sdwdate: Secure Distributed Web Date</p>
-</div>
-<div class="mininav">
+</div><div class="mininav">
 <ul>
 <li><a href="../Network_Time_Synchronization/">Network Time
 Synchronization</a></li>
@@ -47,7 +39,15 @@ Randomization</a></li>
 <li><a href="../Time_Attacks/">Time Attacks</a></li>
 <li><a href="../Dev/sdwdate/">Dev/sdwdate</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Kicksecure_USER_Session">Kicksecure USER Session</a></li><li class="toc-l3"><a href="#Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</a></li><li class="toc-l3"><a href="#Kicksecure-Qubes">Kicksecure-Qubes</a></li><li class="toc-l2"><a href="#Qubes_Template">Qubes Template</a></li><li class="toc-l2"><a href="#Server_Authentication">Server Authentication</a></li><li class="toc-l2"><a href="#sdwdate_Source_Pools">sdwdate Source Pools</a></li><li class="toc-l2"><a href="#sdwdate_Time_Sources_Criteria">sdwdate Time Sources
+Criteria</a></li><li class="toc-l3"><a href="#Current_Implementation_1.0">Current Implementation 1.0</a></li><li class="toc-l3"><a href="#Contributor_Proposed_Version_2.0">Contributor Proposed Version
+2.0</a></li><li class="toc-l2"><a href="#Tor_Consensus_Time_Sanity_Check">Tor Consensus Time Sanity
+Check</a></li><li class="toc-l2"><a href="#sdwdate_Time_Replay_Protection">sdwdate Time Replay
+Protection</a></li><li class="toc-l2"><a href="#sdwdate_Clock_Randomization">sdwdate Clock Randomization</a></li><li class="toc-l2"><a href="#Onion_Time_Sources_Candidates_List">Onion Time Sources
+Candidates List</a></li><li class="toc-l2"><a href="#Demonstration">Demonstration</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
+
 <p><img src="../../media/Sdwdate2.png.webp" alt="sdwdate-gui Control Panel" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -58,20 +58,20 @@ Randomization</a></li>
 </div>
 <h1 id="Introduction">Introduction</h1>
 <p>Time keeping is crucial for security and privacy. sdwdate is a
-Tor-friendly replacement for <a href="https://en.wikipedia.org/wiki/Rdate">rdate</a> and <a href="https://en.wikipedia.org/wiki/ntpdate">ntpdate</a> that sets the
+Tor-friendly replacement for <a href="https://en.wikipedia.org/wiki/Rdate">rdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Rdate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="https://en.wikipedia.org/wiki/ntpdate">ntpdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/ntpdate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> that sets the
 system's clock by communicating via end-to-end encrypted TCP with Tor
 onion webservers. Chosen time providers are exclusively reputable
 sources (whistle-blowing and privacy-friendly onion sites) that are
 highly likely to be hosted on different hardware.</p>
 <p>At random intervals, sdwdate connects to a variety of webservers and
-extracts the time stamps from http headers (see: <a href="https://www.rfc-editor.org/rfc/rfc2616">RFC 2616</a>).</p>
+extracts the time stamps from http headers (see: <a href="https://www.rfc-editor.org/rfc/rfc2616">RFC 2616</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.rfc-editor.org/rfc/rfc2616" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>).</p>
 <h1 id="Sdwdate_vs_NTP">Sdwdate vs NTP</h1>
 <table>
 <caption><em>Sdwdate vs NTP comparison</em></caption>
 <thead>
 <tr class="header">
 <th><p><strong>Feature</strong></p></th>
-<th><p><strong><a href="https://github.com/Kicksecure/sdwdate">sdwdate</a></strong></p></th>
+<th><p><strong><a href="https://github.com/Kicksecure/sdwdate">sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></strong></p></th>
 <th><p><strong>NTP</strong></p></th>
 </tr>
 </thead>
@@ -103,7 +103,7 @@ encryption)</p></td>
 <td><p>Yes</p></td>
 </tr>
 <tr class="even">
-<td><p>Functional over <a href="https://www.torproject.org">Tor</a></p></td>
+<td><p>Functional over <a href="https://www.torproject.org">Tor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.torproject.org" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p></td>
 <td><p>Yes</p></td>
 <td><p>No
 <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p></td>
@@ -183,7 +183,7 @@ icon)</p></td>
 <p>TODO:</p>
 <ul>
 <li>Server, time provider</li>
-<li>Sdwdate issue tracker: <a href="https://phabricator.whonix.org/project/view/6/">Phabricator</a></li>
+<li>Sdwdate issue tracker: <a href="https://phabricator.whonix.org/project/view/6/">Phabricator</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/project/view/6/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p><span class="manually-placed-anchor " id="Disable"></span></p>
 <h1 id="Disable_Autostart">Disable Autostart</h1>
@@ -196,53 +196,17 @@ icon)</p></td>
 </ul>
 <p><strong>2.</strong> Open a terminal.</p>
 <p>Platform specific. Select your platform.</p>
-<div class="tab-content-controller " data-tcc-linkid="non-qubes-versus-qubes">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section  ">
-<div class="tcc-image">
-<p><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Kicksecure_USER_Session">Kicksecure USER Session</h3>
-</div>
-<div class="tcc-content">
-<p><u>If you are using a graphical Kicksecure with
+<p><div class="tab-content-controller " data-tcc-linkid="non-qubes-versus-qubes"><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  "><div class="tcc-image"><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></div><div class="tcc-title"><h3 id="Kicksecure_USER_Session">Kicksecure USER Session</h3><span class="share-tooltip" data-anchor="Kicksecure_USER_Session"><a class="headline-anchor" href="#Kicksecure_USER_Session" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure_USER_Session">https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure_USER_Session</span></span></span></span></div><div class="tcc-content"><p><u>If you are using a graphical Kicksecure with
 <strong>LXQt</strong></u>, complete the following steps.</p>
 <p><code>Start menu</code> &#8594; <code>System Tools</code> &#8594;
-<code>QTerminal</code></p>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-<p><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</h3>
-</div>
-<div class="tcc-content">
-<p>In the System Maintenance Panel, under the <code>Misc</code> section,
-click <code>Open Terminal</code>.</p>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-<p><img src="../../media/Qubes-logo-icon.png.webp" width="25" alt="Qubes-logo-icon.png" /></p>
-</div>
-<div class="tcc-title">
-<h3 id="Kicksecure-Qubes">Kicksecure-Qubes</h3>
-</div>
-<div class="tcc-content">
-<p><u>If you are using <a href="../Qubes/">Kicksecure-Qubes</a></u>, complete the following
+<code>QTerminal</code></p></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"><img src="../../media/Kicksecure-logo-rectangle.svg" width="50" alt="Kicksecure-logo-rectangle.svg" /></div><div class="tcc-title"><h3 id="Kicksecure_SYSMAINT_Session">Kicksecure SYSMAINT Session</h3><span class="share-tooltip" data-anchor="Kicksecure_SYSMAINT_Session"><a class="headline-anchor" href="#Kicksecure_SYSMAINT_Session" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure_SYSMAINT_Session">https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure_SYSMAINT_Session</span></span></span></span></div><div class="tcc-content">In the System Maintenance Panel, under the <code>Misc</code> section,
+click <code>Open Terminal</code>.</div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"><img src="../../media/Qubes-logo-icon.png.webp" width="25" alt="Qubes-logo-icon.png" /></div><div class="tcc-title"><h3 id="Kicksecure-Qubes">Kicksecure-Qubes</h3><span class="share-tooltip" data-anchor="Kicksecure-Qubes"><a class="headline-anchor" href="#Kicksecure-Qubes" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure-Qubes">https://www.kicksecure.com/wiki/Sdwdate/#Kicksecure-Qubes</span></span></span></span></div><div class="tcc-content"><p><u>If you are using <a href="../Qubes/">Kicksecure-Qubes</a></u>, complete the following
 steps.</p>
 <p><code>Qubes App Launcher (blue/grey "Q")</code> &#8594;
 <code>Kicksecure App Qube (commonly named </code><em><code>kicksecure</code></em><code>)</code>
-&#8594; <code>QTerminal</code></p>
-</div>
-</div>
-</div>
-</div>
+&#8594; <code>QTerminal</code></p></div></div></p></div></div></p>
 <p><strong>3.</strong> Disable sdwdate.</p>
 <p>Run the following command.</p>
 <p><span class="code-select">sudo systemctl mask sdwdate</span></p>
@@ -273,7 +237,7 @@ location? Absolutely, this isn't an issue.</li>
 any direct relation to timezones, time, or sdwdate.</li>
 </ul>
 <h1 id="Qubes_Specific">Qubes Specific</h1>
-<h2 id="Qubes_Template">Qubes Template</h2>
+<h2 id="Qubes_Template">Qubes Template</h2><span class="share-tooltip" data-anchor="Qubes_Template"><a class="headline-anchor" href="#Qubes_Template" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Qubes_Template">https://www.kicksecure.com/wiki/Sdwdate/#Qubes_Template</span></span></span></span>
 <p><strong>Information for advanced users:</strong></p>
 <p><u>Laymen users can skip this wiki chapter.</u></p>
 <p>In Qubes Kicksecure Template, <code>sdwdate</code> systemd unit is
@@ -290,27 +254,27 @@ by using Qubes ClockVM.</p>
 <li><code>/lib/systemd/system/qubes-sync-time.service</code></li>
 <li><code>/usr/bin/qvm-sync-clock</code></li>
 <li><code>/usr/lib/qubes/qubes-sync-clock</code></li>
-<li>[Broken-ExtLink--no-url-was-provided]</li>
+<li>Qubes Time Synchronization Features</li>
 <li><a href="https://github.com/QubesOS/qubes-issues/issues/9294">Create
 sys-ops-whonix VM for Enhanced Security and Isolation in Qubes-Whonix
-#9294</a></li>
+#9294</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9294" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.whonix.org/t/qubes-whonix-gateway-as-clockvm/19015">Qubes-Whonix-Gateway
-as ClockVM</a></li>
+as ClockVM</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/qubes-whonix-gateway-as-clockvm/19015" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="sdwdate_Design">sdwdate Design</h1>
-<h2 id="Server_Authentication">Server Authentication</h2>
-<p><a href="https://github.com/Kicksecure/sdwdate">sdwdate</a> only
+<h2 id="Server_Authentication">Server Authentication</h2><span class="share-tooltip" data-anchor="Server_Authentication"><a class="headline-anchor" href="#Server_Authentication" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Server_Authentication">https://www.kicksecure.com/wiki/Sdwdate/#Server_Authentication</span></span></span></span>
+<p><a href="https://github.com/Kicksecure/sdwdate">sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> only
 connects to Tor onion services, which are encrypted by default and do
 not rely on SSL certificate authorities (CAs). Three different pools are
 used for time sources so that if too many connections fail for any given
 pool, <sup class="reference"><a href="#cite_note-8">[8]</a></sup> the pool is considered as potentially
 compromised and sdwdate aborts.</p>
-<h2 id="sdwdate_Source_Pools">sdwdate Source Pools</h2>
+<h2 id="sdwdate_Source_Pools">sdwdate Source Pools</h2><span class="share-tooltip" data-anchor="sdwdate_Source_Pools"><a class="headline-anchor" href="#sdwdate_Source_Pools" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Source_Pools">https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Source_Pools</span></span></span></span>
 <p>Determining what sources should be trusted is an important issue;
 this is also a problem with NTP.</p>
 <p>The sdwdate pools used by Kicksecure are based on stable and reliable
 Tor onion service web servers. The pools are listed in
-<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a></span>.</p>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.</p>
 <p>The various onion services are categorized into three different
 pools. Any member in one pool should be unlikely to share logs (or other
 identifying data), or agree to send fake time information, with a member
@@ -321,8 +285,8 @@ the three advertised dates.</p>
 'foe' pools as per tails_htp, because a good rationale for that approach
 has not yet been provided. <sup class="reference"><a href="#cite_note-9">[9]</a></sup> <sup class="reference"><a href="#cite_note-10">[10]</a></sup></p>
 <h2 id="sdwdate_Time_Sources_Criteria">sdwdate Time Sources
-Criteria</h2>
-<h3 id="Current_Implementation_1.0">Current Implementation 1.0</h3>
+Criteria</h2><span class="share-tooltip" data-anchor="sdwdate_Time_Sources_Criteria"><a class="headline-anchor" href="#sdwdate_Time_Sources_Criteria" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Time_Sources_Criteria">https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Time_Sources_Criteria</span></span></span></span>
+<h3 id="Current_Implementation_1.0">Current Implementation 1.0</h3><span class="share-tooltip" data-anchor="Current_Implementation_1.0"><a class="headline-anchor" href="#Current_Implementation_1.0" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Current_Implementation_1.0">https://www.kicksecure.com/wiki/Sdwdate/#Current_Implementation_1.0</span></span></span></span>
 <p>Prerequisite knowledge: <a href="./#sdwdate_Source_Pools">sdwdate time source pool design</a></p>
 <p>These criteria are meant to be fitting the dynamic trust of the
 internet and to be as close as possible to the highest trustable
@@ -360,7 +324,7 @@ located.</p>
 <p>There needs to be evidence that that onion domain is hosted by the
 same author as the clearnet domain. This can be a mention of the onion
 domain on the clearnet domain or the <a href="https://community.torproject.org/onion-services/advanced/onion-location/"><code>Onion-Location</code>
-HTTP header</a>. The latter can be conveniently noticed by visiting the
+HTTP header</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://community.torproject.org/onion-services/advanced/onion-location/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. The latter can be conveniently noticed by visiting the
 website using Tor Browser and then showing <code>onion available</code>
 and seen by using services such as <code>securityheaders.com</code> or
 using the curl command line tool, i.e.
@@ -394,12 +358,12 @@ time sources</h4>
 Source Inclusion Criteria</a></li>
 <li>New sdwdate pool member additions must be proposed in public in
 Kicksecure development forum thread <a href="https://forums.whonix.org/t/suggest-trustworthy-tor-hidden-services-as-time-sources-for-sdwdate/856">Suggest
-Trustworthy Tor Hidden Services as Time Sources for sdwdate</a> to allow
+Trustworthy Tor Hidden Services as Time Sources for sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/suggest-trustworthy-tor-hidden-services-as-time-sources-for-sdwdate/856" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> to allow
 anyone to comment on it.</li>
 <li>Please check the suggested onion was already previously suggested by
 searching the forum thread.</li>
 <li>Please try to avoid suggesting onions which are already included in
-<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a></span>.</li>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.</li>
 </ul>
 <h4 id="Rules_for_sdwdate_time_source_related_git_pull_requests">Rules
 for sdwdate time source related git pull requests</h4>
@@ -441,8 +405,8 @@ smoke, etc.</li>
 <li>Contain Any Form of gore, gangs, terrorist, assassination
 Content.</li>
 <li>Contain Deanonymization or Cracking Services or Spying Agencies:
-like <a href="https://wikileaks.org/hackingteam/emails/">HackingTeam</a>
-or <a href="https://www.cellebrite.com/">Cellebrite</a> or the NSA,
+like <a href="https://wikileaks.org/hackingteam/emails/">HackingTeam</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wikileaks.org/hackingteam/emails/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+or <a href="https://www.cellebrite.com/">Cellebrite</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cellebrite.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> or the NSA,
 GCHQ, etc.</li>
 <li>Contain or Related to Any Form of Governmental Website: like
 ministries or military websites or anything similar. (Specially those
@@ -475,7 +439,7 @@ after the archived links there must be a space and the unarchived
 clearnet link.</p>
 <p>After that there can be another space and additional comments.</p>
 <p>In doubt just look at the many existing examples in
-<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a></span>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf">Kicksecure/sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate/blob/master/etc/sdwdate.d/30_default.conf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 and imitate new entries.</p>
 <p>This is useful so users, reviewers can more easily see in sdwdate
 logs which organizations where used during sdwdate time fetching since
@@ -485,11 +449,11 @@ belongs to or cumbersome to manually look up every time.</p>
 organisation is possible can be done either manually by opening the
 archived link and looking if it mentions the corresponding onion or
 assisted with the
-<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/usr/share/sdwdate/onion-test-confirm">Kicksecure/sdwdate</a></span>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/sdwdate/blob/master/usr/share/sdwdate/onion-test-confirm">Kicksecure/sdwdate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/sdwdate/blob/master/usr/share/sdwdate/onion-test-confirm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 script.</p>
 <p><span class="code-select">/usr/share/sdwdate/onion_test_confirm</span></p>
 <h3 id="Contributor_Proposed_Version_2.0">Contributor Proposed Version
-2.0</h3>
+2.0</h3><span class="share-tooltip" data-anchor="Contributor_Proposed_Version_2.0"><a class="headline-anchor" href="#Contributor_Proposed_Version_2.0" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Contributor_Proposed_Version_2.0">https://www.kicksecure.com/wiki/Sdwdate/#Contributor_Proposed_Version_2.0</span></span></span></span>
 <p>It is being proposed to drop the requirement
 <code>hosted by non-anonymous organizations or persons</code>. I.e.
 onion's hosted by anonymous organizations or persons should also be
@@ -513,9 +477,9 @@ websites cannot be with reasonable certainty considered well tested,
 established, being scam, fraud, deception or not.</li>
 </ul></li>
 </ul>
-<p>Discussion here: <a href="https://forums.whonix.org/t/sdwdate-time-sources-criteria/11035/2">https://forums.whonix.org/t/sdwdate-time-sources-criteria/11035/2</a></p>
+<p>Discussion here: <a href="https://forums.whonix.org/t/sdwdate-time-sources-criteria/11035/2">https://forums.whonix.org/t/sdwdate-time-sources-criteria/11035/2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sdwdate-time-sources-criteria/11035/2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h2 id="Tor_Consensus_Time_Sanity_Check">Tor Consensus Time Sanity
-Check</h2>
+Check</h2><span class="share-tooltip" data-anchor="Tor_Consensus_Time_Sanity_Check"><a class="headline-anchor" href="#Tor_Consensus_Time_Sanity_Check" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Tor_Consensus_Time_Sanity_Check">https://www.kicksecure.com/wiki/Sdwdate/#Tor_Consensus_Time_Sanity_Check</span></span></span></span>
 <p>sdwdate checks if dates/times from remote servers (onions) are within
 Tor <code>consensus/valid-after</code> and
 <code>consensus/valid-until</code> date/time, otherwise rejects those.
@@ -525,11 +489,11 @@ An example from sdwdate log.</p>
 2021-01-09 14:47:17 - sdwdate - INFO - * consensus/valid-until: 2021-01-09 16:00:00
 2021-01-09 14:47:17 - sdwdate - INFO - * time_consensus_sanity_check: sane</code></pre>
 <h2 id="sdwdate_Time_Replay_Protection">sdwdate Time Replay
-Protection</h2>
+Protection</h2><span class="share-tooltip" data-anchor="sdwdate_Time_Replay_Protection"><a class="headline-anchor" href="#sdwdate_Time_Replay_Protection" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Time_Replay_Protection">https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Time_Replay_Protection</span></span></span></span>
 <p>Done in testers repository master. Will flow to stable as per
 usual.</p>
 <p>sdwdate internally uses
-<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/minimum-unixtime-show">Kicksecure/helper-scripts</a></span>.</p>
+<span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/minimum-unixtime-show">Kicksecure/helper-scripts</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/helper-scripts/blob/master/usr/bin/minimum-unixtime-show" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.</p>
 <p>Effectively, sdwdate looks at file
 <code>/usr/share/timesanitycheck/minimum_unixtime</code> which contains
 a minimum unixtime timestamp which was created by developers during
@@ -561,14 +525,14 @@ file <code>/etc/minimum-unixtime.override</code> (lower priority) or
 <code>/usr/local/etc/minimum-unixtime.override</code> (higher priority)
 which take absolute priority and result in ignoring all other minimum
 unixtime files. Valid values in any minimum unixtime files are only
-integer values. Must be <a href="https://en.wikipedia.org/wiki/Unix_time">unixtime</a>. Example:
+integer values. Must be <a href="https://en.wikipedia.org/wiki/Unix_time">unixtime</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Unix_time" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Example:
 <code>1611651349</code>. Minimum value is <code>0</code> which however
 does not make sense except for testing purposes. That would effectively
 disable time replay protection. For testing purposes it might be useful
 to set a far future date such as <code>2611651349</code> which could be
 temporarily enabled to test if sdwdate's time replay protection would be
 functional.</p>
-<h2 id="sdwdate_Clock_Randomization">sdwdate Clock Randomization</h2>
+<h2 id="sdwdate_Clock_Randomization">sdwdate Clock Randomization</h2><span class="share-tooltip" data-anchor="sdwdate_Clock_Randomization"><a class="headline-anchor" href="#sdwdate_Clock_Randomization" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Clock_Randomization">https://www.kicksecure.com/wiki/Sdwdate/#sdwdate_Clock_Randomization</span></span></span></span>
 <p>Log example.</p>
 <pre><code>End fetching remote times.
 pool differences, sorted: [-35, 5, 5]
@@ -637,17 +601,17 @@ because these times are so far off from the the real world time and so
 few users are using it that randomization could not help or even make
 users more trackable.</p>
 <h2 id="Onion_Time_Sources_Candidates_List">Onion Time Sources
-Candidates List</h2>
+Candidates List</h2><span class="share-tooltip" data-anchor="Onion_Time_Sources_Candidates_List"><a class="headline-anchor" href="#Onion_Time_Sources_Candidates_List" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Onion_Time_Sources_Candidates_List">https://www.kicksecure.com/wiki/Sdwdate/#Onion_Time_Sources_Candidates_List</span></span></span></span>
 <p>The links below are listed to keep track of pool candidates:</p>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/SecureDrop">https://en.wikipedia.org/wiki/SecureDrop</a></li>
-<li><a href="https://securedrop.org/directory/">https://securedrop.org/directory/</a></li>
-<li><a href="https://www.globaleaks.org/usecases/">https://www.globaleaks.org/usecases/</a></li>
-<li><a href="https://x.com/hashtag/MoreOnionsPorFavor">MoreOnionsPorFavor</a>
-(<a href="https://xcancel.com/hashtag/MoreOnionsPorFavor">xcancel</a>)</li>
-<li><a href="https://blog.torproject.org/more-onions-end-of-campaign/">https://blog.torproject.org/more-onions-end-of-campaign/</a></li>
-<li><a href="https://x.com/SecureTheNews">SecureTheNews</a> (<a href="https://xcancel.com/SecureTheNews">xcancel</a>)</li>
-<li><a href="https://freedom.press/news/five-years-of-secure-the-news/">https://freedom.press/news/five-years-of-secure-the-news/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/SecureDrop">https://en.wikipedia.org/wiki/SecureDrop</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/SecureDrop" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://securedrop.org/directory/">https://securedrop.org/directory/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://securedrop.org/directory/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.globaleaks.org/usecases/">https://www.globaleaks.org/usecases/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.globaleaks.org/usecases/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://x.com/hashtag/MoreOnionsPorFavor">MoreOnionsPorFavor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://x.com/hashtag/MoreOnionsPorFavor" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+(<a href="https://xcancel.com/hashtag/MoreOnionsPorFavor">xcancel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xcancel.com/hashtag/MoreOnionsPorFavor" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)</li>
+<li><a href="https://blog.torproject.org/more-onions-end-of-campaign/">https://blog.torproject.org/more-onions-end-of-campaign/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/more-onions-end-of-campaign/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://x.com/SecureTheNews">SecureTheNews</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://x.com/SecureTheNews" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (<a href="https://xcancel.com/SecureTheNews">xcancel</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xcancel.com/SecureTheNews" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)</li>
+<li><a href="https://freedom.press/news/five-years-of-secure-the-news/">https://freedom.press/news/five-years-of-secure-the-news/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://freedom.press/news/five-years-of-secure-the-news/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Screenshots">Screenshots</h1>
 <p><strong>Figure:</strong> <em>sdwdate GUI Control Panel</em></p>
@@ -655,7 +619,7 @@ Candidates List</h2>
 <p><strong>Figure:</strong> <em>sdwdate GUI Successful Check</em></p>
 <p><img src="../../media/Sdwdate3.png.webp" width="470" alt="sdwdate3.png" /></p>
 <h1 id="Clock_Fixing">Clock Fixing</h1>
-<h2 id="Demonstration">Demonstration</h2>
+<h2 id="Demonstration">Demonstration</h2><span class="share-tooltip" data-anchor="Demonstration"><a class="headline-anchor" href="#Demonstration" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Sdwdate/#Demonstration">https://www.kicksecure.com/wiki/Sdwdate/#Demonstration</span></span></span></span>
 <pre><code>sudo date --set &quot;Fri 24 Sep 2011 06:51:24 PM UTC&quot;</code></pre>
 <pre><code>Sat 24 Sep 2011 06:51:24 PM UTC</code></pre>
 <pre><code>sudo systemctl stop tor</code></pre>
@@ -687,16 +651,16 @@ Randomization</a></li>
 <li id="cite_note-3"><a href="https://web.archive.org/web/20080226171005/http://linux.derkeiler.com/Mailing-Lists/Debian/2003-07/0361.html">https://web.archive.org/web/20080226171005/http://linux.derkeiler.com/Mailing-Lists/Debian/2003-07/0361.html</a></li>
 <li id="cite_note-4"><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%23687166">NTP
 security vulnerability because not using authentication by
-default</a></li>
+default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=%23687166" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-5">See <a href="../Dev/TimeSync/#NTP">Dev/TimeSync#NTP</a>.</li>
 <li id="cite_note-6">If replacing ntp with sdwdate, run the following command to avoid
 installing 160+ recommended packages: <span class="code-select">sudo apt
 --no-install-recommends install sdwdate</span></li>
-<li id="cite_note-7"><a href="https://forums.whonix.org/t/sdwdate-and-headless-system/8491">https://forums.whonix.org/t/sdwdate-and-headless-system/8491</a></li>
+<li id="cite_note-7"><a href="https://forums.whonix.org/t/sdwdate-and-headless-system/8491">https://forums.whonix.org/t/sdwdate-and-headless-system/8491</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/sdwdate-and-headless-system/8491" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-8">For example, due to being unreachable or replying with invalid
 data.</li>
 <li id="cite_note-9"><a href="https://web.archive.org/web/20200209085217/https://github.com/whonix/whonix/issues/310">https://web.archive.org/web/20200209085217/https://github.com/whonix/whonix/issues/310</a></li>
-<li id="cite_note-10"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/8283">https://gitlab.tails.boum.org/tails/tails/-/issues/8283</a></li>
+<li id="cite_note-10"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/8283">https://gitlab.tails.boum.org/tails/tails/-/issues/8283</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/8283" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-11">https://phabricator.whonix.org/T131</li>
 <li id="cite_note-12">For now, this is for technical reasons only. url_to_unixtime refuses
 websites that redirect from (onion) http to (onion)

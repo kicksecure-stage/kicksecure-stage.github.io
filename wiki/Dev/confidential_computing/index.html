@@ -21,15 +21,7 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>confidential computing</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Full_Disk_Encryption">Full Disk Encryption</a></li><li class="toc-l2"><a href="#Full_Disk_Encryption_Key_Entry">Full Disk Encryption Key
-Entry</a></li><li class="toc-l2"><a href="#Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks">Full
-Disk Encryption Key Proetction from Cold Boot Attacks</a></li><li class="toc-l3"><a href="#TRESOR">TRESOR</a></li><li class="toc-l3"><a href="#Loop-Amnesia">Loop-Amnesia</a></li><li class="toc-l2"><a href="#RAM_Encryption">RAM Encryption</a></li><li class="toc-l3"><a href="#Intel">Intel</a></li><li class="toc-l3"><a href="#AMD">AMD</a></li><li class="toc-l3"><a href="#RamCrypt">RamCrypt</a></li><li class="toc-l3"><a href="#PrivateCore_vCage">PrivateCore vCage</a></li><li class="toc-l3"><a href="#OpenPOWER">OpenPOWER</a></li><li class="toc-l3"><a href="#RISV-V">RISV-V</a></li><li class="toc-l2"><a href="#Kernel_isolation">Kernel isolation</a></li><li class="toc-l3"><a href="#Use_Case">Use Case</a></li><li class="toc-l3"><a href="#pKVM">pKVM</a></li><li class="toc-l3"><a href="#Xen">Xen</a></li><li class="toc-l3"><a href="#KVM_private_memory">KVM private memory</a></li><li class="toc-l3"><a href="#Gramine">Gramine</a></li><li class="toc-l2"><a href="#Verified_Boot">Verified Boot</a></li><li class="toc-l2"><a href="#non-root_enforcement">non-root enforcement</a></li><li class="toc-l2"><a href="#Remote_Attestation">Remote Attestation</a></li><li class="toc-l3"><a href="#What_is_Remote_Attestation">What is Remote Attestation</a></li><li class="toc-l3"><a href="#Dynamic_Root_of_Trust_for_Measurement">Dynamic Root of Trust for
-Measurement</a></li><li class="toc-l3"><a href="#Raptor_FlexVer">Raptor FlexVer</a></li><li class="toc-l3"><a href="#Trusted_Platform_Module_remote_attestation">Trusted Platform
-Module remote attestation</a></li><li class="toc-l3"><a href="#swtpm">swtpm</a></li><li class="toc-l3"><a href="#Keylime">Keylime</a></li><li class="toc-l3"><a href="#System_Transparency">System Transparency</a></li><li class="toc-l2"><a href="#Tamper_protection">Tamper protection</a></li><li class="toc-l3"><a href="#ORWL">ORWL</a></li><li class="toc-l2"><a href="#Miscellaneous_useful_technologies">Miscellaneous useful
-technologies</a></li><li class="toc-l3"><a href="#Raptor_LPC_Guard">Raptor LPC Guard</a></li><li class="toc-l3"><a href="#Microsoft_SEAL">Microsoft SEAL</a></li><li class="toc-l3"><a href="#Constellation">Constellation</a></li><li class="toc-l3"><a href="#Contrast">Contrast</a></li><li class="toc-l3"><a href="#Continuum">Continuum</a></li><li class="toc-l2"><a href="#Microsoft">Microsoft</a></li><li class="toc-l2"><a href="#Google">Google</a></li><li class="toc-l2"><a href="#IntegriCloud_raptorengineering">IntegriCloud
-raptorengineering</a></li><li class="toc-l2"><a href="#Enclaive">Enclaive</a></li><li class="toc-l2"><a href="#No-fill_cache_mode">No-fill cache mode</a></li><li class="toc-l2"><a href="#Memory_paging">Memory paging</a></li><li class="toc-l2"><a href="#Cache_as_Instruction_RAM">Cache as Instruction RAM</a></li><li class="toc-l2"><a href="#BareMetal">BareMetal</a></li><li class="toc-l2"><a href="#BitVisor">BitVisor</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="mininav">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>confidential computing</span></nav><div class="mininav">
 <ul>
 <li><a href="../../Firmware_Security_and_Updates/">Firmware
 Security and Updates</a></li>
@@ -50,7 +42,15 @@ Builds (dev)</a></li>
 <li><a href="../Stateless/">stateless (dev)</a></li>
 <li><a href="../immutable/">immutable (dev)</a></li>
 </ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Full_Disk_Encryption">Full Disk Encryption</a></li><li class="toc-l2"><a href="#Full_Disk_Encryption_Key_Entry">Full Disk Encryption Key
+Entry</a></li><li class="toc-l2"><a href="#Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks">Full
+Disk Encryption Key Proetction from Cold Boot Attacks</a></li><li class="toc-l3"><a href="#TRESOR">TRESOR</a></li><li class="toc-l3"><a href="#Loop-Amnesia">Loop-Amnesia</a></li><li class="toc-l2"><a href="#RAM_Encryption">RAM Encryption</a></li><li class="toc-l3"><a href="#Intel">Intel</a></li><li class="toc-l3"><a href="#AMD">AMD</a></li><li class="toc-l3"><a href="#RamCrypt">RamCrypt</a></li><li class="toc-l3"><a href="#PrivateCore_vCage">PrivateCore vCage</a></li><li class="toc-l3"><a href="#OpenPOWER">OpenPOWER</a></li><li class="toc-l3"><a href="#RISV-V">RISV-V</a></li><li class="toc-l2"><a href="#Kernel_isolation">Kernel isolation</a></li><li class="toc-l3"><a href="#Use_Case">Use Case</a></li><li class="toc-l3"><a href="#pKVM">pKVM</a></li><li class="toc-l3"><a href="#Xen">Xen</a></li><li class="toc-l3"><a href="#KVM_private_memory">KVM private memory</a></li><li class="toc-l3"><a href="#Gramine">Gramine</a></li><li class="toc-l2"><a href="#Verified_Boot">Verified Boot</a></li><li class="toc-l2"><a href="#non-root_enforcement">non-root enforcement</a></li><li class="toc-l2"><a href="#Remote_Attestation">Remote Attestation</a></li><li class="toc-l3"><a href="#What_is_Remote_Attestation">What is Remote Attestation</a></li><li class="toc-l3"><a href="#Dynamic_Root_of_Trust_for_Measurement">Dynamic Root of Trust for
+Measurement</a></li><li class="toc-l3"><a href="#Raptor_FlexVer">Raptor FlexVer</a></li><li class="toc-l3"><a href="#Trusted_Platform_Module_remote_attestation">Trusted Platform
+Module remote attestation</a></li><li class="toc-l3"><a href="#swtpm">swtpm</a></li><li class="toc-l3"><a href="#Keylime">Keylime</a></li><li class="toc-l3"><a href="#System_Transparency">System Transparency</a></li><li class="toc-l2"><a href="#Tamper_protection">Tamper protection</a></li><li class="toc-l3"><a href="#ORWL">ORWL</a></li><li class="toc-l2"><a href="#Miscellaneous_useful_technologies">Miscellaneous useful
+technologies</a></li><li class="toc-l3"><a href="#Raptor_LPC_Guard">Raptor LPC Guard</a></li><li class="toc-l3"><a href="#Microsoft_SEAL">Microsoft SEAL</a></li><li class="toc-l3"><a href="#Constellation">Constellation</a></li><li class="toc-l3"><a href="#Contrast">Contrast</a></li><li class="toc-l3"><a href="#Continuum">Continuum</a></li><li class="toc-l2"><a href="#Microsoft">Microsoft</a></li><li class="toc-l2"><a href="#Google">Google</a></li><li class="toc-l2"><a href="#IntegriCloud_raptorengineering">IntegriCloud
+raptorengineering</a></li><li class="toc-l2"><a href="#Enclaive">Enclaive</a></li><li class="toc-l2"><a href="#No-fill_cache_mode">No-fill cache mode</a></li><li class="toc-l2"><a href="#Memory_paging">Memory paging</a></li><li class="toc-l2"><a href="#Cache_as_Instruction_RAM">Cache as Instruction RAM</a></li><li class="toc-l2"><a href="#BareMetal">BareMetal</a></li><li class="toc-l2"><a href="#BitVisor">BitVisor</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../../media/Confidential_computing.jpeg.webp" alt="Confidential_computing.jpeg" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -145,14 +145,14 @@ encrypted.</li>
 and/or TPM. If that is at all possible. TODO: research</li>
 </ul>
 <h1 id="Components">Components</h1>
-<h2 id="Full_Disk_Encryption">Full Disk Encryption</h2>
+<h2 id="Full_Disk_Encryption">Full Disk Encryption</h2><span class="share-tooltip" data-anchor="Full_Disk_Encryption"><a class="headline-anchor" href="#Full_Disk_Encryption" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption</span></span></span></span>
 <ul>
 <li><a href="../../Full_Disk_Encryption/">Full Disk
 Encryption</a></li>
 <li>todo</li>
 </ul>
 <h2 id="Full_Disk_Encryption_Key_Entry">Full Disk Encryption Key
-Entry</h2>
+Entry</h2><span class="share-tooltip" data-anchor="Full_Disk_Encryption_Key_Entry"><a class="headline-anchor" href="#Full_Disk_Encryption_Key_Entry" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption_Key_Entry">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption_Key_Entry</span></span></span></span>
 <ul>
 <li>todo</li>
 <li>Options:
@@ -160,14 +160,14 @@ Entry</h2>
 <li>A) manual password entry</li>
 <li>B) <a href="../../Full_Disk_Encryption/#TPM_Transparent_Encryption">TPM Transparent Encryption</a></li>
 <li>C) IP-KVM such as <a href="https://pikvm.org/">PiKVM - Open and
-inexpensive IP-KVM on Raspberry Pi</a></li>
+inexpensive IP-KVM on Raspberry Pi</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pikvm.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <h2 id="Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks">Full
-Disk Encryption Key Proetction from Cold Boot Attacks</h2>
-<h3 id="TRESOR">TRESOR</h3>
+Disk Encryption Key Proetction from Cold Boot Attacks</h2><span class="share-tooltip" data-anchor="Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks"><a class="headline-anchor" href="#Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Full_Disk_Encryption_Key_Proetction_from_Cold_Boot_Attacks</span></span></span></span>
+<h3 id="TRESOR">TRESOR</h3><span class="share-tooltip" data-anchor="TRESOR"><a class="headline-anchor" href="#TRESOR" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#TRESOR">https://www.kicksecure.com/wiki/Dev/confidential_computing/#TRESOR</span></span></span></span>
 <ul>
-<li><a href="https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/">https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/</a></li>
+<li><a href="https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/">https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cs1.tf.fau.de/research/system-security-group/tresor-trevisor-armored/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Provides full disk encryption capabilities using an encryption key
 that is stored only within CPU registers. Uses x86-64 debug
 registers.</li>
@@ -180,9 +180,9 @@ to compromise the CPU's memory itself.</li>
 are encrypted when saved to RAM.</li>
 <li>Not yet present in the Linux kernel.</li>
 </ul>
-<h3 id="Loop-Amnesia">Loop-Amnesia</h3>
+<h3 id="Loop-Amnesia">Loop-Amnesia</h3><span class="share-tooltip" data-anchor="Loop-Amnesia"><a class="headline-anchor" href="#Loop-Amnesia" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Loop-Amnesia">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Loop-Amnesia</span></span></span></span>
 <ul>
-<li><a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=e5f940decaa589f3b2030429f48739281839e4d8">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=e5f940decaa589f3b2030429f48739281839e4d8</a></li>
+<li><a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=e5f940decaa589f3b2030429f48739281839e4d8">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=e5f940decaa589f3b2030429f48739281839e4d8</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=e5f940decaa589f3b2030429f48739281839e4d8" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Similar to TRESOR, provids full disk encryption.</li>
 <li>Only saves disk encryption keys in RAM in encrypted form. A "master
 key" is used to decrypt the encryption keys in CPU registers and never
@@ -192,7 +192,7 @@ registers.</li>
 <li>Not yet present in the Linux kernel.</li>
 <li>Slows down disk I/O performance by a factor of 2.</li>
 <li>Apparently will destroy any filesystems it protects if the system is
-put into suspend and then resumed. See warnings at <a href="https://patricksimmons.us/amnesia.html">https://patricksimmons.us/amnesia.html</a>.
+put into suspend and then resumed. See warnings at <a href="https://patricksimmons.us/amnesia.html">https://patricksimmons.us/amnesia.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://patricksimmons.us/amnesia.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 TRESOR avoids this by re-prompting for an FDE passphrase on resume.</li>
 <li>Not yet present in the Linux kernel.</li>
 <li>Mentions non-maskable interrupts (NMIs) as a potential attack vector
@@ -205,14 +205,14 @@ wouldn't entirely mitigate the attack however and the use of a DDR
 interposer could be used to render the subsequent wiping of RAM futile.
 This is probably an effective attack against TRESOR too.</li>
 </ul>
-<h2 id="RAM_Encryption">RAM Encryption</h2>
-<h3 id="Intel">Intel</h3>
+<h2 id="RAM_Encryption">RAM Encryption</h2><span class="share-tooltip" data-anchor="RAM_Encryption"><a class="headline-anchor" href="#RAM_Encryption" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#RAM_Encryption">https://www.kicksecure.com/wiki/Dev/confidential_computing/#RAM_Encryption</span></span></span></span>
+<h3 id="Intel">Intel</h3><span class="share-tooltip" data-anchor="Intel"><a class="headline-anchor" href="#Intel" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Intel">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Intel</span></span></span></span>
 <h4 id="Intel_TME-MK">Intel TME-MK</h4>
 <p>Total Memory Encryption - Multi-Key (TME-MK)</p>
 <p><blockquote><p>Intel has introduced Intel&#174; Total Memory Encryption - Multi-Key
 (Intel&#174; TME-MK), a new memory encryption technology, on 3rd generation
 Intel&#174; Xeon&#174; Scalable processors (formerly code named Ice
-Lake).<span class="blockquote-context"><a href="https://www.intel.com/content/www/us/en/developer/articles/news/runtime-encryption-of-memory-with-intel-tme-mk.html">https://www.intel.com/content/www/us/en/developer/articles/news/runtime-encryption-of-memory-with-intel-tme-mk.html</a></span></p></blockquote></p>
+Lake).<span class="blockquote-context"><a href="https://www.intel.com/content/www/us/en/developer/articles/news/runtime-encryption-of-memory-with-intel-tme-mk.html">https://www.intel.com/content/www/us/en/developer/articles/news/runtime-encryption-of-memory-with-intel-tme-mk.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.intel.com/content/www/us/en/developer/articles/news/runtime-encryption-of-memory-with-intel-tme-mk.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
 <li>Provides granular, user-controllable full memory encryption.
 Multiple keys can be used at once, allowing a hypervisor to use one key
@@ -227,7 +227,7 @@ hypervisor must be trusted.</li>
 <li>Only supports 128-bit AES encryption. Does not support 256-bit AES
 encryption.</li>
 </ul></li>
-<li>GNOME shows status of RAM encryption: <a href="https://www.reddit.com/r/gnome/comments/12lc5l4/how_do_i_fix_the_encrypted_ram_status_in_device/">https://www.reddit.com/r/gnome/comments/12lc5l4/how_do_i_fix_the_encrypted_ram_status_in_device/</a></li>
+<li>GNOME shows status of RAM encryption: <a href="https://www.reddit.com/r/gnome/comments/12lc5l4/how_do_i_fix_the_encrypted_ram_status_in_device/">https://www.reddit.com/r/gnome/comments/12lc5l4/how_do_i_fix_the_encrypted_ram_status_in_device/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.reddit.com/r/gnome/comments/12lc5l4/how_do_i_fix_the_encrypted_ram_status_in_device/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Check if TME is available, enabled.</p>
 <p><span class="code-select">grep -i tme /proc/cpuinfo</span></p>
@@ -242,7 +242,7 @@ x86/mktme: 15 KeyIDs available</code></pre>
 <ul>
 <li>availability:
 <ul>
-<li>according to <a href="https://www.notebookcheck.net/Intel-Tiger-Lake-H-Alder-Lake-P-and-Alder-Lake-S-detailed-Alder-Lake-to-offer-up-to-8C-16T-configs-with-Xe-LP-DDR5-4400-RAM-Wi-Fi-6E-and-PCIe-Gen5-support.496197.0.html">https://www.notebookcheck.net/Intel-Tiger-Lake-H-Alder-Lake-P-and-Alder-Lake-S-detailed-Alder-Lake-to-offer-up-to-8C-16T-configs-with-Xe-LP-DDR5-4400-RAM-Wi-Fi-6E-and-PCIe-Gen5-support.496197.0.html</a>
+<li>according to <a href="https://www.notebookcheck.net/Intel-Tiger-Lake-H-Alder-Lake-P-and-Alder-Lake-S-detailed-Alder-Lake-to-offer-up-to-8C-16T-configs-with-Xe-LP-DDR5-4400-RAM-Wi-Fi-6E-and-PCIe-Gen5-support.496197.0.html">https://www.notebookcheck.net/Intel-Tiger-Lake-H-Alder-Lake-P-and-Alder-Lake-S-detailed-Alder-Lake-to-offer-up-to-8C-16T-configs-with-Xe-LP-DDR5-4400-RAM-Wi-Fi-6E-and-PCIe-Gen5-support.496197.0.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.notebookcheck.net/Intel-Tiger-Lake-H-Alder-Lake-P-and-Alder-Lake-S-detailed-Alder-Lake-to-offer-up-to-8C-16T-configs-with-Xe-LP-DDR5-4400-RAM-Wi-Fi-6E-and-PCIe-Gen5-support.496197.0.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 the following CPUs come with TME-MK
 <ul>
 <li>Tiger Lake-H</li>
@@ -254,23 +254,23 @@ the following CPUs come with TME-MK
 <p><blockquote><p>Intel&#174; Hardware Shield on the Intel vPro&#174; platform as they pertain to
 helping to protect system memory. It covers both software and hardware
 security capabilities. Specifically, this document provides in-depth
-information Intel&#174; TME.<span class="blockquote-context"><a href="https://www.intel.com/content/www/us/en/architecture-and-technology/vpro/hardware-shield/total-memory-encrpytion.html">https://www.intel.com/content/www/us/en/architecture-and-technology/vpro/hardware-shield/total-memory-encrpytion.html</a></span></p></blockquote></p>
+information Intel&#174; TME.<span class="blockquote-context"><a href="https://www.intel.com/content/www/us/en/architecture-and-technology/vpro/hardware-shield/total-memory-encrpytion.html">https://www.intel.com/content/www/us/en/architecture-and-technology/vpro/hardware-shield/total-memory-encrpytion.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.intel.com/content/www/us/en/architecture-and-technology/vpro/hardware-shield/total-memory-encrpytion.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <p>Intel TME-MK might only be available in combination with Intel vPro.
 However, Intel vPro comes often (or always?) packages with Intel ME and
 Intel AMT, which many users would rather not have inside their CPU. See
 <a href="../../Out-of-band_Management_Technology/">Out-of-band
 Management Technology</a>.</p>
 <ul>
-<li><a href="https://github.com/Dasharo/dasharo-issues/issues/463">https://github.com/Dasharo/dasharo-issues/issues/463</a></li>
-<li><a href="https://github.com/Dasharo/dasharo-issues/issues/464">https://github.com/Dasharo/dasharo-issues/issues/464</a></li>
-<li><a href="https://github.com/Dasharo/dasharo-issues/issues/175">https://github.com/Dasharo/dasharo-issues/issues/175</a></li>
+<li><a href="https://github.com/Dasharo/dasharo-issues/issues/463">https://github.com/Dasharo/dasharo-issues/issues/463</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Dasharo/dasharo-issues/issues/463" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/Dasharo/dasharo-issues/issues/464">https://github.com/Dasharo/dasharo-issues/issues/464</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Dasharo/dasharo-issues/issues/464" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/Dasharo/dasharo-issues/issues/175">https://github.com/Dasharo/dasharo-issues/issues/175</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Dasharo/dasharo-issues/issues/175" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <p>Search term:</p>
 <p><span class="code-select">site:ark.intel.com "Intel&amp;reg; Total
 Memory Encryption - Multi Key"</span></p>
 <h4 id="Intel_TDX">Intel TDX</h4>
 <ul>
-<li><a href="https://cdrdv2.intel.com/v1/dl/getContent/690419">https://cdrdv2.intel.com/v1/dl/getContent/690419</a>
+<li><a href="https://cdrdv2.intel.com/v1/dl/getContent/690419">https://cdrdv2.intel.com/v1/dl/getContent/690419</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cdrdv2.intel.com/v1/dl/getContent/690419" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Provides a full suite of confidential computing technologies in one
 solution, including memory encryption, host/guest isolation, remote
@@ -307,17 +307,17 @@ this can be circumvented to some degree with the help of Gramine.</li>
 vulnerable to an attacker with access to Intel.</li>
 </ul></li>
 </ul>
-<h3 id="AMD">AMD</h3>
+<h3 id="AMD">AMD</h3><span class="share-tooltip" data-anchor="AMD"><a class="headline-anchor" href="#AMD" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#AMD">https://www.kicksecure.com/wiki/Dev/confidential_computing/#AMD</span></span></span></span>
 <h4 id="AMD_SEV_technologies">AMD SEV technologies</h4>
 <ul>
-<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a></li>
-<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf</a>
+<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Encrypts VM memory to make VMs immune to memory-based attacks.
 <ul>
 <li>Attempts to provide host/guest isolation; however, this isolation is
 not bulletproof as the hypervisor's device emulation is free to provide
-malicious data to guest device drivers (same problem mentioned in <a href="https://x86.lol/generic/2023/06/28/intel-tdx-2.html">https://x86.lol/generic/2023/06/28/intel-tdx-2.html</a>,
+malicious data to guest device drivers (same problem mentioned in <a href="https://x86.lol/generic/2023/06/28/intel-tdx-2.html">https://x86.lol/generic/2023/06/28/intel-tdx-2.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://x86.lol/generic/2023/06/28/intel-tdx-2.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 "With TDX, the attack surface includes all device drivers... All devices
 are fair game from the attacker's perspective. The malicious VMM can
 craft problematic responses from any device, such as the PCI
@@ -332,7 +332,7 @@ compromisable by AMD.</li>
 </ul>
 <h4 id="AMD_SME">AMD SME</h4>
 <ul>
-<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a>
+<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Somewhat similar to Intel TME-MK, but does not allow the use of
 user-provided encryption keys and appears to only use one key at a time.
@@ -345,7 +345,7 @@ compromised by AMD.</li>
 </ul></li>
 <li>Troublesome: <a href="https://www.phoronix.com/news/Linux-SME-No-Default-Use">Linux To
 No Longer Enable AMD SME Usage By Default Due To Problems With Some
-Hardware</a>
+Hardware</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/Linux-SME-No-Default-Use" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Better to use <a href="#AMD_TSME">#AMD
 TSME</a>.</li>
@@ -353,7 +353,7 @@ TSME</a>.</li>
 </ul>
 <h4 id="AMD_SMEE">AMD SMEE</h4>
 <ul>
-<li>TODO: <a href="https://blog.cloudflare.com/securing-memory-at-epyc-scale/">https://blog.cloudflare.com/securing-memory-at-epyc-scale/</a></li>
+<li>TODO: <a href="https://blog.cloudflare.com/securing-memory-at-epyc-scale/">https://blog.cloudflare.com/securing-memory-at-epyc-scale/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cloudflare.com/securing-memory-at-epyc-scale/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="AMD_TSME">AMD TSME</h4>
 <p><blockquote><p>Transparent SME (TSME) as the name implies is a stricter subset of
@@ -361,9 +361,9 @@ SME that requires no software intervention. Under TSME, all memory pages
 are encrypted regardless of the C-bit value. TSME is designed for legacy
 OS and hypervisor software that cannot be modified. Note that when TSME
 is enabled, standard SME as well as SEV are still available. TSME and
-SME share a memory encryption key.<span class="blockquote-context"><a href="https://en.wikichip.org/wiki/x86/sme#Transparent_SME">https://en.wikichip.org/wiki/x86/sme#Transparent_SME</a></span></p></blockquote></p>
+SME share a memory encryption key.<span class="blockquote-context"><a href="https://en.wikichip.org/wiki/x86/sme#Transparent_SME">https://en.wikichip.org/wiki/x86/sme#Transparent_SME</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikichip.org/wiki/x86/sme#Transparent_SME" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
-<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a>
+<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Encrypts a machine's RAM contents transparently. It generates an
 encryption key at boot time known only to the CPU, then uses that key to
@@ -389,16 +389,16 @@ AMD.</li>
 <pre><code>AMD Secure Memory Encryption (SME) active</code></pre>
 <ul>
 <li>Check BIOS -&gt; security -&gt; TSME</li>
-<li><a href="https://github.com/AMDESE/mem-encryption-tests">https://github.com/AMDESE/mem-encryption-tests</a></li>
-<li><a href="https://unix.stackexchange.com/questions/627453/how-to-know-if-a-amd-cpus-sme-feature-is-enabled">https://unix.stackexchange.com/questions/627453/how-to-know-if-a-amd-cpus-sme-feature-is-enabled</a></li>
+<li><a href="https://github.com/AMDESE/mem-encryption-tests">https://github.com/AMDESE/mem-encryption-tests</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/AMDESE/mem-encryption-tests" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://unix.stackexchange.com/questions/627453/how-to-know-if-a-amd-cpus-sme-feature-is-enabled">https://unix.stackexchange.com/questions/627453/how-to-know-if-a-amd-cpus-sme-feature-is-enabled</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://unix.stackexchange.com/questions/627453/how-to-know-if-a-amd-cpus-sme-feature-is-enabled" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h4 id="AMD_Infinity_Guard">AMD Infinity Guard</h4>
 <p><blockquote><p>GD-183A: AMD Infinity Guard features vary by EPYC&#8482; Processor
 generations and/or series. Infinity Guard security features must be
 enabled by server OEMs and/or Cloud Service Providers to operate. Check
 with your OEM or provider to confirm support of these features. Learn
-more about Infinity Guard at <a href="http://www.amd.com/en/products/processors/server/epyc/infinity-guard.html">http://www.amd.com/en/products/processors/server/epyc/infinity-guard.html</a>.<span class="blockquote-context">footnote
-1 on <a href="https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html">https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html</a></span></p></blockquote></p>
+more about Infinity Guard at <a href="http://www.amd.com/en/products/processors/server/epyc/infinity-guard.html">http://www.amd.com/en/products/processors/server/epyc/infinity-guard.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://www.amd.com/en/products/processors/server/epyc/infinity-guard.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.<span class="blockquote-context">footnote
+1 on <a href="https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html">https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/en/products/processors/server/epyc/infinity-guard.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
 <li>Infinity Guard is a brand name for AMDs collection of hypervisor
 security features, including Secure Encrypted Virtualization
@@ -413,7 +413,7 @@ purchasing.</li>
 <li>Some or all AMD EPYC CPUs have the TSME feature. Best to check the
 availability of the feature before purchasing the CPU or renting the
 server.</li>
-<li><a href="https://www.hetzner.com/news/new-amd-ryzen-7950-server/">https://www.hetzner.com/news/new-amd-ryzen-7950-server/</a>
+<li><a href="https://www.hetzner.com/news/new-amd-ryzen-7950-server/">https://www.hetzner.com/news/new-amd-ryzen-7950-server/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.hetzner.com/news/new-amd-ryzen-7950-server/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>AMD EPYC available from root server provider <code>hetzner</code>
 for 236 EUR / month
@@ -424,9 +424,9 @@ compromise of hetzner?</li>
 </ul></li>
 </ul></li>
 </ul>
-<h3 id="RamCrypt">RamCrypt</h3>
+<h3 id="RamCrypt">RamCrypt</h3><span class="share-tooltip" data-anchor="RamCrypt"><a class="headline-anchor" href="#RamCrypt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#RamCrypt">https://www.kicksecure.com/wiki/Dev/confidential_computing/#RamCrypt</span></span></span></span>
 <ul>
-<li><a href="https://faui1-files.cs.fau.de/filepool/projects/ramcrypt/ramcrypt.pdf">https://faui1-files.cs.fau.de/filepool/projects/ramcrypt/ramcrypt.pdf</a>
+<li><a href="https://faui1-files.cs.fau.de/filepool/projects/ramcrypt/ramcrypt.pdf">https://faui1-files.cs.fau.de/filepool/projects/ramcrypt/ramcrypt.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://faui1-files.cs.fau.de/filepool/projects/ramcrypt/ramcrypt.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Provides memory encryption for individual processes running under a
 Linux kernel. Fully software-based, uses TRESOR for encryption of RAM.
@@ -442,7 +442,7 @@ performance hit (at least 25%, sometimes much more).
 <li>It may be possible to use no-fill cache mode (a.k.a. cache-as-RAM)
 to mitigate RamCrypt's shortcomings in this area. It is not yet known if
 this is possible, and it is very likely that doing so would come with an
-even greater performance hit. See <a href="https://frozencache.blogspot.com/">https://frozencache.blogspot.com/</a>
+even greater performance hit. See <a href="https://frozencache.blogspot.com/">https://frozencache.blogspot.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://frozencache.blogspot.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>PrivateCore vCage somehow manages to control CPU cache in a manner
 that doesn't harm performance too badly and does acheive the desired
@@ -471,7 +471,7 @@ boot attack.</li>
 </ul></li>
 </ul></li>
 </ul>
-<h3 id="PrivateCore_vCage">PrivateCore vCage</h3>
+<h3 id="PrivateCore_vCage">PrivateCore vCage</h3><span class="share-tooltip" data-anchor="PrivateCore_vCage"><a class="headline-anchor" href="#PrivateCore_vCage" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#PrivateCore_vCage">https://www.kicksecure.com/wiki/Dev/confidential_computing/#PrivateCore_vCage</span></span></span></span>
 <ul>
 <li>Provides similar security to Intel TME / AMD SME, but appears to use
 a software implementation rather than hardware CPU features.</li>
@@ -489,7 +489,7 @@ possible to contact them?
 available to the general public.</li>
 </ul></li>
 </ul>
-<h3 id="OpenPOWER">OpenPOWER</h3>
+<h3 id="OpenPOWER">OpenPOWER</h3><span class="share-tooltip" data-anchor="OpenPOWER"><a class="headline-anchor" href="#OpenPOWER" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#OpenPOWER">https://www.kicksecure.com/wiki/Dev/confidential_computing/#OpenPOWER</span></span></span></span>
 <ul>
 <li>TODO: easier to implement RAM encryption with POWER9/11?</li>
 <li>It's a different CPU architecture. POWER9 is different from
@@ -500,30 +500,30 @@ as with Tor Browser, no POWER9 binaries are available and building from
 source code is difficult.</li>
 <li>Demo: <a href="https://www.whonix.org/wiki/Dev/Porting#Existing_Ports_of_Whonix">Whonix
 reported to be running on POWER9 (OpenPOWER), Raptor Talos II using
-distro-morphing and KVM.</a></li>
+distro-morphing and KVM.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/Dev/Porting#Existing_Ports_of_Whonix" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>There's Debian cloud (server) images (qcow2; raw) for "64-bit Little
 Endian PowerPC" which is probably compatible with POWER9.</li>
-<li>Raptor is selling desktop computers and servers here: <a href="https://www.raptorcs.com/TALOSII/">https://www.raptorcs.com/TALOSII/</a></li>
+<li>Raptor is selling desktop computers and servers here: <a href="https://www.raptorcs.com/TALOSII/">https://www.raptorcs.com/TALOSII/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raptorcs.com/TALOSII/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>There are no notebooks based on POWER9 as in October 2024.</li>
-<li>Raptor is selling cloud servers: IntegriCloud - <a href="https://www.integricloud.com/">https://www.integricloud.com/</a>
+<li>Raptor is selling cloud servers: IntegriCloud - <a href="https://www.integricloud.com/">https://www.integricloud.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.integricloud.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li><a href="#IntegriCloud_raptorengineering">Some
 "weirdness" about IntegriCloud.</a></li>
 </ul></li>
 </ul>
-<h3 id="RISV-V">RISV-V</h3>
+<h3 id="RISV-V">RISV-V</h3><span class="share-tooltip" data-anchor="RISV-V"><a class="headline-anchor" href="#RISV-V" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#RISV-V">https://www.kicksecure.com/wiki/Dev/confidential_computing/#RISV-V</span></span></span></span>
 <ul>
 <li>Good enough performance to consider using?</li>
 </ul>
-<h2 id="Kernel_isolation">Kernel isolation</h2>
-<h3 id="Use_Case">Use Case</h3>
+<h2 id="Kernel_isolation">Kernel isolation</h2><span class="share-tooltip" data-anchor="Kernel_isolation"><a class="headline-anchor" href="#Kernel_isolation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Kernel_isolation">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Kernel_isolation</span></span></span></span>
+<h3 id="Use_Case">Use Case</h3><span class="share-tooltip" data-anchor="Use_Case"><a class="headline-anchor" href="#Use_Case" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Use_Case">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Use_Case</span></span></span></span>
 <p>Only needed if intending to use VMs.</p>
 <p>In case of "root servers" / dedicated servers with only 1 customer,
 there is no need for for pKVM, Xen or similar.</p>
-<h3 id="pKVM">pKVM</h3>
+<h3 id="pKVM">pKVM</h3><span class="share-tooltip" data-anchor="pKVM"><a class="headline-anchor" href="#pKVM" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#pKVM">https://www.kicksecure.com/wiki/Dev/confidential_computing/#pKVM</span></span></span></span>
 <ul>
-<li><a href="https://source.android.com/docs/core/virtualization/architecture">https://source.android.com/docs/core/virtualization/architecture</a></li>
-<li><a href="https://lwn.net/Articles/836693/">https://lwn.net/Articles/836693/</a>
+<li><a href="https://source.android.com/docs/core/virtualization/architecture">https://source.android.com/docs/core/virtualization/architecture</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://source.android.com/docs/core/virtualization/architecture" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lwn.net/Articles/836693/">https://lwn.net/Articles/836693/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/836693/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Provides separation of host and guest operating systems on arm64
 platforms (specifically Android). Uses ARM virtualization features to
@@ -534,7 +534,7 @@ physical device. Additionally, provides strong local and remote
 attestation features both within pKVM itself and with Verified Boot.
 <ul>
 <li>Guest operating systems are not assumed to be locked down, arbitrary
-code can be run in guests with pKVM. See <a href="https://source.android.com/docs/core/virtualization/security">https://source.android.com/docs/core/virtualization/security</a></li>
+code can be run in guests with pKVM. See <a href="https://source.android.com/docs/core/virtualization/security">https://source.android.com/docs/core/virtualization/security</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://source.android.com/docs/core/virtualization/security" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Local attestation is provided by pKVM itself to prevent malicious VM
 tampering.</li>
 <li>pKVM's security features are not guaranteed to work correctly if the
@@ -549,9 +549,9 @@ thus hard to use outside of the context of Android.</li>
 memory from a malicious KVM hypervisor.</li>
 </ul></li>
 </ul>
-<h3 id="Xen">Xen</h3>
+<h3 id="Xen">Xen</h3><span class="share-tooltip" data-anchor="Xen"><a class="headline-anchor" href="#Xen" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Xen">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Xen</span></span></span></span>
 <ul>
-<li><a href="https://xenproject.org">https://xenproject.org</a></li>
+<li><a href="https://xenproject.org">https://xenproject.org</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xenproject.org" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>A true type-1 hypervisor. Much smaller than the Linux kernel,
 currently at around 370K lines of code, thus has a dramatically lower
 attack surface and is much easier to trust than a full Linux kernel.
@@ -561,14 +561,14 @@ from dom0 to some degree (this needs to be researched further).
 Additionally, it provides a hardware TPM-backed vTPM implementation.
 Used in Qubes OS.</li>
 </ul>
-<h3 id="KVM_private_memory">KVM private memory</h3>
+<h3 id="KVM_private_memory">KVM private memory</h3><span class="share-tooltip" data-anchor="KVM_private_memory"><a class="headline-anchor" href="#KVM_private_memory" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#KVM_private_memory">https://www.kicksecure.com/wiki/Dev/confidential_computing/#KVM_private_memory</span></span></span></span>
 <ul>
-<li><a href="https://lwn.net/Articles/890224/">https://lwn.net/Articles/890224/</a></li>
+<li><a href="https://lwn.net/Articles/890224/">https://lwn.net/Articles/890224/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/890224/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Doesn't appear to be related to pKVM.</li>
 </ul>
-<h3 id="Gramine">Gramine</h3>
+<h3 id="Gramine">Gramine</h3><span class="share-tooltip" data-anchor="Gramine"><a class="headline-anchor" href="#Gramine" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Gramine">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Gramine</span></span></span></span>
 <ul>
-<li><a href="https://github.com/gramineproject/gramine">https://github.com/gramineproject/gramine</a>
+<li><a href="https://github.com/gramineproject/gramine">https://github.com/gramineproject/gramine</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/gramineproject/gramine" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Allows running unmodified Linux applications within SGX
 enclaves.</li>
@@ -580,14 +580,14 @@ the host and guest.</li>
 SGX-protected versions of various apps and programming languages.</li>
 </ul></li>
 </ul>
-<h2 id="Verified_Boot">Verified Boot</h2>
+<h2 id="Verified_Boot">Verified Boot</h2><span class="share-tooltip" data-anchor="Verified_Boot"><a class="headline-anchor" href="#Verified_Boot" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Verified_Boot">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Verified_Boot</span></span></span></span>
 <ul>
 <li><strong>See also <a href="../../Verified_Boot/">Verified
 Boot</a>.</strong></li>
 <li>Documentation for replacing default Secure Boot keys with one's own
-keys: <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys">https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys</a></li>
+keys: <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys">https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h2 id="non-root_enforcement">non-root enforcement</h2>
+<h2 id="non-root_enforcement">non-root enforcement</h2><span class="share-tooltip" data-anchor="non-root_enforcement"><a class="headline-anchor" href="#non-root_enforcement" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#non-root_enforcement">https://www.kicksecure.com/wiki/Dev/confidential_computing/#non-root_enforcement</span></span></span></span>
 <p>Non-root enforcement limits the privileges and access rights of
 non-root users or processes, ensuring they can't make system-level
 changes or access sensitive parts of the system without proper
@@ -597,8 +597,8 @@ root (administrative rights). This is because with root rights, the
 cloud server administrator could get access to sensitive data on the
 hard drive and/or RAM contents.</p>
 <p>related: <a href="../user-sysmaint-split/">Dev/user-sysmaint-split</a></p>
-<h2 id="Remote_Attestation">Remote Attestation</h2>
-<h3 id="What_is_Remote_Attestation">What is Remote Attestation</h3>
+<h2 id="Remote_Attestation">Remote Attestation</h2><span class="share-tooltip" data-anchor="Remote_Attestation"><a class="headline-anchor" href="#Remote_Attestation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Remote_Attestation">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Remote_Attestation</span></span></span></span>
+<h3 id="What_is_Remote_Attestation">What is Remote Attestation</h3><span class="share-tooltip" data-anchor="What_is_Remote_Attestation"><a class="headline-anchor" href="#What_is_Remote_Attestation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#What_is_Remote_Attestation">https://www.kicksecure.com/wiki/Dev/confidential_computing/#What_is_Remote_Attestation</span></span></span></span>
 <ul>
 <li><strong>Purpose:</strong> Remote attestation is used to prove to a
 remote party (usually a server or another device) that the software and
@@ -634,32 +634,32 @@ replacing the compromised key with a good one will require that every
 single affected CPU or TPM device be replaced with a new one containing
 a new key.</p>
 <h3 id="Dynamic_Root_of_Trust_for_Measurement">Dynamic Root of Trust for
-Measurement</h3>
+Measurement</h3><span class="share-tooltip" data-anchor="Dynamic_Root_of_Trust_for_Measurement"><a class="headline-anchor" href="#Dynamic_Root_of_Trust_for_Measurement" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Dynamic_Root_of_Trust_for_Measurement">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Dynamic_Root_of_Trust_for_Measurement</span></span></span></span>
 <ul>
-<li><a href="https://trustedcomputinggroup.org/wp-content/uploads/TCG_D-RTM_Architecture_v1-0_Published_06172013.pdf">https://trustedcomputinggroup.org/wp-content/uploads/TCG_D-RTM_Architecture_v1-0_Published_06172013.pdf</a></li>
-<li><a href="https://security.stackexchange.com/questions/274214/how-does-measured-boot-work-using-tpm">https://security.stackexchange.com/questions/274214/how-does-measured-boot-work-using-tpm</a>
+<li><a href="https://trustedcomputinggroup.org/wp-content/uploads/TCG_D-RTM_Architecture_v1-0_Published_06172013.pdf">https://trustedcomputinggroup.org/wp-content/uploads/TCG_D-RTM_Architecture_v1-0_Published_06172013.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trustedcomputinggroup.org/wp-content/uploads/TCG_D-RTM_Architecture_v1-0_Published_06172013.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://security.stackexchange.com/questions/274214/how-does-measured-boot-work-using-tpm">https://security.stackexchange.com/questions/274214/how-does-measured-boot-work-using-tpm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security.stackexchange.com/questions/274214/how-does-measured-boot-work-using-tpm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Uses TPM-based features to ensure that a booted OS is trusted and
 uncompromised at load time.</li>
 <li>Intel TXT (Trusted eXecution Technology) is one implementation of
 this.
 <ul>
-<li><a href="https://www.intel.com/content/www/us/en/support/articles/000025873/processors.html">https://www.intel.com/content/www/us/en/support/articles/000025873/processors.html</a></li>
-<li><a href="https://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf">https://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf</a></li>
+<li><a href="https://www.intel.com/content/www/us/en/support/articles/000025873/processors.html">https://www.intel.com/content/www/us/en/support/articles/000025873/processors.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.intel.com/content/www/us/en/support/articles/000025873/processors.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf">https://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>tboot (https://sourceforge.net/p/tboot/code/ci/default/tree/) Uses
 Intel TXT to securely boot Xen or Linux.</li>
 </ul></li>
 <li>AMD also has their own implementation.
 <ul>
-<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/user-guides/58453.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/user-guides/58453.pdf</a></li>
+<li><a href="https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/user-guides/58453.pdf">https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/user-guides/58453.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/user-guides/58453.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul></li>
 </ul>
-<h3 id="Raptor_FlexVer">Raptor FlexVer</h3>
+<h3 id="Raptor_FlexVer">Raptor FlexVer</h3><span class="share-tooltip" data-anchor="Raptor_FlexVer"><a class="headline-anchor" href="#Raptor_FlexVer" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Raptor_FlexVer">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Raptor_FlexVer</span></span></span></span>
 <ul>
-<li><a href="https://www.raptorengineering.com/TALOS/documentation/integrimon_intro.pdf">https://www.raptorengineering.com/TALOS/documentation/integrimon_intro.pdf</a></li>
-<li><a href="https://www.raptorengineering.com/TALOS/security_features.php">https://www.raptorengineering.com/TALOS/security_features.php</a></li>
-<li><a href="https://www.crowdsupply.com/raptor-computing-systems/talos-secure-workstation/updates/talos-fpga-functions-and-responsibilities-part-2">https://www.crowdsupply.com/raptor-computing-systems/talos-secure-workstation/updates/talos-fpga-functions-and-responsibilities-part-2</a></li>
+<li><a href="https://www.raptorengineering.com/TALOS/documentation/integrimon_intro.pdf">https://www.raptorengineering.com/TALOS/documentation/integrimon_intro.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raptorengineering.com/TALOS/documentation/integrimon_intro.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.raptorengineering.com/TALOS/security_features.php">https://www.raptorengineering.com/TALOS/security_features.php</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.raptorengineering.com/TALOS/security_features.php" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.crowdsupply.com/raptor-computing-systems/talos-secure-workstation/updates/talos-fpga-functions-and-responsibilities-part-2">https://www.crowdsupply.com/raptor-computing-systems/talos-secure-workstation/updates/talos-fpga-functions-and-responsibilities-part-2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.crowdsupply.com/raptor-computing-systems/talos-secure-workstation/updates/talos-fpga-functions-and-responsibilities-part-2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Present on Raptor Engineering POWER9 workstations and servers.
 Unclear whether there are any other systems that ship with similar
 technology.
@@ -672,7 +672,7 @@ fail attestation if tampering is detected.</li>
 <li>Usable to implement verified boot.</li>
 <li>Fully open-source with reproducible builds.
 <ul>
-<li>Source available somewhere under <a href="https://gitlab.raptorengineering.com/explore/groups">https://gitlab.raptorengineering.com/explore/groups</a>
+<li>Source available somewhere under <a href="https://gitlab.raptorengineering.com/explore/groups">https://gitlab.raptorengineering.com/explore/groups</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.raptorengineering.com/explore/groups" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 most likely</li>
 </ul></li>
 <li>Requires a substantial investment of effort for one to gain the
@@ -682,9 +682,9 @@ machine being used.</li>
 </ul></li>
 </ul>
 <h3 id="Trusted_Platform_Module_remote_attestation">Trusted Platform
-Module remote attestation</h3>
+Module remote attestation</h3><span class="share-tooltip" data-anchor="Trusted_Platform_Module_remote_attestation"><a class="headline-anchor" href="#Trusted_Platform_Module_remote_attestation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Trusted_Platform_Module_remote_attestation">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Trusted_Platform_Module_remote_attestation</span></span></span></span>
 <ul>
-<li><a href="https://safeboot.dev/attestation/">https://safeboot.dev/attestation/</a>
+<li><a href="https://safeboot.dev/attestation/">https://safeboot.dev/attestation/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://safeboot.dev/attestation/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 provides a good overview of how this works.</li>
 <li>Allows a remote user to ensure they trust a machine that they will
 eventually run a VM on.</li>
@@ -692,13 +692,13 @@ eventually run a VM on.</li>
 FlexVer avoids this.</li>
 <li>At least some TPMs may be reprogrammable by the end-user,
 potentially allowing one to generate and install their own keys for use
-in remote attestation. <a href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Cyber-Sicherheit/SiSyPHus/Workpackage5b_TPM_Provisioning.pdf?__blob=publicationFile&amp;v=1">https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Cyber-Sicherheit/SiSyPHus/Workpackage5b_TPM_Provisioning.pdf?__blob=publicationFile&amp;v=1</a>
+in remote attestation. <a href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Cyber-Sicherheit/SiSyPHus/Workpackage5b_TPM_Provisioning.pdf?__blob=publicationFile&amp;v=1">https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Cyber-Sicherheit/SiSyPHus/Workpackage5b_TPM_Provisioning.pdf?__blob=publicationFile&amp;v=1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Cyber-Sicherheit/SiSyPHus/Workpackage5b_TPM_Provisioning.pdf?__blob=publicationFile&amp;v=1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Assuming proper key management on the user's part, this would be much
 safer than trusting the TPM manufacturer.</li>
 </ul>
-<h3 id="swtpm">swtpm</h3>
+<h3 id="swtpm">swtpm</h3><span class="share-tooltip" data-anchor="swtpm"><a class="headline-anchor" href="#swtpm" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#swtpm">https://www.kicksecure.com/wiki/Dev/confidential_computing/#swtpm</span></span></span></span>
 <ul>
-<li><a href="https://github.com/stefanberger/swtpm">https://github.com/stefanberger/swtpm</a></li>
+<li><a href="https://github.com/stefanberger/swtpm">https://github.com/stefanberger/swtpm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/stefanberger/swtpm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Provides a virtual TPM for use in virtual machines. If used on a
 remotely attested, trusted host, allows remote attestation of individual
 virtual machines.
@@ -707,19 +707,19 @@ virtual machines.
 Xen-based deployment.</li>
 </ul></li>
 </ul>
-<h3 id="Keylime">Keylime</h3>
+<h3 id="Keylime">Keylime</h3><span class="share-tooltip" data-anchor="Keylime"><a class="headline-anchor" href="#Keylime" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Keylime">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Keylime</span></span></span></span>
 <ul>
-<li><a href="https://keylime.dev/">https://keylime.dev/</a></li>
-<li><a href="https://youtube.com/watch?v=Qhr_aVBCZPw">https://youtube.com/watch?v=Qhr_aVBCZPw</a></li>
+<li><a href="https://keylime.dev/">https://keylime.dev/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://keylime.dev/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://youtube.com/watch?v=Qhr_aVBCZPw">https://youtube.com/watch?v=Qhr_aVBCZPw</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://youtube.com/watch?v=Qhr_aVBCZPw" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Leverages TPM features to provide remote attestation and other
 security features. Investigate further.</li>
-<li><a href="https://www.cvedetails.com/vendor/23068/Keylime.html">https://www.cvedetails.com/vendor/23068/Keylime.html</a></li>
+<li><a href="https://www.cvedetails.com/vendor/23068/Keylime.html">https://www.cvedetails.com/vendor/23068/Keylime.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cvedetails.com/vendor/23068/Keylime.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
-<h3 id="System_Transparency">System Transparency</h3>
+<h3 id="System_Transparency">System Transparency</h3><span class="share-tooltip" data-anchor="System_Transparency"><a class="headline-anchor" href="#System_Transparency" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#System_Transparency">https://www.kicksecure.com/wiki/Dev/confidential_computing/#System_Transparency</span></span></span></span>
 <ul>
-<li><a href="https://www.system-transparency.org/">https://www.system-transparency.org/</a></li>
-<li><a href="https://mullvad.net/en/blog/2019/6/3/system-transparency-future">https://mullvad.net/en/blog/2019/6/3/system-transparency-future</a></li>
-<li><a href="https://docs.system-transparency.org/st-1.1.0/docs/reference/stboot-system/">https://docs.system-transparency.org/st-1.1.0/docs/reference/stboot-system/</a>
+<li><a href="https://www.system-transparency.org/">https://www.system-transparency.org/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.system-transparency.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://mullvad.net/en/blog/2019/6/3/system-transparency-future">https://mullvad.net/en/blog/2019/6/3/system-transparency-future</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://mullvad.net/en/blog/2019/6/3/system-transparency-future" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://docs.system-transparency.org/st-1.1.0/docs/reference/stboot-system/">https://docs.system-transparency.org/st-1.1.0/docs/reference/stboot-system/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.system-transparency.org/st-1.1.0/docs/reference/stboot-system/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Uses a Linux Unified Kernel Image (UKI) as a bootloader for another
 OS.</li>
@@ -737,13 +737,13 @@ TPM supposed to handle this?</li>
 attestation or Intel TXT might be useful for this.</li>
 </ul></li>
 </ul>
-<h2 id="Tamper_protection">Tamper protection</h2>
+<h2 id="Tamper_protection">Tamper protection</h2><span class="share-tooltip" data-anchor="Tamper_protection"><a class="headline-anchor" href="#Tamper_protection" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Tamper_protection">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Tamper_protection</span></span></span></span>
 <p>Instantly shutting down and wiping part or all of a system in the
 event of physical intrusion can be effective to prevent hardware-based
 attacks.</p>
-<h3 id="ORWL">ORWL</h3>
+<h3 id="ORWL">ORWL</h3><span class="share-tooltip" data-anchor="ORWL"><a class="headline-anchor" href="#ORWL" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#ORWL">https://www.kicksecure.com/wiki/Dev/confidential_computing/#ORWL</span></span></span></span>
 <ul>
-<li><a href="https://www.crowdsupply.com/design-shift/orwl">https://www.crowdsupply.com/design-shift/orwl</a>
+<li><a href="https://www.crowdsupply.com/design-shift/orwl">https://www.crowdsupply.com/design-shift/orwl</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.crowdsupply.com/design-shift/orwl" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>No longer in production.</li>
 <li>Used a very involved tamper protection mechanism to immediately wipe
@@ -753,27 +753,27 @@ with.</li>
 </ul></li>
 </ul>
 <h2 id="Miscellaneous_useful_technologies">Miscellaneous useful
-technologies</h2>
-<h3 id="Raptor_LPC_Guard">Raptor LPC Guard</h3>
+technologies</h2><span class="share-tooltip" data-anchor="Miscellaneous_useful_technologies"><a class="headline-anchor" href="#Miscellaneous_useful_technologies" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Miscellaneous_useful_technologies">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Miscellaneous_useful_technologies</span></span></span></span>
+<h3 id="Raptor_LPC_Guard">Raptor LPC Guard</h3><span class="share-tooltip" data-anchor="Raptor_LPC_Guard"><a class="headline-anchor" href="#Raptor_LPC_Guard" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Raptor_LPC_Guard">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Raptor_LPC_Guard</span></span></span></span>
 <ul>
 <li>Mitigates physical LPC bus hijacking attacks that could be used to
 compromise TPM-stored secrets.
 <ul>
-<li>Example of such a TPM secret compromise attack: <a href="https://www.youtube.com/watch?v=wTl4vEednkQ">https://www.youtube.com/watch?v=wTl4vEednkQ</a></li>
+<li>Example of such a TPM secret compromise attack: <a href="https://www.youtube.com/watch?v=wTl4vEednkQ">https://www.youtube.com/watch?v=wTl4vEednkQ</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.youtube.com/watch?v=wTl4vEednkQ" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
-<h3 id="Microsoft_SEAL">Microsoft SEAL</h3>
+<h3 id="Microsoft_SEAL">Microsoft SEAL</h3><span class="share-tooltip" data-anchor="Microsoft_SEAL"><a class="headline-anchor" href="#Microsoft_SEAL" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Microsoft_SEAL">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Microsoft_SEAL</span></span></span></span>
 <ul>
-<li><a href="https://www.microsoft.com/en-us/research/project/microsoft-seal/">https://www.microsoft.com/en-us/research/project/microsoft-seal/</a></li>
+<li><a href="https://www.microsoft.com/en-us/research/project/microsoft-seal/">https://www.microsoft.com/en-us/research/project/microsoft-seal/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.microsoft.com/en-us/research/project/microsoft-seal/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>General-purpose homomorphic encryption library</li>
 <li>Carries many warnings that it is easy to shoot yourself in the foot
 with</li>
 <li>Not directly related to confidential computing but might be useful
 for some part of it?</li>
 </ul>
-<h3 id="Constellation">Constellation</h3>
+<h3 id="Constellation">Constellation</h3><span class="share-tooltip" data-anchor="Constellation"><a class="headline-anchor" href="#Constellation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Constellation">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Constellation</span></span></span></span>
 <ul>
-<li><a href="https://docs.edgeless.systems/constellation/">https://docs.edgeless.systems/constellation/</a>
+<li><a href="https://docs.edgeless.systems/constellation/">https://docs.edgeless.systems/constellation/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.edgeless.systems/constellation/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Runs entire Kubernetes clusters inside confidential VMs, leveraging
 Intel TDX or AMD SEV along with remote attestation to keep the cluster
@@ -791,9 +791,9 @@ hypervisor is considered trusted, greatly reducing security unless one
 can audit and remotely attest the hypervisor</li>
 </ul></li>
 </ul>
-<h3 id="Contrast">Contrast</h3>
+<h3 id="Contrast">Contrast</h3><span class="share-tooltip" data-anchor="Contrast"><a class="headline-anchor" href="#Contrast" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Contrast">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Contrast</span></span></span></span>
 <ul>
-<li><a href="https://docs.edgeless.systems/contrast/">https://docs.edgeless.systems/contrast/</a>
+<li><a href="https://docs.edgeless.systems/contrast/">https://docs.edgeless.systems/contrast/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.edgeless.systems/contrast/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Runs individual Kubernetes containers inside a cluster managed and
 hosted by a third party.</li>
@@ -807,9 +807,9 @@ binaries is unclear</li>
 requiring silicon vendor trust</li>
 </ul></li>
 </ul>
-<h3 id="Continuum">Continuum</h3>
+<h3 id="Continuum">Continuum</h3><span class="share-tooltip" data-anchor="Continuum"><a class="headline-anchor" href="#Continuum" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Continuum">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Continuum</span></span></span></span>
 <ul>
-<li><a href="https://docs.edgeless.systems/constellation/overview/confidential-kubernetes">https://docs.edgeless.systems/constellation/overview/confidential-kubernetes</a>
+<li><a href="https://docs.edgeless.systems/constellation/overview/confidential-kubernetes">https://docs.edgeless.systems/constellation/overview/confidential-kubernetes</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.edgeless.systems/constellation/overview/confidential-kubernetes" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Runs AI code in a confidential VM, using sandboxing to make it more
 difficult for an AI code author to violate the privacy of the user
@@ -891,7 +891,7 @@ investigated but not useful</h1>
 into the CPU. Under Linux, it only provides TPM features. It is
 implemented as another "secure processor" similar to Intel ME. Beyond
 TPM-like functionality, Pluton also provides features somewhat similar
-to Google's SafetyNet, but only on Windows. <a href="https://gabrielsieben.tech/2022/07/25/the-power-of-microsoft-pluton-2/">https://gabrielsieben.tech/2022/07/25/the-power-of-microsoft-pluton-2/</a></li>
+to Google's SafetyNet, but only on Windows. <a href="https://gabrielsieben.tech/2022/07/25/the-power-of-microsoft-pluton-2/">https://gabrielsieben.tech/2022/07/25/the-power-of-microsoft-pluton-2/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gabrielsieben.tech/2022/07/25/the-power-of-microsoft-pluton-2/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>HashiCrop</li>
 <li>Azure Key Vault: Cloud-based, HSM-backed secret management system
 for applications. Claims to be unable to see customer-provided secrets
@@ -923,27 +923,27 @@ individuals running cloud services on confidential VMs.</li>
 <ul>
 <li><a href="https://lore.kernel.org/lkml/20241003194147.2566a393@kf-ir16/T/">Investigating
 practicality of process memory encryption techniques using frozen cache
-and TRESOR/RamCrypt</a></li>
+and TRESOR/RamCrypt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lore.kernel.org/lkml/20241003194147.2566a393@kf-ir16/T/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li><a href="https://forums.whonix.org/t/enable-secure-memory-encryption-sme-kernel-parameter-mem-encrypt-by-default/10393">Enable
 Secure Memory Encryption (SME) - kernel parameter mem_encrypt - by
-default?</a></li>
+default?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/enable-secure-memory-encryption-sme-kernel-parameter-mem-encrypt-by-default/10393" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul>
 <h1 id="Cloud_Vendors">Cloud Vendors</h1>
 <p><strong>NOTE:</strong> This is not an endorsement or recommendation
 of any vendor or technology. Some of the vendors listed here have
 security concerns associated with them.</p>
-<h2 id="Microsoft">Microsoft</h2>
+<h2 id="Microsoft">Microsoft</h2><span class="share-tooltip" data-anchor="Microsoft"><a class="headline-anchor" href="#Microsoft" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Microsoft">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Microsoft</span></span></span></span>
 <ul>
-<li><a href="https://azure.microsoft.com/en-us/solutions/confidential-compute/#solution-architectures">https://azure.microsoft.com/en-us/solutions/confidential-compute/#solution-architectures</a>
+<li><a href="https://azure.microsoft.com/en-us/solutions/confidential-compute/#solution-architectures">https://azure.microsoft.com/en-us/solutions/confidential-compute/#solution-architectures</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://azure.microsoft.com/en-us/solutions/confidential-compute/#solution-architectures" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Azure Confidential Computing: A commercial offering powered by
 confidential computing technologies. No mentions of any special
 technologies in particular.</li>
 </ul></li>
 </ul>
-<h2 id="Google">Google</h2>
+<h2 id="Google">Google</h2><span class="share-tooltip" data-anchor="Google"><a class="headline-anchor" href="#Google" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Google">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Google</span></span></span></span>
 <ul>
-<li><a href="https://cloud.google.com/confidential-computing">https://cloud.google.com/confidential-computing</a>
+<li><a href="https://cloud.google.com/confidential-computing">https://cloud.google.com/confidential-computing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cloud.google.com/confidential-computing" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Google Confidential Computing: A commercial offering powered by
 confidential computing technologies. No mentions of any special
@@ -951,9 +951,9 @@ technologies in particular.</li>
 </ul></li>
 </ul>
 <h2 id="IntegriCloud_raptorengineering">IntegriCloud
-raptorengineering</h2>
+raptorengineering</h2><span class="share-tooltip" data-anchor="IntegriCloud_raptorengineering"><a class="headline-anchor" href="#IntegriCloud_raptorengineering" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#IntegriCloud_raptorengineering">https://www.kicksecure.com/wiki/Dev/confidential_computing/#IntegriCloud_raptorengineering</span></span></span></span>
 <ul>
-<li><a href="https://www.integricloud.com/">https://www.integricloud.com/</a>
+<li><a href="https://www.integricloud.com/">https://www.integricloud.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.integricloud.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Appears to be RAPTOR Engineering's cloud computing division.</li>
 <li>Only provides firmware source code to "active users of the
@@ -971,7 +971,7 @@ of the IntegriCloud&#8482; platform, auditors for active users of the
 IntegriCloud&#8482; platform, and security researchers.</p>
 <p>Please contact us at support@integricloud.com with your IntegriCloud&#8482;
 username to request access to the source packages and build
-instructions.<span class="blockquote-context"><a href="https://www.integricloud.com/content/base/software.html">https://www.integricloud.com/content/base/software.html</a></span></p></blockquote></p>
+instructions.<span class="blockquote-context"><a href="https://www.integricloud.com/content/base/software.html">https://www.integricloud.com/content/base/software.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.integricloud.com/content/base/software.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
 <ul>
 <li>Asked by e-mail about this in October 2024 but did not receive an
 e-mail at time of writing.</li>
@@ -1000,10 +1000,10 @@ Patrick
 <ul>
 <li>reply received. TODO: update</li>
 </ul>
-<h2 id="Enclaive">Enclaive</h2>
+<h2 id="Enclaive">Enclaive</h2><span class="share-tooltip" data-anchor="Enclaive"><a class="headline-anchor" href="#Enclaive" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Enclaive">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Enclaive</span></span></span></span>
 <ul>
-<li><a href="https://www.enclaive.io/">https://www.enclaive.io/</a></li>
-<li><a href="https://github.com/enclaive">https://github.com/enclaive</a>
+<li><a href="https://www.enclaive.io/">https://www.enclaive.io/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.enclaive.io/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/enclaive">https://github.com/enclaive</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/enclaive" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 <ul>
 <li>Provides software for managing confidential computing resources on
 other clouds.</li>
@@ -1016,14 +1016,14 @@ one year ago)</li>
 </ul>
 <h1 id="Homomorphic_Encryption">Homomorphic Encryption</h1>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Homomorphic_encryption">https://en.wikipedia.org/wiki/Homomorphic_encryption</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Homomorphic_encryption">https://en.wikipedia.org/wiki/Homomorphic_encryption</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Homomorphic_encryption" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li>Microsoft
 <ul>
-<li><a href="https://learn.microsoft.com/en-us/azure/architecture/solution-ideas/articles/homomorphic-encryption-seal">https://learn.microsoft.com/en-us/azure/architecture/solution-ideas/articles/homomorphic-encryption-seal</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/architecture/solution-ideas/articles/homomorphic-encryption-seal">https://learn.microsoft.com/en-us/azure/architecture/solution-ideas/articles/homomorphic-encryption-seal</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://learn.microsoft.com/en-us/azure/architecture/solution-ideas/articles/homomorphic-encryption-seal" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 <li>AWS
 <ul>
-<li><a href="https://aws.amazon.com/security/cryptographic-computing/">https://aws.amazon.com/security/cryptographic-computing/</a></li>
+<li><a href="https://aws.amazon.com/security/cryptographic-computing/">https://aws.amazon.com/security/cryptographic-computing/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://aws.amazon.com/security/cryptographic-computing/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ul></li>
 </ul>
 <h1 id="Full_process_memory_encryption_research">Full process memory
@@ -1032,7 +1032,7 @@ encryption research</h1>
 memory encryption strategy that keeps decrypted information in the CPU
 cache, allowing important data to only touch system RAM in an encrypted
 form.</p>
-<h2 id="No-fill_cache_mode">No-fill cache mode</h2>
+<h2 id="No-fill_cache_mode">No-fill cache mode</h2><span class="share-tooltip" data-anchor="No-fill_cache_mode"><a class="headline-anchor" href="#No-fill_cache_mode" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#No-fill_cache_mode">https://www.kicksecure.com/wiki/Dev/confidential_computing/#No-fill_cache_mode</span></span></span></span>
 <p>This is a CPU cache mode present on Intel CPUs that (among other
 things) prevents cache contents from being replaced when a read or write
 misses the cache and accesses system memory instead. If a memory range
@@ -1044,8 +1044,8 @@ accesses only update the cache. Note however it is possible to
 explicitly instruct the CPU to flush cache contents to system RAM, and
 that the instruction that does this (wbinvd) <strong>must not</strong>
 be executed while sensitive data is present in the cache.</p>
-<h2 id="Memory_paging">Memory paging</h2>
-<p>See <a href="https://wiki.osdev.org/Paging">https://wiki.osdev.org/Paging</a>.
+<h2 id="Memory_paging">Memory paging</h2><span class="share-tooltip" data-anchor="Memory_paging"><a class="headline-anchor" href="#Memory_paging" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Memory_paging">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Memory_paging</span></span></span></span>
+<p>See <a href="https://wiki.osdev.org/Paging">https://wiki.osdev.org/Paging</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.osdev.org/Paging" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 In all 32-bit and 64-bit Intel-based systems (and really most
 non-embedded systems in general), memory accesses are virtualized and go
 through a memory management unit (MMU) that translates virtual addresses
@@ -1066,8 +1066,8 @@ RamCrypt page fault handler decrypt RAM contents into the cached area.
 Then the page fault handler would change the address the page is located
 at to point to the decrypted page in cache, mark it as present, and then
 return control to the application (such as QEMU).</p>
-<h2 id="Cache_as_Instruction_RAM">Cache as Instruction RAM</h2>
-<p><a href="https://pete.akeo.ie/2011/08/ubrx-l2-cache-as-instruction-ram.html">https://pete.akeo.ie/2011/08/ubrx-l2-cache-as-instruction-ram.html</a>
+<h2 id="Cache_as_Instruction_RAM">Cache as Instruction RAM</h2><span class="share-tooltip" data-anchor="Cache_as_Instruction_RAM"><a class="headline-anchor" href="#Cache_as_Instruction_RAM" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#Cache_as_Instruction_RAM">https://www.kicksecure.com/wiki/Dev/confidential_computing/#Cache_as_Instruction_RAM</span></span></span></span>
+<p><a href="https://pete.akeo.ie/2011/08/ubrx-l2-cache-as-instruction-ram.html">https://pete.akeo.ie/2011/08/ubrx-l2-cache-as-instruction-ram.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pete.akeo.ie/2011/08/ubrx-l2-cache-as-instruction-ram.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Data loaded into cache will probably end up loaded into the L1 data
 cache first, which is problematic as the CPU cannot execute code in the
 L1 data cache. It has to be moved to the L1 instruction cache first. The
@@ -1082,16 +1082,16 @@ it seems like the CPU should be able to figure out that it's dealing
 with "self-modifying" code and move the data to the L1 instruction cache
 by itself. Experimentation will be needed to determine if this is the
 case or not.)</p>
-<h2 id="BareMetal">BareMetal</h2>
-<p><a href="https://github.com/ReturnInfinity/BareMetal">https://github.com/ReturnInfinity/BareMetal</a>
+<h2 id="BareMetal">BareMetal</h2><span class="share-tooltip" data-anchor="BareMetal"><a class="headline-anchor" href="#BareMetal" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#BareMetal">https://www.kicksecure.com/wiki/Dev/confidential_computing/#BareMetal</span></span></span></span>
+<p><a href="https://github.com/ReturnInfinity/BareMetal">https://github.com/ReturnInfinity/BareMetal</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/ReturnInfinity/BareMetal" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Very small operating system written mostly in assembly language for
 64-bit Intel and AMD CPUs. It's small and relatively simple, thus would
 be useful for prototyping and benchmarking transparent RAM encryption
 with cache used as RAM. If a working implementation can be made here,
 then it is likely possible to implement the same sort of technology in
 Xen or Linux.</p>
-<h2 id="BitVisor">BitVisor</h2>
-<p><a href="https://github.com/matsu/bitvisor">https://github.com/matsu/bitvisor</a>
+<h2 id="BitVisor">BitVisor</h2><span class="share-tooltip" data-anchor="BitVisor"><a class="headline-anchor" href="#BitVisor" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/confidential_computing/#BitVisor">https://www.kicksecure.com/wiki/Dev/confidential_computing/#BitVisor</span></span></span></span>
+<p><a href="https://github.com/matsu/bitvisor">https://github.com/matsu/bitvisor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/matsu/bitvisor" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Small hypervisor meant to provide security features (such as transparent
 encryption) to a single guest OS. Could also potentially be used to
 prototype a RAM encryption + frozen cache implementation. Might be
@@ -1100,7 +1100,7 @@ use of nested virtualization, further slowing down the system.</p>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><a href="https://forums.anandtech.com/threads/what-are-the-requirements-for-intel%C2%AE-total-memory-encryption-on-13900k.2611844/">https://forums.anandtech.com/threads/what-are-the-requirements-for-intel%C2%AE-total-memory-encryption-on-13900k.2611844/</a></li>
+<li id="cite_note-1"><a href="https://forums.anandtech.com/threads/what-are-the-requirements-for-intel%C2%AE-total-memory-encryption-on-13900k.2611844/">https://forums.anandtech.com/threads/what-are-the-requirements-for-intel%C2%AE-total-memory-encryption-on-13900k.2611844/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.anandtech.com/threads/what-are-the-requirements-for-intel%C2%AE-total-memory-encryption-on-13900k.2611844/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
 <div class="robots-nocontent" data-nosnippet="">

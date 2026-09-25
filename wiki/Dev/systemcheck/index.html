@@ -20,15 +20,15 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../../Download/">Download</a></li><li><a href="../../Documentation/">Docs</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Support/">Help</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>systemcheck</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#SSL_Certificate_Pinning">SSL Certificate Pinning</a></li><li class="toc-l3"><a href="#Introduction">Introduction</a></li><li class="toc-l3"><a href="#Defaults_Discussion">Defaults Discussion</a></li><li class="toc-l2"><a href="#systemcheck_Information_Sources">systemcheck Information
-Sources</a></li><li class="toc-l2"><a href="#systemcheck_Operation">systemcheck Operation</a></li><li class="toc-l2"><a href="#Additional_Functions">Additional Functions</a></li><li class="toc-l2"><a href="#Other_Silent_Mode_Settings">Other Silent Mode Settings</a></li><li class="toc-l2"><a href="#Use_Cases">Use Cases</a></li><li class="toc-l3"><a href="#Automated_Tests">Automated Tests</a></li><li class="toc-l3"><a href="#Auto-start_Following_Boot">Auto-start Following Boot</a></li><li class="toc-l3"><a href="#Manual_User_Start">Manual User Start</a></li><li class="toc-l2"><a href="#Planned_Features">Planned Features</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
-<div class="first-heading">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Dev</span> / <span>systemcheck</span></nav><div class="first-heading">
 <p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../openSUSE/" title="Dev/openSUSE"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/openSUSE</span></a><a class="index internal" href="../../Design/" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="../mediawiki/" title="Dev/mediawiki"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/mediawiki</span></a><span class="info"><span class="prev">Previous
 page: Dev/openSUSE</span><span class="index">Index page:
 Design</span><span class="next">Next page:
 Dev/mediawiki</span></span></span>Dev/systemcheck</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#SSL_Certificate_Pinning">SSL Certificate Pinning</a></li><li class="toc-l3"><a href="#Introduction">Introduction</a></li><li class="toc-l3"><a href="#Defaults_Discussion">Defaults Discussion</a></li><li class="toc-l2"><a href="#systemcheck_Information_Sources">systemcheck Information
+Sources</a></li><li class="toc-l2"><a href="#systemcheck_Operation">systemcheck Operation</a></li><li class="toc-l2"><a href="#Additional_Functions">Additional Functions</a></li><li class="toc-l2"><a href="#Other_Silent_Mode_Settings">Other Silent Mode Settings</a></li><li class="toc-l2"><a href="#Use_Cases">Use Cases</a></li><li class="toc-l3"><a href="#Automated_Tests">Automated Tests</a></li><li class="toc-l3"><a href="#Auto-start_Following_Boot">Auto-start Following Boot</a></li><li class="toc-l3"><a href="#Manual_User_Start">Manual User Start</a></li><li class="toc-l2"><a href="#Planned_Features">Planned Features</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <div class="pre-intro-p ">
 </div>
 <div class="hidden-thumbnail">
@@ -65,36 +65,36 @@ systemcheck.</li>
 downloads from <code>check.torproject.org</code> --
 <code>SocksPort</code> Test, <code>TransPort</code> Test -- and abort if
 the certificate is not valid. The <a href="https://packages.debian.org/source/stable/ca-certificates">ca-certificates
-Debian package</a> is installed on Kicksecure.</p>
+Debian package</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/source/stable/ca-certificates" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is installed on Kicksecure.</p>
 <p>When manually running this test, the attack surface for this script
 includes at least curl, apt, gpg, grep, sed, bash, uwt (on systems that
 use uwt only), torsocks (on systems that use torsocks only), zenity, and
 pgrep. Kicksecure developers have assessed that the benefits of this
 check outweigh the potential risks.</p>
-<h2 id="SSL_Certificate_Pinning">SSL Certificate Pinning</h2>
-<h3 id="Introduction">Introduction</h3>
+<h2 id="SSL_Certificate_Pinning">SSL Certificate Pinning</h2><span class="share-tooltip" data-anchor="SSL_Certificate_Pinning"><a class="headline-anchor" href="#SSL_Certificate_Pinning" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#SSL_Certificate_Pinning">https://www.kicksecure.com/wiki/Dev/systemcheck/#SSL_Certificate_Pinning</span></span></span></span>
+<h3 id="Introduction">Introduction</h3><span class="share-tooltip" data-anchor="Introduction"><a class="headline-anchor" href="#Introduction" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Introduction">https://www.kicksecure.com/wiki/Dev/systemcheck/#Introduction</span></span></span></span>
 <p>By default, Kicksecure has not yet implemented direct SSL certificate
 pinning for <code>check.torproject.org</code> using curl.
 <sup class="reference"><a href="#cite_note-1">[1]</a></sup> The intent is to eventually provide users with an
 optional torproject.org certificate pinning option for the SocksPort
 Test, TransPort Test. To manually configure this setting, see below.</p>
-<h3 id="Defaults_Discussion">Defaults Discussion</h3>
+<h3 id="Defaults_Discussion">Defaults Discussion</h3><span class="share-tooltip" data-anchor="Defaults_Discussion"><a class="headline-anchor" href="#Defaults_Discussion" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Defaults_Discussion">https://www.kicksecure.com/wiki/Dev/systemcheck/#Defaults_Discussion</span></span></span></span>
 <p>Interested readers can learn more about why this feature is not
 enabled by default <a href="../SSL_Certificate_Pinning/#Defaults_Discussion">here</a>.</p>
 <h1 id="Source_Code_Introduction">Source Code Introduction</h1>
 <h2 id="systemcheck_Information_Sources">systemcheck Information
-Sources</h2>
-<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/bin/systemcheck">Kicksecure/systemcheck</a></span>
+Sources</h2><span class="share-tooltip" data-anchor="systemcheck_Information_Sources"><a class="headline-anchor" href="#systemcheck_Information_Sources" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#systemcheck_Information_Sources">https://www.kicksecure.com/wiki/Dev/systemcheck/#systemcheck_Information_Sources</span></span></span></span>
+<p><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/bin/systemcheck">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/bin/systemcheck" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 <em><span>sources</span></em>:</p>
 <ol>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/msgcollector/tree/master/usr/libexec/msgcollector/error_handler">Kicksecure/msgcollector</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/tor_enabled_check">Kicksecure/helper-scripts</a></span></li>
-<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/pkg_manager_running_check">Kicksecure/helper-scripts</a></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/msgcollector/tree/master/usr/libexec/msgcollector/error_handler">Kicksecure/msgcollector</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/msgcollector/tree/master/usr/libexec/msgcollector/error_handler" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/tor_enabled_check">Kicksecure/helper-scripts</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/tor_enabled_check" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/pkg_manager_running_check">Kicksecure/helper-scripts</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/helper-scripts/tree/master/usr/libexec/helper-scripts/pkg_manager_running_check" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li>Followed by all files in
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck">Kicksecure/systemcheck</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 in lexical order.</li>
 </ol>
-<h2 id="systemcheck_Operation">systemcheck Operation</h2>
+<h2 id="systemcheck_Operation">systemcheck Operation</h2><span class="share-tooltip" data-anchor="systemcheck_Operation"><a class="headline-anchor" href="#systemcheck_Operation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#systemcheck_Operation">https://www.kicksecure.com/wiki/Dev/systemcheck/#systemcheck_Operation</span></span></span></span>
 <p>After gathering the above information, systemcheck runs functions in
 <em><span>systemcheck_main</span></em>
 while passing command line arguments.</p>
@@ -103,15 +103,15 @@ while passing command line arguments.</p>
 then calls:</p>
 <ol>
 <li>Function
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/parse_cmd.bsh">Kicksecure/systemcheck</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/parse_cmd.bsh">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/parse_cmd.bsh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 while passing command line arguments.</li>
 <li>Function
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L82">Kicksecure/systemcheck</a></span>.</li>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L82">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L82" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>.</li>
 <li>Then uses function
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L17">Kicksecure/systemcheck</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L17">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/preparation.bsh#L17" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 to run all other functions. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></li>
 </ol>
-<h2 id="Additional_Functions">Additional Functions</h2>
+<h2 id="Additional_Functions">Additional Functions</h2><span class="share-tooltip" data-anchor="Additional_Functions"><a class="headline-anchor" href="#Additional_Functions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Additional_Functions">https://www.kicksecure.com/wiki/Dev/systemcheck/#Additional_Functions</span></span></span></span>
 <p>The
 <em><span>/usr/libexec/systemcheck/</span></em>
 folder is not a real .d style plugin drop-in folder. The shell function
@@ -122,7 +122,7 @@ run from
 function
 <em><span>systemcheck_main</span></em>.</p>
 <p>As a simple example, inspect the file
-<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/check_entropy.bsh">Kicksecure/systemcheck</a></span>
+<span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/check_entropy.bsh">Kicksecure/systemcheck</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/systemcheck/tree/master/usr/libexec/systemcheck/check_entropy.bsh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 which contains function
 <em><span>check_entropy</span></em>.
 Users can gather as much information as they like for analysis via this
@@ -221,7 +221,7 @@ with results when complete</p></td>
 </tr>
 </tbody>
 </table>
-<h2 id="Other_Silent_Mode_Settings">Other Silent Mode Settings</h2>
+<h2 id="Other_Silent_Mode_Settings">Other Silent Mode Settings</h2><span class="share-tooltip" data-anchor="Other_Silent_Mode_Settings"><a class="headline-anchor" href="#Other_Silent_Mode_Settings" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Other_Silent_Mode_Settings">https://www.kicksecure.com/wiki/Dev/systemcheck/#Other_Silent_Mode_Settings</span></span></span></span>
 <p>systemcheck was specifically made more silent to suit the Qubes AppVM
 design:</p>
 <ul>
@@ -295,12 +295,12 @@ has not bootstrapped yet</li>
 </tbody>
 </table>
 <h1 id="Development">Development</h1>
-<h2 id="Use_Cases">Use Cases</h2>
+<h2 id="Use_Cases">Use Cases</h2><span class="share-tooltip" data-anchor="Use_Cases"><a class="headline-anchor" href="#Use_Cases" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Use_Cases">https://www.kicksecure.com/wiki/Dev/systemcheck/#Use_Cases</span></span></span></span>
 <p>systemcheck has specific use cases when it should be run either
 manually or automatically.</p>
-<h3 id="Automated_Tests">Automated Tests</h3>
+<h3 id="Automated_Tests">Automated Tests</h3><span class="share-tooltip" data-anchor="Automated_Tests"><a class="headline-anchor" href="#Automated_Tests" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Automated_Tests">https://www.kicksecure.com/wiki/Dev/systemcheck/#Automated_Tests</span></span></span></span>
 <p>Run after automatic boot by an automated test suite.</p>
-<h3 id="Auto-start_Following_Boot">Auto-start Following Boot</h3>
+<h3 id="Auto-start_Following_Boot">Auto-start Following Boot</h3><span class="share-tooltip" data-anchor="Auto-start_Following_Boot"><a class="headline-anchor" href="#Auto-start_Following_Boot" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Auto-start_Following_Boot">https://www.kicksecure.com/wiki/Dev/systemcheck/#Auto-start_Following_Boot</span></span></span></span>
 <ol>
 <li>To provide connectivity progress information (Tor bootstrap check),
 with the familiar "in progress...", "done" (or failed) messages.</li>
@@ -308,7 +308,7 @@ with the familiar "in progress...", "done" (or failed) messages.</li>
 and not an AppVM, IP forwarding is disabled, the clock is sane, and much
 more.</li>
 </ol>
-<h3 id="Manual_User_Start">Manual User Start</h3>
+<h3 id="Manual_User_Start">Manual User Start</h3><span class="share-tooltip" data-anchor="Manual_User_Start"><a class="headline-anchor" href="#Manual_User_Start" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Manual_User_Start">https://www.kicksecure.com/wiki/Dev/systemcheck/#Manual_User_Start</span></span></span></span>
 <ol>
 <li>Connection functionality test.</li>
 <li>Connection leak test.</li>
@@ -321,7 +321,7 @@ Kicksecure Debian package and build version (build version requires the
 <li>To educate users that stream isolation is broken when adding a
 VPN.</li>
 </ol>
-<h2 id="Planned_Features">Planned Features</h2>
+<h2 id="Planned_Features">Planned Features</h2><span class="share-tooltip" data-anchor="Planned_Features"><a class="headline-anchor" href="#Planned_Features" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/systemcheck/#Planned_Features">https://www.kicksecure.com/wiki/Dev/systemcheck/#Planned_Features</span></span></span></span>
 <p>When an error occurs, provide: <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
 <ul>
 <li>A short error message.</li>
@@ -337,7 +337,7 @@ debugging information.</li>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><a href="https://phabricator.whonix.org/T80">https://phabricator.whonix.org/T80</a></li>
+<li id="cite_note-1"><a href="https://phabricator.whonix.org/T80">https://phabricator.whonix.org/T80</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://phabricator.whonix.org/T80" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 <li id="cite_note-2">The order differs for Kicksecure (<code>kicksecure</code>) and
 Kicksecure (<code>kicksecure</code>). For detailed information
 concerning differences, see

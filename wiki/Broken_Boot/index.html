@@ -21,11 +21,6 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li><a href="../Download/">Download</a></li><li><a href="../Documentation/">Docs</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Support/">Help</a></li><li><a href="../Contribute/">Contribute</a></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#What_to_do_first">What to do first</a></li><li class="toc-l2"><a href="#Quick_diagnosis">Quick diagnosis</a></li><li class="toc-l2"><a href="#A._Power_or_firmware_issue">A. Power or firmware issue</a></li><li class="toc-l2"><a href="#B._Bootloader_not_found">B. Bootloader not found</a></li><li class="toc-l2"><a href="#C._GRUB_appears,_but_Kicksecure_does_not_start">C. GRUB appears,
-but Kicksecure does not start</a></li><li class="toc-l2"><a href="#D._Installed_system_needs_repair">D. Installed system needs
-repair</a></li><li class="toc-l2"><a href="#E._Login_or_desktop_failure">E. Login or desktop failure</a></li><li class="toc-l2"><a href="#Troubleshooting">Troubleshooting</a></li><li class="toc-l3"><a href="#Triage">Triage</a></li><li class="toc-l3"><a href="#Fixing_the_problem">Fixing the problem</a></li><li class="toc-l3"><a href="#GRUB_appears,_but_Kicksecure_live_USB_does_not_start">GRUB
-appears, but Kicksecure live USB does not start</a></li><li class="toc-l3"><a href="#Chroot_Boot_Recovery">Chroot Boot Recovery</a></li><li class="toc-l2"><a href="#Boot_Recovery_Tools">Boot Recovery Tools</a></li><li class="toc-l3"><a href="#Super_Grub2_Disk">Super Grub2 Disk</a></li><li class="toc-l2"><a href="#Direct_Linux_boot">Direct Linux boot</a></li><li class="toc-l2"><a href="#GRUB_configuration_chaining">GRUB configuration chaining</a></li><li class="toc-l2"><a href="#BIOS_chainloading">BIOS chainloading</a></li><li class="toc-l2"><a href="#UEFI_chainloading">UEFI chainloading</a></li><li class="toc-l3"><a href="#Getting_Help">Getting Help</a></li><li class="toc-l3"><a href="#Additional_Resources">Additional Resources</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
-</div>
 <div class="mininav">
 <ul>
 <li><a href="../Troubleshooting/#General_Troubleshooting">General Troubleshooting</a></li>
@@ -39,7 +34,16 @@ Troubleshooting</a></li>
 <li><a href="../Factory_Reset/">Factory Reset</a></li>
 <li><a href="../Download_Issues/">Download Issues</a></li>
 </ul>
+</div><div class="intro-like">
+<p>Start here. Identify where the boot process stops, then follow only
+the matching recovery path. This page contains multiple recovery
+methods; not every method applies to every boot failure.</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#What_to_do_first">What to do first</a></li><li class="toc-l2"><a href="#Quick_diagnosis">Quick diagnosis</a></li><li class="toc-l2"><a href="#A._Power_or_firmware_issue">A. Power or firmware issue</a></li><li class="toc-l2"><a href="#B._Bootloader_not_found">B. Bootloader not found</a></li><li class="toc-l2"><a href="#C._GRUB_appears,_but_Kicksecure_does_not_start">C. GRUB appears,
+but Kicksecure does not start</a></li><li class="toc-l2"><a href="#D._Installed_system_needs_repair">D. Installed system needs
+repair</a></li><li class="toc-l2"><a href="#E._Login_or_desktop_failure">E. Login or desktop failure</a></li><li class="toc-l2"><a href="#Troubleshooting">Troubleshooting</a></li><li class="toc-l3"><a href="#Triage">Triage</a></li><li class="toc-l3"><a href="#Fixing_the_problem">Fixing the problem</a></li><li class="toc-l3"><a href="#GRUB_appears,_but_Kicksecure_live_USB_does_not_start">GRUB
+appears, but Kicksecure live USB does not start</a></li><li class="toc-l3"><a href="#Chroot_Boot_Recovery">Chroot Boot Recovery</a></li><li class="toc-l2"><a href="#Boot_Recovery_Tools">Boot Recovery Tools</a></li><li class="toc-l3"><a href="#Super_Grub2_Disk">Super Grub2 Disk</a></li><li class="toc-l2"><a href="#Direct_Linux_boot">Direct Linux boot</a></li><li class="toc-l2"><a href="#GRUB_configuration_chaining">GRUB configuration chaining</a></li><li class="toc-l2"><a href="#BIOS_chainloading">BIOS chainloading</a></li><li class="toc-l2"><a href="#UEFI_chainloading">UEFI chainloading</a></li><li class="toc-l3"><a href="#Getting_Help">Getting Help</a></li><li class="toc-l3"><a href="#Additional_Resources">Additional Resources</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 <p><img src="../../media/Broken_boot123.jpg.webp" alt="Broken_boot123.jpg" /></p>
 <div class="pre-intro-p ">
 </div>
@@ -54,13 +58,9 @@ being an <a href="../Advanced_Users/">advanced user</a> or
 even a very advanced user.</p>
 <div class="post-intro-p">
 </div>
-<h2 id="What_to_do_first">What to do first</h2>
+<h2 id="What_to_do_first">What to do first</h2><span class="share-tooltip" data-anchor="What_to_do_first"><a class="headline-anchor" href="#What_to_do_first" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#What_to_do_first">https://www.kicksecure.com/wiki/Broken_Boot/#What_to_do_first</span></span></span></span>
 <p><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="GRUB boot menu" /></p>
-<div class="intro-like">
-<p>Start here. Identify where the boot process stops, then follow only
-the matching recovery path. This page contains multiple recovery
-methods; not every method applies to every boot failure.</p>
-</div>
+
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Identify where boot stops.</p>
 <p>Check whether the failure happens before firmware, before <a href="../Grub/">GRUB</a>, after GRUB, during early Linux
@@ -77,22 +77,11 @@ modify disks, bootloaders, or firmware boot entries.</p>
 Ask for help if unsure.</p>
 <p>If the correct path is unclear, ask for help before changing
 bootloader, disk, firmware, or encryption-related configuration.</p>
-<h2 id="Quick_diagnosis">Quick diagnosis</h2>
+<h2 id="Quick_diagnosis">Quick diagnosis</h2><span class="share-tooltip" data-anchor="Quick_diagnosis"><a class="headline-anchor" href="#Quick_diagnosis" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Quick_diagnosis">https://www.kicksecure.com/wiki/Broken_Boot/#Quick_diagnosis</span></span></span></span>
 <div class="intro-like">
 <p>Choose the first description that matches your situation.</p>
 </div>
-<div class="tab-content-controller tcc-indent">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section active ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="A._Power_or_firmware_issue">A. Power or firmware issue</h2>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
+<p><div class="tab-content-controller tcc-indent"><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section active "><div class="tcc-image"></div><div class="tcc-title"><h2 id="A._Power_or_firmware_issue">A. Power or firmware issue</h2><span class="share-tooltip" data-anchor="A._Power_or_firmware_issue"><a class="headline-anchor" href="#A._Power_or_firmware_issue" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#A._Power_or_firmware_issue">https://www.kicksecure.com/wiki/Broken_Boot/#A._Power_or_firmware_issue</span></span></span></span></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">A</i>
 The computer does not power on, or firmware errors appear.</p>
 <p>Use this path if the machine does not react normally to the power
 button, shows firmware-level errors, emits beep codes, or fails before
@@ -101,17 +90,8 @@ Linux or GRUB messages appear.</p>
 <ul>
 <li><a href="#Power_on">Power on</a></li>
 <li><a href="#BIOS_/_Firmware">BIOS / Firmware</a></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="B._Bootloader_not_found">B. Bootloader not found</h2>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="B._Bootloader_not_found">B. Bootloader not found</h2><span class="share-tooltip" data-anchor="B._Bootloader_not_found"><a class="headline-anchor" href="#B._Bootloader_not_found" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#B._Bootloader_not_found">https://www.kicksecure.com/wiki/Broken_Boot/#B._Bootloader_not_found</span></span></span></span></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">B</i>
 The firmware cannot find Kicksecure or no boot menu appears.</p>
 <p>Use this path if the system shows a message such as "No Operating
 System Found", enters a UEFI shell, boots the wrong operating system, or
@@ -121,18 +101,9 @@ does not show the Kicksecure GRUB menu.</p>
 <li><a href="#Bootloader_discovery_and_launch">Bootloader discovery and launch</a></li>
 <li><a href="#Boot_Recovery_Tools">Boot Recovery
 Tools</a></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="C._GRUB_appears,_but_Kicksecure_does_not_start">C. GRUB appears,
-but Kicksecure does not start</h2>
-</div>
-<div class="tcc-content">
-<p><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="GRUB boot menu" /></p>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="C._GRUB_appears,_but_Kicksecure_does_not_start">C. GRUB appears,
+but Kicksecure does not start</h2><span class="share-tooltip" data-anchor="C._GRUB_appears,_but_Kicksecure_does_not_start"><a class="headline-anchor" href="#C._GRUB_appears,_but_Kicksecure_does_not_start" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#C._GRUB_appears,_but_Kicksecure_does_not_start">https://www.kicksecure.com/wiki/Broken_Boot/#C._GRUB_appears,_but_Kicksecure_does_not_start</span></span></span></span></div><div class="tcc-content"><p><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="GRUB boot menu" /></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">C</i>
 GRUB appears, but boot hangs, freezes, blackscreens, or drops to a
 prompt.</p>
@@ -147,18 +118,9 @@ preparation</a></li>
 <li><a href="#Initramfs_launch">Initramfs
 launch</a></li>
 <li><a href="#Root_filesystem_discovery_and_handoff">Root filesystem discovery and handoff</a></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="D._Installed_system_needs_repair">D. Installed system needs
-repair</h2>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">D</i>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="D._Installed_system_needs_repair">D. Installed system needs
+repair</h2><span class="share-tooltip" data-anchor="D._Installed_system_needs_repair"><a class="headline-anchor" href="#D._Installed_system_needs_repair" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#D._Installed_system_needs_repair">https://www.kicksecure.com/wiki/Broken_Boot/#D._Installed_system_needs_repair</span></span></span></span></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">D</i>
 Kicksecure is installed, but no longer boots.</p>
 <p>Use this path when an installed Kicksecure system needs repair from a
 live ISO.</p>
@@ -166,17 +128,8 @@ live ISO.</p>
 <ul>
 <li><a href="#Chroot_Boot_Recovery">Chroot Boot
 Recovery</a></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="E._Login_or_desktop_failure">E. Login or desktop failure</h2>
-</div>
-<div class="tcc-content">
-<p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">E</i>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="E._Login_or_desktop_failure">E. Login or desktop failure</h2><span class="share-tooltip" data-anchor="E._Login_or_desktop_failure"><a class="headline-anchor" href="#E._Login_or_desktop_failure" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#E._Login_or_desktop_failure">https://www.kicksecure.com/wiki/Broken_Boot/#E._Login_or_desktop_failure</span></span></span></span></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">E</i>
 The system reaches login or desktop startup, but the GUI fails.</p>
 <p>Use this path if text-mode boot works, but graphical login, session
 startup, or desktop components fail.</p>
@@ -185,12 +138,8 @@ startup, or desktop components fail.</p>
 <li><a href="#Login_manager_startup">Login manager
 startup</a></li>
 <li><a href="#Desktop_startup">Desktop startup</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<h2 id="Troubleshooting">Troubleshooting</h2>
+</ul></div></div></p></div></div></p>
+<h2 id="Troubleshooting">Troubleshooting</h2><span class="share-tooltip" data-anchor="Troubleshooting"><a class="headline-anchor" href="#Troubleshooting" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Troubleshooting">https://www.kicksecure.com/wiki/Broken_Boot/#Troubleshooting</span></span></span></span>
 <div class="intro-like">
 <p>Use this section to identify where the boot process fails. Do not
 start with repair commands until the failure stage is known.</p>
@@ -210,7 +159,7 @@ of a malware infection. If you suspect that your system has been
 compromised, the only safe solution is to reinstall all operating
 systems (including Kicksecure) that are installed on your device. See <a href="../ISO/">the download page</a> for download and
 installation instructions for Kicksecure.</p>
-<h3 id="Triage">Triage</h3>
+<h3 id="Triage">Triage</h3><span class="share-tooltip" data-anchor="Triage"><a class="headline-anchor" href="#Triage" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Triage">https://www.kicksecure.com/wiki/Broken_Boot/#Triage</span></span></span></span>
 <div class="intro-like">
 <p>Triage means identifying the first part of the boot process that
 fails. This determines which recovery method is appropriate.</p>
@@ -435,7 +384,7 @@ important desktop components may be missing or behave erratically.</li>
 </ul>
 </div>
 </div>
-<h3 id="Fixing_the_problem">Fixing the problem</h3>
+<h3 id="Fixing_the_problem">Fixing the problem</h3><span class="share-tooltip" data-anchor="Fixing_the_problem"><a class="headline-anchor" href="#Fixing_the_problem" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Fixing_the_problem">https://www.kicksecure.com/wiki/Broken_Boot/#Fixing_the_problem</span></span></span></span>
 <div class="intro-like">
 <p>Once the failed boot stage is known, use only the matching section
 below. Some fixes are harmless tests, while others modify bootloader or
@@ -640,7 +589,7 @@ Then press Ctrl+X to boot.</li>
 </ul></li>
 </ul>
 <h3 id="GRUB_appears,_but_Kicksecure_live_USB_does_not_start">GRUB
-appears, but Kicksecure live USB does not start</h3>
+appears, but Kicksecure live USB does not start</h3><span class="share-tooltip" data-anchor="GRUB_appears,_but_Kicksecure_live_USB_does_not_start"><a class="headline-anchor" href="#GRUB_appears,_but_Kicksecure_live_USB_does_not_start" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#GRUB_appears,_but_Kicksecure_live_USB_does_not_start">https://www.kicksecure.com/wiki/Broken_Boot/#GRUB_appears,_but_Kicksecure_live_USB_does_not_start</span></span></span></span>
 <p><img src="../../media/Kicksecure-persistent-mode-user-session.png.webp" alt="GRUB boot menu" /></p>
 <div class="intro-like">
 <p>Use this section when the Kicksecure live USB reaches GRUB, but boot
@@ -690,7 +639,7 @@ additional Kicksecure kernel command line options causes the boot
 failure on specific hardware or firmware.</p>
 </div>
 </div>
-<h3 id="Chroot_Boot_Recovery">Chroot Boot Recovery</h3>
+<h3 id="Chroot_Boot_Recovery">Chroot Boot Recovery</h3><span class="share-tooltip" data-anchor="Chroot_Boot_Recovery"><a class="headline-anchor" href="#Chroot_Boot_Recovery" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Chroot_Boot_Recovery">https://www.kicksecure.com/wiki/Broken_Boot/#Chroot_Boot_Recovery</span></span></span></span>
 <div class="intro-like">
 <p>Use this only when repairing an installed Kicksecure system from a
 live ISO. This is usually not the right section for a live USB that
@@ -843,7 +792,7 @@ successfully.</li>
 </ul>
 </div>
 </div>
-<h2 id="Boot_Recovery_Tools">Boot Recovery Tools</h2>
+<h2 id="Boot_Recovery_Tools">Boot Recovery Tools</h2><span class="share-tooltip" data-anchor="Boot_Recovery_Tools"><a class="headline-anchor" href="#Boot_Recovery_Tools" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Boot_Recovery_Tools">https://www.kicksecure.com/wiki/Broken_Boot/#Boot_Recovery_Tools</span></span></span></span>
 <div class="intro-like">
 <p>Boot recovery tools can help start or repair a system when the normal
 boot path is broken. These tools should be chosen according to the
@@ -852,8 +801,8 @@ failure mode identified above.</p>
 <p>There are several tools that can be useful for fixing or working
 around broken boot issues. The following is not an endorsement or
 recommendation of any particular tool.</p>
-<h3 id="Super_Grub2_Disk">Super Grub2 Disk</h3>
-<p>Website: <a href="https://www.supergrubdisk.org/super-grub2-disk/">https://www.supergrubdisk.org/super-grub2-disk/</a></p>
+<h3 id="Super_Grub2_Disk">Super Grub2 Disk</h3><span class="share-tooltip" data-anchor="Super_Grub2_Disk"><a class="headline-anchor" href="#Super_Grub2_Disk" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Super_Grub2_Disk">https://www.kicksecure.com/wiki/Broken_Boot/#Super_Grub2_Disk</span></span></span></span>
+<p>Website: <a href="https://www.supergrubdisk.org/super-grub2-disk/">https://www.supergrubdisk.org/super-grub2-disk/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.supergrubdisk.org/super-grub2-disk/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p>Super Grub2 Disk is a highly flexible bootable GRUB-based tool that
 can be used for booting operating systems in a number of different ways.
 It is primarily useful for getting a system to boot even when the
@@ -862,7 +811,7 @@ Super Grub2 Disk is not a Linux distribution. It is simply a GRUB
 bootloader paired with a number of very powerful configuration files
 that use GRUB's built-in scripting language.</p>
 <h4 id="Installation">Installation</h4>
-<p>Super Grub2 Disk can be downloaded from <a href="https://www.supergrubdisk.org/category/download/supergrub2diskdownload/super-grub2-disk-stable/">https://www.supergrubdisk.org/category/download/supergrub2diskdownload/super-grub2-disk-stable/</a>.</p>
+<p>Super Grub2 Disk can be downloaded from <a href="https://www.supergrubdisk.org/category/download/supergrub2diskdownload/super-grub2-disk-stable/">https://www.supergrubdisk.org/category/download/supergrub2diskdownload/super-grub2-disk-stable/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.supergrubdisk.org/category/download/supergrub2diskdownload/super-grub2-disk-stable/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Digital software signature verification.</p>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
@@ -917,18 +866,7 @@ options.</p>
 loading operating systems in various different ways. This guide will
 cover four of the provided methods. Which method to use depends on what
 hardware you are using and how badly the system is broken.</p>
-<div class="tab-content-controller tcc-indent">
-<div class="mininav">
-</div>
-<div class="tcc-content">
-<div class="tcc-section active ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="Direct_Linux_boot">Direct Linux boot</h2>
-</div>
-<div class="tcc-content">
-<ul>
+<p><div class="tab-content-controller tcc-indent"><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section active "><div class="tcc-image"></div><div class="tcc-title"><h2 id="Direct_Linux_boot">Direct Linux boot</h2><span class="share-tooltip" data-anchor="Direct_Linux_boot"><a class="headline-anchor" href="#Direct_Linux_boot" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Direct_Linux_boot">https://www.kicksecure.com/wiki/Broken_Boot/#Direct_Linux_boot</span></span></span></span></div><div class="tcc-content"><ul>
 <li>Direct Linux boot
 <ul>
 <li>The direct Linux boot options are listed under the
@@ -957,17 +895,8 @@ to boot into recovery mode on systems such as Ubuntu. For other
 operating systems (including Kicksecure), the <code>( single )</code>
 option can be used to boot into rescue mode. See <a href="../Recovery/">Recovery</a>.</li>
 </ul></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="GRUB_configuration_chaining">GRUB configuration chaining</h2>
-</div>
-<div class="tcc-content">
-<ul>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="GRUB_configuration_chaining">GRUB configuration chaining</h2><span class="share-tooltip" data-anchor="GRUB_configuration_chaining"><a class="headline-anchor" href="#GRUB_configuration_chaining" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#GRUB_configuration_chaining">https://www.kicksecure.com/wiki/Broken_Boot/#GRUB_configuration_chaining</span></span></span></span></div><div class="tcc-content"><ul>
 <li>GRUB configuration chaining
 <ul>
 <li>The GRUB configuration chaining options are listed under the
@@ -995,17 +924,8 @@ Alternatively, find the desired grub.cfg file under the
 and press Enter. If you are shown another boot menu, select your desired
 boot option.</li>
 </ul></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="BIOS_chainloading">BIOS chainloading</h2>
-</div>
-<div class="tcc-content">
-<ul>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="BIOS_chainloading">BIOS chainloading</h2><span class="share-tooltip" data-anchor="BIOS_chainloading"><a class="headline-anchor" href="#BIOS_chainloading" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#BIOS_chainloading">https://www.kicksecure.com/wiki/Broken_Boot/#BIOS_chainloading</span></span></span></span></div><div class="tcc-content"><ul>
 <li>BIOS chainloading
 <ul>
 <li>The BIOS chainloading options are listed under the
@@ -1033,17 +953,8 @@ to boot Kicksecure with BIOS chainloading, you must select either the
 Attempting to chainload the "rootfs" partition will result in an
 "invalid signature" error message.</li>
 </ul></li>
-</ul>
-</div>
-</div>
-<div class="tcc-section  ">
-<div class="tcc-image">
-</div>
-<div class="tcc-title">
-<h2 id="UEFI_chainloading">UEFI chainloading</h2>
-</div>
-<div class="tcc-content">
-<ul>
+</ul></div></div></p>
+<p><div class="tcc-section  "><div class="tcc-image"></div><div class="tcc-title"><h2 id="UEFI_chainloading">UEFI chainloading</h2><span class="share-tooltip" data-anchor="UEFI_chainloading"><a class="headline-anchor" href="#UEFI_chainloading" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#UEFI_chainloading">https://www.kicksecure.com/wiki/Broken_Boot/#UEFI_chainloading</span></span></span></span></div><div class="tcc-content"><ul>
 <li>UEFI chainloading
 <ul>
 <li>The UEFI chainloading options are listed under the
@@ -1071,11 +982,7 @@ boot from any files named <code>mmx64.efi</code><sup class="reference"><a href="
 <code>fbx64.efi</code><sup class="reference"><a href="#cite_note-2">[2]</a></sup> unless you know what you're
 doing.</li>
 </ul></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
+</ul></div></div></p></div></div></p>
 <h4 id="Booting_ISO_Files">Booting ISO Files</h4>
 <p>In addition to the above features, Super Grub2 Disk can be used to
 boot ISO files that are compatible with loopback booting. When properly
@@ -1086,7 +993,7 @@ from it. This file contains configuration settings that are then be used
 to load the kernel and initramfs from the ISO. The kernel is passed a
 command line parameter that allows the initramfs to find the ISO, attach
 it as a device, and boot the rest of the OS from it. For further
-details, see <a href="https://www.supergrubdisk.org/wiki/Loopback.cfg">https://www.supergrubdisk.org/wiki/Loopback.cfg</a>.</p>
+details, see <a href="https://www.supergrubdisk.org/wiki/Loopback.cfg">https://www.supergrubdisk.org/wiki/Loopback.cfg</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.supergrubdisk.org/wiki/Loopback.cfg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Not all ISO files can be booted this way. In particular, Kicksecure's
 ISO does not currently support loopback boot. Much of the work needed to
 get loopback boot working has been done, but it is still a work in
@@ -1114,15 +1021,15 @@ select "Detect and show boot methods". All loopback bootable ISO files
 saved in this the "BOOTISOS" directory will be detected and displayed in
 the <code>Bootable ISOs (in /boot-isos or /boot/boot-isos)</code>
 section. Select the ISO you wish to boot, and press Enter.</p>
-<h3 id="Getting_Help">Getting Help</h3>
+<h3 id="Getting_Help">Getting Help</h3><span class="share-tooltip" data-anchor="Getting_Help"><a class="headline-anchor" href="#Getting_Help" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Getting_Help">https://www.kicksecure.com/wiki/Broken_Boot/#Getting_Help</span></span></span></span>
 <div class="intro-like">
 <p>If you are unsure which recovery path applies, ask for help before
 running commands that modify disks, bootloaders, or firmware boot
 entries.</p>
 </div>
 <p>If you are not comfortable attempting to repair your system by
-yourself, you can ask for help via Kicksecure's support forum at <a href="https://forums.kicksecure.com/">https://forums.kicksecure.com/</a>.</p>
-<h3 id="Additional_Resources">Additional Resources</h3>
+yourself, you can ask for help via Kicksecure's support forum at <a href="https://forums.kicksecure.com/">https://forums.kicksecure.com/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<h3 id="Additional_Resources">Additional Resources</h3><span class="share-tooltip" data-anchor="Additional_Resources"><a class="headline-anchor" href="#Additional_Resources" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Broken_Boot/#Additional_Resources">https://www.kicksecure.com/wiki/Broken_Boot/#Additional_Resources</span></span></span></span>
 <p>The following Wiki pages may have useful information:</p>
 <ul>
 <li><a href="../Malware_and_Firmware_Trojans/">Malware</a>
