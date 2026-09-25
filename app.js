@@ -59,11 +59,21 @@
     }
   }
 
-  // Copy-to-clipboard button on each code block (raw text from data-code or text).
+  // Copy-to-clipboard button on each code block (raw text from data-code or text),
+  // plus production's CodeSelect behavior: clicking the block selects all its text so
+  // a keyboard copy works even where the clipboard API is unavailable.
   function initCopyButtons() {
     var blocks = document.querySelectorAll(".code-select");
     for (var i = 0; i < blocks.length; i++) {
       (function (block) {
+        block.addEventListener("click", function () {
+          var sel = window.getSelection();
+          if (!sel) return;
+          var range = document.createRange();
+          range.selectNodeContents(block);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        });
         var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "copy-button";
@@ -145,7 +155,18 @@
           var btn = document.createElement("button");
           btn.type = "button";
           btn.className = "mininav-tab";
-          btn.textContent = title ? title.textContent.trim() : "Tab " + (j + 1);
+          // Label from the title text ONLY -- a section title is also a real heading, so
+          // it carries an injected .share-tooltip (permalink + copy menu); its text must
+          // not leak into the tab button. Strip it from a clone before reading textContent.
+          var label = "Tab " + (j + 1);
+          if (title) {
+            var tclone = title.cloneNode(true);
+            var strip = tclone.querySelectorAll(".share-tooltip");
+            for (var s = 0; s < strip.length; s++) strip[s].parentNode.removeChild(strip[s]);
+            var t = tclone.textContent.trim();
+            if (t) label = t;
+          }
+          btn.textContent = label;
           (function (idx) {
             btn.addEventListener("click", function () { activate(idx); });
           })(j);
