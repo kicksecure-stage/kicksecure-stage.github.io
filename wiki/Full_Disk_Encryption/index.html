@@ -21,7 +21,15 @@
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><a class="site-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download/">Download</a><ul class="nav-submenu"><li><a href="../ISO/">On Computer</a></li><li><a href="../USB_Installation/">USB Installation</a></li><li><a href="../Intel_AMD64/">Intel / AMD64</a></li><li><a href="../ARM64/">ARM64</a></li><li><a href="../Raspberry_Pi/">Raspberry Pi</a></li><li><a href="../VirtualBox/">Windows (VM)</a></li><li><a href="../MacOS/">Mac</a></li><li><a href="../Linux/">Linux (VM)</a></li><li><a href="../VirtualBox/">VirtualBox (VM)</a></li><li><a href="../Qubes/">Qubes (VM)</a></li><li><a href="../KVM/">KVM (VM)</a></li><li><a href="../Debian/">Debian morph to Kicksecure</a></li><li><a href="../Download/">More options</a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer">Source Code</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About/">About</a><ul class="nav-submenu"><li><a href="../About/">Overview</a></li><li><a href="../Reasons_for_Freedom_Software/">Why Open Source?</a></li><li><a href="../What_we_do/">Project Activities</a></li><li><a href="../Contributors/">Contributors</a></li><li><a href="../Security_Roadmap/">Mission &amp; Vision</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation/">Docs</a><ul class="nav-submenu"><li><a href="../Documentation/">Documentation</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Troubleshooting/">Troubleshooting</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Contribute/">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Forums</a></li><li><a href="../Forum_Best_Practices/">Forum Best Practices</a></li><li><a href="../Contribute/">Contribute</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support/">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy/">Self Support First Policy</a></li><li><a href="../Support/">Support (Limited)</a></li><li><a href="../Plus_Support/">Plus</a></li><li><a href="../Premium_Support/">Premium</a></li><li><a href="../Reporting_Bugs/">Reporting Bugs</a></li><li><a href="../Contact/">Contact (Restricted)</a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<div class="mininav">
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Encrypted_Images/" title="Encrypted Images"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Encrypted
+Images</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Cold_Boot_Attack_Defense/" title="Cold Boot Attack Defense"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Cold
+Boot Attack
+Defense</span></a><span class="info"><span class="prev">Previous page:
+Encrypted Images</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Cold Boot Attack
+Defense</span></span></span>Full Disk Encryption (FDE)</p>
+</div><div class="mininav">
 <ul>
 <li><a class="mw-selflink selflink" aria-current="page">Full Disk
 Encryption</a></li>
@@ -48,6 +56,7 @@ Table</a></li><li class="toc-l2"><a href="#2FA_Considerations">2FA Consideration
 Authentication Methods</a></li><li class="toc-l2"><a href="#Hardware-Based_Encryption_versus_Software-Based_Encryption">Hardware-Based
 Encryption versus Software-Based Encryption</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
+
 
 <div class="mininav">
 <ul>
@@ -868,134 +877,119 @@ Table[/url]</span></span></span></span>
 <tbody>
 <tr class="odd">
 <td><p>Cannot bruteforce weak user passwords?</p></td>
-<td><p>No,
-susceptible to bruteforce if the password is weak.</p></td>
-<td><p>Yes,
-keyfile adds significant entropy.</p></td>
-<td><p>Yes,
-keyfile adds significant entropy.</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
+<td class="cell-red"><p> No, susceptible to bruteforce if the password is
+weak.</p></td>
+<td class="cell-green"><p> Yes, keyfile adds significant entropy.</p></td>
+<td class="cell-green"><p> Yes, keyfile adds significant entropy.</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
 </tr>
 <tr class="even">
 <td><p>Secure if using a strong password?</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>No,
-due to Warm Boot Attacks.</p></td>
-<td><p>In
-theory, yes, but no such implementations exist in practice. There are
-currently no implementations that truly combine a strong user-provided
-password with the unsealed key from the TPM.</p>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No, due to Warm Boot Attacks.</p></td>
+<td class="cell-yellow"><p> In theory, yes, but no such implementations
+exist in practice. There are currently no implementations that truly
+combine a strong user-provided password with the unsealed key from the
+TPM.</p>
 <p>This has significant disadvantages compared to FDE Password + USB
 Keyfile. <sup class="reference"><a href="#cite_note-38">[38]</a></sup></p></td>
 </tr>
 <tr class="odd">
 <td><p>No TPM-Specific Risks or Vulnerabilities (<a href="../Backdoor/">Backdoors</a>, Attack Surface, Data Loss)?</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>No,
-TPM introduces potential attack surface, is proprietary (non-freedom
-software), and is not as time-tested.</p></td>
-<td><p>No
-(See left.)</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No, TPM introduces potential attack surface, is
+proprietary (non-freedom software), and is not as time-tested.</p></td>
+<td class="cell-red"><p> No (See left.)</p></td>
 </tr>
 <tr class="even">
 <td><p>Not vulnerable to Warm Boot Attacks (as defined above)?</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
-<td><p>No
-(Unless using <a href="../Dev/confidential_computing/">confidential computing</a>, which isn't really
-available with Freedom Software yet.)</p></td>
-<td><p>Yes
-(Due to additional password required at pre-boot
-authentication.)</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No (Unless using <a href="../Dev/confidential_computing/">confidential
+computing</a>, which isn't really available with Freedom Software
+yet.)</p></td>
+<td class="cell-green"><p> Yes (Due to additional password required at
+pre-boot authentication.)</p></td>
 </tr>
 <tr class="odd">
 <td><p>Not vulnerable to Cold Boot Attacks (as defined above)?</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
 </tr>
 <tr class="even">
 <td><p>Not vulnerable to <a href="https://xkcd.com/538/">5$ wrench
 attack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://xkcd.com/538/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>?</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
 </tr>
 <tr class="odd">
 <td><p>Unattended server boot without needing to enter a pre-boot
 authentication password?</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
 <td><p>Where would the keyfile be stored?</p></td>
-<td><p>Yes</p></td>
-<td><p>No,
-requires user password for boot.</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No, requires user password for boot.</p></td>
 </tr>
 <tr class="even">
 <td><p>Secure against sniffing of encryption passwords using (hidden)
 cameras or laser microphones?</p></td>
-<td><p>No</p></td>
-<td><p>Yes</p></td>
-<td><p>Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
 <td><p>Depends:</p>
 <ul>
 <li>Server: Yes, because the user typically logs in over SSH.</li>
 <li>Desktop: No, because the user must type the login manager
 password.</li>
 </ul></td>
-<td><p>Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
 </tr>
 <tr class="odd">
 <td><p>Encryption Key Binding to Specific Hardware (TPM)?</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-<td><p>Yes,
-key bound to device's hardware through TPM.</p></td>
-<td><p>Yes
-(Same as left.)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes, key bound to device's hardware through
+TPM.</p></td>
+<td class="cell-green"><p> Yes (Same as left.)</p></td>
 </tr>
 <tr class="even">
 <td><p>Protection Against Key File Being Moved to Another
 Device?</p></td>
-<td><p>No</p></td>
-<td><p>No,
-Keyfile can be copied</p></td>
-<td><p>No,
-Keyfile can be copied</p></td>
-<td><p>Yes,
-Keyfile tied to hardware. Discrete TPM (on motherboard) or External TPM
-Security Key both prevent simple copying, but discrete TPM is integrated
-while the external security key is removable.</p></td>
-<td><p>Yes
-(Same as left.)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No, Keyfile can be copied</p></td>
+<td class="cell-red"><p> No, Keyfile can be copied</p></td>
+<td class="cell-green"><p> Yes, Keyfile tied to hardware. Discrete TPM (on
+motherboard) or External TPM Security Key both prevent simple copying,
+but discrete TPM is integrated while the external security key is
+removable.</p></td>
+<td class="cell-green"><p> Yes (Same as left.)</p></td>
 </tr>
 <tr class="odd">
 <td><p>Supports Multi-Factor Authentication (Password + External
 Device)</p></td>
-<td><p>No
-(password only)</p></td>
-<td><p>Yes,
-password plus USB key</p></td>
-<td><p>No
-(USB key only)</p></td>
-<td><p>No,
-then it no longer fulfills the definition of TPM transparent
-encryption.</p></td>
-<td><p>In
-theory, yes. TPM can be combined with password and potentially other
-factors for multi-factor authentication - in theory - though support
-might require manual setup and maybe even development.</p>
+<td class="cell-red"><p> No (password only)</p></td>
+<td class="cell-green"><p> Yes, password plus USB key</p></td>
+<td class="cell-red"><p> No (USB key only)</p></td>
+<td class="cell-red"><p> No, then it no longer fulfills the definition of
+TPM transparent encryption.</p></td>
+<td class="cell-yellow"><p> In theory, yes. TPM can be combined with
+password and potentially other factors for multi-factor authentication -
+in theory - though support might require manual setup and maybe even
+development.</p>
 <p>At time of writing, no Linux distribution installer is known to
 support setting up true key derivation that combines both a password and
 TPM during installation.</p></td>
@@ -1227,6 +1221,13 @@ bug report: <a href="https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/issues/
 up encryption to AES-256 by default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.gnome.org/GNOME/gnome-disk-utility/-/issues/103" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>
 </div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Encrypted_Images/" title="Encrypted Images"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Encrypted
+Images</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Cold_Boot_Attack_Defense/" title="Cold Boot Attack Defense"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Cold
+Boot Attack
+Defense</span></a><span class="info"><span class="prev">Previous page:
+Encrypted Images</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Cold Boot Attack
+Defense</span></span></span></p>
 <div class="robots-nocontent" data-nosnippet="">
 <div id="custom-footer">
 </div>
