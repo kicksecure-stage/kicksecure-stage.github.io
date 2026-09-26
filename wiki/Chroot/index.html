@@ -470,16 +470,13 @@ APT yet. If not available in your distribution, it can be safely
 ignored. * <code>apt-transport-tor</code> is required because
 <span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/anon-apt-sources-list/blob/master/etc/apt/sources.list.d/debian.sources">Kicksecure/anon-apt-sources-list</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/anon-apt-sources-list/blob/master/etc/apt/sources.list.d/debian.sources" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 is using <code>tor+https</code>. Otherwise we would see the following
-error.
-<pre><code> I: cleaning package lists and apt cache... Reading package lists... E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease E: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease E: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease E: Some index files failed to download. They have been ignored, or old ones used instead. E: apt --option Dir::Etc::SourceList=/dev/null update -oAPT::Status-Fd=&lt;$fd&gt; -oDpkg::Use-Pty=false failed </code></pre>
-<p>* <code>tor</code> is required so <code>apt-transport-tor</code> can
-use Tor. Otherwise we would see the following error.</p>
-<pre><code> I: cleaning package lists and apt cache... Err:1 tor+https://deb.debian.org/debian-security buster/updates InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Err:2 tor+https://deb.debian.org/debian buster InRelease Unable to connect to 127.0.0.1:9050: Err:3 tor+https://deb.kicksecure.com buster-developers InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Reading package lists... W: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease Unable to connect to 127.0.0.1:9050: W: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Some index files failed to download. They have been ignored, or old ones used instead. </code></pre>
-<p>* Actually package <code>apt-transport-tor</code> recommends package
-<code>tor</code> but listing it here anyhow for those using APT with
-parameter <code>--no-install-recommends</code>. *
-<code>apt-transport-https</code> is suggested below to download the
-signing key.</p></li>
+error. zZmwstaticVERBATIMzZ0zZ * <code>tor</code> is required so
+<code>apt-transport-tor</code> can use Tor. Otherwise we would see the
+following error. zZmwstaticVERBATIMzZ1zZ * Actually package
+<code>apt-transport-tor</code> recommends package <code>tor</code> but
+listing it here anyhow for those using APT with parameter
+<code>--no-install-recommends</code>. * <code>apt-transport-https</code>
+is suggested below to download the signing key.</li>
 <li id="cite_note-2">See <a href="../Secure_Downloads/">Secure Downloads</a>
 to understand why <code>curl</code> and the parameters
 <code>--tlsv1.3</code> are used instead of <code>wget</code>.<br />
