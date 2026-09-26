@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>security-misc: Enhance Miscellaneous Security Settings</title>
 <meta name="description" content="Documentation for package security-misc.">
@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -1025,9 +1025,11 @@ when using <code>su</code> the <code>PATH</code> environment variable is
 not adjusted for use with root rights. See <code>echo "$PATH"</code>.
 <span class="code-select" data-language="bash" data-code="echo &quot;$PATH&quot;">echo
 "$PATH"</span> user rights <code>PATH</code> printout:
-zZmwstaticVERBATIMzZ3zZ root rights <code>PATH</code> printout:
-zZmwstaticVERBATIMzZ4zZ By comparison, when using <code>sudo</code>
-using /full/path/to/application is not required.</li>
+<pre><code> /usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games </code></pre>
+<p>root rights <code>PATH</code> printout:</p>
+<pre><code> /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin </code></pre>
+<p>By comparison, when using <code>sudo</code> using
+/full/path/to/application is not required.</p></li>
 <li id="cite_note-7">A root terminal is required to proceed which can be started from
 Qubes dom0 terminal as per the Qubes upstream documentation. <a href="../Unspecific/">Unspecific to Kicksecure.</a></li>
 <li id="cite_note-8">If a root password has not been configured during Debian

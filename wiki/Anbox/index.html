@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Anbox - Run Android Applications and Games</title>
 <meta name="description" content="Anbox allows Android applications and mobile games to run inside Kicksecure.">
@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -476,9 +476,11 @@ systemctl start anbox-container-manager.service</span> Check if anbox
 systemd service is functional.
 <span class="code-select" data-code="sudo systemctl status anbox-container-manager.service">sudo
 systemctl status anbox-container-manager.service</span> Should show
-something similar to the following. zZmwstaticVERBATIMzZ2zZ</p>
+something similar to the following.</p>
+<pre><code> &amp;#x25CF; anbox-container-manager.service - Anbox Container Manager Loaded: loaded (/lib/systemd/system/anbox-container-manager.service; enabled; vendor preset: enabled) Active: active (running) since Mon 2018-12-31 06:23:49 EST; 874ms ago Docs: man:anbox(1) Process: 1996 ExecStartPre=/usr/share/anbox/anbox-bridge.sh start (code=exited, status=0/SUCCESS) Process: 1991 ExecStartPre=/sbin/modprobe binder_linux (code=exited, status=0/SUCCESS) Process: 1986 ExecStartPre=/sbin/modprobe ashmem_linux (code=exited, status=0/SUCCESS) Main PID: 2074 (anbox) Tasks: 9 (limit: 4915) Memory: 5.1M CPU: 51ms CGroup: /system.slice/anbox-container-manager.service &amp;#x2514;&amp;#x2500;2074 /usr/bin/anbox container-manager --daemon --privileged --data-path=/var/lib/anbox Dec 31 06:23:48 debian systemd[1]: Starting Anbox Container Manager... Dec 31 06:23:49 debian systemd[1]: Started Anbox Container Manager. </code></pre>
 </div></li>
-<li id="cite_note-12">These steps do not work yet. zZmwstaticVERBATIMzZ3zZ
+<li id="cite_note-12">These steps do not work yet.
+<pre><code> [ 2019-10-14 11:00:41] [launch.cpp:214@operator()] Session manager failed to become ready </code></pre>
 <div class="info-box ">
 <p><strong>1.</strong> Increase VM private storage. * Power off the VM.
 * Add at least 2 GB more private storage to the VM. This can be done

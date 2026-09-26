@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>command-not-found - suggest installation of missing software packages in the terminal</title>
 <meta name="description" content="HowTo: install command-not-found">
@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -146,10 +146,10 @@ contents files need to be downloaded.</li>
 <span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/etc/apt/apt.conf.d/30usability-misc">Kicksecure/usability-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/usability-misc/blob/master/etc/apt/apt.conf.d/30usability-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 because it contains settings that <a href="https://forums.whonix.org/t/speeding-up-apt-update-with-acquire-languages-none-and-contents-deb-defaultenabled-false-its-so-much-faster/8894">speed
 up APT</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/speeding-up-apt-update-with-acquire-languages-none-and-contents-deb-defaultenabled-false-its-so-much-faster/8894" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> but break <code>command-not-found</code>.
-zZmwstaticVERBATIMzZ0zZ This breaks <code>command-not-found</code>
-because it requires <code>/var/lib/apt/lists/*Contents*</code> to exist.
-See: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090">Debian
-bug #857090</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<pre><code> Acquire::IndexTargets::deb::Contents-deb::DefaultEnabled false; </code></pre>
+<p>This breaks <code>command-not-found</code> because it requires
+<code>/var/lib/apt/lists/*Contents*</code> to exist. See: <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090">Debian
+bug #857090</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=857090" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p></li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Apt-file/" title="apt-file"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">apt-file</span></a><a class="index internal" href="../Advanced_Documentation/" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced

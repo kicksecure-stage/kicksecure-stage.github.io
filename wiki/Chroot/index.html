@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Install Kicksecure inside a folder (chroot)</title>
 <meta name="description" content="You can install Kicksecure on top of your existing Debian (based) Linux installation inside a chroot (change root).">
@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
 <link rel="apple-touch-icon" href="../../apple-touch-icon.png">
-<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -470,13 +470,16 @@ APT yet. If not available in your distribution, it can be safely
 ignored. * <code>apt-transport-tor</code> is required because
 <span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/anon-apt-sources-list/blob/master/etc/apt/sources.list.d/debian.sources">Kicksecure/anon-apt-sources-list</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/anon-apt-sources-list/blob/master/etc/apt/sources.list.d/debian.sources" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 is using <code>tor+https</code>. Otherwise we would see the following
-error. zZmwstaticVERBATIMzZ0zZ * <code>tor</code> is required so
-<code>apt-transport-tor</code> can use Tor. Otherwise we would see the
-following error. zZmwstaticVERBATIMzZ1zZ * Actually package
-<code>apt-transport-tor</code> recommends package <code>tor</code> but
-listing it here anyhow for those using APT with parameter
-<code>--no-install-recommends</code>. * <code>apt-transport-https</code>
-is suggested below to download the signing key.</li>
+error.
+<pre><code> I: cleaning package lists and apt cache... Reading package lists... E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: The method driver /usr/lib/apt/methods/tor+https could not be found. E: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease E: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease E: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease E: Some index files failed to download. They have been ignored, or old ones used instead. E: apt --option Dir::Etc::SourceList=/dev/null update -oAPT::Status-Fd=&lt;$fd&gt; -oDpkg::Use-Pty=false failed </code></pre>
+<p>* <code>tor</code> is required so <code>apt-transport-tor</code> can
+use Tor. Otherwise we would see the following error.</p>
+<pre><code> I: cleaning package lists and apt cache... Err:1 tor+https://deb.debian.org/debian-security buster/updates InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Err:2 tor+https://deb.debian.org/debian buster InRelease Unable to connect to 127.0.0.1:9050: Err:3 tor+https://deb.kicksecure.com buster-developers InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) Reading package lists... W: Failed to fetch tor+https://deb.debian.org/debian-security/dists/buster/updates/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Failed to fetch tor+https://deb.debian.org/debian/dists/buster/InRelease Unable to connect to 127.0.0.1:9050: W: Failed to fetch tor+https://deb.kicksecure.com/dists/buster-developers/InRelease Could not connect to 127.0.0.1:9050 (127.0.0.1). - connect (111: Connection refused) W: Some index files failed to download. They have been ignored, or old ones used instead. </code></pre>
+<p>* Actually package <code>apt-transport-tor</code> recommends package
+<code>tor</code> but listing it here anyhow for those using APT with
+parameter <code>--no-install-recommends</code>. *
+<code>apt-transport-https</code> is suggested below to download the
+signing key.</p></li>
 <li id="cite_note-2">See <a href="../Secure_Downloads/">Secure Downloads</a>
 to understand why <code>curl</code> and the parameters
 <code>--tlsv1.3</code> are used instead of <code>wget</code>.<br />
