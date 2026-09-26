@@ -132,6 +132,11 @@ hr {
 }
 a { color: var(--link); text-decoration: none; }
 a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 2px; }
+/* Links inside running text are underlined, not distinguished by colour alone
+   (a11y: link-in-text-block). Nav/TOC/footer links (lists of links, not in prose)
+   keep the clean colour-only look. */
+.wiki-content p a, .wiki-content li a, .wiki-content dd a,
+.wiki-content td a, .wiki-content th a { text-decoration: underline; text-underline-offset: 2px; }
 /* External links are distinguished by the trailing archive <sup> (see _archive_links /
    .ext-link-to-archive below), matching production -- no separate arrow, to avoid a
    double affordance. */
@@ -946,7 +951,9 @@ code {
 }
 .mininav.mn-switcher > ul > li { display: inline-block; margin: 0; padding: 0; }
 .mininav.mn-switcher li > :not(span, img) {
-  background-color: #9aabed; color: white; padding: 3px 11px 5px; text-decoration: none;
+  /* dark text on the light-blue pill: white failed WCAG contrast (2.22) on #9aabed;
+     dark navy keeps the production pill colour while passing a11y */
+  background-color: #9aabed; color: #1c2a5e; padding: 3px 11px 5px; text-decoration: none;
   font-size: 17px; display: inline-block; border: none; border-radius: 50px; cursor: pointer;
   margin: 5px 0; box-shadow: 1px 1px 3px #0002; transition: background-color .2s, color .2s;
 }
