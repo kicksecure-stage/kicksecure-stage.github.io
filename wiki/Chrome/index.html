@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Chrome</title>
 <meta name="description" content="Using Chrome in Kicksecure.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/GoogleChromeicon.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -86,11 +86,12 @@ this stage. Just ignore them for now.</span></li><li><i class="fa-solid fa-light
 familiar with advanced computer security concepts, you can learn more
 about digital signatures here: <a href="../Verifying_Software_Signatures/">Verifying Software Signatures</a></span></li></ul></p>
 <p>Download the signing key.</p>
-<p><span class="code-select">scurl-download <a href="https://dl.google.com/linux/linux_signing_key.pub">https://dl.google.com/linux/linux_signing_key.pub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://dl.google.com/linux/linux_signing_key.pub" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="scurl-download https://dl.google.com/linux/linux_signing_key.pub">scurl-download
+<a href="https://dl.google.com/linux/linux_signing_key.pub">https://dl.google.com/linux/linux_signing_key.pub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://dl.google.com/linux/linux_signing_key.pub" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>View OpenPGP key information.</p>
-<p><span class="code-select">gpg --keyid-format long --import
---import-options show-only --with-fingerprint
-linux_signing_key.pub</span></p>
+<p><span class="code-select" data-code="gpg --keyid-format long --import --import-options show-only --with-fingerprint linux_signing_key.pub">gpg
+--keyid-format long --import --import-options show-only
+--with-fingerprint linux_signing_key.pub</span></p>
 <pre><code>pub   dsa1024/A040830F7FAC5991 2007-03-08 [SC]
       Key fingerprint = 4CCA 1EAF 950C EE4A B839  76DC A040 830F 7FAC 5991
 uid                            Google, Inc. Linux Package Signing Key &lt;linux-packages-keymaster@google.com&gt;
@@ -104,17 +105,18 @@ sub   rsa4096/78BD65473CB3BD13 2019-07-22 [S] [expires: 2022-07-21]</code></pre>
 <p>Convert assci armored <code>linux_signing_key.pub</code> to gpg
 keyring format <code>linux_signing_key.pub.gpg</code>.
 <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
-<p><span class="code-select">gpg --no-default-keyring --keyring
-linux_signing_key.pub.gpg --import linux_signing_key.pub</span></p>
+<p><span class="code-select" data-code="gpg --no-default-keyring --keyring linux_signing_key.pub.gpg --import linux_signing_key.pub">gpg
+--no-default-keyring --keyring linux_signing_key.pub.gpg --import
+linux_signing_key.pub</span></p>
 <p><sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
 <p>Create keyring with the RSA 4096 signing key only.</p>
-<p><span class="code-select">gpg --no-default-keyring --keyring
-linux_signing_key.pub.gpg --armor --export "EB4C 1BFD 4F04 2F6D DDCC
-EC91 7721 F63B D38B 4796" | gpg --dearmor --no-options
---no-default-keyring &gt; google.gpg</span></p>
+<p><span class="code-select" data-code="gpg --no-default-keyring --keyring linux_signing_key.pub.gpg --armor --export &quot;EB4C 1BFD 4F04 2F6D DDCC  EC91 7721 F63B D38B 4796&quot; | gpg --dearmor --no-options --no-default-keyring &gt; google.gpg">gpg
+--no-default-keyring --keyring linux_signing_key.pub.gpg --armor
+--export "EB4C 1BFD 4F04 2F6D DDCC EC91 7721 F63B D38B 4796" | gpg
+--dearmor --no-options --no-default-keyring &gt; google.gpg</span></p>
 <p>Install the Google RSA 4096 APT signing key.</p>
-<p><span class="code-select">sudo cp google.gpg
-/usr/share/keyrings/google.gpg</span></p>
+<p><span class="code-select" data-code="sudo cp google.gpg /usr/share/keyrings/google.gpg">sudo
+cp google.gpg /usr/share/keyrings/google.gpg</span></p>
 <h2 id="Avoid_Google_Chrome_Automatic_Repository_Configuration">Avoid
 Google Chrome Automatic Repository Configuration</h2><span class="share-tooltip" data-anchor="Avoid_Google_Chrome_Automatic_Repository_Configuration"><a class="headline-anchor" href="#Avoid_Google_Chrome_Automatic_Repository_Configuration" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Chrome/#Avoid_Google_Chrome_Automatic_Repository_Configuration">https://www.kicksecure.com/wiki/Chrome/#Avoid_Google_Chrome_Automatic_Repository_Configuration</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Avoid_Google_Chrome_Automatic_Repository_Configuration&amp;text=Avoid%0AGoogle%20Chrome%20Automatic%20Repository%20Configuration" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Avoid_Google_Chrome_Automatic_Repository_Configuration&amp;text=Avoid%0AGoogle%20Chrome%20Automatic%20Repository%20Configuration" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Avoid_Google_Chrome_Automatic_Repository_Configuration&amp;title=Avoid%0AGoogle%20Chrome%20Automatic%20Repository%20Configuration" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Avoid%0AGoogle%20Chrome%20Automatic%20Repository%20Configuration&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Avoid_Google_Chrome_Automatic_Repository_Configuration" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Chrome/#Avoid_Google_Chrome_Automatic_Repository_Configuration]Avoid
 Google Chrome Automatic Repository Configuration[/url]">[url=https://www.kicksecure.com/wiki/Chrome/#Avoid_Google_Chrome_Automatic_Repository_Configuration]Avoid
@@ -124,8 +126,8 @@ Google Chrome Automatic Repository Configuration[/url]</span></span></span></spa
 Chrome Automatic Repository Configuration. <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
 <p>Note: this will only work if Google Chrome Repository hasn't been
 previously added.</p>
-<p><span class="code-select">sudo touch
-/etc/default/google-chrome</span></p>
+<p><span class="code-select" data-code="sudo touch /etc/default/google-chrome">sudo
+touch /etc/default/google-chrome</span></p>
 <h2 id="Repository_Installation">Repository Installation</h2><span class="share-tooltip" data-anchor="Repository_Installation"><a class="headline-anchor" href="#Repository_Installation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Chrome/#Repository_Installation">https://www.kicksecure.com/wiki/Chrome/#Repository_Installation</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Repository_Installation&amp;text=Repository%20Installation" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Repository_Installation&amp;text=Repository%20Installation" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Repository_Installation&amp;title=Repository%20Installation" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Repository%20Installation&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FChrome%2F%23Repository_Installation" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Chrome/#Repository_Installation]Repository Installation[/url]">[url=https://www.kicksecure.com/wiki/Chrome/#Repository_Installation]Repository Installation[/url]</span></span></span></span>
 <p>Open file <code>/etc/apt/sources.list.d/google-chrome.sources</code>
 in an editor with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
@@ -143,7 +145,7 @@ editor) before running the <code>sudoedit</code> command.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/apt/sources.list.d/google-chrome.sources">sudoedit
 /etc/apt/sources.list.d/google-chrome.sources</span></p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
@@ -158,7 +160,7 @@ Template.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/apt/sources.list.d/google-chrome.sources">sudoedit
 /etc/apt/sources.list.d/google-chrome.sources</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Notes.</p>
@@ -183,11 +185,16 @@ with Root Rights</a>.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/apt/sources.list.d/google-chrome.sources">sudoedit
 /etc/apt/sources.list.d/google-chrome.sources</span></p></div></div></p></div></div></p>
 </div>
 <p>Paste.</p>
-<p><span class="code-select">Types: deb URIs: <a href="https://dl.google.com/linux/chrome/deb/">https://dl.google.com/linux/chrome/deb/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://dl.google.com/linux/chrome/deb/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<p><span class="code-select" data-code="Types: deb
+URIs: https://dl.google.com/linux/chrome/deb/
+Suites: stable
+Components: main
+Enabled: yes
+Signed-By: /usr/share/keyrings/google.gpg">Types: deb URIs: <a href="https://dl.google.com/linux/chrome/deb/">https://dl.google.com/linux/chrome/deb/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://dl.google.com/linux/chrome/deb/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Suites: stable Components: main Enabled: yes Signed-By:
 /usr/share/keyrings/google.gpg</span></p>
 <p>Save.</p>
@@ -213,14 +220,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>google-chrome-stable</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-google-chrome-stable</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends google-chrome-stable">sudo
+apt install --no-install-recommends google-chrome-stable</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -235,7 +242,7 @@ Done.</p>
 </div>
 <h1 id="Usage">Usage</h1>
 <p>Start.</p>
-<p><span class="code-select">/opt/google/chrome/chrome</span></p>
+<p><span class="code-select" data-code="/opt/google/chrome/chrome">/opt/google/chrome/chrome</span></p>
 <h1 id="Related">Related</h1>
 <ul>
 <li><a href="../Chromium/">Chromium</a></li>
@@ -252,9 +259,10 @@ Browser for Kicksecure Discussions (not Whonix)</a><sup class="ext-link-to-archi
 <li id="cite_note-1">Because in next step, gpg can only work with keyrings. Not with
 assci armored public key files. This is to import only the newer signing
 key. Avoiding to import the insecure legacy DSA 1024 signing key.</li>
-<li id="cite_note-2"><span class="code-select">gpg --no-default-keyring --keyring
-linux_signing_key.pub.gpg --armor --export "EB4C 1BFD 4F04 2F6D DDCC
-EC91 7721 F63B D38B 4796" | gpg --import</span>
+<li id="cite_note-2"><span class="code-select" data-code="gpg --no-default-keyring --keyring linux_signing_key.pub.gpg --armor --export &quot;EB4C 1BFD 4F04 2F6D DDCC EC91 7721 F63B D38B 4796&quot; | gpg --import">gpg
+--no-default-keyring --keyring linux_signing_key.pub.gpg --armor
+--export "EB4C 1BFD 4F04 2F6D DDCC EC91 7721 F63B D38B 4796" | gpg
+--import</span>
 <pre><code> gpg: key 7721F63BD38B4796: 2 signatures not checked due to missing keys gpg: key 7721F63BD38B4796: public key &quot;Google Inc. (Linux Packages Signing Authority) &lt;linux-packages-keymaster@google.com&gt;&quot; imported gpg: Total number processed: 1 gpg: imported: 1 gpg: no ultimately trusted keys found </code></pre></li>
 <li id="cite_note-3"><blockquote><p>Note: Installing Google Chrome will add the Google repository so your
 system will automatically keep Google Chrome up to date. If you don't

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>NAT traversal</title>
 <meta name="description" content="todo">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="NAT traversal">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -59,8 +59,8 @@ potential alternatives.</p>
 correct setup:</p>
 <p>On Your Server (behind NAT, running the HTTP service on port
 <code>8080</code>):</p>
-<p><span class="code-select">sudo ./pwnat -s 0.0.0.0 2222
-127.0.0.1:8080</span></p>
+<p><span class="code-select" data-code="sudo ./pwnat -s 0.0.0.0 2222 127.0.0.1:8080">sudo
+./pwnat -s 0.0.0.0 2222 127.0.0.1:8080</span></p>
 <p>This:</p>
 <ul>
 <li>Listens for <code>pwnat</code> clients on UDP port
@@ -69,12 +69,14 @@ correct setup:</p>
 HTTP server)</li>
 </ul>
 <p>Make sure your HTTP server is running:</p>
-<p><span class="code-select">python3 -m http.server 8080</span></p>
+<p><span class="code-select" data-code="python3 -m http.server 8080">python3
+-m http.server 8080</span></p>
 <p>On the Client (behind another NAT, allows browser to connect):</p>
 <p><u>Note:</u> Replace <code>your.server.public.ip</code> with the
 actual IP address of your server.</p>
-<p><span class="code-select">sudo ./pwnat -c 0.0.0.0 80
-your.server.public.ip 2222 127.0.0.1 8080</span></p>
+<p><span class="code-select" data-code="sudo ./pwnat -c 0.0.0.0 80 your.server.public.ip 2222 127.0.0.1 8080">sudo
+./pwnat -c 0.0.0.0 80 your.server.public.ip 2222 127.0.0.1
+8080</span></p>
 <p>This:</p>
 <ul>
 <li>Binds to port <code>80</code> on the client (accessible via
@@ -83,7 +85,7 @@ your.server.public.ip 2222 127.0.0.1 8080</span></p>
 local <code>8080</code></li>
 <li>Now, on the client machine, just open:</li>
 </ul>
-<p><span class="code-select"><a href="http://127.0.0.1">http://127.0.0.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://127.0.0.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="http://127.0.0.1"><a href="http://127.0.0.1">http://127.0.0.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://127.0.0.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Expected result:</p>
 <p>Client should see the server's content.</p>
 <h2 id="Actual_Result">Actual Result</h2><span class="share-tooltip" data-anchor="Actual_Result"><a class="headline-anchor" href="#Actual_Result" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/NAT_traversal/#Actual_Result">https://www.kicksecure.com/wiki/NAT_traversal/#Actual_Result</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FNAT_traversal%2F%23Actual_Result&amp;text=Actual%20Result" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FNAT_traversal%2F%23Actual_Result&amp;text=Actual%20Result" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FNAT_traversal%2F%23Actual_Result&amp;title=Actual%20Result" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Actual%20Result&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FNAT_traversal%2F%23Actual_Result" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/NAT_traversal/#Actual_Result]Actual Result[/url]">[url=https://www.kicksecure.com/wiki/NAT_traversal/#Actual_Result]Actual Result[/url]</span></span></span></span>

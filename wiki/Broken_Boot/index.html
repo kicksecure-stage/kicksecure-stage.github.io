@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Broken Boot</title>
 <meta name="description" content="System is no longer booting?">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Broken_boot123.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -578,8 +578,8 @@ You may be able to resolve the issue by using
 </ul></li>
 </ul></li>
 </ul>
-<p><span class="code-select">sudo apt-get install --reinstall greetd
-wlgreet</span></p>
+<p><span class="code-select" data-code="sudo apt-get install --reinstall greetd wlgreet">sudo
+apt-get install --reinstall greetd wlgreet</span></p>
 <ul>
 <li>Desktop startup
 <ul>
@@ -686,28 +686,30 @@ ISO file to be at the top of the boot order.</li>
 system. The partition containing Kicksecure's root filesystem should be
 recognizable by size.</li>
 </ul>
-<p><span class="code-select">lsblk</span></p>
+<p><span class="code-select" data-code="lsblk">lsblk</span></p>
 <ul>
 <li>Mount Kicksecure's root filesystem using
 <code>sudo mount /dev/sdXY /mnt</code>, replacing <code>sdXY</code> as
 appropriate.</li>
 </ul>
-<p><span class="code-select">sudo mount /dev/sdXY /mnt</span></p>
+<p><span class="code-select" data-code="sudo mount /dev/sdXY /mnt">sudo
+mount /dev/sdXY /mnt</span></p>
 <ul>
 <li>Determine which partition contains Kicksecure's boot filesystem
 (which is always separate from the root filesystem). Mount it using
 <code>sudo mount /dev/sdXY /mnt/boot</code>, again replacing
 <code>sdXY</code> as appropriate.</li>
 </ul>
-<p><span class="code-select">sudo mount /dev/sdXY /mnt/boot</span></p>
+<p><span class="code-select" data-code="sudo mount /dev/sdXY /mnt/boot">sudo
+mount /dev/sdXY /mnt/boot</span></p>
 <ul>
 <li>If the system uses UEFI firmware, there will be an additional, small
 fat32 partition near the beginning of the drive Kicksecure is installed
 onto. Mount it using <code>mount /dev/sdXY /mnt/boot/efi</code>, again
 replacing <code>sdXY</code> as appropriate.</li>
 </ul>
-<p><span class="code-select">sudo mount /dev/sdXY
-/mnt/boot/efi</span></p>
+<p><span class="code-select" data-code="sudo mount /dev/sdXY /mnt/boot/efi">sudo
+mount /dev/sdXY /mnt/boot/efi</span></p>
 <ul>
 <li>Bind-mount several system directories into <code>/mnt</code> so that
 recovery tools will work:
@@ -718,15 +720,19 @@ recovery tools will work:
 <li><code>sudo mount --bind /sys /mnt/sys</code></li>
 </ul></li>
 </ul>
-<p><span class="code-select">sudo mount --bind /dev /mnt/dev sudo mount
---bind /dev/pts /mnt/dev/pts sudo mount --bind /proc /mnt/proc sudo
-mount --bind /sys /mnt/sys</span></p>
+<p><span class="code-select" data-code="sudo mount --bind /dev /mnt/dev
+sudo mount --bind /dev/pts /mnt/dev/pts
+sudo mount --bind /proc /mnt/proc
+sudo mount --bind /sys /mnt/sys">sudo mount --bind /dev /mnt/dev sudo
+mount --bind /dev/pts /mnt/dev/pts sudo mount --bind /proc /mnt/proc
+sudo mount --bind /sys /mnt/sys</span></p>
 <ul>
 <li>Run <code>chroot /mnt</code> to enter the chroot environment.
 Commands you run at this point will act as if you were running them on
 the installed system.</li>
 </ul>
-<p><span class="code-select">sudo chroot /mnt</span></p>
+<p><span class="code-select" data-code="sudo chroot /mnt">sudo chroot
+/mnt</span></p>
 <ul>
 <li>Depending on which boot issue you are attempting to resolve, you may
 have to modify some configuration files before regenerating boot data.
@@ -746,8 +752,9 @@ Kicksecure boot entry to your UEFI NVRAM.</li>
 </ul></li>
 </ul></li>
 </ul>
-<p><span class="code-select">efibootmgr -c -d /dev/sdX -p Y -L
-'Kicksecure' -l 'EFI\Kicksecure\shimx64.efi'</span></p>
+<p><span class="code-select" data-code="efibootmgr -c -d /dev/sdX -p Y -L &#x27;Kicksecure&#x27; -l &#x27;EFI\Kicksecure\shimx64.efi&#x27;">efibootmgr
+-c -d /dev/sdX -p Y -L 'Kicksecure' -l
+'EFI\Kicksecure\shimx64.efi'</span></p>
 <ul>
 <li><ul>
 <li><b>Incorrectly named filesystem in crypttab</b>
@@ -762,8 +769,8 @@ the crypttab file.</li>
 </ul></li>
 </ul></li>
 </ul>
-<p><span class="code-select">nano /etc/crypttab nano
-/etc/fstab</span></p>
+<p><span class="code-select" data-code="nano /etc/crypttab
+nano /etc/fstab">nano /etc/crypttab nano /etc/fstab</span></p>
 <ul>
 <li><ul>
 <li><b>Important system software was uninstalled</b>
@@ -775,7 +782,8 @@ uninstalled recently.</li>
 </ul></li>
 </ul></li>
 </ul>
-<p><span class="code-select">apt install package-name less
+<p><span class="code-select" data-code="apt install package-name
+less /var/log/apt/history.log">apt install package-name less
 /var/log/apt/history.log</span></p>
 <ul>
 <li>After completing any necessary prerequiste steps from above,
@@ -790,13 +798,15 @@ appropriate.</li>
 <code>dracut --regenerate-all --force</code>.</li>
 </ul></li>
 </ul>
-<p><span class="code-select">grub-install /dev/sdX update-grub dracut
---regenerate-all --force</span></p>
+<p><span class="code-select" data-code="grub-install /dev/sdX
+update-grub
+dracut --regenerate-all --force">grub-install /dev/sdX update-grub
+dracut --regenerate-all --force</span></p>
 <ul>
 <li>After running the above commands, exit the chroot environment by
 running <code>exit</code>.</li>
 </ul>
-<p><span class="code-select">exit</span></p>
+<p><span class="code-select" data-code="exit">exit</span></p>
 <ul>
 <li>Shut down the system and remove the Kicksecure live ISO. Then power
 the system back on. If all goes well, Kicksecure should now boot
@@ -849,7 +859,15 @@ terminal!</strong></p>
 <div class="toccolours mw-collapsible mw-collapsed">
 <p><strong>Show Super Grub2 Disk installation commands</strong></p>
 <div class="mw-collapsible-content">
-<p><span class="code-select">cd ~/Downloads sha256sum
+<p><span class="code-select" data-code="cd ~/Downloads
+sha256sum supergrub2-2.06s4-multiarch-USB.img.zip
+# Compare the checksum displayed in your terminal with the file&#x27;s
+# checksum listed in the SHA256SUMS section of the download page
+# If it looks right, proceed
+unzip supergrub2-2.06s4-multiarch-USB.img.zip
+# Replace &quot;sdX&quot; with your USB drive&#x27;s device ID
+sudo dd if=./supergrub2-2.06s4-multiarch-USB.img of=/dev/sdX bs=4M
+sync">cd ~/Downloads sha256sum
 supergrub2-2.06s4-multiarch-USB.img.zip</p>
 <ol>
 <li>Compare the checksum displayed in your terminal with the file's</li>
@@ -1021,8 +1039,8 @@ running <code>sudo apt install gparted</code>. You will also need the
 fatresize tool, which GParted will use under the hood to resize the
 filesystem. This can be installed by running
 <code>sudo apt install fatresize</code>.</p>
-<p><span class="code-select">sudo apt install gparted
-fatresize</span></p>
+<p><span class="code-select" data-code="sudo apt install gparted fatresize">sudo
+apt install gparted fatresize</span></p>
 <p>Once the partition is large enough to contain your ISO files, simply
 mount it and copy your desired ISO files to the BOOTISOS directory on
 the drive. Note that the ISO storage partition is formatted with the

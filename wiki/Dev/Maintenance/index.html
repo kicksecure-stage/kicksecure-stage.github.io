@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Dev/Maintenance</title>
 <meta name="description" content="Design Documentation about Redistribution of Kicksecure">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Dev/Maintenance">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -92,7 +92,7 @@ software such as:
 <li>testing on stage server before upgrades</li>
 </ul>
 <h1 id="package_stable_upgrade">package stable upgrade</h1>
-<p><span class="code-select">dist_build_apt_codename=trixie-proposed-updates
+<p><span class="code-select" data-code="dist_build_apt_codename=trixie-proposed-updates make reprepro-add">dist_build_apt_codename=trixie-proposed-updates
 make reprepro-add</span></p>
 <h1 id="Tor_Browser_hardcoded_version_file">Tor Browser hardcoded
 version file</h1>
@@ -107,9 +107,10 @@ torproject.org</li>
 updated</li>
 <li>to manually test from a Qubes AppVM</li>
 </ul>
-<p><span class="code-select">CURL_PROXY=--fail tbb_version=6.5.2
-qubes_vm_type=Template update-torbrowser --postinst</span></p>
-<p><span class="code-select">dist_build_apt_codename=trixie-proposed-updates
+<p><span class="code-select" data-code="CURL_PROXY=--fail tbb_version=6.5.2 qubes_vm_type=Template  update-torbrowser --postinst">CURL_PROXY=--fail
+tbb_version=6.5.2 qubes_vm_type=Template update-torbrowser
+--postinst</span></p>
+<p><span class="code-select" data-code="dist_build_apt_codename=trixie-proposed-updates make reprepro-add">dist_build_apt_codename=trixie-proposed-updates
 make reprepro-add</span></p>
 <h1 id="Kicksecure_repository_TPO_packages">Kicksecure repository TPO
 packages</h1>
@@ -123,7 +124,7 @@ trixie-proposed-updates) for wider testing</li>
 <li>upload to stable (currently: trixie)</li>
 </ul></li>
 </ul>
-<p><span class="code-select">./build-steps.d/1200_create-debian-packages
+<p><span class="code-select" data-code="./build-steps.d/1200_create-debian-packages --build --allow-untagged true --allow-uncommitted true --internalrun --target root --function &quot;get_tpo_packages ; create_whonix_repository&quot;">./build-steps.d/1200_create-debian-packages
 --build --allow-untagged true --allow-uncommitted true --internalrun
 --target root --function "get_tpo_packages ;
 create_whonix_repository"</span></p>

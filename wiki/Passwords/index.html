@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Passwords</title>
 <meta name="description" content="Generating Strong Passwords">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Passwords2132341.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -339,15 +339,17 @@ inaccessible during part of the process.</p>
 <div class="info-box ">
 <p><strong>1.</strong> Enumerate all devices to determine the partition
 name.</p>
-<p><span class="code-select"># ls /dev/</span></p>
+<p><span class="code-select" data-code="# ls /dev/"># ls
+/dev/</span></p>
 <p><strong>2.</strong> Verify the partition in question is an encrypted
 one (typically <code>sda5</code> by default on non-customized
 installs).</p>
-<p><span class="code-select"># blkid -p /dev/sda5</span></p>
+<p><span class="code-select" data-code="# blkid -p /dev/sda5"># blkid -p
+/dev/sda5</span></p>
 <p><strong>3.</strong> Inspect LUKS header details and confirm it was
 converted at the end.</p>
-<p><span class="code-select"># cryptsetup luksDump --debug
-/dev/sda5</span></p>
+<p><span class="code-select" data-code="# cryptsetup luksDump --debug /dev/sda5">#
+cryptsetup luksDump --debug /dev/sda5</span></p>
 <p><strong>4.</strong> Check kernel module availability.</p>
 <p>Before rebooting, it is advisable to check the 'algif_skcipher'
 kernel module is included in the initramfs image, otherwise it might not
@@ -365,7 +367,8 @@ sudo update-initramfs -u</code></pre>
 transient and will not survive the next reboot (users should land in an
 initramfs debug shell).</li>
 </ul>
-<p>Convert the header to LUKS2: <span class="code-select">cryptsetup
+<p>Convert the header to LUKS2:
+<span class="code-select" data-code="cryptsetup convert /dev/sda5 --type luks2 --debug">cryptsetup
 convert /dev/sda5 --type luks2 --debug</span></p>
 <p>Then convert to Argon2id. Parameters used in this example:</p>
 <ul>
@@ -373,9 +376,9 @@ convert /dev/sda5 --type luks2 --debug</span></p>
 <li>50 iterations.</li>
 <li>4 threads.</li>
 </ul>
-<p><span class="code-select">cryptsetup luksConvertKey --key-slot 0
---pbkdf argon2id --pbkdf-force-iterations 50 --pbkdf-memory 1048576
---pbkdf-parallel 4 /dev/sda5</span></p>
+<p><span class="code-select" data-code="cryptsetup luksConvertKey --key-slot 0 --pbkdf argon2id --pbkdf-force-iterations 50 --pbkdf-memory 1048576 --pbkdf-parallel 4 /dev/sda5">cryptsetup
+luksConvertKey --key-slot 0 --pbkdf argon2id --pbkdf-force-iterations 50
+--pbkdf-memory 1048576 --pbkdf-parallel 4 /dev/sda5</span></p>
 </div>
 <h1 id="Guidelines">Guidelines</h1>
 <h2 id="Argon2id_Entropy_Estimates">Argon2id Entropy Estimates</h2><span class="share-tooltip" data-anchor="Argon2id_Entropy_Estimates"><a class="headline-anchor" href="#Argon2id_Entropy_Estimates" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Passwords/#Argon2id_Entropy_Estimates">https://www.kicksecure.com/wiki/Passwords/#Argon2id_Entropy_Estimates</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPasswords%2F%23Argon2id_Entropy_Estimates&amp;text=Argon2id%20Entropy%20Estimates" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPasswords%2F%23Argon2id_Entropy_Estimates&amp;text=Argon2id%20Entropy%20Estimates" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPasswords%2F%23Argon2id_Entropy_Estimates&amp;title=Argon2id%20Entropy%20Estimates" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Argon2id%20Entropy%20Estimates&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPasswords%2F%23Argon2id_Entropy_Estimates" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Passwords/#Argon2id_Entropy_Estimates]Argon2id Entropy Estimates[/url]">[url=https://www.kicksecure.com/wiki/Passwords/#Argon2id_Entropy_Estimates]Argon2id Entropy Estimates[/url]</span></span></span></span>
@@ -424,7 +427,8 @@ physically choose the Diceware words. <sup class="reference"><a href="#cite_note
 <p>The <a href="https://packages.debian.org/diceware">"diceware"
 package</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/diceware" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is available in Debian. To generate a 12-word password from
 the EFF's list, run:</p>
-<p><span class="code-select">diceware -n 12 -w en_eff</span></p>
+<p><span class="code-select" data-code="diceware -n 12 -w en_eff">diceware
+-n 12 -w en_eff</span></p>
 <p>Follow this additional advice for Diceware passwords:
 <sup class="reference"><a href="#cite_note-27">[27]</a></sup></p>
 <ul>

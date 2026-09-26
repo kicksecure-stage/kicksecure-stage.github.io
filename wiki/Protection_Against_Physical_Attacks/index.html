@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Protection against Physical Attacks</title>
 <meta name="description" content="BIOS Password, Problematic Interfaces, Screen Lock, Virtual Consoles, Login Screen, Side Channel Attacks">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Protectionagainst234234234.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -310,7 +310,8 @@ and editing <code>/boot/grub/grub.cfg</code> to disable the GRUB
 bootloader password.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 Usage.</p>
-<p><span class="code-select">sudo grub-pwchange</span></p>
+<p><span class="code-select" data-code="sudo grub-pwchange">sudo
+grub-pwchange</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Password prompt.</p>
 <p>You'll be prompted to enter a password.</p>
@@ -361,12 +362,12 @@ named <code>user</code> and has root access. Using this method,
 a username and password.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Make sure <strong>grub-common</strong> is installed.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt install
-grub-common</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt install grub-common">sudo
+apt update &amp;&amp; sudo apt install grub-common</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Run the Grub password generator <a href="https://manpages.debian.org/stable/grub-common/grub-mkpasswd-pbkdf2.1.en.html">grub-mkpasswd-pbkdf2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org/stable/grub-common/grub-mkpasswd-pbkdf2.1.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 and enter the desired password that you wish to use.</p>
-<p><span class="code-select">grub-mkpasswd-pbkdf2</span></p>
+<p><span class="code-select" data-code="grub-mkpasswd-pbkdf2">grub-mkpasswd-pbkdf2</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 The output will look similar to the following: (copy the part starting
 with <strong>grub.pbkdf2.sha512.10000.</strong>)</p>
@@ -374,16 +375,20 @@ with <strong>grub.pbkdf2.sha512.10000.</strong>)</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 Open the custom GRUB configuration file at
 <code>/etc/grub.d/40_custom</code> (using a text editor like nano).</p>
-<p><span class="code-select">sudo nano /etc/grub.d/40_custom</span></p>
+<p><span class="code-select" data-code="sudo nano /etc/grub.d/40_custom">sudo
+nano /etc/grub.d/40_custom</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Add the necessary lines to the file, including the copied
 grub.pbkdf2.sha512.10000. along with the username of
 the machine (which is user in our case).</p>
-<p><span class="code-select">set superusers="user" password_pbkdf2 user
+<p><span class="code-select" data-code="set superusers=&quot;user&quot;
+password_pbkdf2 user grub.pbkdf2.sha512.10000.&lt;hashed-password&gt;">set
+superusers="user" password_pbkdf2 user
 grub.pbkdf2.sha512.10000.&lt;hashed-password&gt;</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
 Save and exit the file, then update GRUB to apply the changes.</p>
-<p><span class="code-select">sudo update-grub</span></p>
+<p><span class="code-select" data-code="sudo update-grub">sudo
+update-grub</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
 Reboot. A prompt should appear if you press the <code>e</code> key,
 <code>Esc</code>, or if you want to run Kicksecure from the boot menu,
@@ -727,8 +732,9 @@ Encryption</a></li>
 <li id="cite_note-4">If the system has both a supervisor password and a user password,
 then set passwords for both.</li>
 <li id="cite_note-5">Results in GRUB configuration file <code>/boot/grub/grub.cfg</code>
-to be appended with: <span class="code-select">sudo cat
-/boot/grub/grub.cfg</span>
+to be appended with:
+<span class="code-select" data-code="sudo cat /boot/grub/grub.cfg">sudo
+cat /boot/grub/grub.cfg</span>
 <pre><code> ### BEGIN /etc/grub.d/44_password ### set superusers=&quot;user&quot; password_pbkdf2 user grub.pbkdf2.sha512.10000.password-hash-replaced ### END /etc/grub.d/44_password ### </code></pre></li>
 <li id="cite_note-6">This is hardcoded in the <code>grub-pwchange</code> script.</li>
 <li id="cite_note-7"><a href="https://en.wikipedia.org/wiki/DMA_attack">https://en.wikipedia.org/wiki/DMA_attack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/DMA_attack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>

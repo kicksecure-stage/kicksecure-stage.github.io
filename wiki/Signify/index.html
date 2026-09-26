@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Signify: Cryptographically Sign and Verify Files</title>
 <meta name="description" content="HowTo: Use Signify on Debian (based) Distributions">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Signify1323.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -90,14 +90,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>signify-openbsd qrencode</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-signify-openbsd qrencode</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends signify-openbsd qrencode">sudo
+apt install --no-install-recommends signify-openbsd qrencode</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -114,14 +114,14 @@ Done.</p>
 <p>This only needs to be done once unless multiple keys are desired; in
 that case different key names should be used. In the following example,
 <code>keyname</code> is used as the sample key name.</p>
-<p><span class="code-select">signify-openbsd -G -p keyname.pub -s
-keyname.sec</span></p>
+<p><span class="code-select" data-code="signify-openbsd -G -p keyname.pub -s keyname.sec">signify-openbsd
+-G -p keyname.pub -s keyname.sec</span></p>
 <p><strong>3.</strong> <em>Optional:</em> Add a key comment.</p>
 <p>Replace <code>comments here</code> with the actual comment but keep
 the <code>"</code>. The comment could be a name, position, website,
 e-mail address and/or anything else.</p>
-<p><span class="code-select">signify-openbsd -G -p keyname.pub -s
-keyname.sec -c "comments here"</span></p>
+<p><span class="code-select" data-code="signify-openbsd -G -p keyname.pub -s keyname.sec -c &quot;comments here&quot;">signify-openbsd
+-G -p keyname.pub -s keyname.sec -c "comments here"</span></p>
 <p><u>Note</u>:</p>
 <ul>
 <li>The private key file <code>keyname.sec</code> needs to stay private
@@ -133,17 +133,17 @@ anyone.</li>
 <p><strong>4.</strong> Utilize signify.</p>
 <p>To sign a file <code>message.txt</code> (which has to be created by
 the user beforehand).</p>
-<p><span class="code-select">signify-openbsd -S -s keyname.sec -m
-message.txt</span></p>
+<p><span class="code-select" data-code="signify-openbsd -S -s keyname.sec -m message.txt">signify-openbsd
+-S -s keyname.sec -m message.txt</span></p>
 <p>This will create a signature file <code>message.txt.sig</code>.</p>
 <p>To verify a file <code>message.txt</code> with signature file
 <code>message.txt.sig</code>.</p>
-<p><span class="code-select">signify-openbsd -V -p keyname.pub -m
-message.txt</span></p>
+<p><span class="code-select" data-code="signify-openbsd -V -p keyname.pub -m message.txt">signify-openbsd
+-V -p keyname.pub -m message.txt</span></p>
 <p><strong>5.</strong> <em>Optional:</em> Create a QR code for the
 public key.</p>
-<p><span class="code-select">qrencode -r keyname.pub -o
-keyname.pub.png</span></p>
+<p><span class="code-select" data-code="qrencode -r keyname.pub -o keyname.pub.png">qrencode
+-r keyname.pub -o keyname.pub.png</span></p>
 <p>File <code>keyname.pub.png</code> would be the QR code of the public
 key.</p>
 <p>Refer to the Debian <a href="https://manpages.debian.org/signify-openbsd">signify-openbsd

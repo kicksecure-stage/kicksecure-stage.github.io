@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>copy.fail security vulnerability (CVE-2026-31431)</title>
 <meta name="description" content="User-friendly overview, mitigation notes, and reference links for the copy.fail Linux kernel vulnerability, CVE-2026-31431.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="copy.fail security vulnerability (CVE-2026-31431)">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -110,8 +110,9 @@ includes mainline commit <code>a664bf3d603d</code> - it reverts the 2017
 no longer end up in the writable destination scatterlist. Most major
 distributions are shipping the fix now.</p>
 <p>Before you can patch: disable the <code>algif_aead</code> module.</p>
-<p><span class="code-select"># echo "install algif_aead /bin/false" &gt;
-/etc/modprobe.d/disable-algif.conf</p>
+<p><span class="code-select" data-code="# echo &quot;install algif_aead /bin/false&quot; &gt; /etc/modprobe.d/disable-algif.conf
+# rmmod algif_aead 2&gt;/dev/null"># echo "install algif_aead
+/bin/false" &gt; /etc/modprobe.d/disable-algif.conf</p>
 <ol>
 <li>rmmod algif_aead 2&gt;/dev/null</span></li>
 </ol>
@@ -211,7 +212,11 @@ contains documented whitelists of SUID binaries such as:</p>
 to <a href="../SUID_Disabler_and_Permission_Hardener/#Search_for_SUID_SGID">Search for SUID SGID</a>. At the time of writing, the
 list of SUID binaries is greatly reduced compared to most other Linux
 distributions, but unfortunately not zero. Current list:</p>
-<p><span class="code-select">/usr/libexec/pam-tmpdir/pam-tmpdir-helper
+<p><span class="code-select" data-code="/usr/libexec/pam-tmpdir/pam-tmpdir-helper
+/usr/lib/qubes/qfile-unpacker
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/bin/qfile-unpacker
+/usr/bin/fusermount3">/usr/libexec/pam-tmpdir/pam-tmpdir-helper
 /usr/lib/qubes/qfile-unpacker
 /usr/lib/dbus-1.0/dbus-daemon-launch-helper /usr/bin/qfile-unpacker
 /usr/bin/fusermount3</span></p>

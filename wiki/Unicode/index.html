@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Invisible Malicious Unicode Risks</title>
 <meta name="description" content="Invisible textual characters that leading to security compromises during copy and paste.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Unicode123123.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -92,7 +92,7 @@ check files for unicode.</p>
 <p><strong>Example for files:</strong></p>
 <p><u>Note:</u> The following example check file <code>~/.bashrc</code>.
 Replace <code>~/.bashrc</code> with the actual file to check.</p>
-<p><span class="code-select">grep-find-unicode-wrapper
+<p><span class="code-select" data-code="grep-find-unicode-wrapper ~/.bashrc">grep-find-unicode-wrapper
 ~/.bashrc</span></p>
 <p><strong>Syntax for folders:</strong></p>
 <pre><code>grep-find-unicode-wrapper -r /path/to/folder</code></pre>
@@ -100,7 +100,8 @@ Replace <code>~/.bashrc</code> with the actual file to check.</p>
 <p><u>Note:</u> The following example check the user's home folder.
 Replace <code>~/</code> with a different folder if another folder should
 be checked.</p>
-<p><span class="code-select">grep-find-unicode-wrapper -r ~/</span></p>
+<p><span class="code-select" data-code="grep-find-unicode-wrapper -r ~/">grep-find-unicode-wrapper
+-r ~/</span></p>
 <p><strong>Expected output:</strong></p>
 <ul>
 <li><strong>A)</strong> If no unicode has been found: None.</li>
@@ -128,18 +129,20 @@ logs.</p>
 to <code>stcat</code>, <code>stcatn</code> also normalizes output by
 ensuring a final newline and trimming trailing whitespace.</p>
 <p>Example, dump untrusted file to terminal.</p>
-<p><span class="code-select">stcatn /path/to/untrusted-file</span></p>
+<p><span class="code-select" data-code="stcatn /path/to/untrusted-file">stcatn
+/path/to/untrusted-file</span></p>
 <p>Example, dump untrusted file and redirect to sanitized file.</p>
-<p><span class="code-select">stcatn /path/to/untrusted-file &gt;
-/path/to/sanitized-file</span></p>
+<p><span class="code-select" data-code="stcatn /path/to/untrusted-file &gt; /path/to/sanitized-file">stcatn
+/path/to/untrusted-file &gt; /path/to/sanitized-file</span></p>
 <p>Use <code>stecho</code> when you want to safely print untrusted text
 to the terminal and enforce a newline at the end.</p>
 <p>Example:</p>
-<p><span class="code-select">stecho "${untrusted_string}"</span></p>
+<p><span class="code-select" data-code="stecho &quot;${untrusted_string}&quot;">stecho
+"${untrusted_string}"</span></p>
 <p><code>stsponge</code> can for example be used to sanitize a file on
 disk in-place. Example:</p>
-<p><span class="code-select">stsponge /path/to/file &lt;
-/path/to/file</span></p>
+<p><span class="code-select" data-code="stsponge /path/to/file &lt; /path/to/file">stsponge
+/path/to/file &lt; /path/to/file</span></p>
 <p><u>Warning:</u> <a href="../Shell_scripting/">Shell
 Scripting</a> is still a risk. <code>stdisplay</code> only makes
 terminal <em>display</em> safer. It does not make shell scripts safe and

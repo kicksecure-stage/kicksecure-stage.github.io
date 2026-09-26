@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Recovery</title>
 <meta name="description" content="Recovery Mode, Emergency, Chroot, Debugging, Capturing Diagnostic Output from Serial Console">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Recovery312123.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -242,11 +242,12 @@ emergency shell, one option would be to delete the <a href="https://github.com/K
 configuration file. This is of course only possible if the system is
 still booting (or more complicated, using a chroot). Delete the file
 responsible for Linux recovery mode disabling:
-<span class="code-select">sudo safe-rm --
-/etc/default/grub.d/41_recovery_restrict.cfg</span></p>
+<span class="code-select" data-code="sudo safe-rm -- /etc/default/grub.d/41_recovery_restrict.cfg">sudo
+safe-rm -- /etc/default/grub.d/41_recovery_restrict.cfg</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Update <a href="../Grub/">GRUB</a> boot menu:
-<span class="code-select">sudo update-grub</span></p>
+<span class="code-select" data-code="sudo update-grub">sudo
+update-grub</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 After powering on Kicksecure, you will see the virtual BIOS for a
 second, then the grub boot menu. The grub boot menu is easily identified
@@ -566,18 +567,21 @@ into the Live CD, follow these steps.</p>
 <div class="info-box ">
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 List the available drives and partitions.</p>
-<p><span class="code-select">fdisk -l</span></p>
+<p><span class="code-select" data-code="fdisk -l">fdisk -l</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Mount the partition.</p>
-<p><span class="code-select">mount /dev/sda1 /mnt</span></p>
+<p><span class="code-select" data-code="mount /dev/sda1 /mnt">mount
+/dev/sda1 /mnt</span></p>
 <p>Replace "/dev/sda1" with the drive partition name.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Chroot into the partition.</p>
-<p><span class="code-select">chroot /mnt /bin/bash</span></p>
+<p><span class="code-select" data-code="chroot /mnt /bin/bash">chroot
+/mnt /bin/bash</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 <em>Optional:</em> If the PATH variable is incorrect, it can be fixed
 with the following command.</p>
-<p><span class="code-select">source /etc/profile</span></p>
+<p><span class="code-select" data-code="source /etc/profile">source
+/etc/profile</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Done.</p>
 <p>The target partition has been mounted and a chroot shell has been
@@ -606,14 +610,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>socat</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-socat</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends socat">sudo
+apt install --no-install-recommends socat</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -645,14 +649,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>serial-console-enable</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-serial-console-enable</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends serial-console-enable">sudo
+apt install --no-install-recommends serial-console-enable</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -704,14 +708,15 @@ Enable the serial ports option.</p>
 View the file with a text editor.</p>
 <p>Any text editor can be used for this purpose. For example to view the
 file with Featherpad, run.</p>
-<p><span class="code-select">featherpad
+<p><span class="code-select" data-code="featherpad /home/user/vbox-raw-file">featherpad
 /home/user/vbox-raw-file</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 <em>Optional:</em> View the file as it is being appended to from a
 terminal emulator.</p>
 <p>The logfile is also compatible with other standard Linux utilities
 such as <code>tail</code>. To view it as it is being written, run.</p>
-<p><span class="code-select">tail -f /home/user/vbox-raw-file</span></p>
+<p><span class="code-select" data-code="tail -f /home/user/vbox-raw-file">tail
+-f /home/user/vbox-raw-file</span></p>
 <div class="info-box has-icon">
 <p><span class="info-box-icon"><img src="../../media/Ambox_warning_pn.svg.png.webp" width="40" alt="Ambox_warning_pn.svg.png" /></span>
 <strong>Warning:</strong> If the guest may be compromised, do NOT follow
@@ -726,8 +731,8 @@ Retain the file contents.</p>
 <p>After VM shutdown it may be useful to retain its contents by copying
 the <code>vbox-raw-file</code> elsewhere to make it a persistent log
 file. If this is desirable, run.</p>
-<p><span class="code-select">cp /home/user/vbox-raw-file
-/home/user/vbox-console-log</span></p>
+<p><span class="code-select" data-code="cp /home/user/vbox-raw-file /home/user/vbox-console-log">cp
+/home/user/vbox-raw-file /home/user/vbox-console-log</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Done.</p>
 <p>A read-only serial console log has been enabled and can be viewed or
@@ -764,8 +769,8 @@ Connect to the relevant unix domain socket file.</p>
 <p>On the host, run the following socat command to connect to the unix
 domain socket file which is connected to the operating system running
 inside the virtual machine. <sup class="reference"><a href="#cite_note-5">[5]</a></sup></p>
-<p><span class="code-select">socat -
-UNIX-CONNECT:/home/user/vbox-socket-file</span></p>
+<p><span class="code-select" data-code="socat - UNIX-CONNECT:/home/user/vbox-socket-file">socat
+- UNIX-CONNECT:/home/user/vbox-socket-file</span></p>
 <p>Depending on when the above command is run, nothing might appear. The
 reason is an interactive serial console will only show messages once
 connected to the serial console; old messages cannot be viewed that way.
@@ -807,7 +812,8 @@ Console</a>.</p>
 <p>Write to serial console by writing to the appropriate serial console
 device. <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
 <p>Write <code>dmesg</code> to serial console.</p>
-<p><span class="code-select">dmesg &gt; /dev/ttyS0</span></p>
+<p><span class="code-select" data-code="dmesg &gt; /dev/ttyS0">dmesg
+&gt; /dev/ttyS0</span></p>
 <h1 id="Qubes_specific">Qubes specific</h1>
 <h2 id="Non-Bootable_Qubes_VM">Non-Bootable Qubes VM</h2><span class="share-tooltip" data-anchor="Non-Bootable_Qubes_VM"><a class="headline-anchor" href="#Non-Bootable_Qubes_VM" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Recovery/#Non-Bootable_Qubes_VM">https://www.kicksecure.com/wiki/Recovery/#Non-Bootable_Qubes_VM</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FRecovery%2F%23Non-Bootable_Qubes_VM&amp;text=Non-Bootable%20Qubes%20VM" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FRecovery%2F%23Non-Bootable_Qubes_VM&amp;text=Non-Bootable%20Qubes%20VM" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FRecovery%2F%23Non-Bootable_Qubes_VM&amp;title=Non-Bootable%20Qubes%20VM" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Non-Bootable%20Qubes%20VM&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FRecovery%2F%23Non-Bootable_Qubes_VM" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Recovery/#Non-Bootable_Qubes_VM]Non-Bootable Qubes VM[/url]">[url=https://www.kicksecure.com/wiki/Recovery/#Non-Bootable_Qubes_VM]Non-Bootable Qubes VM[/url]</span></span></span></span>
 <p>This is <a href="../Unspecific/">unspecific to
@@ -871,15 +877,17 @@ Passwords</a>.</li>
 <pre><code> Result Code: NS_ERROR_FAILURE (0x80004005) Component: ConsoleWrap Interface: IConsole {872da645-4a9b-1727-bee2-5585105b9eed} </code></pre>
 <p>Then you must <u>un</u>check
 <code>Connect to existing pipe/socket</code>.</p></li>
-<li id="cite_note-4"><span class="code-select">vboxmanage modifyvm Kicksecure-LXQt
---uart1 0x3F8 4 --uartmode1=server
+<li id="cite_note-4"><span class="code-select" data-code="vboxmanage modifyvm Kicksecure-LXQt --uart1 0x3F8 4 --uartmode1=server /home/user/vbox-socket-file">vboxmanage
+modifyvm Kicksecure-LXQt --uart1 0x3F8 4 --uartmode1=server
 /home/user/vbox-socket-file</span></li>
-<li id="cite_note-5"><span class="code-select">socat -
-UNIX-CONNECT:/home/user/vbox-socket-file</span></li>
-<li id="cite_note-6">To find the serial console. <span class="code-select">dmesg</span>
-(nothing helpful) <span class="code-select">dmesg</span> Found
-<code>/dev/ttyS0</code>. Test write. <span class="code-select">echo test
-&gt; /dev/ttyS0</span></li>
+<li id="cite_note-5"><span class="code-select" data-code="socat - UNIX-CONNECT:/home/user/vbox-socket-file">socat
+- UNIX-CONNECT:/home/user/vbox-socket-file</span></li>
+<li id="cite_note-6">To find the serial console.
+<span class="code-select" data-code="dmesg">dmesg</span> (nothing
+helpful) <span class="code-select" data-code="dmesg">dmesg</span> Found
+<code>/dev/ttyS0</code>. Test write.
+<span class="code-select" data-code="echo test &gt; /dev/ttyS0">echo
+test &gt; /dev/ttyS0</span></li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Factory_Reset/" title="Factory Reset"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Factory

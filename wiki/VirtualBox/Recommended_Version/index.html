@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Recommended VirtualBox Version for use with Kicksecure</title>
 <meta name="description" content="This wiki page provides information on the recommended version of VirtualBox for use with Kicksecure, along with installation instructions.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Recommendedvboxversion1231231234.png">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -147,20 +147,24 @@ Older versions are not recommended.</em></p>
 <strong>On the host : Open a terminal.</strong></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <strong>Update the package lists.</strong></p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 <strong>Install VirtualBox and Linux kernel headers.</strong></p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-virtualbox-qt linux-headers-generic</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends virtualbox-qt linux-headers-generic">sudo
+apt install --no-install-recommends virtualbox-qt
+linux-headers-generic</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 <strong>Add your current user to group <code>vboxusers</code>.
 <sup class="reference"><a href="#cite_note-3">[3]</a></sup></strong></p>
-<p><span class="code-select">sudo adduser $(whoami) vboxusers</span></p>
+<p><span class="code-select" data-code="sudo adduser $(whoami) vboxusers">sudo
+adduser $(whoami) vboxusers</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
 <strong>Prevent KVM from conflicting with VirtualBox.</strong></p>
 <p>This is necessary if your system uses Linux 6.12 or higher.</p>
-<p><span class="code-select">echo 'options kvm enable_virt_at_load=0' |
-sudo tee /etc/modprobe.d/disable-kvm-virt-at-load.conf</span></p>
+<p><span class="code-select" data-code="echo &#x27;options kvm enable_virt_at_load=0&#x27; | sudo tee /etc/modprobe.d/disable-kvm-virt-at-load.conf">echo
+'options kvm enable_virt_at_load=0' | sudo tee
+/etc/modprobe.d/disable-kvm-virt-at-load.conf</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">6</i>
 <strong>Reboot.</strong></p>
 <p>To ensure KVM configuration takes effect.</p>
@@ -208,8 +212,9 @@ VirtualBox <u>g</u>raphical <u>u</u>ser <u>i</u>nterface
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">7</i>
 <strong>Prevent KVM from conflicting with VirtualBox.</strong></p>
 <p>This is necessary if your system uses Linux 6.12 or higher.</p>
-<p><span class="code-select">echo 'options kvm enable_virt_at_load=0' |
-sudo tee /etc/modprobe.d/disable-kvm-virt-at-load.conf</span></p>
+<p><span class="code-select" data-code="echo &#x27;options kvm enable_virt_at_load=0&#x27; | sudo tee /etc/modprobe.d/disable-kvm-virt-at-load.conf">echo
+'options kvm enable_virt_at_load=0' | sudo tee
+/etc/modprobe.d/disable-kvm-virt-at-load.conf</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">8</i>
 <strong>Reboot.</strong></p>
 <p>To ensure KVM configuration takes effect.</p>
@@ -242,36 +247,52 @@ repository</a><sup class="ext-link-to-archive has-sibling" title="Link to archiv
 <strong>On the host : Open a terminal.</strong></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <strong>Update the package lists.</strong></p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 <strong>Install the Debian <code>fasttrack</code> signing
 key.</strong></p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-fasttrack-archive-keyring</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends fasttrack-archive-keyring">sudo
+apt install --no-install-recommends fasttrack-archive-keyring</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 <strong>Add the Debian <code>fasttrack</code> repository.</strong></p>
-<p><span class="code-select">echo 'Types: deb URIs: <a href="https://fasttrack.debian.net/debian/">https://fasttrack.debian.net/debian/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://fasttrack.debian.net/debian/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<p><span class="code-select" data-code="echo &#x27;Types: deb
+URIs: https://fasttrack.debian.net/debian/
+Suites: trixie-fasttrack
+Components: main contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/fasttrack-archive-keyring.gpg&#x27; | sudo tee /etc/apt/sources.list.d/fasttrack.sources">echo
+'Types: deb URIs: <a href="https://fasttrack.debian.net/debian/">https://fasttrack.debian.net/debian/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://fasttrack.debian.net/debian/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Suites: trixie-fasttrack Components: main contrib non-free Enabled: yes
 Signed-By: /usr/share/keyrings/fasttrack-archive-keyring.gpg' | sudo tee
 /etc/apt/sources.list.d/fasttrack.sources</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">5</i>
 <strong>Add the Debian <code>backports</code> repository.</strong>
 <sup class="reference"><a href="#cite_note-6">[6]</a></sup></p>
-<p><span class="code-select">echo 'Types: deb URIs: <a href="https://deb.debian.org/debian">https://deb.debian.org/debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://deb.debian.org/debian" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<p><span class="code-select" data-code="echo &#x27;Types: deb
+URIs: https://deb.debian.org/debian
+Suites: trixie-backports
+Components: main contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg&#x27; | sudo tee /etc/apt/sources.list.d/backports.sources">echo
+'Types: deb URIs: <a href="https://deb.debian.org/debian">https://deb.debian.org/debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://deb.debian.org/debian" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 Suites: trixie-backports Components: main contrib non-free Enabled: yes
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' | sudo tee
 /etc/apt/sources.list.d/backports.sources</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">6</i>
 <strong>Update the package lists again.</strong> <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">7</i>
 <strong>Install VirtualBox and Linux kernel headers.</strong></p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-virtualbox-qt linux-headers-$(dpkg --print-architecture)</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends virtualbox-qt linux-headers-$(dpkg --print-architecture)">sudo
+apt install --no-install-recommends virtualbox-qt linux-headers-$(dpkg
+--print-architecture)</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">8</i>
 <strong>Add your current user to group <code>vboxusers</code>.</strong>
 <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
-<p><span class="code-select">sudo adduser $(whoami) vboxusers</span></p>
+<p><span class="code-select" data-code="sudo adduser $(whoami) vboxusers">sudo
+adduser $(whoami) vboxusers</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">9</i>
 <strong>Done.</strong></p>
 <p>The procedure of installing the VirtualBox host software is
@@ -282,14 +303,17 @@ Repository</a>.</div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h4 id="Debian_Unstable">Debian Unstable</h4></div><div class="tcc-content"><p>VirtualBox can be installed by adding the Debian unstable
 (<code>sid</code>) repository.</p>
 <p><strong>1.</strong> Update your package lists.</p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><strong>2.</strong> Install VirtualBox and Linux headers, which are a
 dependency.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-virtualbox-qt linux-headers-$(dpkg --print-architecture)</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends virtualbox-qt linux-headers-$(dpkg --print-architecture)">sudo
+apt install --no-install-recommends virtualbox-qt linux-headers-$(dpkg
+--print-architecture)</span></p>
 <p><strong>3.</strong> Add your Linux user account to Linux user group
 <code>vboxusers</code>.</p>
-<p><span class="code-select">sudo adduser $(whoami) vboxusers</span></p>
+<p><span class="code-select" data-code="sudo adduser $(whoami) vboxusers">sudo
+adduser $(whoami) vboxusers</span></p>
 <p>The details of this are <a href="../../Unspecific/">unspecific to Kicksecure</a> and <a href="../../Unsupported/">undocumented</a>.</p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h4 id="Other_Debian_Releases">Other Debian Releases</h4></div><div class="tcc-content"><p>Other Debian releases might work, but this is <a href="../../Unsupported/">untested</a>. In case of other Debian release:</p>
 <div class="show-for-nojs-only">

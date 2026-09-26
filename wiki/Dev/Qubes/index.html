@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Dev/Qubes</title>
 <meta name="description" content="Kicksecure Qubes OS related development documentation.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Dev/Qubes">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -84,7 +84,8 @@ template. The dependencies are listed at:</p>
 <p>All packages from both lists must be installed.</p>
 <p>3. Ensure <code>git</code> is installed by running the following
 command:</p>
-<p><span class="code-select">sudo dnf install git</span></p>
+<p><span class="code-select" data-code="sudo dnf install git">sudo dnf
+install git</span></p>
 <p>4. Shut down the template once you have completed installing all
 dependencies.</p>
 <h4 id="Prepare_App_Qube">Prepare App Qube</h4>
@@ -116,8 +117,8 @@ is preferable).</p>
 aside for use later.</p>
 <h4 id="dom0_Setup">dom0 Setup</h4>
 <p><strong>1.</strong> Open a dom0 terminal and run:</p>
-<p><span class="code-select">sudo nano
-/etc/qubes/policy.d/50-qubesbuilder.policy</span></p>
+<p><span class="code-select" data-code="sudo nano /etc/qubes/policy.d/50-qubesbuilder.policy">sudo
+nano /etc/qubes/policy.d/50-qubesbuilder.policy</span></p>
 <p><strong>2.</strong> Paste.</p>
 <p>Type the contents of <a href="https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy">https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 into this file. (Note: If you have chosen names other than
@@ -130,25 +131,26 @@ names.)</p>
 <h4 id="qubes-builder-dvm_setup">qubes-builder-dvm setup</h4>
 <p>Inside <code>qubes-builder-dvm</code> Template</p>
 <p><strong>1.</strong> Create folders.</p>
-<p><span class="code-select">sudo mkdir -p /rw/bind-dirs/builder
-/rw/config/qubes-bind-dirs.d</span></p>
+<p><span class="code-select" data-code="sudo mkdir -p /rw/bind-dirs/builder /rw/config/qubes-bind-dirs.d">sudo
+mkdir -p /rw/bind-dirs/builder /rw/config/qubes-bind-dirs.d</span></p>
 <p><strong>2.</strong> Open bind-dires configuration file.</p>
-<p><span class="code-select">sudo nano
-/rw/config/qubes-bind-dirs.d/builder.conf</span></p>
+<p><span class="code-select" data-code="sudo nano /rw/config/qubes-bind-dirs.d/builder.conf">sudo
+nano /rw/config/qubes-bind-dirs.d/builder.conf</span></p>
 <p><strong>3.</strong> Paste.</p>
-<p><span class="code-select">binds+=('/builder')</span></p>
+<p><span class="code-select" data-code="binds+=(&#x27;/builder&#x27;)">binds+=('/builder')</span></p>
 <p><strong>4.</strong> Save.</p>
 <p><strong>5.</strong> Open rc.local file.</p>
-<p><span class="code-select">sudo nano /rw/config/rc.local</span></p>
+<p><span class="code-select" data-code="sudo nano /rw/config/rc.local">sudo
+nano /rw/config/rc.local</span></p>
 <p><strong>6.</strong> Paste.</p>
-<p><span class="code-select">mount /builder -o
-dev,suid,remount</span></p>
+<p><span class="code-select" data-code="mount /builder -o dev,suid,remount">mount
+/builder -o dev,suid,remount</span></p>
 <p><strong>7.</strong> Save.</p>
 <p><strong>8.</strong> Shut down the Template.</p>
 <h4 id="dom0_Setup_Continued">dom0 Setup Continued</h4>
 <p><strong>1.</strong> In a dom0 terminal, run:</p>
-<p><span class="code-select">qvm-prefs work-qubesos default_dispvm
-qubes-builder-dvm</span></p>
+<p><span class="code-select" data-code="qvm-prefs work-qubesos default_dispvm qubes-builder-dvm">qvm-prefs
+work-qubesos default_dispvm qubes-builder-dvm</span></p>
 <p>Once this is done, all configuration should be complete, and you are
 now ready to install and use <code>qubes-builderv2</code>.</p>
 <h4 id="Installing_qubes-builderv2">Installing qubes-builderv2</h4>
@@ -162,11 +164,14 @@ instructions at <a href="https://www.qubes-os.org/security/pack/">https://www.qu
 This is necessary to verify the authenticity of the
 <code>qubes-builderv2</code> source code.</p>
 <p>3. Clone the <code>qubes-builderv2</code> repository using:</p>
-<p><span class="code-select">git clone <a href="https://github.com/QubesOS/qubes-builderv2.git">https://github.com/QubesOS/qubes-builderv2.git</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2.git" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="git clone https://github.com/QubesOS/qubes-builderv2.git">git
+clone <a href="https://github.com/QubesOS/qubes-builderv2.git">https://github.com/QubesOS/qubes-builderv2.git</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2.git" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>4. Enter the cloned repository:</p>
-<p><span class="code-select">cd qubes-builderv2</span></p>
+<p><span class="code-select" data-code="cd qubes-builderv2">cd
+qubes-builderv2</span></p>
 <p>5. Verify the authenticity of the head commit's tag:</p>
-<p><span class="code-select">git tag -v $(git describe)</span></p>
+<p><span class="code-select" data-code="git tag -v $(git describe)">git
+tag -v $(git describe)</span></p>
 <p>The output of this command should indicate that the tag's signature
 is good and should NOT display any warnings. If warnings are displayed,
 you may have installed the Qubes Security Pack improperly (for example,
@@ -175,7 +180,8 @@ it as trusted). If you are told that a tag does not exist, the head
 commit hasn't been tagged by a Qubes OS developer, and you should
 use:</p>
 <p>6. Back up one commit if a tag does not exist:</p>
-<p><span class="code-select">git checkout HEAD^</span></p>
+<p><span class="code-select" data-code="git checkout HEAD^">git checkout
+HEAD^</span></p>
 <p>Then try to verify the repository's authenticity again. If the
 signature comes back bad, the repository is corrupted (or compromised)
 and should be discarded immediately.</p>
@@ -191,9 +197,9 @@ use-qubes-repo:
   version: 4.3
   testing: true</code></pre>
 <p>2. To build the template, run:</p>
-<p><span class="code-select">sudo ./qb package fetch prep build
-&amp;&amp; sudo ./qb -t kicksecure-18 template fetch prep
-build</span></p>
+<p><span class="code-select" data-code="sudo ./qb package fetch prep build &amp;&amp; sudo ./qb -t kicksecure-18 template fetch prep build">sudo
+./qb package fetch prep build &amp;&amp; sudo ./qb -t kicksecure-18
+template fetch prep build</span></p>
 <p>This will download the code needed to build the template and then
 build the template. If all goes well, the built template will be placed
 in folder:</p>
@@ -203,11 +209,13 @@ in folder:</p>
 <p>1. Copy the template RPM file to dom0:</p>
 <p><u>Note:</u> Substitute the real name of the RPM file (this name
 includes a timestamp and will thus be different for each build).</p>
-<p><span class="code-select">qvm-run --pass-io work-qubesos 'cat
+<p><span class="code-select" data-code="qvm-run --pass-io work-qubesos &#x27;cat /home/user/qubes-builderv2/artifacts/templates/rpm/qubes-template-kicksecure...rpm&#x27; &gt; qubes-template-kicksecure...rpm">qvm-run
+--pass-io work-qubesos 'cat
 /home/user/qubes-builderv2/artifacts/templates/rpm/qubes-template-kicksecure...rpm'
 &gt; qubes-template-kicksecure...rpm</span></p>
 <p>2. Install the template with:</p>
-<p><span class="code-select">sudo qvm-template install --nogpgcheck
+<p><span class="code-select" data-code="sudo qvm-template install --nogpgcheck ./qubes-template-kicksecure...rpm">sudo
+qvm-template install --nogpgcheck
 ./qubes-template-kicksecure...rpm</span></p>
 <p><strong>WARNING: This action can execute arbitrary code as root on
 dom0! Only do this if you fully trust the App Qube used to build this

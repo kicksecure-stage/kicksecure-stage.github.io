@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>VirtualBox - Green Turtle Issue</title>
 <meta name="description" content="Fix VirtualBox green turtle icon issue on Windows hosts caused by Hyper-V and VBS. Learn how to improve VM performance and stability with step-by-step instructions.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Green-turtle-icon-on-VirtualBox-Windows-11.jpg">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -200,8 +200,8 @@ helpful to debug this issue.</p>
 <p>Start Menu -&gt; type <code>Windows Power Shell</code> -&gt; right
 click -&gt; <code>Run as administrator</code></p>
 <p><strong>2.</strong> Check if Hyper-V has been loaded.</p>
-<p><span class="code-select">Get-CimInstance Win32_ComputerSystem |
-Select-Object HypervisorPresent</span></p>
+<p><span class="code-select" data-code="Get-CimInstance Win32_ComputerSystem | Select-Object HypervisorPresent">Get-CimInstance
+Win32_ComputerSystem | Select-Object HypervisorPresent</span></p>
 <p>Good result:</p>
 <pre><code>HypervisorPresent
 -----------------
@@ -217,7 +217,7 @@ VirtualBox, so if it's not running, that's great.</p>
 because Hyper-V competes with VirtualBox and slows down VirtualBox.</p>
 <p><strong>3.</strong> Run systeminfo to find out what may be starting
 Hyper-V.</p>
-<p><span class="code-select">systeminfo</span></p>
+<p><span class="code-select" data-code="systeminfo">systeminfo</span></p>
 <p>Do not post the full output of systeminfo. It is not needed and
 contains private information such as system model.</p>
 <p>Good result:</p>
@@ -266,8 +266,8 @@ Hyper-V to automatically start at boot time. After disabling
 <li><code>Firmware protection</code></li>
 </ul></li>
 <li>Check if device guard is running:
-<span class="code-select inline-style">(Get-CimInstance -ClassName
-Win32_DeviceGuard -Namespace
+<span class="code-select inline-style" data-code="(Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard).SecurityServicesRunning">(Get-CimInstance
+-ClassName Win32_DeviceGuard -Namespace
 root\Microsoft\Windows\DeviceGuard).SecurityServicesRunning</span></li>
 <li>VirtualBox manual: <a href="https://www.virtualbox.org/manual/ch10.html#gimproviders">Paravirtualization
 Providers</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch10.html#gimproviders" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>

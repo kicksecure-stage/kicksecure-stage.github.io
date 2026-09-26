@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Verify Kicksecure Virtual Machine Images in Windows</title>
 <meta name="description" content="Instructions for OpenPGP Verification of Kicksecure Images using Windows">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Verify_images_on_windows.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -91,13 +91,13 @@ directory.</li>
 </ul>
 <p><strong>3.</strong> <em>Verify the Package using SignTool:</em></p>
 <p>Open the command prompt from the Windows Start Menu:</p>
-<p><span class="code-select">cmd.exe</span></p>
+<p><span class="code-select" data-code="cmd.exe">cmd.exe</span></p>
 <p>Change to the Downloads directory:</p>
-<p><span class="code-select">cd
+<p><span class="code-select" data-code="cd C:\Users\&lt;your_user_name&gt;\Downloads">cd
 C:\Users\&lt;your_user_name&gt;\Downloads</span></p>
 <p>Run SignTool to verify the <code>gpg4win</code> package:</p>
-<p><span class="code-select">signtool verify /pa
-gpg4win-3-1.12.exe</span></p>
+<p><span class="code-select" data-code="signtool verify /pa gpg4win-3-1.12.exe">signtool
+verify /pa gpg4win-3-1.12.exe</span></p>
 <p>Upon successful verification, the following output will appear:</p>
 <p><strong>Figure:</strong> <em>Successful Verification</em></p>
 <p><img src="../../media/Signtool_verify_gpg4win_success.png.webp" alt="signtool_verify_gpg4win_success.png" /></p>
@@ -135,7 +135,8 @@ from <code>C:\Users\&lt;user_name\Downloads</code></p>
 <div class="info-box ">
 <p><strong>1.</strong> If not already completed, have GnuPG initialize
 your user data folder.</p>
-<p><span class="code-select">gpg --fingerprint</span></p>
+<p><span class="code-select" data-code="gpg --fingerprint">gpg
+--fingerprint</span></p>
 <p><strong>2.</strong> Download <a href="../Patrick_Schleizer/">Patrick Schleizer</a>'s (adrelanos') <a href="../OpenPGP/">OpenPGP</a> key. <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
 <p><a rel="noreferrer" data-no-instant="" href="../../keys/derivative.asc" class="download-button-v2"><span class="dbutton"><i class="fa-solid fa-pen-nib" title="Signify icon"></i><span>Download
 Kicksecure OpenPGP Key</span></span></a></p>
@@ -143,12 +144,12 @@ Kicksecure OpenPGP Key</span></span></a></p>
 <code>C:\Users\</code><code>\Downloads\derivative.asc</code></p>
 <p><strong>3.</strong> Change to the
 <code>C:\Users\</code><code>\Downloads\</code> directory.</p>
-<p><span class="code-select">cd
+<p><span class="code-select" data-code="cd C:\Users\&lt;user_name&gt;\Downloads\">cd
 C:\Users\&lt;user_name&gt;\Downloads\</span></p>
 <p><strong>4.</strong> Check fingerprints/owners without importing
 anything.</p>
-<p><span class="code-select">gpg --keyid-format long --with-fingerprint
-derivative.asc</span></p>
+<p><span class="code-select" data-code="gpg --keyid-format long --with-fingerprint derivative.asc">gpg
+--keyid-format long --with-fingerprint derivative.asc</span></p>
 <p><strong>5.</strong> Verify the output.</p>
 <p>The most important check is confirming the key fingerprint
 <u>exactly</u> matches the output below. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
@@ -158,7 +159,8 @@ derivative.asc</span></p>
 is related to the <a href="../OpenPGP/#The_OpenPGP_Web_of_Trust">The OpenPGP Web of Trust</a>. Advanced users can learn
 more about this <a href="../Main/Project_Signing_Key/#OpenPGP_Web_of_Trust">here</a>.</p>
 <p><strong>6.</strong> Import the key.</p>
-<p><span class="code-select">gpg --import derivative.asc</span></p>
+<p><span class="code-select" data-code="gpg --import derivative.asc">gpg
+--import derivative.asc</span></p>
 <p>The output should include the key was imported.</p>
 <pre><code>gpg: Total number processed: 1
 gpg:               imported: 1</code></pre>
@@ -196,22 +198,33 @@ process can take several minutes.</p>
 <p>At the Windows command prompt, change to the directory with the
 Kicksecure <code>iso</code> (or <code>ova</code>) and corresponding
 signature file.</p>
-<p><span class="code-select">cd
+<p><span class="code-select" data-code="cd C:\Users\&lt;user_name&gt;\&lt;directory_name&gt;">cd
 C:\Users\&lt;user_name&gt;\&lt;directory_name&gt;</span></p>
 <p><strong>3.</strong> Verify the Kicksecure <code>iso</code> (or
 <code>ova</code>) image.</p>
 <ul>
-<li>iso: <span class="code-select">gpg --verify-options show-notations
---verify Kicksecure*.*.asc Kicksecure*.iso</span></li>
-<li>ova: <span class="code-select">gpg --verify-options show-notations
---verify Kicksecure*.*.asc Kicksecure*.ova</span></li>
+<li>iso:
+<span class="code-select" data-code="gpg --verify-options show-notations --verify Kicksecure*.*.asc Kicksecure*.iso">gpg
+--verify-options show-notations --verify Kicksecure*.*.asc
+Kicksecure*.iso</span></li>
+<li>ova:
+<span class="code-select" data-code="gpg --verify-options show-notations --verify Kicksecure*.*.asc Kicksecure*.ova">gpg
+--verify-options show-notations --verify Kicksecure*.*.asc
+Kicksecure*.ova</span></li>
 </ul>
 <p>If the Virtual Machine image is correct the output will tell you that
 the signature is good.</p>
-<p><span class="code-select">gpg: Signature made Mon 19 Jan 2015
-11:45:41 PM CET using RSA key ID 77BB3C48 gpg: Good signature from
-"Patrick Schleizer &lt;adrelanos@whonix.org&gt;" [unknown] gpg:
-Signature notation:
+<p><span class="code-select" data-code="gpg: Signature made Mon 19 Jan 2015 11:45:41 PM CET using RSA key ID 77BB3C48
+gpg: Good signature from &quot;Patrick Schleizer &lt;adrelanos@whonix.org&gt;&quot; [unknown]
+gpg: Signature notation: issuer-fpr@notations.openpgp.fifthhorseman.net=6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48
+gpg: Signature notation: file@name=Kicksecure-18.2.1.9.ova
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: 916B 8D99 C38E AF5E 8ADC  7A2A 8D66 066A 2EEA CCDA
+     Subkey fingerprint: 6E97 9B28 A6F3 7C43 BE30  AFA1 CB8D 50BB 77BB 3C48">gpg:
+Signature made Mon 19 Jan 2015 11:45:41 PM CET using RSA key ID 77BB3C48
+gpg: Good signature from "Patrick Schleizer
+&lt;adrelanos@whonix.org&gt;" [unknown] gpg: Signature notation:
 issuer-fpr@notations.openpgp.fifthhorseman.net=6E979B28A6F37C43BE30AFA1CB8D50BB77BB3C48
 gpg: Signature notation: file@name=Kicksecure-18.2.1.9.ova gpg: WARNING:
 This key is not certified with a trusted signature! gpg: There is no
@@ -267,8 +280,8 @@ Kicksecure.</p>
 <h1 id="Footnotes">Footnotes</h1>
 <div class="references">
 <ol>
-<li id="cite_note-1"><span class="code-select">curl --tlsv1.3 --proto =https --max-time
-180 --output derivative.asc <a href="https://www.whonix.org/derivative.asc">https://www.whonix.org/derivative.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/derivative.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-1"><span class="code-select" data-code="curl --tlsv1.3 --proto =https --max-time 180 --output derivative.asc https://www.whonix.org/derivative.asc">curl
+--tlsv1.3 --proto =https --max-time 180 --output derivative.asc <a href="https://www.whonix.org/derivative.asc">https://www.whonix.org/derivative.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/derivative.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li id="cite_note-2">Minor changes in the output such as new uids (email addresses) or
 newer expiration dates are inconsequential.</li>
 <li id="cite_note-3">As defined by TUF: Attacks and Weaknesses: * <a href="https://theupdateframework.io/security/">https://theupdateframework.io/security/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://theupdateframework.io/security/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>

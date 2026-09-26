@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>VM Live Mode: Anti-forensics Precautions</title>
 <meta name="description" content="Minimize what is written to the hard drive when using Kicksecure VMs in Live Mode.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Fornesic324234.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -123,16 +123,18 @@ functionality.</p>
 persistently.</p>
 <p>The following command will disable swap and delete the file during
 the life of this session.</p>
-<p><span class="code-select">sudo swapoff -a</span></p>
+<p><span class="code-select" data-code="sudo swapoff -a">sudo swapoff
+-a</span></p>
 <p>To disable swap in a persistent way, edit the <code>fstab</code> file
 and comment out the line (using <code>#</code>) with the swap
 partition.</p>
-<p><span class="code-select">sudoedit /etc/fstab</span></p>
+<p><span class="code-select" data-code="sudoedit /etc/fstab">sudoedit
+/etc/fstab</span></p>
 <p><strong>2.</strong> Save and reboot.</p>
 <p><strong>3.</strong> Confirm swap is disabled.</p>
 <p>To check it is off, run the <code>free</code> command. The swap line
 should show zeros.</p>
-<p><span class="code-select">free -h</span></p>
+<p><span class="code-select" data-code="free -h">free -h</span></p>
 </div>
 <p>TODO: the existing swap partition should be securely wiped since
 sensitive information like encryption keys might have already leaked
@@ -158,7 +160,8 @@ it is not enabled by default; kdump-tools is utilized in Debian.
 <p><u>Userspace</u></p>
 <p>The default core dump file size is <code>0</code> on Debian Linux:
 <sup class="reference"><a href="#cite_note-14">[14]</a></sup></p>
-<p><span class="code-select">ulimit -c 0</span></p>
+<p><span class="code-select" data-code="ulimit -c
+0">ulimit -c 0</span></p>
 <p>This setting is enforced for systemd-coredump too and can be verified
 by inspecting the lack of core files in <code>/var/spool</code> or
 <code>/var/lib/systemd/coredump</code> when an intentional crash is
@@ -175,11 +178,12 @@ configuration is typically used. A setting is called a 'key', which has
 a related value attached to it (also known as a key-value pair).</p>
 <p>To disable programs with the setuid bit from dumping, set the
 fs.suid_dumpable to zero:</p>
-<p><span class="code-select">sudo su</span></p>
-<p><span class="code-select">echo "fs.suid_dumpable=0" &gt;&gt;
-/etc/sysctl.conf</span></p>
+<p><span class="code-select" data-code="sudo su">sudo su</span></p>
+<p><span class="code-select" data-code="echo &quot;fs.suid_dumpable=0&quot; &gt;&gt; /etc/sysctl.conf">echo
+"fs.suid_dumpable=0" &gt;&gt; /etc/sysctl.conf</span></p>
 <p>Reload the sysctl configuration with the -p flag to activate any
-changes you made. <span class="code-select">sysctl -p</span></p>
+changes you made. <span class="code-select" data-code="sysctl -p">sysctl
+-p</span></p>
 <h1 id="See_Also">See Also</h1>
 <ul>
 <li><a href="../Core_Dumps/">Core Dumps</a></li>

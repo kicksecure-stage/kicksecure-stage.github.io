@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Dev/APT Repository</title>
 <meta name="description" content="Development Notes about Kicksecure APT Repository.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Dev/APT Repository">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -70,37 +70,42 @@ has been originally imported</li>
 <h1 id="Maintenance">Maintenance</h1>
 <p>Update <a href="https://blog.ganneff.de/2008/09/valid-until-field-in-release-f.html">Valid-Until</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.ganneff.de/2008/09/valid-until-field-in-release-f.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 field, upload repository.</p>
-<p><span class="code-select">dm-resign-all</span></p>
+<p><span class="code-select" data-code="dm-resign-all">dm-resign-all</span></p>
 <p>Migrate packages.</p>
 <ul>
 <li>Migrate from developers APT repository to testers APT repository:
-<span class="code-select">dm-migrate-to-testers-repository</span></li>
+<span class="code-select" data-code="dm-migrate-to-testers-repository">dm-migrate-to-testers-repository</span></li>
 <li>Migrate from testers APT repository to stable-proposed-updates APT
 repository:
-<span class="code-select">dm-migrate-to-proposed-updates-repository</span></li>
+<span class="code-select" data-code="dm-migrate-to-proposed-updates-repository">dm-migrate-to-proposed-updates-repository</span></li>
 <li>Migrate from stable-proposed-updates APT to stable APT repository:
-<span class="code-select">dm-migrate-to-stable-repository</span></li>
+<span class="code-select" data-code="dm-migrate-to-stable-repository">dm-migrate-to-stable-repository</span></li>
 </ul>
 <p>Manually add package to developers repository.</p>
-<p><span class="code-select">dm-reprepro-wrapper includedeb developers
-../Kicksecure/packages/*.deb</span></p>
+<p><span class="code-select" data-code="dm-reprepro-wrapper includedeb developers ../Kicksecure/packages/*.deb">dm-reprepro-wrapper
+includedeb developers ../Kicksecure/packages/*.deb</span></p>
 <p>Copy package-name from developers to testers repository.</p>
-<p><span class="code-select">dm-reprepro-wrapper copy testers developers
-package-name</span></p>
+<p><span class="code-select" data-code="dm-reprepro-wrapper copy testers developers package-name">dm-reprepro-wrapper
+copy testers developers package-name</span></p>
 <p>Copy package-name from trixie-proposed-updates to trixie
 repository.</p>
-<p><span class="code-select">dm-reprepro-wrapper copy trixie
-trixie-proposed-updates package-name</span></p>
+<p><span class="code-select" data-code="dm-reprepro-wrapper copy trixie trixie-proposed-updates package-name">dm-reprepro-wrapper
+copy trixie trixie-proposed-updates package-name</span></p>
 <p>Migrate all packages matching
 <span>apparmor-profile-*</span> from
 trixie-proposed-updates to trixie repository.</p>
-<p><span class="code-select">dm-reprepro-wrapper copymatched trixie
-trixie-proposed-updates "apparmor-profile-*"</span></p>
+<p><span class="code-select" data-code="dm-reprepro-wrapper copymatched trixie trixie-proposed-updates &quot;apparmor-profile-*&quot;">dm-reprepro-wrapper
+copymatched trixie trixie-proposed-updates
+"apparmor-profile-*"</span></p>
 <h1 id="Misc">Misc</h1>
-<p><span class="code-select">pkg_name=corridor dm-reprepro-wrapper copy
-testers developers "$pkg_name" dm-reprepro-wrapper copy
-trixie-proposed-updates testers "$pkg_name" dm-reprepro-wrapper copy
-trixie trixie-proposed-updates "$pkg_name"</span></p>
+<p><span class="code-select" data-code="pkg_name=corridor
+dm-reprepro-wrapper copy testers developers &quot;$pkg_name&quot;
+dm-reprepro-wrapper copy trixie-proposed-updates testers &quot;$pkg_name&quot;
+dm-reprepro-wrapper copy trixie trixie-proposed-updates &quot;$pkg_name&quot;">pkg_name=corridor
+dm-reprepro-wrapper copy testers developers "$pkg_name"
+dm-reprepro-wrapper copy trixie-proposed-updates testers "$pkg_name"
+dm-reprepro-wrapper copy trixie trixie-proposed-updates
+"$pkg_name"</span></p>
 <h1 id="Misc_2">Misc</h1>
 <p>We might need this for key transition:</p>
 <ul>

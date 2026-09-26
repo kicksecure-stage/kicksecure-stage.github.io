@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Nested Virtualization</title>
 <meta name="description" content="It is possible to run Virtual Machines (VMs) inside other VMs. That is called Nested Virtualization.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Mastomys-332686640.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -150,14 +150,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>virtualbox</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-virtualbox</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends virtualbox">sudo
+apt install --no-install-recommends virtualbox</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -196,15 +196,16 @@ the VM, for example if the VM was renamed or multiple Kicksecure are in
 use. The following command works on Linux. It is untested on Windows but
 it should be possible to make this command work. Its purpose is adding
 VBoxManage to PATH (if that is not the default) or using the full path
-to VBoxManage. <span class="code-select">VBoxManage modifyvm
-Whonix-Workstation-LXQt --nested-hw-virt on</span></li>
+to VBoxManage.
+<span class="code-select" data-code="VBoxManage modifyvm Whonix-Workstation-LXQt --nested-hw-virt on">VBoxManage
+modifyvm Whonix-Workstation-LXQt --nested-hw-virt on</span></li>
 <li id="cite_note-4"><a href="https://www.virtualbox.org/ticket/19500">https://www.virtualbox.org/ticket/19500</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/ticket/19500" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
-<li id="cite_note-5"><span class="code-select">vboxmanage "Kicksecure" modifyvm --ioapic
-on</span></li>
+<li id="cite_note-5"><span class="code-select" data-code="vboxmanage &quot;Kicksecure&quot; modifyvm --ioapic on">vboxmanage
+"Kicksecure" modifyvm --ioapic on</span></li>
 <li id="cite_note-6">So does enabling ACPI. Enabling ACPI in all VMs significantly speeds
 up the "inside" VM (<code>L1</code>).
-<span class="code-select">vboxmanage "Kicksecure" modifyvm --acpi
-on</span> Quote <a href="https://www.virtualbox.org/manual/ch03.html#settings-motherboard">VirtualBox
+<span class="code-select" data-code="vboxmanage &quot;Kicksecure&quot; modifyvm --acpi on">vboxmanage
+"Kicksecure" modifyvm --acpi on</span> Quote <a href="https://www.virtualbox.org/manual/ch03.html#settings-motherboard">VirtualBox
 manual</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtualbox.org/manual/ch03.html#settings-motherboard" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: <blockquote><p>ACPI is the current industry standard to allow OSes to recognize
 hardware, configure motherboards and other devices and manage power. As
 most computers contain this feature and Windows and Linux support ACPI,

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Non Anonymous Onion Encryption and NAT Traversal</title>
 <meta name="description" content="Using Tor for Onion Encryption / Authentication and NAT Traversal Only - Without Anonymity!">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Nontanonymous213132.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -93,11 +93,23 @@ Qubes</a></u>, take the following step.</p>
 <code>Tor User Config (Torrc)</code></p></div></div></p>
 <p><div class="tcc-section  "><div class="tcc-image"><img src="../../media/Utilities-terminal.png.webp" width="25" alt="Utilities-terminal.png" /></div><div class="tcc-title"><h4 id="CLI">CLI</h4></div><div class="tcc-content"><u>If you are using Kicksecure with <u>c</u>ommand <u>l</u>ine
 <u>i</u>nterface (CLI)</u>, take the following step.
-<span class="code-select">sudoedit
+<span class="code-select" data-code="sudoedit /usr/local/etc/torrc.d/50_user.conf">sudoedit
 /usr/local/etc/torrc.d/50_user.conf</span></div></div></p></div></div></p>
 <p>Add.</p>
-<p><span class="code-select">HiddenServiceNonAnonymousMode 1
-HiddenServiceSingleHopMode 1 SocksPort 0</p>
+<p><span class="code-select" data-code="HiddenServiceNonAnonymousMode 1
+HiddenServiceSingleHopMode 1
+SocksPort 0
+
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 22 127.0.0.1:22
+HiddenServicePort 5900 127.0.0.1:5900
+HiddenServiceVersion 3
+## syntax:
+## HiddenServiceAuthorizeClient auth-type client-name,client-name,...
+## The auth-type can either be &#x27;basic&#x27; for a general-purpose authorization protocol or &#x27;stealth&#x27; for a less scalable protocol that also hides service activity from unauthorized clients.
+## Valid client names are 1 to 16 characters long and only use characters in A-Za-z0-9+-_ (no spaces).
+HiddenServiceAuthorizeClient stealth 1234567890123456">HiddenServiceNonAnonymousMode
+1 HiddenServiceSingleHopMode 1 SocksPort 0</p>
 <p>HiddenServiceDir /var/lib/tor/hidden_service/ HiddenServicePort 22
 127.0.0.1:22 HiddenServicePort 5900 127.0.0.1:5900 HiddenServiceVersion
 3</p>
@@ -117,28 +129,43 @@ characters in A-Za-z0-9+-_ (no spaces).</li>
 <p>Save and exit.</p>
 <h1 id="Client_Side">Client Side</h1>
 <p><a href="../Operating_System_Software_and_Updates/">Update</a> the package lists.</p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p>Install Tor's build dependencies.</p>
-<p><span class="code-select">sudo apt build-dep tor</span></p>
+<p><span class="code-select" data-code="sudo apt build-dep tor">sudo apt
+build-dep tor</span></p>
 <p><sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
 <p>Create directory <code>~/tor-src</code>.</p>
-<p><span class="code-select">mkdir ~/tor-src</span></p>
+<p><span class="code-select" data-code="mkdir ~/tor-src">mkdir
+~/tor-src</span></p>
 <p>Change directory to <code>~/tor-src</code>.</p>
-<p><span class="code-select">cd tor-src</span></p>
+<p><span class="code-select" data-code="cd tor-src">cd
+tor-src</span></p>
 <p>Download the Tor source package.</p>
-<p><span class="code-select">apt source tor</span></p>
+<p><span class="code-select" data-code="apt source tor">apt source
+tor</span></p>
 <p>Change directory to Tor source directory.</p>
-<p><span class="code-select">cd tor-*/</span></p>
+<p><span class="code-select" data-code="cd tor-*/">cd tor-*/</span></p>
 <p>Open file <code>debian/rules</code> in a <a href="../Software/#Text_Editor">text editor</a> of your
 choice as a regular, non-root user.</p>
 <div class="info-box ">
 <p><u>If you are using a graphical environment</u>, run.
-<span class="code-select">featherpad debian/rules</span></p>
+<span class="code-select" data-code="featherpad debian/rules">featherpad
+debian/rules</span></p>
 <p><u>If you are using a terminal</u>, run.
-<span class="code-select">nano debian/rules</span></p>
+<span class="code-select" data-code="nano debian/rules">nano
+debian/rules</span></p>
 </div>
 <p>Change:</p>
-<p><span class="code-select">dh_auto_configure \</p>
+<p><span class="code-select" data-code="dh_auto_configure \
+        $(confflags) \
+        --prefix=/usr \
+        --mandir=\$${prefix}/share/man \
+        --infodir=\$${prefix}/share/info \
+        --localstatedir=/var \
+        --sysconfdir=/etc \
+        --disable-silent-rules \
+        --enable-gcc-warnings-advisory">dh_auto_configure \</p>
 <p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;$(confflags)&#160;\</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--prefix=/usr&#160;\</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--mandir=\$${prefix}/share/man&#160;\</code><br />
@@ -148,7 +175,16 @@ choice as a regular, non-root user.</p>
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--disable-silent-rules&#160;\</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--enable-gcc-warnings-advisory</code></span><code>&#160;</code></p>
 <p>To:</p>
-<p><span class="code-select">dh_auto_configure \</p>
+<p><span class="code-select" data-code="dh_auto_configure \
+        $(confflags) \
+        --prefix=/usr \
+        --mandir=\$${prefix}/share/man \
+        --infodir=\$${prefix}/share/info \
+        --localstatedir=/var \
+        --sysconfdir=/etc \
+        --disable-silent-rules \
+        --enable-gcc-warnings-advisory \
+        --enable-tor2web-mode">dh_auto_configure \</p>
 <p><code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;$(confflags)&#160;\</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--prefix=/usr&#160;\</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&#160;&#160;--mandir=\$${prefix}/share/man&#160;\</code><br />
@@ -162,16 +198,20 @@ choice as a regular, non-root user.</p>
 choice as a regular, non-root user.</p>
 <div class="info-box ">
 <p><u>If you are using a graphical environment</u>, run.
-<span class="code-select">featherpad src/or/config.c</span></p>
+<span class="code-select" data-code="featherpad src/or/config.c">featherpad
+src/or/config.c</span></p>
 <p><u>If you are using a terminal</u>, run.
-<span class="code-select">nano src/or/config.c</span></p>
+<span class="code-select" data-code="nano src/or/config.c">nano
+src/or/config.c</span></p>
 </div>
 <p>Change</p>
-<p><span class="code-select">V(Tor2webMode, BOOL, "0"),</span></p>
+<p><span class="code-select" data-code="V(Tor2webMode,                 BOOL,     &quot;0&quot;),">V(Tor2webMode,
+BOOL, "0"),</span></p>
 <p>To</p>
-<p><span class="code-select">V(Tor2webMode, BOOL, "1"),</span></p>
+<p><span class="code-select" data-code="V(Tor2webMode,                 BOOL,     &quot;1&quot;),">V(Tor2webMode,
+BOOL, "1"),</span></p>
 <p>Build the Tor package.</p>
-<p><span class="code-select">debuild</span></p>
+<p><span class="code-select" data-code="debuild">debuild</span></p>
 <p><sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
 <h1 id="Footnotes">Footnotes</h1>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../NAT_traversal/" title="NAT traversal"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">NAT
@@ -187,8 +227,9 @@ intelligence</span></span></span></p>
 </div>
 <div class="references">
 <ol>
-<li id="cite_note-1"><span class="code-select">sudo apt install zlib1g-dev libevent-dev
-asciidoc xmlto libsystemd-dev</span></li>
+<li id="cite_note-1"><span class="code-select" data-code="sudo apt install zlib1g-dev libevent-dev asciidoc xmlto libsystemd-dev">sudo
+apt install zlib1g-dev libevent-dev asciidoc xmlto
+libsystemd-dev</span></li>
 <li id="cite_note-2">* <a href="https://github.com/globaleaks/Tor2web/wiki/Installation-Guide">https://github.com/globaleaks/Tor2web/wiki/Installation-Guide</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/globaleaks/Tor2web/wiki/Installation-Guide" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 * <a href="https://github.com/globaleaks/Tor2web/issues/327">https://github.com/globaleaks/Tor2web/issues/327</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/globaleaks/Tor2web/issues/327" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
 </ol>

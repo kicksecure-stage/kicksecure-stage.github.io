@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Configuration Files</title>
 <meta name="description" content="Everything you should know about Configuration Drop-in Folders and Files.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Five-elements-379106640.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -206,7 +206,8 @@ is useful if a user changes their mind or selected the wrong action
 Check using <code>debsums</code>.</p>
 <p>Run <a href="https://manpages.debian.org"><code>debsums</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> to
 show a list of changed and missing configuration files.</p>
-<p><span class="code-select">sudo debsums -ce</span></p>
+<p><span class="code-select" data-code="sudo debsums -ce">sudo debsums
+-ce</span></p>
 <p>A sample output might look like this.</p>
 <pre><code>sdwdate: /etc/sdwdate.d/30_default.conf</code></pre>
 <p>This means:</p>
@@ -216,7 +217,8 @@ Reinstall the package.</p>
 <p>In the command below, replace <code>package-name</code> with the
 actual name of the package, such as <code>sdwdate</code>.
 <sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
-<p><span class="code-select">sudo apt-get-reset package-name</span></p>
+<p><span class="code-select" data-code="sudo apt-get-reset package-name">sudo
+apt-get-reset package-name</span></p>
 <p>The output will be similar to below.</p>
 <pre><code>Setting up sdwdate (3:14.7-1) ...
 Configuration file &#39;/etc/sdwdate.d/30_default.conf&#39;, does not exist on system.
@@ -290,10 +292,16 @@ This is a systemd feature.</p>
 certain condition is met." If the condition is not met, systemd will
 skip starting the unit.</p>
 <p>For example, file
-<span class="code-select inline-style">/usr/lib/systemd/system/mnt-shared-vbox.service.d/30_grub-live.conf</span>
+<span class="code-select inline-style" data-code="/usr/lib/systemd/system/mnt-shared-vbox.service.d/30_grub-live.conf">/usr/lib/systemd/system/mnt-shared-vbox.service.d/30_grub-live.conf</span>
 (in <a href="https://github.com/Kicksecure/vm-config-dist">package
 <code>vm-config-dist</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/vm-config-dist" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>) does that.</p>
-<p><span class="code-select">[Unit]</p>
+<p><span class="code-select" data-code="[Unit]
+
+## Debian forked upstream module 90overlay-root
+ConditionKernelCommandLine=!rootovl
+
+## dracut upstream module 90overlayfs - grub-live / ISO
+ConditionKernelCommandLine=!rd.live.overlay.overlayfs=1">[Unit]</p>
 <ol>
 <li><ol>
 <li>Debian forked upstream module 90overlay-root</li>
@@ -320,12 +328,13 @@ present.</p>
 <p>This is an example. Adjust as needed.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Create the override directory:</p>
-<p><span class="code-select">sudo mkdir -p
-/etc/systemd/system/openvpn@openvpn.service.d/</span></p>
+<p><span class="code-select" data-code="sudo mkdir -p /etc/systemd/system/openvpn@openvpn.service.d/">sudo
+mkdir -p /etc/systemd/system/openvpn@openvpn.service.d/</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Disable the specific drop-in file by linking it to
 <code>/dev/null</code>:</p>
-<p><span class="code-select">sudo ln -sf /dev/null
+<p><span class="code-select" data-code="sudo ln -sf /dev/null /etc/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf">sudo
+ln -sf /dev/null
 /etc/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Done.</p>
@@ -342,14 +351,15 @@ Policy</a> applies.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Create folder.</p>
 <p>This is the folder where the files will be moved.</p>
-<p><span class="code-select">sudo mkdir --parents
-/var/lib/user</span></p>
+<p><span class="code-select" data-code="sudo mkdir --parents /var/lib/user">sudo
+mkdir --parents /var/lib/user</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Learn which package owns the file.</p>
 <p>Syntax:</p>
 <pre><code>dpkg -S /path/to/file/to/move/out/of/the/way</code></pre>
 <p>Example:</p>
-<p><span class="code-select">dpkg -S
+<p><span class="code-select" data-code="dpkg -S /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf">dpkg
+-S
 /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Learn the syntax for file diversion.</p>
@@ -361,13 +371,13 @@ Check if the file exists.</p>
 <pre><code>ls /path/to/file/to/move/out/of/the/way</code></pre>
 <p>Example:</p>
 <p><u>Note:</u> Adjust paths for your use case.</p>
-<p><span class="code-select">ls
+<p><span class="code-select" data-code="ls /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf">ls
 /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Example of diverting the file.</p>
 <p><u>Note:</u> Adjust paths for your use case.</p>
-<p><span class="code-select">sudo dpkg-divert --divert
-/var/lib/user/50_unpriv.conf --rename
+<p><span class="code-select" data-code="sudo dpkg-divert --divert /var/lib/user/50_unpriv.conf --rename /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf">sudo
+dpkg-divert --divert /var/lib/user/50_unpriv.conf --rename
 /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
 Confirm the file has been moved.</p>
@@ -378,7 +388,8 @@ Undo DPKG diversion.</p>
 <p>Syntax:</p>
 <pre><code>sudo dpkg-divert --no-rename --remove /path/to/file/to/restore</code></pre>
 <p>Example:</p>
-<p><span class="code-select">sudo dpkg-divert --no-rename --remove
+<p><span class="code-select" data-code="sudo dpkg-divert --no-rename --remove /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf">sudo
+dpkg-divert --no-rename --remove
 /usr/lib/systemd/system/openvpn@openvpn.service.d/50_unpriv.conf</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
 Restore the file.</p>
@@ -489,8 +500,8 @@ User: What does "source" do?</a><sup class="ext-link-to-archive has-sibling" tit
 <li id="cite_note-2">For example, not installed instead of installed.</li>
 <li id="cite_note-3"><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/bin/apt-get-reset">Kicksecure/usability-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/usability-misc/blob/master/usr/bin/apt-get-reset" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 is a Kicksecure-specific feature. It performs an action like this:
-<span class="code-select">sudo apt -o
-Dpkg::Options::=--force-confnew,confmiss install --reinstall
+<span class="code-select" data-code="sudo apt -o Dpkg::Options::=--force-confnew,confmiss install --reinstall package-name">sudo
+apt -o Dpkg::Options::=--force-confnew,confmiss install --reinstall
 package-name</span></li>
 <li id="cite_note-4"><a href="https://www.qubes-os.org/doc/getting-started/">App Qubes
 and Templates</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.qubes-os.org/doc/getting-started/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>systemd</title>
 <meta name="description" content="systemd versus non-systemd / Miscellaneous / Find systemd dependency cycles.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="systemd">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -358,28 +358,33 @@ opinion.</span></li>
 <h1 id="Systemd_User_Environment_Variables_Configuration">Systemd User
 Environment Variables Configuration</h1>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i></p>
-<p><span class="code-select">mkdir -p
-~/.config/environment.d/</span></p>
+<p><span class="code-select" data-code="mkdir -p ~/.config/environment.d/">mkdir
+-p ~/.config/environment.d/</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Open file <code>~/.config/environment.d/electrumx.conf</code> in a <a href="../Software/#Text_Editor">text editor</a> of your
 choice as a regular, non-root user.</p>
 <div class="info-box ">
 <p><u>If you are using a graphical environment</u>, run.
-<span class="code-select">featherpad
+<span class="code-select" data-code="featherpad ~/.config/environment.d/electrumx.conf">featherpad
 ~/.config/environment.d/electrumx.conf</span></p>
 <p><u>If you are using a terminal</u>, run.
-<span class="code-select">nano
+<span class="code-select" data-code="nano ~/.config/environment.d/electrumx.conf">nano
 ~/.config/environment.d/electrumx.conf</span></p>
 </div>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Paste the following contents.</p>
-<p><span class="code-select">COIN=Bitcoin DB_DIRECTORY=~/.electrumx
+<p><span class="code-select" data-code="COIN=Bitcoin
+DB_DIRECTORY=~/.electrumx
+DAEMON_URL=username:password@127.0.0.1
+SERVICES=rpC://localhost
+PEER_DISCOVERY=self">COIN=Bitcoin DB_DIRECTORY=~/.electrumx
 DAEMON_URL=username:password@127.0.0.1 SERVICES=rpC://localhost
 PEER_DISCOVERY=self</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 Save.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i></p>
-<p><span class="code-select">systemctl --user daemon-reload</span></p>
+<p><span class="code-select" data-code="systemctl --user daemon-reload">systemctl
+--user daemon-reload</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
 Done.</p>
 <p>The systemd user environment variables configuration has been created

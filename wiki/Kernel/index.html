@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Linux Kernel</title>
 <meta name="description" content="Newer Kernel Versions for Better Security Hardening / Kernel Issues">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Newerlinux161108640.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -204,34 +204,46 @@ Add the current Debian stable backports codename
 <p><u>Note:</u> this applies to Kicksecure 18.2.1.9. Later Kicksecure
 versions may use a codename different from <code>trixie</code>.</p>
 <p>In Kicksecure (<code>kicksecure-18</code>) Template, run.</p>
-<p><span class="code-select">sudo su -c "echo -e 'Types: deb URIs:
-tor+https://deb.debian.org/debian Suites: trixie-backports Components:
-main contrib non-free Enabled: yes Signed-By:
-/usr/share/keyrings/debian-archive-keyring.gpg' &gt;
+<p><span class="code-select" data-code="sudo su -c &quot;echo -e &#x27;Types: deb
+URIs: tor+https://deb.debian.org/debian
+Suites: trixie-backports
+Components: main contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg&#x27; &gt; /etc/apt/sources.list.d/backports.sources&quot;">sudo
+su -c "echo -e 'Types: deb URIs: tor+https://deb.debian.org/debian
+Suites: trixie-backports Components: main contrib non-free Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' &gt;
 /etc/apt/sources.list.d/backports.sources"</span></p>
 <p>Alternatively, users who like <a href="../Onionizing_Repositories/">Onionizing Repositories</a> can set the <i>.onion</i>
 mirror.</p>
-<p><span class="code-select">sudo su -c "echo -e 'Types: deb URIs:
+<p><span class="code-select" data-code="sudo su -c &quot;echo -e &#x27;Types: deb
+URIs: tor+http://2s4yqjx5ul6okpp3f2gaunr2syex5jgbfpfvhxxbbjwnrsvbk5v3qbid.onion/debian
+Suites: trixie-backports
+Components: main contrib non-free
+Enabled: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg&#x27; &gt; /etc/apt/sources.list.d/backports.sources&quot;">sudo
+su -c "echo -e 'Types: deb URIs:
 tor+http://2s4yqjx5ul6okpp3f2gaunr2syex5jgbfpfvhxxbbjwnrsvbk5v3qbid.onion/debian
 Suites: trixie-backports Components: main contrib non-free Enabled: yes
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg' &gt;
 /etc/apt/sources.list.d/backports.sources"</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">3</i>
 <a href="../Operating_System_Software_and_Updates/#Updates">Update</a> the package lists.</p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">4</i>
 Install the selected software.</p>
-<p><span class="code-select">sudo apt -t trixie-backports install
-linux-image-$(dpkg --print-architecture) linux-headers-$(dpkg
---print-architecture)</span></p>
+<p><span class="code-select" data-code="sudo apt -t trixie-backports install linux-image-$(dpkg --print-architecture) linux-headers-$(dpkg --print-architecture)">sudo
+apt -t trixie-backports install linux-image-$(dpkg --print-architecture)
+linux-headers-$(dpkg --print-architecture)</span></p>
 <p>The procedure is now complete.</p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-blue iconset-h2">5</i>
 Undo.</p>
 <p>On occasion it is necessary to undo this configuration, for example
 when upgrading from Debian <code>trixie</code> to <code>forky</code>.
 <sup class="reference"><a href="#cite_note-16">[16]</a></sup> To proceed, run.</p>
-<p><span class="code-select">sudo rm
-/etc/apt/sources.list.d/backports.sources</span></p>
+<p><span class="code-select" data-code="sudo rm /etc/apt/sources.list.d/backports.sources">sudo
+rm /etc/apt/sources.list.d/backports.sources</span></p>
 </div>
 <p>These steps can be repeated for any other host operating system
 installations or other VMs.</p>

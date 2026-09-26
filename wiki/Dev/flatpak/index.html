@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Dev/flatpak</title>
 <meta name="description" content="Bootstrapping a Trust path To Flathub Repository Signing Key">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Dev/flatpak">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -38,18 +38,20 @@ Dev/videos</span></span></span>Dev/flatpak</p>
 <h1 id="Extract_Flathub_Signing_Key_from_flathub.flatpakrepo">Extract
 Flathub Signing Key from flathub.flatpakrepo</h1>
 <p>Based on <a href="https://github.com/flatpak/flatpak/issues/5657#issuecomment-1898586690">https://github.com/flatpak/flatpak/issues/5657#issuecomment-1898586690</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/flatpak/flatpak/issues/5657#issuecomment-1898586690" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
-<p><span class="code-select">scurl-download <a href="https://flathub.org/repo/flathub.flatpakrepo">https://flathub.org/repo/flathub.flatpakrepo</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://flathub.org/repo/flathub.flatpakrepo" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
-<p><span class="code-select">sed -ne 's/^GPGKey=//p' flathub.flatpakrepo
-| base64 -w0 -d | gpg --import</span></p>
+<p><span class="code-select" data-code="scurl-download https://flathub.org/repo/flathub.flatpakrepo">scurl-download
+<a href="https://flathub.org/repo/flathub.flatpakrepo">https://flathub.org/repo/flathub.flatpakrepo</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://flathub.org/repo/flathub.flatpakrepo" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="sed -ne &#x27;s/^GPGKey=//p&#x27; flathub.flatpakrepo | base64 -w0 -d | gpg --import">sed
+-ne 's/^GPGKey=//p' flathub.flatpakrepo | base64 -w0 -d | gpg
+--import</span></p>
 <h1 id="Flathub_Signing_Key">Flathub Signing Key</h1>
-<p><span class="code-select">gpg --fingerprint
-6E5C05D979C76DAF93C081354184DD4D907A7CAE</span></p>
+<p><span class="code-select" data-code="gpg --fingerprint 6E5C05D979C76DAF93C081354184DD4D907A7CAE">gpg
+--fingerprint 6E5C05D979C76DAF93C081354184DD4D907A7CAE</span></p>
 <pre><code>pub   rsa4096/0x4184DD4D907A7CAE 2017-06-16 [SC] [expires: 2027-06-14]
       Key fingerprint = 6E5C 05D9 79C7 6DAF 93C0  8135 4184 DD4D 907A 7CAE
 uid                   [ unknown] Flathub Repo Signing Key &lt;flathub@flathub.org&gt;
 sub   rsa4096/0x562702E9E3ED7EE8 2017-06-16 [S] [expires: 2027-06-14]</code></pre>
 <h1 id="Flathub_-_upstream_default">Flathub - upstream default</h1>
-<p><span class="code-select">/etc/flatpak/remotes.d/flathub.flatpakrepo</span></p>
+<p><span class="code-select" data-code="/etc/flatpak/remotes.d/flathub.flatpakrepo">/etc/flatpak/remotes.d/flathub.flatpakrepo</span></p>
 <pre><code>[Flatpak Repo]
 Title=Flathub
 Url=https://dl.flathub.org/repo/

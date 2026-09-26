@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Secure Shell (SSH)</title>
 <meta name="description" content="SSH Hardening Tips; Recommended Client and Server Settings for better Security">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Sshlogo.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -151,7 +151,8 @@ your username.</p>
 Generate the SSH keypair.</p>
 <p>Use a tool called <code>ssh-keygen</code>. On the command line,
 type.</p>
-<p><span class="code-select">ssh-keygen -o -a 75 -t ed25519</span></p>
+<p><span class="code-select" data-code="ssh-keygen -o -a 75 -t ed25519">ssh-keygen
+-o -a 75 -t ed25519</span></p>
 <ul>
 <li><u><code>-o</code>:</u> Produces a key that is compatible with
 OpenSSH instead of the older style <code>.pem</code>.</li>
@@ -193,8 +194,8 @@ password-based login, enter the SSH login password. This password should
 be provided by the server provider. No password might be provided if the
 server provider already pre-installed an SSH key.</li>
 </ul>
-<p><span class="code-select">ssh-copy-id -i ~/.ssh/id_ed25519.pub
-root@127.0.0.1</span></p>
+<p><span class="code-select" data-code="ssh-copy-id -i ~/.ssh/id_ed25519.pub root@127.0.0.1">ssh-copy-id
+-i ~/.ssh/id_ed25519.pub root@127.0.0.1</span></p>
 <p>The <code>ssh-copy-id</code> utility will check for the correct
 permissions before it allows the key to be transferred.</p>
 <p>In the following example the SSH server fingerprint is
@@ -217,7 +218,8 @@ of the server.</li>
 <li><u>User name:</u> Replace user name <code>root</code> in case using
 a different account name.</li>
 </ul>
-<p><span class="code-select">ssh root@127.0.0.1</span></p>
+<p><span class="code-select" data-code="ssh root@127.0.0.1">ssh
+root@127.0.0.1</span></p>
 <p>A password prompt for the key will be shown if a passphrase has been
 previously set.</p>
 <p>If the SSH login was successful, the shell prompt will be different
@@ -237,7 +239,7 @@ The relevant files are: <code>/etc/ssh/ssh_config</code> and
 <h3 id="Client_Configuration_File">Client Configuration File</h3><span class="share-tooltip" data-anchor="Client_Configuration_File"><a class="headline-anchor" href="#Client_Configuration_File" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SSH/#Client_Configuration_File">https://www.kicksecure.com/wiki/SSH/#Client_Configuration_File</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSSH%2F%23Client_Configuration_File&amp;text=Client%20Configuration%20File" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSSH%2F%23Client_Configuration_File&amp;text=Client%20Configuration%20File" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSSH%2F%23Client_Configuration_File&amp;title=Client%20Configuration%20File" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Client%20Configuration%20File&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSSH%2F%23Client_Configuration_File" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/SSH/#Client_Configuration_File]Client Configuration File[/url]">[url=https://www.kicksecure.com/wiki/SSH/#Client_Configuration_File]Client Configuration File[/url]</span></span></span></span>
 <p>View the default configuration file for informational purposes
 only.</p>
-<p><span class="code-select">featherpad
+<p><span class="code-select" data-code="featherpad /etc/ssh/ssh_config.d/30_security-misc.conf">featherpad
 /etc/ssh/ssh_config.d/30_security-misc.conf</span></p>
 <p>See also:</p>
 <ul>
@@ -439,13 +441,14 @@ closed in the middle of the setup.</p>
 View the fingerprint of the server's ed25519 public key.</p>
 <p>Fine hosting providers will also show the server fingerprint in the
 server web interface.</p>
-<p><span class="code-select">ssh-keygen -lf
-/etc/ssh/ssh_host_ed25519_key.pub</span></p>
+<p><span class="code-select" data-code="ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub">ssh-keygen
+-lf /etc/ssh/ssh_host_ed25519_key.pub</span></p>
 <p>Example output:</p>
 <pre><code>256 SHA256:1Ri62BbzONwKbRau92UcyA1K4vu+mctfeddDTUu04ao root@nc-ph-1401-50 (ED25519)</code></pre>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Restart the <code>sshd</code> daemon.</p>
-<p><span class="code-select">sudo systemctl restart sshd</span></p>
+<p><span class="code-select" data-code="sudo systemctl restart sshd">sudo
+systemctl restart sshd</span></p>
 <p>Existing SSH connections should not be interrupted by Debian
 default.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
@@ -487,14 +490,15 @@ this setup.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
 View the default configuration file for informational purposes only.</p>
 <ul>
-<li><span class="code-select inline-style">featherpad
+<li><span class="code-select inline-style" data-code="featherpad /etc/ssh/sshd_config.d/30_security-misc.conf">featherpad
 /etc/ssh/sshd_config.d/30_security-misc.conf</span></li>
 <li><span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><code>github-link-widget-no-url-given</code></span></li>
 </ul>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
 Create the SSH group and add your SSH user (in this example, the user
 <code>user</code>) to the SSH group.</p>
-<p><span class="code-select">sudo groupadd -f ssh sudo usermod -aG ssh
+<p><span class="code-select" data-code="sudo groupadd -f ssh
+sudo usermod -aG ssh user">sudo groupadd -f ssh sudo usermod -aG ssh
 user</span></p>
 <p>If you want to allow <code>root</code> login, also add
 <code>root</code> to the <code>ssh</code> group and <a href="./#Key_Installation">copy the client's public
@@ -516,7 +520,7 @@ editor) before running the <code>sudoedit</code> command.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/ssh/sshd_config.d/50_user.conf">sudoedit
 /etc/ssh/sshd_config.d/50_user.conf</span></p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
@@ -531,7 +535,7 @@ Template.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/ssh/sshd_config.d/50_user.conf">sudoedit
 /etc/ssh/sshd_config.d/50_user.conf</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Notes.</p>
@@ -556,7 +560,7 @@ with Root Rights</a>.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/ssh/sshd_config.d/50_user.conf">sudoedit
 /etc/ssh/sshd_config.d/50_user.conf</span></p></div></div></p></div></div></p>
 </div>
 <div class="info-box has-icon">
@@ -569,12 +573,14 @@ restart the systemd service in case of any failure.</p>
 </div>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
 The file will be empty. Paste the following content:</p>
-<p><span class="code-select">## Only members of this group are allowed
-to attempt login. AllowGroups ssh</span></p>
+<p><span class="code-select" data-code="## Only members of this group are allowed to attempt login.
+AllowGroups ssh">## Only members of this group are allowed to attempt
+login. AllowGroups ssh</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">11</i>
 Restart the <code>sshd</code> daemon. All existing SSH connections will
 remain open.</p>
-<p><span class="code-select">sudo systemctl restart sshd</span></p>
+<p><span class="code-select" data-code="sudo systemctl restart sshd">sudo
+systemctl restart sshd</span></p>
 <p>Keep the SSH connection open.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">12</i>
 Open another terminal tab and try to SSH to the server.</p>
@@ -617,17 +623,18 @@ Warning: This is for <u><strong>testers-only</strong></u>!</p>
 activity. For example, if you wanted to connect to a server at
 <code>123.45.678.910</code> and both your configuration and the server's
 configuration specify port <code>4675</code> to communicate over:</p>
-<p><span class="code-select">sudo iptables -A OUTPUT -p tcp -o
-[interface-name] -s [your client ssh ip] -d [ssh server ip] --dport 4675
---j ACCEPT</span></p>
+<p><span class="code-select" data-code="sudo iptables -A OUTPUT -p tcp -o [interface-name] -s [your client ssh ip] -d [ssh server ip] --dport 4675 --j ACCEPT">sudo
+iptables -A OUTPUT -p tcp -o [interface-name] -s [your client ssh ip] -d
+[ssh server ip] --dport 4675 --j ACCEPT</span></p>
 <p>Then to let them respond:</p>
-<p><span class="code-select">sudo iptables -A INPUT -p tcp -i
-[interface-name] -s [ssh server ip] -d [your client ip] --dport 4675 --j
-ACCEPT</span></p>
+<p><span class="code-select" data-code="sudo iptables -A INPUT -p tcp -i [interface-name] -s [ssh server ip] -d [your client ip] --dport 4675 --j ACCEPT">sudo
+iptables -A INPUT -p tcp -i [interface-name] -s [ssh server ip] -d [your
+client ip] --dport 4675 --j ACCEPT</span></p>
 <p>This assumes a default-deny policy for INPUT and OUTPUT. If you have
 a default-allow for OUTPUT, then the following rule must be added as the
 last one in the OUTPUT chain:</p>
-<p><span class="code-select">sudo iptables -A OUTPUT --j DROP</span></p>
+<p><span class="code-select" data-code="sudo iptables -A OUTPUT --j DROP">sudo
+iptables -A OUTPUT --j DROP</span></p>
 <p>This ensures the outgoing rules you have are the only ones that allow
 traffic. Iptables parses in order, so when it does not see a rule
 matching a packet not on your list, it checks each one in the chain

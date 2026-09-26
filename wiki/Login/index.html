@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Login Security</title>
 <meta name="description" content="Instructions and information about configuring Kicksecure login security.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Gui_login.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -186,7 +186,7 @@ Panel</a>.</li>
 <u>Terminal:</u> You can also run the tool by running the following
 command in a terminal:
 <ul>
-<li><span class="code-select inline-style">sudo
+<li><span class="code-select inline-style" data-code="sudo autologinchange">sudo
 autologinchange</span></li>
 </ul></li>
 </ul>
@@ -234,7 +234,7 @@ applicable. Users can skip this section. <sup class="reference"><a href="#cite_n
 <p><span class="info-box-icon"><img src="../../media/Ambox_notice.png.webp" width="40" alt="Kicksecure default admin password is: No password required. (Passwordless login.)" /></span></p>
 <ul>
 <li><strong>Default username:</strong>
-<span class="code-select">user</span></li>
+<span class="code-select" data-code="user">user</span></li>
 <li><strong>Default password:</strong> No password required.
 (Passwordless login.) <sup class="reference"><a href="#cite_note-4">[4]</a></sup></li>
 </ul>
@@ -303,13 +303,15 @@ using <code>sudo</code>.</p>
 <p>This is only a simple test to confirm that the user can currently
 escalate to administrative rights. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> Type the following
 command in the terminal and press .</p>
-<p><span class="code-select">sudo whoami</span></p>
+<p><span class="code-select" data-code="sudo whoami">sudo
+whoami</span></p>
 <p>Expected output.</p>
 <pre><code>root</code></pre>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
 <strong>Change a Linux user account password.</strong>
 <sup class="reference"><a href="#cite_note-7">[7]</a></sup></p>
-<p><span class="code-select">sudo pwchange</span></p>
+<p><span class="code-select" data-code="sudo pwchange">sudo
+pwchange</span></p>
 <p><code>pwchange</code> will display a prompt.</p>
 <pre><code>What user&#39;s password do you want to change?</code></pre>
 <p>Type the account name such as <code>user</code> or
@@ -435,11 +437,12 @@ authentication.</li>
 <li id="cite_note-7">* Using <a href="https://github.com/Kicksecure/usability-misc/blob/master/man/pwchange.8.ronn"><code>pwchange</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/usability-misc/blob/master/man/pwchange.8.ronn" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
 * <a href="https://github.com/Kicksecure/usability-misc/blob/master/usr/sbin/pwchange"><code>/usr/sbin/pwchange</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/usability-misc/blob/master/usr/sbin/pwchange" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 source code. * Alternatively, Debian standard command:
-<span class="code-select">sudo passwd user</span> While using
-<code>passwd</code> and typing the password, it will <u>not</u> appear
-on the screen, nor will the asterisk sign (<code>*</code>) be visible.
-This is normal behavior and does not mean your keyboard isn't working.
-It is necessary to type blindly and trust the procedure.</li>
+<span class="code-select" data-code="sudo passwd user">sudo passwd
+user</span> While using <code>passwd</code> and typing the password, it
+will <u>not</u> appear on the screen, nor will the asterisk sign
+(<code>*</code>) be visible. This is normal behavior and does not mean
+your keyboard isn't working. It is necessary to type blindly and trust
+the procedure.</li>
 </ol>
 </div>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../User/" title="User"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">User</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Timezone/" title="Timezone"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Timezone</span></a><span class="info"><span class="prev">Previous

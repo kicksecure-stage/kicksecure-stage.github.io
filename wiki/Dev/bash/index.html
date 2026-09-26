@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>/bin/bash - Proper Whitespace Handling - Whitespace Safety - End-of-Options Parameter Security</title>
 <meta name="description" content="Supporting multiple command line parameters with spaces in wrapper scripts, safe output handling, and use of the end-of-options parameter (--).">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="/bin/bash - Proper Whitespace Handling - Whitespace Safety - End-of-Options Parameter Security">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -139,26 +139,30 @@ recommended to be explicit about the format being used.</p>
 <p>Normally, there is no need to interpret escape sequences from a
 variable. Therefore, use the <code>printf</code> format specifier
 <code>%s</code> when the data is not printed to a terminal:</p>
-<p><span class="code-select">var="$(printf '%s'
-"${untrusted_text}")"</span></p>
+<p><span class="code-select" data-code="var=&quot;$(printf &#x27;%s&#x27; &quot;${untrusted_text}&quot;)&quot;">var="$(printf
+'%s' "${untrusted_text}")"</span></p>
 <p><code>printf '%s\n' "message here"</code> is the usual replacement
 for <code>echo "message here"</code>.</p>
 <p>If you require escapes to be interpreted, interpret them on a
 per-need basis:</p>
-<p><span class="code-select">red="$(printf '%b' "\e[31m")" #
-red=$'\e[31m' # printf -v red '%b' "\e[31m" nocolor="$(printf '%b'
-"\e[m")" # nocolor=$'\e[m' # printf -v nocolor '%b' "\e[m"</span></p>
+<p><span class="code-select" data-code="red=&quot;$(printf &#x27;%b&#x27; &quot;\e[31m&quot;)&quot;    # red=$&#x27;\e[31m&#x27;   # printf -v red     &#x27;%b&#x27; &quot;\e[31m&quot;
+nocolor=&quot;$(printf &#x27;%b&#x27; &quot;\e[m&quot;)&quot;  # nocolor=$&#x27;\e[m&#x27; # printf -v nocolor &#x27;%b&#x27; &quot;\e[m&quot;">red="$(printf
+'%b' "\e[31m")" # red=$'\e[31m' # printf -v red '%b' "\e[31m"
+nocolor="$(printf '%b' "\e[m")" # nocolor=$'\e[m' # printf -v nocolor
+'%b' "\e[m"</span></p>
 <p>Escapes that are already interpreted can then be printed with
 <code>%s</code>:</p>
-<p><span class="code-select">var="$(printf '%s' "${red}
-${untrusted_text} ${nocolor}")"</span></p>
+<p><span class="code-select" data-code="var=&quot;$(printf &#x27;%s&#x27; &quot;${red} ${untrusted_text} ${nocolor}&quot;)&quot;">var="$(printf
+'%s' "${red} ${untrusted_text} ${nocolor}")"</span></p>
 <p>And this is why you should use <code>stecho</code> when printing to
 the terminal, because it sanitizes unsafe characters (<a href="../../Unicode/">unicode</a>). Simply using <code>printf '%s'</code> is
 not sufficient when escapes are already interpreted:</p>
-<p><span class="code-select">stecho "${red} ${untrusted_text}
-${nocolor}" printf '%s' "${red} ${untrusted_text} ${nocolor}" | stecho
-printf '%s' "${red} ${untrusted_text} ${nocolor}" | stecho | less
--R</span></p>
+<p><span class="code-select" data-code="stecho &quot;${red} ${untrusted_text} ${nocolor}&quot;
+printf &#x27;%s&#x27; &quot;${red} ${untrusted_text} ${nocolor}&quot; | stecho
+printf &#x27;%s&#x27; &quot;${red} ${untrusted_text} ${nocolor}&quot; | stecho | less -R">stecho
+"${red} ${untrusted_text} ${nocolor}" printf '%s' "${red}
+${untrusted_text} ${nocolor}" | stecho printf '%s' "${red}
+${untrusted_text} ${nocolor}" | stecho | less -R</span></p>
 <p><strong>Rule of thumb</strong>:</p>
 <ul>
 <li><code>echo</code>: Never.</li>
@@ -262,20 +266,36 @@ explicitly.</p>
 <h1 id="local">local</h1>
 <h2 id="Error_swallowing">Error swallowing</h2><span class="share-tooltip" data-anchor="Error_swallowing"><a class="headline-anchor" href="#Error_swallowing" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/bash/#Error_swallowing">https://www.kicksecure.com/wiki/Dev/bash/#Error_swallowing</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Error_swallowing&amp;text=Error%20swallowing" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Error_swallowing&amp;text=Error%20swallowing" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Error_swallowing&amp;title=Error%20swallowing" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Error%20swallowing&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Error_swallowing" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/bash/#Error_swallowing]Error swallowing[/url]">[url=https://www.kicksecure.com/wiki/Dev/bash/#Error_swallowing]Error swallowing[/url]</span></span></span></span>
 <p><u>Note:</u></p>
-<p><span class="code-select">local testvar=$(false)</span></p>
+<p><span class="code-select" data-code="local testvar=$(false)">local
+testvar=$(false)</span></p>
 <p><u>Expected:</u> error</p>
 <p><u>Actual:</u> no error</p>
 <p>When declaration and assignment are combined on the same line,
 <code>local</code> itself returns success and masks the failing command
 substitution.</p>
 <p>Better:</p>
-<p><span class="code-select">local testvar testvar=$(false)</span></p>
+<p><span class="code-select" data-code="local testvar
+testvar=$(false)">local testvar testvar=$(false)</span></p>
 <h2 id="Dynamic_scoping">Dynamic scoping</h2><span class="share-tooltip" data-anchor="Dynamic_scoping"><a class="headline-anchor" href="#Dynamic_scoping" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/bash/#Dynamic_scoping">https://www.kicksecure.com/wiki/Dev/bash/#Dynamic_scoping</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Dynamic_scoping&amp;text=Dynamic%20scoping" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Dynamic_scoping&amp;text=Dynamic%20scoping" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Dynamic_scoping&amp;title=Dynamic%20scoping" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Dynamic%20scoping&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fbash%2F%23Dynamic_scoping" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/bash/#Dynamic_scoping]Dynamic scoping[/url]">[url=https://www.kicksecure.com/wiki/Dev/bash/#Dynamic_scoping]Dynamic scoping[/url]</span></span></span></span>
 <p><code>local</code> variables in Bash use dynamic scoping. That means
 nested function calls can still read and modify them unless they declare
 their own <code>local</code> variable.</p>
 <p><u>Example:</u></p>
-<p><span class="code-select">fn_01 () {</p>
+<p><span class="code-select" data-code="fn_01 () {
+  local myvar
+  myvar=&#x27;supposedly local&#x27;
+  printf &#x27;%s\n&#x27; &quot;in fn_01, myvar is $myvar&quot;
+  fn_02
+  printf &#x27;%s\n&#x27; &quot;in fn_01, myvar is now $myvar&quot;
+}
+
+fn_02 () {
+  printf &#x27;%s\n&#x27; &quot;in fn_02, myvar is $myvar&quot;
+  myvar=&#x27;not so local after all&#x27;
+  printf &#x27;%s\n&#x27; &quot;in fn_02, myvar is now $myvar&quot;
+}
+
+fn_01">fn_01 () {</p>
 <p><code>&#160;local&#160;myvar</code><br />
 <code>&#160;myvar='supposedly&#160;local'</code><br />
 <code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;$myvar"</code><br />
@@ -295,7 +315,21 @@ in fn_02, myvar is now not so local after all
 in fn_01, myvar is now not so local after all</code></pre>
 <p>To avoid problems from this, declare all function-local variables as
 <code>local</code> at the head of a function. For example:</p>
-<p><span class="code-select">fn_01 () {</p>
+<p><span class="code-select" data-code="fn_01 () {
+  local myvar
+  myvar=&#x27;local to fn_01&#x27;
+  printf &#x27;%s\n&#x27; &quot;in fn_01, myvar is $myvar&quot;
+  fn_02
+  printf &#x27;%s\n&#x27; &quot;in fn_01, myvar is now $myvar&quot;
+}
+
+fn_02 () {
+  local myvar
+  myvar=&#x27;local to fn_02&#x27;
+  printf &#x27;%s\n&#x27; &quot;in fn_02, myvar is $myvar&quot;
+}
+
+fn_01">fn_01 () {</p>
 <p><code>&#160;local&#160;myvar</code><br />
 <code>&#160;myvar='local&#160;to&#160;fn_01'</code><br />
 <code>&#160;printf&#160;'%s\n'&#160;"in&#160;fn_01,&#160;myvar&#160;is&#160;$myvar"</code><br />
@@ -332,20 +366,20 @@ Parameter (--)</h1>
 otherwise inputs might be mistaken for command options. This can even
 become a security issue. Here are examples using the <code>sponge</code>
 command:</p>
-<p><span class="code-select">sponge -a testfilename
-&lt;/dev/null</span></p>
+<p><span class="code-select" data-code="sponge -a testfilename &lt;/dev/null">sponge
+-a testfilename &lt;/dev/null</span></p>
 <p>Result: OK. This works because "<code>testfilename</code>" does not
 look like an option.</p>
-<p><span class="code-select">sponge -a --testfilename
-&lt;/dev/null</span></p>
+<p><span class="code-select" data-code="sponge -a --testfilename &lt;/dev/null">sponge
+-a --testfilename &lt;/dev/null</span></p>
 <p>Result: Fail. The command interprets "<code>--testfilename</code>" as
 options:</p>
 <pre><code>sponge: invalid option -- &#39;-&#39;
 sponge: invalid option -- &#39;t&#39;
 sponge: invalid option -- &#39;e&#39;
 ...</code></pre>
-<p><span class="code-select">sponge -a -- --testfilename
-&lt;/dev/null</span></p>
+<p><span class="code-select" data-code="sponge -a -- --testfilename &lt;/dev/null">sponge
+-a -- --testfilename &lt;/dev/null</span></p>
 <p>Result: OK. The <code>--</code> signals that
 "<code>--testfilename</code>" is a filename, not an option.</p>
 <p>Conclusion:</p>
@@ -381,9 +415,10 @@ with NUL-Delimited Input</h1>
 <p>Example:</p>
 <p><u>Note:</u> The variable could be different. It could, for example,
 be <code>--/usr</code>.</p>
-<p><span class="code-select">folder_name="/usr"</span></p>
-<p><span class="code-select">printf '%s\0' "${folder_name}" | find
--files0-from - -perm /u=s,g=s -print0</span></p>
+<p><span class="code-select" data-code="folder_name=&quot;/usr&quot;">folder_name="/usr"</span></p>
+<p><span class="code-select" data-code="printf &#x27;%s\0&#x27; &quot;${folder_name}&quot; | find -files0-from - -perm /u=s,g=s -print0">printf
+'%s\0' "${folder_name}" | find -files0-from - -perm /u=s,g=s
+-print0</span></p>
 <p>Do not use <code>stecho</code> or <code>stprint</code> here, because
 <code>find -files0-from</code> requires NUL-delimited input.</p>
 <p><code>NUL</code> ("<code>\0</code>") is required because:</p>
@@ -570,7 +605,9 @@ explicitly instead of assuming the pipeline is harmless.</li>
 </ul>
 <h1 id="Improved_Error_Handler">Improved Error Handler</h1>
 <p>Inspired by <a href="https://github.com/pottmi/stringent.sh">stringent.sh</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/pottmi/stringent.sh" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
-<p><span class="code-select">if (( "$BASH_SUBSHELL" &gt;= 1 )); then</p>
+<p><span class="code-select" data-code="if (( &quot;$BASH_SUBSHELL&quot; &gt;= 1 )); then
+  kill &quot;$$&quot;
+fi">if (( "$BASH_SUBSHELL" &gt;= 1 )); then</p>
 <p><code>&#160;kill&#160;"$$"</code></p>
 <p>fi</span></p>
 <p>Usually not needed. When a subshell detects an error due to

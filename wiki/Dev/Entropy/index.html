@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Entropy, Randomness, /dev/random vs /dev/urandom, Entropy Sources, Entropy Gathering Daemons, RDRAND</title>
 <meta name="description" content="Technical Design Documentation about Entropy">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Random_entropy.png">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -713,15 +713,22 @@ sufficient.</p>
 contain <a href="https://www.issihosts.com/haveged/ais31.html">instructions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.issihosts.com/haveged/ais31.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for
 testing haveged.</p>
 <p>It makes sense to test entropy while haveged is disabled.</p>
-<p><span class="code-select">sudo service haveged stop</span></p>
+<p><span class="code-select" data-code="sudo service haveged stop">sudo
+service haveged stop</span></p>
 <p>Get the haveged sources and test.</p>
-<p><span class="code-select">apt source haveged</span></p>
-<p><span class="code-select">cd haveged-*</span></p>
-<p><span class="code-select">./configure --enable-nistest</span></p>
-<p><span class="code-select">make check</span></p>
+<p><span class="code-select" data-code="apt source haveged">apt source
+haveged</span></p>
+<p><span class="code-select" data-code="cd haveged-*">cd
+haveged-*</span></p>
+<p><span class="code-select" data-code="./configure --enable-nistest">./configure
+--enable-nistest</span></p>
+<p><span class="code-select" data-code="make check">make
+check</span></p>
 <p>Perhaps repeat.</p>
-<p><span class="code-select">make clean</span></p>
-<p><span class="code-select">make check</span></p>
+<p><span class="code-select" data-code="make clean">make
+clean</span></p>
+<p><span class="code-select" data-code="make check">make
+check</span></p>
 <p>Expected output.</p>
 <pre><code>0 failed individual tests
 PASS: nist/test.sh
@@ -975,14 +982,20 @@ Debian.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived 
 </ul>
 <h1 id="Entropy_Tests">Entropy Tests</h1>
 <h2 id="ent">ent</h2><span class="share-tooltip" data-anchor="ent"><a class="headline-anchor" href="#ent" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#ent">https://www.kicksecure.com/wiki/Dev/Entropy/#ent</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23ent&amp;text=ent" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23ent&amp;text=ent" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23ent&amp;title=ent" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=ent&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23ent" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Entropy/#ent]ent[/url]">[url=https://www.kicksecure.com/wiki/Dev/Entropy/#ent]ent[/url]</span></span></span></span>
-<p><span class="code-select">sudo apt install ent</span></p>
-<p><span class="code-select">ent file_name</span></p>
+<p><span class="code-select" data-code="sudo apt install ent">sudo apt
+install ent</span></p>
+<p><span class="code-select" data-code="ent file_name">ent
+file_name</span></p>
 <h2 id="rngtest">rngtest</h2><span class="share-tooltip" data-anchor="rngtest"><a class="headline-anchor" href="#rngtest" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest">https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23rngtest&amp;text=rngtest" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23rngtest&amp;text=rngtest" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23rngtest&amp;title=rngtest" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=rngtest&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23rngtest" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest]rngtest[/url]">[url=https://www.kicksecure.com/wiki/Dev/Entropy/#rngtest]rngtest[/url]</span></span></span></span>
-<p><span class="code-select">sudo apt install rng-tools5</span></p>
-<p><span class="code-select">cat file_name | rngtest</span></p>
+<p><span class="code-select" data-code="sudo apt install rng-tools5">sudo
+apt install rng-tools5</span></p>
+<p><span class="code-select" data-code="cat file_name | rngtest">cat
+file_name | rngtest</span></p>
 <h2 id="dieharder">dieharder</h2><span class="share-tooltip" data-anchor="dieharder"><a class="headline-anchor" href="#dieharder" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder">https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23dieharder&amp;text=dieharder" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23dieharder&amp;text=dieharder" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23dieharder&amp;title=dieharder" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=dieharder&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23dieharder" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder]dieharder[/url]">[url=https://www.kicksecure.com/wiki/Dev/Entropy/#dieharder]dieharder[/url]</span></span></span></span>
-<p><span class="code-select">sudo apt install dieharder</span></p>
-<p><span class="code-select">dieharder -a -f file_name</span></p>
+<p><span class="code-select" data-code="sudo apt install dieharder">sudo
+apt install dieharder</span></p>
+<p><span class="code-select" data-code="dieharder -a -f file_name">dieharder
+-a -f file_name</span></p>
 <h2 id="PractRand">PractRand</h2><span class="share-tooltip" data-anchor="PractRand"><a class="headline-anchor" href="#PractRand" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand">https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23PractRand&amp;text=PractRand" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23PractRand&amp;text=PractRand" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23PractRand&amp;title=PractRand" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=PractRand&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FEntropy%2F%23PractRand" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand]PractRand[/url]">[url=https://www.kicksecure.com/wiki/Dev/Entropy/#PractRand]PractRand[/url]</span></span></span></span>
 <p><a href="https://pracrand.sourceforge.net">https://pracrand.sourceforge.net</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pracrand.sourceforge.net" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <h1 id="Implementation">Implementation</h1>

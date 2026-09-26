@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Post-Quantum Cryptography (PQCrypto)</title>
 <meta name="description" content="In ~10 years Quantum Computers will break todays common asymmetric public-key cryptography algorithms used for web encryption (https), e-mail encryption (gnupg...), ssh and others.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Quantum-869533640.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -248,9 +248,11 @@ in order to make combinations with other tools easier.</p>
 page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://e-x-a.org/codecrypt/ccr.1.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for common use-cases.</p>
 <h4 id="Basic_Commands">Basic Commands</h4>
 <p>Generate a strong(er) asymmetric encryption key.</p>
-<p><span class="code-select">ccr -g ENC-256 -N [keyname]</span></p>
+<p><span class="code-select" data-code="ccr -g ENC-256 -N [keyname]">ccr
+-g ENC-256 -N [keyname]</span></p>
 <p>Generate a strong(er) signature key.</p>
-<p><span class="code-select">ccr -g SIG-256 -N [keyname]</span></p>
+<p><span class="code-select" data-code="ccr -g SIG-256 -N [keyname]">ccr
+-g SIG-256 -N [keyname]</span></p>
 <h4 id="Key_Management">Key Management</h4>
 <table>
 <caption><em>Codecrypt Key Management Commands</em></caption>
@@ -271,25 +273,26 @@ file view in the file browser to see it.</p></td>
 <td><p>Export specified public key for sharing with contacts</p></td>
 <td><p>If a signature key was also created, both types of keys will be
 exported for distribution in a single file if they share the same name.
-<span class="code-select">ccr -F [keyname] -ap &gt;
-[keyname]</span></p></td>
+<span class="code-select" data-code="ccr -F [keyname] -ap &gt; [keyname]">ccr
+-F [keyname] -ap &gt; [keyname]</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Export specified private key</p></td>
 <td><p>The <code>-F</code> parameter chooses the key to be used. To
 enumerate all keys in the keyring run <code>ccr -k</code> for public
-ones and <code>ccr -K</code> for private. <span class="code-select">ccr
+ones and <code>ccr -K</code> for private.
+<span class="code-select" data-code="ccr -F [keyname] -aP &gt; [keyname]">ccr
 -F [keyname] -aP &gt; [keyname]</span></p></td>
 </tr>
 <tr class="even">
 <td><p>Import a public key</p></td>
-<td><p><span class="code-select">ccr -ai &lt;
-[contactkey]</span></p></td>
+<td><p><span class="code-select" data-code="ccr -ai &lt; [contactkey]">ccr
+-ai &lt; [contactkey]</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Import a private key</p></td>
-<td><p><span class="code-select">ccr -aI &lt;
-[myprivatekey]</span></p></td>
+<td><p><span class="code-select" data-code="ccr -aI &lt; [myprivatekey]">ccr
+-aI &lt; [myprivatekey]</span></p></td>
 </tr>
 <tr class="even">
 <td></td>
@@ -313,8 +316,9 @@ Commands</em></caption>
 <td><p>Encrypt a plaintext message file only to an already imported
 contact key</p></td>
 <td><p>Note this will be inaccessible to you. Save a plaintext copy for
-archival purposes. <span class="code-select">ccr -aer [contactkey] -R
-plaintext &gt; ciphertext</span></p></td>
+archival purposes.
+<span class="code-select" data-code="ccr -aer [contactkey] -R plaintext &gt; ciphertext">ccr
+-aer [contactkey] -R plaintext &gt; ciphertext</span></p></td>
 </tr>
 <tr class="even">
 <td><p>Encrypt and sign a plaintext message file only to an already
@@ -329,40 +333,41 @@ Codecrypt issues a warning after every time you sign "notice: 65535
 signatures remaining". Backup/restore the private keys everytime after a
 signature is made. <sup class="reference"><a href="#cite_note-25">[25]</a></sup></p>
 </div>
-<p><span class="code-select">ccr -sea -r [contactkey] -R plaintext &gt;
-ciphertext</span></p></td>
+<p><span class="code-select" data-code="ccr -sea -r [contactkey] -R plaintext &gt; ciphertext">ccr
+-sea -r [contactkey] -R plaintext &gt; ciphertext</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Decrypt a ciphertext message creating plaintext output</p></td>
-<td><p><span class="code-select">ccr -adR ciphertext &gt;
-plaintext</span></p></td>
+<td><p><span class="code-select" data-code="ccr -adR ciphertext &gt; plaintext">ccr
+-adR ciphertext &gt; plaintext</span></p></td>
 </tr>
 <tr class="even">
 <td><p>Decrypt and verify a signed ciphertext message creating plaintext
 output</p></td>
 <td><p>A contact's public signature key must be imported beforehand.
-<sup class="reference"><a href="#cite_note-26">[26]</a></sup> <span class="code-select">ccr -advR ciphertext &gt;
-plaintext</span></p></td>
+<sup class="reference"><a href="#cite_note-26">[26]</a></sup>
+<span class="code-select" data-code="ccr -advR ciphertext &gt; plaintext">ccr
+-advR ciphertext &gt; plaintext</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Create clearsigned text output</p></td>
-<td><p><span class="code-select">ccr -s -C -R plaintext &gt;
-clearsigned</span> If multiple private signature keys have been created,
-a single one must be specified for clearsigning using
-<code>-u</code>.</p>
-<p><span class="code-select">ccr -u [keyname] -s -C -R plaintext &gt;
-clearsigned</span></p></td>
+<td><p><span class="code-select" data-code="ccr -s -C -R plaintext &gt; clearsigned">ccr
+-s -C -R plaintext &gt; clearsigned</span> If multiple private signature
+keys have been created, a single one must be specified for clearsigning
+using <code>-u</code>.</p>
+<p><span class="code-select" data-code="ccr -u [keyname] -s -C -R plaintext &gt; clearsigned">ccr
+-u [keyname] -s -C -R plaintext &gt; clearsigned</span></p></td>
 </tr>
 <tr class="even">
 <td><p>Create a detached signature for a binary such as a code
 package</p></td>
-<td><p><span class="code-select">ccr -sab package.ccr &lt;
-package</span></p></td>
+<td><p><span class="code-select" data-code="ccr -sab package.ccr &lt; package">ccr
+-sab package.ccr &lt; package</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Verify detached signature</p></td>
-<td><p><span class="code-select">ccr -vab package.ccr &lt;
-package</span></p></td>
+<td><p><span class="code-select" data-code="ccr -vab package.ccr &lt; package">ccr
+-vab package.ccr &lt; package</span></p></td>
 </tr>
 <tr class="even">
 <td><p>Create hashfile from a large file</p></td>
@@ -371,13 +376,13 @@ a file with cryptographic hashes that can later be used to verify if the
 contents of input was changed, is generated. The contents of the
 hashfile could then be clearsigned asymmetrically, making it act as a
 detached signature file. <sup class="reference"><a href="#cite_note-27">[27]</a></sup>
-<span class="code-select">ccr -saS hashfile.ccr &lt;
-big_data.iso</span></p></td>
+<span class="code-select" data-code="ccr -saS hashfile.ccr &lt; big_data.iso">ccr
+-saS hashfile.ccr &lt; big_data.iso</span></p></td>
 </tr>
 <tr class="odd">
 <td><p>Verify the hashfile</p></td>
-<td><p><span class="code-select">ccr -vaS hashfile.ccr &lt;
-the_same_big_data.iso</span></p></td>
+<td><p><span class="code-select" data-code="ccr -vaS hashfile.ccr &lt; the_same_big_data.iso">ccr
+-vaS hashfile.ccr &lt; the_same_big_data.iso</span></p></td>
 </tr>
 </tbody>
 </table>

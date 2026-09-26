@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>grub-live - boot an existing Host OS or VM into Live Mode</title>
 <meta name="description" content="Add a Live Mode entry to the grub boot menu on your existing Debian host platform. Stop persistent malware. Read-only mode. Make all writes go to non-persistent storage (RAM) instead of the hard disk.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Live-mode-promo.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -104,7 +104,8 @@ already available, then <code>grub-live</code> is already installed.</p>
 <p>Alternatively, you can make sure the <a href="https://github.com/Kicksecure/grub-live"><code>grub-live</code>
 package</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is installed. The following command can be used to check on
 the command line if the package is already installed by default.</p>
-<p><span class="code-select">dpkg -l | grep grub-live</span></p>
+<p><span class="code-select" data-code="dpkg -l | grep grub-live">dpkg
+-l | grep grub-live</span></p>
 <p><span class="fontsize19">2. Set LIVE mode as the default boot menu
 entry</span></p>
 <p>There are two ways to accomplish this. Choose one of these
@@ -115,8 +116,8 @@ options:</p>
 <li>Disadvantage: There will be a duplicate live boot menu entry.</li>
 <li>Copy and execute the following command:</li>
 </ul>
-<p><span class="code-select">sudo ln -s /etc/grub.d/10_20_linux_live
-/etc/grub.d/09_linux_live</span></p>
+<p><span class="code-select" data-code="sudo ln -s /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live">sudo
+ln -s /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live</span></p>
 <p><strong>Option (B) - moving method</strong></p>
 <ul>
 <li>Advantage: No duplicate live boot menu entry.</li>
@@ -124,12 +125,13 @@ options:</p>
 automatically applied.</li>
 <li>Copy and execute the following command:</li>
 </ul>
-<p><span class="code-select">sudo mv /etc/grub.d/10_20_linux_live
-/etc/grub.d/09_linux_live</span></p>
+<p><span class="code-select" data-code="sudo mv /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live">sudo
+mv /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live</span></p>
 <p><span class="fontsize19">3. Re-generate GRUB boot menu</span></p>
 <p>The GRUB boot menu needs to be regenerated for the changes to be
 applied. Copy and execute the following command:</p>
-<p><span class="code-select">sudo update-grub</span></p>
+<p><span class="code-select" data-code="sudo update-grub">sudo
+update-grub</span></p>
 <p><span class="fontsize19">4. DONE</span></p>
 <p>The process of changing from "live mode opt-in through GRUB boot
 menu" to "live boot by default" has been completed.</p>
@@ -166,7 +168,7 @@ editor) before running the <code>sudoedit</code> command.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
 /etc/default/grub.d/50_user.conf</span></p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
@@ -181,7 +183,7 @@ Template.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
 /etc/default/grub.d/50_user.conf</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Notes.</p>
@@ -206,14 +208,16 @@ with Root Rights</a>.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
 /etc/default/grub.d/50_user.conf</span></p></div></div></p></div></div></p>
 </div>
 <p><strong>2.</strong> Now add these two lines to this file:
-<span class="code-select inline-style">GRUB_DEFAULT=saved
+<span class="code-select inline-style" data-code="GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true">GRUB_DEFAULT=saved
 GRUB_SAVEDEFAULT=true</span></p>
 <p><strong>3.</strong> Finally, execute this command:
-<span class="code-select inline-style">sudo update-grub</span></p>
+<span class="code-select inline-style" data-code="sudo update-grub">sudo
+update-grub</span></p>
 <p><strong>4.</strong> Done.</p>
 <p>Your boot menu now remembers your last choice.</p>
 <h1 id="Alternative_to_grub-live">Alternative to grub-live</h1>
@@ -704,29 +708,34 @@ Disk as Read-Write after booting into Live Mode</h1>
 chapter is more of developer documentation, proof of concept, and
 curiosity rather than something that users should do.</p>
 <p><strong>1.</strong> Create a mount folder <code>/mnt/disk</code>.</p>
-<p><span class="code-select">sudo mkdir /mnt/disk</span></p>
+<p><span class="code-select" data-code="sudo mkdir /mnt/disk">sudo mkdir
+/mnt/disk</span></p>
 <p><strong>2.</strong> Mount.</p>
 <p>Note: <code>/dev/sda3</code> applies to VirtualBox VMs. It needs to
 be replaced with the actual hard drive device name.</p>
-<p><span class="code-select">sudo mount /dev/sda3 /mnt/disk</span></p>
+<p><span class="code-select" data-code="sudo mount /dev/sda3 /mnt/disk">sudo
+mount /dev/sda3 /mnt/disk</span></p>
 <p><strong>3.</strong> Remount as read-write.</p>
-<p><span class="code-select">sudo mount -o remount,rw /dev/sda3
-/mnt/disk</span></p>
+<p><span class="code-select" data-code="sudo mount -o remount,rw /dev/sda3 /mnt/disk">sudo
+mount -o remount,rw /dev/sda3 /mnt/disk</span></p>
 <p><strong>4.</strong> Make persistent modifications.</p>
 <p>For example, create a file <code>/home/test-file</code>.</p>
-<p><span class="code-select">touch /mnt/disk/home/test-file</span></p>
+<p><span class="code-select" data-code="touch /mnt/disk/home/test-file">touch
+/mnt/disk/home/test-file</span></p>
 <p><strong>5.</strong> When done, unmount.</p>
-<p><span class="code-select">sudo umount /mnt/disk</span></p>
+<p><span class="code-select" data-code="sudo umount /mnt/disk">sudo
+umount /mnt/disk</span></p>
 <p><strong>6.</strong> Remove the mount point.</p>
 <p>Optional.</p>
-<p><span class="code-select">sudo rmdir /mnt/disk</span></p>
+<p><span class="code-select" data-code="sudo rmdir /mnt/disk">sudo rmdir
+/mnt/disk</span></p>
 <p><strong>7.</strong> Done.</p>
 <p>The process has been completed.</p>
 <p><strong>8.</strong> Extra.</p>
 <p>Even the root of the filesystem ("<code>/</code>") can be remounted
 read-write.</p>
-<p><span class="code-select">sudo mount -o remount,rw /dev/sda3
-/</span></p>
+<p><span class="code-select" data-code="sudo mount -o remount,rw /dev/sda3 /">sudo
+mount -o remount,rw /dev/sda3 /</span></p>
 <p>Questions and answers:</p>
 <ul>
 <li>Is this a security issue? Yes.</li>
@@ -749,15 +758,16 @@ solutions.</p>
 <li>Kicksecure: In recent versions of Kicksecure, <code>dracut</code> is
 installed by default. To boot into live mode without using
 <code>grub-live</code>, simply add the
-<span class="code-select inline-style">rootovl</span> kernel parameter.
-Instructions for adding kernel parameters can be found on the <a href="../Grub/">grub</a> wiki page.
+<span class="code-select inline-style" data-code="rootovl">rootovl</span>
+kernel parameter. Instructions for adding kernel parameters can be found
+on the <a href="../Grub/">grub</a> wiki page.
 <ul>
 <li>Note that booting with the
-<span class="code-select inline-style">rootovl</span> kernel parameter
-will only mount the root filesystem live. If you have other filesystems
-that are mounted by default when the system starts, such as
-<code>/home</code> on a separate partition, those filesystems will
-<strong>NOT</strong> be mounted live when doing this.
+<span class="code-select inline-style" data-code="rootovl">rootovl</span>
+kernel parameter will only mount the root filesystem live. If you have
+other filesystems that are mounted by default when the system starts,
+such as <code>/home</code> on a separate partition, those filesystems
+will <strong>NOT</strong> be mounted live when doing this.
 <code>grub-live</code> remedies this via a <code>live-hardener</code>
 script that detects additional persistent mountpoints and remounts them
 read-only with a live writable overlay.</li>
@@ -775,37 +785,41 @@ entry[/url]</span></span></span></span>
 <p>Please run the following commands for debugging or information
 gathering and post them when creating any support requests.</p>
 <p><strong>1.</strong>
-<span class="code-select inline-style">/etc/grub.d/10_20_linux_live</span>
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
 file existence.</p>
-<p><span class="code-select">ls -la
-/etc/grub.d/10_20_linux_live</span></p>
+<p><span class="code-select" data-code="ls -la /etc/grub.d/10_20_linux_live">ls
+-la /etc/grub.d/10_20_linux_live</span></p>
 <p><strong>2.</strong>
-<span class="code-select inline-style">/etc/grub.d/10_20_linux_live</span>
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
 file contents.</p>
 <p>Please check your local file
-<span class="code-select inline-style">/etc/grub.d/10_20_linux_live</span>
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
 to ensure it looks exactly the same as <a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live"><code>/etc/grub.d/10_20_linux_live</code>
 on GitHub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. This will verify that you have the latest version of the
 <code>grub-live</code> package. Note that the stable version might look
 slightly different from the developer's or tester's version on
 GitHub.</p>
-<p><span class="code-select">cat /etc/grub.d/10_20_linux_live</span></p>
+<p><span class="code-select" data-code="cat /etc/grub.d/10_20_linux_live">cat
+/etc/grub.d/10_20_linux_live</span></p>
 <p><strong>3.</strong> <code>dracut</code> package version number.</p>
-<p><span class="code-select">dpkg-query -W -f='${db:Status-Status}'
-dracut</span></p>
+<p><span class="code-select" data-code="dpkg-query -W -f=&#x27;${db:Status-Status}&#x27; dracut">dpkg-query
+-W -f='${db:Status-Status}' dracut</span></p>
 <p><strong>4.</strong> <code>dist-base-files</code> package version
 number.</p>
-<p><span class="code-select">dpkg -l | grep dist-base-files</span></p>
+<p><span class="code-select" data-code="dpkg -l | grep dist-base-files">dpkg
+-l | grep dist-base-files</span></p>
 <p><strong>5.</strong> <code>grub-live</code> package version
 number.</p>
-<p><span class="code-select">dpkg -l | grep grub-live</span></p>
+<p><span class="code-select" data-code="dpkg -l | grep grub-live">dpkg
+-l | grep grub-live</span></p>
 <p><strong>6.</strong>
-<span class="code-select inline-style">/boot/grub/grub.cfg</span> file
-contents.</p>
-<p><span class="code-select">sudo cat /boot/grub/grub.cfg</span></p>
+<span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
+file contents.</p>
+<p><span class="code-select" data-code="sudo cat /boot/grub/grub.cfg">sudo
+cat /boot/grub/grub.cfg</span></p>
 <p><strong>7.</strong> Optional: Compare
-<span class="code-select inline-style">/boot/grub/grub.cfg</span> with
-sample <a href="./#grub.cfg">grub.cfg</a>.</p>
+<span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
+with sample <a href="./#grub.cfg">grub.cfg</a>.</p>
 <p>Use <a href="../Software/#File_Comparison_Tools">File
 Comparison Tools</a>.</p>
 <p>related forums tips:</p>
@@ -825,24 +839,25 @@ that this icon has issues. If so, here is what you can do.</p>
 is as simple as: the Live Check Systray is broken.</p>
 <p><strong>1.</strong> Is <code>live-mode.sh</code> showing an
 error?</p>
-<p><span class="code-select">bash -x
-/usr/libexec/helper-scripts/live-mode.sh</span></p>
+<p><span class="code-select" data-code="bash -x /usr/libexec/helper-scripts/live-mode.sh">bash
+-x /usr/libexec/helper-scripts/live-mode.sh</span></p>
 <p><strong>2.</strong> Is <code>get_writable_fs_lists.sh</code> showing
 an error?</p>
-<p><span class="code-select">bash -x
-/usr/libexec/helper-scripts/get_writable_fs_lists.sh</span></p>
+<p><span class="code-select" data-code="bash -x /usr/libexec/helper-scripts/get_writable_fs_lists.sh">bash
+-x /usr/libexec/helper-scripts/get_writable_fs_lists.sh</span></p>
 <p><strong>3.</strong> Try <code>lsblk</code>.</p>
 <p>If the above method does not work, try also this:</p>
-<p><span class="code-select">sudo /bin/lsblk</span></p>
+<p><span class="code-select" data-code="sudo /bin/lsblk">sudo
+/bin/lsblk</span></p>
 <p><strong>4.</strong> Kernel parameter check.</p>
 <p>Please check kernel parameters after booting into live mode.</p>
 <p>If using <a href="../Dracut/">dracut</a> (default in
 newer versions):</p>
-<p><span class="code-select">cat -- /proc/cmdline | grep --color --
-rootovl</span></p>
+<p><span class="code-select" data-code="cat -- /proc/cmdline | grep --color -- rootovl">cat
+-- /proc/cmdline | grep --color -- rootovl</span></p>
 <p>If using initramfs-tools (old build versions):</p>
-<p><span class="code-select">cat -- /proc/cmdline | grep --color --
-boot=live</span></p>
+<p><span class="code-select" data-code="cat -- /proc/cmdline | grep --color -- boot=live">cat
+-- /proc/cmdline | grep --color -- boot=live</span></p>
 <p>If not booting into live mode, these kernel parameters should not be
 there.</p>
 <p><strong>5.</strong> Bug report.</p>
@@ -866,7 +881,7 @@ when kernel parameter <code>rootovl</code> is set.
 dracut.</p>
 <ul>
 <li>dracut module source file:
-<span class="code-select inline-style">/usr/lib/dracut/modules.d/90overlay-root/overlay-mount.sh</span></li>
+<span class="code-select inline-style" data-code="/usr/lib/dracut/modules.d/90overlay-root/overlay-mount.sh">/usr/lib/dracut/modules.d/90overlay-root/overlay-mount.sh</span></li>
 <li>main file:
 <span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1017039"><code>90overlay-root</code>
@@ -878,7 +893,14 @@ vs <code>90dmsquash-live</code></a><sup class="ext-link-to-archive has-sibling" 
 <span class="github-link-widget"><img src="../../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
 The most relevant parts...</p>
 <p>(Kicksecure at the time of writing uses the initramfs generator "<a href="../Dracut/"><code>dracut</code></a>" by default.)</p>
-<p><span class="code-select">## dracut support</p>
+<p><span class="code-select" data-code="## dracut support
+## https://www.kicksecure.com/wiki/Grub-live#Developer_Information
+##
+## using Debian forked upstream module 90overlay-root (tested)
+GRUB_CMDLINE_LINUX=&quot;$GRUB_CMDLINE_LINUX rootovl&quot;
+## using dracut upstream module 90overlayfs (untested)
+#GRUB_CMDLINE_LINUX=&quot;$GRUB_CMDLINE_LINUX rd.live.overlay.overlayfs=1 rd.live.overlay.readonly=1&quot;">##
+dracut support</p>
 <ol>
 <li><ol>
 <li><a href="https://www.kicksecure.com/wiki/Grub-live#Developer_Information">https://www.kicksecure.com/wiki/Grub-live#Developer_Information</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Grub-live#Developer_Information" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
@@ -928,7 +950,7 @@ thorough hardening mechanism for filesystems beyond the root
 filesystem.</p>
 <h2 id="Development">Development</h2><span class="share-tooltip" data-anchor="Development"><a class="headline-anchor" href="#Development" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live/#Development">https://www.kicksecure.com/wiki/Grub-live/#Development</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23Development&amp;text=Development" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23Development&amp;text=Development" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23Development&amp;title=Development" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Development&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23Development" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live/#Development]Development[/url]">[url=https://www.kicksecure.com/wiki/Grub-live/#Development]Development[/url]</span></span></span></span>
 <p>Should port to <a href="https://github.com/dracutdevs/dracut/tree/master/modules.d/90overlayfs"><code>90overlayfs</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracutdevs/dracut/tree/master/modules.d/90overlayfs" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
-<p><span class="code-select">rd.live.overlay.overlayfs=1
+<p><span class="code-select" data-code="rd.live.overlay.overlayfs=1 rd.live.overlay.readonly=1">rd.live.overlay.overlayfs=1
 rd.live.overlay.readonly=1</span></p>
 <p>on Debian 14 / forky. This has not been done during the Debian 13 /
 trixie based release cycle due to Debian dracut bug <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1121043">overlayfs
@@ -976,11 +998,11 @@ very limited.</p>
 </ul>
 <h2 id="grub.cfg">grub.cfg</h2><span class="share-tooltip" data-anchor="grub.cfg"><a class="headline-anchor" href="#grub.cfg" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live/#grub.cfg">https://www.kicksecure.com/wiki/Grub-live/#grub.cfg</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23grub.cfg&amp;text=grub.cfg" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23grub.cfg&amp;text=grub.cfg" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23grub.cfg&amp;title=grub.cfg" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=grub.cfg&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%2F%23grub.cfg" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live/#grub.cfg]grub.cfg[/url]">[url=https://www.kicksecure.com/wiki/Grub-live/#grub.cfg]grub.cfg[/url]</span></span></span></span>
 <p>For reference only.</p>
-<p><span class="code-select inline-style">/boot/grub/grub.cfg</span>
+<p><span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
 will be automatically created. (Auto-generated by
-<span class="code-select inline-style">sudo update-grub</span> .) No
-manual user action required. Useful for comparison in case of
-debugging.</p>
+<span class="code-select inline-style" data-code="sudo update-grub">sudo
+update-grub</span> .) No manual user action required. Useful for
+comparison in case of debugging.</p>
 <pre><code>#
 # DO NOT EDIT THIS FILE
 #

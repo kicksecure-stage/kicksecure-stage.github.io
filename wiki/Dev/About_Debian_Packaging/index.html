@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Dev/About Debian Packaging</title>
 <meta name="description" content="Debian Packaging of Kicksecure Design Documentation / Recommends vs Depends / --no-install-recommends / Files in Home Folder / Files in /etc/skel">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Dev/About Debian Packaging">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -212,15 +212,18 @@ lintian           --suppress-tags missing-tests-control          --suppress-tags
 <div class="info-box ">
 <p><strong>1.</strong> Modify
 <code>/etc/dpkg/origins/default</code>.</p>
-<p><span class="code-select">sudo unlink
-/etc/dpkg/origins/default</span> <span class="code-select">sudo ln -s
-/etc/dpkg/origins/debian /etc/dpkg/origins/default</span></p>
+<p><span class="code-select" data-code="sudo unlink /etc/dpkg/origins/default">sudo
+unlink /etc/dpkg/origins/default</span>
+<span class="code-select" data-code="sudo ln -s /etc/dpkg/origins/debian /etc/dpkg/origins/default">sudo
+ln -s /etc/dpkg/origins/debian /etc/dpkg/origins/default</span></p>
 <p><strong>2.</strong> Download the source package.</p>
-<p><span class="code-select">apt source package</span></p>
+<p><span class="code-select" data-code="apt source package">apt source
+package</span></p>
 <p><strong>3.</strong> Undo afterwards to prevent unexpected issues.</p>
-<p><span class="code-select">sudo unlink
-/etc/dpkg/origins/default</span> <span class="code-select">sudo ln -s
-/etc/dpkg/origins/whonix /etc/dpkg/origins/default</span></p>
+<p><span class="code-select" data-code="sudo unlink /etc/dpkg/origins/default">sudo
+unlink /etc/dpkg/origins/default</span>
+<span class="code-select" data-code="sudo ln -s /etc/dpkg/origins/whonix /etc/dpkg/origins/default">sudo
+ln -s /etc/dpkg/origins/whonix /etc/dpkg/origins/default</span></p>
 </div>
 <div class="info-box ">
 <p>Install package(s) <code>ubuntu-dev-tools</code> following these
@@ -236,14 +239,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>ubuntu-dev-tools</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-ubuntu-dev-tools</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends ubuntu-dev-tools">sudo
+apt install --no-install-recommends ubuntu-dev-tools</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -256,7 +259,7 @@ Done.</p>
 <p>The procedure of installing package(s) <code>ubuntu-dev-tools</code>
 is complete.</p>
 </div>
-<p><span class="code-select">reverse-depends
+<p><span class="code-select" data-code="reverse-depends evolution-data-server">reverse-depends
 evolution-data-server</span></p>
 <h2 id="meta_packages">meta packages</h2><span class="share-tooltip" data-anchor="meta_packages"><a class="headline-anchor" href="#meta_packages" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/About_Debian_Packaging/#meta_packages">https://www.kicksecure.com/wiki/Dev/About_Debian_Packaging/#meta_packages</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FAbout_Debian_Packaging%2F%23meta_packages&amp;text=meta%20packages" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FAbout_Debian_Packaging%2F%23meta_packages&amp;text=meta%20packages" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FAbout_Debian_Packaging%2F%23meta_packages&amp;title=meta%20packages" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=meta%20packages&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FAbout_Debian_Packaging%2F%23meta_packages" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/About_Debian_Packaging/#meta_packages]meta packages[/url]">[url=https://www.kicksecure.com/wiki/Dev/About_Debian_Packaging/#meta_packages]meta packages[/url]</span></span></span></span>
 <ul>
@@ -367,8 +370,8 @@ Default Configuration of Third Party Packages</h1>
 modifications are desired.</p>
 <p>File <code>/lib/systemd/system/systemd-random-seed.service</code> is
 owned by a third party package <code>systemd</code>.</p>
-<p><span class="code-select">dpkg -S
-/lib/systemd/system/systemd-random-seed.service</span></p>
+<p><span class="code-select" data-code="dpkg -S /lib/systemd/system/systemd-random-seed.service">dpkg
+-S /lib/systemd/system/systemd-random-seed.service</span></p>
 <pre><code>systemd: /lib/systemd/system/systemd-random-seed.service</code></pre>
 <ul>
 <li>Editing

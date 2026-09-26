@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Compiler Hardening</title>
 <meta name="description" content="Compiler flags for hardening compiled applications at both binary and source code levels.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Compiler Hardening">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -279,8 +279,28 @@ code.</li>
 code.</li>
 </ul>
 <p>All flags for GCC x86_64 executables:</p>
-<p><span class="code-select">-O2 -g -Wall -Wextra -Wformat -Wformat=2
--Wconversion -Wimplicit-fallthrough \ -Werror=format-security
+<p><span class="code-select" data-code="-O2 -g -Wall -Wextra -Wformat -Wformat=2 -Wconversion -Wimplicit-fallthrough \
+-Werror=format-security -Werror=implicit -Werror=int-conversion \
+-Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness \
+-Wformat-truncation -Wnull-dereference -Winit-self -Wmissing-include-dirs
+-Wshift-negative-value -Wshift-overflow -Wswitch-default -Wuninitialized \
+-Walloca -Warray-bounds \
+-Wfloat-equal -Wshadow -Wpointer-arith -Wundef -Wunused-macros \
+-Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdate-time \
+-Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Winvalid-utf8 \
+-Wvla -Wdisabled-optimization -Wstack-protector -Wdeclaration-after-statement \
+-Wtrampolines -Wbidi-chars=any,ucn -Wformat-overflow=2 -Wformat-truncation=2 \
+-Wshift-overflow=2 -Wtrivial-auto-var-init -Wstringop-overflow=3 \
+-Wstrict-flex-arrays -Walloc-zero -Warray-bounds=2 -Wattribute-alias=2 \
+-Wduplicated-branches -Wduplicated-cond -Wcast-align=strict \
+-Wjump-misses-init -Wlogical-op -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 \
+-fstack-clash-protection -fstack-protector-all -fno-delete-null-pointer-checks \
+-fno-strict-overflow -fno-strict-aliasing -fstrict-flex-arrays=3 \
+-ftrivial-auto-var-init=pattern -fzero-call-used-regs=all \
+-fcf-protection=full -fPIE -Wl,-z,nodlopen \
+-Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,-z,separate-code -Wl,--as-needed \
+-Wl,--no-copy-dt-needed-entries -pie">-O2 -g -Wall -Wextra -Wformat
+-Wformat=2 -Wconversion -Wimplicit-fallthrough \ -Werror=format-security
 -Werror=implicit -Werror=int-conversion \
 -Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness
 \ -Wformat-truncation -Wnull-dereference -Winit-self
@@ -304,19 +324,35 @@ code.</li>
 -Wl,-z,relro -Wl,-z,now -Wl,-z,separate-code -Wl,--as-needed \
 -Wl,--no-copy-dt-needed-entries -pie</span></p>
 <p>All flags for Clang x86_64 executables:</p>
-<p><span class="code-select">-O2 -g -Wall -Wextra -Wformat -Wformat=2
--Wconversion -Wimplicit-fallthrough \ -Werror=format-security
--Werror=implicit -Werror=int-conversion \
--Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness
-\ -Wformat-truncation -Wnull-dereference -Winit-self
--Wmissing-include-dirs \ -Wshift-negative-value -Wshift-overflow
--Wswitch-default -Wuninitialized \ -Walloca -Warray-bounds \
+<p><span class="code-select" data-code="-O2 -g -Wall -Wextra -Wformat -Wformat=2 -Wconversion -Wimplicit-fallthrough \
+-Werror=format-security -Werror=implicit -Werror=int-conversion \
+-Werror=incompatible-pointer-types -Wformat-overflow -Wformat-signedness \
+-Wformat-truncation -Wnull-dereference -Winit-self -Wmissing-include-dirs \
+-Wshift-negative-value -Wshift-overflow -Wswitch-default -Wuninitialized \
+-Walloca -Warray-bounds \
 -Wfloat-equal -Wshadow -Wpointer-arith -Wundef -Wunused-macros \
--Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdate-time
-\ -Wstrict-prototypes -Wold-style-definition -Wredundant-decls
--Winvalid-utf8 \ -Wvla -Wdisabled-optimization -Wstack-protector
--Wdeclaration-after-statement \ -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3
--fstack-clash-protection \ -fstack-protector-all
+-Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wdate-time \
+-Wstrict-prototypes -Wold-style-definition -Wredundant-decls -Winvalid-utf8 \
+-Wvla -Wdisabled-optimization -Wstack-protector -Wdeclaration-after-statement \
+-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -fstack-clash-protection \
+-fstack-protector-all -fno-delete-null-pointer-checks -fno-strict-aliasing \
+-fno-strict-overflow \
+-fsanitize=undefined -fsanitize-minimal-runtime -fno-sanitize-recover=all \
+-fstrict-flex-arrays=3 -ftrivial-auto-var-init=pattern -fcf-protection=full \
+-fzero-call-used-regs=all -fPIE -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro \
+-Wl,-z,now -Wl,-z,separate-code -Wl,--as-needed -Wl,--no-copy-dt-needed-entries \
+-pie">-O2 -g -Wall -Wextra -Wformat -Wformat=2 -Wconversion
+-Wimplicit-fallthrough \ -Werror=format-security -Werror=implicit
+-Werror=int-conversion \ -Werror=incompatible-pointer-types
+-Wformat-overflow -Wformat-signedness \ -Wformat-truncation
+-Wnull-dereference -Winit-self -Wmissing-include-dirs \
+-Wshift-negative-value -Wshift-overflow -Wswitch-default -Wuninitialized
+\ -Walloca -Warray-bounds \ -Wfloat-equal -Wshadow -Wpointer-arith
+-Wundef -Wunused-macros \ -Wbad-function-cast -Wcast-qual -Wcast-align
+-Wwrite-strings -Wdate-time \ -Wstrict-prototypes -Wold-style-definition
+-Wredundant-decls -Winvalid-utf8 \ -Wvla -Wdisabled-optimization
+-Wstack-protector -Wdeclaration-after-statement \ -U_FORTIFY_SOURCE
+-D_FORTIFY_SOURCE=3 -fstack-clash-protection \ -fstack-protector-all
 -fno-delete-null-pointer-checks -fno-strict-aliasing \
 -fno-strict-overflow \ -fsanitize=undefined -fsanitize-minimal-runtime
 -fno-sanitize-recover=all \ -fstrict-flex-arrays=3

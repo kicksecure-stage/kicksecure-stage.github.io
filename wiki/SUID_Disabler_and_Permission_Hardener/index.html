@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>SUID Disabler and Permission Hardener</title>
 <meta name="description" content="Attack surface reduction via disabling of SUID-enabled binaries.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Suidhardener.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -224,7 +224,8 @@ Hardener[/url]</span></span></span></span>
 <p><strong>Optional.</strong> This is useful to better understand what
 SUID Disabler and Permission Hardener is actually doing after expanding
 its configuration folder.</p>
-<p><span class="code-select">sudo permission-hardener</span></p>
+<p><span class="code-select" data-code="sudo permission-hardener">sudo
+permission-hardener</span></p>
 <p>(The printout will look similar to <a href="#SUID_Disabler_and_Permission_Hardener_Printout">this</a>.)</p>
 <h2 id="Optional_At_Boot_Time">Optional At Boot Time</h2><span class="share-tooltip" data-anchor="Optional_At_Boot_Time"><a class="headline-anchor" href="#Optional_At_Boot_Time" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Optional_At_Boot_Time">https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Optional_At_Boot_Time</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Optional_At_Boot_Time&amp;text=Optional%20At%20Boot%20Time" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Optional_At_Boot_Time&amp;text=Optional%20At%20Boot%20Time" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Optional_At_Boot_Time&amp;title=Optional%20At%20Boot%20Time" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Optional%20At%20Boot%20Time&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Optional_At_Boot_Time" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Optional_At_Boot_Time]Optional At Boot Time[/url]">[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Optional_At_Boot_Time]Optional At Boot Time[/url]</span></span></span></span>
 <p><span class="manually-placed-anchor mpa-visible" id="permission-hardener.service">permission-hardener.service</span></p>
@@ -241,8 +242,8 @@ sometimes even prevent the operating system from starting.</p>
 These commands are only required once.</p>
 </div>
 <p><strong>1.</strong> Enable and start systemd unit.</p>
-<p><span class="code-select">sudo systemctl enable --now
-permission-hardener.service</span></p>
+<p><span class="code-select" data-code="sudo systemctl enable --now permission-hardener.service">sudo
+systemctl enable --now permission-hardener.service</span></p>
 <p><strong>2.</strong> Done.</p>
 <p>Permission hardener will now run also at boot time in addition to
 when APT installs or upgrades packages.</p>
@@ -260,7 +261,8 @@ file permissions. I.e. re-enable SUID. To prevent a race condition
 <code>dpkg-statoverride</code> is being used.</p>
 <p>It might be helpful to view the list of overwritten dpkg file
 permissions.</p>
-<p><span class="code-select">dpkg-statoverride --list</span></p>
+<p><span class="code-select" data-code="dpkg-statoverride --list">dpkg-statoverride
+--list</span></p>
 <p>Note that even when not using SUID Disabler at all, Debian (and a few
 other packages) by default adds a few dpkg statoverwrites by themselves.
 Not all entries in the list of dpkg statoverwrites are the caused by
@@ -277,7 +279,7 @@ List of Debian Default File Permissions Before Changes[/url]</span></span></span
 <code>/var/lib/permission-hardener/existing_mode/statoverride</code>
 records modes before changing them using SUID Disabler and Permission
 Hardener. To view, run the following command.</p>
-<p><span class="code-select">cat
+<p><span class="code-select" data-code="cat /var/lib/permission-hardener/existing_mode/statoverride">cat
 /var/lib/permission-hardener/existing_mode/statoverride</span></p>
 <h2 id="View_List_of_Changed_Mode_Permissions">View List of Changed Mode
 Permissions</h2><span class="share-tooltip" data-anchor="View_List_of_Changed_Mode_Permissions"><a class="headline-anchor" href="#View_List_of_Changed_Mode_Permissions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#View_List_of_Changed_Mode_Permissions">https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#View_List_of_Changed_Mode_Permissions</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23View_List_of_Changed_Mode_Permissions&amp;text=View%20List%20of%20Changed%20Mode%0APermissions" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23View_List_of_Changed_Mode_Permissions&amp;text=View%20List%20of%20Changed%20Mode%0APermissions" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23View_List_of_Changed_Mode_Permissions&amp;title=View%20List%20of%20Changed%20Mode%0APermissions" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=View%20List%20of%20Changed%20Mode%0APermissions&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23View_List_of_Changed_Mode_Permissions" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#View_List_of_Changed_Mode_Permissions]View List of Changed Mode
@@ -286,13 +288,13 @@ Permissions[/url]</span></span></span></span>
 <p>File <code>/var/lib/permission-hardener/new_mode/statoverride</code>
 records modes that were changed by SUID Disabler and Permission
 Hardener. To view, run the following command.</p>
-<p><span class="code-select">cat
+<p><span class="code-select" data-code="cat /var/lib/permission-hardener/new_mode/statoverride">cat
 /var/lib/permission-hardener/new_mode/statoverride</span></p>
 <p>Alternatively see <a href="#Show_dpkg-statoverride_List">dpkg-statoverride list</a>.</p>
 <h2 id="Compare_Mode_Changes">Compare Mode Changes</h2><span class="share-tooltip" data-anchor="Compare_Mode_Changes"><a class="headline-anchor" href="#Compare_Mode_Changes" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Compare_Mode_Changes">https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Compare_Mode_Changes</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Compare_Mode_Changes&amp;text=Compare%20Mode%20Changes" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Compare_Mode_Changes&amp;text=Compare%20Mode%20Changes" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Compare_Mode_Changes&amp;title=Compare%20Mode%20Changes" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Compare%20Mode%20Changes&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Compare_Mode_Changes" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Compare_Mode_Changes]Compare Mode Changes[/url]">[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Compare_Mode_Changes]Compare Mode Changes[/url]</span></span></span></span>
 <p>To view previous modes and how these were changed (replace
 <code>meld</code> with your favorite <code>diff</code> viewer):</p>
-<p><span class="code-select">meld
+<p><span class="code-select" data-code="meld /var/lib/permission-hardener/existing_mode/statoverride /var/lib/permission-hardener/new_mode/statoverride">meld
 /var/lib/permission-hardener/existing_mode/statoverride
 /var/lib/permission-hardener/new_mode/statoverride</span></p>
 <h2 id="Re-enable_Specific_SUID_Binaries">Re-enable Specific SUID
@@ -302,13 +304,13 @@ Binaries[/url]</span></span></span></span>
 <p>Re-enable specific SUID binaries means to restore their SUID bit.</p>
 <p><strong>Syntax:</strong></p>
 <p><u>Note:</u> Full path to the file is required.</p>
-<p><span class="code-select">sudo permission-hardener disable
-/full/path/to/file</span></p>
+<p><span class="code-select" data-code="sudo permission-hardener disable /full/path/to/file">sudo
+permission-hardener disable /full/path/to/file</span></p>
 <p><strong>Example:</strong></p>
 <p><u>Note:</u> Replace <code>/usr/sbin/exim4</code> with the actual
 full path to the binary.</p>
-<p><span class="code-select">sudo permission-hardener disable
-/usr/sbin/exim4</span></p>
+<p><span class="code-select" data-code="sudo permission-hardener disable /usr/sbin/exim4">sudo
+permission-hardener disable /usr/sbin/exim4</span></p>
 <p>What permission-hardener's <code>disable</code> option does is
 restoring the binary's original file permissions.</p>
 <p>This is only effective until new packages are installed or upgraded
@@ -339,8 +341,8 @@ Binaries[/url]">[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permissio
 Binaries[/url]</span></span></span></span>
 <div class="info-box ">
 <p><strong>1.</strong> Create settings folder.</p>
-<p><span class="code-select">sudo mkdir -p
-/usr/lib/permission-hardener.d</span></p>
+<p><span class="code-select" data-code="sudo mkdir -p /usr/lib/permission-hardener.d">sudo
+mkdir -p /usr/lib/permission-hardener.d</span></p>
 <p><strong>2.</strong> Open file
 <code>/usr/lib/permission-hardener.d/20_user.conf</code> in an editor
 with administrative ("<a href="../Root/"><code>root</code></a>") rights.</p>
@@ -358,7 +360,7 @@ editor) before running the <code>sudoedit</code> command.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /usr/lib/permission-hardener.d/20_user.conf">sudoedit
 /usr/lib/permission-hardener.d/20_user.conf</span></p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
@@ -373,7 +375,7 @@ Template.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /usr/lib/permission-hardener.d/20_user.conf">sudoedit
 /usr/lib/permission-hardener.d/20_user.conf</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Notes.</p>
@@ -398,17 +400,18 @@ with Root Rights</a>.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /usr/lib/permission-hardener.d/20_user.conf">sudoedit
 /usr/lib/permission-hardener.d/20_user.conf</span></p></div></div></p></div></div></p>
 </div>
 <p><strong>3.</strong> Learn the syntax.</p>
 <p>Do <u>not</u> add this.</p>
-<p><span class="code-select">/full/path/to/file
+<p><span class="code-select" data-code="/full/path/to/file exactwhitelist">/full/path/to/file
 exactwhitelist</span></p>
 <p><strong>4.</strong> Add.</p>
 <p>Example. Replace <code>/usr/sbin/exim4</code> with the actual path to
 the binary intended to be whitelisted.</p>
-<p><span class="code-select">/usr/sbin/exim4 exactwhitelist</span></p>
+<p><span class="code-select" data-code="/usr/sbin/exim4 exactwhitelist">/usr/sbin/exim4
+exactwhitelist</span></p>
 <p><strong>5.</strong> Save.</p>
 <p><strong>6.</strong> Re-enable SUID binary.</p>
 <p>Steps in this chapter by itself are not sufficient. It is required to
@@ -428,20 +431,22 @@ Specific SUID Binaries</a> even though this is a capability binary and
 not a SUID binary.</p>
 <p><strong>2.</strong> Learn the syntax.</p>
 <p>Do <u>not</u> run this command.</p>
-<p><span class="code-select">sudo setcap capability
-/full/path/to/binary</span></p>
+<p><span class="code-select" data-code="sudo setcap capability /full/path/to/binary">sudo
+setcap capability /full/path/to/binary</span></p>
 <p><strong>3.</strong> Re-add previously removed capability.</p>
 <p>The following example adds capability <code>cap_net_raw+ep</code> to
 binary <code>/bin/ping</code>. Replace <code>cap_net_raw+ep</code> with
 the actual capability and binary <code>/bin/ping</code> with the actual
 binary intended to be re-added.</p>
-<p><span class="code-select">sudo setcap cap_net_raw+ep
-/bin/ping</span></p>
+<p><span class="code-select" data-code="sudo setcap cap_net_raw+ep /bin/ping">sudo
+setcap cap_net_raw+ep /bin/ping</span></p>
 <p><strong>4.</strong> Verify capability was re-added.</p>
 <p>Syntax.</p>
-<p><span class="code-select">sudo getcap /full/path/to/binary</span></p>
+<p><span class="code-select" data-code="sudo getcap /full/path/to/binary">sudo
+getcap /full/path/to/binary</span></p>
 <p>Example.</p>
-<p><span class="code-select">sudo getcap /bin/ping</span></p>
+<p><span class="code-select" data-code="sudo getcap /bin/ping">sudo
+getcap /bin/ping</span></p>
 <p>Should show.</p>
 <pre><code>/bin/ping = cap_net_raw+ep</code></pre>
 <p><strong>5.</strong> Done.</p>
@@ -452,7 +457,7 @@ binary intended to be re-added.</p>
 <strong>Warning:</strong></p>
 <p>Advanced users only! This breaks even <code>sudo</code>.</p>
 </div>
-<p><span class="code-select">whitelists_disable_all=true</span></p>
+<p><span class="code-select" data-code="whitelists_disable_all=true">whitelists_disable_all=true</span></p>
 <h2 id="Disable_SUID_Disabler_and_Permission_Hardener">Disable SUID
 Disabler and Permission Hardener</h2><span class="share-tooltip" data-anchor="Disable_SUID_Disabler_and_Permission_Hardener"><a class="headline-anchor" href="#Disable_SUID_Disabler_and_Permission_Hardener" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Disable_SUID_Disabler_and_Permission_Hardener">https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Disable_SUID_Disabler_and_Permission_Hardener</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Disable_SUID_Disabler_and_Permission_Hardener&amp;text=Disable%20SUID%0ADisabler%20and%20Permission%20Hardener" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Disable_SUID_Disabler_and_Permission_Hardener&amp;text=Disable%20SUID%0ADisabler%20and%20Permission%20Hardener" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Disable_SUID_Disabler_and_Permission_Hardener&amp;title=Disable%20SUID%0ADisabler%20and%20Permission%20Hardener" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Disable%20SUID%0ADisabler%20and%20Permission%20Hardener&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FSUID_Disabler_and_Permission_Hardener%2F%23Disable_SUID_Disabler_and_Permission_Hardener" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Disable_SUID_Disabler_and_Permission_Hardener]Disable SUID
 Disabler and Permission Hardener[/url]">[url=https://www.kicksecure.com/wiki/SUID_Disabler_and_Permission_Hardener/#Disable_SUID_Disabler_and_Permission_Hardener]Disable SUID
@@ -460,14 +465,14 @@ Disabler and Permission Hardener[/url]</span></span></span></span>
 <p>Undo all changes. The following command is is only efficient until
 upgrade of package security-misc or reboot. To disable permanently the
 subsequent <code>systemctl</code> commands are required as well.</p>
-<p><span class="code-select">sudo permission-hardener disable
-all</span></p>
+<p><span class="code-select" data-code="sudo permission-hardener disable all">sudo
+permission-hardener disable all</span></p>
 <p>Disable and stop systemd unit.</p>
-<p><span class="code-select">sudo systemctl disable --now
-permission-hardener.service</span></p>
+<p><span class="code-select" data-code="sudo systemctl disable --now permission-hardener.service">sudo
+systemctl disable --now permission-hardener.service</span></p>
 <p>Mask systemd unit.</p>
-<p><span class="code-select">sudo systemctl mask
-permission-hardener.service</span></p>
+<p><span class="code-select" data-code="sudo systemctl mask permission-hardener.service">sudo
+systemctl mask permission-hardener.service</span></p>
 <h1 id="SUID_SGID_Hardening_Issues">SUID SGID Hardening Issues</h1>
 <p>This is a list of SUID/SGID programs which have their
 <code>set-user-id</code> bit and/or <code>set-group-id</code> bit
@@ -579,17 +584,18 @@ is non-SUID. For the rationale behind this, see this wiki page from the
 top.</p>
 <p>Therefore, <code>passwd</code> must be run as root / with
 <code>sudo</code>.</p>
-<p><span class="code-select">sudo passwd user</span></p>
+<p><span class="code-select" data-code="sudo passwd user">sudo passwd
+user</span></p>
 <p>See <a href="../Login/#Configuring_Passwords">configuring passwords</a> for detailed information on
 changing user account passwords.</p>
 <p>Related: <a href="../Root/">root</a></p>
 <h1 id="SUID_SGID_Troubleshooting">SUID SGID Troubleshooting</h1>
 <p>Syntax:</p>
-<p><span class="code-select">stat -c "%n %a %U %G"
-/path/to/filename</span></p>
+<p><span class="code-select" data-code="stat -c &quot;%n %a %U %G&quot; /path/to/filename">stat
+-c "%n %a %U %G" /path/to/filename</span></p>
 <p>Example:</p>
-<p><span class="code-select">stat -c "%n %a %U %G"
-/usr/bin/sudo</span></p>
+<p><span class="code-select" data-code="stat -c &quot;%n %a %U %G&quot; /usr/bin/sudo">stat
+-c "%n %a %U %G" /usr/bin/sudo</span></p>
 <p>Expected output.</p>
 <pre><code>/usr/bin/sudo 4755 root root</code></pre>
 <h1 id="SUID_Disabler_and_Permission_Hardener_Design">SUID Disabler and
@@ -635,7 +641,8 @@ date. It is for illustrative purposes to document what SUID Disabler and
 Permission Hardener is actually doing.</p>
 <p>When initially running SUID Disabler and Permission Hardener for the
 first time.</p>
-<p><span class="code-select">sudo permission-hardener</span></p>
+<p><span class="code-select" data-code="sudo permission-hardener">sudo
+permission-hardener</span></p>
 <p>The printout will look like the following.</p>
 <pre><code>INFO: START parsing config_file: &#39;/etc/permission-hardener.d/30_default.conf&#39;
 run: dpkg-statoverride --add --update root root 745 /bin/mount
@@ -767,14 +774,14 @@ kernel images or inside VM kernel images.</li>
 <ul>
 <li>Search for SUID binaries.
 <ul>
-<li><span class="code-select inline-style">sudo find / -perm -4000 -type
-f -executable</span></li>
+<li><span class="code-select inline-style" data-code="sudo find / -perm -4000 -type f -executable">sudo
+find / -perm -4000 -type f -executable</span></li>
 </ul></li>
 <li>Ignore irrelevant ones, those owned (and only accessible) by group
 <code>sysmaint</code>. (Those secured through <a href="../Dev/user-sysmaint-split/">Dev/user-sysmaint-split</a>.)
 <ul>
-<li><span class="code-select inline-style">sudo find / -perm -4000 -type
-f -executable -not -group sysmaint</span></li>
+<li><span class="code-select inline-style" data-code="sudo find / -perm -4000 -type f -executable -not -group sysmaint">sudo
+find / -perm -4000 -type f -executable -not -group sysmaint</span></li>
 </ul></li>
 </ul>
 <p>Ignore the following.</p>
@@ -789,16 +796,16 @@ find: &#39;/proc/5422/fdinfo/5&#39;: No such file or directory</code></pre>
 /usr/bin/fusermount3
 /usr/bin/qfile-unpacker</code></pre>
 <p>Search for SGID binaries.</p>
-<p><span class="code-select">sudo find / -perm -2000 -type f
--executable</span></p>
+<p><span class="code-select" data-code="sudo find / -perm -2000 -type f -executable">sudo
+find / -perm -2000 -type f -executable</span></p>
 <p>The following list shows only white listed SGID binaries.</p>
 <pre><code>/usr/lib/x86_64-linux-gnu/utempter/utempter</code></pre>
 <h1 id="Debugging">Debugging</h1>
 <p>Look what SUID Disabler and Permission Hardener is actually doing.
 Most interesting to run this command during initial enabling of SUID
 Disabler and Permission Hardener.</p>
-<p><span class="code-select">sudo journalctl --no-pager -b -o cat -u
-permission-hardener</span></p>
+<p><span class="code-select" data-code="sudo journalctl --no-pager -b -o cat -u permission-hardener">sudo
+journalctl --no-pager -b -o cat -u permission-hardener</span></p>
 <h1 id="fixing_state_files">fixing state files</h1>
 <p>This is only required if a notice with a link to this wiki chapter
 has been shown during upgrading.</p>

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>stdisplay</title>
 <meta name="description" content="Tools to sanitize untrusted text before printing it to a terminal, reducing risk from malicious Unicode and dangerous ANSI escape sequences.">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="stdisplay">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -161,35 +161,39 @@ untrusted output (stcat / stcatn)[/url]</span></span></span></span>
 for untrusted content.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Display piped output safely.</p>
-<p><span class="code-select">untrusted-cmd 2&gt;&amp;1 |
-stcat</span></p>
+<p><span class="code-select" data-code="untrusted-cmd 2&gt;&amp;1 | stcat">untrusted-cmd
+2&gt;&amp;1 | stcat</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Display a file safely.</p>
-<p><span class="code-select">stcat /untrusted/file</span></p>
+<p><span class="code-select" data-code="stcat /untrusted/file">stcat
+/untrusted/file</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Done.</p>
 <p>Untrusted output has been sanitized before being printed to the
 terminal.</p>
 <p><u>More examples:</u></p>
 <p>From a variable:</p>
-<p><span class="code-select">printf '%s' "${untrusted_string}" |
-stcat</span></p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | stcat">printf
+'%s' "${untrusted_string}" | stcat</span></p>
 <p>From redirected input:</p>
-<p><span class="code-select">stcat &lt; /untrusted/file</span></p>
+<p><span class="code-select" data-code="stcat &lt; /untrusted/file">stcat
+&lt; /untrusted/file</span></p>
 <p>Concatenate multiple files:</p>
-<p><span class="code-select">stcat /untrusted/file
-/untrusted/log</span></p>
+<p><span class="code-select" data-code="stcat /untrusted/file /untrusted/log">stcat
+/untrusted/file /untrusted/log</span></p>
 <h4 id="Using_a_pager_(less)">Using a pager (less)</h4>
 <p>If output is long, you can still use a pager.</p>
-<p><span class="code-select">data | stcat | less</span></p>
+<p><span class="code-select" data-code="data | stcat | less">data |
+stcat | less</span></p>
 <p>Sanitize git output before paging:</p>
-<p><span class="code-select">GIT_PAGER="stcat | less -R" git
-log</span></p>
+<p><span class="code-select" data-code="GIT_PAGER=&quot;stcat | less -R&quot; git log">GIT_PAGER="stcat
+| less -R" git log</span></p>
 <h4 id="When_you_need_elevated_permissions">When you need elevated
 permissions</h4>
 <p>If a log file requires administrative permissions to read, you can
 combine with <code>sudo</code>.</p>
-<p><span class="code-select">sudo -- stcat /untrusted/log</span></p>
+<p><span class="code-select" data-code="sudo -- stcat /untrusted/log">sudo
+-- stcat /untrusted/log</span></p>
 <h4 id="What_is_different_about_stcatn?">What is different about
 stcatn?</h4>
 <p><code>stcatn</code> is like <code>stcat</code>, plus additional
@@ -209,12 +213,12 @@ output to a file (sttee / stsponge)[/url]</span></span></span></span>
 optionally write a sanitized copy to a file.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Show sanitized output.</p>
-<p><span class="code-select">printf '%s' "${untrusted_string}" |
-sttee</span></p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | sttee">printf
+'%s' "${untrusted_string}" | sttee</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Show sanitized output and save it to a file.</p>
-<p><span class="code-select">printf '%s' "${untrusted_string}" | sttee
-/trusted/file</span></p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | sttee /trusted/file">printf
+'%s' "${untrusted_string}" | sttee /trusted/file</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Done.</p>
 <p>Sanitized output has been printed and (if selected) saved to a
@@ -225,8 +229,8 @@ file.</p>
 version.</p>
 <p><u>Warning:</u> Ensure you have a backup or are confident about
 rewriting the file.</p>
-<p><span class="code-select">stsponge /untrusted/file &lt;
-/untrusted/file</span></p>
+<p><span class="code-select" data-code="stsponge /untrusted/file &lt; /untrusted/file">stsponge
+/untrusted/file &lt; /untrusted/file</span></p>
 <h3 id="Safely_printing_text_(stprint_/_stecho)">Safely printing text
 (stprint / stecho)</h3><span class="share-tooltip" data-anchor="Safely_printing_text_(stprint_/_stecho)"><a class="headline-anchor" href="#Safely_printing_text_(stprint_/_stecho)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)">https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;text=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;text=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;title=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)]Safely printing text
 (stprint / stecho)[/url]">[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)]Safely printing text
@@ -236,18 +240,19 @@ newline automatically). Use <code>stecho</code> for a more familiar
 "echo-like" behavior (spaces between arguments and a newline).</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Print a variable safely.</p>
-<p><span class="code-select">stprint "${untrusted_string}"</span></p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot;">stprint
+"${untrusted_string}"</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Print multiple values.</p>
 <p>No automatic space is inserted:</p>
-<p><span class="code-select">stprint "${untrusted_string}"
-"${another_untrusted_string}"</span></p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot; &quot;${another_untrusted_string}&quot;">stprint
+"${untrusted_string}" "${another_untrusted_string}"</span></p>
 <p>To include a space, include it yourself:</p>
-<p><span class="code-select">stprint "${untrusted_string}
-${another_untrusted_string}"</span></p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string} ${another_untrusted_string}&quot;">stprint
+"${untrusted_string} ${another_untrusted_string}"</span></p>
 <p>Alternative way to include a space:</p>
-<p><span class="code-select">stprint "${untrusted_string}" "
-${another_untrusted_string}"</span></p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot; &quot; ${another_untrusted_string}&quot;">stprint
+"${untrusted_string}" " ${another_untrusted_string}"</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Done.</p>
 <p>Text has been sanitized and printed safely.</p>
@@ -255,8 +260,9 @@ Done.</p>
 (heredoc)</h4>
 <p>A heredoc can make it easier to pass multi-line text via stdin
 without complex quoting.</p>
-<p><span class="code-select">stcat &lt;&lt;EOF ${untrusted_string}
-EOF</span></p>
+<p><span class="code-select" data-code="stcat &lt;&lt;EOF
+${untrusted_string}
+EOF">stcat &lt;&lt;EOF ${untrusted_string} EOF</span></p>
 <h1 id="Common_mistakes_to_avoid">Common mistakes to avoid</h1>
 <p><code>stprint</code> returns text that is safe to print. It is unsafe
 to reinterpret it as escape sequences later.</p>
@@ -267,26 +273,32 @@ later.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 <u>Safe</u>: store sanitized output normally.</p>
 <p>This assignment is safe:</p>
-<p><span class="code-select">var="$(stprint
+<p><span class="code-select" data-code="var=&quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">var="$(stprint
 "${untrusted_string}")"</span></p>
 <p>Print the variable without interpreting escapes:</p>
-<p><span class="code-select">printf '%s' "${var}"</span></p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${var}&quot;">printf
+'%s' "${var}"</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 <u>Unsafe</u>: do not reinterpret escapes.</p>
 <p>This assignment is safe by itself:</p>
-<p><span class="code-select">var="$(stprint
+<p><span class="code-select" data-code="var=&quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">var="$(stprint
 "${untrusted_string}")"</span></p>
 <p>The following examples are <u>dangerous</u> because they may
 interpret escapes and can re-enable terminal control sequences:</p>
-<p><span class="code-select">printf -v var "$(stprint
-"${untrusted_string}")"</span></p>
-<p><span class="code-select">printf -v var '%b' "$(stprint
-"${untrusted_string}")"</span></p>
-<p><span class="code-select">printf "${var}"</span></p>
-<p><span class="code-select">printf '%b' "${var}"</span></p>
-<p><span class="code-select">echo -e "${var}"</span></p>
-<p><span class="code-select">echo "${var}"</span></p>
-<p><span class="code-select">echo -E "${var}"</span></p>
+<p><span class="code-select" data-code="printf -v var &quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">printf
+-v var "$(stprint "${untrusted_string}")"</span></p>
+<p><span class="code-select" data-code="printf -v var &#x27;%b&#x27; &quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">printf
+-v var '%b' "$(stprint "${untrusted_string}")"</span></p>
+<p><span class="code-select" data-code="printf &quot;${var}&quot;">printf
+"${var}"</span></p>
+<p><span class="code-select" data-code="printf &#x27;%b&#x27; &quot;${var}&quot;">printf
+'%b' "${var}"</span></p>
+<p><span class="code-select" data-code="echo -e &quot;${var}&quot;">echo
+-e "${var}"</span></p>
+<p><span class="code-select" data-code="echo &quot;${var}&quot;">echo
+"${var}"</span></p>
+<p><span class="code-select" data-code="echo -E &quot;${var}&quot;">echo
+-E "${var}"</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Done.</p>
 <p>Common unsafe patterns have been identified so sanitized output stays
@@ -308,14 +320,16 @@ its color capability.</p>
 <p><strong>Examples:</strong></p>
 <p>Enable 24-bit color (useful if the terminal database is
 outdated):</p>
-<p><span class="code-select">COLORTERM=truecolor stprint "$(printf '%b'
-"\033[38;2;0;0;255mSome color\033[m")"</span></p>
+<p><span class="code-select" data-code="COLORTERM=truecolor stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[38;2;0;0;255mSome color\033[m&quot;)&quot;">COLORTERM=truecolor
+stprint "$(printf '%b' "\033[38;2;0;0;255mSome color\033[m")"</span></p>
 <p>Disable color using <code>NO_COLOR</code>:</p>
-<p><span class="code-select">NO_COLOR=1 stprint "$(printf '%b'
-"\033[31mNo color\033[m")"</span></p>
+<p><span class="code-select" data-code="NO_COLOR=1 stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[31mNo color\033[m&quot;)&quot;">NO_COLOR=1
+stprint "$(printf '%b' "\033[31mNo color\033[m")"</span></p>
 <p>Disable color using <code>TERM=dumb</code>:</p>
-<p><span class="code-select">unset COLORTERM TERM=dumb stprint "$(printf
-'%b' "\033[31mNo color\033[m")"</span></p>
+<p><span class="code-select" data-code="unset COLORTERM
+TERM=dumb stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[31mNo color\033[m&quot;)&quot;">unset
+COLORTERM TERM=dumb stprint "$(printf '%b' "\033[31mNo
+color\033[m")"</span></p>
 <p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Unicode-show/" title="Unicode-show"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Unicode-show</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Shell_scripting/" title="Shell scripting"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Shell
 scripting</span></a><span class="info"><span class="prev">Previous page:
 Unicode-show</span><span class="index">Index page:

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Mouse Settings</title>
 <meta name="description" content="Left-Handed Mouse">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Mouse Settings">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -47,21 +47,32 @@ Project-APT-Repository</span></span></span>Mouse Settings</p>
 <p>To get a left-handed mouse (that is, to swap the left and right
 buttons), follow these instructions: <sup class="reference"><a href="#cite_note-1">[1]</a></sup><br />
 <i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
-Create the required directory <span class="code-select">mkdir --parents
-~/.config/labwc</span><br />
+Create the required directory
+<span class="code-select" data-code="mkdir --parents ~/.config/labwc">mkdir
+--parents ~/.config/labwc</span><br />
 <i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Open file <code>~/.config/labwc/rc.xml</code> in a <a href="../Software/#Text_Editor">text editor</a> of your
 choice as a regular, non-root user.</p>
 <div class="info-box ">
 <p><u>If you are using a graphical environment</u>, run.
-<span class="code-select">featherpad ~/.config/labwc/rc.xml</span></p>
+<span class="code-select" data-code="featherpad ~/.config/labwc/rc.xml">featherpad
+~/.config/labwc/rc.xml</span></p>
 <p><u>If you are using a terminal</u>, run.
-<span class="code-select">nano ~/.config/labwc/rc.xml</span></p>
+<span class="code-select" data-code="nano ~/.config/labwc/rc.xml">nano
+~/.config/labwc/rc.xml</span></p>
 </div>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Type in or copy the following lines</p>
-<p><sup class="reference"><a href="#cite_note-2">[2]</a></sup> <span class="code-select">&lt;?xml
-version="1.0"?&gt; &lt;labwc_config&gt;</p>
+<p><sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+<span class="code-select" data-code="&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;labwc_config&gt;
+  &lt;libinput&gt;
+    &lt;device&gt;
+      &lt;leftHanded&gt;yes&lt;/leftHanded&gt;
+    &lt;/device&gt;
+  &lt;/libinput&gt;
+&lt;/labwc_config&gt;">&lt;?xml version="1.0"?&gt;
+&lt;labwc_config&gt;</p>
 <p><code>&#160;&lt;libinput&gt;</code><br />
 <code>&#160;&#160;&#160;&lt;device&gt;</code><br />
 <code>&#160;&#160;&#160;&#160;&#160;&lt;leftHanded&gt;yes&lt;/leftHanded&gt;</code><br />

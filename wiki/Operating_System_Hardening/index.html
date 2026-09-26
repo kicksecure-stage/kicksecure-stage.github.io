@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Operating System Hardening</title>
 <meta name="description" content="Hardening the Debian operating system, which is the base Kicksecure. It covers topics such as Debian Security Announcements, hardening steps, kernel hardening, and module loading.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Oshardening34234.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -123,13 +123,34 @@ development discussion: <a href="https://forums.whonix.org/t/allow-loading-signe
 loading signed kernel modules by default / disallow kernel module
 loading by default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/allow-loading-signed-kernel-modules-by-default-disallow-kernel-module-loading-by-default/7880" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
 <p><code>/usr/lib/modules-load.d/firewall.conf</code></p>
-<p><span class="code-select">ipt_REJECT ip6t_REJECT</p>
+<p><span class="code-select" data-code="ipt_REJECT
+ip6t_REJECT
+
+nft_chain_nat_ipv4
+nft_chain_route_ipv4
+nft_chain_route_ipv6
+nft_compat
+nft_counter
+
+xt_conntrack
+xt_state
+xt_tcpudp">ipt_REJECT ip6t_REJECT</p>
 <p>nft_chain_nat_ipv4 nft_chain_route_ipv4 nft_chain_route_ipv6
 nft_compat nft_counter</p>
 <p>xt_conntrack xt_state xt_tcpudp</span></p>
 <p><code>/usr/lib/modules-load.d/lxqt.conf</code> TODO: check if still
 needed</p>
-<p><span class="code-select">snd_intel8x0</p>
+<p><span class="code-select" data-code="snd_intel8x0
+
+## Platform specific?
+## is autoloaded by snd_intel8x0
+#snd
+
+evdev
+drm
+
+## works without too
+#binfmt_misc">snd_intel8x0</p>
 <ol>
 <li><ol>
 <li>Platform specific?</li>
@@ -145,15 +166,18 @@ needed</p>
 <li>binfmt_misc</span></li>
 </ol>
 <p>Kicksecure only: <code>/usr/lib/modules-load.d/kloak.conf</code></p>
-<p><span class="code-select">uinput</span></p>
+<p><span class="code-select" data-code="uinput">uinput</span></p>
 <p>VirtualBox only: <code>/usr/lib/modules-load.d/vbox.conf</code></p>
-<p><span class="code-select">vboxguest vboxsf vboxvideo</span></p>
+<p><span class="code-select" data-code="vboxguest
+vboxsf
+vboxvideo">vboxguest vboxsf vboxvideo</span></p>
 <p>Disable module loading by creating this file:
 <code>/etc/sysctl.d/module-loading.conf</code></p>
-<p><span class="code-select">kernel.modules_disabled=1</span></p>
+<p><span class="code-select" data-code="kernel.modules_disabled=1">kernel.modules_disabled=1</span></p>
 <p>After reboot, test if module loading is really disabled. Try to load
 any module, for example <code>apanel</code>.</p>
-<p><span class="code-select">sudo modprobe apanel</span></p>
+<p><span class="code-select" data-code="sudo modprobe apanel">sudo
+modprobe apanel</span></p>
 <p>Should show.</p>
 <pre><code>modprobe: ERROR: could not insert &#39;apanel&#39;: Operation not permitted</code></pre>
 <h2 id="Harden_Software_Repositories">Harden Software Repositories</h2><span class="share-tooltip" data-anchor="Harden_Software_Repositories"><a class="headline-anchor" href="#Harden_Software_Repositories" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;text=Harden%20Software%20Repositories" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;text=Harden%20Software%20Repositories" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;title=Harden%20Software%20Repositories" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Harden%20Software%20Repositories&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories]Harden Software Repositories[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories]Harden Software Repositories[/url]</span></span></span></span>

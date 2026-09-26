@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Verified Boot</title>
 <meta name="description" content="Boot chain and integrity guarantees. What is Verified Boot, Secure Boot, Trusted Boot, dm-verity? Advantages, restrictions for user freedom, and more.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Verifiedboot1245.png">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -561,7 +561,8 @@ read-write access is that the user (or malware) can modify any file in
 <li>Let's consider running a tool that can show modified files in
 <code>/etc</code> and <code>/usr</code>.
 <ul>
-<li><span class="code-select">debsums -ce</span></li>
+<li><span class="code-select" data-code="debsums -ce">debsums
+-ce</span></li>
 </ul></li>
 <li>Sample output might include:
 <ul>
@@ -1182,7 +1183,22 @@ be mounted as read-only and verified with dm-verity. The apps partition
 can be mounted as <code>/apps</code>, and <code>chroot</code> into it.
 The apps partition, however, will not be verified.</p>
 <p>For example:</p>
-<p><span class="code-select">mount /path/to/unverified_image /apps</p>
+<p><span class="code-select" data-code="mount /path/to/unverified_image /apps
+
+for dir in bin sbin usr lib lib64 var etc
+do
+  mkdir &quot;/apps/${dir}&quot;
+  mount -o bind &quot;/${dir}&quot; &quot;/apps/${dir}&quot;
+done
+
+mkdir /apps/{proc,sys,dev}
+mount proc /apps/proc -t proc
+mount sysfs /apps/sys -t sysfs
+mount devtmpfs /apps/dev -t devtmpfs
+mount devpts /apps/dev/pts -t devpts
+
+apt install -o Dir=/apps $program
+chroot /apps $program">mount /path/to/unverified_image /apps</p>
 <p>for dir in bin sbin usr lib lib64 var etc do</p>
 <p><code>&#160;mkdir&#160;"/apps/${dir}"</code><br />
 <code>&#160;mount&#160;-o&#160;bind&#160;"/${dir}"&#160;"/apps/${dir}"</code></p>
@@ -2933,8 +2949,8 @@ line in this case?</p>
 <h1 id="Keys">Keys</h1>
 <p>Debian's shim in <a href="https://packages.debian.org/trixie/shim-signed"><code>shim-signed</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/shim-signed" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 at the time of writing is signed by Microsoft's public key only.</p>
-<p><span class="code-select">sbverify --list
-/usr/lib/shim/shimx64.efi.signed</span></p>
+<p><span class="code-select" data-code="sbverify --list /usr/lib/shim/shimx64.efi.signed">sbverify
+--list /usr/lib/shim/shimx64.efi.signed</span></p>
 <pre><code>warning: data remaining[833960 vs 960080]: gaps between PE/COFF sections?
 signature 1
 image signature issuers:
@@ -2946,8 +2962,8 @@ image signature certificates:
    issuer:  /C=US/ST=Washington/L=Redmond/O=Microsoft Corporation/CN=Microsoft Corporation Third Party Marketplace Root</code></pre>
 <p>Debian's GRUB in the package <a href="https://packages.debian.org/bookworm/grub-efi-amd64-signed"><code>grub-efi-amd64-signed</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/bookworm/grub-efi-amd64-signed" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
 at the time of writing is signed by Debian's public key only.</p>
-<p><span class="code-select">sbverify --list
-/usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed</span></p>
+<p><span class="code-select" data-code="sbverify --list /usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed">sbverify
+--list /usr/lib/grub/x86_64-efi-signed/grubx64.efi.signed</span></p>
 <pre><code>signature 1
 image signature issuers:
  - /CN=Debian Secure Boot CA

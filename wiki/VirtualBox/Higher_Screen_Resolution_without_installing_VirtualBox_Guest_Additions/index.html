@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Higher Screen Resolution without VirtualBox Guest Additions</title>
 <meta name="description" content="This wiki page provides a guide on how to achieve higher screen resolution in VirtualBox without installing VirtualBox Guest Additions inside the VM.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Anaglyph-102548640.jpg">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -79,14 +79,35 @@ guest additions, complete the following steps.</p>
 <p>For example, create a file called
 <code>/etc/X11/xorg.conf.d/00-virtualbox-monitor.conf</code>.</p>
 <p>Create the directory if it does not already exist.</p>
-<p><span class="code-select">sudo mkdir -p
-/etc/X11/xorg.conf.d</span></p>
+<p><span class="code-select" data-code="sudo mkdir -p /etc/X11/xorg.conf.d">sudo
+mkdir -p /etc/X11/xorg.conf.d</span></p>
 <p><strong>2.</strong> Open the configuration file in an editor with
 root rights.</p>
-<p><span class="code-select">sudoedit
+<p><span class="code-select" data-code="sudoedit /etc/X11/xorg.conf.d/00-virtualbox-monitor.conf">sudoedit
 /etc/X11/xorg.conf.d/00-virtualbox-monitor.conf</span></p>
 <p><strong>3.</strong> Add the following contents.</p>
-<p><span class="code-select">Section "Device"</p>
+<p><span class="code-select" data-code="Section &quot;Device&quot;
+  Identifier &quot;VirtualBox-Device&quot;
+  Option &quot;Monitor-default&quot; &quot;VirtualBox-Monitor&quot;
+EndSection
+
+Section &quot;Monitor&quot;
+  Identifier &quot;VirtualBox-Monitor&quot;
+  VendorName &quot;VirtualBox&quot;
+  ModelName &quot;VirtualBox&quot;
+  HorizSync 1.0 - 1000.0
+  VertRefresh 1.0 - 1000.0
+  Option &quot;MinClock&quot; &quot;1.0&quot;
+  Option &quot;MaxClock&quot; &quot;10000.0&quot;
+  Option &quot;Primary&quot; &quot;True&quot;
+  Option &quot;PreferredMode&quot; &quot;1600x1200&quot;
+EndSection
+
+Section &quot;Screen&quot;
+  Identifier &quot;MyScreen&quot;
+  Device &quot;VirtualBox-Device&quot;
+  Monitor &quot;VirtualBox-Monitor&quot;
+EndSection">Section "Device"</p>
 <p><code>&#160;Identifier&#160;"VirtualBox-Device"</code><br />
 <code>&#160;Option&#160;"Monitor-default"&#160;"VirtualBox-Monitor"</code></p>
 <p>EndSection</p>
@@ -130,8 +151,8 @@ using the LXQt graphical user interface.</p>
 </ul>
 <p>If the preferred screen resolution is not listed (e.g.
 <code>1440x900</code>), try running this command on the host.</p>
-<p><span class="code-select">vboxmanage setextradata "VM Name"
-"CustomVideoMode1" "1440x900x32"</span></p>
+<p><span class="code-select" data-code="vboxmanage setextradata &quot;VM Name&quot; &quot;CustomVideoMode1&quot; &quot;1440x900x32&quot;">vboxmanage
+setextradata "VM Name" "CustomVideoMode1" "1440x900x32"</span></p>
 <p>If the Start Menu button is not visible (because it is outside the
 screen), then start Konsole and manually start System Settings by
 running
@@ -156,8 +177,8 @@ work.</li>
 <h1 id="Troubleshooting">Troubleshooting</h1>
 <p>If this procedure does not work or you want to revert the changes,
 delete <code>/etc/X11/xorg.conf.d/00-virtualbox-monitor.conf</code>.</p>
-<p><span class="code-select">sudo rm
-/etc/X11/xorg.conf.d/00-virtualbox-monitor.conf</span></p>
+<p><span class="code-select" data-code="sudo rm /etc/X11/xorg.conf.d/00-virtualbox-monitor.conf">sudo
+rm /etc/X11/xorg.conf.d/00-virtualbox-monitor.conf</span></p>
 <p>Next, restart the display manager or reboot.</p>
 <h1 id="Technical_Information">Technical Information</h1>
 <h2 id="EDID">EDID</h2><span class="share-tooltip" data-anchor="EDID"><a class="headline-anchor" href="#EDID" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/VirtualBox/Higher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions/#EDID">https://www.kicksecure.com/wiki/VirtualBox/Higher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions/#EDID</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FVirtualBox%2FHigher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions%2F%23EDID&amp;text=EDID" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FVirtualBox%2FHigher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions%2F%23EDID&amp;text=EDID" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FVirtualBox%2FHigher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions%2F%23EDID&amp;title=EDID" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=EDID&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FVirtualBox%2FHigher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions%2F%23EDID" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/VirtualBox/Higher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions/#EDID]EDID[/url]">[url=https://www.kicksecure.com/wiki/VirtualBox/Higher_Screen_Resolution_without_installing_VirtualBox_Guest_Additions/#EDID]EDID[/url]</span></span></span></span>

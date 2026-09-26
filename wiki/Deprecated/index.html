@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Outdated, Deprecated, Archived Kicksecure Documentation.</title>
 <meta name="description" content="Most users can safely ignore this page.">
@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://www.kicksecure.com/media/orig/Deprec.jpg">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -99,7 +99,8 @@ other VM such as <code>Kicksecure-LXQt</code>.</li>
 <li>On the host command line, run.</li>
 </ul></li>
 </ul>
-<p><span class="code-select">VBoxManage setextradata Kicksecure-LXQt
+<p><span class="code-select" data-code="VBoxManage setextradata Kicksecure-LXQt &quot;VBoxInternal/Devices/lsilogicsas/0/LUN#0/AttachedDriver/Config/ReadOnly&quot; 1">VBoxManage
+setextradata Kicksecure-LXQt
 "VBoxInternal/Devices/lsilogicsas/0/LUN#0/AttachedDriver/Config/ReadOnly"
 1</span></p>
 <p><strong>3.</strong> Remove VirtualBox virtual DVD drive.</p>
@@ -116,7 +117,8 @@ system and use it as normal.</p>
 change.</p>
 <p>To boot into normal mode again, run this command on the host to
 revert the change.</p>
-<p><span class="code-select">VBoxManage setextradata Kicksecure-LXQt
+<p><span class="code-select" data-code="VBoxManage setextradata Kicksecure-LXQt &quot;VBoxInternal/Devices/lsilogicsas/0/LUN#0/AttachedDriver/Config/ReadOnly&quot;">VBoxManage
+setextradata Kicksecure-LXQt
 "VBoxInternal/Devices/lsilogicsas/0/LUN#0/AttachedDriver/Config/ReadOnly"</span></p>
 <p>The normal boot option can now be selected in the GRUB menu.</p>
 <p><strong>6.</strong> <em>Optional:</em> Re-add the virtual DVD.</p>
@@ -233,21 +235,28 @@ Expand on the right.</p>
 <p>VirtualBox has a feature to spoof the initial virtual hardware clock
 offset by setting the clock X milliseconds in the future or past. The
 syntax is outlined below.</p>
-<p><span class="code-select">VBoxManage modifyvm &lt;name&gt;
---biossystemtimeoffset -&lt;milliseconds&gt; VBoxManage modifyvm
-&lt;name&gt; --biossystemtimeoffset +&lt;milliseconds&gt;</span></p>
+<p><span class="code-select" data-code="VBoxManage modifyvm &lt;name&gt; --biossystemtimeoffset -&lt;milliseconds&gt;
+VBoxManage modifyvm &lt;name&gt; --biossystemtimeoffset +&lt;milliseconds&gt;">VBoxManage
+modifyvm &lt;name&gt; --biossystemtimeoffset -&lt;milliseconds&gt;
+VBoxManage modifyvm &lt;name&gt; --biossystemtimeoffset
++&lt;milliseconds&gt;</span></p>
 <p>It is recommended to add a random delay within the following
 range.</p>
-<p><span class="code-select">VBoxManage modifyvm &lt;name&gt;
---biossystemtimeoffset -60000 VBoxManage modifyvm &lt;name&gt;
---biossystemtimeoffset +60000</span></p>
+<p><span class="code-select" data-code="VBoxManage modifyvm &lt;name&gt; --biossystemtimeoffset -60000
+VBoxManage modifyvm &lt;name&gt; --biossystemtimeoffset +60000">VBoxManage
+modifyvm &lt;name&gt; --biossystemtimeoffset -60000 VBoxManage modifyvm
+&lt;name&gt; --biossystemtimeoffset +60000</span></p>
 <p>A spoofing example is below. Users should select their own unique and
 random values for both the past (-) and future (+) within the specified
 range. Different values should be used for each distinct VM (on the
 host).</p>
-<p><span class="code-select">VBoxManage modifyvm "Kicksecure"
---biossystemtimeoffset -35017 VBoxManage modifyvm "Kicksecure"
---biossystemtimeoffset +27931</p>
+<p><span class="code-select" data-code="VBoxManage modifyvm &quot;Kicksecure&quot; --biossystemtimeoffset -35017
+VBoxManage modifyvm &quot;Kicksecure&quot; --biossystemtimeoffset +27931
+
+VBoxManage modifyvm &quot;Kicksecure&quot; --biossystemtimeoffset -35017
+VBoxManage modifyvm &quot;Kicksecure&quot; --biossystemtimeoffset +27931">VBoxManage
+modifyvm "Kicksecure" --biossystemtimeoffset -35017 VBoxManage modifyvm
+"Kicksecure" --biossystemtimeoffset +27931</p>
 <p>VBoxManage modifyvm "Kicksecure" --biossystemtimeoffset -35017
 VBoxManage modifyvm "Kicksecure" --biossystemtimeoffset
 +27931</span></p>

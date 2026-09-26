@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Hardened Malloc/Manual Installation</title>
 <meta name="description" content="memory allocator for many applications to increase security - manual installation">
@@ -13,14 +13,14 @@
 <meta property="og:title" content="Hardened Malloc/Manual Installation">
 <link rel="stylesheet" href="../../../style.css">
 <link rel="stylesheet" href="../../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
 <header class="site-header"><a class="site-logo" href="/">Kicksecure</a><a class="site-tm" href="../../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../../Download/">Download</a><ul class="nav-submenu"><li><a href="../../ISO/">On Computer</a></li><li><a href="../../USB_Installation/">USB Installation</a></li><li><a href="../../Intel_AMD64/">Intel / AMD64</a></li><li><a href="../../ARM64/">ARM64</a></li><li><a href="../../Raspberry_Pi/">Raspberry Pi</a></li><li><a href="../../VirtualBox/">Windows (VM)</a></li><li><a href="../../MacOS/">Mac</a></li><li><a href="../../Linux/">Linux (VM)</a></li><li><a href="../../VirtualBox/">VirtualBox (VM)</a></li><li><a href="../../Qubes/">Qubes (VM)</a></li><li><a href="../../KVM/">KVM (VM)</a></li><li><a href="../../Debian/">Debian morph to Kicksecure</a></li><li><a href="../../Download/">More options</a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer">Source Code</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../../About/">About</a><ul class="nav-submenu"><li><a href="../../About/">Overview</a></li><li><a href="../../Reasons_for_Freedom_Software/">Why Open Source?</a></li><li><a href="../../What_we_do/">Project Activities</a></li><li><a href="../../Contributors/">Contributors</a></li><li><a href="../../Security_Roadmap/">Mission &amp; Vision</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../../Documentation/">Docs</a><ul class="nav-submenu"><li><a href="../../Documentation/">Documentation</a></li><li><a href="../../FAQ/">FAQ</a></li><li><a href="../../Troubleshooting/">Troubleshooting</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../../Contribute/">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Forums</a></li><li><a href="../../Forum_Best_Practices/">Forum Best Practices</a></li><li><a href="../../Contribute/">Contribute</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../../Support/">Support</a><ul class="nav-submenu"><li><a href="../../Self_Support_First_Policy/">Self Support First Policy</a></li><li><a href="../../Support/">Support (Limited)</a></li><li><a href="../../Plus_Support/">Plus</a></li><li><a href="../../Premium_Support/">Premium</a></li><li><a href="../../Reporting_Bugs/">Reporting Bugs</a></li><li><a href="../../Contact/">Contact (Restricted)</a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../../Special:AllPages/">Browse</a></div></header>
 <div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
 <main class="wiki-content">
-<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Hardened Malloc</span> / <span>Manual Installation</span></nav><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Install_Hardened_Malloc">Install Hardened Malloc</a></li><li class="toc-l2"><a href="#Systemd_Services">Systemd Services</a></li><li class="toc-l2"><a href="#Other_Applications">Other Applications</a></li><li class="toc-l2"><a href="#All_Applications_by_Default">All Applications by Default</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <span>Hardened Malloc</span> / <span>Manual Installation</span></nav><h1 id="firstHeading" class="first-heading">Hardened Malloc/Manual Installation</h1><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Install_Hardened_Malloc">Install Hardened Malloc</a></li><li class="toc-l2"><a href="#Systemd_Services">Systemd Services</a></li><li class="toc-l2"><a href="#Other_Applications">Other Applications</a></li><li class="toc-l2"><a href="#All_Applications_by_Default">All Applications by Default</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
 </div>
 <div class="pre-intro-p ">
 </div>
@@ -41,10 +41,12 @@ compile Hardened Malloc from source. <sup class="reference"><a href="#cite_note-
 is necessary to install g++ for compilation.</p>
 <div class="info-box ">
 <p><strong>1.</strong> Update the package lists.</p>
-<p><span class="code-select">sudo apt update</span></p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
 <p><strong>2.</strong> Install <code>g++</code>, and <code>git</code> to
 clone the repository.</p>
-<p><span class="code-select">sudo apt install g++ git</span></p>
+<p><span class="code-select" data-code="sudo apt install g++ git">sudo
+apt install g++ git</span></p>
 <p><strong>3.</strong> The following block explains how to download and
 signature verify hardened malloc.</p>
 <div class="info-box has-icon">
@@ -59,10 +61,11 @@ for further information.</p>
 <p>Run the following commands in a terminal to download and verify the
 signing key and source code.</p>
 <p>Retrieve the signing key. <sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
-<p><span class="code-select">scurl-download <a href="https://github.com/thestinger.gpg">https://github.com/thestinger.gpg</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/thestinger.gpg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="scurl-download https://github.com/thestinger.gpg">scurl-download
+<a href="https://github.com/thestinger.gpg">https://github.com/thestinger.gpg</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/thestinger.gpg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Verify the key fingerprint.</p>
-<p><span class="code-select">gpg --keyid-format long --with-fingerprint
-thestinger.gpg</span></p>
+<p><span class="code-select" data-code="gpg --keyid-format long --with-fingerprint thestinger.gpg">gpg
+--keyid-format long --with-fingerprint thestinger.gpg</span></p>
 <p>Should show.</p>
 <p><blockquote><p><blockquote><p>gpg: WARNING: no command supplied. Trying to guess what you mean
 ...<br />
@@ -76,14 +79,18 @@ uid Daniel Micay &lt;security@seamlessupdate.app&gt;<br />
 uid Daniel Micay &lt;security@grapheneos.org&gt;<br />
 sub rsa4096/7363D2F61FDC8A7F 2012-12-06 [E]</p></blockquote></p></blockquote></p>
 <p>Import the key.</p>
-<p><span class="code-select">gpg --import thestinger.gpg</span></p>
+<p><span class="code-select" data-code="gpg --import thestinger.gpg">gpg
+--import thestinger.gpg</span></p>
 <p>Get the source code.</p>
-<p><span class="code-select">git clone <a href="https://github.com/GrapheneOS/hardened_malloc">https://github.com/GrapheneOS/hardened_malloc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/hardened_malloc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="git clone https://github.com/GrapheneOS/hardened_malloc">git
+clone <a href="https://github.com/GrapheneOS/hardened_malloc">https://github.com/GrapheneOS/hardened_malloc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/hardened_malloc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Navigate to the <code>hardened_malloc</code> folder.</p>
-<p><span class="code-select">cd hardened_malloc</span></p>
+<p><span class="code-select" data-code="cd hardened_malloc">cd
+hardened_malloc</span></p>
 <p><a href="../../Warning/#Always_Verify_Signatures">Always
 verify software signatures!</a> Check the hardened malloc signature.</p>
-<p><span class="code-select">git tag --verify 8</span></p>
+<p><span class="code-select" data-code="git tag --verify 8">git tag
+--verify 8</span></p>
 <p>Should show.</p>
 <p><blockquote><p><blockquote><p>object d80919fa1e8042a070a3f9b2560ff2ecac8a75da type commit tag 8
 tagger Daniel Micay &lt;danielmicay@gmail.com&gt; 1562939118 -0400</p>
@@ -99,23 +106,25 @@ signature belongs to the owner. Primary key fingerprint: 65EE FE02 2108
 E2B7 08CB FCF7 F9E7 12E5 9AF5 F22A</p></blockquote></p></blockquote></p>
 </div>
 <p><strong>4.</strong> Checkout the tag.</p>
-<p><span class="code-select">git checkout 8</span></p>
+<p><span class="code-select" data-code="git checkout 8">git checkout
+8</span></p>
 <p><strong>5.</strong> Build the program.</p>
 <p>This will only take a few seconds, depending on your system's
 resources.</p>
-<p><span class="code-select">make</span></p>
+<p><span class="code-select" data-code="make">make</span></p>
 <p><strong>6.</strong> Move the hardened_malloc library to the system
 library folder</p>
 <p>Create folder <code>/usr/lib/libhardened_malloc.so</code></p>
-<p><span class="code-select">sudo mkdir -p
-/usr/lib/libhardened_malloc.so</span></p>
+<p><span class="code-select" data-code="sudo mkdir -p /usr/lib/libhardened_malloc.so">sudo
+mkdir -p /usr/lib/libhardened_malloc.so</span></p>
 <p>Move the library.</p>
-<p><span class="code-select">sudo mv libhardened_malloc.so
+<p><span class="code-select" data-code="sudo mv libhardened_malloc.so /usr/lib/x86_64-linux-gnu/libhardened_malloc-light.so">sudo
+mv libhardened_malloc.so
 /usr/lib/x86_64-linux-gnu/libhardened_malloc-light.so</span></p>
 <p><strong>7.</strong> Set SUID (<code>set-user-id</code>).</p>
 <p><sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
-<p><span class="code-select">sudo chmod u+s
-/lib/x86_64-linux-gnu/libhardened_malloc.so</span></p>
+<p><span class="code-select" data-code="sudo chmod u+s /lib/x86_64-linux-gnu/libhardened_malloc.so">sudo
+chmod u+s /lib/x86_64-linux-gnu/libhardened_malloc.so</span></p>
 <p><strong>8.</strong> Done.</p>
 <p>Installation of Hardened Malloc has been completed.</p>
 </div>
@@ -124,13 +133,13 @@ Applications with Hardened Malloc</h1>
 <h2 id="Systemd_Services">Systemd Services</h2><span class="share-tooltip" data-anchor="Systemd_Services"><a class="headline-anchor" href="#Systemd_Services" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Systemd_Services">https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Systemd_Services</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Systemd_Services&amp;text=Systemd%20Services" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Systemd_Services&amp;text=Systemd%20Services" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Systemd_Services&amp;title=Systemd%20Services" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Systemd%20Services&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Systemd_Services" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Systemd_Services]Systemd Services[/url]">[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Systemd_Services]Systemd Services[/url]</span></span></span></span>
 <p>To launch individual systemd services with hardened malloc, add drop
 a systemd configuration snippet.</p>
-<p><span class="code-select">Environment="LD_PRELOAD='libhardened_malloc.so'"</span></p>
+<p><span class="code-select" data-code="Environment=&quot;LD_PRELOAD=&#x27;libhardened_malloc.so&#x27;&quot;">Environment="LD_PRELOAD='libhardened_malloc.so'"</span></p>
 <h2 id="Other_Applications">Other Applications</h2><span class="share-tooltip" data-anchor="Other_Applications"><a class="headline-anchor" href="#Other_Applications" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Other_Applications">https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Other_Applications</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Other_Applications&amp;text=Other%20Applications" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Other_Applications&amp;text=Other%20Applications" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Other_Applications&amp;title=Other%20Applications" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Other%20Applications&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23Other_Applications" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Other_Applications]Other Applications[/url]">[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#Other_Applications]Other Applications[/url]</span></span></span></span>
 <p>To launch other applications with Hardened Malloc, the
 <code>LD_PRELOAD</code> environment variable must be edited before
 starting the application. For example, to launch
 <code>application-name</code> in this way, run.</p>
-<p><span class="code-select">LD_PRELOAD='libhardened_malloc.so'
+<p><span class="code-select" data-code="LD_PRELOAD=&#x27;libhardened_malloc.so&#x27; application-name">LD_PRELOAD='libhardened_malloc.so'
 application-name</span></p>
 <h2 id="All_Applications_by_Default">All Applications by Default</h2><span class="share-tooltip" data-anchor="All_Applications_by_Default"><a class="headline-anchor" href="#All_Applications_by_Default" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#All_Applications_by_Default">https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#All_Applications_by_Default</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23All_Applications_by_Default&amp;text=All%20Applications%20by%20Default" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23All_Applications_by_Default&amp;text=All%20Applications%20by%20Default" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23All_Applications_by_Default&amp;title=All%20Applications%20by%20Default" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=All%20Applications%20by%20Default&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FHardened_Malloc%2FManual_Installation%2F%23All_Applications_by_Default" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#All_Applications_by_Default]All Applications by Default[/url]">[url=https://www.kicksecure.com/wiki/Hardened_Malloc/Manual_Installation/#All_Applications_by_Default]All Applications by Default[/url]</span></span></span></span>
 <p><u>Note</u>: This action may break numerous applications such as man,
@@ -156,7 +165,8 @@ editor) before running the <code>sudoedit</code> command.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p></div></div></p>
+<p><span class="code-select" data-code="sudoedit /etc/ld.so.preload">sudoedit
+/etc/ld.so.preload</span></p></div></div></p>
 <p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../../../media/Qubes-logo-blue.png.webp" width="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 role="heading" aria-level="5" id="Kicksecure-Qubes">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 Notes.</p>
 <ul>
@@ -170,7 +180,8 @@ Template.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p>
+<p><span class="code-select" data-code="sudoedit /etc/ld.so.preload">sudoedit
+/etc/ld.so.preload</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Notes.</p>
 <ul>
@@ -194,11 +205,12 @@ with Root Rights</a>.</li>
 </ul>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Open the file with root rights.</p>
-<p><span class="code-select">sudoedit /etc/ld.so.preload</span></p></div></div></p></div></div></p>
+<p><span class="code-select" data-code="sudoedit /etc/ld.so.preload">sudoedit
+/etc/ld.so.preload</span></p></div></div></p></div></div></p>
 </div>
 <p><strong>2.</strong> Add the <code>hardened_malloc.so</code>
 library.</p>
-<p><span class="code-select">libhardened_malloc.so</span></p>
+<p><span class="code-select" data-code="libhardened_malloc.so">libhardened_malloc.so</span></p>
 <p><strong>3.</strong> Save the file.</p>
 <p>The procedure is complete.</p>
 </div>

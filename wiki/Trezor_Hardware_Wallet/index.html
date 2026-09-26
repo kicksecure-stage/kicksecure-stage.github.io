@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-sn-id="38">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-CfNaB52bngqEHx7jciumppsSI2ETl8okuB+c5yVEAL4='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-/EIM37O72cJgw3uUn5Mj0uAwPs+uoIinE4FkmT5B+bg='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
 <meta name="robots" content="noindex,nofollow">
 <title>Trezor Hardware Wallet</title>
 <meta name="description" content="How to use the Trezor Hardware Wallet in Kicksecure">
@@ -13,7 +13,7 @@
 <meta property="og:title" content="Trezor Hardware Wallet">
 <link rel="stylesheet" href="../../style.css">
 <link rel="stylesheet" href="../../fontawesome/css/all.min.css">
-<script>(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
 </head>
 <body>
 <div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
@@ -69,7 +69,8 @@ secret, and together they form the final key used for seed decryption
 <li>Kicksecure for Qubes: In the <code>kicksecure-18</code>
 Template.</li>
 </ul>
-<p><span class="code-select">sudo adduser user plugdev</span></p>
+<p><span class="code-select" data-code="sudo adduser user plugdev">sudo
+adduser user plugdev</span></p>
 <p><sup class="reference"><a href="#cite_note-3">[3]</a></sup></p>
 <div class="info-box ">
 <p>Install package(s) <code>trezor python3-hid</code> following these
@@ -85,14 +86,14 @@ Template.</li>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
 <a href="../Operating_System_Software_and_Updates/">Update
 the package lists and upgrade the system</a>.</p>
-<p><span class="code-select">sudo apt update &amp;&amp; sudo apt
-full-upgrade</span></p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt full-upgrade">sudo
+apt update &amp;&amp; sudo apt full-upgrade</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
 Install the <code>trezor python3-hid</code> package(s).</p>
 <p>Using <code>apt</code> command line <a href="../Install_Software/#--no-install-recommends"><code>--no-install-recommends</code> option</a> is in
 most cases optional.</p>
-<p><span class="code-select">sudo apt install --no-install-recommends
-trezor python3-hid</span></p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends trezor python3-hid">sudo
+apt install --no-install-recommends trezor python3-hid</span></p>
 <p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
 Platform specific notice.</p>
 <ul>
@@ -122,11 +123,12 @@ familiar with advanced computer security concepts, you can learn more
 about digital signatures here: <a href="../Verifying_Software_Signatures/">Verifying Software Signatures</a></span></li></ul></p>
 <p><a href="../Secure_Downloads/">Securely download</a> the
 signing key.</p>
-<p><span class="code-select">scurl-download <a href="https://trezor.io/security/satoshilabs-2021-signing-key.asc">https://trezor.io/security/satoshilabs-2021-signing-key.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/security/satoshilabs-2021-signing-key.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="scurl-download https://trezor.io/security/satoshilabs-2021-signing-key.asc">scurl-download
+<a href="https://trezor.io/security/satoshilabs-2021-signing-key.asc">https://trezor.io/security/satoshilabs-2021-signing-key.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://trezor.io/security/satoshilabs-2021-signing-key.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Display the key's fingerprint.</p>
-<p><span class="code-select">gpg --keyid-format long --import
---import-options show-only --with-fingerprint
-satoshilabs-2021-signing-key.asc</span></p>
+<p><span class="code-select" data-code="gpg --keyid-format long --import --import-options show-only --with-fingerprint satoshilabs-2021-signing-key.asc">gpg
+--keyid-format long --import --import-options show-only
+--with-fingerprint satoshilabs-2021-signing-key.asc</span></p>
 <p>Verify the fingerprint. It should show.</p>
 <p><u>Note</u>: Key fingerprints provided on the Kicksecure website are
 for convenience only. The Kicksecure project does not have the
@@ -147,8 +149,8 @@ infected or erroneous files! The whole point of verification is to
 confirm file integrity.</p>
 </div>
 <p>Add the signing key.</p>
-<p><span class="code-select">gpg --import
-satoshilabs-2021-signing-key.asc</span></p>
+<p><span class="code-select" data-code="gpg --import satoshilabs-2021-signing-key.asc">gpg
+--import satoshilabs-2021-signing-key.asc</span></p>
 </div>
 <h2 id="Download">Download</h2><span class="share-tooltip" data-anchor="Download"><a class="headline-anchor" href="#Download" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Download&amp;text=Download" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Download&amp;text=Download" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Download&amp;title=Download" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Download&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Download" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download]Download[/url]">[url=https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Download]Download[/url]</span></span></span></span>
 <p>Platform specific.</p>
@@ -158,9 +160,11 @@ satoshilabs-2021-signing-key.asc</span></p>
 </ul>
 <p>Check the latest version number and read the release notes on the <a href="https://suite.trezor.io/">Trezor Suite website</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Download the Trezor Suite AppImage.</p>
-<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="scurl-download https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage">scurl-download
+<a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <p>Download the OpenPGP signature.</p>
-<p><span class="code-select">scurl-download <a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p><span class="code-select" data-code="scurl-download https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">scurl-download
+<a href="https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://suite.trezor.io/web/static/desktop/Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
 <h2 id="Digital_Software_Signature_Verification">Digital Software
 Signature Verification</h2><span class="share-tooltip" data-anchor="Digital_Software_Signature_Verification"><a class="headline-anchor" href="#Digital_Software_Signature_Verification" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification">https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Digital_Software_Signature_Verification&amp;text=Digital%20Software%0ASignature%20Verification" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Digital_Software_Signature_Verification&amp;text=Digital%20Software%0ASignature%20Verification" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Digital_Software_Signature_Verification&amp;title=Digital%20Software%0ASignature%20Verification" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Digital%20Software%0ASignature%20Verification&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FTrezor_Hardware_Wallet%2F%23Digital_Software_Signature_Verification" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification]Digital Software
 Signature Verification[/url]">[url=https://www.kicksecure.com/wiki/Trezor_Hardware_Wallet/#Digital_Software_Signature_Verification]Digital Software
@@ -171,8 +175,8 @@ Signature Verification[/url]</span></span></span></span>
 <li>Kicksecure for Qubes: In the <code>kicksecure</code> App Qube.</li>
 </ul>
 <p>Verify the OpenPGP signature.</p>
-<p><span class="code-select">gpg --verify
-Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</span></p>
+<p><span class="code-select" data-code="gpg --verify Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc">gpg
+--verify Trezor-Suite-21.10.2-linux-x86_64.AppImage.asc</span></p>
 <p><u>If the file is verified successfully</u>, the output will include
 <code>Good signature</code>, which is the most important thing to
 check.</p>
@@ -191,8 +195,8 @@ personally signed with your own key.</p>
 </ul>
 <p>Make the file <code>Trezor-Suite-21.10.2-linux-x86_64.AppImage</code>
 executable.</p>
-<p><span class="code-select">chmod +x
-Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
+<p><span class="code-select" data-code="chmod +x Trezor-Suite-21.10.2-linux-x86_64.AppImage">chmod
++x Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
 <h1 id="Usage">Usage</h1>
 <p>Platform specific.</p>
 <ul>
@@ -200,7 +204,7 @@ Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
 <li>Kicksecure for Qubes: In the <code>kicksecure</code> App Qube.</li>
 </ul>
 <p>Run the following command to start Trezor Suite.</p>
-<p><span class="code-select">./Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
+<p><span class="code-select" data-code="./Trezor-Suite-21.10.2-linux-x86_64.AppImage">./Trezor-Suite-21.10.2-linux-x86_64.AppImage</span></p>
 <h1 id="Qubes_Issues">Qubes Issues</h1>
 <p>Symptom:</p>
 <pre><code>kernel: vhci_hcd: vhci_device speed not set
@@ -244,35 +248,50 @@ Bridge service in sys-usb[/url]</span></span></span></span>
 to launch the bridge service via the Trezor Suite AppImage directly.</p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
 Copy Trezor Suite Appimage you just downloaded to <code>sys-usb</code>
-qube. <span class="code-select">qvm-copy Trezor*</span></p>
+qube. <span class="code-select" data-code="qvm-copy Trezor*">qvm-copy
+Trezor*</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
 Move Trezor Suite Appimage from QubesIncoming directory to home
 directory. In this scenario, it's being sent from a VM named
 <code>browser</code></p>
-<p><span class="code-select">mv /home/user/QubesIncoming/Trezor*
-~</span></p>
+<p><span class="code-select" data-code="mv /home/user/QubesIncoming/Trezor* ~">mv
+/home/user/QubesIncoming/Trezor* ~</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
 Make sure it is executable</p>
-<p><span class="code-select">chmod +x ~/Trezor*</span></p>
+<p><span class="code-select" data-code="chmod +x ~/Trezor*">chmod +x
+~/Trezor*</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
 Set up the systemd service</p>
-<p><span class="code-select">mkdir -p ~/.config/systemd/user touch
+<p><span class="code-select" data-code="mkdir -p ~/.config/systemd/user
+touch ~/.config/systemd/user/trezor-bridge.service">mkdir -p
+~/.config/systemd/user touch
 ~/.config/systemd/user/trezor-bridge.service</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Open the trezor-bridge.service systemd config file and paste</p>
-<p><span class="code-select">[Unit] Description=Trezor Suite Bridge
-daemon mode</p>
+<p><span class="code-select" data-code="[Unit]
+Description=Trezor Suite Bridge daemon mode
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+ExecStart=/home/user/Trezor-Suite.AppImage --bridge-daemon --disable-gpu
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target">[Unit] Description=Trezor Suite Bridge daemon
+mode</p>
 <p>[Service] Type=simple WorkingDirectory=%h
 ExecStart=/home/user/Trezor-Suite.AppImage --bridge-daemon --disable-gpu
 Restart=on-failure RestartSec=3</p>
 <p>[Install] WantedBy=default.target</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
 Enable auto start.</p>
-<p><span class="code-select">systemctl --user enable --now
-trezor-bridge.service</span></p>
+<p><span class="code-select" data-code="systemctl --user enable --now trezor-bridge.service">systemctl
+--user enable --now trezor-bridge.service</span></p>
 <p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
 Check the service</p>
-<p><span class="code-select">ss -tuple</span></p>
+<p><span class="code-select" data-code="ss -tuple">ss -tuple</span></p>
 <p>If you see a program listening on port&#8239;<code>21325</code>, the Trezor
 Bridge service is running.</p>
 <h1 id="Footnotes">Footnotes</h1>
