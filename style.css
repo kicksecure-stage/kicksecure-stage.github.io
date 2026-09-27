@@ -720,7 +720,14 @@ code {
 .strict-list-columns { list-style-position: inside; }
 .force-column-break { break-before: column; }
 @media (max-width: 720px) { .use-3-columns { columns: 2; } }
-@media (max-width: 480px) { .use-2-columns, .use-3-columns { columns: 1; } }
+@media (max-width: 480px) {
+  .use-2-columns, .use-3-columns { columns: 1; }
+  /* Single column: a column-break spacer has no next column to break to, and Chromium paints
+     its forced break as overflow columns PAST the viewport (an expanded mw-collapsible then
+     scrolls horizontally). Drop the spacers -- they only balance the multi-column desktop
+     layout. */
+  .force-column-break { display: none; }
+}
 
 /* ---- tabs (tcc): JS toggles .active; no-JS shows all (progressive) ---- */
 .tab-content-controller, .tcc-section {
@@ -768,10 +775,6 @@ code {
 .mw-collapsible:has(> .collapsible-toggle).mw-collapsed .mw-collapsible-content {
   display: none;
 }
-/* Expanded content must not push the page past a phone viewport: the strict-CSP sanitizer
-   drops the source's max-width:100%, and the single-column (<=480px) list sizes to a long
-   link label's min-content. Break long labels, as .toc a already does for the TOC. */
-.mw-collapsible-content { overflow-wrap: anywhere; }
 
 /* ---- headings from #headline widget ---- */
 .widget-headline { padding: 0; }
