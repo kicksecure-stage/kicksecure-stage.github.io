@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>stdisplay</title>
+<meta name="description" content="Tools to sanitize untrusted text before printing it to a terminal, reducing risk from malicious Unicode and dangerous ANSI escape sequences.">
+<meta property="og:description" content="Tools to sanitize untrusted text before printing it to a terminal, reducing risk from malicious Unicode and dangerous ANSI escape sequences.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Stdisplay/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Stdisplay/">
+<meta property="og:title" content="stdisplay">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><a class="site-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download/">Download</a><ul class="nav-submenu"><li><a href="../ISO/">On Computer</a></li><li><a href="../USB_Installation/">USB Installation</a></li><li><a href="../Intel_AMD64/">Intel / AMD64</a></li><li><a href="../ARM64/">ARM64</a></li><li><a href="../Raspberry_Pi/">Raspberry Pi</a></li><li><a href="../VirtualBox/">Windows (VM)</a></li><li><a href="../MacOS/">Mac</a></li><li><a href="../Linux/">Linux (VM)</a></li><li><a href="../VirtualBox/">VirtualBox (VM)</a></li><li><a href="../Qubes/">Qubes (VM)</a></li><li><a href="../KVM/">KVM (VM)</a></li><li><a href="../Debian/">Debian morph to Kicksecure</a></li><li><a href="../Download/">More options</a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer">Source Code</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About/">About</a><ul class="nav-submenu"><li><a href="../About/">Overview</a></li><li><a href="../Reasons_for_Freedom_Software/">Why Open Source?</a></li><li><a href="../What_we_do/">Project Activities</a></li><li><a href="../Contributors/">Contributors</a></li><li><a href="../Security_Roadmap/">Mission &amp; Vision</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation/">Docs</a><ul class="nav-submenu"><li><a href="../Documentation/">Documentation</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Troubleshooting/">Troubleshooting</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Contribute/">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Forums</a></li><li><a href="../Forum_Best_Practices/">Forum Best Practices</a></li><li><a href="../Contribute/">Contribute</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support/">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy/">Self Support First Policy</a></li><li><a href="../Support/">Support (Limited)</a></li><li><a href="../Plus_Support/">Plus</a></li><li><a href="../Premium_Support/">Premium</a></li><li><a href="../Reporting_Bugs/">Reporting Bugs</a></li><li><a href="../Contact/">Contact (Restricted)</a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Unicode-show/" title="Unicode-show"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Unicode-show</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Shell_scripting/" title="Shell scripting"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Shell
+scripting</span></a><span class="info"><span class="prev">Previous page:
+Unicode-show</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Shell
+scripting</span></span></span>stdisplay</p>
+</div><div class="mininav">
+<ul>
+<li><a href="../Unicode/">Unicode</a></li>
+<li><a href="../Unicode-show/">unicode-show</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">stdisplay (stcatn, stecho,
+etc.)</a></li>
+<li><a href="../Shell/">Hidden Text Attacks</a></li>
+<li><a href="../Shell_scripting/">Shell Scripting</a></li>
+</ul>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l3"><a href="#Overview">Overview</a></li><li class="toc-l3"><a href="#Safely_viewing_untrusted_output_(stcat_/_stcatn)">Safely viewing
+untrusted output (stcat / stcatn)</a></li><li class="toc-l3"><a href="#Safely_copying_output_to_a_file_(sttee_/_stsponge)">Safely copying
+output to a file (sttee / stsponge)</a></li><li class="toc-l3"><a href="#Safely_printing_text_(stprint_/_stecho)">Safely printing text
+(stprint / stecho)</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+
+
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This wiki page documents <code>stdisplay</code> and its related
+command line tools. These tools help to safely print untrusted text to a
+terminal by sanitizing non-ASCII characters, dangerous ANSI escape
+sequences and <a href="../Unicode/">unicode</a>.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Introduction">Introduction</h1>
+<p><code>stdisplay</code> is a set of <u>c</u>ommand <u>l</u>ine
+<u>i</u>nterface (CLI) tools designed to make it safer to display
+untrusted text in a terminal. This helps defend against:</p>
+<ul>
+<li>Invisible or confusing characters in text (non-ASCII Unicode).</li>
+<li>Dangerous terminal control codes (ANSI escape sequences) that can
+change what you see, hide text, alter the prompt, or otherwise mislead
+you.</li>
+</ul>
+<p>If you ever copy text from the Internet, print logs from untrusted
+programs, or inspect files that might contain strange characters, using
+<code>stdisplay</code>-based tools can reduce risk.</p>
+<h1 id="What_gets_cleaned_up?">What gets cleaned up?</h1>
+<p>The tools sanitize (clean) untrusted output before it is shown in the
+terminal.</p>
+<ul>
+<li><u>Non-ASCII characters:</u> are sanitized so unexpected characters
+do not silently appear in terminal output.</li>
+<li><u>ANSI escape sequences:</u> for non-allowed sequences, the
+<code>ESC</code> byte is replaced with <code>_</code> so the sequence
+cannot execute. Only a strict subset of harmless color formatting (SGR)
+may be allowed, plus newlines (<code>\n</code>) and horizontal tabs
+(<code>\t</code>).</li>
+</ul>
+<h1 id="Limitations">Limitations</h1>
+<ul>
+<li><u>Terminal display only:</u> <code>stdisplay</code> tools only
+sanitize what you <em>see</em> in the terminal. They do not make other
+uses of untrusted text safe.</li>
+<li><u>Copy and paste remains risky:</u> Copying and pasting shell
+commands from untrusted sources and executing them is still unsafe. If
+you paste commands you do not fully understand, you can still execute
+harmful actions. See also <a href="../Shell/">Hidden Text
+Attacks</a>.</li>
+<li><u>Not a shell scripting protection:</u> <a href="../Shell_scripting/">Shell Scripting</a> is still a risk.
+<code>stdisplay</code> tools do not sanitize shell code and do not
+prevent command execution when untrusted text is used in scripts.</li>
+<li><u>Out of scope:</u> This is not a bug in <code>stdisplay</code>.
+Preventing shell scripting mistakes and command injection is outside the
+scope of <code>stdisplay</code> tools.</li>
+</ul>
+<h1 id="stdisplay_Tools">stdisplay Tools</h1>
+<h3 id="Overview">Overview</h3><span class="share-tooltip" data-anchor="Overview"><a class="headline-anchor" href="#Overview" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Stdisplay/#Overview">https://www.kicksecure.com/wiki/Stdisplay/#Overview</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Overview&amp;text=Overview" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Overview&amp;text=Overview" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Overview&amp;title=Overview" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Overview&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Overview" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Stdisplay/#Overview]Overview[/url]">[url=https://www.kicksecure.com/wiki/Stdisplay/#Overview]Overview[/url]</span></span></span></span>
+<p>These tools intentionally have no option parameters. Everything you
+pass is treated as either text or a file, depending on the tool.</p>
+<p><u>Important:</u> <code>--</code> is treated as normal text, not as
+"end of options".</p>
+<p><u>Note:</u> For <code>stcat</code> and <code>stcatn</code>,
+<code>-</code> means "read stdin" (like <code>cat</code>).</p>
+<table>
+<caption>stdisplay tools and what they replace</caption>
+<thead>
+<tr class="header">
+<th><p>Sanitizer command</p></th>
+<th><p>Similar to</p></th>
+<th><p>What it is for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><code>stprint</code></p></td>
+<td><p><code>printf</code></p></td>
+<td><p>Print text exactly as given (no extra newline).</p></td>
+</tr>
+<tr class="even">
+<td><p><code>stecho</code></p></td>
+<td><p><code>echo</code></p></td>
+<td><p>Print text with spaces between arguments and a newline at the
+end.</p></td>
+</tr>
+<tr class="odd">
+<td><p><code>stcat</code></p></td>
+<td><p><code>cat</code></p></td>
+<td><p>Safely display file contents or piped input.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>stcatn</code></p></td>
+<td><p>(like <code>cat</code> plus cleanup)</p></td>
+<td><p>Like <code>stcat</code>, but also normalizes line endings and
+trims trailing whitespace.</p></td>
+</tr>
+<tr class="odd">
+<td><p><code>sttee</code></p></td>
+<td><p><code>tee</code></p></td>
+<td><p>Safely show output and optionally save a sanitized copy to a
+file.</p></td>
+</tr>
+<tr class="even">
+<td><p><code>stsponge</code></p></td>
+<td><p><code>sponge</code></p></td>
+<td><p>Collect input first, then write (supports safe in-place sanitize
+when used carefully).</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Safely_viewing_untrusted_output_(stcat_/_stcatn)">Safely viewing
+untrusted output (stcat / stcatn)</h3><span class="share-tooltip" data-anchor="Safely_viewing_untrusted_output_(stcat_/_stcatn)"><a class="headline-anchor" href="#Safely_viewing_untrusted_output_(stcat_/_stcatn)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Stdisplay/#Safely_viewing_untrusted_output_(stcat_/_stcatn)">https://www.kicksecure.com/wiki/Stdisplay/#Safely_viewing_untrusted_output_(stcat_/_stcatn)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_viewing_untrusted_output_%28stcat_%2F_stcatn%29&amp;text=Safely%20viewing%0Auntrusted%20output%20%28stcat%20%2F%20stcatn%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_viewing_untrusted_output_%28stcat_%2F_stcatn%29&amp;text=Safely%20viewing%0Auntrusted%20output%20%28stcat%20%2F%20stcatn%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_viewing_untrusted_output_%28stcat_%2F_stcatn%29&amp;title=Safely%20viewing%0Auntrusted%20output%20%28stcat%20%2F%20stcatn%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Safely%20viewing%0Auntrusted%20output%20%28stcat%20%2F%20stcatn%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_viewing_untrusted_output_%28stcat_%2F_stcatn%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_viewing_untrusted_output_(stcat_/_stcatn)]Safely viewing
+untrusted output (stcat / stcatn)[/url]">[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_viewing_untrusted_output_(stcat_/_stcatn)]Safely viewing
+untrusted output (stcat / stcatn)[/url]</span></span></span></span>
+<p>Use <code>stcat</code> when you would normally use <code>cat</code>
+for untrusted content.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Display piped output safely.</p>
+<p><span class="code-select" data-code="untrusted-cmd 2&gt;&amp;1 | stcat">untrusted-cmd
+2&gt;&amp;1 | stcat</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Display a file safely.</p>
+<p><span class="code-select" data-code="stcat /untrusted/file">stcat
+/untrusted/file</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>Untrusted output has been sanitized before being printed to the
+terminal.</p>
+<p><u>More examples:</u></p>
+<p>From a variable:</p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | stcat">printf
+'%s' "${untrusted_string}" | stcat</span></p>
+<p>From redirected input:</p>
+<p><span class="code-select" data-code="stcat &lt; /untrusted/file">stcat
+&lt; /untrusted/file</span></p>
+<p>Concatenate multiple files:</p>
+<p><span class="code-select" data-code="stcat /untrusted/file /untrusted/log">stcat
+/untrusted/file /untrusted/log</span></p>
+<h4 id="Using_a_pager_(less)">Using a pager (less)</h4>
+<p>If output is long, you can still use a pager.</p>
+<p><span class="code-select" data-code="data | stcat | less">data |
+stcat | less</span></p>
+<p>Sanitize git output before paging:</p>
+<p><span class="code-select" data-code="GIT_PAGER=&quot;stcat | less -R&quot; git log">GIT_PAGER="stcat
+| less -R" git log</span></p>
+<h4 id="When_you_need_elevated_permissions">When you need elevated
+permissions</h4>
+<p>If a log file requires administrative permissions to read, you can
+combine with <code>sudo</code>.</p>
+<p><span class="code-select" data-code="sudo -- stcat /untrusted/log">sudo
+-- stcat /untrusted/log</span></p>
+<h4 id="What_is_different_about_stcatn?">What is different about
+stcatn?</h4>
+<p><code>stcatn</code> is like <code>stcat</code>, plus additional
+cleanup:</p>
+<ul>
+<li>Adds a newline at the end of each file if it is not empty and does
+not already end in a newline.</li>
+<li>Trims trailing whitespace.</li>
+</ul>
+<p>This can be useful when inspecting logs that have messy
+formatting.</p>
+<h3 id="Safely_copying_output_to_a_file_(sttee_/_stsponge)">Safely copying
+output to a file (sttee / stsponge)</h3><span class="share-tooltip" data-anchor="Safely_copying_output_to_a_file_(sttee_/_stsponge)"><a class="headline-anchor" href="#Safely_copying_output_to_a_file_(sttee_/_stsponge)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Stdisplay/#Safely_copying_output_to_a_file_(sttee_/_stsponge)">https://www.kicksecure.com/wiki/Stdisplay/#Safely_copying_output_to_a_file_(sttee_/_stsponge)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_copying_output_to_a_file_%28sttee_%2F_stsponge%29&amp;text=Safely%20copying%0Aoutput%20to%20a%20file%20%28sttee%20%2F%20stsponge%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_copying_output_to_a_file_%28sttee_%2F_stsponge%29&amp;text=Safely%20copying%0Aoutput%20to%20a%20file%20%28sttee%20%2F%20stsponge%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_copying_output_to_a_file_%28sttee_%2F_stsponge%29&amp;title=Safely%20copying%0Aoutput%20to%20a%20file%20%28sttee%20%2F%20stsponge%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Safely%20copying%0Aoutput%20to%20a%20file%20%28sttee%20%2F%20stsponge%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_copying_output_to_a_file_%28sttee_%2F_stsponge%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_copying_output_to_a_file_(sttee_/_stsponge)]Safely copying
+output to a file (sttee / stsponge)[/url]">[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_copying_output_to_a_file_(sttee_/_stsponge)]Safely copying
+output to a file (sttee / stsponge)[/url]</span></span></span></span>
+<p>Use <code>sttee</code> if you want to see output in the terminal and
+optionally write a sanitized copy to a file.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Show sanitized output.</p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | sttee">printf
+'%s' "${untrusted_string}" | sttee</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Show sanitized output and save it to a file.</p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${untrusted_string}&quot; | sttee /trusted/file">printf
+'%s' "${untrusted_string}" | sttee /trusted/file</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>Sanitized output has been printed and (if selected) saved to a
+file.</p>
+<h4 id="In-place_sanitizing_(stsponge)">In-place sanitizing
+(stsponge)</h4>
+<p><code>stsponge</code> can be used to rewrite a file with a sanitized
+version.</p>
+<p><u>Warning:</u> Ensure you have a backup or are confident about
+rewriting the file.</p>
+<p><span class="code-select" data-code="stsponge /untrusted/file &lt; /untrusted/file">stsponge
+/untrusted/file &lt; /untrusted/file</span></p>
+<h3 id="Safely_printing_text_(stprint_/_stecho)">Safely printing text
+(stprint / stecho)</h3><span class="share-tooltip" data-anchor="Safely_printing_text_(stprint_/_stecho)"><a class="headline-anchor" href="#Safely_printing_text_(stprint_/_stecho)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)">https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;text=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;text=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29&amp;title=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Safely%20printing%20text%0A%28stprint%20%2F%20stecho%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FStdisplay%2F%23Safely_printing_text_%28stprint_%2F_stecho%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)]Safely printing text
+(stprint / stecho)[/url]">[url=https://www.kicksecure.com/wiki/Stdisplay/#Safely_printing_text_(stprint_/_stecho)]Safely printing text
+(stprint / stecho)[/url]</span></span></span></span>
+<p>Use <code>stprint</code> to print text exactly as provided (no
+newline automatically). Use <code>stecho</code> for a more familiar
+"echo-like" behavior (spaces between arguments and a newline).</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Print a variable safely.</p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot;">stprint
+"${untrusted_string}"</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Print multiple values.</p>
+<p>No automatic space is inserted:</p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot; &quot;${another_untrusted_string}&quot;">stprint
+"${untrusted_string}" "${another_untrusted_string}"</span></p>
+<p>To include a space, include it yourself:</p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string} ${another_untrusted_string}&quot;">stprint
+"${untrusted_string} ${another_untrusted_string}"</span></p>
+<p>Alternative way to include a space:</p>
+<p><span class="code-select" data-code="stprint &quot;${untrusted_string}&quot; &quot; ${another_untrusted_string}&quot;">stprint
+"${untrusted_string}" " ${another_untrusted_string}"</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>Text has been sanitized and printed safely.</p>
+<h4 id="Avoid_quoting_problems_(heredoc)">Avoid quoting problems
+(heredoc)</h4>
+<p>A heredoc can make it easier to pass multi-line text via stdin
+without complex quoting.</p>
+<p><span class="code-select" data-code="stcat &lt;&lt;EOF
+${untrusted_string}
+EOF">stcat &lt;&lt;EOF ${untrusted_string} EOF</span></p>
+<h1 id="Common_mistakes_to_avoid">Common mistakes to avoid</h1>
+<p><code>stprint</code> returns text that is safe to print. It is unsafe
+to reinterpret it as escape sequences later.</p>
+<p><u>Warning:</u> Avoid printing sanitized output using commands or
+formats that interpret escapes (for example <code>%b</code> or
+<code>echo -e</code>). This can cause hidden sequences to be evaluated
+later.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+<u>Safe</u>: store sanitized output normally.</p>
+<p>This assignment is safe:</p>
+<p><span class="code-select" data-code="var=&quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">var="$(stprint
+"${untrusted_string}")"</span></p>
+<p>Print the variable without interpreting escapes:</p>
+<p><span class="code-select" data-code="printf &#x27;%s&#x27; &quot;${var}&quot;">printf
+'%s' "${var}"</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+<u>Unsafe</u>: do not reinterpret escapes.</p>
+<p>This assignment is safe by itself:</p>
+<p><span class="code-select" data-code="var=&quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">var="$(stprint
+"${untrusted_string}")"</span></p>
+<p>The following examples are <u>dangerous</u> because they may
+interpret escapes and can re-enable terminal control sequences:</p>
+<p><span class="code-select" data-code="printf -v var &quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">printf
+-v var "$(stprint "${untrusted_string}")"</span></p>
+<p><span class="code-select" data-code="printf -v var &#x27;%b&#x27; &quot;$(stprint &quot;${untrusted_string}&quot;)&quot;">printf
+-v var '%b' "$(stprint "${untrusted_string}")"</span></p>
+<p><span class="code-select" data-code="printf &quot;${var}&quot;">printf
+"${var}"</span></p>
+<p><span class="code-select" data-code="printf &#x27;%b&#x27; &quot;${var}&quot;">printf
+'%b' "${var}"</span></p>
+<p><span class="code-select" data-code="echo -e &quot;${var}&quot;">echo
+-e "${var}"</span></p>
+<p><span class="code-select" data-code="echo &quot;${var}&quot;">echo
+"${var}"</span></p>
+<p><span class="code-select" data-code="echo -E &quot;${var}&quot;">echo
+-E "${var}"</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Done.</p>
+<p>Common unsafe patterns have been identified so sanitized output stays
+safe when displayed later.</p>
+<h1 id="Color_output_control_(SGR)">Color output control (SGR)</h1>
+<p>Some terminals support colored output. <code>stdisplay</code> will
+only allow safe coloring, and it automatically decides how much color
+support to enable:</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+If <code>$NO_COLOR</code> is set (non-empty), color is disabled.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+If <code>$COLORTERM</code> is <code>truecolor</code> or
+<code>24bit</code>, 24-bit color is enabled.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Otherwise, the terminal described by <code>$TERM</code> is checked for
+its color capability.</p>
+<p><u>Tip:</u> If you want to ensure there is no color at all, set
+<code>NO_COLOR=1</code> for the command.</p>
+<p><strong>Examples:</strong></p>
+<p>Enable 24-bit color (useful if the terminal database is
+outdated):</p>
+<p><span class="code-select" data-code="COLORTERM=truecolor stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[38;2;0;0;255mSome color\033[m&quot;)&quot;">COLORTERM=truecolor
+stprint "$(printf '%b' "\033[38;2;0;0;255mSome color\033[m")"</span></p>
+<p>Disable color using <code>NO_COLOR</code>:</p>
+<p><span class="code-select" data-code="NO_COLOR=1 stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[31mNo color\033[m&quot;)&quot;">NO_COLOR=1
+stprint "$(printf '%b' "\033[31mNo color\033[m")"</span></p>
+<p>Disable color using <code>TERM=dumb</code>:</p>
+<p><span class="code-select" data-code="unset COLORTERM
+TERM=dumb stprint &quot;$(printf &#x27;%b&#x27; &quot;\033[31mNo color\033[m&quot;)&quot;">unset
+COLORTERM TERM=dumb stprint "$(printf '%b' "\033[31mNo
+color\033[m")"</span></p>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Unicode-show/" title="Unicode-show"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Unicode-show</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Shell_scripting/" title="Shell scripting"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Shell
+scripting</span></a><span class="info"><span class="prev">Previous page:
+Unicode-show</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Shell
+scripting</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor">Supported by Power Up Privacy</p></div><div class="footer-col footer-legal"><p class="footer-subhead">Open Source</p><nav class="footer-freedom"><ul><li><a href="../Reasons_for_Freedom_Software/">Freedom Software</a></li><li><a href="../Policy_On_Nonfreedom_Software/">Policy on Nonfreedom Software</a></li></ul></nav><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../E-Sign_Consent/">E-Sign Consent</a></li><li><a href="../Terms_of_Service/#DMCA_Policy">DMCA</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

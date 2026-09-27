@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Operating System Hardening</title>
+<meta name="description" content="Hardening the Debian operating system, which is the base Kicksecure. It covers topics such as Debian Security Announcements, hardening steps, kernel hardening, and module loading.">
+<meta property="og:description" content="Hardening the Debian operating system, which is the base Kicksecure. It covers topics such as Debian Security Announcements, hardening steps, kernel hardening, and module loading.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Operating_System_Hardening/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Operating_System_Hardening/">
+<meta property="og:title" content="Operating System Hardening">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Oshardening34234.jpg">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><a class="site-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download/">Download</a><ul class="nav-submenu"><li><a href="../ISO/">On Computer</a></li><li><a href="../USB_Installation/">USB Installation</a></li><li><a href="../Intel_AMD64/">Intel / AMD64</a></li><li><a href="../ARM64/">ARM64</a></li><li><a href="../Raspberry_Pi/">Raspberry Pi</a></li><li><a href="../VirtualBox/">Windows (VM)</a></li><li><a href="../MacOS/">Mac</a></li><li><a href="../Linux/">Linux (VM)</a></li><li><a href="../VirtualBox/">VirtualBox (VM)</a></li><li><a href="../Qubes/">Qubes (VM)</a></li><li><a href="../KVM/">KVM (VM)</a></li><li><a href="../Debian/">Debian morph to Kicksecure</a></li><li><a href="../Download/">More options</a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer">Source Code</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About/">About</a><ul class="nav-submenu"><li><a href="../About/">Overview</a></li><li><a href="../Reasons_for_Freedom_Software/">Why Open Source?</a></li><li><a href="../What_we_do/">Project Activities</a></li><li><a href="../Contributors/">Contributors</a></li><li><a href="../Security_Roadmap/">Mission &amp; Vision</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation/">Docs</a><ul class="nav-submenu"><li><a href="../Documentation/">Documentation</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Troubleshooting/">Troubleshooting</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Contribute/">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Forums</a></li><li><a href="../Forum_Best_Practices/">Forum Best Practices</a></li><li><a href="../Contribute/">Contribute</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support/">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy/">Self Support First Policy</a></li><li><a href="../Support/">Support (Limited)</a></li><li><a href="../Plus_Support/">Plus</a></li><li><a href="../Premium_Support/">Premium</a></li><li><a href="../Reporting_Bugs/">Reporting Bugs</a></li><li><a href="../Contact/">Contact (Restricted)</a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="first-heading">
+<p><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="../Network_Time_Synchronization/" title="Network Time Synchronization"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Network
+Time
+Synchronization</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Protection_Against_Physical_Attacks/" title="Protection Against Physical Attacks"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Protection
+Against Physical
+Attacks</span></a><span class="info"><span class="prev">Previous page:
+Network Time Synchronization</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Protection Against
+Physical Attacks</span></span></span>Operating System Hardening</p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Debian_Security_Announcements">Debian Security
+Announcements</a></li><li class="toc-l2"><a href="#Harden_Debian">Harden Debian</a></li><li class="toc-l2"><a href="#Hardened_Kernels">Hardened Kernels</a></li><li class="toc-l2"><a href="#Module_Loading">Module Loading</a></li><li class="toc-l2"><a href="#Harden_Software_Repositories">Harden Software Repositories</a></li><li class="toc-l2"><a href="#Introduction">Introduction</a></li><li class="toc-l2"><a href="#Possible_Solutions">Possible Solutions</a></li><li class="toc-l3"><a href="#Always_Up-to-date_Builds">Always Up-to-date Builds</a></li><li class="toc-l3"><a href="#apt-cache">apt-cache</a></li><li class="toc-l3"><a href="#apt-offline">apt-offline</a></li><li class="toc-l3"><a href="#Building_from_Source_Code_using_Current_Sources">Building from
+Source Code using Current Sources</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+
+<p><img src="../../media/Oshardening34234.jpg.webp" alt="Oshardening34234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The page is about hardening the Debian operating system, which is the
+base Kicksecure. It covers topics such as Debian Security Announcements,
+hardening steps, kernel hardening, and module loading.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="Debian">Debian</h1>
+<h2 id="Debian_Security_Announcements">Debian Security
+Announcements</h2><span class="share-tooltip" data-anchor="Debian_Security_Announcements"><a class="headline-anchor" href="#Debian_Security_Announcements" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Debian_Security_Announcements">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Debian_Security_Announcements</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Debian_Security_Announcements&amp;text=Debian%20Security%0AAnnouncements" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Debian_Security_Announcements&amp;text=Debian%20Security%0AAnnouncements" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Debian_Security_Announcements&amp;title=Debian%20Security%0AAnnouncements" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Debian%20Security%0AAnnouncements&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Debian_Security_Announcements" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Debian_Security_Announcements]Debian Security
+Announcements[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Debian_Security_Announcements]Debian Security
+Announcements[/url]</span></span></span></span>
+<p>Since Kicksecure is based on Debian, it takes advantage of all the
+hard work done by their security team: <sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p><blockquote><p>Debian takes security very seriously. We handle all security problems
+brought to our attention and ensure that they are corrected within a
+reasonable timeframe. Many advisories are coordinated with other free
+software vendors and are published the same day a vulnerability is made
+public and we also have a Security Audit team that reviews the archive
+looking for new or unfixed security bugs.</p>
+<p>Experience has shown that "security through obscurity" does not work.
+Public disclosure allows for more rapid and better solutions to security
+problems. In that vein, this page addresses Debian's status with respect
+to various known security holes, which could potentially affect
+Debian.</p></blockquote></p>
+<p>Users should consider subscribing to the Debian <a href="https://lists.debian.org/debian-security-announce/">security
+announcement mailing list</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-security-announce/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> to stay informed about the latest security
+advisories.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="../About/">Kicksecure</a>
+is an <a href="../About/#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch04.en.html#debian-sec-announce">Subscribe
+to the Debian Security Announce mailing
+list</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch04.en.html#debian-sec-announce" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h2 id="Harden_Debian">Harden Debian</h2><span class="share-tooltip" data-anchor="Harden_Debian"><a class="headline-anchor" href="#Harden_Debian" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Debian">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Debian</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Debian&amp;text=Harden%20Debian" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Debian&amp;text=Harden%20Debian" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Debian&amp;title=Harden%20Debian" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Harden%20Debian&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Debian" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Debian]Harden Debian[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Debian]Harden Debian[/url]</span></span></span></span>
+<p>Most hardening steps cannot be easily added to Kicksecure by default.
+Any major changes require careful research and significant
+developer/tester effort, otherwise system errors or breakage may occur.
+This is an open topic and Kicksecure developers are amenable to
+suggestions - improving operating system security will always be a
+primary design goal.</p>
+<p>Before attempting additional hardening measures below, be sure to
+fully understand them and apply the steps carefully:</p>
+<ul>
+<li><a href="https://wiki.debian.org/HardeningWalkthrough">Debian
+Hardening Walkthrough</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/HardeningWalkthrough" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.debian.org/security/">Debian Security
+Information</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/security/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.debian.org/doc/manuals/securing-debian-manual/index.en.html">Securing
+Debian Manual</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/index.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<ul>
+<li><a href="https://www.debian.org/doc/manuals/securing-debian-manual/automatic-harden.en.html">Securing
+Debian Manual Chapter 6 - Automatic hardening of Debian systems</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/automatic-harden.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+</ul>
+<p>Readers are welcome to add any additional hardening resources to this
+list.</p>
+<h2 id="Hardened_Kernels">Hardened Kernels</h2><span class="share-tooltip" data-anchor="Hardened_Kernels"><a class="headline-anchor" href="#Hardened_Kernels" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Hardened_Kernels">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Hardened_Kernels</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Hardened_Kernels&amp;text=Hardened%20Kernels" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Hardened_Kernels&amp;text=Hardened%20Kernels" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Hardened_Kernels&amp;title=Hardened%20Kernels" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Hardened%20Kernels&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Hardened_Kernels" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Hardened_Kernels]Hardened Kernels[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Hardened_Kernels]Hardened Kernels[/url]</span></span></span></span>
+<p>The upstream Kernel Self Protection Project (KSPP) <sup class="reference"><a href="#cite_note-2">[2]</a></sup>
+was established in 2015 with the goal of introducing more hardening
+features into mainline Linux. This includes many features found in the
+Grsecurity patchset, which was <a href="https://www.phoronix.com/news/GrSecurity-No-Longer-Free">publicly
+available until early 2017</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.phoronix.com/news/GrSecurity-No-Longer-Free" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. One advantage of KSPP is that users will
+no longer need to compile and tweak settings to create a secure kernel.
+Instead, many hardening features will become the default over time in
+various distributions. Up-to-date information on available hardening
+features can be viewed <a href="https://github.com/a13xp0p0v/linux-kernel-defence-map">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/a13xp0p0v/linux-kernel-defence-map" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>The Hardened Kernel Project is a collaborative effort between Arch
+and Gentoo developers who handled Grsecurity packaging in their
+respective distributions with the goal of accelerating mainlining of the
+patchset. <sup class="reference"><a href="#cite_note-3">[3]</a></sup> <sup class="reference"><a href="#cite_note-4">[4]</a></sup></p>
+<p>While kernel hardening is important, it only addresses a subset of
+security risks. It cannot protect against backdoors or security issues
+related to design, policy or yet unknown exploit classes.</p>
+<h2 id="Module_Loading">Module Loading</h2><span class="share-tooltip" data-anchor="Module_Loading"><a class="headline-anchor" href="#Module_Loading" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Module_Loading">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Module_Loading</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Module_Loading&amp;text=Module%20Loading" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Module_Loading&amp;text=Module%20Loading" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Module_Loading&amp;title=Module%20Loading" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Module%20Loading&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Module_Loading" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Module_Loading]Module Loading[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Module_Loading]Module Loading[/url]</span></span></span></span>
+<p>Restricting module loading can protect the kernel.</p>
+<p>Chapter "Module Loading" is for advanced users only since it could
+break various things. This is still under development. See Kicksecure
+development discussion: <a href="https://forums.whonix.org/t/allow-loading-signed-kernel-modules-by-default-disallow-kernel-module-loading-by-default/7880">allow
+loading signed kernel modules by default / disallow kernel module
+loading by default</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/allow-loading-signed-kernel-modules-by-default-disallow-kernel-module-loading-by-default/7880" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p><code>/usr/lib/modules-load.d/firewall.conf</code></p>
+<p><span class="code-select" data-code="ipt_REJECT
+ip6t_REJECT
+
+nft_chain_nat_ipv4
+nft_chain_route_ipv4
+nft_chain_route_ipv6
+nft_compat
+nft_counter
+
+xt_conntrack
+xt_state
+xt_tcpudp">ipt_REJECT ip6t_REJECT</p>
+<p>nft_chain_nat_ipv4 nft_chain_route_ipv4 nft_chain_route_ipv6
+nft_compat nft_counter</p>
+<p>xt_conntrack xt_state xt_tcpudp</span></p>
+<p><code>/usr/lib/modules-load.d/lxqt.conf</code> TODO: check if still
+needed</p>
+<p><span class="code-select" data-code="snd_intel8x0
+
+## Platform specific?
+## is autoloaded by snd_intel8x0
+#snd
+
+evdev
+drm
+
+## works without too
+#binfmt_misc">snd_intel8x0</p>
+<ol>
+<li><ol>
+<li>Platform specific?</li>
+<li>is autoloaded by snd_intel8x0</li>
+</ol></li>
+<li>snd</li>
+</ol>
+<p>evdev drm</p>
+<ol>
+<li><ol>
+<li>works without too</li>
+</ol></li>
+<li>binfmt_misc</span></li>
+</ol>
+<p>Kicksecure only: <code>/usr/lib/modules-load.d/kloak.conf</code></p>
+<p><span class="code-select" data-code="uinput">uinput</span></p>
+<p>VirtualBox only: <code>/usr/lib/modules-load.d/vbox.conf</code></p>
+<p><span class="code-select" data-code="vboxguest
+vboxsf
+vboxvideo">vboxguest vboxsf vboxvideo</span></p>
+<p>Disable module loading by creating this file:
+<code>/etc/sysctl.d/module-loading.conf</code></p>
+<p><span class="code-select" data-code="kernel.modules_disabled=1">kernel.modules_disabled=1</span></p>
+<p>After reboot, test if module loading is really disabled. Try to load
+any module, for example <code>apanel</code>.</p>
+<p><span class="code-select" data-code="sudo modprobe apanel">sudo
+modprobe apanel</span></p>
+<p>Should show.</p>
+<pre><code>modprobe: ERROR: could not insert &#39;apanel&#39;: Operation not permitted</code></pre>
+<h2 id="Harden_Software_Repositories">Harden Software Repositories</h2><span class="share-tooltip" data-anchor="Harden_Software_Repositories"><a class="headline-anchor" href="#Harden_Software_Repositories" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;text=Harden%20Software%20Repositories" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;text=Harden%20Software%20Repositories" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories&amp;title=Harden%20Software%20Repositories" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Harden%20Software%20Repositories&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Harden_Software_Repositories" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories]Harden Software Repositories[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Harden_Software_Repositories]Harden Software Repositories[/url]</span></span></span></span>
+<p>Many operating systems provide multiple repositories. Since the
+Kicksecure implementation is based on Debian, these resources provide a
+suitable introduction for interested readers:</p>
+<ul>
+<li><a href="https://www.debian.org/doc/debian-policy/ch-archive.html">Debian
+Policy Manual Chapter 2 - The Debian Archive</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/debian-policy/ch-archive.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li><a href="https://help.ubuntu.com/community/Repositories/">Ubuntu
+Repositories (similar to Debian)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://help.ubuntu.com/community/Repositories/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+</ul>
+<p>In summary, these resources confirm the main repository receives the
+most developer attention and security updates. This suggests a degree of
+hardening might involve editing <em>/etc/apt/sources.list</em> to
+strictly limit software to the main repository, while only installing
+security fixes and no other updates.</p>
+<p>Kicksecure has <u>not</u> implemented this design by default and it
+is an open research question whether this will actually improve
+security.</p>
+<h1 id="Vulnerabilities_at_Install_Time">Vulnerabilities at Install
+Time</h1>
+<h2 id="Introduction">Introduction</h2><span class="share-tooltip" data-anchor="Introduction"><a class="headline-anchor" href="#Introduction" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Introduction">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Introduction</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Introduction&amp;text=Introduction" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Introduction&amp;text=Introduction" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Introduction&amp;title=Introduction" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Introduction&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Introduction" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Introduction]Introduction[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Introduction]Introduction[/url]</span></span></span></span>
+<p>Various installation media expose users to vulnerabilities,
+including:</p>
+<ul>
+<li><u>Importable <a href="../Download/">VM images</a>:</u>
+Kicksecure and <a href="https://virtualboxes.org/">other
+images</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://virtualboxes.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li><u>Installer DVDs:</u> <a href="https://www.debian.org">Debian</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+and other major platforms.</li>
+<li><u>Live DVDs:</u> <a href="https://tails.boum.org">Tails</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and
+similar platforms.</li>
+<li><u>VM Images built with <a href="../Dev/Build_Documentation/">frozen sources</a>:</u> Platforms without current
+sources.</li>
+</ul>
+<p>The threat arises because the latest stable releases sometimes
+contain vulnerable, remotely exploitable applications. These
+applications are very likely to be used over untrusted networks
+<sup class="reference"><a href="#cite_note-5">[5]</a></sup> which are in a position to run <a href="../Warning/#Man-in-the-middle_Attacks">Man-in-the-Middle Attacks</a>.</p>
+<p>One recent example is the January, 2019 APT vulnerability (<a href="https://security-tracker.debian.org/tracker/CVE-2019-3462">CVE-2019-3462</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security-tracker.debian.org/tracker/CVE-2019-3462" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)
+which allowed content injection by a MiTM attacker, thereby enabling
+remote code execution on the affected Linux machine. Specifically,
+improper sanitization of parameters in HTTP redirects allowed malicious
+content (altered packages) to be installed via a harmful mirror or
+direct injection into the network traffic. <sup class="reference"><a href="#cite_note-6">[6]</a></sup> For
+another example, see <a href="https://lists.debian.org/debian-security-announce/2014/msg00219.html">CVE-2014-6273</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.debian.org/debian-security-announce/2014/msg00219.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+which affected APT in 2014.</p>
+<p>Readers are welcome to help research this issue further and document
+sane and effective solutions. <sup class="reference"><a href="#cite_note-7">[7]</a></sup> For example, users who
+solely rely on Debian and Kicksecure onion services for updates may have
+had (partial) protection against the 2019 APT bug, but this requires
+investigation.</p>
+<h2 id="Possible_Solutions">Possible Solutions</h2><span class="share-tooltip" data-anchor="Possible_Solutions"><a class="headline-anchor" href="#Possible_Solutions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Possible_Solutions">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Possible_Solutions</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Possible_Solutions&amp;text=Possible%20Solutions" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Possible_Solutions&amp;text=Possible%20Solutions" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Possible_Solutions&amp;title=Possible%20Solutions" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Possible%20Solutions&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Possible_Solutions" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Possible_Solutions]Possible Solutions[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Possible_Solutions]Possible Solutions[/url]</span></span></span></span>
+<h3 id="Always_Up-to-date_Builds">Always Up-to-date Builds</h3><span class="share-tooltip" data-anchor="Always_Up-to-date_Builds"><a class="headline-anchor" href="#Always_Up-to-date_Builds" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Always_Up-to-date_Builds">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Always_Up-to-date_Builds</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Always_Up-to-date_Builds&amp;text=Always%20Up-to-date%20Builds" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Always_Up-to-date_Builds&amp;text=Always%20Up-to-date%20Builds" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Always_Up-to-date_Builds&amp;title=Always%20Up-to-date%20Builds" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Always%20Up-to-date%20Builds&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Always_Up-to-date_Builds" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Always_Up-to-date_Builds]Always Up-to-date Builds[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Always_Up-to-date_Builds]Always Up-to-date Builds[/url]</span></span></span></span>
+<p>If Kicksecure regularly released up-to-date builds, this would be an
+optimal solution for end users. However, the maintenance effort --
+building, testing and uploading -- is resource-intensive and not
+currently feasible for the Kicksecure team.</p>
+<p>Greater community support is needed for <a href="../Contribute/#Testing">testing</a> proposed Kicksecure package updates and
+major new releases, alongside an automated test suite for
+Kicksecure.</p>
+<h3 id="apt-cache">apt-cache</h3><span class="share-tooltip" data-anchor="apt-cache"><a class="headline-anchor" href="#apt-cache" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-cache">https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-cache</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-cache&amp;text=apt-cache" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-cache&amp;text=apt-cache" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-cache&amp;title=apt-cache" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=apt-cache&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-cache" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-cache]apt-cache[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-cache]apt-cache[/url]</span></span></span></span>
+<p>When using virtual machines, Kicksecure could be configured to use
+the host apt-cache. <a href="../Physical_Isolation/">Physically-isolated</a> Kicksecure could use an
+apt-cache running on a separate machine. <a href="https://packages.debian.org/apt-cacher-ng">apt-cacher-ng</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/apt-cacher-ng" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is an
+example implementation of such an apt-cache.</p>
+<p>This configuration does not secure <a href="../Operating_System_Software_and_Updates/#Updates">operating system updates</a> by default over Tor, which
+is a big disadvantage. <sup class="reference"><a href="#cite_note-8">[8]</a></sup> It would be first necessary to
+determine how to configure apt-cacher-ng on the host to force downloads
+through Tor.</p>
+<h3 id="apt-offline">apt-offline</h3><span class="share-tooltip" data-anchor="apt-offline"><a class="headline-anchor" href="#apt-offline" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-offline">https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-offline</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-offline&amp;text=apt-offline" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-offline&amp;text=apt-offline" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-offline&amp;title=apt-offline" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=apt-offline&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23apt-offline" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-offline]apt-offline[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#apt-offline]apt-offline[/url]</span></span></span></span>
+<p>Another possibility is somehow using <a href="https://packages.debian.org/apt-offline">apt-offline</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/apt-offline" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> to
+complete the initial updates of Kicksecure.</p>
+<h3 id="Building_from_Source_Code_using_Current_Sources">Building from
+Source Code using Current Sources</h3><span class="share-tooltip" data-anchor="Building_from_Source_Code_using_Current_Sources"><a class="headline-anchor" href="#Building_from_Source_Code_using_Current_Sources" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Operating_System_Hardening/#Building_from_Source_Code_using_Current_Sources">https://www.kicksecure.com/wiki/Operating_System_Hardening/#Building_from_Source_Code_using_Current_Sources</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Building_from_Source_Code_using_Current_Sources&amp;text=Building%20from%0ASource%20Code%20using%20Current%20Sources" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Building_from_Source_Code_using_Current_Sources&amp;text=Building%20from%0ASource%20Code%20using%20Current%20Sources" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Building_from_Source_Code_using_Current_Sources&amp;title=Building%20from%0ASource%20Code%20using%20Current%20Sources" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Building%20from%0ASource%20Code%20using%20Current%20Sources&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOperating_System_Hardening%2F%23Building_from_Source_Code_using_Current_Sources" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Building_from_Source_Code_using_Current_Sources]Building from
+Source Code using Current Sources[/url]">[url=https://www.kicksecure.com/wiki/Operating_System_Hardening/#Building_from_Source_Code_using_Current_Sources]Building from
+Source Code using Current Sources[/url]</span></span></span></span>
+<p>Not applicable until frozen sources builds / reproducible builds have
+been implemented.</p>
+<p>Self-created Kicksecure builds from source code use current sources,
+thereby solving this problem. Although frozen sources have been
+deprecated for reasons outlined in the <a href="../Dev/Build_Documentation/">Build</a> documentation, using current sources comes
+with its own issues.</p>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://www.debian.org/security/">https://www.debian.org/security/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/security/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-2"><a href="https://www.openwall.com/lists/kernel-hardening/">https://www.openwall.com/lists/kernel-hardening/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openwall.com/lists/kernel-hardening/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-3"><a href="https://github.com/GrapheneOS/linux-hardened/wiki">https://github.com/GrapheneOS/linux-hardened/wiki</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/GrapheneOS/linux-hardened/wiki" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-4"><a href="https://github.com/anthraxx/linux-hardened">https://github.com/anthraxx/linux-hardened</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/anthraxx/linux-hardened" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-5">Such as Tor exit relays.</li>
+<li id="cite_note-6"><a href="https://thehackernews.com/2019/01/linux-apt-http-hacking.html">https://thehackernews.com/2019/01/linux-apt-http-hacking.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://thehackernews.com/2019/01/linux-apt-http-hacking.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-7"><a href="https://forums.whonix.org/t/new-chapter-vulnerabilities-at-install-time-in-advanced-security-guide/538">Forum
+discussion</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/new-chapter-vulnerabilities-at-install-time-in-advanced-security-guide/538" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li id="cite_note-8">This leaks a list of installed packages to ISP-level adversaries and
+update servers. For example, if a user installed a webserver that is
+likely to be used to host a hidden web service, then this information
+would leak.</li>
+</ol>
+</div>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="../Network_Time_Synchronization/" title="Network Time Synchronization"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Network
+Time
+Synchronization</span></a><a class="index internal" href="../Documentation/" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="../Protection_Against_Physical_Attacks/" title="Protection Against Physical Attacks"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Protection
+Against Physical
+Attacks</span></a><span class="info"><span class="prev">Previous page:
+Network Time Synchronization</span><span class="index">Index page:
+Documentation</span><span class="next">Next page: Protection Against
+Physical Attacks</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor">Supported by Power Up Privacy</p></div><div class="footer-col footer-legal"><p class="footer-subhead">Open Source</p><nav class="footer-freedom"><ul><li><a href="../Reasons_for_Freedom_Software/">Freedom Software</a></li><li><a href="../Policy_On_Nonfreedom_Software/">Policy on Nonfreedom Software</a></li></ul></nav><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../E-Sign_Consent/">E-Sign Consent</a></li><li><a href="../Terms_of_Service/#DMCA_Policy">DMCA</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

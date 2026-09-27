@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Onion Reachability</title>
+<meta name="description" content="Onion services can become unreachable because of Tor bugs, denial of service attacks, malformed descriptors, client-side Tor state, and limited debugging tools.">
+<meta property="og:description" content="Onion services can become unreachable because of Tor bugs, denial of service attacks, malformed descriptors, client-side Tor state, and limited debugging tools.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Onion_reachability/">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Onion_reachability/">
+<meta property="og:title" content="Onion Reachability">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<header class="site-header"><a class="site-logo" href="/">Kicksecure</a><a class="site-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu">&#9776;</label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download/">Download</a><ul class="nav-submenu"><li><a href="../ISO/">On Computer</a></li><li><a href="../USB_Installation/">USB Installation</a></li><li><a href="../Intel_AMD64/">Intel / AMD64</a></li><li><a href="../ARM64/">ARM64</a></li><li><a href="../Raspberry_Pi/">Raspberry Pi</a></li><li><a href="../VirtualBox/">Windows (VM)</a></li><li><a href="../MacOS/">Mac</a></li><li><a href="../Linux/">Linux (VM)</a></li><li><a href="../VirtualBox/">VirtualBox (VM)</a></li><li><a href="../Qubes/">Qubes (VM)</a></li><li><a href="../KVM/">KVM (VM)</a></li><li><a href="../Debian/">Debian morph to Kicksecure</a></li><li><a href="../Download/">More options</a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer">Source Code</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About/">About</a><ul class="nav-submenu"><li><a href="../About/">Overview</a></li><li><a href="../Reasons_for_Freedom_Software/">Why Open Source?</a></li><li><a href="../What_we_do/">Project Activities</a></li><li><a href="../Contributors/">Contributors</a></li><li><a href="../Security_Roadmap/">Mission &amp; Vision</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation/">Docs</a><ul class="nav-submenu"><li><a href="../Documentation/">Documentation</a></li><li><a href="../FAQ/">FAQ</a></li><li><a href="../Troubleshooting/">Troubleshooting</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Contribute/">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Forums</a></li><li><a href="../Forum_Best_Practices/">Forum Best Practices</a></li><li><a href="../Contribute/">Contribute</a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support/">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy/">Self Support First Policy</a></li><li><a href="../Support/">Support (Limited)</a></li><li><a href="../Plus_Support/">Plus</a></li><li><a href="../Premium_Support/">Premium</a></li><li><a href="../Reporting_Bugs/">Reporting Bugs</a></li><li><a href="../Contact/">Contact (Restricted)</a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="search" id="search-input" aria-label="Search" placeholder="Search" autocomplete="off"><a class="search-browse" href="../Special:AllPages/">Browse</a></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate/"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<h1 id="firstHeading" class="first-heading">Onion Reachability</h1><div class="intro-like">
+<p>A Tor v3 onion connection is two independent 3-hop circuits meeting
+at a rendezvous point (RP), split across two daemons on two hosts, with
+cached state and rate-limited observation. From the outside almost every
+failure looks identical: a connect just "hangs" or "fails". Each
+question below isolates a different failure stage, and the difficulty is
+nearly always the same shape: <em>how do I observe one stage without the
+other stages masking what it is really doing?</em></p>
+</div><nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l2"><a href="#Fault_attribution:_is_it_me_or_the_service?">Fault attribution: is
+it me or the service?</a></li><li class="toc-l2"><a href="#Descriptor_problems_(the_stale-cache_trap)">Descriptor problems
+(the stale-cache trap)</a></li><li class="toc-l2"><a href="#Split-brain_(two_Tor_daemons,_same_identity)">Split-brain (two Tor
+daemons, same identity)</a></li><li class="toc-l2"><a href="#DoS_/_introduction_flood">DoS / introduction flood</a></li><li class="toc-l2"><a href="#Server-side_intermittent_disruption">Server-side intermittent
+disruption</a></li><li class="toc-l2"><a href="#Reachable-but-wrong_(the_false_green)">Reachable-but-wrong (the
+false green)</a></li><li class="toc-l2"><a href="#Planned_Tools">Planned Tools</a></li><li class="toc-l2"><a href="#OnionBalance">OnionBalance</a></li><li class="toc-l2"><a href="#Docker">Docker</a></li></ul></nav><div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Onion services can sometimes become unreachable even when the server
+configuration has not changed. Possible causes include Tor bugs, denial
+of service attacks, malformed service descriptors, problems with the
+local Tor daemon, and limitations in available debugging tools. This
+page documents known issues, investigation results, temporary recovery
+procedures, and related upstream bug reports.</p>
+<div class="post-intro-p">
+</div>
+<h1 id="User_Documentation">User Documentation</h1>
+<p><a href="../Operating_System_Software_and_Updates/#Non-functional_Onion_Services">Non-functional Onion Services</a></p>
+<h1 id="Tor_Upstream_Unfixed_Denial_of_Service_Issue">Tor Upstream
+Unfixed Denial of Service Issue</h1>
+<p>Tor upstream DoS issue <a href="https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294">attacker
+can force intro point rotation by ddos</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> was reported by Tor developer
+<a href="https://gitlab.torproject.org/arma">Roger Dingledine</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/arma" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. At
+the time of writing:</p>
+<ul>
+<li>Issue opened in <code>2018</code>.</li>
+<li><code>Status</code>: <code>Open</code>,
+<code>Not Scheduled</code>.</li>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294#note_2907391">Last
+comment by Roger Dingledine in <code>2023</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294#note_2907391" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li>Last ticket status change to <code>Not Scheduled</code> in December
+<code>2025</code>.</li>
+</ul>
+<h1 id="Malformed_Hidden_Service_Descriptor_Issues">Malformed Hidden
+Service Descriptor Issues</h1>
+<p>All were unresolved at the time of writing in July 2026.</p>
+<ul>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/41094">https://gitlab.torproject.org/tpo/core/tor/-/issues/41094</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/41094" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/41016">https://gitlab.torproject.org/tpo/core/tor/-/issues/41016</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/41016" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/41101">https://gitlab.torproject.org/tpo/core/tor/-/issues/41101</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/41101" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="General_Bad_State_of_Tor_Onions">General Bad State of Tor
+Onions</h1>
+<p>Tor onions are generally in a bad state. This is <a href="../Unspecific/">unspecific</a> to Kicksecure or Whonix.</p>
+<p>Vanguards is a software project by The Tor Project (TPO) / Tor
+developer Mike Perry. Quote from <a href="https://github.com/mikeperry-tor/vanguards">The Vanguards Onion
+Service Addon</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
+<p><blockquote><p>Even after deployment of the <a href="https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt">new
+v3 onion service protocol</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitweb.torproject.org/torspec.git/tree/proposals/224-rend-spec-ng.txt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, the attacks facing onion services are
+wide-ranging, and still require more extensive modifications to fix in
+Tor-core itself.</p>
+<p>Because of this, we have decided to rapid-prototype these defenses in
+a controller addon in order to make them available ahead of their
+official Tor-core release, for onion services that require high security
+as soon as possible.</p>
+<p>For details about the defenses themselves, please see <a href="https://github.com/mikeperry-tor/vanguards/blob/master/README_TECHNICAL.md">README_TECHNICAL.md</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/blob/master/README_TECHNICAL.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>For additional security information, please see <a href="https://github.com/mikeperry-tor/vanguards/blob/master/README_SECURITY.md">README_SECURITY.md</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/blob/master/README_SECURITY.md" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.<span class="blockquote-context"><a href="https://github.com/mikeperry-tor/vanguards">https://github.com/mikeperry-tor/vanguards</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p>A <a href="https://github.com/mikeperry-tor/vanguards/issues/91">very
+comprehensive bug report</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/issues/91" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> was submitted by an advanced user in
+2022.</p>
+<p>In the same year, 2022, Tor developer Mike Perry provided rare and
+detailed insights into the funding and development issues of Tor
+onions.</p>
+<p><blockquote><p>We have been seeing sustained attacks from multiple adversaries
+against onion services, and against the Tor network itself, for the past
+3 months. These adversaries are continually adapting to our
+defenses.</p>
+<p>For the past 3 years, we have attempted to get funding for DoS
+defenses for onion services from various funding sources. Every single
+one of these funding sources declined to fund onion service development
+or defenses. Because of the way our funding model works, this
+proposal-reject churn also delayed development on other tasks.
+Effectively a DoS attack in and of itself.</p>
+<p>During this process, one of the two primary developers on onion
+services resigned. The other primary onion service developer is
+currently on leave. In fact, we will only have 2 developers directly
+devoted to all of C-Tor for the next 6-8 weeks or so, and about half of
+that developer time will be spent writing and revising other funding
+proposals during this period. The remainder will be spent performing
+other already funded work, and related administration tasks.</p>
+<p>We do have pending funding for general DoS defenses that should be
+finalized soon, but that also does not cover onion service development.
+We will need to show other progress for that funder; any DoS defenses
+specifically for onion services will still have to be done "on the
+side".</p>
+<p>Normally, I would not air our dirty laundry like this, but since it
+will have a direct impact on people like you, it seemed important to
+explain why we're going to be especially unresponsive to issues with
+onion services for the next while.<span class="blockquote-context"><a href="https://github.com/mikeperry-tor/vanguards/issues/91#issuecomment-1228698338">https://github.com/mikeperry-tor/vanguards/issues/91#issuecomment-1228698338</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/issues/91#issuecomment-1228698338" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p>As per the <a href="https://github.com/mikeperry-tor/vanguards/commits/master/">Vanguards
+commit history</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/commits/master/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, the last substantial code change in Vanguards
+happened in 2021. There were some minor commits in 2023, but these were
+only related to <a href="https://github.com/dependabot">Dependabot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dependabot" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>A <a href="https://gitlab.torproject.org/tpo/core/tor/-/work_items/40892">Vanguards
+issue</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/work_items/40892" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> was reported to TPO in November 2023, was assigned, but
+stalled.</p>
+<p>More tickets with zero replies:</p>
+<ul>
+<li><a href="https://github.com/mikeperry-tor/vanguards/issues/100">Vanguards
+issue #100</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/issues/100" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/mikeperry-tor/vanguards/issues/99">Vanguards
+issue #99</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/issues/99" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p>There was a <a href="https://blog.torproject.org/tor-network-ddos-attack/">Tor Project
+fundraiser in 2023</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/tor-network-ddos-attack/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>The Tor Project published a <a href="https://onionservices.torproject.org/research/scenarios/network/">roadmap
+for improving onion support</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://onionservices.torproject.org/research/scenarios/network/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>A number of open tickets are related to onion service stability:</p>
+<ul>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/33704">Understand
+code performance of onion services under DoS (#33704) - Tor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/33704" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/31223">Research
+approaches for improving the availability of services under DoS (#31223)
+- Tor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/31223" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/tor/-/issues/26294">Attacker
+can force intro point rotation by DDoS (#26294) - Tor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/issues/26294" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/arti/-/issues/351">DoS
+resistance measures from C Tor (#351) - Arti</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/arti/-/issues/351" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>No attempt was made to write an exhaustive list.</li>
+</ul>
+<p>The Tor Project's focus seems to have since shifted to onions in
+Arti.<sup class="reference"><a href="#cite_note-1">[1]</a></sup></p>
+<p>See <a href="https://blog.torproject.org/announcing-vanguards-for-arti/">Announcing
+Vanguards for Arti</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/announcing-vanguards-for-arti/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p><blockquote><p>Arti's Vanguards implementation is based on the research behind Tor's
+<a href="https://blog.torproject.org/announcing-vanguards-add-onion-services/">Vanguards
+add-on</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/announcing-vanguards-add-onion-services/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, and offers similar protections to its <a href="https://github.com/mikeperry-tor/vanguards/blob/master/README_TECHNICAL.md#the-vanguards-subsystem">Vanguards
+component</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/mikeperry-tor/vanguards/blob/master/README_TECHNICAL.md#the-vanguards-subsystem" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.<span class="blockquote-context"><a href="https://blog.torproject.org/announcing-vanguards-for-arti/">https://blog.torproject.org/announcing-vanguards-for-arti/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/announcing-vanguards-for-arti/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p><blockquote><p>The other experimental defenses from the add-on are not yet
+implemented in Arti (but they are on our
+roadmap!)<span class="blockquote-context"><a href="https://blog.torproject.org/announcing-vanguards-for-arti/">https://blog.torproject.org/announcing-vanguards-for-arti/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/announcing-vanguards-for-arti/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<h1 id="Lack_of_Onion_Reachability_Debugging_Tools">Lack of Onion
+Reachability Debugging Tools</h1>
+
+<h2 id="Fault_attribution:_is_it_me_or_the_service?">Fault attribution: is
+it me or the service?</h2><span class="share-tooltip" data-anchor="Fault_attribution:_is_it_me_or_the_service?"><a class="headline-anchor" href="#Fault_attribution:_is_it_me_or_the_service?" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Fault_attribution:_is_it_me_or_the_service?">https://www.kicksecure.com/wiki/Onion_reachability/#Fault_attribution:_is_it_me_or_the_service?</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Fault_attribution%3A_is_it_me_or_the_service%3F&amp;text=Fault%20attribution%3A%20is%0Ait%20me%20or%20the%20service%3F" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Fault_attribution%3A_is_it_me_or_the_service%3F&amp;text=Fault%20attribution%3A%20is%0Ait%20me%20or%20the%20service%3F" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Fault_attribution%3A_is_it_me_or_the_service%3F&amp;title=Fault%20attribution%3A%20is%0Ait%20me%20or%20the%20service%3F" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Fault%20attribution%3A%20is%0Ait%20me%20or%20the%20service%3F&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Fault_attribution%3A_is_it_me_or_the_service%3F" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Fault_attribution:_is_it_me_or_the_service?]Fault attribution: is
+it me or the service?[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Fault_attribution:_is_it_me_or_the_service?]Fault attribution: is
+it me or the service?[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Whose fault is a failed connect -- my client Tor, the network, or
+the service?</p></td>
+<td><p>The single hardest question: all three produce the same "it does
+not load".</p></td>
+<td><p><code>onion-preflight</code> (isolates client-vs-onion via
+external control onions), <code>tor-client-health</code></p></td>
+</tr>
+<tr class="even">
+<td><p>Can my local Tor reach relays at all, or is my guard set
+dead?</p></td>
+<td><p>A degraded or 0-up guard set is a client fault masquerading as an
+onion outage.</p></td>
+<td><p><code>tor-client-health</code> (DEGRADED on 0 guards)</p></td>
+</tr>
+<tr class="odd">
+<td><p>Is the break in the client's own 3 hops, or beyond the rendezvous
+point where I can never see?</p></td>
+<td><p>On the real internet each side sees only its own three
+hops.</p></td>
+<td><p><code>onion-connect-trace</code> (client leg),
+<code>onion-control-snapshot --paths</code> (service leg),
+<code>onion-e2e-path</code> (stitches both on a same-host
+repro)</p></td>
+</tr>
+<tr class="even">
+<td><p>Which exact stage did the connect die at -- descriptor / intro /
+rend / service?</p></td>
+<td><p>"Failed" is not a stage. SERVICE = rendezvous done, far side
+refused at app/port level, a wholly different bug from "intro did not
+answer".</p></td>
+<td><p><code>onion-connect-trace</code> (stage classifier), extended
+SOCKS <code>0xF0-0xF6</code></p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Descriptor_problems_(the_stale-cache_trap)">Descriptor problems
+(the stale-cache trap)</h2><span class="share-tooltip" data-anchor="Descriptor_problems_(the_stale-cache_trap)"><a class="headline-anchor" href="#Descriptor_problems_(the_stale-cache_trap)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Descriptor_problems_(the_stale-cache_trap)">https://www.kicksecure.com/wiki/Onion_reachability/#Descriptor_problems_(the_stale-cache_trap)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Descriptor_problems_%28the_stale-cache_trap%29&amp;text=Descriptor%20problems%0A%28the%20stale-cache%20trap%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Descriptor_problems_%28the_stale-cache_trap%29&amp;text=Descriptor%20problems%0A%28the%20stale-cache%20trap%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Descriptor_problems_%28the_stale-cache_trap%29&amp;title=Descriptor%20problems%0A%28the%20stale-cache%20trap%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Descriptor%20problems%0A%28the%20stale-cache%20trap%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Descriptor_problems_%28the_stale-cache_trap%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Descriptor_problems_(the_stale-cache_trap)]Descriptor problems
+(the stale-cache trap)[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Descriptor_problems_(the_stale-cache_trap)]Descriptor problems
+(the stale-cache trap)[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Is the descriptor published on the hashring now, or am I clinging
+to a cached one?</p></td>
+<td><p>Two different truths, and the warm-client cache hides the
+difference.</p></td>
+<td><p><code>onion-desc-fetch</code> (live HSFETCH),
+<code>onion-desc-inspect</code> (cached copy)</p></td>
+</tr>
+<tr class="even">
+<td><p>Am I hitting the <a href="https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294">tor#25882
+refetch-stall</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/tor/-/work_items/26294" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (warm client, stale descriptor, dead intro
+points)?</p></td>
+<td><p>A fresh client works while the warm one fails, so it will not
+reproduce after a restart.</p></td>
+<td><p><code>onion-preflight</code> REFETCH HEAL TEST (heals =&gt;
+stale-descriptor class; still fails =&gt; intro points genuinely
+dead)</p></td>
+</tr>
+<tr class="odd">
+<td><p>How do I view the descriptor, its revision counter, and which
+dead intro relays the client held?</p></td>
+<td><p>The forensic state lives encrypted in the client's
+cache.</p></td>
+<td><p><code>onion-desc-inspect</code> (revision counter, lifetime,
+single-onion, PoW, intro set; <code>--ns</code> marks NOT IN
+CONSENSUS)</p></td>
+</tr>
+<tr class="even">
+<td><p>Is my clock skewed outside the descriptor validity
+window?</p></td>
+<td><p>A silent skew makes a perfectly-published descriptor look
+absent.</p></td>
+<td><p><code>clock-drift-check</code> (independent online clock vs
+local)</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Split-brain_(two_Tor_daemons,_same_identity)">Split-brain (two Tor
+daemons, same identity)</h2><span class="share-tooltip" data-anchor="Split-brain_(two_Tor_daemons,_same_identity)"><a class="headline-anchor" href="#Split-brain_(two_Tor_daemons,_same_identity)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Split-brain_(two_Tor_daemons,_same_identity)">https://www.kicksecure.com/wiki/Onion_reachability/#Split-brain_(two_Tor_daemons,_same_identity)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Split-brain_%28two_Tor_daemons%2C_same_identity%29&amp;text=Split-brain%20%28two%20Tor%0Adaemons%2C%20same%20identity%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Split-brain_%28two_Tor_daemons%2C_same_identity%29&amp;text=Split-brain%20%28two%20Tor%0Adaemons%2C%20same%20identity%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Split-brain_%28two_Tor_daemons%2C_same_identity%29&amp;title=Split-brain%20%28two%20Tor%0Adaemons%2C%20same%20identity%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Split-brain%20%28two%20Tor%0Adaemons%2C%20same%20identity%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Split-brain_%28two_Tor_daemons%2C_same_identity%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Split-brain_(two_Tor_daemons,_same_identity)]Split-brain (two Tor
+daemons, same identity)[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Split-brain_(two_Tor_daemons,_same_identity)]Split-brain (two Tor
+daemons, same identity)[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Are two Tor daemons publishing the same identity key and
+competing on the hashring?</p></td>
+<td><p>Intermittent by nature: a client hits a "wrong" HSDir only
+sometimes.</p></td>
+<td><p><code>onion-splitbrain-check</code> (fans HSFETCH to every
+responsible dir)</p></td>
+</tr>
+<tr class="even">
+<td><p>Is it a REAL persistent split, or benign republish lag caught
+mid-flight?</p></td>
+<td><p>A normal republish makes old+new descriptors coexist transiently,
+so one sweep is never proof, and C-tor rate-limits per-HSDir requeries
+~15 min.</p></td>
+<td><p><code>onion-splitbrain-corroborate</code> (spaced sweeps:
+PERSISTENT vs FLAPPING vs UNDER-SAMPLED)</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="DoS_/_introduction_flood">DoS / introduction flood</h2><span class="share-tooltip" data-anchor="DoS_/_introduction_flood"><a class="headline-anchor" href="#DoS_/_introduction_flood" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#DoS_/_introduction_flood">https://www.kicksecure.com/wiki/Onion_reachability/#DoS_/_introduction_flood</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23DoS_%2F_introduction_flood&amp;text=DoS%20%2F%20introduction%20flood" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23DoS_%2F_introduction_flood&amp;text=DoS%20%2F%20introduction%20flood" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23DoS_%2F_introduction_flood&amp;title=DoS%20%2F%20introduction%20flood" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=DoS%20%2F%20introduction%20flood&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23DoS_%2F_introduction_flood" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#DoS_/_introduction_flood]DoS / introduction flood[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#DoS_/_introduction_flood]DoS / introduction flood[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Would we detect an introduction flood (tor#26294) before
+reachability degrades?</p></td>
+<td><p>The preflight path only points at the stats tool; it does not
+itself alarm, so a flood erodes reachability invisibly.</p></td>
+<td><p><code>onion-hs-stats</code> (INTRODUCE2 rate, PoW
+verify-fails/replays, PoW-queue trim,
+<code>est_hours_to_force_intro_rotation</code> dropping below intro
+lifetime)</p></td>
+</tr>
+<tr class="even">
+<td><p>Is the service silently running on a degraded intro-point
+set?</p></td>
+<td><p>Fewer live intro points than configured shrinks reachability
+before it fully breaks.</p></td>
+<td><p><code>onion-intro-watchdog</code></p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Server-side_intermittent_disruption">Server-side intermittent
+disruption</h2><span class="share-tooltip" data-anchor="Server-side_intermittent_disruption"><a class="headline-anchor" href="#Server-side_intermittent_disruption" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Server-side_intermittent_disruption">https://www.kicksecure.com/wiki/Onion_reachability/#Server-side_intermittent_disruption</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Server-side_intermittent_disruption&amp;text=Server-side%20intermittent%0Adisruption" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Server-side_intermittent_disruption&amp;text=Server-side%20intermittent%0Adisruption" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Server-side_intermittent_disruption&amp;title=Server-side%20intermittent%0Adisruption" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Server-side%20intermittent%0Adisruption&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Server-side_intermittent_disruption" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Server-side_intermittent_disruption]Server-side intermittent
+disruption[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Server-side_intermittent_disruption]Server-side intermittent
+disruption[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Is our own server's uplink intermittently killing
+OR-connections?</p></td>
+<td><p>Intermittent, gone by the time you look, and indistinguishable
+from a healthy circuit in any point-in-time snapshot.</p></td>
+<td><p><code>tor-orconn-watch --follow</code> (live
+flap/reset/extend-fail timeline), <code>tor-orconn-watch</code> cron
+<code>*/5</code> (joined with host NIC/TCP counter deltas)</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Reachable-but-wrong_(the_false_green)">Reachable-but-wrong (the
+false green)</h2><span class="share-tooltip" data-anchor="Reachable-but-wrong_(the_false_green)"><a class="headline-anchor" href="#Reachable-but-wrong_(the_false_green)" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Reachable-but-wrong_(the_false_green)">https://www.kicksecure.com/wiki/Onion_reachability/#Reachable-but-wrong_(the_false_green)</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Reachable-but-wrong_%28the_false_green%29&amp;text=Reachable-but-wrong%20%28the%0Afalse%20green%29" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Reachable-but-wrong_%28the_false_green%29&amp;text=Reachable-but-wrong%20%28the%0Afalse%20green%29" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Reachable-but-wrong_%28the_false_green%29&amp;title=Reachable-but-wrong%20%28the%0Afalse%20green%29" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Reachable-but-wrong%20%28the%0Afalse%20green%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Reachable-but-wrong_%28the_false_green%29" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Reachable-but-wrong_(the_false_green)]Reachable-but-wrong (the
+false green)[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Reachable-but-wrong_(the_false_green)]Reachable-but-wrong (the
+false green)[/url]</span></span></span></span>
+<table>
+<thead>
+<tr class="header">
+<th><p>Question</p></th>
+<th><p>Why it is hard</p></th>
+<th><p>Planned Tool(s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Is a web onion reachable but serving the wrong thing -- a
+502/503, the default vhost, or an empty reply after a good
+rendezvous?</p></td>
+<td><p>A completed rendezvous only proves the tunnel is up; nginx can
+still answer with an error page, the wrong server block, or nothing at
+all, and a plain reachability probe passes it clean.</p></td>
+<td><p><code>onion-preflight</code> (HTTP end-to-end gate),
+<code>onion-mail-probe --direct</code> (local <code>:74</code> HTTP stub
+vs the onion's <code>:80</code>)</p></td>
+</tr>
+<tr class="even">
+<td><p>Is a mail onion reachable but not actually replying
+correctly?</p></td>
+<td><p>Same trap for mail: a port can accept TCP yet give no valid
+greeting, or refuse at the app level after a good rendezvous.</p></td>
+<td><p><code>onion-mail-probe</code> (POP3 <code>+OK</code> / IMAP
+<code>* OK</code> / SMTP <code>220</code>; <code>--direct</code>
+separates "backend down" from "onion path broken")</p></td>
+</tr>
+<tr class="odd">
+<td><p>Does any <code>.onion</code> request get redirected to the
+clearnet host?</p></td>
+<td><p>A correctness and deanonymization bug that a plain reachability
+check passes clean.</p></td>
+<td><p><code>onion-redirect-test</code></p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Planned_Tools">Planned Tools</h2><span class="share-tooltip" data-anchor="Planned_Tools"><a class="headline-anchor" href="#Planned_Tools" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Planned_Tools">https://www.kicksecure.com/wiki/Onion_reachability/#Planned_Tools</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Planned_Tools&amp;text=Planned%20Tools" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Planned_Tools&amp;text=Planned%20Tools" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Planned_Tools&amp;title=Planned%20Tools" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Planned%20Tools&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Planned_Tools" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Planned_Tools]Planned Tools[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Planned_Tools]Planned Tools[/url]</span></span></span></span>
+<p>General tools:</p>
+<ul>
+<li><code>onion-socks-probe</code> -- raw SOCKS5 CONNECT reachability
+probe (real onion REP byte).</li>
+<li><code>onion-desc-fetch</code> -- is the descriptor PUBLISHED on the
+hashring right now (HSFETCH)?</li>
+<li><code>onion-desc-inspect</code> -- decrypt/print the client's CACHED
+descriptor (intro points, revision, PoW).</li>
+<li><code>onion-connect-trace</code> -- client-side sidecar timeline:
+stage reached + the client's own 3 hops.</li>
+<li><code>tor-client-health</code> -- client Tor health (bootstrap,
+guards, consensus validity window).</li>
+<li><code>onion-splitbrain-check</code> -- two daemons publishing the
+SAME identity key on the hashring?</li>
+<li><code>onion-splitbrain-selftest</code> -- mock-control-port selftest
+for the split-brain detector.</li>
+<li><code>tor-orconn-watch</code> -- server-side OR-connection
+disruption (live <code>--follow</code> or cron sample).</li>
+<li><code>clock-drift-check</code> -- online-vs-local clock delta (a
+skew breaks descriptor windows).</li>
+<li><code>onion-control-snapshot</code> -- service-side
+intro/guard/liveness snapshot (<code>--paths</code>: service's 3
+hops).</li>
+<li><code>onion-intro-watchdog</code> -- detect a DEGRADED intro-point
+set (+ optional remediation).</li>
+<li><code>onion-hs-stats</code> -- onion health / anti-DoS stats (intro
+rate, PoW, upload freshness).</li>
+<li><code>onion-hostname</code> -- print an instance's
+<code>.onion</code> hostname.</li>
+</ul>
+<p>Server specific tools:</p>
+<ul>
+<li><code>onion-preflight</code> -- staged reachability diagnosis for
+ONE onion (+ refetch heal test).</li>
+<li><code>onion-e2e-path</code> -- end-to-end hop-by-hop stitcher, both
+control ports (repro/same-host).</li>
+<li><code>check-onions</code> -- sweep EVERY instance, run the matching
+preflight; non-zero if any fail.</li>
+<li><code>onion-probe-fresh</code> -- probe via a FRESH, isolated Tor
+(<code>onionprobe</code>, ephemeral ports).</li>
+<li><code>onion-fail-capture</code> / <code>-all</code> -- on-failure
+forensic capture into the onion-diag log.</li>
+<li><code>onion-rend-collect</code> -- collect REND
+(degraded-descriptor) causes into the diag log.</li>
+<li><code>onion-circuit-rate</code> -- rendezvous-circuit request rate
+per onion (from nginx logs).</li>
+<li><code>onion-redirect-test</code> -- guard: a <code>.onion</code>
+request must never redirect to the clearnet host.</li>
+<li><code>onion-ipv6-ab</code> -- TEMPORARY: surface the IPv6 A/B
+circuit-test result.</li>
+</ul>
+<h1 id="Local_Tor_Client_Stall_Bug">Local Tor Client Stall Bug</h1>
+<p>A relevant factor is the state of the Tor user's local Tor
+daemon.</p>
+<p>It has been reproduced multiple times that an unreachable onion
+becomes reachable after restarting Tor. <a href="https://forums.whonix.org/t/tor-connection-dies-randomly-and-needs-manual-restart/12688">Similar
+reports can be found online.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/tor-connection-dies-randomly-and-needs-manual-restart/12688" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p>When restarting Tor resolves the issue, this can almost always be
+considered a bug in Tor, as Tor should be able to recover without
+requiring a restart.</p>
+<p>onionprobe can be useful for this purpose.</p>
+<h1 id="onionprobe">onionprobe</h1>
+<p>Whonix: <code>onionprobe</code> is incompatible with
+Whonix.<sup class="reference"><a href="#cite_note-2">[2]</a></sup></p>
+<p>Debian, Kicksecure, etc.:</p>
+<p><span class="code-select" data-code="sudo apt update">sudo apt
+update</span></p>
+<p><span class="code-select" data-code="sudo apt install onionprobe">sudo
+apt install onionprobe</span></p>
+<p>Kicksecure:</p>
+<p><span class="code-select" data-code="onionprobe -e w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion">onionprobe
+-e
+w5j6stm77zs6652pgsij4awcjeel3eco7kvipheu6mtr623eyyehj4yd.onion</span></p>
+<p>Whonix:</p>
+<p><span class="code-select" data-code="onionprobe -e dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion">onionprobe
+-e
+dds6qkxpwdeubwucdiaord2xgbbeyds25rbsgr73tbfpqpt4a6vjwsyd.onion</span></p>
+<h1 id="Onion_Domains_by_Other_Projects">Onion Domains by Other
+Projects</h1>
+<ul>
+<li><a href="https://tails.net/">Tails</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.net/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p><blockquote><ul>
+<li>APT: use non-onion HTTPS sources for Debian repositories (<a href="https://gitlab.tails.boum.org/tails/tails/-/merge_requests/383">tails/tails!383</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/merge_requests/383" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)</li>
+</ul>
+<p>Closes issues:</p>
+<ul>
+<li>Fix failures with Debian's APT repository onion service (<a href="https://gitlab.tails.boum.org/tails/tails/-/issues/17993">tails/tails#17993</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/17993" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>)</li>
+</ul>
+<p>Commits:</p>
+<ul>
+<li><a href="https://gitlab.tails.boum.org/tails/tails/-/commit/ec83674736c5cf91292d56d0a5a1ae69341c60a5">APT:
+use non-onion HTTPS sources for Debian
+repositories</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/commit/ec83674736c5cf91292d56d0a5a1ae69341c60a5" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><span class="blockquote-context"><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/bc2536554cd61f51c744c032b688af09ed5136de/debian/changelog">Tails
+changelog</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/bc2536554cd61f51c744c032b688af09ed5136de/debian/changelog" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ul></blockquote></p>
+<ul>
+<li><a href="https://forum.qubes-os.org/t/whonix-update-issue/40671/3">Qubes
+onion and Debian onion issue user bug report</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forum.qubes-os.org/t/whonix-update-issue/40671/3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<ul>
+<li>Other projects with unresolved onion issues:
+<ul>
+<li><a href="https://github.com/bitcoin-core/bitcoincore.org/issues/985">bitcoin.org
+onion domain connectivity issues</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/bitcoin-core/bitcoincore.org/issues/985" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://lightningnetwork.plus/questions/2637">Lightning
+Network Plus onion service issue</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lightningnetwork.plus/questions/2637" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<ul>
+<li><a href="https://github.com/getumbrel/umbrel/issues/2151">Umbrel
+onion service issue</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/getumbrel/umbrel/issues/2151" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+<li><a href="https://community.start9.com/t/lnd-hidden-service-descriptor-not-publishing-no-more-hsdir-available-to-query/5004">Start9
+LND hidden service descriptor issue</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://community.start9.com/t/lnd-hidden-service-descriptor-not-publishing-no-more-hsdir-available-to-query/5004" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+</ul>
+<h1 id="Denial_of_Service_Attacks_against_Tor_and_Onions_Are_Common">Denial
+of Service Attacks against Tor and Onions Are Common</h1>
+<ul>
+<li>2021: <a href="https://forums.whonix.org/t/most-onions-down-due-to-a-denial-of-service-attack-on-the-tor-network/10979">https://forums.whonix.org/t/most-onions-down-due-to-a-denial-of-service-attack-on-the-tor-network/10979</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/most-onions-down-due-to-a-denial-of-service-attack-on-the-tor-network/10979" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>2023: <a href="https://blog.torproject.org/tor-network-ddos-attack/">https://blog.torproject.org/tor-network-ddos-attack/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/tor-network-ddos-attack/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p><blockquote><p>At some points, the attacks impacted the network severely enough that
+users could not load pages or access onion
+services.<span class="blockquote-context"><a href="https://blog.torproject.org/tor-network-ddos-attack/">https://blog.torproject.org/tor-network-ddos-attack/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.torproject.org/tor-network-ddos-attack/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<h1 id="Non-Solutions">Non-Solutions</h1>
+<h2 id="OnionBalance">OnionBalance</h2><span class="share-tooltip" data-anchor="OnionBalance"><a class="headline-anchor" href="#OnionBalance" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#OnionBalance">https://www.kicksecure.com/wiki/Onion_reachability/#OnionBalance</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23OnionBalance&amp;text=OnionBalance" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23OnionBalance&amp;text=OnionBalance" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23OnionBalance&amp;title=OnionBalance" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=OnionBalance&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23OnionBalance" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#OnionBalance]OnionBalance[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#OnionBalance]OnionBalance[/url]</span></span></span></span>
+<ul>
+<li><a href="https://forum.torproject.org/t/onionbalance-master-domain-periodically-offline-error-descriptor-upload-failed/21087">OnionBalance
+master domain periodically offline - error "Descriptor upload failed"
+(January 2026)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forum.torproject.org/t/onionbalance-master-domain-periodically-offline-error-descriptor-upload-failed/21087" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Lacking Proof Of Work anti-DoS defense.</li>
+</ul>
+<p><blockquote><p>As of December 2023, it does not support the Proof Of Work anti-DoS
+defense (<a href="https://onionservices.torproject.org/technology/security/pow/">PoW</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://onionservices.torproject.org/technology/security/pow/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>),
+but this is <a href="https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/13">being
+planned</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/13" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.<span class="blockquote-context"><a href="https://onionservices.torproject.org/apps/web/checklist/#using-onionbalance">https://onionservices.torproject.org/apps/web/checklist/#using-onionbalance</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://onionservices.torproject.org/apps/web/checklist/#using-onionbalance" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<ul>
+<li>Bug: <a href="https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/work_items/9">OnionBalance
+issue descriptor loading error</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/work_items/9" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<ul>
+<li><a href="https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/work_items/38">OnionBalance
+issue Automatic Reupload Attempts for Failed Descriptors</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/work_items/38" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Pull request: <a href="https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/52">OnionBalance
+merge request Automatic Reupload Attempts for Failed Descriptors</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/52" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+remains unanswered after 5 months.</li>
+</ul></li>
+</ul>
+<h1 id="Non-Issues">Non-Issues</h1>
+<h2 id="Docker">Docker</h2><span class="share-tooltip" data-anchor="Docker"><a class="headline-anchor" href="#Docker" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Onion_reachability/#Docker">https://www.kicksecure.com/wiki/Onion_reachability/#Docker</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Docker&amp;text=Docker" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Docker&amp;text=Docker" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Docker&amp;title=Docker" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Docker&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FOnion_reachability%2F%23Docker" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Onion_reachability/#Docker]Docker[/url]">[url=https://www.kicksecure.com/wiki/Onion_reachability/#Docker]Docker[/url]</span></span></span></span>
+<p><code>download.kicksecure.com</code> /
+<code>download.whonix.org</code> are simple, with no Docker at all.</p>
+<h1 id="Tor_Onions_Outdated_Cryptography">Tor Onions Outdated
+Cryptography</h1>
+<p>Does not support offline keys yet:</p>
+<ul>
+<li><a href="https://onionservices.torproject.org/apps/web/checklist/#towards-offline-main-keys">https://onionservices.torproject.org/apps/web/checklist/#towards-offline-main-keys</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://onionservices.torproject.org/apps/web/checklist/#towards-offline-main-keys" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://spec.torproject.org/rend-spec/protocol-overview.html#imd-offline-keys">https://spec.torproject.org/rend-spec/protocol-overview.html#imd-offline-keys</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://spec.torproject.org/rend-spec/protocol-overview.html#imd-offline-keys" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://gitlab.torproject.org/tpo/core/arti/-/work_items/1194">https://gitlab.torproject.org/tpo/core/arti/-/work_items/1194</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/tpo/core/arti/-/work_items/1194" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+<div class="references">
+<ol>
+<li id="cite_note-1"><a href="https://forums.whonix.org/t/keep-an-eye-on-arti-tor/15815">Keep an
+Eye on Arti Tor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/keep-an-eye-on-arti-tor/15815" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li id="cite_note-2">Because <code>onionprobe</code> starts a temporary (throwaway) Tor
+daemon before probing an onion. Hence, <code>onionprobe</code> is not
+suitable to be run from within Whonix, and only from Debian, Kicksecure,
+or similar. <code>onionprobe</code> supports
+<code>--no-launch_tor</code> but requires Tor control protocol access.
+Writing an <a href="https://www.whonix.org/wiki/Onion-grater">onion-grater</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.whonix.org/wiki/Onion-grater" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> profile
+might be possible, but it would be a lot of work for a non-ideal result
+using <code>onionprobe</code> differently from how it is designed to run
+by default.</li>
+</ol>
+</div>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation/">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="../Trademark_Policy/" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor">Supported by Power Up Privacy</p></div><div class="footer-col footer-legal"><p class="footer-subhead">Open Source</p><nav class="footer-freedom"><ul><li><a href="../Reasons_for_Freedom_Software/">Freedom Software</a></li><li><a href="../Policy_On_Nonfreedom_Software/">Policy on Nonfreedom Software</a></li></ul></nav><nav class="footer-links"><ul><li><a href="../Terms_of_Service/">Terms of Service</a></li><li><a href="../Privacy_Policy/">Privacy Policy</a></li><li><a href="../Cookie_Policy/">Cookie Policy</a></li><li><a href="../E-Sign_Consent/">E-Sign Consent</a></li><li><a href="../Terms_of_Service/#DMCA_Policy">DMCA</a></li><li><a href="../Imprint/">Imprint</a></li></ul></nav><p class="copyright">(c) 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy/">Privacy Policy</a>, <a href="../Cookie_Policy/">Cookie Policy</a>, <a href="../Terms_of_Service/">Terms of Service</a>, and <a href="../E-Sign_Consent/">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate/">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate/">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>
