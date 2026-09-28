@@ -1351,8 +1351,14 @@ code {
 /* --- consent / privacy banner (no-JS shows it; JS dismiss -> localStorage) --- */
 /* Fixed translucent overlay pinned to the viewport bottom that follows on scroll,
    matching production's CookieWarning (position:fixed; rgba dark bg; white text). */
+/* Bottom-fixed stack holding the dismissible consent banner ABOVE the permanent staging
+   notice, so they never overlap. Both children flow in the column; each spans full width. */
+.bottom-stack {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 450;
+  display: flex; flex-direction: column;
+}
 .consent-banner {
-  position: fixed; left: 0; bottom: 0; width: 100%; z-index: 450; box-sizing: border-box;
+  width: 100%; box-sizing: border-box;
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 0.9rem;
   padding: 0.5rem 1rem; font-size: 0.88rem;
   background: rgba(60, 60, 60, 0.9); color: #fff; box-shadow: 0 -2px 8px rgb(0 0 0 / 25%);
@@ -1371,17 +1377,15 @@ code {
    the header then renders at y=0 exactly like production (no top offset), which keeps
    stage-vs-prod pixel comparison aligned. Always visible while scrolling. */
 .stage-banner {
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 60;   /* above the sticky header (z 30) and all content */
   padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center;
   color: #3a2500; background: #ffcf33;
   border-top: 2px solid #e0a800;
-  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.15);
 }
 .stage-banner strong { color: #7a1f00; }
-/* Reserve space so the fixed bar never hides the last of the footer (stage builds only). */
-body:has(.stage-banner) { padding-bottom: 3rem; }
+/* Reserve space so the fixed bottom stack never hides the last of the footer (stage builds
+   only). The staging notice wraps to ~3 lines at phone width, so reserve more there. */
+body:has(.stage-banner) { padding-bottom: 3.5rem; }
+@media (max-width: 720px) { body:has(.stage-banner) { padding-bottom: 6rem; } }
 
 /* Browser-storage viewer (Special:BrowserStorage) */
 .storage-table {
