@@ -1141,8 +1141,9 @@ code {
 }
 
 /* --- breadcrumbs + categories box --- */
-.breadcrumbs { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem; }
-.breadcrumbs a { color: var(--link); }
+/* production MediaWiki .subpages line ("< Dev"): small, muted, above the title */
+.subpages { font-size: 0.85rem; color: var(--muted); margin: 0 0 0.4rem; }
+.subpages a { color: var(--link); }
 .catlinks {
   margin: 2rem 0 0; padding: 0.6rem 0.9rem; font-size: 0.9rem;
   border-top: 1px solid var(--border); color: var(--muted);
@@ -1151,28 +1152,21 @@ code {
 .catlinks a { color: var(--link); margin-right: 0.5rem; }
 
 /* --- book prev/index/next nav (#wikibookindex) --- */
+/* Production shows this as a compact prev/index/next ICON cluster at the top-right of the title,
+   NOT a full-width text bar. Float it right of the title text, icon-only (the shipped
+   FontAwesome chevron-left / list / chevron-right glyphs), no labels, no box. */
 .wiki-book-index {
-  display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
-  margin: 0 0 1.25rem; padding: 0.5rem 0.85rem; font-size: 0.9rem;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md, 6px);
+  float: right;
+  display: inline-flex; gap: 0.55rem; align-items: center;
+  margin: 0.15rem 0 0 1rem; padding: 0; font-size: 1.05rem;
 }
-/* book-nav links are chrome, not prose -- color-only, never the content-link underline. */
-.wiki-book-index a, .wiki-book-index a:hover { display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none; }
-.wiki-book-index a.next { margin-left: auto; }
-.wiki-book-index a.prev::before { content: "\2039\00a0"; color: var(--muted); }
-.wiki-book-index a.index::before { content: "\2261\00a0"; color: var(--muted); }
-.wiki-book-index a.next::after { content: "\00a0\203a"; color: var(--muted); }
-/* info spans duplicate the links; the book nav uses text arrows (::before), so its
-   own <i> icons are hidden -- but Font Awesome IS shipped now, so DO NOT hide fa-* */
+.wiki-book-index a, .wiki-book-index a:hover {
+  display: inline-flex; align-items: center; color: var(--muted); text-decoration: none;
+}
+.wiki-book-index a:hover { color: var(--link); }
+.wiki-book-index i { display: inline-block; }   /* SHOW the FA prev/index/next icons */
+.wiki-book-index .text { display: none; }        /* icon-only, like prod */
 .wiki-book-index .info { display: none; }
-.wiki-book-index i { display: none; }
-/* On phones the top book-nav shows SYMBOLS ONLY (the prev/index/next glyphs), no text
-   labels -- more compact, matching production. */
-@media (max-width: 480px) {
-  .wiki-book-index .text { display: none; }
-  .wiki-book-index { gap: 1.5rem; }
-}
 
 /* Book / related-links nav box: a .mininav carrying a title + link list (e.g. the
    "Legal Policies" grouping). :has(> ul) scopes this to the list variant, NOT the
