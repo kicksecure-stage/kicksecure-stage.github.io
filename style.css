@@ -465,6 +465,13 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   .site-search { order: 2; margin-left: auto; }
   .search-toggle:checked ~ .search-field { width: min(55vw, 11rem); }
 }
+/* Narrow phones: production drops the "Donate" word (heart glyph only) at <=382px, where
+   the label would otherwise crowd the bar. font-size:0 hides the text node; the heart keeps
+   its own size. */
+@media (max-width: 382px) {
+  .header-donate { font-size: 0; }
+  .header-donate .fa-heart { font-size: 20px; }
+}
 
 /* ---- content ---- */
 /* A few wiki pages embed a raw MediaWiki skin HTML dump (mw-body/vector-body/mw-parser-output)
