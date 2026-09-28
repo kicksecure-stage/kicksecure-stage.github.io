@@ -32,6 +32,7 @@
   --fg: #1b1d1f;
   --fg-soft: #3c4147;
   --muted: #5c626a;
+  --heading: #777777;
   --border: #d5d9de;
   --border-soft: #e6e9ec;
   --code-bg: #f3f4f6;
@@ -75,6 +76,7 @@
   --fg: #e7e8ea;
   --fg-soft: #c6c9ce;
   --muted: #9aa1a9;
+  --heading: #9aa1a9;
   --border: #333840;
   --border-soft: #2a2e35;
   --code-bg: #1e2126;
@@ -104,6 +106,7 @@
     --fg: #e7e8ea;
     --fg-soft: #c6c9ce;
     --muted: #9aa1a9;
+    --heading: #9aa1a9;
     --border: #333840;
     --border-soft: #2a2e35;
     --code-bg: #1e2126;
@@ -400,7 +403,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 
 @media (max-width: 640px) {
   .site-header { padding: 0.55rem 1rem; }
-  .nav-toggle-label { display: inline-flex; align-items: center; margin-left: auto; order: 2; }
+  .nav-toggle-label { display: inline-flex; align-items: center; margin-left: 0.2rem; order: 3; }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
      label + separators), not a cramped wall of links. Collapsed by default; the hamburger
      plus outside-tap / Esc (app.js initNavToggle) toggle it. */
@@ -426,7 +429,8 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   .nav-submenu a { padding: 0.4rem 0.65rem; font-size: 0.9rem; color: var(--muted); }
   .nav-toggle:not(:checked) ~ .site-nav { display: none; }
   /* search icon rides in the top bar next to the hamburger (prod), not its own row */
-  .site-search { order: 2; margin-left: 0.3rem; }
+  /* search + hamburger group together on the right of the top bar (prod) */
+  .site-search { order: 2; margin-left: auto; }
   .search-toggle:checked ~ .search-field { width: min(55vw, 11rem); }
 }
 
@@ -452,7 +456,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
    Measured on prod: h1 26px, h2 18px, h3 ~17px, all font-weight 400; h4+ bold. */
 .wiki-content h1, .wiki-content h2, .wiki-content h3,
 .wiki-content h4, .wiki-content h5, .wiki-content h6 {
-  color: var(--fg);
+  color: var(--heading);   /* prod section headings are gray (#777), not near-black */
   font-weight: 400;
   line-height: 1.3;
   margin: 1.1em 0 0.5em;
