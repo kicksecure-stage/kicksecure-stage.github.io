@@ -511,6 +511,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 }
 
 .wiki-content p { margin: 0 0 0.85em; }   /* prod paragraph spacing */
+/* pandoc wraps every table-cell's content in <p>; prod's wikitable cells hold bare text,
+   so the 0.85em paragraph margin makes stage rows ~13px taller. Zero it inside cells. */
+.wiki-content td > p, .wiki-content th > p { margin: 0; }
 .wiki-content ul, .wiki-content ol { margin: 0 0 1rem; padding-left: 1.6rem; }
 .wiki-content li { margin: 0.3rem 0; }
 .wiki-content li > ul, .wiki-content li > ol { margin: 0.3rem 0 0.3rem; }
