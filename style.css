@@ -281,6 +281,70 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   border-radius: 0 0 8px 8px;
   white-space: nowrap;
 }
+/* Header "supermenu": a pure-CSS chevron dropdown (Edit/History/Print/Permalink/Share)
+   between the search icon and the Donate CTA, matching production's page-tools chevron. */
+.tools { position: relative; display: inline-flex; align-items: center; }
+.tools-label {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2rem; height: 2rem; cursor: pointer; color: var(--fg-soft);
+  border-radius: var(--radius-sm);
+}
+.tools-label:hover,
+.tools-toggle:checked ~ .tools-label { background: var(--surface-2); color: var(--fg); }
+.tools-menu {
+  display: none; position: absolute; top: 100%; right: 0; z-index: 50;
+  min-width: 250px; margin-top: 0.4rem; padding: 0.35rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 0 0 10px 10px; box-shadow: var(--shadow-md);
+}
+.tools-toggle:checked ~ .tools-menu { display: block; }
+.tools-item {
+  display: flex; align-items: center; gap: 0.6rem; width: 100%;
+  padding: 0.5rem 0.7rem; border: 0; background: none; border-radius: var(--radius-sm);
+  color: var(--fg-soft); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer;
+}
+.tools-item:hover { background: var(--surface-2); color: var(--fg); text-decoration: none; }
+.tools-item i { color: var(--muted); }
+.tools-item.copied::after {
+  content: attr(data-copied); margin-left: auto; color: #2e7d32; font-size: 0.85em;
+}
+.share-panel { margin-top: 0.35rem; padding: 0.55rem 0.7rem 0.4rem; border-top: 1px solid var(--border); }
+.share-head { margin: 0 0 0.45rem; font-weight: 600; font-size: 0.9rem; color: var(--fg); }
+.share-copies { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.55rem; }
+.share-copy {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border); background: var(--bg); border-radius: var(--radius-sm);
+  color: var(--fg-soft); font: inherit; font-size: 0.85rem; cursor: pointer; text-align: left;
+}
+.share-copy:hover { background: var(--surface-2); color: var(--fg); }
+.share-copy.copied::after {
+  content: attr(data-copied); margin-left: auto; color: #2e7d32; font-size: 0.9em;
+}
+.share-socials { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+.share-social {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface-2); color: var(--fg-soft);
+}
+.share-social:hover { background: var(--border); color: var(--fg); text-decoration: none; }
+.share-note { margin: 0; font-size: 0.75rem; color: var(--muted); }
+.share-note a { color: var(--link); }
+@media (max-width: 720px) {
+  /* full-width dropped panel on phones so the wide share panel never overflows the viewport */
+  .tools-menu {
+    position: fixed; left: 8px; right: 8px; top: 52px; min-width: 0;
+    max-height: calc(100vh - 64px); overflow-y: auto;
+  }
+}
+/* Printable view: strip all chrome, print the article only (the supermenu Print action). */
+@media print {
+  .site-header, .site-footer, .bottom-stack, .consent-banner, .stage-banner,
+  #fly-in-notification-panel, .sitenotice, #siteNotice, .back-to-top, .wiki-book-index {
+    display: none !important;
+  }
+  .wiki-content { max-width: 100%; margin: 0; padding: 0; }
+  body { background: #fff; padding: 0; }
+}
 /* DIRECT-child ul only: the horizontal top bar. `.site-nav ul` (unscoped) also matched the
    nested .nav-submenu ul and -- at higher specificity than `.nav-submenu {display:none}` --
    forced EVERY dropdown open by default on desktop. `>` confines the flex bar to the top ul
