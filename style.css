@@ -32,7 +32,7 @@
   --fg: #1b1d1f;
   --fg-soft: #3c4147;
   --muted: #5c626a;
-  --heading: #777777;
+  --heading: #444444;
   --border: #d5d9de;
   --border-soft: #e6e9ec;
   --code-bg: #f3f4f6;
@@ -232,6 +232,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   gap: 0.5rem 1.1rem;
   flex-wrap: wrap;
   padding: 0.55rem 1.25rem;
+  font-size: 16px;   /* chrome stays 16px (body is 15px for content parity) */
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
@@ -403,7 +404,8 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 
 @media (max-width: 640px) {
   .site-header { padding: 0.55rem 1rem; }
-  .nav-toggle-label { display: inline-flex; align-items: center; margin-left: 0.2rem; order: 3; }
+  /* hamburger stays top-LEFT like prod (order -1), so it never wraps below the wide CTA */
+  .nav-toggle-label { display: inline-flex; align-items: center; margin: 0 0.5rem 0 0; order: -1; }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
      label + separators), not a cramped wall of links. Collapsed by default; the hamburger
      plus outside-tap / Esc (app.js initNavToggle) toggle it. */
@@ -484,7 +486,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   border: none;
   position: relative;
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 400;   /* prod page title is normal-weight Roboto, not bold */
   line-height: 1.25;
 }
 .first-heading > h1, .first-heading .widget-headline h1 {
@@ -1049,6 +1051,16 @@ code {
    eating the column on narrow desktops. Collapses to in-flow on mobile below. */
 .wiki-content .float-right { float: right; margin: 0.3rem 0 0.75rem 0.75rem; max-width: 60%; }
 .wiki-content .float-left { float: left; margin: 0.3rem 0.75rem 0.75rem 0; max-width: 60%; }
+/* {{Contributor}} infobox (a floated wikitable): production renders it BORDERLESS with
+   shaded cells (header/label #dfdfdf, value #ebebeb, 4px radius), not the generic bordered
+   content-table look. Labels are <td> here (pandoc downgrades the row-header), so shade by
+   column: first cell = label shade, the rest = value shade. */
+.wiki-content .float-right table { border: none; border-radius: 4px; overflow: hidden; }
+.wiki-content .float-right table th,
+.wiki-content .float-right table td { border: none; padding: 10px 15px; }
+.wiki-content .float-right table td { background: #ebebeb; }
+.wiki-content .float-right table th,
+.wiki-content .float-right table td:first-child { background: #dfdfdf; }
 [hidden] { display: none !important; }
 
 /* comparison-table info tooltip (production Utility.css .info-tooltip; the /w/images
@@ -1103,9 +1115,9 @@ code {
 /* --- table of contents (pure-CSS collapsible; no-JS friendly, CSP-safe) --- */
 .toc {
   display: table; min-width: 15rem; max-width: 100%; box-sizing: border-box;
-  margin: 0 0 1.5rem; padding: 0.5rem 1rem 0.7rem;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-md, 6px); font-size: 0.95rem;
+  margin: 0 0 1.5rem; padding: 20px 25px;   /* prod TOC: roomy padding */
+  background: var(--bg); border: 1px solid var(--border);   /* prod TOC is white, not gray */
+  border-radius: 8px; font-size: 14px;
 }
 /* overflow-wrap:anywhere (not break-word) shrinks the min-content width, so a long entry
    lets the shrink-to-fit TOC honor max-width:100% instead of overflowing the viewport. */
@@ -1260,7 +1272,7 @@ code {
   position: relative; min-height: 40px;
 }
 .mininav:not(.mn-switcher) li > a {
-  display: inline-block; background: var(--surface); color: var(--link);
+  display: inline-block; background: #fafafa; color: #3366bb;   /* prod tab colours */
   padding: 9px 15px; font-size: 17px; text-decoration: none;
   border-bottom: 4px solid var(--bg);
   transition: background-color 0.3s, border-bottom-color 0.3s;
