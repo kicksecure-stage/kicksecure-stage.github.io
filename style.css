@@ -426,7 +426,14 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .search-results a:hover { background: var(--surface-2); text-decoration: none; }
 
 @media (max-width: 640px) {
-  .site-header-inner { padding: 0.55rem 1rem; }
+  /* Compact top bar so hamburger + logo + wordmark + search + Donate fit ONE row (prod),
+     not two -- a 44px logo + 20px wordmark + TM overflowed and wrapped search to a 2nd row. */
+  .site-header-inner { padding: 5px 1rem; gap: 0.3rem 0.5rem; }
+  .site-logo { font-size: 17px; gap: 0.3rem; }
+  .site-logo-img { height: 34px; width: 46px; }   /* prod mobile logo box */
+  .site-tm { display: none; }   /* prod omits the trademark mark on mobile */
+  .header-donate { font-size: 0; }   /* prod mobile: heart glyph only, no "Donate" word */
+  .header-donate .fa-heart { font-size: 20px; }
   /* hamburger stays top-LEFT like prod (order -1), so it never wraps below the wide CTA */
   .nav-toggle-label { display: inline-flex; align-items: center; margin: 0 0.5rem 0 0; order: -1; }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
