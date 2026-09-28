@@ -334,7 +334,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .nav-group:focus-within > .nav-submenu { display: block; }
 .nav-submenu li { margin: 0; }
 .nav-submenu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   padding: 0.4rem 0.6rem;
   border-radius: var(--radius-sm);
   color: var(--fg-soft);
@@ -342,6 +344,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   font-size: 0.9rem;
   white-space: nowrap;
 }
+.nav-submenu a i { color: var(--muted); font-size: 0.95em; flex: none; }
 .nav-submenu a:hover { background: var(--surface-2); color: var(--fg); text-decoration: none; }
 .nav-toggle-label {
   display: none;
@@ -353,6 +356,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   border-radius: var(--radius-sm);
   color: var(--fg);
 }
+/* Hamburger <-> X swap: the label shows the bars glyph closed, the xmark when the toggle
+   checkbox is checked (matches production's open-menu X). */
+.nav-ico-close { display: none; }
+.nav-toggle:checked ~ .nav-toggle-label .nav-ico-open { display: none; }
+.nav-toggle:checked ~ .nav-toggle-label .nav-ico-close { display: inline-block; }
 /* Production Vector search: a magnifier ICON that expands the search box on click
    (pure-CSS checkbox toggle) so the header stays compact like prod. */
 .site-search {
@@ -445,20 +453,24 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
     margin: 0.4rem -1rem 0; padding: 0 1rem 0.4rem;
     border-top: 1px solid var(--border);
   }
-  .site-nav ul { flex-direction: column; gap: 0; }
-  .site-nav > ul > li:not(:last-child) { border-bottom: 1px solid var(--border-soft); }
+  .site-nav > ul { flex-direction: column; gap: 0; }
+  /* every section header carries an underline (prod), including the last section */
   .nav-group > .nav-top {
     font-weight: 700; font-size: 1rem; color: var(--fg);
-    padding: 0.7rem 0.5rem 0.35rem;
+    padding: 0.7rem 4px 0.35rem;
+    border-bottom: 1px solid #858585;
   }
   .site-nav a { padding: 0.5rem 0.65rem; }
-  /* submenus render inline + expanded in the drawer (no hover on touch), indented + muted */
+  /* submenu: production's mobile mega-menu is a 2-column CSS-multicolumn list with a
+     vertical divider rule between the columns; each item stays whole (no column split). */
   .nav-submenu {
     display: block; position: static; min-width: 0;
-    margin: 0 0 0.35rem 0.5rem; padding: 0;
+    columns: 2; column-gap: 1px; column-rule: 1px solid #858585;
+    margin: 0.35rem 0 0.6rem; padding: 0;
     background: transparent; border: none; box-shadow: none;
   }
-  .nav-submenu a { padding: 0.4rem 0.65rem; font-size: 0.9rem; color: var(--muted); }
+  .nav-submenu li { break-inside: avoid; }
+  .nav-submenu a { padding: 0.5rem 0.4rem; font-size: 0.95rem; color: var(--fg-soft); }
   .nav-toggle:not(:checked) ~ .site-nav { display: none; }
   /* Right-side group (prod order): search THEN Donate heart, pushed to the far right.
      margin-left:auto on the search (first of the group) shoves both to the right edge;
