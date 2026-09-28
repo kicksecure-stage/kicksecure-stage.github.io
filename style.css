@@ -756,7 +756,9 @@ code {
   background: var(--surface);
   cursor: pointer;
 }
-.tcc-section.active .tcc-title { color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+/* active tab: prod's Mininav marks the current tab BLUE (the JS switcher pills use the
+   same blue below); use --link, not the teal --accent, so both tab states match prod. */
+.tcc-section.active .tcc-title { color: var(--link); box-shadow: inset 3px 0 0 var(--link); }
 .tcc-content { padding: 0.8rem; border-top: 1px solid var(--border-soft); }
 /* Once the JS mininav switcher is built, hide the WHOLE inactive section (production);
    no-JS shows every section (progressive enhancement). */
@@ -961,6 +963,12 @@ code {
   display: block; margin: 0.55rem 0 0.25rem; font-weight: 600; font-size: 0.8rem; color: var(--muted);
 }
 .image-right { float: right; margin: 0 0 1rem 1.25rem; max-width: 45%; }
+/* float rescued from an inline style by sanitize (strict CSP strips style=):
+   the {{Contributor}} support-status box floats right of the lead prose in prod.
+   Margin mirrors prod's margin-top-5/margin-left-10; max-width keeps it from
+   eating the column on narrow desktops. Collapses to in-flow on mobile below. */
+.wiki-content .float-right { float: right; margin: 0.3rem 0 0.75rem 0.75rem; max-width: 60%; }
+.wiki-content .float-left { float: left; margin: 0.3rem 0.75rem 0.75rem 0; max-width: 60%; }
 [hidden] { display: none !important; }
 
 /* comparison-table info tooltip (production Utility.css .info-tooltip; the /w/images
@@ -1009,6 +1017,7 @@ code {
 @media (max-width: 480px) {
   .wiki-content { margin: 1.25rem auto 2rem; padding: 0 1rem; }
   .image-right { float: none; margin: 1rem 0; max-width: 100%; }
+  .wiki-content .float-right, .wiki-content .float-left { float: none; margin: 1rem 0; max-width: 100%; }
 }
 
 /* --- table of contents (pure-CSS collapsible; no-JS friendly, CSP-safe) --- */
