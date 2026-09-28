@@ -594,7 +594,13 @@ blockquote p:last-child { margin-bottom: 0; }
 .payitem .qr-button { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
 .payitem .qr-button .icon { width: 1.4rem; height: 1.4rem; object-fit: contain; }
 .payitem .code-select { flex: 1 1 7rem; font-size: 0.78rem; }
+/* the sanitizer now keeps the label+checkbox, so the QR is a pure-CSS disclosure: hidden by
+   default (prod), revealed when its checkbox is checked by clicking the label. */
+.payitem .expand-checkbox { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.payitem > label[for] { order: 3; margin-left: auto; cursor: pointer; color: var(--link); font-size: 0.75rem; align-self: center; }
+.payitem > label[for]:hover, .payitem .expand-checkbox:focus-visible ~ label[for] { text-decoration: underline; }
 .payitem .expand { display: none; }   /* QR collapsed by default (prod); address stays copyable */
+.payitem .expand-checkbox:checked ~ .expand { display: block; flex-basis: 100%; margin-top: 0.4rem; }
 .donation-panel .info, .donate-legal-disclaimer {
   font-size: 0.78rem; color: var(--muted); padding: 0.55rem 0.85rem;
 }
