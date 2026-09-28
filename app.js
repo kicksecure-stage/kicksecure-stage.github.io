@@ -148,7 +148,7 @@
         toggle.type = "button";
         toggle.className = "collapsible-toggle";
         function label() {
-          toggle.textContent = item.classList.contains("mw-collapsed") ? "Expand" : "Collapse";
+          toggle.textContent = item.classList.contains("mw-collapsed") ? "Learn More" : "Collapse";
         }
         label();
         toggle.addEventListener("click", function () {

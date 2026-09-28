@@ -6,6 +6,22 @@
    explicit choice wins) AND [data-theme=dark] (set flash-free by the pre-paint
    script). All color/spacing/shape is a token, redefined only for dark. */
 
+/* Self-hosted webfonts (production parity, served from 'self' under the strict CSP).
+   Only the weights production ships: Roboto 400 + 300, Cousine (mono). Bold/italic are
+   the browser's synthetic faces, exactly as production renders them. */
+@font-face {
+  font-family: Roboto; font-weight: 400; font-display: swap;
+  src: url(/fonts/Roboto-Regular-webfont.woff) format("woff");
+}
+@font-face {
+  font-family: Roboto; font-weight: 300; font-display: swap;
+  src: url(/fonts/Roboto-Light-webfont.woff) format("woff");
+}
+@font-face {
+  font-family: Cousine; font-display: swap;
+  src: url(/fonts/Cousine-Regular.woff) format("woff");
+}
+
 /* ---- design tokens: light (default) ---- */
 :root {
   /* surfaces + text */
@@ -45,8 +61,8 @@
   --gap: 1rem;
 
   /* fonts */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", "Cousine", Menlo, Consolas, "Courier New", monospace;
+  --font-sans: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, "Noto Sans", sans-serif;
+  --font-mono: Cousine, ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "Courier New", monospace;
 }
 
 /* ---- design tokens: dark ---- */
@@ -118,7 +134,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 16px/1.65 var(--font-sans);
+  font: 15px/1.6 var(--font-sans);   /* production content metric: 15px Roboto, 1.6 line-height */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-wrap: break-word;
@@ -825,11 +841,12 @@ code {
    production's .mw-collapsible-toggle (was a plain gray "Toggle" at the top-left). */
 .collapsible-toggle {
   float: right; margin: 0 0 0.5rem 0.5rem;
-  background: var(--accent); border-color: var(--accent); color: var(--accent-fg); font-weight: 700;
+  /* prod's collapsible toggle is BLUE, not the teal site accent */
+  background: var(--link); border-color: var(--link); color: #fff; font-weight: 700;
 }
 .collapsible-toggle:hover {
-  background: color-mix(in srgb, var(--accent) 85%, #000);
-  border-color: var(--accent); color: var(--accent-fg);
+  background: var(--link-hover);
+  border-color: var(--link-hover); color: #fff;
 }
 .collapsible-toggle::before { content: "\25B2"; margin-right: 0.4rem; font-size: 0.8em; }
 .mw-collapsed > .collapsible-toggle::before { content: "\25BC"; }
