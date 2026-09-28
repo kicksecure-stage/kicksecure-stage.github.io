@@ -9,17 +9,20 @@
 /* Self-hosted webfonts (production parity, served from 'self' under the strict CSP).
    Only the weights production ships: Roboto 400 + 300, Cousine (mono). Bold/italic are
    the browser's synthetic faces, exactly as production renders them. */
+/* CSS-RELATIVE font URLs (resolved against style.css's own location, like Font Awesome's
+   ../webfonts/): root-absolute /fonts/... would 404 on a subpath (project Pages) or file://
+   deploy, where relativize_assets does not rewrite CSS url()s. */
 @font-face {
   font-family: Roboto; font-weight: 400; font-display: swap;
-  src: url(/fonts/Roboto-Regular-webfont.woff) format("woff");
+  src: url(fonts/Roboto-Regular-webfont.woff) format("woff");
 }
 @font-face {
   font-family: Roboto; font-weight: 300; font-display: swap;
-  src: url(/fonts/Roboto-Light-webfont.woff) format("woff");
+  src: url(fonts/Roboto-Light-webfont.woff) format("woff");
 }
 @font-face {
   font-family: Cousine; font-display: swap;
-  src: url(/fonts/Cousine-Regular.woff) format("woff");
+  src: url(fonts/Cousine-Regular.woff) format("woff");
 }
 
 /* ---- design tokens: light (default) ---- */
@@ -36,6 +39,7 @@
   --border: #d5d9de;
   --border-soft: #e6e9ec;
   --code-bg: #f3f4f6;
+  --pre-bg: #dddddd;
 
   /* interaction */
   --link: #0b57d0;
@@ -80,6 +84,7 @@
   --border: #333840;
   --border-soft: #2a2e35;
   --code-bg: #1e2126;
+  --pre-bg: #23262b;
 
   --link: #74b1ff;
   --link-hover: #9cc8ff;
@@ -110,6 +115,7 @@
     --border: #333840;
     --border-soft: #2a2e35;
     --code-bg: #1e2126;
+    --pre-bg: #23262b;
 
     --link: #74b1ff;
     --link-hover: #9cc8ff;
@@ -501,7 +507,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   #firstHeading, .first-heading { font-size: 25px; }
 }
 
-.wiki-content p { margin: 0 0 1rem; }
+.wiki-content p { margin: 0 0 0.85em; }   /* prod paragraph spacing */
 .wiki-content ul, .wiki-content ol { margin: 0 0 1rem; padding-left: 1.6rem; }
 .wiki-content li { margin: 0.3rem 0; }
 .wiki-content li > ul, .wiki-content li > ol { margin: 0.3rem 0 0.3rem; }
@@ -524,13 +530,13 @@ blockquote p:last-child { margin-bottom: 0; }
 /* ---- code + pre ---- */
 .wiki-content pre {
   display: block;
-  background: var(--code-bg);
+  background: var(--pre-bg);   /* prod code blocks are a medium gray (#ddd), no radius */
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0.8rem 0.95rem;
+  border-radius: 0;
+  padding: 13px;
   overflow-x: auto;
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 13px;
   line-height: 1.55;
   tab-size: 4;
 }
@@ -592,13 +598,11 @@ blockquote p:last-child { margin-bottom: 0; }
 .payitem .qr-button { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
 .payitem .qr-button .icon { width: 1.4rem; height: 1.4rem; object-fit: contain; }
 .payitem .code-select { flex: 1 1 7rem; font-size: 0.78rem; }
-/* the sanitizer now keeps the label+checkbox, so the QR is a pure-CSS disclosure: hidden by
-   default (prod), revealed when its checkbox is checked by clicking the label. */
-.payitem .expand-checkbox { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.payitem > label[for] { order: 3; margin-left: auto; cursor: pointer; color: var(--link); font-size: 0.75rem; align-self: center; }
-.payitem > label[for]:hover, .payitem .expand-checkbox:focus-visible ~ label[for] { text-decoration: underline; }
-.payitem .expand { display: none; }   /* QR collapsed by default (prod); address stays copyable */
-.payitem .expand-checkbox:checked ~ .expand { display: block; flex-basis: 100%; margin-top: 0.4rem; }
+/* QR collapsed by default -- matches prod's default (collapsed) view; the address stays
+   copyable. The interactive expand is intentionally NOT wired: it would need content
+   checkboxes/labels, whose sanitizer allowance was reverted for security (phishing-input
+   forgery + chrome-checkbox toggling). The sanitizer drops the stripped label/checkbox. */
+.payitem .expand { display: none; }
 .donation-panel .info, .donate-legal-disclaimer {
   font-size: 0.78rem; color: var(--muted); padding: 0.55rem 0.85rem;
 }
@@ -630,8 +634,8 @@ blockquote p:last-child { margin-bottom: 0; }
 code {
   background: var(--code-bg);
   border: 1px solid var(--border-soft);
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
+  padding: 3px 7px;
+  border-radius: 3px;
   font-family: var(--font-mono);
   font-size: 0.88em;
 }
@@ -1056,11 +1060,15 @@ code {
    content-table look. Labels are <td> here (pandoc downgrades the row-header), so shade by
    column: first cell = label shade, the rest = value shade. */
 .wiki-content .float-right table { border: none; border-radius: 4px; overflow: hidden; }
-.wiki-content .float-right table th,
-.wiki-content .float-right table td { border: none; padding: 10px 15px; }
-.wiki-content .float-right table td { background: #ebebeb; }
-.wiki-content .float-right table th,
-.wiki-content .float-right table td:first-child { background: #dfdfdf; }
+/* :not(.toc):not(.storage-table) matches the generic content-table selector's specificity
+   so these (later) rules win the border/padding cascade. */
+.wiki-content .float-right table:not(.toc):not(.storage-table) th,
+.wiki-content .float-right table:not(.toc):not(.storage-table) td {
+  border: none; padding: 10px 15px;
+}
+.wiki-content .float-right table:not(.toc):not(.storage-table) td { background: #ebebeb; }
+.wiki-content .float-right table:not(.toc):not(.storage-table) th,
+.wiki-content .float-right table:not(.toc):not(.storage-table) td:first-child { background: #dfdfdf; }
 [hidden] { display: none !important; }
 
 /* comparison-table info tooltip (production Utility.css .info-tooltip; the /w/images
