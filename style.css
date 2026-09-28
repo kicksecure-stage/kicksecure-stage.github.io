@@ -545,6 +545,36 @@ blockquote p:last-child { margin-bottom: 0; }
   display: inline-block; background: #07c007; border-color: #01b101; color: white;
 }
 .code-select.copied .tooltip2::after { border-top-color: #00a400; }
+/* --- Donate page crypto panel. Production styles it via the retired kicksecure_css_page_donate
+   (MediaWiki CSS extension, dropped under strict CSP); reproduced here. Floats right of the
+   appeal text as a compact box; each coin row shows its icon, name and copyable address with
+   the QR collapsed by default (prod's default view -- the address stays copyable). --- */
+.donate-area { display: flow-root; }
+.donation-panel { float: right; width: 360px; max-width: 100%; margin: 0.2rem 0 1rem 1.5rem; }
+.donation-panel > p { margin: 0; }
+.crypto {
+  border: 1px solid var(--border); border-radius: var(--radius-md, 6px);
+  overflow: hidden; background: var(--surface);
+}
+.crypto > .headline {
+  font-weight: 700; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 55%, var(--fg) 12%);
+}
+.payitem.line {
+  display: flex; align-items: center; gap: 0.5rem 0.75rem; flex-wrap: wrap;
+  padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft); font-size: 0;
+}
+.payitem.line > * { font-size: 0.9rem; }
+.payitem .qr-button { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+.payitem .qr-button .icon { width: 1.4rem; height: 1.4rem; object-fit: contain; }
+.payitem .code-select { flex: 1 1 7rem; font-size: 0.78rem; }
+.payitem .expand { display: none; }   /* QR collapsed by default (prod); address stays copyable */
+.donation-panel .info, .donate-legal-disclaimer {
+  font-size: 0.78rem; color: var(--muted); padding: 0.55rem 0.85rem;
+}
+@media (max-width: 640px) {
+  .donation-panel { float: none; width: 100%; margin: 1rem 0; }
+}
 .code-select .tooltip2 .copied > i { margin-right: 3px; position: relative; top: 1px; }
 .code-select > .cbutton:hover ~ .tooltip2 { display: inline-block; }
 .code-select > .cbutton {
