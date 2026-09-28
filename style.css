@@ -1360,13 +1360,21 @@ code {
 .consent-dismiss:hover { background: rgba(255, 255, 255, 0.25); }
 
 /* Staging notice -- STAGE builds only; loud + non-dismissible so stage is never
-   mistaken for production. */
+   mistaken for production. Fixed to the viewport BOTTOM so it is out of the header:
+   the header then renders at y=0 exactly like production (no top offset), which keeps
+   stage-vs-prod pixel comparison aligned. Always visible while scrolling. */
 .stage-banner {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 60;   /* above the sticky header (z 30) and all content */
   padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center;
   color: #3a2500; background: #ffcf33;
-  border-bottom: 2px solid #e0a800;
+  border-top: 2px solid #e0a800;
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.15);
 }
 .stage-banner strong { color: #7a1f00; }
+/* Reserve space so the fixed bar never hides the last of the footer (stage builds only). */
+body:has(.stage-banner) { padding-bottom: 3rem; }
 
 /* Browser-storage viewer (Special:BrowserStorage) */
 .storage-table {
