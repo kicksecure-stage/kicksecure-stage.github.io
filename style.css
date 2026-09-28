@@ -251,6 +251,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   max-width: var(--maxw);
   margin: 0 auto;
   padding: 0.55rem 1.25rem;
+  position: relative;   /* anchor for the hanging Developer-Zone tab (Dev pages) */
 }
 .site-logo {
   font-weight: 700;
@@ -265,6 +266,22 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 /* Shield logo: production renders the rectangle SVG at a fixed 44x44 square. */
 .site-logo-img { display: block; height: 44px; width: 44px; }
 .header-cta { display: flex; align-items: center; }
+/* Developer-Zone tab (Dev-namespace pages): a small cream tab hanging from the header
+   column's bottom-right edge, overlapping ~11px into the bar (matches production's
+   .style-wrapper::after: #f9f5e4 bg, #555 700 12px Roboto, bottom-rounded). */
+.dev-zone-badge {
+  position: absolute;
+  right: 3px;
+  top: calc(100% - 11px);
+  background: #f9f5e4;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  padding: 0 8px 2px;
+  border-radius: 0 0 8px 8px;
+  white-space: nowrap;
+}
 /* DIRECT-child ul only: the horizontal top bar. `.site-nav ul` (unscoped) also matched the
    nested .nav-submenu ul and -- at higher specificity than `.nav-submenu {display:none}` --
    forced EVERY dropdown open by default on desktop. `>` confines the flex bar to the top ul
