@@ -251,10 +251,8 @@ only.</p>
 </ul>
 <h4 id="Rationale_on_recommended_encryption_algorithms">Rationale on
 recommended encryption algorithms</h4>
-<p>The above client configuration sets a number of cryptography-related
-algorithms as preferred over others and disables several others. The
-rationale for these choices is described below. Algorithms are sorted by
-order of preference.</p>
+<p>Both configurations offer only the strongest algorithms and disable
+all others. The rationale for these choices is described below.</p>
 <ul>
 <li><strong>Ciphers</strong>
 <ul>
@@ -262,28 +260,15 @@ order of preference.</p>
 in real time as it is passed between the SSH client and server.</li>
 <li><u>Algorithms:</u>
 <ul>
-<li><code>chacha20-poly1305@openssh.com</code>: Has a higher security
-margin than any other algorithm provided in Debian
-Bookworm.<sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup> This mode provides
-authenticated encryption, which prevents malleability
-attacks.<sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></li>
-<li><code>aes256-gcm@openssh.com</code>: An AES mode that provides
-authenticated encryption.<sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup> This algorithm is ranked
-below <code>chacha20-poly1305@openssh.com</code> because of potential
-safety concerns with nonce handling and poorly designed
-implementations.<sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup></li>
-<li><code>aes256-ctr</code>: Does not provide authenticated encryption
-and should be combined with an encrypt-then-MAC algorithm (as described
-in the MACs section below). <sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup> This encryption method
-is likely safe even when using a MAC algorithm that verifies integrity
-after decryption, due to SSH's implementation of MAC verification.
-<sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup> Still, verification after decryption is generally
-dangerous, so this method is ranked lower than the others.</li>
-<li>Other algorithms are not recommended; all cipher block chaining
-(CBC) algorithms in OpenSSH have been disabled by default since OpenSSH
-7.6. <sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup> Variants of AES with 128 bits of security are
-believed to be quantum-safe but may not be, depending on the speed at
-which quantum computers develop. <sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup> There is little
+<li><code>aes256-gcm@openssh.com</code>: The only cipher offered. It is
+an AES mode that provides authenticated encryption,<sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup>
+which prevents malleability attacks.<sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup></li>
+<li>Other algorithms are not offered.
+<code>chacha20-poly1305@openssh.com</code> is also a strong
+authenticated-encryption cipher<sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup> but is not used.
+<code>aes256-ctr</code> does not provide authenticated
+encryption.<sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup> Cipher block chaining (CBC) algorithms are
+disabled by default in OpenSSH.<sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup> There is little
 reason to use 192-bit AES keys when 256-bit keys are available.</li>
 </ul></li>
 </ul></li>
@@ -297,8 +282,8 @@ integrity of data passed between the client and server.</li>
 <ul>
 <li><code>umac-128-etm@openssh.com</code>: UMAC has strong, proven
 security guarantees. UMAC is essentially only as breakable as the cipher
-or hash it uses. <sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup> OpenSSH's UMAC implementation uses
-AES with 128-bit keys, <sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup> which is post-quantum secure
+or hash it uses. <sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup> OpenSSH's UMAC implementation uses
+AES with 128-bit keys, <sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup> which is post-quantum secure
 in this context since the keys are only used to generate authentication
 codes for SSH packets. Once the SSH session ends, the keys lose all
 value. Even a quantum computer capable of a practical attack against
@@ -306,18 +291,17 @@ value. Even a quantum computer capable of a practical attack against
 here.</li>
 <li><code>hmac-sha2-512-etm@openssh.com</code>: HMAC's security is
 uncertain. There are no public known attacks yet, but it could
-happen.<sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup> Therefore, this is not as good as UMAC but
+happen.<sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup> Therefore, this is not as good as UMAC but
 still decent. This is the "least bad" choice after UMAC.</li>
 <li><code>hmac-sha2-256-etm@openssh.com</code>: Same as the previous
 algorithm but with a shorter tag length.</li>
 <li>Other algorithms are not recommended; MAC tag lengths shorter than
-128 bits are sometimes considered insecure. <sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup> SHA1-
+128 bits are sometimes considered insecure. <sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup> SHA1-
 and md5-based algorithms are potentially insecure due to known
 vulnerabilities in their hash functions. SHA2 without HMAC is
 potentially dangerous due to length extension attacks.
-<sup id="cite_ref-20" class="reference"><a href="#cite_note-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup> Generating the MAC first, then encrypting, is
-generally a bad idea, as mentioned in the <code>aes256-ctr</code>
-rationale above.</li>
+<sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup> Generating the MAC first, then encrypting
+(encrypt-and-MAC), is generally a bad idea.</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -329,32 +313,27 @@ symmetric encryption keys that will secure the connection.</li>
 <li><u>Algorithms:</u>
 <ul>
 <li><code>sntrup761x25519-sha512</code>: Believed to be at least
-equivalent in security to Curve25519, which is the best
-non-quantum-secure algorithm provided. <sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup> This
-algorithm combines Curve25519 with NTRU Prime, which is currently
-believed to be post-quantum secure. <sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup></li>
+equivalent in security to Curve25519, the best classical
+(non-post-quantum) algorithm. <sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup> This algorithm
+combines Curve25519 with NTRU Prime, which is currently believed to be
+post-quantum secure. <sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup></li>
 <li><code>mlkem768x25519-sha256</code>: Proven to be at least equivalent
-to Curve25519 in security.<sup id="cite_ref-23" class="reference"><a href="#cite_note-23"><span class="cite-bracket">[</span>23<span class="cite-bracket">]</span></a></sup> Ranked below NTRU Prime
+to Curve25519 in security.<sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup> Ranked below NTRU Prime
 because it is possible, or even likely, that ML-KEM is intentionally
 weakened. Cryptographer <a href="https://en.wikipedia.org/wiki/Daniel_J._Bernstein">Daniel J.
 Bernstein</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Daniel_J._Bernstein" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> has raised serious concerns about ML-KEM (a.k.a. Kyber)
-and the trustworthiness of NIST in standardizing it. <sup id="cite_ref-24" class="reference"><a href="#cite_note-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup>
-<sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span class="cite-bracket">[</span>25<span class="cite-bracket">]</span></a></sup> It is therefore recommended to assume ML-KEM is not
-post-quantum secure and offers no additional protection over Curve25519.
-<ul>
-<li>Note: In the recommended configuration above,
-<code>mlkem768x25519-sha256</code> is not included because it is not
-supported in Debian 12 and, thus, not supported in Kicksecure 17. It
-will be added when Debian 13 is released and Kicksecure is ported to
-it.</li>
-</ul></li>
-<li><code>curve25519-sha256</code>: Not post-quantum-secure. Widely used
-and believed to be secure against classical computers.</li>
-<li>Other algorithms are not recommended; nistp-based algorithms are
-likely intentionally broken <sup id="cite_ref-26" class="reference"><a href="#cite_note-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup> and are difficult to
-implement correctly. <sup id="cite_ref-27" class="reference"><a href="#cite_note-27"><span class="cite-bracket">[</span>27<span class="cite-bracket">]</span></a></sup> Diffie-Hellman algorithms are
-rarely used, computationally expensive, and offer no security advantages
-over Curve25519. <sup id="cite_ref-28" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup></li>
+and the trustworthiness of NIST in standardizing it. <sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-20" class="reference"><a href="#cite_note-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup> It is therefore recommended to assume ML-KEM is not
+post-quantum secure and offers no additional protection over
+Curve25519.</li>
+<li><code>curve25519-sha256</code>: Not offered. It is not
+post-quantum-secure, although it is widely used and believed to be
+secure against classical computers.</li>
+<li>Other algorithms are not offered; nistp-based algorithms are likely
+intentionally broken <sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup> and are difficult to implement
+correctly. <sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup> Diffie-Hellman algorithms are rarely
+used, computationally expensive, and offer no security advantages.
+<sup id="cite_ref-23" class="reference"><a href="#cite_note-23"><span class="cite-bracket">[</span>23<span class="cite-bracket">]</span></a></sup></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -366,29 +345,29 @@ server's identity.</li>
 <li><u>Algorithms:</u>
 <ul>
 <li><code>sk-ssh-ed25519@openssh.com</code>: Closely related to
-Curve25519. <sup id="cite_ref-29" class="reference"><a href="#cite_note-29"><span class="cite-bracket">[</span>29<span class="cite-bracket">]</span></a></sup> The <code>sk</code> variant is designed
+Curve25519. <sup id="cite_ref-24" class="reference"><a href="#cite_note-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup> The <code>sk</code> variant is designed
 specifically for use with FIDO/U2F tokens, which may be useful in some
-setups. <sup id="cite_ref-30" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup></li>
+setups. <sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span class="cite-bracket">[</span>25<span class="cite-bracket">]</span></a></sup></li>
 <li><code>ssh-ed25519</code>: Same as above, but a standalone key with
 no hardware token involved.</li>
 <li>Both <code>sk-ssh-ed25519@openssh.com</code> and
 <code>ssh-ed25519</code> have corresponding certificate authority based
 modes that may be useful in some scenarios, namely
 <code>sk-ssh-ed25519-cert-v01@openssh.com</code> and
-<code>ssh-ed25519-cert-v01@openssh.com</code>. <sup id="cite_ref-31" class="reference"><a href="#cite_note-31"><span class="cite-bracket">[</span>31<span class="cite-bracket">]</span></a></sup> These
+<code>ssh-ed25519-cert-v01@openssh.com</code>. <sup id="cite_ref-26" class="reference"><a href="#cite_note-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup> These
 modes are not enabled by default, but should be safe to enable if you
 need them.</li>
 <li>Other algorithms are not recommended; nistp-based algorithms are
 likely intentionally broken. RSA can be dangerous due to difficulties in
-correct implementation. <sup id="cite_ref-32" class="reference"><a href="#cite_note-32"><span class="cite-bracket">[</span>32<span class="cite-bracket">]</span></a></sup> DSS is intentionally
-disabled by OpenSSH by default. <sup id="cite_ref-33" class="reference"><a href="#cite_note-33"><span class="cite-bracket">[</span>33<span class="cite-bracket">]</span></a></sup></li>
+correct implementation. <sup id="cite_ref-27" class="reference"><a href="#cite_note-27"><span class="cite-bracket">[</span>27<span class="cite-bracket">]</span></a></sup> DSS is intentionally
+disabled by OpenSSH by default. <sup id="cite_ref-28" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup></li>
 <li>There appear to be no post-quantum-secure signature algorithms
 supported by OpenSSH at this time. In a post-quantum world, anyone with
 a sufficiently powerful quantum computer could forge a host key and
-perform a MITM attack on the SSH connection. <sup id="cite_ref-34" class="reference"><a href="#cite_note-34"><span class="cite-bracket">[</span>34<span class="cite-bracket">]</span></a></sup> There
+perform a MITM attack on the SSH connection. <sup id="cite_ref-29" class="reference"><a href="#cite_note-29"><span class="cite-bracket">[</span>29<span class="cite-bracket">]</span></a></sup> There
 is currently no way to address this with OpenSSH client configuration.
 Some experiments have been done with adding post-quantum-secure
-signatures to OpenSSH. <sup id="cite_ref-35" class="reference"><a href="#cite_note-35"><span class="cite-bracket">[</span>35<span class="cite-bracket">]</span></a></sup></li>
+signatures to OpenSSH. <sup id="cite_ref-30" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -599,12 +578,26 @@ entries preceded by a <code>#</code> are not necessary for functional
 use; they are included only as examples of what is possible in SSH. If
 you do not have a specific use for any of the commented-out options in
 either configuration file, do not use them at all.</p>
-<p>The Ciphers, MACs, and Kex algorithms are all the strongest available
-at the time of writing with OpenSSH 9.2p1 on Debian Bookworm. The
-entries in the configuration files above are the most important and will
-establish a functional and well-guarded setup. Use ed25519 keys only.
-RSA and ECDSA are outdated. Use the <code>ssh-keygen</code> command to
-generate the keys.</p>
+<p>The Ciphers, MACs, and Kex algorithms are all among the strongest
+available at the time of writing with OpenSSH 10.0p2 on Debian trixie.
+The entries in the configuration files above are the most important and
+will establish a functional and well-guarded setup. Use ed25519 keys
+only. RSA and ECDSA are outdated. Use the <code>ssh-keygen</code>
+command to generate the keys.</p>
+<p>Both the server configuration
+(<code>/etc/ssh/sshd_config.d/30_security-misc.conf</code>) and the
+client configuration
+(<code>/etc/ssh/ssh_config.d/30_security-misc.conf</code>) use the
+strictest set: <strong>only</strong> post-quantum key exchange
+(<code>sntrup761x25519-sha512</code> and
+<code>mlkem768x25519-sha256</code>) and <strong>only</strong> the
+<code>aes256-gcm@openssh.com</code> cipher. This is the strongest
+posture and resists harvest-now-decrypt-later attacks. As a consequence,
+the server only accepts a post-quantum-capable client and the client
+only connects to a post-quantum-capable server. To reach a server that
+offers a narrower algorithm set, override per-host in
+<code>~/.ssh/config</code> or in a higher-numbered
+<code>/etc/ssh/ssh_config.d/50_user.conf</code> drop-in.</p>
 <p>The <code>VisualHostKey yes</code> entry in the
 <code>/etc/ssh/ssh_config.d/30_security-misc.conf</code> file ensures
 that when you log in, OpenSSH shows you an ASCII-generated picture of
@@ -648,8 +641,9 @@ needed.</p>
 re-generating the moduli file that comes in <code>/etc/ssh</code>. If
 you use the settings above, look at the kex algorithms. Since no
 Diffie-Hellman group exchange kex algorithms are used to exchange keys,
-it is unnecessary to regenerate the moduli. The chosen kex algo is
-curve25519.</p>
+it is unnecessary to regenerate the moduli. The chosen kex algorithms
+are the post-quantum hybrids <code>sntrup761x25519-sha512</code> and
+<code>mlkem768x25519-sha256</code>.</p>
 <h1 id="SSH_Login_Comparison_Table">SSH Login Comparison Table</h1>
 <p><strong>Note</strong>: <code>/etc/shadow</code> password symbol
 evaluation is done left to right. If a password is locked or disabled
@@ -788,7 +782,7 @@ non password-based login.</p></td>
 <td class="cell-red"><p> No</p></td>
 <td class="cell-red"><p> No</p></td>
 <td><p>SSHD checks the shadow file and a locked password prohibits any
-type of login. <sup id="cite_ref-36" class="reference"><a href="#cite_note-36"><span class="cite-bracket">[</span>36<span class="cite-bracket">]</span></a></sup></p></td>
+type of login. <sup id="cite_ref-31" class="reference"><a href="#cite_note-31"><span class="cite-bracket">[</span>31<span class="cite-bracket">]</span></a></sup></p></td>
 </tr>
 <tr class="even">
 <td></td>
@@ -820,39 +814,34 @@ distributions. For reference, the correct permissions are as follows: *
 <code>0600</code> (root) Having overly permissive permissions will
 prevent logins and cause unwanted errors.</span></li>
 <li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/">https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://devconnected.com/how-to-install-and-enable-ssh-server-on-debian-10/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/101056">https://crypto.stackexchange.com/a/101056</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/101056" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-7"><span class="mw-cite-backlink"><a href="#cite_ref-7" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://eprint.iacr.org/2019/1492.pdf">https://eprint.iacr.org/2019/1492.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://eprint.iacr.org/2019/1492.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://andrea.corbellini.name/2023/03/09/authenticated-encryption/">https://andrea.corbellini.name/2023/03/09/authenticated-encryption/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://andrea.corbellini.name/2023/03/09/authenticated-encryption/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-9"><span class="mw-cite-backlink"><a href="#cite_ref-9" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr">https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/questions/42982/safety-of-random-nonce-with-aes-gcm">https://crypto.stackexchange.com/questions/42982/safety-of-random-nonce-with-aes-gcm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/questions/42982/safety-of-random-nonce-with-aes-gcm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-11"><span class="mw-cite-backlink"><a href="#cite_ref-11" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://eprint.iacr.org/2016/475.pdf">https://eprint.iacr.org/2016/475.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://eprint.iacr.org/2016/475.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://manpages.debian.org/bookworm/openssh-client/ssh_config.5.en.html#MACs">https://manpages.debian.org/bookworm/openssh-client/ssh_config.5.en.html#MACs</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org/bookworm/openssh-client/ssh_config.5.en.html#MACs" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/44028">https://crypto.stackexchange.com/a/44028</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/44028" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-7.6">https://www.openssh.com/txt/release-7.6</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-7.6" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-15"><span class="mw-cite-backlink"><a href="#cite_ref-15" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/102672/133564">https://crypto.stackexchange.com/a/102672/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/102672/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://datatracker.ietf.org/doc/html/rfc4418#section-6.1">https://datatracker.ietf.org/doc/html/rfc4418#section-6.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://datatracker.ietf.org/doc/html/rfc4418#section-6.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-17"><span class="mw-cite-backlink"><a href="#cite_ref-17" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104">https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-18"><span class="mw-cite-backlink"><a href="#cite_ref-18" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/67350/133564">https://crypto.stackexchange.com/a/67350/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/67350/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/">https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-20"><span class="mw-cite-backlink"><a href="#cite_ref-20" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/50881/133564">https://crypto.stackexchange.com/a/50881/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/50881/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr">https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/questions/103242/why-gcm-is-used-more-often-than-ctr" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><a href="#cite_ref-7" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://andrea.corbellini.name/2023/03/09/authenticated-encryption/">https://andrea.corbellini.name/2023/03/09/authenticated-encryption/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://andrea.corbellini.name/2023/03/09/authenticated-encryption/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/101056">https://crypto.stackexchange.com/a/101056</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/101056" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><a href="#cite_ref-9" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/44028">https://crypto.stackexchange.com/a/44028</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/44028" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-7.6">https://www.openssh.com/txt/release-7.6</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-7.6" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><a href="#cite_ref-11" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://datatracker.ietf.org/doc/html/rfc4418#section-6.1">https://datatracker.ietf.org/doc/html/rfc4418#section-6.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://datatracker.ietf.org/doc/html/rfc4418#section-6.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104">https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/openssh/openssh-portable/blob/eddd1d2daa64a6ab1a915ca88436fa41aede44d4/umac.c#L104" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/67350/133564">https://crypto.stackexchange.com/a/67350/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/67350/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/">https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.virtuesecurity.com/kb/ssh-weak-mac-algorithms-enabled/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><a href="#cite_ref-15" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/50881/133564">https://crypto.stackexchange.com/a/50881/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/50881/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 search answer for "length extension"</span></li>
-<li id="cite_note-21"><span class="mw-cite-backlink"><a href="#cite_ref-21" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html">https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-22"><span class="mw-cite-backlink"><a href="#cite_ref-22" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://eprint.iacr.org/2016/461">https://eprint.iacr.org/2016/461</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://eprint.iacr.org/2016/461" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-23"><span class="mw-cite-backlink"><a href="#cite_ref-23" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations">https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-24"><span class="mw-cite-backlink"><a href="#cite_ref-24" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.cr.yp.to/20231003-countcorrectly.html">https://blog.cr.yp.to/20231003-countcorrectly.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20231003-countcorrectly.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-25"><span class="mw-cite-backlink"><a href="#cite_ref-25" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.cr.yp.to/20231125-kyber.html">https://blog.cr.yp.to/20231125-kyber.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20231125-kyber.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-26"><span class="mw-cite-backlink"><a href="#cite_ref-26" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://credelius.com/credelius/?p=97">https://credelius.com/credelius/?p=97</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://credelius.com/credelius/?p=97" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-27"><span class="mw-cite-backlink"><a href="#cite_ref-27" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf">https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-28"><span class="mw-cite-backlink"><a href="#cite_ref-28" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-10.0">https://www.openssh.com/txt/release-10.0</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-10.0" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-29"><span class="mw-cite-backlink"><a href="#cite_ref-29" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/43058/133564">https://crypto.stackexchange.com/a/43058/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/43058/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-30"><span class="mw-cite-backlink"><a href="#cite_ref-30" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-8.2">https://www.openssh.com/txt/release-8.2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-8.2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-31"><span class="mw-cite-backlink"><a href="#cite_ref-31" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://superuser.com/a/1225476/1734781">https://superuser.com/a/1225476/1734781</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/a/1225476/1734781" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-32"><span class="mw-cite-backlink"><a href="#cite_ref-32" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.trailofbits.com/2019/07/08/fuck-rsa/">https://blog.trailofbits.com/2019/07/08/fuck-rsa/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.trailofbits.com/2019/07/08/fuck-rsa/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-33"><span class="mw-cite-backlink"><a href="#cite_ref-33" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/legacy.html">https://www.openssh.com/legacy.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/legacy.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
+<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html">https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.ietf.org/archive/id/draft-josefsson-ntruprime-ssh-02.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><a href="#cite_ref-17" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://eprint.iacr.org/2016/461">https://eprint.iacr.org/2016/461</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://eprint.iacr.org/2016/461" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><a href="#cite_ref-18" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations">https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.ietf.org/archive/id/draft-ietf-sshm-mlkem-hybrid-kex-02.html#name-security-considerations" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.cr.yp.to/20231003-countcorrectly.html">https://blog.cr.yp.to/20231003-countcorrectly.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20231003-countcorrectly.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-20"><span class="mw-cite-backlink"><a href="#cite_ref-20" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.cr.yp.to/20231125-kyber.html">https://blog.cr.yp.to/20231125-kyber.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20231125-kyber.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-21"><span class="mw-cite-backlink"><a href="#cite_ref-21" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://credelius.com/credelius/?p=97">https://credelius.com/credelius/?p=97</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://credelius.com/credelius/?p=97" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-22"><span class="mw-cite-backlink"><a href="#cite_ref-22" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf">https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cr.yp.to/talks/2013.05.31/slides-dan+tanja-20130531-4x3.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-23"><span class="mw-cite-backlink"><a href="#cite_ref-23" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-10.0">https://www.openssh.com/txt/release-10.0</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-10.0" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-24"><span class="mw-cite-backlink"><a href="#cite_ref-24" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/43058/133564">https://crypto.stackexchange.com/a/43058/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/43058/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-25"><span class="mw-cite-backlink"><a href="#cite_ref-25" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/txt/release-8.2">https://www.openssh.com/txt/release-8.2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/txt/release-8.2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-26"><span class="mw-cite-backlink"><a href="#cite_ref-26" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://superuser.com/a/1225476/1734781">https://superuser.com/a/1225476/1734781</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://superuser.com/a/1225476/1734781" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-27"><span class="mw-cite-backlink"><a href="#cite_ref-27" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.trailofbits.com/2019/07/08/fuck-rsa/">https://blog.trailofbits.com/2019/07/08/fuck-rsa/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.trailofbits.com/2019/07/08/fuck-rsa/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-28"><span class="mw-cite-backlink"><a href="#cite_ref-28" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.openssh.com/legacy.html">https://www.openssh.com/legacy.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.openssh.com/legacy.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
 search for "dsa"</span></li>
-<li id="cite_note-34"><span class="mw-cite-backlink"><a href="#cite_ref-34" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/56197/133564">https://crypto.stackexchange.com/a/56197/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/56197/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-35"><span class="mw-cite-backlink"><a href="#cite_ref-35" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html">https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
-<li id="cite_note-36"><span class="mw-cite-backlink"><a href="#cite_ref-36" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">sshd journal log:
+<li id="cite_note-29"><span class="mw-cite-backlink"><a href="#cite_ref-29" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://crypto.stackexchange.com/a/56197/133564">https://crypto.stackexchange.com/a/56197/133564</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://crypto.stackexchange.com/a/56197/133564" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-30"><span class="mw-cite-backlink"><a href="#cite_ref-30" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html">https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.mindrot.org/pipermail/openssh-unix-dev/2025-July/041979.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-31"><span class="mw-cite-backlink"><a href="#cite_ref-31" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">sshd journal log:
 <pre><code> sshd[7740]: User user not allowed because account is locked </code></pre></span></li>
 </ol>
 
