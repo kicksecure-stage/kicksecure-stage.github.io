@@ -236,15 +236,21 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   position: sticky;
   top: 0;
   z-index: 30;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem 1.1rem;
-  flex-wrap: wrap;
-  padding: 0.55rem 1.25rem;
   font-size: 16px;   /* chrome stays 16px (body is 15px for content parity) */
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+}
+/* the bar spans the viewport, but its CONTENT is constrained + centered to the article
+   column (prod), so the logo/nav/donate align with the content below instead of the edges. */
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem 1.1rem;
+  flex-wrap: wrap;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0.55rem 1.25rem;
 }
 .site-logo {
   font-weight: 700;
@@ -412,7 +418,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .search-results a:hover { background: var(--surface-2); text-decoration: none; }
 
 @media (max-width: 640px) {
-  .site-header { padding: 0.55rem 1rem; }
+  .site-header-inner { padding: 0.55rem 1rem; }
   /* hamburger stays top-LEFT like prod (order -1), so it never wraps below the wide CTA */
   .nav-toggle-label { display: inline-flex; align-items: center; margin: 0 0.5rem 0 0; order: -1; }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
