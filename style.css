@@ -652,6 +652,11 @@ code {
   font-style: normal; font-weight: 700; font-family: inherit;
   color: var(--callout, var(--accent));
 }
+/* A pci-text IconSet is a plain-text LABEL (FAILURE / PASS / a numeral), not a glyph, so it
+   must NOT render in the Font Awesome font that the element's co-present `fa-solid` class
+   sets (same specificity as the base rule, wins on source order) -- that gave "FAILURE" the
+   icon-font's cramped metrics. The extra class outranks `.fa-solid`. */
+.padded-content-icon.pci-text { font-family: inherit; }
 .padded-content-icon.iconset-h1 { font-size: 1.5rem; }
 .padded-content-icon.iconset-h2 { font-size: 1.1rem; }
 .padded-content-icon.pci-style-circle {
