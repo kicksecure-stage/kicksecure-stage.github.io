@@ -422,7 +422,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 }
 /* Hamburger <-> X swap: the label shows the bars glyph closed, the xmark when the toggle
    checkbox is checked (matches production's open-menu X). */
-.nav-ico-close { display: none; }
+.nav-toggle-label .nav-ico-close { display: none; }   /* 2 classes: beat FontAwesome's .fa-solid (loaded after) */
 .nav-toggle:checked ~ .nav-toggle-label .nav-ico-open { display: none; }
 .nav-toggle:checked ~ .nav-toggle-label .nav-ico-close { display: inline-block; }
 /* Production Vector search: a magnifier ICON that expands the search box on click
@@ -543,8 +543,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   /* Right-side group (prod order): search THEN Donate heart, pushed to the far right.
      margin-left:auto on the search (first of the group) shoves both to the right edge;
      order:2 on both keeps them after the logo/wordmark, ahead of the nav drawer (order 3). */
+  /* right group order (prod): search, chevron supermenu, Donate -- all pushed to the far
+     right by the auto-margin on the search (the first of the group). The chevron MUST carry
+     an order too, or it stays in the left group and overflows the row (Donate then wraps). */
   .site-search { order: 2; margin-left: auto; }
-  .header-cta { order: 2; }
+  .tools { order: 3; }
+  .header-cta { order: 4; }
   .search-toggle:checked ~ .search-field { width: min(55vw, 11rem); }
 }
 /* Narrow phones: production drops the "Donate" word (heart glyph only) at <=382px, where
@@ -607,6 +611,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   font-size: 28px;
   font-weight: 400;   /* prod page title is normal-weight Roboto, not bold */
   line-height: 1.25;
+  /* title on the LEFT, book-nav on the RIGHT (prod) -- flex, not a float, so the book-nav
+     stays right even when the title wraps to several lines on mobile. */
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
 }
 .first-heading > h1, .first-heading .widget-headline h1 {
   margin: 0;
@@ -615,6 +624,10 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
+  flex: 1 1 auto;
+}
+.first-heading > .wiki-book-index {
+  float: none; order: 2; margin-left: auto; flex: none;
 }
 @media (max-width: 600px) {
   #firstHeading, .first-heading { font-size: 25px; }
