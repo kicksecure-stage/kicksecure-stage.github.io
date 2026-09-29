@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Protection against Physical Attacks</title>
+<meta name="description" content="BIOS Password, Problematic Interfaces, Screen Lock, Virtual Consoles, Login Screen, Side Channel Attacks">
+<meta property="og:description" content="BIOS Password, Problematic Interfaces, Screen Lock, Virtual Consoles, Login Screen, Side Channel Attacks">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks">
+<meta property="og:title" content="Protection against Physical Attacks">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Protectionagainst234234234.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="Download">Download</a><ul class="nav-submenu"><li><a href="ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="About">About</a><ul class="nav-submenu"><li><a href="About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Documentation">Docs</a><ul class="nav-submenu"><li><a href="Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Support">Support</a><ul class="nav-submenu"><li><a href="Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Protection_Against_Physical_Attacks.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Protection_Against_Physical_Attacks.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Protection Against Physical Attacks|Protection against Physical Attacks]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[Protection against Physical Attacks](https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks]Protection against Physical Attacks[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks&amp;text=Protection%20against%20Physical%20Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks&amp;text=Protection%20against%20Physical%20Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks&amp;title=Protection%20against%20Physical%20Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks&amp;summary=Protection%20against%20Physical%20Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks&amp;t=Protection%20against%20Physical%20Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=Protection%20against%20Physical%20Attacks%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=Protection%20against%20Physical%20Attacks&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Operating_System_Hardening" title="Operating System Hardening"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Operating
+System
+Hardening</span></a><a class="index internal" href="Documentation" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Vm-app-manager" title="sandbox-app-launcher"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">sandbox-app-launcher</span></a><span class="info"><span class="prev">Previous
+page: Operating System Hardening</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+sandbox-app-launcher</span></span></span><h1 id="firstHeading">Protection against Physical
+Attacks</h1></div>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access">System
+Configuration and Access</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<div class="mininav">
+<ul>
+<li><a href="Default_Passwords">Default
+Passwords</a></li>
+<li><a href="Passwords">Passwords</a></li>
+<li><a href="User">Account Management</a></li>
+<li><a href="Login">Login</a></li>
+<li><a href="Login_spoofing">Login Spoofing</a></li>
+<li><a href="Root">Safely Use Root Commands</a></li>
+<li><a href="Sysmaint"><code>sysmaint</code>
+Account</a></li>
+<li><a href="System_Maintenance_Panel">System
+Maintenance Panel</a></li>
+<li><a href="Unrestricted_admin_mode">Unrestricted
+Admin Mode</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">Protection against Physical Attacks</a></li>
+<li><a href="Dev/Strong_Linux_User_Account_Isolation">User Account Isolation (developers)</a></li>
+<li><a href="Dev/user-sysmaint-split"><code>user</code>-<code>sysmaint</code>-split
+(developers)</a></li>
+<li><a href="Polkit">Polkit (formerly PolicyKit) /
+<code>pkexec</code></a></li>
+<li><a href="Privleap">privleap /
+<code>leaprun</code></a></li>
+</ul>
+</div>
+<p><img src="../media/Protectionagainst234234234.jpg.webp" alt="Protectionagainst234234234.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>BIOS Password, Problematic Interfaces, Screen Lock, Virtual Consoles,
+Login Screen, Side Channel Attacks</p>
+<div class="post-intro-p">
+</div>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li><li class="toc-l1"><a href="#BIOS_Password"><span class="tocnumber">2</span> <span class="toctext">BIOS Password</span></a></li><li class="toc-l1"><a href="#Bootloader_Password"><span class="tocnumber">3</span> <span class="toctext">Bootloader Password</span></a></li><li class="toc-l2"><a href="#How_to_set_a_bootloader_password"><span class="tocnumber">3.1</span> <span class="toctext">How to set a bootloader password</span></a></li><li class="toc-l3"><a href="#grub-pwchange"><span class="tocnumber">3.1.1</span> <span class="toctext">grub-pwchange</span></a></li><li class="toc-l3"><a href="#Simple"><span class="tocnumber">3.1.2</span> <span class="toctext">Simple</span></a></li><li class="toc-l3"><a href="#Advanced"><span class="tocnumber">3.1.3</span> <span class="toctext">Advanced</span></a></li><li class="toc-l4"><a href="#Separate_root_and_user"><span class="tocnumber">3.1.3.1</span> <span class="toctext">Separate root and user</span></a></li><li class="toc-l4"><a href="#Hide_the_Ability_to_Edit_Entries"><span class="tocnumber">3.1.3.2</span> <span class="toctext">Hide the Ability to Edit Entries</span></a></li><li class="toc-l4"><a href="#Disable_GRUB_to_show_advanced_entries_(like_recovery_mode)"><span class="tocnumber">3.1.3.3</span> <span class="toctext">Disable GRUB to show advanced entries (like recovery mode)</span></a></li><li class="toc-l1"><a href="#Cold_Boot_Attacks"><span class="tocnumber">4</span> <span class="toctext">Cold Boot Attacks</span></a></li><li class="toc-l1"><a href="#Evil_Maid_Attack"><span class="tocnumber">5</span> <span class="toctext">Evil Maid Attack</span></a></li><li class="toc-l1"><a href="#Problematic_Interfaces"><span class="tocnumber">6</span> <span class="toctext">Problematic Interfaces</span></a></li><li class="toc-l1"><a href="#Screen_Lock"><span class="tocnumber">7</span> <span class="toctext">Screen Lock</span></a></li><li class="toc-l1"><a href="#Sleep_Mode"><span class="tocnumber">8</span> <span class="toctext">Sleep Mode</span></a></li><li class="toc-l1"><a href="#Virtual_Consoles"><span class="tocnumber">9</span> <span class="toctext">Virtual Consoles</span></a></li><li class="toc-l1"><a href="#Login_Screen"><span class="tocnumber">10</span> <span class="toctext">Login Screen</span></a></li><li class="toc-l1"><a href="#Side_Channel_Attacks"><span class="tocnumber">11</span> <span class="toctext">Side Channel Attacks</span></a></li><li class="toc-l1"><a href="#Hardware-based_Tampering_Protection"><span class="tocnumber">12</span> <span class="toctext">Hardware-based Tampering Protection</span></a></li><li class="toc-l1"><a href="#Malicious_Hardware_Modifications"><span class="tocnumber">13</span> <span class="toctext">Malicious Hardware Modifications</span></a></li><li class="toc-l1"><a href="#See_Also"><span class="tocnumber">14</span> <span class="toctext">See Also</span></a></li><li class="toc-l1"><a href="#Footnotes"><span class="tocnumber">15</span> <span class="toctext">Footnotes</span></a></li><li class="toc-l1"><a href="#License"><span class="tocnumber">16</span> <span class="toctext">License</span></a></li></ul></nav><h1 id="Introduction">Introduction</h1>
+<p>Physical attacks require adversaries to have direct access to a
+user's computer and cannot be conducted remotely. This section should be
+read in conjunction with the <a href="Full_Disk_Encryption">Full Disk Encryption</a> and <a href="Encrypted_Images">Encrypted Images</a> chapters.</p>
+<h1 id="BIOS_Password">BIOS Password</h1>
+<p>The Basic Input/Output System (BIOS) is non-volatile firmware which
+performs hardware initialization during computer booting after it is
+powered on. It also provides runtime services for operating systems and
+programs. BIOS in modern PCs initialize and test system hardware
+components, as well as loading a boot loader or operating system from a
+mass memory device. The Unified Extensible Firmware Interface (UEFI) is
+the successor to BIOS that was released in 2011. <sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup></p>
+<p>Most hardware-level settings are stored in BIOS, including power
+options, boot options and memory information. The BIOS menu allows the
+user to set and change a boot password for the computer upon startup. An
+administrator password can also be set to prevent others from changing
+BIOS settings.</p>
+<ul>
+<li><strong>A)</strong> <strong>BIOS power-on password</strong>;
+<u>and/or</u></li>
+<li><strong>B)</strong> <strong>BIOS administrator
+password</strong></li>
+</ul>
+<p>To set a BIOS boot password: <sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup></p>
+<ul>
+<li>Turn on / restart the computer.</li>
+<li>Press the relevant key to access the BIOS menu. It is usually one
+of: <code>Del</code>, <code>Esc</code>, <code>F2</code>,
+<code>F10</code>, or <code>F12</code>.</li>
+<li>Navigate to the Security or Password section using the arrow
+keys.</li>
+<li>Search for an entry named "Password on boot" or similar.</li>
+<li>Enter the new, <a href="Passwords#Generating_Unbreakable_Passwords">strong password</a>.</li>
+<li>Save the changes made to BIOS settings. On most PCs, this is done by
+pressing <code>Esc</code> or <code>F10</code> &#8594;
+<code>Save and Exit</code>. Check the bottom of the BIOS screen to be
+sure.</li>
+<li>Reboot the computer and confirm a password prompt now appears.</li>
+</ul>
+<p>For greater security, a password should be set to access the BIOS
+menu itself. Search the Security or Password BIOS menu for "Set
+supervisor password", "User password", "System password", or something
+similar. <sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup> Also, users may prefer to configure BIOS to
+only allow booting from HDD/SSD so the computer cannot be booted from
+CD-ROM or USB flash drives.</p>
+<p>It should be noted that this is hardware dependent. There are:</p>
+<ul>
+<li><strong>A)</strong> <u>Secure BIOS Password implementations</u>: If
+the password has been forgotten, the motherboard might be <a href="https://en.wikipedia.org/wiki/Brick_(electronics)">bricked</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Brick_(electronics)" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li><strong>B)</strong> <u>Insecure BIOS Password implementations</u>:
+On some hardware this method will only prevent casual attempts to gain
+access. There are <a href="https://www.technibble.com/how-to-bypass-or-remove-a-bios-password/">numerous</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.technibble.com/how-to-bypass-or-remove-a-bios-password/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+<a href="https://www.instructables.com/How-to-Bypass-BIOS-Passwords/">methods</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.instructables.com/How-to-Bypass-BIOS-Passwords/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+of <a href="https://web.archive.org/web/20170511122202/https://www.askvg.com/how-to-reset-remove-bypass-a-bios-or-cmos-password/">bypassing,
+removing or resetting BIOS passwords</a>. Some methods include easily
+available recovery modes, removal of the CMOS batteries and/or BIOS
+password reset <a href="https://en.wikipedia.org/wiki/Jumper_(computing)">jumper</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Jumper_(computing)" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+</ul>
+<p>Before relying on the security of the BIOS password, the user should
+research the security of their motherboard's BIOS.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="About">Kicksecure</a>
+is an <a href="About#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/ch03.en.html#bios-passwd">Choose
+a BIOS
+password</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/ch03.en.html#bios-passwd" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h1 id="Bootloader_Password">Bootloader Password</h1>
+<p><u>Note:</u> There are two distinct prompts in GRUB:</p>
+<p><strong>A)</strong> <a href="Grub#GRUB_Bootloader_Authentication_Password_Prompt">GRUB <u>Bootloader Authentication Password
+Prompt</u></a> (related to protecting GRUB menu and settings from
+unauthorized changes);</p>
+<ul>
+<li><strong>Figure:</strong> <em>GRUB Bootloader Authentication Password
+Prompt</em>
+<ul>
+<li><img src="../media/Grub_bootloader_password.jpg.webp" alt="grub_bootloader_password.jpg" /></li>
+</ul></li>
+</ul>
+<p><strong>B)</strong> <a href="Grub#EFI-_GRUB_Disk_Decryption_Password_Prompt">EFI BIOS</a> or <a href="Grub#Legacy_BIOS_-GRUB_Disk_Decryption_Password_Prompt">Legacy BIOS</a> <u>Disk Decryption Password Prompt</u>
+(related to unlocking an encrypted <code>/boot</code>):</p>
+<ul>
+<li><strong>Figure:</strong> <em>GRUB Bootloader Disk Decryption
+Password Prompt (EFI)</em>
+<ul>
+<li><img src="../media/EFIGrubpass.png.webp" width="600" height="451" alt="EFIGrubpass.png" /></li>
+</ul></li>
+</ul>
+<p>This chapter focuses on the <u>bootloader authentication
+password</u>.</p>
+<p><u>Note:</u> The GRUB authentication password is unrelated to <a href="Full_Disk_Encryption">Full Disk
+Encryption</a>.</p>
+<ul>
+<li>Purpose of a bootloader password:
+<ul>
+<li>Prevent unauthorized users from editing boot parameters or accessing
+recovery options through the GRUB menu.</li>
+<li>Without a password, someone with physical access can modify boot
+entries to bypass security mechanisms, load an alternative kernel, or
+boot into single-user mode.</li>
+</ul></li>
+<li>Is a GRUB password useful when using FDE with encrypted
+<code>/boot</code>?
+<ul>
+<li><strong>FDE Already Protects Data</strong>: Without the FDE
+password, the data on the disk remains inaccessible.</li>
+<li><strong>Bootloader Security is Less Critical</strong>: Since the
+disk is encrypted, unauthorized users cannot alter its contents or boot
+into the system without decrypting it first.</li>
+<li>Note: <a href="https://forums.kicksecure.com/t/iso-change-to-unencrypted-boot-if-using-full-disk-encryption/420">Due
+to the less secure encryption and bad usability supported by GRUB's FDE
+features, Kicksecure defaults to using FDE with
+<strong>unencrypted</strong> <code>/boot</code>.</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/iso-change-to-unencrypted-boot-if-using-full-disk-encryption/420" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> Installing
+Kicksecure with <code>/boot</code> encrypted requires using manual
+partitioning.</li>
+</ul></li>
+<li>When a GRUB password is useful with FDE and unencrypted
+<code>/boot</code>:
+<ul>
+<li><strong>Protect Against Physical Access Attacks</strong>: If an
+attacker gains physical access and can boot from external media or
+tamper with the GRUB menu, they might not access the encrypted data but
+could still cause disruptions by modifying boot files.</li>
+</ul></li>
+<li>When a bootloader password might be redundant:
+<ul>
+<li><strong>Dedicated Single-User FDE Systems</strong>: If you're the
+sole user and you physically secure your device, a GRUB password might
+add minimal value.</li>
+<li><strong>Trusted Environment</strong>: If the system is in a trusted
+physical environment, the additional step of a GRUB password could be
+unnecessary.</li>
+</ul></li>
+<li><strong><u>v</u>irtual <u>m</u>achines (VM)</strong>:
+<ul>
+<li><u>Physically protected hosts:</u> Unnecessary.</li>
+<li><u>Physically unprotected hosts:</u> In scenarios where physical
+access to the VM's host system is possible, a GRUB password can serve as
+an additional layer of protection against tampering with boot settings.
+However, administrators or attackers with access to the hypervisor can
+bypass the GRUB password by mounting the virtual disk and editing
+configuration files directly.</li>
+</ul></li>
+<li><strong>Servers</strong>:
+<ul>
+<li>Servers are often managed remotely, and GRUB passwords require
+manual input during boot. This makes them impractical for systems that
+rely on automated reboots or remote administration since physical
+presence is required to enter the password.</li>
+</ul></li>
+</ul>
+<p>A GRUB bootloader password is not critically important if you're
+already using full disk encryption, but it can provide an additional
+layer of security in specific scenarios when physical access is a
+concern. Assess your threat model and decide accordingly.</p>
+<p>While a GRUB password can mitigate some physical attacks, it won't
+protect against many others.</p>
+<ul>
+<li><strong>Boot from Other Devices:</strong> Attackers can boot from a
+USB drive, CD, or network (PXE boot) to bypass the system's internal
+bootloader entirely. A BIOS password might make attacks that rely on
+this strategy more difficult or impossible.</li>
+<li><strong>Disk Removal:</strong> Removing the disk and connecting it
+to another computer allows the attacker to bypass GRUB altogether. If
+the disk is not encrypted, the attacker has unrestricted access to all
+data.</li>
+<li><strong>Tampering with Hardware or Firmware:</strong> Attackers can
+flash the firmware (e.g. BIOS/UEFI) to introduce malicious code,
+effectively bypassing GRUB entirely or compromising the system during
+boot.</li>
+<li><strong>Others:</strong> Listed on this wiki page.</li>
+</ul>
+<h2 id="How_to_set_a_bootloader_password">How to set a bootloader
+password</h2><span class="share-tooltip" data-anchor="How_to_set_a_bootloader_password"><a class="headline-anchor" href="#How_to_set_a_bootloader_password" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#How_to_set_a_bootloader_password">https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#How_to_set_a_bootloader_password</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23How_to_set_a_bootloader_password&amp;text=How%20to%20set%20a%20bootloader%0Apassword" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23How_to_set_a_bootloader_password&amp;text=How%20to%20set%20a%20bootloader%0Apassword" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23How_to_set_a_bootloader_password&amp;title=How%20to%20set%20a%20bootloader%0Apassword" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=How%20to%20set%20a%20bootloader%0Apassword&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23How_to_set_a_bootloader_password" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#How_to_set_a_bootloader_password]How to set a bootloader
+password[/url]">[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#How_to_set_a_bootloader_password]How to set a bootloader
+password[/url]</span></span></span></span>
+<p>Select an option.</p>
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h3 id="grub-pwchange">grub-pwchange</h3><span class="share-tooltip" data-anchor="grub-pwchange"><a class="headline-anchor" href="#grub-pwchange" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#grub-pwchange">https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#grub-pwchange</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23grub-pwchange&amp;text=grub-pwchange" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23grub-pwchange&amp;text=grub-pwchange" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23grub-pwchange&amp;title=grub-pwchange" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=grub-pwchange&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23grub-pwchange" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#grub-pwchange]grub-pwchange[/url]">[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#grub-pwchange]grub-pwchange[/url]</span></span></span></span></div><div class="tcc-content"><p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Prerequisite knowledge: <a href="Protection_Against_Physical_Attacks#Bootloader_Password">Bootloader Password</a></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Information.</p>
+<p><code>grub-pwchange</code> is a GRUB bootloader password management
+tool for systems with only one human user. It supports:</p>
+<ul>
+<li>Setting an encrypted bootloader password by creating GRUB account
+<code>user</code> and storing it in file
+<code>/etc/grub.d/44_password</code>. (Then running
+<code>sudo update-grub</code>.)</li>
+<li>Deleting the bootloader password by removing
+<code>/etc/grub.d/44_password</code>.</li>
+<li>It configures GRUB to always require a password at boot for all
+actions.</li>
+</ul>
+<p><code>grub-pwchange</code> does NOT handle:</p>
+<ul>
+<li><a href="Full_Disk_Encryption"><u>F</u>ull
+<u>D</u>isk <u>E</u>ncryption (FDE)</a></li>
+</ul>
+<p>Advanced GRUB features <code>not</code> supported by
+<code>grub-pwchange</code>:</p>
+<ul>
+<li>Multiple GRUB user accounts</li>
+<li>Fine-grained permissions to allow boot into user session without
+password but require a password to:
+<ul>
+<li>edit kernel cmdline;</li>
+<li>boot into sysmaint session;</li>
+<li>boot older kernels;</li>
+<li>recovery mode,</li>
+<li>have not been implemented yet.</li>
+</ul></li>
+<li>Changing manually set GRUB passwords not managed by this tool</li>
+</ul>
+<p>Advanced use should be configured manually.</p>
+<p>For developer information, see footnote. <sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Exercise.</p>
+<p>Before using this in production, it's best to test this in a safe
+environment such as on another computer or inside a virtual machine.
+This is because if the GRUB bootloader password is wrong, there are bugs
+or other issues (such as with keyboard layout), you might lock yourself
+out and require <a href="Recovery">Recovery</a>.</p>
+<p>It is also recommended to practice how to disable the GRUB bootloader
+password using a recovery boot medium, for example by booting from ISO
+and editing <code>/boot/grub/grub.cfg</code> to disable the GRUB
+bootloader password.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Usage.</p>
+<p><span class="code-select" data-code="sudo grub-pwchange">sudo
+grub-pwchange</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Password prompt.</p>
+<p>You'll be prompted to enter a password.</p>
+<ul>
+<li>To set the password: Type a password.</li>
+<li>To disable the GRUB bootloader password: Keep it empty, simply press
+enter.</li>
+</ul>
+<p><strong>Figure:</strong> <em>GRUB bootloader password prompt</em></p>
+<p><img src="../media/Bootloader-pass.png.webp" width="400" height="189" alt="bootloader-pass.png" /></p>
+<p>(We plan to update this screenshot to say "user".)</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+You'll be prompted to enter the same password again for
+verification.</p>
+<ul>
+<li>To set the password: Type the same password.</li>
+<li>To disable the GRUB bootloader password: Keep it empty, simply press
+enter.</li>
+</ul>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Result.</p>
+<p>Read the output of <code>grub-pwchange</code>. It will most likely
+report success.</p>
+<pre><code>/usr/sbin/grub-pwchange: SUCCESS: GRUB bootloader password for GRUB account &#39;user&#39; was set successfully in &#39;/etc/grub.d/44_password&#39;.</code></pre>
+<p>In case of issues, contact <a href="Support">Support</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Reboot.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">9</i>
+After selecting a boot option at GRUB boot menu, the user will be
+prompted for a username and password.</p>
+<ul>
+<li>username: <code>user</code></li>
+<li>password: The password that you have set using
+<code>grub-pwchange</code>.</li>
+</ul>
+<p>After entering the username, press enter. You'll be prompted for the
+password. After typing the password and pressing enter, the system
+should boot. If you're back to the GRUB boot menu, then either the
+username or password was typed incorrectly. There could also be issues
+with the keyboard layout.</p>
+<p>The username is always <code>user</code>. <sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">10</i>
+Done.</p>
+<p>The GRUB bootloader password has been configured.</p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h3 id="Simple">Simple</h3><span class="share-tooltip" data-anchor="Simple"><a class="headline-anchor" href="#Simple" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Simple">https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Simple</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Simple&amp;text=Simple" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Simple&amp;text=Simple" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Simple&amp;title=Simple" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Simple&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Simple" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Simple]Simple[/url]">[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Simple]Simple[/url]</span></span></span></span></div><div class="tcc-content"><p>This is the simplest way to set a GRUB password, assuming the user is
+named <code>user</code> and has root access. Using this method,
+<strong><u>all</u></strong> GRUB/boot menu entries will be locked behind
+a username and password.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Make sure <strong>grub-common</strong> is installed.</p>
+<p><span class="code-select" data-code="sudo apt update &amp;&amp; sudo apt install grub-common">sudo
+apt update &amp;&amp; sudo apt install grub-common</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Run the Grub password generator <a href="https://manpages.debian.org/stable/grub-common/grub-mkpasswd-pbkdf2.1.en.html">grub-mkpasswd-pbkdf2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://manpages.debian.org/stable/grub-common/grub-mkpasswd-pbkdf2.1.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+and enter the desired password that you wish to use.</p>
+<p><span class="code-select" data-code="grub-mkpasswd-pbkdf2">grub-mkpasswd-pbkdf2</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+The output will look similar to the following: (copy the part starting
+with <strong>grub.pbkdf2.sha512.10000.</strong>)</p>
+<p><code>PBKDF2 hash of your password is grub.pbkdf2.sha512.10000.</code></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Open the custom GRUB configuration file at
+<code>/etc/grub.d/40_custom</code> (using a text editor like nano).</p>
+<p><span class="code-select" data-code="sudo nano /etc/grub.d/40_custom">sudo
+nano /etc/grub.d/40_custom</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Add the necessary lines to the file, including the copied
+grub.pbkdf2.sha512.10000. along with the username of
+the machine (which is user in our case).</p>
+<p><span class="code-select" data-code="set superusers=&quot;user&quot;
+password_pbkdf2 user grub.pbkdf2.sha512.10000.&lt;hashed-password&gt;">set
+superusers="user" password_pbkdf2 user
+grub.pbkdf2.sha512.10000.&lt;hashed-password&gt;</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Save and exit the file, then update GRUB to apply the changes.</p>
+<p><span class="code-select" data-code="sudo update-grub">sudo
+update-grub</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Reboot. A prompt should appear if you press the <code>e</code> key,
+<code>Esc</code>, or if you want to run Kicksecure from the boot menu,
+asking for a username and password.</p>
+<p><img src="../media/Bootloader-pass.png.webp" width="400" height="189" alt="bootloader-pass.png" /></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Done.</p>
+<p>The GRUB bootloader password has been configured.</p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h3 id="Advanced">Advanced</h3><span class="share-tooltip" data-anchor="Advanced"><a class="headline-anchor" href="#Advanced" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Advanced">https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Advanced</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Advanced&amp;text=Advanced" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Advanced&amp;text=Advanced" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Advanced&amp;title=Advanced" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Advanced&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FProtection_Against_Physical_Attacks%23Advanced" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Advanced]Advanced[/url]">[url=https://www.kicksecure.com/wiki/Protection_Against_Physical_Attacks#Advanced]Advanced[/url]</span></span></span></span></div><div class="tcc-content"><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section active info-box"><div class="tcc-image"></div><div class="tcc-title"><h4 id="Separate_root_and_user">Separate root and user</h4></div><div class="tcc-content"><p>This is <a href="Unsupported">undocumented</a>.</p>
+<p><a href="https://www.gnu.org/software/grub/manual/grub/html_node/Authentication-and-authorisation.html">GRUB
+Authentication and Authorization</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.gnu.org/software/grub/manual/grub/html_node/Authentication-and-authorisation.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h4 id="Hide_the_Ability_to_Edit_Entries">Hide the Ability to Edit
+Entries</h4></div><div class="tcc-content">This is <a href="Unsupported">undocumented</a>.</div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"></div><div class="tcc-title"><h4 id="Disable_GRUB_to_show_advanced_entries_(like_recovery_mode)"><span id="Disable_GRUB_to_show_advanced_entries_.28like_recovery_mode.29"></span>Disable
+GRUB to show advanced entries (like recovery mode)</h4></div><div class="tcc-content">This is <a href="Unsupported">undocumented</a>.</div></div></p></div></div></div></div></p></div></div></p>
+<p>See also: <a href="Grub">GRUB</a></p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><i class="fa-solid fa-lock cs-green"></i></span>
+<strong>Note</strong>: <a href="About">Kicksecure</a>
+is an <a href="About#Implementation_of_the_Securing_Debian_Manual">Implementation of the Securing Debian Manual</a>.
+Specifically the feature you're reading about here is inspired by this
+chapter in the manual: <a href="https://www.debian.org/doc/manuals/securing-debian-manual/lilo-passwd.en.html">Set
+a (...) GRUB
+password</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/doc/manuals/securing-debian-manual/lilo-passwd.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup><img src="../media/Sdebian-logo.svg" alt="Sdebian-logo.svg" /></p>
+</div>
+<h1 id="Cold_Boot_Attacks">Cold Boot Attacks</h1>
+<p>Check <a href="Cold_Boot_Attack_Defense">Cold Boot
+Attack Defense</a> Section.</p>
+<h1 id="Evil_Maid_Attack">Evil Maid Attack</h1>
+<p>Check <a href="AEM">Anti Evil Maid</a> Section.</p>
+<h1 id="Problematic_Interfaces">Problematic Interfaces</h1>
+<p>There are a number of computer interfaces that pose the risk of a <a href="https://en.wikipedia.org/wiki/DMA_attack">direct memory access
+(DMA) attack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/DMA_attack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Potentially exploitable interfaces include
+ExpressCard, PCMCIA, FireWire, PCI, PCI Express or Thunderbolt.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" height="34" alt="Ambox_warning_pn.svg.png" /></span>
+High-speed expansion ports allow attackers to penetrate computers and
+other peripherals because the connected devices have direct hardware
+access to enable maximum throughput.</p>
+</div>
+<p>In practice, attached devices are permitted to read and write
+directly to memory, often without supervision of the operating system.
+This is in contrast to user-mode applications that are usually prevented
+from accessing memory locations that are not explicitly authorized by
+virtual memory controllers. <sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup></p>
+<p>A successful DMA attack on an unattended, live computer allows the
+adversary to: <sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-7-2" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup></p>
+<ul>
+<li>Access sensitive cryptographic material in memory.</li>
+<li>Circumvent FDE.</li>
+<li>Inject executable code.</li>
+<li>Partially or fully read the memory address space.</li>
+<li>Read documents, files or other digital traces present in
+memory.</li>
+<li>Take control of the entire system, for example via the network.</li>
+<li>Unlock screensavers without a passphrase.</li>
+</ul>
+<p>DMA attack software tools which mimic the <a href="https://en.wikipedia.org/wiki/FinFisher#FinFireWire">abilities of
+state-level adversaries</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/FinFisher#FinFireWire" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> are even available on <a href="https://github.com/carmaa/inception">GitHub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/carmaa/inception" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>!
+<sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup> Mitigating the threat of a DMA attack requires
+mostly physical security countermeasures; it is recommended to:</p>
+<ul>
+<li>Consider blocking or removing dangerous ports completely.</li>
+<li>Disable them in BIOS or UEFI.</li>
+<li>Never allow unknown and potentially malicious devices to be inserted
+into these ports. <sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup></li>
+<li>Securely configure these interfaces.</li>
+<li>Use <a href="https://en.wikipedia.org/wiki/Input%E2%80%93output_memory_management_unit">IOMMU</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Input%E2%80%93output_memory_management_unit" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+technology if available, along with software which supports it, like
+Qubes. <sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup></li>
+<li>Use Linux kernel options to disable DMA by Firewire devices. Package
+<a href="Security-misc">security-misc</a> is installed
+by default and implements this, see also <a href="https://github.com/Kicksecure/security-misc#disables-and-blacklists-kernel-modules">package
+description</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/security-misc#disables-and-blacklists-kernel-modules" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+</ul>
+<h1 id="Screen_Lock">Screen Lock</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" height="40" alt="Info" /></span>
+If a computer is left unattended, always lock the screen of the host or
+shut it down for greater security.</p>
+</div>
+<p>Locking the screen on the host prevents others from viewing or using
+the device. It is advisable to configure the screen to lock after a
+period of inactivity, and a <a href="Passwords#Generating_Unbreakable_Passwords">strong password</a> is recommended.</p>
+<ul>
+<li><strong>X11</strong>: Be aware that screen lockers provide <a href="https://blog.martin-graesslin.com/blog/2015/01/why-screen-lockers-on-x11-cannot-be-secure/">notoriously
+weak protection</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.martin-graesslin.com/blog/2015/01/why-screen-lockers-on-x11-cannot-be-secure/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, especially under X11. Do not overestimate their
+effectiveness. <sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup></li>
+<li><strong>Wayland</strong>: Screen locking under Wayland is
+theoretically more secure since the system will not unlock if the screen
+locker crashes, nor can sensitive information be easily displayed on top
+of the lock screen. <sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup></li>
+</ul>
+<p>To manually lock the screen: <sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup></p>
+<p><u>Linux</u>:</p>
+<ul>
+<li><code>Menu panel</code> &#8594; <code>Lock Screen</code>.</li>
+<li>Shortcuts vary depending on the desktop environment in use, such as
+GNOME, KDE, LXQt, and others.</li>
+</ul>
+<p><strong>Recommendations:</strong></p>
+<ul>
+<li>If using X11, do not enable <code>Alt + Ctrl + Backspace</code> to
+kill the X Server. Do not disable <code>DontZap</code> in the Xorg
+configuration. <sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup></li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>In Kicksecure 18 and higher, the default screenlocker is <a href="https://github.com/swaywm/swaylock">Swaylock</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/swaywm/swaylock" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Swaylock does
+not display a password prompt while the lock screen is active, and does
+not provide a traditional text box showing the length of the currently
+entered password. The lock screen is currently configured to look like
+the default wallpaper background. To unlock, type your password and
+press Enter. A circular indicator will appear on the screen to provide
+simple visual feedback as each character of the password is typed.</li>
+</ul>
+<h1 id="Sleep_Mode">Sleep Mode</h1>
+<p>Best avoided unless a screen lock is being used. See also above.</p>
+<h1 id="Virtual_Consoles">Virtual Consoles</h1>
+<p><img src="../media/Virtual_console.png.webp" alt="virtual console example" /></p>
+<p>Linux allows you to access a text-only user interface to the system
+by pressing a key combo like Ctrl+Alt+F1, Ctrl+Alt+F2, etc. These
+virtual consoles are not locked by the GUI screen locker, and do not
+automatically time out. If you use virtual consoles for any reason, you
+should always run <code>exit</code> to log out of the virtual console
+immediately after you are done using it. It's also advisable to check
+all virtual consoles and log out of them before leaving the system
+unattended. <sup id="cite_ref-18-2" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-20" class="reference"><a href="#cite_note-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup></p>
+<p>See also:</p>
+<ul>
+<li><a href="Desktop#Virtual_Consoles">virtual consoles
+usage instructions</a></li>
+<li><a href="Server_Security_Guide#User_Account_Password_Security">Server Security Guide, User Account Password
+Security</a></li>
+</ul>
+<h1 id="Login_Screen">Login Screen</h1>
+<p><img src="../media/Gui_login.png.webp" alt="graphical login screen (by login manager greetd + wlgreet)" /></p>
+<p><u>Host versus VMs:</u></p>
+<ul>
+<li><strong>Host operating system:</strong> A login screen can be useful
+if the user wants to require a password in order to log in to the
+system.</li>
+<li><strong>VMs:</strong> It is not very useful to enable a login screen
+inside VMs. If the host operating system (OS) is ever compromised, then
+any VMs it hosts are also effectively compromised. Therefore, if
+anything, it is much better to lock the host screen. See also <a href="#Screen_Lock">Screen Lock</a>.</li>
+</ul>
+<p><u>Note:</u></p>
+<ul>
+<li><strong>Login, yes:</strong> A login screen only protects the
+login.</li>
+<li><strong>Encryption, no:</strong> A login screen does not provide <a href="Full_Disk_Encryption">Full Disk Encryption
+(FDE)</a>!</li>
+</ul>
+<p>A login screen can be provided by a login manager. For example,
+greetd + wlgreet is the login manager used by default in Kicksecure.</p>
+<p>Kicksecure is configured by default to autologin. Hence, no login
+screen will be shown by default.</p>
+<p>To enable a login screen in Kicksecure, it is required to disable
+autologin. For instructions on how to do that, see <a href="Desktop#Disable_Autologin">disable
+autologin</a>.</p>
+<p>See also: <a href="Login">Login</a></p>
+<h1 id="Side_Channel_Attacks">Side Channel Attacks</h1>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" height="40" alt="Info" /></span>
+Kicksecure does not provide protection against most <a href="https://en.wikipedia.org/wiki/Side-channel_attack">side-channel
+attacks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Side-channel_attack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+</div>
+<p>Side-channel attacks are made possible by physical effects caused by
+cryptosystem operations (<em>on the side</em>) which provide extra
+information about system secrets like cryptographic keys, state
+information, or full/partial plaintexts. Wikipedia defines side-channel
+attacks as: <sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></p>
+<p><blockquote><p>...any attack based on information gained from the physical
+implementation of a cryptosystem, rather than brute force or theoretical
+weaknesses in the algorithms (compare cryptanalysis). For example,
+timing information, power consumption, electromagnetic leaks or even
+sound can provide an extra source of information, which can be exploited
+to break the system.</p></blockquote></p>
+<p>Side-channels emerge because computation takes place on a non-ideal
+system, composed of transistors, wires, power supplies, memory, and
+peripherals. Component characteristics vary with the instructions and
+data that are processed, allowing measurable variance to be used by
+attackers. <sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup></p>
+<table>
+<caption><em>Primary Side-channel Attack Classes</em>
+<sup id="cite_ref-21-2" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Attack Class</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Acoustic Cryptanalysis</p></td>
+<td><p>Sound produced during computation is used for attacks.</p></td>
+</tr>
+<tr class="even">
+<td><p>Cache Attacks</p></td>
+<td><p>Attackers monitor cache accesses made by the user in shared
+physical systems like virtualized environments or cloud
+services.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Data Remanence</p></td>
+<td><p>Sensitive data are read after supposedly being deleted.</p></td>
+</tr>
+<tr class="even">
+<td><p>Differential Fault Analysis</p></td>
+<td><p>Secrets are discovered by introducing faults in a
+computation.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Electromagnetic Attacks</p></td>
+<td><p>Leaked electromagnetic radiation allows attacks that can provide
+plaintexts and other information. Cryptographic keys can be inferred via
+this method; for example, see <a href="https://en.wikipedia.org/wiki/Tempest_(codename)">TEMPEST</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Tempest_(codename)" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p></td>
+</tr>
+<tr class="even">
+<td><p>Optical</p></td>
+<td><p>Secrets and sensitive data are read by visual recordings with a
+high resolution camera, or other devices.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Power-monitoring Attacks</p></td>
+<td><p>Attacks use measurements of varying hardware power consumption
+during computation.</p></td>
+</tr>
+<tr class="even">
+<td><p>Software-initiated Fault Attacks</p></td>
+<td><p><a href="https://en.wikipedia.org/wiki/Row_hammer">Row hammer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Row_hammer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+is an example of this attack, whereby off-limits memory is changed by
+rapidly accessing adjacent memory, leading to state retention
+loss.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Timing Attacks</p></td>
+<td><p>Attacks are based on measuring how long various computations take
+to perform, such as the attacker's password compared to the user's
+unknown one.</p></td>
+</tr>
+</tbody>
+</table>
+<p>While Kicksecure has tools related to side-channel attacks
+(security-misc; tirdad; sdwdate), in general it <em>cannot</em> provide
+protection against most classes, nor <a href="https://en.wikipedia.org/wiki/Hardware_keylogger">hardware
+keyloggers</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Hardware_keylogger" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, TEMPEST, miniature cameras, laser microphones and so on.
+Full disk encryption is also helpless against these attacks.</p>
+<p>For further reading on this complex topic, see <a href="https://owasp.org/www-pdf-archive/Side_Channel_Vulnerabilities.pdf">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://owasp.org/www-pdf-archive/Side_Channel_Vulnerabilities.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
+<a href="https://web.archive.org/web/20220801104851/http://gauss.ececs.uc.edu/Courses/C653/lectures/SideC/intro.pdf">here</a>
+and <a href="https://web.archive.org/web/20220909063101/https://scl.uconn.edu/courses/ece6095/lectures/side_channels.pdf">here</a>.</p>
+<h1 id="Hardware-based_Tampering_Protection">Hardware-based Tampering
+Protection</h1>
+<p>Many attacks are possible if a sufficiently sophisticated attacker is
+able to probe, modify, or directly access hardware interfaces inside a
+device. Many devices used within modern systems assume that they are
+operating in a trusted environment and thus make no or very little
+effort to secure or validate the origin of signals they send and
+receive. This means that if an attacker is able to sniff these signals
+or inject their own signals into the system, they can potentially
+compromise the machine and gain access to sensitive data such as
+encryption keys. <a href="https://www.youtube.com/watch?v=wTl4vEednkQ">This video</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.youtube.com/watch?v=wTl4vEednkQ" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+provides a good overview of an attack on a TPM chip that uses hardware
+tampering. The equipment necessary to carry out these attacks is not
+always expensive or difficult to use.</p>
+<p>Hardware-based tampering protection mechanisms attempt to detect when
+an attacker is tampering with the system, taking immediate measures to
+report or prevent the attack. These kinds of protections are generally
+integrated into computer hardware as part of the device, though there
+are exceptions. If your computer supports tampering protection, it will
+likely allow you to configure this protection in the BIOS settings. The
+exact steps to take to enable tampering protection will depend on your
+hardware.</p>
+<p>Some examples of tampering protection mechanisms:</p>
+<ul>
+<li>Enterprise-grade Dell hardware (e.g., Optiplex and Latitude
+machines) often features a <a href="https://www.youtube.com/watch?v=UQ-6rUPhBQQ">chassis intrusion
+switch</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.youtube.com/watch?v=UQ-6rUPhBQQ" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> that detects when the side panel is removed from the machine.
+<ul>
+<li>Depending on the machine, this switch may be configured to:
+<ul>
+<li>Log intrusion events in the BIOS.</li>
+<li>Beep very loudly when the machine is opened.</li>
+<li>Prevent the system from booting until an intrusion warning is
+cleared by an authorized user.</li>
+</ul></li>
+<li>A determined attacker may bypass the switch by cutting the cover
+open rather than removing it normally.</li>
+</ul></li>
+<li>Some HP machines include a feature called <a href="https://h20195.www2.hp.com/v2/getpdf.aspx/4AA7-8167ENW.pdf">TamperLock</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://h20195.www2.hp.com/v2/getpdf.aspx/4AA7-8167ENW.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>,
+which is similar to a chassis intrusion switch. In addition to blocking
+boot, TamperLock can clear the system's TPM when the cover is
+opened.</li>
+<li>The <a href="https://www.crowdsupply.com/design-shift/orwl">ORWL
+physically secure computer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.crowdsupply.com/design-shift/orwl" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> used a special wire mesh to detect any
+attempt to physically access the motherboard (including drilling or
+cutting the outer cover). When detected, the system would immediately
+wipe an internal encryption key used to protect the internal solid-state
+drive. ORWL machines are no longer produced.</li>
+<li>The <a href="https://www.physec.de/en/solutions/physec-seal/">PHYSEC
+SEAL</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.physec.de/en/solutions/physec-seal/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is a miniature radar device that can detect and report when a
+device is tampered with.</li>
+</ul>
+<h1 id="Malicious_Hardware_Modifications">Malicious Hardware
+Modifications</h1>
+<p>Hardware implants.</p>
+<p>Hardware Replacement or Modification: Attackers could replace
+hardware components, such as the keyboard, to capture passwords or
+encryption keys, bypassing the need for GRUB, <code>/boot</code>
+partition tampering by sniffing full disk decryption passwords.</p>
+<p>External:</p>
+<ul>
+<li><a href="https://hak5.org/products/lan-turtle">https://hak5.org/products/lan-turtle</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://hak5.org/products/lan-turtle" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p>Internal:</p>
+<ul>
+<li><a href="https://github.com/ufrisk/pcileech">https://github.com/ufrisk/pcileech</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/ufrisk/pcileech" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<div class="mininav">
+<ul>
+<li><a href="System_Configuration_and_Access">System
+Configuration and Access</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">Protection Against Physical Attacks</a></li>
+<li><a href="Hardware_Threat_Minimization">Hardware
+Threat Minimization</a></li>
+<li><a href="Full_Disk_Encryption">Full Disk
+Encryption</a></li>
+<li><a href="Virtualization_Platform_Security">Virtualization Platform Security</a></li>
+</ul>
+</div>
+<h1 id="Footnotes">Footnotes</h1>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/BIOS">https://en.wikipedia.org/wiki/BIOS</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/BIOS" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://web.archive.org/web/20220803213740/https://www.techwalla.com/articles/how-to-change-the-administrator-password-in-bios">https://web.archive.org/web/20220803213740/https://www.techwalla.com/articles/how-to-change-the-administrator-password-in-bios</a></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://web.archive.org/web/20210430031204/https://www.intowindows.com/how-to-set-bios-or-uefi-password-in-windows-10/">https://web.archive.org/web/20210430031204/https://www.intowindows.com/how-to-set-bios-or-uefi-password-in-windows-10/</a></span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">If the system has both a supervisor password and a user password,
+then set passwords for both.</span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Results in GRUB configuration file <code>/boot/grub/grub.cfg</code>
+to be appended with:
+<span class="code-select" data-code="sudo cat /boot/grub/grub.cfg">sudo
+cat /boot/grub/grub.cfg</span>
+<pre><code> ### BEGIN /etc/grub.d/44_password ### set superusers=&quot;user&quot; password_pbkdf2 user grub.pbkdf2.sha512.10000.password-hash-replaced ### END /etc/grub.d/44_password ### </code></pre></span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">This is hardcoded in the <code>grub-pwchange</code> script.</span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-7">1</a></sup> <sup><a href="#cite_ref-7-2">2</a></sup></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/DMA_attack">https://en.wikipedia.org/wiki/DMA_attack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/DMA_attack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://louwrentius.com/firewire-the-forgotten-security-risk.html">https://louwrentius.com/firewire-the-forgotten-security-risk.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://louwrentius.com/firewire-the-forgotten-security-risk.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><a href="#cite_ref-9" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://privatecore.com/resources-overview/physical-memory-attacks/index.html">https://privatecore.com/resources-overview/physical-memory-attacks/index.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://privatecore.com/resources-overview/physical-memory-attacks/index.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://web.archive.org/web/20170427144955/https://www.delaat.net/rp/2011-2012/p14/report.pdf">https://web.archive.org/web/20170427144955/https://www.delaat.net/rp/2011-2012/p14/report.pdf</a></span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><a href="#cite_ref-11" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">This is not an endorsement for the use of hacking tools.</span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">This is another reason why high-risk users should never leave their
+devices unattended.</span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">IOMMU maps device-visible virtual addresses to physical addresses.
+The security benefit is that devices that are passed through to guest
+virtualized machines -- AppVMs in Qubes -- are unable to access the
+host's physical memory. This makes DMA attacks against the host very
+difficult and can lead to memory corruption if attempted. Qubes OS
+automatically uses device passthrough to isolate USB controllers and
+network devices from the host, thus helping prevent these and other
+attacks. An IOMMU may also prevent DMA attacks from host devices (not
+passed through to a VM), although this is not necessarily guaranteed to
+work in all situations. See <a href="https://security.stackexchange.com/questions/176503/dma-attacks-despite-iommu-isolation">https://security.stackexchange.com/questions/176503/dma-attacks-despite-iommu-isolation</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://security.stackexchange.com/questions/176503/dma-attacks-despite-iommu-isolation" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Attacks that have bypassed screen lockers on most platforms can
+easily be found online.</span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><a href="#cite_ref-15" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">See also <a href="https://wayland.app/protocols/ext-session-lock-v1">Wayland,
+Session Lock</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wayland.app/protocols/ext-session-lock-v1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</span></li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.isunshare.com/windows-10/3-ways-to-lock-windows-10-computer.html">https://www.isunshare.com/windows-10/3-ways-to-lock-windows-10-computer.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.isunshare.com/windows-10/3-ways-to-lock-windows-10-computer.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><a href="#cite_ref-17" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://swissmacuser.ch/new-lock-screen-feature-in-macos-high-sierra/">https://swissmacuser.ch/new-lock-screen-feature-in-macos-high-sierra/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://swissmacuser.ch/new-lock-screen-feature-in-macos-high-sierra/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-18">1</a></sup> <sup><a href="#cite_ref-18-2">2</a></sup></span> <span class="reference-text"><a href="https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128">https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/screen-locker-in-security-can-we-disable-these-at-least-4-backdoors/8128" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.jwz.org/xscreensaver/faq.html">Quote from
+xscreensaver FAQ</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.jwz.org/xscreensaver/faq.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: <blockquote><p>Backdoor #1: Ctrl-Alt-Backspace This keystroke kills the X server,
+and on some systems, leaves you at a text console. If the user launched
+X11 manually, that text console will still be logged in. [...]</p></blockquote></span></li>
+<li id="cite_note-20"><span class="mw-cite-backlink"><a href="#cite_ref-20" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.jwz.org/xscreensaver/faq.html">Quote
+xscreensaver FAQ</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.jwz.org/xscreensaver/faq.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: <blockquote><p>Backdoor #2: Ctrl-Alt-F1, Ctrl-Alt-F2, etc. These keystrokes will
+switch to a different virtual console, while leaving the console that
+X11 is running on locked. If you left a shell logged in on another
+virtual console, it is unprotected. So don't leave yourself logged in on
+other consoles. You can disable VT switching globally and permanently by
+setting DontVTSwitch in your xorg.conf, but that might make your system
+harder to use.</p></blockquote></span></li>
+<li id="cite_note-21"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-21">1</a></sup> <sup><a href="#cite_ref-21-2">2</a></sup></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/Side-channel_attack">https://en.wikipedia.org/wiki/Side-channel_attack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Side-channel_attack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-22"><span class="mw-cite-backlink"><a href="#cite_ref-22" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="http://rootlabs.com/articles/IEEE_SideChannelAttacks.pdf">http://rootlabs.com/articles/IEEE_SideChannelAttacks.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/http://rootlabs.com/articles/IEEE_SideChannelAttacks.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ol>
+
+<h1 id="License">License</h1>
+<p><blockquote><p>Kicksecure Protection Against Physical Attacks wiki page Copyright
+(C) Amnesia <br />
+Kicksecure Protection Against Physical Attacks wiki page Copyright (C)
+2012 - 2026 ENCRYPTED SUPPORT LLC
+&lt;<span class="antispam-email-tooltip"><span class="robots-nocontent" data-nosnippet=""><code>adrelanos(at)kicksecure.com</code>
+(Replace <code>(at)</code> with
+<code>@</code>.)<span class="tooltip"><span>Please <strong>DO
+NOT</strong> use e-mail for one of the following
+reasons:</span><span class="icon-bullet-list"><span><i class="fa-solid fa-lock cs-yellow"></i><span><u>Private Contact:</u> Please avoid e-mail whenever possible. (<a href="Contact#Private_Communications_Policy">Private
+Communications Policy</a>)</span></span><span><i class="fas fa-headset cs-red"></i><span><u>User Support Questions:</u> No. (See <a href="Support">Support</a>.)</span></span><span><i class="fa-solid fa-droplet cs-red"></i><span><u>Leaks Submissions:</u> No. (<a href="Contact#No_Leaks_Policy">No Leaks Policy</a>)</span></span><span><i class="fa-solid fa-ban cs-red"></i><span><u>Sponsored posts:</u> No.</span></span><span><i class="fa-solid fa-link cs-red"></i><span><u>Paid links:</u> No.</span></span><span><i class="fa-solid fa-chart-line cs-red"></i><span><u>SEO reviews:</u> No.</span></span><span><i class="fa-solid fa-bullhorn cs-red"></i><span><u>Advertisement deals:</u> No.</span></span><span><i class="fa-solid fa-box-open cs-red"></i><span><u>Default application installation:</u> No. (<a href="Contact#Default_Application_Policy">Default
+Application Policy</a>)</span></span></span></span></span>&gt;</p>
+<p>This program comes with ABSOLUTELY NO WARRANTY; for details see the
+wiki source code.<br />
+This is free software, and you are welcome to redistribute it under
+certain conditions; see the wiki source code for details.</p></blockquote></p>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Operating_System_Hardening" title="Operating System Hardening"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Operating
+System
+Hardening</span></a><a class="index internal" href="Documentation" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="Vm-app-manager" title="sandbox-app-launcher"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">sandbox-app-launcher</span></a><span class="info"><span class="prev">Previous
+page: Operating System Hardening</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+sandbox-app-launcher</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="Terms_of_Service">Terms of Service</a></li><li><a href="Privacy_Policy">Privacy Policy</a></li><li><a href="Cookie_Policy">Cookie Policy</a></li><li><a href="E-Sign_Consent">E-Sign Consent</a></li><li><a href="Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy">Privacy Policy</a>, <a href="Cookie_Policy">Cookie Policy</a>, <a href="Terms_of_Service">Terms of Service</a>, and <a href="E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../search-index.js" defer></script>
+<script src="../page-previews.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

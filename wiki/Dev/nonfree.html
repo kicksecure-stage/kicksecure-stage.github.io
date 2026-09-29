@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Non-Freedom Firmware and Drivers</title>
+<meta name="description" content="This page discusses the security arguments for and against shipping non-freedom firmware blobs and drivers.">
+<meta property="og:description" content="This page discusses the security arguments for and against shipping non-freedom firmware blobs and drivers.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/nonfree">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/nonfree">
+<meta property="og:title" content="Non-Freedom Firmware and Drivers">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="../Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download">Download</a><ul class="nav-submenu"><li><a href="../ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="../USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="../Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="../ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="../Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="../PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="../VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="../MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="../Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="../VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="../Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="../KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="../Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="../Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About">About</a><ul class="nav-submenu"><li><a href="../About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="../Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="../What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="../Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="../Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation">Docs</a><ul class="nav-submenu"><li><a href="../Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="../FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="../Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="../Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="../Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="../Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="../Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="../Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="../Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="../Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Dev%2Fnonfree.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Dev%2Fnonfree.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Dev/nonfree" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Dev/nonfree|Non-Freedom Firmware and Drivers]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[Non-Freedom Firmware and Drivers](https://www.kicksecure.com/wiki/Dev/nonfree)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Dev/nonfree]Non-Freedom Firmware and Drivers[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree&amp;text=Non-Freedom%20Firmware%20and%20Drivers" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree&amp;text=Non-Freedom%20Firmware%20and%20Drivers" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree&amp;title=Non-Freedom%20Firmware%20and%20Drivers" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree&amp;summary=Non-Freedom%20Firmware%20and%20Drivers" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree&amp;t=Non-Freedom%20Firmware%20and%20Drivers" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=Non-Freedom%20Firmware%20and%20Drivers%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=Non-Freedom%20Firmware%20and%20Drivers&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="../Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="../Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div><span class="dev-zone-badge">Developer Zone</span></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="RAM_Wipe" title="Dev/RAM Wipe"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/RAM
+Wipe</span></a><a class="index internal" href="../Design" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="filesystem" title="Dev/filesystem"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/filesystem</span></a><span class="info"><span class="prev">Previous
+page: Dev/RAM Wipe</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/filesystem</span></span></span><h1 id="firstHeading">Non-Freedom Firmware and Drivers</h1></div>
+<div class="mininav">
+<ul>
+<li><hr />
+<p><a href="../Policy_On_Nonfreedom_Software">Kicksecure
+Policy on Non-Freedom Software</a></p></li>
+<li><hr />
+<p><a href="../Reasons_for_Freedom_Software">Why
+Kicksecure is Freedom Software</a></p></li>
+<li><hr />
+<p><a href="../Avoid_nonfreedom_software">Avoid
+Non-Freedom Software</a></p></li>
+<li><hr />
+<p><a href="../Miscellaneous_Threats_to_User_Freedom">Miscellaneous Threats to User Freedom</a></p></li>
+<li><hr />
+<p><a class="mw-selflink selflink" aria-current="page">Non-Freedom Firmware, CPU
+Microcode and Drivers</a></p></li>
+</ul>
+</div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>This page discusses the security arguments for and against shipping
+non-freedom firmware blobs and drivers.</p>
+<div class="post-intro-p">
+</div>
+<table>
+<thead>
+<tr class="header">
+<th><p>Logo</p></th>
+<th><p>Architecture Family</p></th>
+<th><p>Sub-architectures</p></th>
+<th><p>Official binary images available</p></th>
+<th><p>Official binary images: no non-freedom firmware installed by
+default</p></th>
+<th><p>Builds from source possible</p></th>
+<th><p>Source builds: freedom setting</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><img src="../../media/Intel-amd-combi-logo.svg" width="50" alt="Intel-amd-combi-logo.svg" /></p></td>
+<td><p><a href="../Intel_AMD64">Intel / AMD64</a></p></td>
+<td><p><code>amd64</code></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No. Non-freedom firmware is installed by
+default.</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="even">
+<td><p><img src="../../media/Arm64-logo.svg" width="50" alt="Arm64-logo.svg" /></p></td>
+<td><p><a href="../ARM64">ARM</a></p></td>
+<td><p><code>armel</code>, <code>armhf</code>,
+<code>arm64</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><img src="../../media/Raspberry-pi-logo.svg" width="50" alt="raspberry-pi-logo.svg" /></p></td>
+<td><p><a href="../Raspberry_Pi">Raspberry Pi
+(RPi)</a></p></td>
+<td><p><code>armhf</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="even">
+<td><p><img src="../../media/Ppc64-logo.svg" width="50" alt="Ppc64-logo.svg" /></p></td>
+<td><p><a href="../PPC64">Power</a></p></td>
+<td><p><code>ppc64el</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><img src="../../media/Riscv64-logo.svg" width="50" alt="Riscv64-logo.svg" /></p></td>
+<td><p><a href="../RISCV64">RISCV</a></p></td>
+<td><p><code>riscv64</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="even">
+<td><p><img src="../../media/Apple-with-intel-logo.jpg.webp" width="50" height="56" alt="Apple-with-intel-logo.jpg" /></p></td>
+<td><p><a href="../MacOS#Intel-based_MacBook">Intel-based
+Mac</a></p></td>
+<td><p><code>amd64</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="odd">
+<td><p><img src="../../media/Apple-mx-logo.jpg.webp" width="50" height="56" alt="Apple-mx-logo.jpg" /></p></td>
+<td><p><a href="../MacOS#Apple_Silicon">Apple Silicon
+Mac</a></p></td>
+<td><p><code>arm64</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="even">
+<td><p><img src="../../media/Logo-apple-500x500.png.webp" width="50" height="50" alt="Logo-apple-500x500.png" /></p></td>
+<td><p><a href="../MacOS">Apple Mac (Generic)</a></p></td>
+<td><p><code>amd64</code>, <code>arm64</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p>IBM System/390</p></td>
+<td><p><code>s390x</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><p>MIPS</p></td>
+<td><p><code>mipsel</code>, <code>mips64el</code></p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>N/A</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>Mandatory choice: <code>--freedom true</code> /
+<code>--freedom false</code></p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td><p><code>i386</code></p></td>
+<td><p><a href="../Unsupported">Unsupported</a></p></td>
+<td><p><a href="../Unsupported">Unsupported</a></p></td>
+<td><p><a href="../Unsupported">Unsupported</a></p></td>
+<td><p><a href="../Unsupported">Unsupported</a></p></td>
+</tr>
+</tbody>
+</table>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Table_Addendum"><span class="tocnumber">1</span> <span class="toctext">Table Addendum</span></a></li><li class="toc-l1"><a href="#Nonfree_Firmware"><span class="tocnumber">2</span> <span class="toctext">Nonfree Firmware</span></a></li><li class="toc-l2"><a href="#Security_Argument"><span class="tocnumber">2.1</span> <span class="toctext">Security Argument</span></a></li><li class="toc-l2"><a href="#Other_Projects"><span class="tocnumber">2.2</span> <span class="toctext">Other Projects</span></a></li><li class="toc-l3"><a href="#Debian"><span class="tocnumber">2.2.1</span> <span class="toctext">Debian</span></a></li><li class="toc-l3"><a href="#Tails_-_The_Amnesic_Incognito_Live_System_-_Position"><span class="tocnumber">2.2.2</span> <span class="toctext">Tails - The Amnesic Incognito Live System - Position</span></a></li><li class="toc-l3"><a href="#Qubes"><span class="tocnumber">2.2.3</span> <span class="toctext">Qubes</span></a></li><li class="toc-l2"><a href="#Argument_of_Negative_Adaption"><span class="tocnumber">2.3</span> <span class="toctext">Argument of Negative Adaption</span></a></li><li class="toc-l2"><a href="#Overview_of_Arguments"><span class="tocnumber">2.4</span> <span class="toctext">Overview of Arguments</span></a></li><li class="toc-l2"><a href="#Comparison_Table"><span class="tocnumber">2.5</span> <span class="toctext">Comparison Table</span></a></li><li class="toc-l2"><a href="#Kicksecure_Lead_Developer_Position"><span class="tocnumber">2.6</span> <span class="toctext">Kicksecure Lead Developer Position</span></a></li><li class="toc-l2"><a href="#Overview_of_Packages"><span class="tocnumber">2.7</span> <span class="toctext">Overview of Packages</span></a></li><li class="toc-l1"><a href="#Nonfree_Drivers"><span class="tocnumber">3</span> <span class="toctext">Nonfree Drivers</span></a></li><li class="toc-l1"><a href="#Forum_Discussion"><span class="tocnumber">4</span> <span class="toctext">Forum Discussion</span></a></li><li class="toc-l1"><a href="#See_Also"><span class="tocnumber">5</span> <span class="toctext">See Also</span></a></li><li class="toc-l1"><a href="#Footnotes"><span class="tocnumber">6</span> <span class="toctext">Footnotes</span></a></li></ul></nav><h1 id="Table_Addendum">Table Addendum</h1>
+<ul>
+<li>Builds from source code: <code>derivative-maker</code> <a href="https://github.com/Kicksecure/derivative-maker/blob/master/build-steps.d/2800_create-lb-iso">build-steps.d/2800_create-lb-iso</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/derivative-maker/blob/master/build-steps.d/2800_create-lb-iso" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+works on an opt-in basis. Starting from version <code>18.0.7.7</code>,
+when attempting to build an ISO, choosing between
+<code>--freedom true</code> (no non-freedom firmware, install Freedom
+Software only) and <code>--freedom false</code> (install non-freedom
+firmware by default) is mandatory.</li>
+<li>Downloadable images: If the architecture supports
+<code>firmware-nonfreedom</code>, it is installed by default. At the
+time of writing, only on the Intel / AMD64 architecture is
+<code>firmware-nonfreedom</code> installed by default, which is useful
+due to <a href="../Firmware_Security_and_Updates#Processor_Microcode_Updates">Processor Microcode Updates</a>.</li>
+<li>Generally: <code>amd-microcode</code> / <code>intel-microcode</code>
+are unavailable and cannot be installed as packages for architectures
+such as <code>arm64</code>, <code>riscv64</code>, and others, and are
+not needed there either.</li>
+</ul>
+<h1 id="Nonfree_Firmware">Nonfree Firmware</h1>
+<h2 id="Security_Argument">Security Argument</h2><span class="share-tooltip" data-anchor="Security_Argument"><a class="headline-anchor" href="#Security_Argument" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Security_Argument">https://www.kicksecure.com/wiki/Dev/nonfree#Security_Argument</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Security_Argument&amp;text=Security%20Argument" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Security_Argument&amp;text=Security%20Argument" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Security_Argument&amp;title=Security%20Argument" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Security%20Argument&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Security_Argument" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Security_Argument]Security Argument[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Security_Argument]Security Argument[/url]</span></span></span></span>
+<p>On the Tails issue tracker there is an <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5393">interesting
+discussion about shipping nonfree firmware blobs</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/5393" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Most convincing
+arguments start in <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5393#note_117229">comment
+11</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/5393#note_117229" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
+<p>It talks about <a href="https://packages.debian.org/trixie/firmware-linux-nonfree">https://packages.debian.org/trixie/firmware-linux-nonfree</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/trixie/firmware-linux-nonfree" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p>Bold / italic added.</p>
+<p><blockquote><p>There is no evidence that anything in the Linux kernel is spyware.
+The firmware blobs are loaded into devices which need them to function.
+The alternative is for them to be present in the device from the
+beginning, as I explain later.</p>
+<p><blockquote><p>Here, for example, almost a year ago, all you summarily refused to
+discuss this issue:<br />
+<a href="https://web.archive.org/web/20210416183217/https://mailman.boum.org/pipermail/tails-support/2016-March/000345.html">https://web.archive.org/web/20210416183217/https://mailman.boum.org/pipermail/tails-support/2016-March/000345.html</a></p></blockquote></p></blockquote></p>
+<p><blockquote><p>In that thread, you linked to a paper on DMA malware. Note that the
+blobs in question are typically firmware for PCI devices, usually NICs.
+DMA malware works by abusing the bus master bit and becoming bus master,
+allowing DMA requests. Most modern UEFI/BIOS come with ACPI tables built
+in, which contains one table, the DMAR table, which can be used by the
+IOMMU to restrict the addresses a device with bus master is allowed to
+access. If you boot with `intel_iommu=on` or `amd_iommu=force` , and
+your DMAR table is valid, then DMA malware, if it is loaded after the
+IOMMU enforces its restrictions, is effectively crippled. Tails
+unfortunately does not enable the IOMMU by default, as it breaks a lot
+of hardware with broken DMAR tables (BIOS vendors suck, don't they?),
+but it's trivial to enable it yourself.</p></blockquote></p>
+<p><blockquote><p><strong>Being free software, and being endorsed by the Free Software
+Foundation are different things.</strong> By many definitions, something
+can still be FOSS even if it distributes blobs which run on NICs for
+example, as long as those blobs do not run on the CPU alongside the
+kernel. <strong>In the case that they run as firmware, they are
+effectively no different than an updatable ROM.</strong> <em>If you
+select an FSF-endorsed distro, you are still running the same type of
+blob.</em> <strong>The only difference is that it is bunt into your
+hardware, not in the kernel.</strong> <strong>If there is a backdoor, as
+you worry about, it will not be neutered just because it is distributed
+through a ROM rather than loaded by the kernel.</strong> If anything,
+loading through the kernel is safer, because people are more willing to
+reverse engineer it or audit it (yes, closed source blobs <em>can</em>
+be reverse engineered and audited), whereas something burnt into a ROM
+will likely never be touched.</p></blockquote></p>
+<p><blockquote><p>That is primarily due to philosophical reasons, and possibly
+misunderstandings. <strong>I can completely understand the philosophical
+ideology</strong> behind "Fine, let the hardware manufacturers
+distribute the blobs, but I don't want <em>my</em> distro to take part
+in it at all!", <strong>but you'd be deluding yourself to say that it
+improves your security.</strong> The only way to improve your security
+(or at least the openness of the whole software ecosystem) is to get the
+firmware/ROM source to be open, not simply be content with it being
+burnt into your hardware.</p></blockquote></p>
+<p><blockquote><p>But in the end, if you're really worried about covert backdoors on
+this level, why are you singling out what really amounts to just NIC
+firmware, most of which boils down to just a few brands? There's so much
+more which puts people at risk if an adversary with these capabilities
+is after them. After all, the Linux kernel is huge, takes patches from
+many people, and is poorly audited. Adding a mistake (bugdoor) would not
+be hard. I don't mean something obvious like `if (uid = 0)` from the old
+`wait4()` backdoor attempt either. There's also the fact that, no matter
+how open your software is, you're running on entirely closed hardware.
+Who cares about the Intel Manageability Engine or the Embedded
+Controller Firmware when the entirety of the immensely complex processor
+is closed.</p></blockquote></p>
+<p><blockquote><p>Now start porting Tails to seL4 or INTEGRITY-178B, and run it
+entirely on OpenSPARC, and then you can be happy. :P</p></blockquote></p>
+<p><blockquote><p>But seriously though, if you're this passionate about this, learn how
+to use `r2` and get to reverse engineering those blobs.</p></blockquote></p>
+<p><blockquote><p><strong>Not distributing firmware in the kernel does <em>not</em>
+affect the risk of "spyware" whatsoever. If there is going to be a
+backdoor, it can also exist burnt into the ROM.</strong> <em>Not having
+firmware blobs in the kernel does not mean they do not still exist. It
+just means they are distributed in a different way.</em> Do you think
+that a Realtek NIC that does not need uploaded firmware, but does use a
+burnt in ROM, cannot have a backdoor in its built in firmware, but a
+Broadcom NIC that requires firmware and does not use burnt in ROM
+can?</p></blockquote></p>
+<p><blockquote><p><strong>Furthermore, all the blobs in the kernel are only loaded for
+the people who are using the specific hardware which requires
+it.</strong> <em>If you are not using the tg3 driver, you will not be
+loading the tg3 firmware.</em> So if someone uses tg3, they will not be
+able to use a "libre" Tails. If someone uses r8192, they won't be using
+firmware blobs for their NIC regardless of whether they use a "libre"
+Tails or current Tails. <strong>Simply put, people who do not use
+blob-requiring hardware will not be using blobs, regardless.</strong>
+<strong>People who do need blobs will either be using
+<em>nothing</em></strong> , or an NIC that loads blobs. Those people are
+screwed anyway, whereas people who are using NICs which don't need blobs
+don't have to worry.</p></blockquote></p>
+<h2 id="Other_Projects">Other Projects</h2><span class="share-tooltip" data-anchor="Other_Projects"><a class="headline-anchor" href="#Other_Projects" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Other_Projects">https://www.kicksecure.com/wiki/Dev/nonfree#Other_Projects</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Other_Projects&amp;text=Other%20Projects" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Other_Projects&amp;text=Other%20Projects" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Other_Projects&amp;title=Other%20Projects" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Other%20Projects&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Other_Projects" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Other_Projects]Other Projects[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Other_Projects]Other Projects[/url]</span></span></span></span>
+<h3 id="Debian">Debian</h3><span class="share-tooltip" data-anchor="Debian"><a class="headline-anchor" href="#Debian" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Debian">https://www.kicksecure.com/wiki/Dev/nonfree#Debian</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Debian&amp;text=Debian" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Debian&amp;text=Debian" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Debian&amp;title=Debian" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Debian&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Debian" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Debian]Debian[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Debian]Debian[/url]</span></span></span></span>
+<p>Debian official image nowadays includes non-freedom firmware.</p>
+<p><blockquote><p>The Debian official media may include firmware that is otherwise not
+part of the Debian system to enable use of Debian with hardware that
+requires such firmware.<span class="blockquote-context"><a href="https://www.debian.org/vote/2022/vote_003#texte">https://www.debian.org/vote/2022/vote_003#texte</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/vote/2022/vote_003#texte" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p><blockquote><p>The winners</p>
+<p>Option 5 "Change SC for non-free firmware in installer, one
+installer"<span class="blockquote-context"><a href="https://www.debian.org/vote/2022/vote_003#outcome">https://www.debian.org/vote/2022/vote_003#outcome</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.debian.org/vote/2022/vote_003#outcome" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></p>
+<p>Note: SC stands for the Debian Social Contract.</p>
+<p>Sources:</p>
+<ul>
+<li><a href="https://lwn.net/Articles/910065/">https://lwn.net/Articles/910065/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lwn.net/Articles/910065/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.tomshardware.com/news/debian-includes-proprietary-code">https://www.tomshardware.com/news/debian-includes-proprietary-code</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.tomshardware.com/news/debian-includes-proprietary-code" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/">https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h3 id="Tails_-_The_Amnesic_Incognito_Live_System_-_Position">Tails -
+The Amnesic Incognito Live System - Position</h3><span class="share-tooltip" data-anchor="Tails_-_The_Amnesic_Incognito_Live_System_-_Position"><a class="headline-anchor" href="#Tails_-_The_Amnesic_Incognito_Live_System_-_Position" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Tails_-_The_Amnesic_Incognito_Live_System_-_Position">https://www.kicksecure.com/wiki/Dev/nonfree#Tails_-_The_Amnesic_Incognito_Live_System_-_Position</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Tails_-_The_Amnesic_Incognito_Live_System_-_Position&amp;text=Tails%20-%0AThe%20Amnesic%20Incognito%20Live%20System%20-%20Position" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Tails_-_The_Amnesic_Incognito_Live_System_-_Position&amp;text=Tails%20-%0AThe%20Amnesic%20Incognito%20Live%20System%20-%20Position" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Tails_-_The_Amnesic_Incognito_Live_System_-_Position&amp;title=Tails%20-%0AThe%20Amnesic%20Incognito%20Live%20System%20-%20Position" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Tails%20-%0AThe%20Amnesic%20Incognito%20Live%20System%20-%20Position&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Tails_-_The_Amnesic_Incognito_Live_System_-_Position" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Tails_-_The_Amnesic_Incognito_Live_System_-_Position]Tails -
+The Amnesic Incognito Live System - Position[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Tails_-_The_Amnesic_Incognito_Live_System_-_Position]Tails -
+The Amnesic Incognito Live System - Position[/url]</span></span></span></span>
+<p>Tails developer intrigeri <a href="https://web.archive.org/web/20210416180924/https://mailman.boum.org/pipermail/tails-support/2016-March/000347.html">wrote</a>:</p>
+<p><blockquote><p>We have actual users. If they can't use Tails on their current,
+real-world hardware, then likely they'll use something else, that has
+just the same amount of binary firmware blobs, except it won't have any
+of Tails properties that some people find worthwhile.</p></blockquote></p>
+<h3 id="Qubes">Qubes</h3><span class="share-tooltip" data-anchor="Qubes"><a class="headline-anchor" href="#Qubes" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Qubes">https://www.kicksecure.com/wiki/Dev/nonfree#Qubes</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Qubes&amp;text=Qubes" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Qubes&amp;text=Qubes" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Qubes&amp;title=Qubes" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Qubes&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Qubes" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Qubes]Qubes[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Qubes]Qubes[/url]</span></span></span></span>
+<ul>
+<li><a href="https://www.qubes-os.org/faq/#is-qubes-os-free-and-open-source-software">https://www.qubes-os.org/faq/#is-qubes-os-free-and-open-source-software</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.qubes-os.org/faq/#is-qubes-os-free-and-open-source-software" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.qubes-os.org/faq/#will-qubes-seek-to-get-certified-under-the-gnu-free-system-distribution-guidelines-gnu-fsdg">https://www.qubes-os.org/faq/#will-qubes-seek-to-get-certified-under-the-gnu-free-system-distribution-guidelines-gnu-fsdg</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.qubes-os.org/faq/#will-qubes-seek-to-get-certified-under-the-gnu-free-system-distribution-guidelines-gnu-fsdg" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forum.qubes-os.org/t/qubes-debian-templates-have-non-free-contrib-apt-by-default/13035/103">https://forum.qubes-os.org/t/qubes-debian-templates-have-non-free-contrib-apt-by-default/13035/103</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forum.qubes-os.org/t/qubes-debian-templates-have-non-free-contrib-apt-by-default/13035/103" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h2 id="Argument_of_Negative_Adaption">Argument of Negative
+Adaption</h2><span class="share-tooltip" data-anchor="Argument_of_Negative_Adaption"><a class="headline-anchor" href="#Argument_of_Negative_Adaption" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Argument_of_Negative_Adaption">https://www.kicksecure.com/wiki/Dev/nonfree#Argument_of_Negative_Adaption</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Argument_of_Negative_Adaption&amp;text=Argument%20of%20Negative%0AAdaption" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Argument_of_Negative_Adaption&amp;text=Argument%20of%20Negative%0AAdaption" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Argument_of_Negative_Adaption&amp;title=Argument%20of%20Negative%0AAdaption" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Argument%20of%20Negative%0AAdaption&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Argument_of_Negative_Adaption" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Argument_of_Negative_Adaption]Argument of Negative
+Adaption[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Argument_of_Negative_Adaption]Argument of Negative
+Adaption[/url]</span></span></span></span>
+<p>I believe that negative publicity can still generate attention and
+attract new users. In fact, bad news is often better than no news at
+all. This is particularly true for Kicksecure, which is still far from
+reaching its maximum popularity and user base.</p>
+<p>It is worth noting that Ubuntu has faced bad publicity due to its
+nonfree practices in the past, such as <a href="https://www.networkworld.com/article/2226367/making-sense-of-the-ubuntu-licensing-fiasco.html">requiring
+Linux Mint to sign a license contract with Canonical</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.networkworld.com/article/2226367/making-sense-of-the-ubuntu-licensing-fiasco.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="https://www.eff.org/deeplinks/2012/10/privacy-ubuntu-1210-amazon-ads-and-data-leaks">introducing
+the Amazon search lens and data leaks</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.eff.org/deeplinks/2012/10/privacy-ubuntu-1210-amazon-ads-and-data-leaks" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. Despite this, Ubuntu remains
+the most popular Linux distribution.</p>
+<p>Similarly, Tails, another popular privacy-oriented operating system,
+includes firmware-linux-nonfree by default, but this decision did not
+significantly decrease its user base. The criticism was limited to a
+small number of users who expressed their concerns on the Tails issue
+tracker and mailing list several years ago.</p>
+<h2 id="Overview_of_Arguments">Overview of Arguments</h2><span class="share-tooltip" data-anchor="Overview_of_Arguments"><a class="headline-anchor" href="#Overview_of_Arguments" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Arguments">https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Arguments</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Arguments&amp;text=Overview%20of%20Arguments" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Arguments&amp;text=Overview%20of%20Arguments" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Arguments&amp;title=Overview%20of%20Arguments" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Overview%20of%20Arguments&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Arguments" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Arguments]Overview of Arguments[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Arguments]Overview of Arguments[/url]</span></span></span></span>
+<p>The stance against non-freedom blobs can be argued from multiple
+perspectives.</p>
+<ul>
+<li><strong>A)</strong> <u>The security argument:</u> which was refuted
+above.</li>
+<li><strong>B)</strong> <u>The philosophical argument:</u> a stance
+against ever including any kind of non-freedom software. This is based
+on striving to be the best possible Freedom Software vendor.</li>
+<li><strong>C)</strong> <u>Argument of negative adaption:</u> the claim
+that the number of users would decrease due to fallout from being
+associated with non-freedom software, resulting in bad reputation, word
+of mouth, and negative media coverage.</li>
+</ul>
+<h2 id="Comparison_Table">Comparison Table</h2><span class="share-tooltip" data-anchor="Comparison_Table"><a class="headline-anchor" href="#Comparison_Table" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Comparison_Table">https://www.kicksecure.com/wiki/Dev/nonfree#Comparison_Table</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Comparison_Table&amp;text=Comparison%20Table" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Comparison_Table&amp;text=Comparison%20Table" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Comparison_Table&amp;title=Comparison%20Table" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Comparison%20Table&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Comparison_Table" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Comparison_Table]Comparison Table[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Comparison_Table]Comparison Table[/url]</span></span></span></span>
+<table>
+<caption><em>Comparison Table - <code>(non)</code><a href="../Open_Source_Hardware"><code>Freedom Hardware Design</code></a> vs
+<code>(non)Freedom Firmware</code> installed</em></caption>
+<tbody>
+<tr class="odd">
+<td><p><strong>Thing</strong></p></td>
+<td><p><strong><a href="../Avoid_nonfreedom_software"><code>nonfreedom</code></a><code> hardware design</code>
+with <code>nonfreedom firmware</code> installed</strong></p></td>
+<td><p><strong><code>nonfreedom hardware design</code> <u>without</u>
+<code>nonfreedom firmware</code> installed</strong></p></td>
+<td><p><strong><code>Freedom Hardware Design</code> with
+<code>nonfreedom firmware</code> installed</strong></p></td>
+<td><p><strong><code>Freedom Hardware Design</code> <u>without</u>
+<code>nonfreedom firmware</code> installed</strong></p></td>
+</tr>
+<tr class="even">
+<td><p>built-in provided <code>nonfreedom firmware</code> blobs not
+active in kernel (security argument)</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-1-2" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p><code>nonfreedom firmware</code> package-provided
+<code>nonfreedom firmware</code> blobs not active in kernel (security
+argument)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>no <code>nonfreedom software</code> active (security
+argument)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>boot medium entirely clean from <code>nonfreedom software</code>
+(philosophical argument)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>system entirely clean from <code>nonfreedom software</code>
+(philosophical argument)</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Kicksecure_Lead_Developer_Position">Kicksecure Lead Developer
+Position</h2><span class="share-tooltip" data-anchor="Kicksecure_Lead_Developer_Position"><a class="headline-anchor" href="#Kicksecure_Lead_Developer_Position" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Kicksecure_Lead_Developer_Position">https://www.kicksecure.com/wiki/Dev/nonfree#Kicksecure_Lead_Developer_Position</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Kicksecure_Lead_Developer_Position&amp;text=Kicksecure%20Lead%20Developer%0APosition" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Kicksecure_Lead_Developer_Position&amp;text=Kicksecure%20Lead%20Developer%0APosition" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Kicksecure_Lead_Developer_Position&amp;title=Kicksecure%20Lead%20Developer%0APosition" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Kicksecure%20Lead%20Developer%0APosition&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Kicksecure_Lead_Developer_Position" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Kicksecure_Lead_Developer_Position]Kicksecure Lead Developer
+Position[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Kicksecure_Lead_Developer_Position]Kicksecure Lead Developer
+Position[/url]</span></span></span></span>
+<p>Some people argue that it's better to ship something broken,
+insecure, or unusable for most users than to compromise on Freedom
+Software principles. While I believe in the importance of Free Software,
+I don't think it's practical to adhere to these principles to the point
+of sacrificing usability and functionality.</p>
+<p>That said, I'm not a non-freedom software minimalist like RMS, nor am
+I a Freedom Software maximalist like RMS. I believe in finding a
+practical balance between the two.</p>
+<p>Therefore, when considering practicality vs. Freedom Software
+principles, I've decided that <code>firmware-linux-nonfree</code> will
+be installed by default on Kicksecure Host. This decision ensures that
+our users have a better out-of-the-box experience and that we can
+support a wider range of hardware.</p>
+<p>However, it is understood that some users may prefer a completely
+Free Software system. That's why Kicksecure's build script supports
+command-line parameters <code>--freedom true</code> to skip the
+installation of any non-freedom software, making it easy to create
+custom builds or forks that adhere to Freedom Software principles.</p>
+<h2 id="Overview_of_Packages">Overview of Packages</h2><span class="share-tooltip" data-anchor="Overview_of_Packages"><a class="headline-anchor" href="#Overview_of_Packages" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Packages">https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Packages</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Packages&amp;text=Overview%20of%20Packages" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Packages&amp;text=Overview%20of%20Packages" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Packages&amp;title=Overview%20of%20Packages" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Overview%20of%20Packages&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2Fnonfree%23Overview_of_Packages" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Packages]Overview of Packages[/url]">[url=https://www.kicksecure.com/wiki/Dev/nonfree#Overview_of_Packages]Overview of Packages[/url]</span></span></span></span>
+<p>These will not be all shipped in Kicksecure. This is only a notepad
+for developers to decide which packages to ship and which ones not.</p>
+<ul>
+<li><a href="https://packages.debian.org/stable/atmel-firmware">atmel-firmware</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/atmel-firmware" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-ath9k-htc">firmware-ath9k-htc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-ath9k-htc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- freedom (Debian main; free firmware)</li>
+<li><a href="https://packages.debian.org/stable/firmware-atheros">firmware-atheros</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-atheros" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-brcm80211">firmware-brcm80211</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-brcm80211" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-ipw2x00">firmware-ipw2x00</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-ipw2x00" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-iwlwifi">firmware-iwlwifi</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-iwlwifi" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-libertas">firmware-libertas</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-libertas" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-realtek">firmware-realtek</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-realtek" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-ti-connectivity">firmware-ti-connectivity</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-ti-connectivity" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-zd1211">firmware-zd1211</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-zd1211" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-mediatek">firmware-mediatek</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-mediatek" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-linux-free">firmware-linux-free</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-linux-free" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- freedom (free software)</li>
+<li><a href="https://packages.debian.org/stable/firmware-misc-nonfree">firmware-misc-nonfree</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-misc-nonfree" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-intel-misc">firmware-intel-misc</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-intel-misc" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/amd64-microcode">amd64-microcode</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/amd64-microcode" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-nonfreedom-network">firmware-nonfreedom-network</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-nonfreedom-network" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-amd-graphics">firmware-amd-graphics</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-amd-graphics" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-intel-sound">firmware-intel-sound</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-intel-sound" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-linux">firmware-linux</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-linux" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-linux-nonfree">firmware-linux-nonfree</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-linux-nonfree" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-nvidia-graphics">firmware-nvidia-graphics</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-nvidia-graphics" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-intel-graphics">firmware-intel-graphics</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-intel-graphics" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/intel-microcode">intel-microcode</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/intel-microcode" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-adi">firmware-adi</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-adi" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo) - deprecated transitional
+package</li>
+<li><a href="https://packages.debian.org/stable/firmware-intelwimax">firmware-intelwimax</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-intelwimax" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-myricom">firmware-myricom</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-myricom" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-netronome">firmware-netronome</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-netronome" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-ivtv">firmware-ivtv</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-ivtv" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-netxen">firmware-netxen</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-netxen" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-qcom-media">firmware-qcom-media</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-qcom-media" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-qlogic">firmware-qlogic</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-qlogic" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-b43-installer">firmware-b43-installer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-b43-installer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- contrib (Debian contrib; downloads Broadcom's non-free b43 firmware
+during installation by package maintainer script) (not same drivers as
+firmware-b43legacy-installer)</li>
+<li><a href="https://packages.debian.org/stable/firmware-ralink">firmware-ralink</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-ralink" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-b43legacy-installer">firmware-b43legacy-installer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-b43legacy-installer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- contrib (Debian contrib; downloads Broadcom's non-free b43legacy
+firmware during installation by package maintainer script) (not same
+drivers as firmware-b43-installer) <sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup></li>
+<li><a href="https://packages.debian.org/stable/firmware-bnx2">firmware-bnx2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-bnx2" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-samsung">firmware-samsung</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-samsung" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-bnx2x">firmware-bnx2x</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-bnx2x" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-microbit-micropython">firmware-microbit-micropython</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-microbit-micropython" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- freedom (Debian main) (small board computer (SBC))</li>
+<li><a href="https://packages.debian.org/stable/firmware-siano">firmware-siano</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-siano" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+<li><a href="https://packages.debian.org/stable/firmware-cavium">firmware-cavium</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://packages.debian.org/stable/firmware-cavium" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+- nonfreedom (debian nonfree repo)</li>
+</ul>
+<h1 id="Nonfree_Drivers">Nonfree Drivers</h1>
+<p>Closed source drivers pose privacy and security risks and are
+therefore unacceptable. With the wide selection of PC hardware that
+supports the FLOSS-only mainline kernel, we can make this decision with
+pragmatism in mind.</p>
+<p>Nvidia's closed drivers have been confirmed to contain telemetry
+baked into them.<sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup> The open Nouveau stack is an
+alternative for those running Nvidia GPUs. Nouveau is included in
+mainline Linux.</p>
+<p>Proprietary drivers require the continued support of the vendor for
+compatibility with the latest Linux versions. Withdrawal of support at
+the end of product life cycles, or because it is not financially
+desirable for the companies involved, means users will be stuck running
+ancient kernels in perpetuity to maintain hardware functionality at the
+expense of security updates. Many Google Android OEMs are a sad example
+of this epidemic. Also, the closed driver module cannot be patched for
+security problems, nor can the fixes be legally redistributed even if
+available.</p>
+<h1 id="Forum_Discussion">Forum Discussion</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/whonix-host-nonfree-blobs-firmware-linux-nonfree/7251">https://forums.whonix.org/t/whonix-host-nonfree-blobs-firmware-linux-nonfree/7251</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/whonix-host-nonfree-blobs-firmware-linux-nonfree/7251" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://forums.whonix.org/t/wiki-item-firmware-blob-update-advice/23053">https://forums.whonix.org/t/wiki-item-firmware-blob-update-advice/23053</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/wiki-item-firmware-blob-update-advice/23053" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Reasons_for_Freedom_Software">Why
+Kicksecure is Freedom Software</a></li>
+<li><a href="../Avoid_nonfreedom_software">Avoid
+non-freedom software</a></li>
+<li><a href="../Policy_On_Nonfreedom_Software">Kicksecure
+Policy On Non-Freedom Software</a></li>
+<li>Context: <a href="https://forums.whonix.org/t/whonix-host-operating-system/3931">Kicksecure
+Host Operating System Development</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/whonix-host-operating-system/3931" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Purpose of forum thread <a href="https://forums.whonix.org/t/whonix-host-nonfree-blobs-firmware-linux-nonfree/7251">Whonix
+host - nonfree blobs - firmware-linux-nonfree</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/whonix-host-nonfree-blobs-firmware-linux-nonfree/7251" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>: keeping the
+discussion of nonfree vs free out of above thread.</li>
+<li>Non-Purpose of this: non-freedom software in Kicksecure VMs (there
+is none but if you think there is <a href="https://forums.whonix.org/t/adding-non-freedom-contrib-non-free-apt-repositories-by-default-is-it-safe/3300">another
+thread</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/adding-non-freedom-contrib-non-free-apt-repositories-by-default-is-it-safe/3300" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>Related: <a href="https://forums.whonix.org/t/whonix-and-free-system-distribution-guidelines-gnu-fsdg/5877">Kicksecure
+and Free System Distribution Guidelines (GNU FSDG)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/whonix-and-free-system-distribution-guidelines-gnu-fsdg/5877" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and <a href="../Policy_On_Nonfreedom_Software">Kicksecure Policy
+On Non-Freedom Software</a></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-1">1</a></sup> <sup><a href="#cite_ref-1-2">2</a></sup></span> <span class="reference-text">By definition, there are no built-in
+<code>nonfreedom firmware</code> blobs to begin with due to the absence
+of <code>nonfreedom hardware design</code>.</span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://salsa.debian.org/debian/b43-fwcutter/blob/master/debian/firmware-b43-installer.postinst">https://salsa.debian.org/debian/b43-fwcutter/blob/master/debian/firmware-b43-installer.postinst</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/debian/b43-fwcutter/blob/master/debian/firmware-b43-installer.postinst" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://forums.developer.nvidia.com/t/is-there-telemetry-in-nvidias-proprietary-linux-drivers/46414">https://forums.developer.nvidia.com/t/is-there-telemetry-in-nvidias-proprietary-linux-drivers/46414</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.developer.nvidia.com/t/is-there-telemetry-in-nvidias-proprietary-linux-drivers/46414" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+"So NVIDIA customer care has informed me that all latest drivers from
+them, including Linux drivers contain telemetry."</span></li>
+</ol>
+
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="RAM_Wipe" title="Dev/RAM Wipe"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/RAM
+Wipe</span></a><a class="index internal" href="../Design" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="filesystem" title="Dev/filesystem"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/filesystem</span></a><span class="info"><span class="prev">Previous
+page: Dev/RAM Wipe</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/filesystem</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Design">Design</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="../Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="../Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="../Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="../Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="../Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="../Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service">Terms of Service</a></li><li><a href="../Privacy_Policy">Privacy Policy</a></li><li><a href="../Cookie_Policy">Cookie Policy</a></li><li><a href="../E-Sign_Consent">E-Sign Consent</a></li><li><a href="../Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="../Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="../Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy">Privacy Policy</a>, <a href="../Cookie_Policy">Cookie Policy</a>, <a href="../Terms_of_Service">Terms of Service</a>, and <a href="../E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

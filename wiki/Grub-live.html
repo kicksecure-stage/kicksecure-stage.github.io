@@ -1,0 +1,1405 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>grub-live - boot an existing Host OS or VM into Live Mode</title>
+<meta name="description" content="Add a Live Mode entry to the grub boot menu on your existing Debian host platform. Stop persistent malware. Read-only mode. Make all writes go to non-persistent storage (RAM) instead of the hard disk.">
+<meta property="og:description" content="Add a Live Mode entry to the grub boot menu on your existing Debian host platform. Stop persistent malware. Read-only mode. Make all writes go to non-persistent storage (RAM) instead of the hard disk.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Grub-live">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Grub-live">
+<meta property="og:title" content="grub-live - boot an existing Host OS or VM into Live Mode">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Live-mode-promo.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="Download">Download</a><ul class="nav-submenu"><li><a href="ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="About">About</a><ul class="nav-submenu"><li><a href="About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Documentation">Docs</a><ul class="nav-submenu"><li><a href="Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Support">Support</a><ul class="nav-submenu"><li><a href="Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Grub-live.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Grub-live.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Grub-live" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Grub-live|grub-live - boot an existing Host OS or VM into Live Mode]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[grub-live - boot an existing Host OS or VM into Live Mode](https://www.kicksecure.com/wiki/Grub-live)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Grub-live]grub-live - boot an existing Host OS or VM into Live Mode[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live&amp;text=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live&amp;text=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live&amp;title=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live&amp;summary=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live&amp;t=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=grub-live%20-%20boot%20an%20existing%20Host%20OS%20or%20VM%20into%20Live%20Mode&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Distribution_Morphing" title="Distribution Morphing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Distribution
+Morphing</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Grub" title="grub"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">grub</span></a><span class="info"><span class="prev">Previous
+page: Distribution Morphing</span><span class="index">Index page:
+Advanced Documentation</span><span class="next">Next page:
+grub</span></span></span><h1 id="firstHeading">grub-live - boot an existing Host OS or VM into
+Live Mode</h1></div>
+<div class="mininav">
+<ul>
+<li><a href="Live_Mode">Live Mode</a></li>
+<li><a href="ISO_Live_Mode">ISO Live Mode</a></li>
+<li><a href="Read-only">read-only</a></li>
+<li><a href="Immutable">immutable</a></li>
+<li><a href="Write_protection">Write
+Protection</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">Grub-live</a></li>
+<li><a href="USB_Installation">Kicksecure on
+USB</a></li>
+<li><a href="Persistent_Mode">Persistent Mode</a></li>
+</ul>
+</div>
+<p><img src="../media/Live-mode-promo.jpg.webp" alt="Live Mode boot entry selectable in boot menu. (more screenshots)" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>The grub-live package offers an additional "LIVE mode" boot menu
+entry for the <a href="https://www.gnu.org/software/grub/">GNU GRUB boot
+loader</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.gnu.org/software/grub/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>This package is potentially compatible with many Linux distributions
+such as Debian. In Kicksecure and Whonix<sup>&#174;</sup>, it is installed by
+default. Grub-live can be applied to a host <u>o</u>perating
+<u>s</u>ystem (OS) as well as to a guest OS on a virtual machine.</p>
+<div class="post-intro-p">
+</div>
+<p><img src="../media/Grub-live_mode_indicator_in_debian.cleaned.png.webp" alt="Debian Live Mode Boot (Live Mode)" /></p>
+<p><img src="../media/Grub-live_mode_indicator_in_kicksecure.cleaned.png.webp" alt="Kicksecure Live Mode Boot (Live Mode)" /></p>
+<p><img src="../media/Live_boot.png.webp" alt="Whonix&amp;reg; Live Mode Boot (Live Mode)" /></p>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Context"><span class="tocnumber">1</span> <span class="toctext">Context</span></a></li><li class="toc-l1"><a href="#Compatibility"><span class="tocnumber">2</span> <span class="toctext">Compatibility</span></a></li><li class="toc-l1"><a href="#Installation_/_Getting_started"><span class="tocnumber">3</span> <span class="toctext">Installation / Getting started</span></a></li><li class="toc-l1"><a href="#Set_grub-live_as_Default_in_GRUB_boot_menu"><span class="tocnumber">4</span> <span class="toctext">Set grub-live as Default in GRUB boot menu</span></a></li><li class="toc-l1"><a href="#Get_GRUB_to_remember_your_last_choice_(e.g.,_Live_mode)"><span class="tocnumber">5</span> <span class="toctext">Get GRUB to remember your last choice (e.g., Live mode)</span></a></li><li class="toc-l1"><a href="#Alternative_to_grub-live"><span class="tocnumber">6</span> <span class="toctext">Alternative to grub-live</span></a></li><li class="toc-l1"><a href="#Comparison_between_grub-live_and_Tails"><span class="tocnumber">7</span> <span class="toctext">Comparison between grub-live and Tails</span></a></li><li class="toc-l1"><a href="#Security_Considerations"><span class="tocnumber">8</span> <span class="toctext">Security Considerations</span></a></li><li class="toc-l1"><a href="#Remount_Disk_as_Read-Write_after_booting_into_Live_Mode"><span class="tocnumber">9</span> <span class="toctext">Remount Disk as Read-Write after booting into Live Mode</span></a></li><li class="toc-l1"><a href="#Troubleshooting"><span class="tocnumber">10</span> <span class="toctext">Troubleshooting</span></a></li><li class="toc-l2"><a href="#Live_Mode_Without_grub-live"><span class="tocnumber">10.1</span> <span class="toctext">Live Mode Without grub-live</span></a></li><li class="toc-l2"><a href="#Missing_grub-live_boot_menu_entry"><span class="tocnumber">10.2</span> <span class="toctext">Missing grub-live boot menu entry</span></a></li><li class="toc-l2"><a href="#Live_Check_Indicator_Systray_Issues"><span class="tocnumber">10.3</span> <span class="toctext">Live Check Indicator Systray Issues</span></a></li><li class="toc-l2"><a href="#dracut"><span class="tocnumber">10.4</span> <span class="toctext">dracut</span></a></li><li class="toc-l1"><a href="#Developer_Information"><span class="tocnumber">11</span> <span class="toctext">Developer Information</span></a></li><li class="toc-l2"><a href="#Implementation"><span class="tocnumber">11.1</span> <span class="toctext">Implementation</span></a></li><li class="toc-l2"><a href="#Simplified_Summary"><span class="tocnumber">11.2</span> <span class="toctext">Simplified Summary</span></a></li><li class="toc-l2"><a href="#Development"><span class="tocnumber">11.3</span> <span class="toctext">Development</span></a></li><li class="toc-l2"><a href="#File_Names"><span class="tocnumber">11.4</span> <span class="toctext">File Names</span></a></li><li class="toc-l3"><a href="#Legacy_File_Names"><span class="tocnumber">11.4.1</span> <span class="toctext">Legacy File Names</span></a></li><li class="toc-l2"><a href="#Porting_grub-live_to_other_Linux_Distributions"><span class="tocnumber">11.5</span> <span class="toctext">Porting grub-live to other Linux Distributions</span></a></li><li class="toc-l2"><a href="#grub.cfg"><span class="tocnumber">11.6</span> <span class="toctext">grub.cfg</span></a></li><li class="toc-l1"><a href="#Footnotes"><span class="tocnumber">12</span> <span class="toctext">Footnotes</span></a></li></ul></nav><h1 id="Context">Context</h1>
+<p>This wiki page documents grub-live mostly as a standalone software
+package outside the context of Kicksecure. Any elements related to
+Kicksecure are clearly marked as such
+("<code>Kicksecure feature</code>").</p>
+<h1 id="Compatibility">Compatibility</h1>
+<p>grub-live is compatible and tested with <strong>Debian, Kicksecure,
+and Whonix</strong>. In Kicksecure and Whonix, it is installed by
+default. It should also run without any problems on Ubuntu and other
+Linux distributions that implement Debian's dracut. However, due to
+little user adoption and testing at this point in time, grub-live for
+those distributions is still labeled <a href="Unsupported">untested</a>.</p>
+<h1 id="Installation_/_Getting_started"><span id="Installation_.2F_Getting_started"></span>Installation / Getting
+started</h1>
+<p>The grub-live package is hosted under the <a href="https://github.com/Kicksecure/grub-live">grub-live GitHub
+repository</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. There you will also find the <strong>installation
+guide</strong>.</p>
+<p>After the installation, you can instantly use the Live Mode in your
+operating system. Simply boot or reboot your system and choose the new
+"LIVE mode" entry in the boot menu. For Kicksecure specifically, read:
+<a href="Live_Mode">Detailed documentation for using
+the live mode for Kicksecure</a>.</p>
+<p><span class="manually-placed-anchor " id="grub-default-live"></span></p>
+<h1 id="Set_grub-live_as_Default_in_GRUB_boot_menu">Set grub-live as
+Default in GRUB boot menu</h1>
+<p>Optional.</p>
+<p>If you have installed grub-live and want the "LIVE mode" entry to be
+the default selected entry in your GRUB menu, please follow the
+instructions below. Be aware, however, that due to little user adoption
+and testing, this option is still labeled <strong><a href="Unsupported">untested</a></strong>.</p>
+<p><span class="fontsize19">1. Do a grub-live package installation
+check</span></p>
+<p>By default, the <code>grub-live</code> package is installed in
+Kicksecure. If you boot your system and a boot menu entry "LIVE mode" is
+already available, then <code>grub-live</code> is already installed.</p>
+<p>Alternatively, you can make sure the <a href="https://github.com/Kicksecure/grub-live"><code>grub-live</code>
+package</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> is installed. The following command can be used to check on
+the command line if the package is already installed by default.</p>
+<p><span class="code-select" data-code="dpkg -l | grep grub-live">dpkg
+-l | grep grub-live</span></p>
+<p><span class="fontsize19">2. Set LIVE mode as the default boot menu
+entry</span></p>
+<p>There are two ways to accomplish this. Choose one of these
+options:</p>
+<p><strong>Option (A) - symlink method</strong></p>
+<ul>
+<li>Advantage: This is easier because updates to <a class="mw-selflink selflink" aria-current="page">grub-live</a> will be automatically applied.</li>
+<li>Disadvantage: There will be a duplicate live boot menu entry.</li>
+<li>Copy and execute the following command:</li>
+</ul>
+<p><span class="code-select" data-code="sudo ln -s /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live">sudo
+ln -s /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live</span></p>
+<p><strong>Option (B) - moving method</strong></p>
+<ul>
+<li>Advantage: No duplicate live boot menu entry.</li>
+<li>Disadvantage: Updates to <a class="mw-selflink selflink" aria-current="page">grub-live</a> will <strong>NOT</strong> be
+automatically applied.</li>
+<li>Copy and execute the following command:</li>
+</ul>
+<p><span class="code-select" data-code="sudo mv /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live">sudo
+mv /etc/grub.d/10_20_linux_live /etc/grub.d/09_linux_live</span></p>
+<p><span class="fontsize19">3. Re-generate GRUB boot menu</span></p>
+<p>The GRUB boot menu needs to be regenerated for the changes to be
+applied. Copy and execute the following command:</p>
+<p><span class="code-select" data-code="sudo update-grub">sudo
+update-grub</span></p>
+<p><span class="fontsize19">4. DONE</span></p>
+<p>The process of changing from "live mode opt-in through GRUB boot
+menu" to "live boot by default" has been completed.</p>
+<p><span class="fontsize19">5. Updates</span></p>
+<p>If in step 2, "option (B)" was chosen, then this process might need
+to be repeated from time to time if there have been updates to GRUB or
+to your system. The need to repeat this process from step 1 to step 4
+will be indicated as soon as the "LIVE mode" entry is no longer the
+default entry in the GRUB boot menu.</p>
+<p>If in step 2, "option (A)" was chosen, then this step is not needed.
+Updates will be applied automatically.</p>
+<h1 id="Get_GRUB_to_remember_your_last_choice_(e.g.,_Live_mode)"><span id="Get_GRUB_to_remember_your_last_choice_.28e.g..2C_Live_mode.29"></span>Get GRUB
+to remember your last choice (e.g., Live mode)</h1>
+<p>Optional.</p>
+<p>If you do not want to set Live Mode as your permanent default boot
+entry but still want the comfort of having GRUB remember your last
+choice, e.g., "Live mode," then follow these instructions.
+<sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup></p>
+<p><strong>1.</strong> Open file
+<code>/etc/default/grub.d/50_user.conf</code> in an editor with
+administrative ("<a href="Root"><code>root</code></a>")
+rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="kicksecure" role="heading" aria-level="5">Kicksecure</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
+/etc/default/grub.d/50_user.conf</span></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Qubes-logo-blue.png.webp" width="25" height="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="kicksecure-qubes" role="heading" aria-level="5">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="Qubes">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
+/etc/default/grub.d/50_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="Qubes#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="Unspecific">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Any12312.png.webp" width="25" height="40" alt="Any12312.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="others-and-alternatives" role="heading" aria-level="5">Others and Alternatives</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/default/grub.d/50_user.conf">sudoedit
+/etc/default/grub.d/50_user.conf</span></p></div></div></p></div></div></p>
+</div>
+<p><strong>2.</strong> Now add these two lines to this file:
+<span class="code-select inline-style" data-code="GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true">GRUB_DEFAULT=saved
+GRUB_SAVEDEFAULT=true</span></p>
+<p><strong>3.</strong> Finally, execute this command:
+<span class="code-select inline-style" data-code="sudo update-grub">sudo
+update-grub</span></p>
+<p><strong>4.</strong> Done.</p>
+<p>Your boot menu now remembers your last choice.</p>
+<h1 id="Alternative_to_grub-live">Alternative to grub-live</h1>
+<p>As an alternative to grub-live, it is also possible to automatically
+detect if the disk is set to read-only and enable live mode
+automatically using the <code>ro-mode-init</code> package. Read <a href="VM_Live_Mode/ro-mode-init">VM Live Mode -
+Alternative ro-mode-init Configuration</a> for further instructions.</p>
+<p><code>ro-mode-init</code> is currently less tested than
+<code>grub-live</code>.</p>
+<h1 id="Comparison_between_grub-live_and_Tails">Comparison between
+grub-live and Tails</h1>
+<p>Tails is its own operating system, whereas grub-live is a package
+enabling Live Mode on different Linux distributions. The following table
+shows the advantages and disadvantages of grub-live in regard to Tails.
+It should be noted, however, that while Tails is optimized for Live
+mode, grub-live is vastly more compatible with other systems.</p>
+<table>
+<caption><em>Comparison of grub-live and Tails</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Aspect</strong></p></th>
+<th><p><strong>grub-live on the host</strong> <sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup> /<br />
+<strong>grub-default-live on the host</strong> with Kicksecure</p></th>
+<th><p><strong>Tails DVD only</strong></p></th>
+<th><p><strong>Tails USB / DVD, with persistent USB</strong></p></th>
+<th><p><strong>Tails read-only medium and other devices with write
+capability unplugged</strong> <sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Common <sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup> mode of operation</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Amnesic / protects against disk modifications
+<sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Protects against malware persistence on hard drive after malware
+compromise</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-2" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-3" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-8-4" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Protects against <a href="Malware_and_Firmware_Trojans#Firmware_Trojans">firmware trojans</a> after malware compromise</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-5" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-6" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-7" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-8-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Avoid writing to arbitrary (non-boot) host disks</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-9-2" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-9-3" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Disables removable drives auto-mounting (Kicksecure
+feature)</p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>? <sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>? <sup id="cite_ref-11-2" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>? <sup id="cite_ref-11-3" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Disables swap</p></td>
+<td class="cell-green"><p> Yes (Kicksecure feature)
+<sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Disabled virtual machine shared folders</p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>?</p></td>
+<td><p>?</p></td>
+<td><p>?</p></td>
+</tr>
+<tr class="odd">
+<td><p>Wipe RAM on shutdown</p></td>
+<td class="cell-green"><p> Yes, implemented in <a href="Ram-wipe">ram-wipe</a>, not grub-live. (Kicksecure feature.)
+<sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>Yes, but with limitations. <sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>Yes, but with limitations. <sup id="cite_ref-15-2" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>Yes, but with limitations. <sup id="cite_ref-15-3" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Wipe video RAM on shutdown</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-17-2" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-17-3" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Emergency shutdown on USB removal</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Live Mode Usability <sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Good <sup id="cite_ref-20" class="reference"><a href="#cite_note-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Good <sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Good <sup id="cite_ref-21-2" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Good <sup id="cite_ref-21-3" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Live Mode Indicator Systray</p></td>
+<td class="cell-green"><p> Yes (Kicksecure feature)
+<sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-23" class="reference"><a href="#cite_note-23"><span class="cite-bracket">[</span>23<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Unneeded</p></td>
+<td class="cell-green"><p> Unneeded</p></td>
+<td class="cell-green"><p> Unneeded</p></td>
+</tr>
+<tr class="even">
+<td><p>Unified Amnesic User Experience</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Unified Amnesic + Anonymous User Experience</p></td>
+<td><ul>
+<li>Kicksecure: Not applicable <sup id="cite_ref-24" class="reference"><a href="#cite_note-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup></li>
+<li>Whonix: <span>No</span>
+<sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span class="cite-bracket">[</span>25<span class="cite-bracket">]</span></a></sup></li>
+</ul></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="even">
+<td><p>Easy standard ("everyday") upgrades <sup id="cite_ref-26" class="reference"><a href="#cite_note-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>?</p></td>
+<td><p>?</p></td>
+<td><p>?</p></td>
+</tr>
+<tr class="odd">
+<td><p><a href="Release_Upgrade">Release upgrades</a>
+<sup id="cite_ref-27" class="reference"><a href="#cite_note-27"><span class="cite-bracket">[</span>27<span class="cite-bracket">]</span></a></sup> possible anytime <sup id="cite_ref-26-2" class="reference"><a href="#cite_note-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-28" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-28-2" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-red"><p> No <sup id="cite_ref-28-3" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>Live boot by default</p></td>
+<td><ul>
+<li>grub-live:
+<span>No</span>
+<sup id="cite_ref-29" class="reference"><a href="#cite_note-29"><span class="cite-bracket">[</span>29<span class="cite-bracket">]</span></a></sup></li>
+<li>grub-default-live:
+<span>Yes</span></li>
+</ul></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+</tr>
+<tr class="odd">
+<td><p>Persistent boot by default</p></td>
+<td><ul>
+<li>grub-live:
+<span>Yes</span>
+<sup id="cite_ref-29-2" class="reference"><a href="#cite_note-29"><span class="cite-bracket">[</span>29<span class="cite-bracket">]</span></a></sup></li>
+<li>grub-default-live:
+<span>No</span></li>
+</ul></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+</tr>
+<tr class="even">
+<td><p>Full disk encryption compatibility</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+</tr>
+<tr class="odd">
+<td><p>Encrypted persistence supported</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-30" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-30-2" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup></p></td>
+<td class="cell-green"><p> Yes <sup id="cite_ref-30-3" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+</tbody>
+</table>
+<h1 id="Security_Considerations">Security Considerations</h1>
+<p>How secure and reliable is any live mode?</p>
+<p>Computers typically default to data persistence rather than amnesia.
+Coupled with widespread computer security vulnerabilities (see <a href="Dev/About_Computer_Insecurity">About Computer
+(In)Security</a>), implementing a secure non-persistent system is
+challenging.</p>
+<p><code>grub-live</code> is relatively straightforward. It primarily
+involves installing necessary dependencies and setting kernel parameters
+(details in <a href="#Implementation">Implementation</a>). However, the software it is based
+on, such as <code>dracut</code>, <code>mount</code>, and
+<code>overlayfs</code>, are complex. Sparse developer documentation in
+this area makes this challenging. There is also an increased risk of
+failures post <a href="Release_Upgrade">Release
+Upgrade</a> or after installing new major versions of Kicksecure or
+Debian, due to the <a href="Unspecific">generic nature
+of the solution</a>.</p>
+<p>There is a potential risk that <a href="Malware_and_Firmware_Trojans">malware</a> could <a href="#remount"><code>remount</code></a> a read-only disk as
+read-write. While we are not aware of confirmed cases, theoretically,
+even legitimate software could inadvertently perform such actions. To
+mitigate this risk, it's advisable to use grub-live in conjunction
+with</p>
+<ul>
+<li>USER session; and/or</li>
+<li>physical read-only mode for hard drives, where feasible. See <a href="Read-only">read-only</a>.</li>
+</ul>
+<p>Using grub-live on the host operating system, combined with virtual
+machines (VMs), is a safer configuration. In this setup, any disk
+remounting as read-write within a VM would be negated upon rebooting the
+host. VMs, in this context, are unaware of the host's live mode status
+and cannot directly alter it.</p>
+<p>Would using a read-only base system image (for example an ISO) be
+safer? Often yes. especially if the image integrity is verified and the
+storage holding it cannot be modified while running. It seems unlikely
+that such an image would be inadvertently remounted as read-write,
+unless targeted specifically by malware.</p>
+<p>Tools like <code>growisofs</code> can append data to an ISO, but it's
+more complex than a simple remount command. Even without
+<code>growisofs</code>, malware could potentially <a href="https://wiki.debian.org/RepackBootableISO">repack</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://wiki.debian.org/RepackBootableISO" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> and rewrite
+an ISO, but it is an even more complicated process. Not something that
+can happen by accident.</p>
+<p>What about write-once media, like a DVD-R (not DVD-RW)? This is
+indeed a safer option, but less practical. It requires burning the DVD
+and then booting from it. Such devices are not popular anymore.</p>
+<p>Combining physical write protection switches with grub-live would
+further enhance security. However, even this is not foolproof due to
+potential hardware vulnerabilities or defects. (See <a href="Verified_Boot#Write_Protection">Write
+Protection</a>.) Thus, it should be considered an additional layer of
+defense rather than a complete solution.</p>
+<p>Reflecting on these aspects, we can categorize security
+configurations from least to most secure, as follows:</p>
+<p>Notes:</p>
+<ul>
+<li>This list, created in December 2025, might have minor inaccuracies
+but generally represents the correct security hierarchy.</li>
+<li>Read-only filesystem on HDD: For example, booting a read-only image
+stored on HDD (e.g., via a bootloader loopback) is possible, but out of
+scope here.</li>
+</ul>
+<p><em>Note:</em> "Booted from Read-Only Filesystem" refers to the
+<em>base</em> OS image. Live mode typically still provides a writable
+RAM overlay so the running system can create/modify files without
+persisting them to disk.</p>
+<table>
+<caption><em>Live Mode Security Comparison (Least &#8594; Most
+Secure)</em></caption>
+<thead>
+<tr class="header">
+<th><p>#</p></th>
+<th><p>Boot Context</p></th>
+<th><p>Booted from Read-Only Filesystem</p></th>
+<th><p>Boot Medium</p></th>
+<th><p>Persistent Storage Enforced Read-Only</p></th>
+<th><p>Uses VMs</p></th>
+<th><p>Physical Write Protection</p></th>
+<th><p>Other Storage Not Accessible</p></th>
+<th><p>Security Level</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>1</p></td>
+<td><p>VM</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>*</p></td>
+</tr>
+<tr class="even">
+<td><p>2</p></td>
+<td><p>VM</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>**</p></td>
+</tr>
+<tr class="odd">
+<td><p>3</p></td>
+<td><p>VM</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>CD/DVD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>***</p></td>
+</tr>
+<tr class="even">
+<td><p>4</p></td>
+<td><p>Host</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>**</p></td>
+</tr>
+<tr class="odd">
+<td><p>5</p></td>
+<td><p>Host</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>***</p></td>
+</tr>
+<tr class="even">
+<td><p>6</p></td>
+<td><p>Host</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>***</p></td>
+</tr>
+<tr class="odd">
+<td><p>7</p></td>
+<td><p>Host</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>****</p></td>
+</tr>
+<tr class="even">
+<td><p>8</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>****</p></td>
+</tr>
+<tr class="odd">
+<td><p>9</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>*****</p></td>
+</tr>
+<tr class="even">
+<td><p>10</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>******<br />
++ <a href="Full_Disk_Encryption">Full Disk
+Encryption</a></p></td>
+</tr>
+<tr class="odd">
+<td><p>11</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>HDD</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>*******</p></td>
+</tr>
+<tr class="even">
+<td><p>12</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>DVD-RW</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>*******</p></td>
+</tr>
+<tr class="odd">
+<td><p>13</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>DVD-RW</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>*******</p></td>
+</tr>
+<tr class="even">
+<td><p>14</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>DVD-R</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>********</p></td>
+</tr>
+<tr class="odd">
+<td><p>15</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>DVD-R</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-red"><p> No</p></td>
+<td><p>********</p></td>
+</tr>
+<tr class="even">
+<td><p>16</p></td>
+<td><p>Host</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>DVD-R</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td class="cell-green"><p> Yes</p></td>
+<td><p>********* ("most secure")</p></td>
+</tr>
+</tbody>
+</table>
+<p>Additional steps users can take to improve the security of live
+mode:</p>
+<ul>
+<li>Avoiding the installation of additional software, especially more
+complex software that uses mount or loop devices or breaks the live
+indicator, such as, for example, <code>snapd</code>.</li>
+<li><a href="Root#Prevent_Malware_from_Sniffing_the_Root_Password">Prevention of Malware Sniffing the Root Password</a>,
+because remount read-write requires <a href="Root">root</a>.</li>
+</ul>
+<p>See also Whonix technical design documentation on forensics.</p>
+<p>In summary, while striving for maximum security, absolute guarantees
+are unattainable. Users seeking higher data amnesia assurances should
+consider becoming developers or auditors, or sponsoring focused
+development and review in the realm of anti-forensics, including the
+development of comprehensive automated testing frameworks.</p>
+<h1 id="Remount_Disk_as_Read-Write_after_booting_into_Live_Mode">Remount
+Disk as Read-Write after booting into Live Mode</h1>
+<p><span class="manually-placed-anchor " id="remount"></span> This
+chapter is more of developer documentation, proof of concept, and
+curiosity rather than something that users should do.</p>
+<p><strong>1.</strong> Create a mount folder <code>/mnt/disk</code>.</p>
+<p><span class="code-select" data-code="sudo mkdir /mnt/disk">sudo mkdir
+/mnt/disk</span></p>
+<p><strong>2.</strong> Mount.</p>
+<p>Note: <code>/dev/sda3</code> applies to VirtualBox VMs. It needs to
+be replaced with the actual hard drive device name.</p>
+<p><span class="code-select" data-code="sudo mount /dev/sda3 /mnt/disk">sudo
+mount /dev/sda3 /mnt/disk</span></p>
+<p><strong>3.</strong> Remount as read-write.</p>
+<p><span class="code-select" data-code="sudo mount -o remount,rw /dev/sda3 /mnt/disk">sudo
+mount -o remount,rw /dev/sda3 /mnt/disk</span></p>
+<p><strong>4.</strong> Make persistent modifications.</p>
+<p>For example, create a file <code>/home/test-file</code>.</p>
+<p><span class="code-select" data-code="touch /mnt/disk/home/test-file">touch
+/mnt/disk/home/test-file</span></p>
+<p><strong>5.</strong> When done, unmount.</p>
+<p><span class="code-select" data-code="sudo umount /mnt/disk">sudo
+umount /mnt/disk</span></p>
+<p><strong>6.</strong> Remove the mount point.</p>
+<p>Optional.</p>
+<p><span class="code-select" data-code="sudo rmdir /mnt/disk">sudo rmdir
+/mnt/disk</span></p>
+<p><strong>7.</strong> Done.</p>
+<p>The process has been completed.</p>
+<p><strong>8.</strong> Extra.</p>
+<p>Even the root of the filesystem ("<code>/</code>") can be remounted
+read-write.</p>
+<p><span class="code-select" data-code="sudo mount -o remount,rw /dev/sda3 /">sudo
+mount -o remount,rw /dev/sda3 /</span></p>
+<p>Questions and answers:</p>
+<ul>
+<li>Is this a security issue? Yes.</li>
+<li>Is this issue specific to, or caused by, grub-live or Kicksecure?
+No, <a href="Unspecific">unspecific to
+Kicksecure</a>.</li>
+<li>Is this issue reproducible on other live systems, i.e., without
+grub-live or Kicksecure being involved? Yes.</li>
+<li>Are similar live systems also affected? Yes, see <a href="#Security_Considerations">Security
+Considerations</a>.</li>
+<li>What can users do to improve their security? See the same link as
+above.</li>
+</ul>
+<h1 id="Troubleshooting">Troubleshooting</h1>
+<p>Here are some problems you might encounter and their possible
+solutions.</p>
+<h2 id="Live_Mode_Without_grub-live">Live Mode Without grub-live</h2><span class="share-tooltip" data-anchor="Live_Mode_Without_grub-live"><a class="headline-anchor" href="#Live_Mode_Without_grub-live" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Live_Mode_Without_grub-live">https://www.kicksecure.com/wiki/Grub-live#Live_Mode_Without_grub-live</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Mode_Without_grub-live&amp;text=Live%20Mode%20Without%20grub-live" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Mode_Without_grub-live&amp;text=Live%20Mode%20Without%20grub-live" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Mode_Without_grub-live&amp;title=Live%20Mode%20Without%20grub-live" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Live%20Mode%20Without%20grub-live&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Mode_Without_grub-live" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Live_Mode_Without_grub-live]Live Mode Without grub-live[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Live_Mode_Without_grub-live]Live Mode Without grub-live[/url]</span></span></span></span>
+<p>Platform specific.</p>
+<ul>
+<li>Kicksecure: In recent versions of Kicksecure, <code>dracut</code> is
+installed by default. To boot into live mode without using
+<code>grub-live</code>, simply add the
+<span class="code-select inline-style" data-code="rootovl">rootovl</span>
+kernel parameter. Instructions for adding kernel parameters can be found
+on the <a href="Grub">grub</a> wiki page.
+<ul>
+<li>Note that booting with the
+<span class="code-select inline-style" data-code="rootovl">rootovl</span>
+kernel parameter will only mount the root filesystem live. If you have
+other filesystems that are mounted by default when the system starts,
+such as <code>/home</code> on a separate partition, those filesystems
+will <strong>NOT</strong> be mounted live when doing this.
+<code>grub-live</code> remedies this via a <code>live-hardener</code>
+script that detects additional persistent mountpoints and remounts them
+read-only with a live writable overlay.</li>
+</ul></li>
+<li>Kicksecure for Qubes: Refer to the related Qubes feature request <a href="https://github.com/QubesOS/qubes-issues/issues/4982">Implement
+live boot by porting grub-live to Qubes - amnesia / non-persistent boot
+/ anti-forensics</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/4982" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p>It is recommended to <a href="Live_Mode#Functionality_Test_of_Live_mode">Functionality Test of Live mode</a> to verify
+non-persistence.</p>
+<h2 id="Missing_grub-live_boot_menu_entry">Missing grub-live boot menu
+entry</h2><span class="share-tooltip" data-anchor="Missing_grub-live_boot_menu_entry"><a class="headline-anchor" href="#Missing_grub-live_boot_menu_entry" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Missing_grub-live_boot_menu_entry">https://www.kicksecure.com/wiki/Grub-live#Missing_grub-live_boot_menu_entry</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Missing_grub-live_boot_menu_entry&amp;text=Missing%20grub-live%20boot%20menu%0Aentry" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Missing_grub-live_boot_menu_entry&amp;text=Missing%20grub-live%20boot%20menu%0Aentry" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Missing_grub-live_boot_menu_entry&amp;title=Missing%20grub-live%20boot%20menu%0Aentry" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Missing%20grub-live%20boot%20menu%0Aentry&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Missing_grub-live_boot_menu_entry" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Missing_grub-live_boot_menu_entry]Missing grub-live boot menu
+entry[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Missing_grub-live_boot_menu_entry]Missing grub-live boot menu
+entry[/url]</span></span></span></span>
+<p>Please run the following commands for debugging or information
+gathering and post them when creating any support requests.</p>
+<p><strong>1.</strong>
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
+file existence.</p>
+<p><span class="code-select" data-code="ls -la /etc/grub.d/10_20_linux_live">ls
+-la /etc/grub.d/10_20_linux_live</span></p>
+<p><strong>2.</strong>
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
+file contents.</p>
+<p>Please check your local file
+<span class="code-select inline-style" data-code="/etc/grub.d/10_20_linux_live">/etc/grub.d/10_20_linux_live</span>
+to ensure it looks exactly the same as <a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live"><code>/etc/grub.d/10_20_linux_live</code>
+on GitHub</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>. This will verify that you have the latest version of the
+<code>grub-live</code> package. Note that the stable version might look
+slightly different from the developer's or tester's version on
+GitHub.</p>
+<p><span class="code-select" data-code="cat /etc/grub.d/10_20_linux_live">cat
+/etc/grub.d/10_20_linux_live</span></p>
+<p><strong>3.</strong> <code>dracut</code> package version number.</p>
+<p><span class="code-select" data-code="dpkg-query -W -f=&#x27;${db:Status-Status}&#x27; dracut">dpkg-query
+-W -f='${db:Status-Status}' dracut</span></p>
+<p><strong>4.</strong> <code>dist-base-files</code> package version
+number.</p>
+<p><span class="code-select" data-code="dpkg -l | grep dist-base-files">dpkg
+-l | grep dist-base-files</span></p>
+<p><strong>5.</strong> <code>grub-live</code> package version
+number.</p>
+<p><span class="code-select" data-code="dpkg -l | grep grub-live">dpkg
+-l | grep grub-live</span></p>
+<p><strong>6.</strong>
+<span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
+file contents.</p>
+<p><span class="code-select" data-code="sudo cat /boot/grub/grub.cfg">sudo
+cat /boot/grub/grub.cfg</span></p>
+<p><strong>7.</strong> Optional: Compare
+<span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
+with sample <a href="Grub-live#grub.cfg">grub.cfg</a>.</p>
+<p>Use <a href="Software#File_Comparison_Tools">File
+Comparison Tools</a>.</p>
+<p>related forums tips:</p>
+<ul>
+<li><a href="Forum_Best_Practices#Pasting_Logs_for_Support">Pasting Logs for Support</a></li>
+<li><a href="Forum_Best_Practices#Code_Tags">Code
+Tags</a></li>
+</ul>
+<h2 id="Live_Check_Indicator_Systray_Issues">Live Check Indicator
+Systray Issues</h2><span class="share-tooltip" data-anchor="Live_Check_Indicator_Systray_Issues"><a class="headline-anchor" href="#Live_Check_Indicator_Systray_Issues" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Live_Check_Indicator_Systray_Issues">https://www.kicksecure.com/wiki/Grub-live#Live_Check_Indicator_Systray_Issues</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Check_Indicator_Systray_Issues&amp;text=Live%20Check%20Indicator%0ASystray%20Issues" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Check_Indicator_Systray_Issues&amp;text=Live%20Check%20Indicator%0ASystray%20Issues" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Check_Indicator_Systray_Issues&amp;title=Live%20Check%20Indicator%0ASystray%20Issues" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Live%20Check%20Indicator%0ASystray%20Issues&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Live_Check_Indicator_Systray_Issues" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Live_Check_Indicator_Systray_Issues]Live Check Indicator
+Systray Issues[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Live_Check_Indicator_Systray_Issues]Live Check Indicator
+Systray Issues[/url]</span></span></span></span>
+<p><span class="manually-placed-anchor " id="Live_Check_Systray_Issues"></span>
+The live mode is indicated by a Live Check Systray icon. It can happen
+that this icon has issues. If so, here is what you can do.</p>
+<p>First of all, this is <u>not</u> an <a href="Malware_and_Firmware_Trojans#Valid_Compromise_Indicators_versus_Invalid_Compromise_Indicators">indication of compromise by malware</a>. The real issue
+is as simple as: the Live Check Systray is broken.</p>
+<p><strong>1.</strong> Is <code>live-mode.sh</code> showing an
+error?</p>
+<p><span class="code-select" data-code="bash -x /usr/libexec/helper-scripts/live-mode.sh">bash
+-x /usr/libexec/helper-scripts/live-mode.sh</span></p>
+<p><strong>2.</strong> Is <code>get_writable_fs_lists.sh</code> showing
+an error?</p>
+<p><span class="code-select" data-code="bash -x /usr/libexec/helper-scripts/get_writable_fs_lists.sh">bash
+-x /usr/libexec/helper-scripts/get_writable_fs_lists.sh</span></p>
+<p><strong>3.</strong> Try <code>lsblk</code>.</p>
+<p>If the above method does not work, try also this:</p>
+<p><span class="code-select" data-code="sudo /bin/lsblk">sudo
+/bin/lsblk</span></p>
+<p><strong>4.</strong> Kernel parameter check.</p>
+<p>Please check kernel parameters after booting into live mode.</p>
+<p>If using <a href="Dracut">dracut</a> (default in
+newer versions):</p>
+<p><span class="code-select" data-code="cat -- /proc/cmdline | grep --color -- rootovl">cat
+-- /proc/cmdline | grep --color -- rootovl</span></p>
+<p>If using initramfs-tools (old build versions):</p>
+<p><span class="code-select" data-code="cat -- /proc/cmdline | grep --color -- boot=live">cat
+-- /proc/cmdline | grep --color -- boot=live</span></p>
+<p>If not booting into live mode, these kernel parameters should not be
+there.</p>
+<p><strong>5.</strong> Bug report.</p>
+<p>If you are still having issues, you can <a href="Reporting_Bugs">report a bug</a> with the output from the commands
+included above.</p>
+<h2 id="dracut">dracut</h2><span class="share-tooltip" data-anchor="dracut"><a class="headline-anchor" href="#dracut" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#dracut">https://www.kicksecure.com/wiki/Grub-live#dracut</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23dracut&amp;text=dracut" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23dracut&amp;text=dracut" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23dracut&amp;title=dracut" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=dracut&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23dracut" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#dracut]dracut[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#dracut]dracut[/url]</span></span></span></span>
+<p><strong>Optional.</strong></p>
+<p>Changing from initramfs-tools to dracut is optional and can cause
+dracut issues, unbootable system. See <a href="Dracut">dracut</a>.</p>
+<h1 id="Developer_Information">Developer Information</h1>
+<p>Users can skip this chapter and below.</p>
+<h2 id="Implementation">Implementation</h2><span class="share-tooltip" data-anchor="Implementation"><a class="headline-anchor" href="#Implementation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Implementation">https://www.kicksecure.com/wiki/Grub-live#Implementation</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Implementation&amp;text=Implementation" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Implementation&amp;text=Implementation" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Implementation&amp;title=Implementation" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Implementation&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Implementation" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Implementation]Implementation[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Implementation]Implementation[/url]</span></span></span></span>
+<p>The <code>grub-live</code> implementation combines the dracut module
+<code>90overlay-root</code> with a script
+<code>/usr/libexec/grub-live/live-hardener</code> to mount all possible
+writable filesystems read-only, with a writable RAM-based overlay to
+allow normal system operation without persistence.
+<code>90overlay-root</code> and <code>live-hardener</code> are enabled
+when kernel parameter <code>rootovl</code> is set.
+<code>90overlay-root</code> is only available in the Debian fork of
+dracut.</p>
+<ul>
+<li>dracut module source file:
+<span class="code-select inline-style" data-code="/usr/lib/dracut/modules.d/90overlay-root/overlay-mount.sh">/usr/lib/dracut/modules.d/90overlay-root/overlay-mount.sh</span></li>
+<li>main file:
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1017039"><code>90overlay-root</code>
+vs <code>90dmsquash-live</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1017039" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/dracutdevs/dracut/issues/1565">https://github.com/dracutdevs/dracut/issues/1565</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracutdevs/dracut/issues/1565" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h2 id="Simplified_Summary">Simplified Summary</h2><span class="share-tooltip" data-anchor="Simplified_Summary"><a class="headline-anchor" href="#Simplified_Summary" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Simplified_Summary">https://www.kicksecure.com/wiki/Grub-live#Simplified_Summary</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Simplified_Summary&amp;text=Simplified%20Summary" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Simplified_Summary&amp;text=Simplified%20Summary" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Simplified_Summary&amp;title=Simplified%20Summary" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Simplified%20Summary&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Simplified_Summary" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Simplified_Summary]Simplified Summary[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Simplified_Summary]Simplified Summary[/url]</span></span></span></span>
+<p>The first main source file is this one:
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span>
+The most relevant parts...</p>
+<p>(Kicksecure at the time of writing uses the initramfs generator "<a href="Dracut"><code>dracut</code></a>" by default.)</p>
+<p><span class="code-select" data-code="## dracut support
+## https://www.kicksecure.com/wiki/Grub-live#Developer_Information
+##
+## using Debian forked upstream module 90overlay-root (tested)
+GRUB_CMDLINE_LINUX=&quot;$GRUB_CMDLINE_LINUX rootovl&quot;
+## using dracut upstream module 90overlayfs (untested)
+#GRUB_CMDLINE_LINUX=&quot;$GRUB_CMDLINE_LINUX rd.live.overlay.overlayfs=1 rd.live.overlay.readonly=1&quot;">##
+dracut support</p>
+<ol>
+<li><ol>
+<li><a href="https://www.kicksecure.com/wiki/Grub-live#Developer_Information">https://www.kicksecure.com/wiki/Grub-live#Developer_Information</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.kicksecure.com/wiki/Grub-live#Developer_Information" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li></li>
+<li>using Debian forked upstream module 90overlay-root (tested)</li>
+</ol></li>
+</ol>
+<p>GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX rootovl"</p>
+<ol>
+<li><ol>
+<li>using dracut upstream module 90overlayfs (untested)</li>
+</ol></li>
+<li>GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX rd.live.overlay.overlayfs=1
+rd.live.overlay.readonly=1"</span></li>
+</ol>
+<p>The essence of what <code>grub-live</code> does is provide a
+convenient way (the GRUB boot menu entry) to easily set the kernel
+parameter <code>rootovl</code>, which is a feature provided by Debian's
+forked version of dracut, module <code>90overlay-root</code>.</p>
+<p>In the future on Debian 14 / forky, grub-live will probably use
+dracut upstream module <code>90overlayfs</code> instead. See also <a href="Grub-live#Development">Development</a>.</p>
+<p>These dracut modules in turn make use of Linux kernel features.</p>
+<p>The other primary source file is this one: <a href="https://github.com/Kicksecure/grub-live/blob/master/usr/libexec/grub-live/live-hardener"><code>live-hardener</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/usr/libexec/grub-live/live-hardener" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
+This script detects writable filesystems and remounts most of them
+read-only, then adds a live overlay on top. This is similar to what
+Debian's dracut's <code>90overlay-root</code> does for the root
+filesystem, but applies to most other writable filesystems on the
+system, thus reducing persistence even in more complex setups.</p>
+<p><code>live-hardener</code> does not remount writable filesystems if
+both of the following conditions are met:</p>
+<ul>
+<li>The filesystem is mounted to <code>/media</code>, <code>/mnt</code>,
+or a subdirectory thereof, and</li>
+<li>The drive containing the filesystem is detected to be a removable
+drive (<code>/sys/class/block/DRIVE_ID/removable</code> is equal to
+<code>1</code>).</li>
+</ul>
+<p><code>live-hardener</code> is not always able to mount a writable
+RAM-based overlay on top of all filesystems, as some filesystems are not
+compatible with the <code>overlayfs</code> kernel feature. These
+filesystems are simply remounted read-only, without providing a writable
+overlay.</p>
+<p>In summary, the most heavy lifting is done by the initramfs generator
+<code>dracut</code> and the Linux kernel. <code>grub-live</code> only
+implements usability (GRUB boot menu entry), documentation, and a more
+thorough hardening mechanism for filesystems beyond the root
+filesystem.</p>
+<h2 id="Development">Development</h2><span class="share-tooltip" data-anchor="Development"><a class="headline-anchor" href="#Development" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Development">https://www.kicksecure.com/wiki/Grub-live#Development</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Development&amp;text=Development" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Development&amp;text=Development" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Development&amp;title=Development" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Development&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Development" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Development]Development[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Development]Development[/url]</span></span></span></span>
+<p>Should port to <a href="https://github.com/dracutdevs/dracut/tree/master/modules.d/90overlayfs"><code>90overlayfs</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracutdevs/dracut/tree/master/modules.d/90overlayfs" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p><span class="code-select" data-code="rd.live.overlay.overlayfs=1 rd.live.overlay.readonly=1">rd.live.overlay.overlayfs=1
+rd.live.overlay.readonly=1</span></p>
+<p>on Debian 14 / forky. This has not been done during the Debian 13 /
+trixie based release cycle due to Debian dracut bug <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1121043">overlayfs
+module fails to mount an overlay over a BTRFS filesystem, breaking live
+boot</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1121043" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<p>While Debian did not merge <a href="https://salsa.debian.org/debian/dracut/-/merge_requests/20">overlayfs
+with nfs for Debian bookworm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://salsa.debian.org/debian/dracut/-/merge_requests/20" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> the module might be updated in the next
+major version of Debian as per usual as Debian receives newer
+<code>dracut</code> versions from <code>dracut</code> upstream.</p>
+<h2 id="File_Names">File Names</h2><span class="share-tooltip" data-anchor="File_Names"><a class="headline-anchor" href="#File_Names" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#File_Names">https://www.kicksecure.com/wiki/Grub-live#File_Names</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23File_Names&amp;text=File%20Names" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23File_Names&amp;text=File%20Names" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23File_Names&amp;title=File%20Names" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=File%20Names&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23File_Names" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#File_Names]File Names[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#File_Names]File Names[/url]</span></span></span></span>
+<h3 id="Legacy_File_Names">Legacy File Names</h3><span class="share-tooltip" data-anchor="Legacy_File_Names"><a class="headline-anchor" href="#Legacy_File_Names" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Legacy_File_Names">https://www.kicksecure.com/wiki/Grub-live#Legacy_File_Names</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Legacy_File_Names&amp;text=Legacy%20File%20Names" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Legacy_File_Names&amp;text=Legacy%20File%20Names" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Legacy_File_Names&amp;title=Legacy%20File%20Names" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Legacy%20File%20Names&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Legacy_File_Names" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Legacy_File_Names]Legacy File Names[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Legacy_File_Names]Legacy File Names[/url]</span></span></span></span>
+<p><code>/etc/grub.d/11_linux_live</code> has been renamed to
+<code>/etc/grub.d/10_20_linux_live</code>.</p>
+<h2 id="Porting_grub-live_to_other_Linux_Distributions">Porting
+grub-live to other Linux Distributions</h2><span class="share-tooltip" data-anchor="Porting_grub-live_to_other_Linux_Distributions"><a class="headline-anchor" href="#Porting_grub-live_to_other_Linux_Distributions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#Porting_grub-live_to_other_Linux_Distributions">https://www.kicksecure.com/wiki/Grub-live#Porting_grub-live_to_other_Linux_Distributions</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Porting_grub-live_to_other_Linux_Distributions&amp;text=Porting%0Agrub-live%20to%20other%20Linux%20Distributions" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Porting_grub-live_to_other_Linux_Distributions&amp;text=Porting%0Agrub-live%20to%20other%20Linux%20Distributions" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Porting_grub-live_to_other_Linux_Distributions&amp;title=Porting%0Agrub-live%20to%20other%20Linux%20Distributions" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Porting%0Agrub-live%20to%20other%20Linux%20Distributions&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23Porting_grub-live_to_other_Linux_Distributions" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#Porting_grub-live_to_other_Linux_Distributions]Porting
+grub-live to other Linux Distributions[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#Porting_grub-live_to_other_Linux_Distributions]Porting
+grub-live to other Linux Distributions[/url]</span></span></span></span>
+<p>This is an informational chapter for developers. Users can skip this
+chapter.</p>
+<p>Porting <code>grub-live</code> to other Linux Distributions might be
+rather simple in comparison to other packages.</p>
+<p><code>grub-live</code> should already be compatible with any Debian
+based distribution as mentioned on top of this wiki page. Testing is
+very limited.</p>
+<p>What <code>grub-live</code> technically in essence does:</p>
+<ul>
+<li>1) The <code>grub-live</code> is mainly shipping three files:
+<ul>
+<li>GRUB config file
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/etc/grub.d/10_20_linux_live" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li>live-hardener script <a href="https://github.com/Kicksecure/grub-live/blob/master/usr/libexec/grub-live/live-hardener"><code>live-hardener</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/usr/libexec/grub-live/live-hardener" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+<li>systemd service <a href="https://github.com/Kicksecure/grub-live/blob/master/usr/lib/systemd/system/live-hardener.service"><code>live-hardener.service</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/usr/lib/systemd/system/live-hardener.service" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</li>
+</ul></li>
+<li>2) Pull required dependencies in
+<span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/grub-live/blob/master/debian/control">Kicksecure/grub-live</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/grub-live/blob/master/debian/control" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li>3) Postinst runs: "<code>sudo update-grub</code>"</li>
+</ul>
+<p>Qubes support:</p>
+<ul>
+<li>Might be harder.</li>
+<li>That would require packaging <code>grub-live</code> for Fedora.</li>
+<li>Or as a first step copying over the config files.</li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/1018">https://github.com/QubesOS/qubes-issues/issues/1018</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/1018" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/4982">https://github.com/QubesOS/qubes-issues/issues/4982</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/4982" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h2 id="grub.cfg">grub.cfg</h2><span class="share-tooltip" data-anchor="grub.cfg"><a class="headline-anchor" href="#grub.cfg" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Grub-live#grub.cfg">https://www.kicksecure.com/wiki/Grub-live#grub.cfg</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23grub.cfg&amp;text=grub.cfg" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23grub.cfg&amp;text=grub.cfg" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23grub.cfg&amp;title=grub.cfg" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=grub.cfg&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FGrub-live%23grub.cfg" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Grub-live#grub.cfg]grub.cfg[/url]">[url=https://www.kicksecure.com/wiki/Grub-live#grub.cfg]grub.cfg[/url]</span></span></span></span>
+<p>For reference only.</p>
+<p><span class="code-select inline-style" data-code="/boot/grub/grub.cfg">/boot/grub/grub.cfg</span>
+will be automatically created. (Auto-generated by
+<span class="code-select inline-style" data-code="sudo update-grub">sudo
+update-grub</span> .) No manual user action required. Useful for
+comparison in case of debugging.</p>
+<pre><code>#
+# DO NOT EDIT THIS FILE
+#
+# It is automatically generated by grub-mkconfig using templates
+# from /etc/grub.d and settings from /etc/default/grub
+#
+
+### BEGIN /etc/grub.d/00_header ###
+if [ -s $prefix/grubenv ]; then
+  set have_grubenv=true
+  load_env
+fi
+if [ &quot;${next_entry}&quot; ] ; then
+   set default=&quot;${next_entry}&quot;
+   set next_entry=
+   save_env next_entry
+   set boot_once=true
+else
+   set default=&quot;0&quot;
+fi
+
+if [ x&quot;${feature_menuentry_id}&quot; = xy ]; then
+  menuentry_id_option=&quot;--id&quot;
+else
+  menuentry_id_option=&quot;&quot;
+fi
+
+export menuentry_id_option
+
+if [ &quot;${prev_saved_entry}&quot; ]; then
+  set saved_entry=&quot;${prev_saved_entry}&quot;
+  save_env saved_entry
+  set prev_saved_entry=
+  save_env prev_saved_entry
+  set boot_once=true
+fi
+
+function savedefault {
+  if [ -z &quot;${boot_once}&quot; ]; then
+    saved_entry=&quot;${chosen}&quot;
+    save_env saved_entry
+  fi
+}
+function load_video {
+  if [ x$feature_all_video_module = xy ]; then
+    insmod all_video
+  else
+    insmod efi_gop
+    insmod efi_uga
+    insmod ieee1275_fb
+    insmod vbe
+    insmod vga
+    insmod video_bochs
+    insmod video_cirrus
+  fi
+}
+
+if [ x$feature_default_font_path = xy ] ; then
+   font=unicode
+else
+insmod part_msdos
+insmod btrfs
+search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+    font=&quot;/grub/unicode.pf2&quot;
+fi
+
+if loadfont $font ; then
+  set gfxmode=1024x768
+  load_video
+  insmod gfxterm
+  set locale_dir=$prefix/locale
+  set lang=en_US
+  insmod gettext
+fi
+terminal_output gfxterm
+insmod part_msdos
+insmod btrfs
+search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+insmod gfxmenu
+loadfont ($root)/grub/themes/dist-common/inter-grub_regular_17.pf2
+loadfont ($root)/grub/themes/dist-common/inter-grub_regular_20.pf2
+loadfont ($root)/grub/themes/dist-common/terminus-grub_14.pf2
+insmod png
+set theme=($root)/grub/themes/kicksecure/theme-4x3.txt
+export theme
+if [ &quot;${recordfail}&quot; = 1 ] ; then
+  set timeout=30
+else
+  if [ x$feature_timeout_style = xy ] ; then
+    set timeout_style=menu
+    set timeout=5
+  # Fallback normal timeout code in case the timeout_style feature is
+  # unavailable.
+  else
+    set timeout=5
+  fi
+fi
+### END /etc/grub.d/00_header ###
+
+### BEGIN /etc/grub.d/05_debian_theme ###
+set menu_color_normal=cyan/blue
+set menu_color_highlight=white/blue
+### END /etc/grub.d/05_debian_theme ###
+
+### BEGIN /etc/grub.d/10_00_linux_dist ###
+function gfxmode {
+    set gfxpayload=&quot;${1}&quot;
+}
+set linux_gfx_mode=1024x768
+export linux_gfx_mode
+menuentry &#39;Kicksecure GNU/Linux&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-simple-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+    load_video
+    gfxmode $linux_gfx_mode
+    insmod gzio
+    if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+    insmod part_msdos
+    insmod btrfs
+    search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+    echo    &#39;Loading Linux 6.1.0-32-amd64 ...&#39;
+    linux   /vmlinuz-6.1.0-32-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+    echo    &#39;Loading initial ramdisk ...&#39;
+    initrd  /initrd.img-6.1.0-32-amd64
+}
+
+### END /etc/grub.d/10_00_linux_dist ###
+
+### BEGIN /etc/grub.d/10_20_linux_live ###
+function gfxmode {
+    set gfxpayload=&quot;${1}&quot;
+}
+set linux_gfx_mode=1024x768
+export linux_gfx_mode
+menuentry &#39;Kicksecure LIVE mode USER (For daily activities.) GNU/Linux&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-simple-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+    load_video
+    gfxmode $linux_gfx_mode
+    insmod gzio
+    if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+    insmod part_msdos
+    insmod btrfs
+    search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+    echo    &#39;Loading Linux 6.1.0-32-amd64 ...&#39;
+    linux   /vmlinuz-6.1.0-32-amd64 root=/dev/disk/by-uuid/f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy rootovl  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+    echo    &#39;Loading initial ramdisk ...&#39;
+    initrd  /initrd.img-6.1.0-32-amd64
+}
+
+### END /etc/grub.d/10_20_linux_live ###
+
+### BEGIN /etc/grub.d/10_50_linux_dist_advanced ###
+submenu &#39;Advanced options for Kicksecure GNU/Linux&#39; $menuentry_id_option &#39;gnulinux-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-32-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-32-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-32-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-32-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-32-amd64
+    }
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-32-amd64 (recovery mode)&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-32-amd64-recovery-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-32-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-32-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro single rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-32-amd64
+    }
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-31-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-31-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-31-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-31-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-31-amd64
+    }
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-31-amd64 (recovery mode)&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-31-amd64-recovery-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-31-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-31-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro single rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-31-amd64
+    }
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-28-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-28-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-28-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-28-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-28-amd64
+    }
+    menuentry &#39;Kicksecure GNU/Linux, with Linux 6.1.0-28-amd64 (recovery mode)&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-28-amd64-recovery-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-28-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-28-amd64 root=UUID=f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro single rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-28-amd64
+    }
+}
+
+### END /etc/grub.d/10_50_linux_dist_advanced ###
+
+### BEGIN /etc/grub.d/10_51_linux_live_advanced ###
+submenu &#39;Advanced options for Kicksecure LIVE mode USER (For daily activities.) GNU/Linux&#39; $menuentry_id_option &#39;gnulinux-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+    menuentry &#39;Kicksecure LIVE mode USER (For daily activities.) GNU/Linux, with Linux 6.1.0-32-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-32-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-32-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-32-amd64 root=/dev/disk/by-uuid/f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy rootovl  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-32-amd64
+    }
+    menuentry &#39;Kicksecure LIVE mode USER (For daily activities.) GNU/Linux, with Linux 6.1.0-31-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-31-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-31-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-31-amd64 root=/dev/disk/by-uuid/f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy rootovl  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-31-amd64
+    }
+    menuentry &#39;Kicksecure LIVE mode USER (For daily activities.) GNU/Linux, with Linux 6.1.0-28-amd64&#39; --class kicksecure --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-6.1.0-28-amd64-advanced-f980020b-0f30-442d-b3ec-ab4c6c54fa9a&#39; {
+        load_video
+        gfxmode $linux_gfx_mode
+        insmod gzio
+        if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+        insmod part_msdos
+        insmod btrfs
+        search --no-floppy --fs-uuid --set=root e727c741-7916-416a-a89b-6df8286415eb
+        echo    &#39;Loading Linux 6.1.0-28-amd64 ...&#39;
+        linux   /vmlinuz-6.1.0-28-amd64 root=/dev/disk/by-uuid/f980020b-0f30-442d-b3ec-ab4c6c54fa9a ro rootflags=subvol=@  mitigations=auto,nosmt nosmt=force spectre_v2=on spectre_bhi=on spec_store_bypass_disable=on ssbd=force-on l1tf=full,force mds=full,nosmt tsx=off tsx_async_abort=full,nosmt kvm.nx_huge_pages=force l1d_flush=on mmio_stale_data=full,nosmt retbleed=auto,nosmt gather_data_sampling=force reg_file_data_sampling=on slab_nomerge slab_debug=FZ init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 pti=on randomize_kstack_offset=on vsyscall=none debugfs=off kfence.sample_interval=100 vdso32=0 amd_iommu=force_isolation intel_iommu=on iommu=force iommu.passthrough=0 iommu.strict=1 efi=disable_early_pci_dma random.trust_bootloader=off random.trust_cpu=off extra_latent_entropy rootovl  rd.luks.uuid=dc1f531b-eea8-47b0-86f2-a841d6d61a4e loglevel=0 quiet
+        echo    &#39;Loading initial ramdisk ...&#39;
+        initrd  /initrd.img-6.1.0-28-amd64
+    }
+}
+
+### END /etc/grub.d/10_51_linux_live_advanced ###
+
+### BEGIN /etc/grub.d/20_linux_xen ###
+
+### END /etc/grub.d/20_linux_xen ###
+
+### BEGIN /etc/grub.d/30_os-prober ###
+### END /etc/grub.d/30_os-prober ###
+
+### BEGIN /etc/grub.d/30_uefi-firmware ###
+### END /etc/grub.d/30_uefi-firmware ###
+
+### BEGIN /etc/grub.d/40_custom ###
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the &#39;exec tail&#39; line above.
+### END /etc/grub.d/40_custom ###
+
+### BEGIN /etc/grub.d/41_custom ###
+if [ -f  ${config_directory}/custom.cfg ]; then
+  source ${config_directory}/custom.cfg
+elif [ -z &quot;${config_directory}&quot; -a -f  $prefix/custom.cfg ]; then
+  source $prefix/custom.cfg
+fi
+### END /etc/grub.d/41_custom ###
+
+### BEGIN /etc/grub.d/45_debugging ###
+### END /etc/grub.d/45_debugging ###</code></pre>
+<h1 id="Footnotes">Footnotes</h1>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Based on <a href="https://askubuntu.com/a/149572">this Ask Ubuntu
+answer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://askubuntu.com/a/149572" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Meaning, <code>grub-live</code> outside of a virtual machine. For
+<code>grub-live</code> in a VM, see <a href="Live_Mode">Live Mode</a>.</span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Assuming Tails on a DVD which can only be written to once, not
+DVD-RW.</span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Or using Tails USB with a physical, active, and effective
+(non-circumventable by software) write protection switch enabled.</span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">As in a substantial user group willing and able to do this.</span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">This would be a prudent approach, but search engines indicate that
+no or very few users run this configuration.</span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><a href="#cite_ref-7" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Excluding malware compromise.</span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-8">1</a></sup> <sup><a href="#cite_ref-8-2">2</a></sup> <sup><a href="#cite_ref-8-3">3</a></sup> <sup><a href="#cite_ref-8-4">4</a></sup> <sup><a href="#cite_ref-8-5">5</a></sup> <sup><a href="#cite_ref-8-6">6</a></sup> <sup><a href="#cite_ref-8-7">7</a></sup> <sup><a href="#cite_ref-8-8">8</a></sup></span> <span class="reference-text">Once targeted malware is active, it can circumvent read-only
+settings, mount the hard drive, and add malware which becomes active
+after the next boot.</span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-9">1</a></sup> <sup><a href="#cite_ref-9-2">2</a></sup> <sup><a href="#cite_ref-9-3">3</a></sup></span> <span class="reference-text">Avoid writing to arbitrary (non-boot) host disks:
+<blockquote><p>Tails takes care not to use any filesystem that might exist on the
+host machine's hard drive, unless explicitly told to do so by the user.
+The Debian Live persistence feature is disabled by passing
+<code>nopersistence</code> over the kernel command line to
+live-boot.<span class="blockquote-context"><a href="https://tails.boum.org/contribute/design/">https://tails.boum.org/contribute/design/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote></span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">* <a href="https://forums.whonix.org/t/disk-usb-automount-in-kicksecure/8728">https://forums.whonix.org/t/disk-usb-automount-in-kicksecure/8728</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/disk-usb-automount-in-kicksecure/8728" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-11">1</a></sup> <sup><a href="#cite_ref-11-2">2</a></sup> <sup><a href="#cite_ref-11-3">3</a></sup></span> <span class="reference-text">Does Tails enable or disable auto mounting? Conflicting information.
+* Tails ticket: <a href="https://gitlab.tails.boum.org/tails/tails/-/issues/15900">Mount
+external drives automatically (enable automount)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/15900" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> <blockquote><pre><code> automount = true </code></pre>
+<p><span class="blockquote-context"><a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults#L24">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults#L24</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults#L24" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote>
+<blockquote><p>Removable drives auto-mounting is disabled in Tails 0.7 and
+newer.<span class="blockquote-context"><a href="https://tails.boum.org/contribute/design/#index39h3">https://tails.boum.org/contribute/design/#index39h3</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/#index39h3" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p></blockquote> * <a href="https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults">https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/blob/master/config/chroot_local-includes/etc/dconf/db/local.d/00_Tails_defaults" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Disables swap: * <u>not grub-live:</u> This is not a feature by the
+standalone grub-live package. * <u>Kicksecure feature:</u> This is a
+Kicksecure feature. * <u>No swap partition:</u> There is no swap
+partition by default in Kicksecure, except maybe if using <a href="Distribution_Morphing">Distribution Morphing</a>.
+* <u>Kicksecure swap design:</u> Kicksecure comes with <a href="Swap-file-creator">swap-file-creator</a> by
+default that creates an encrypted swap file with an ephemeral key that
+is lost after poweroff. * <u>live mode:</u> swap-file-creator refuses to
+start in live mode. * <u>Conclusion:</u> Swap is disabled in Kicksecure
+when booting into live mode.</span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">* VirtualBox: <a href="VirtualBox/Guest_Additions#Shared_Folder_in_Live_Mode">Shared Folder in Live Mode</a> * KVM: KVM,
+Shared_Folders</span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">* <a href="https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596">https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/is-ram-wipe-possible-inside-whonix/5596" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+* <a href="https://github.com/QubesOS/qubes-issues/issues/1562">https://github.com/QubesOS/qubes-issues/issues/1562</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/1562" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+Then a meta package <code>amnesia</code> could depend on both
+<code>grub-live</code> and <code>wiperam</code> to simplify live boot
+for users.</span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-15">1</a></sup> <sup><a href="#cite_ref-15-2">2</a></sup> <sup><a href="#cite_ref-15-3">3</a></sup></span> <span class="reference-text"><a href="https://tails.boum.org/contribute/design/memory_erasure/">https://tails.boum.org/contribute/design/memory_erasure/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/contribute/design/memory_erasure/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://github.com/QubesOS/qubes-issues/issues/1563">https://github.com/QubesOS/qubes-issues/issues/1563</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/1563" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-17">1</a></sup> <sup><a href="#cite_ref-17-2">2</a></sup> <sup><a href="#cite_ref-17-3">3</a></sup></span> <span class="reference-text"><a href="https://gitlab.tails.boum.org/tails/tails/-/issues/5356">https://gitlab.tails.boum.org/tails/tails/-/issues/5356</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.tails.boum.org/tails/tails/-/issues/5356" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><a href="#cite_ref-18" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">* <a href="https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755">https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/panic-button-panic-shutdown-buskill-the-usb-kill-cord-for-your-laptop/13755" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+* <a href="https://forums.kicksecure.com/t/unplugging-external-drive-doesnt-trigger-a-shutdown/994">https://forums.kicksecure.com/t/unplugging-external-drive-doesnt-trigger-a-shutdown/994</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.kicksecure.com/t/unplugging-external-drive-doesnt-trigger-a-shutdown/994" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">The user being aware of currently running in live mode vs persistent
+mode.</span></li>
+<li id="cite_note-20"><span class="mw-cite-backlink"><a href="#cite_ref-20" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">The live mode status is reported by the Live Mode Indicator Systray
+widget, which is a Kicksecure feature and not part of
+<code>grub-live</code>.</span></li>
+<li id="cite_note-21"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-21">1</a></sup> <sup><a href="#cite_ref-21-2">2</a></sup> <sup><a href="#cite_ref-21-3">3</a></sup></span> <span class="reference-text">Consistently good because amnesia has always been a core Tails
+feature. It is obvious to the user that nothing persists except folders
+that have selective persistence enabled.</span></li>
+<li id="cite_note-22"><span class="mw-cite-backlink"><a href="#cite_ref-22" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">The systray widget is implemented in <a href="https://github.com/Kicksecure/desktop-config-dist"><code>desktop-config-dist</code></a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/desktop-config-dist" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+and is not included in <code>grub-live</code>.</span></li>
+<li id="cite_note-23"><span class="mw-cite-backlink"><a href="#cite_ref-23" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Without Live Mode Indicator Systray (see below), it is not obvious
+to the user if they booted into persistent or live mode. This might lead
+to a mistake where live boot is not selected from the grub boot menu
+(persistent mode is instead set), but the user believes otherwise.</span></li>
+<li id="cite_note-24"><span class="mw-cite-backlink"><a href="#cite_ref-24" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="Privacy">Kicksecure is
+non-anonymous</a>.</span></li>
+<li id="cite_note-25"><span class="mw-cite-backlink"><a href="#cite_ref-25" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="Whonix">Whonix</a> is anonymous. Whonix is
+primarily run inside virtualizers. <code>grub-live</code> is an extra
+configuration step on the user's host.</span></li>
+<li id="cite_note-26"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-26">1</a></sup> <sup><a href="#cite_ref-26-2">2</a></sup></span> <span class="reference-text">When booting into <a href="Persistent_Mode">Persistent Mode</a> the user can use standard upgrade
+mechanisms such standard package managers such as <code>apt</code>.</span></li>
+<li id="cite_note-27"><span class="mw-cite-backlink"><a href="#cite_ref-27" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Such as from Debian <code>bookworm</code> to Debian
+<code>trixie</code>. grub-live functionality must be re-tested in every
+major distribution release.</span></li>
+<li id="cite_note-28"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-28">1</a></sup> <sup><a href="#cite_ref-28-2">2</a></sup> <sup><a href="#cite_ref-28-3">3</a></sup></span> <span class="reference-text">Release upgrade of Tails from, let's say, Debian
+<code>bookworm</code> to Debian <code>trixie</code>, is a non-trivial
+development effort. See also: <a href="https://tails.boum.org/doc/upgrade/">https://tails.boum.org/doc/upgrade/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.boum.org/doc/upgrade/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-29"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-29">1</a></sup> <sup><a href="#cite_ref-29-2">2</a></sup></span> <span class="reference-text">Persistent boot is the default entry in grub boot menu.</span></li>
+<li id="cite_note-30"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-30">1</a></sup> <sup><a href="#cite_ref-30-2">2</a></sup> <sup><a href="#cite_ref-30-3">3</a></sup></span> <span class="reference-text"><a href="https://tails.net/doc/persistent_storage/index.en.html">https://tails.net/doc/persistent_storage/index.en.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tails.net/doc/persistent_storage/index.en.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ol>
+
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Distribution_Morphing" title="Distribution Morphing"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Distribution
+Morphing</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Grub" title="grub"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">grub</span></a><span class="info"><span class="prev">Previous
+page: Distribution Morphing</span><span class="index">Index page:
+Advanced Documentation</span><span class="next">Next page:
+grub</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="Terms_of_Service">Terms of Service</a></li><li><a href="Privacy_Policy">Privacy Policy</a></li><li><a href="Cookie_Policy">Cookie Policy</a></li><li><a href="E-Sign_Consent">E-Sign Consent</a></li><li><a href="Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy">Privacy Policy</a>, <a href="Cookie_Policy">Cookie Policy</a>, <a href="Terms_of_Service">Terms of Service</a>, and <a href="E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../search-index.js" defer></script>
+<script src="../page-previews.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

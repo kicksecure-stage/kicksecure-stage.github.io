@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>dracut</title>
+<meta name="description" content="dracut is an initial ramdisk (also called &quot;initrd&quot; or &quot;initramfs&quot;) generator for Linux systems.">
+<meta property="og:description" content="dracut is an initial ramdisk (also called &quot;initrd&quot; or &quot;initramfs&quot;) generator for Linux systems.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dracut">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dracut">
+<meta property="og:title" content="dracut">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Dracut.svg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="Download">Download</a><ul class="nav-submenu"><li><a href="ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="About">About</a><ul class="nav-submenu"><li><a href="About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Documentation">Docs</a><ul class="nav-submenu"><li><a href="Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Support">Support</a><ul class="nav-submenu"><li><a href="Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Dracut.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Dracut.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Dracut" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Dracut|dracut]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[dracut](https://www.kicksecure.com/wiki/Dracut)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Dracut]dracut[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut&amp;text=dracut" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut&amp;text=dracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut&amp;title=dracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut&amp;summary=dracut" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut&amp;t=dracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=dracut%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=dracut&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDracut" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Grub" title="grub"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">grub</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Installation_of_Debian_based_Linux_distributions_in_a_folder_chroot" title="Installation of Debian based Linux distributions in a folder chroot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Installation
+of Debian based Linux distributions in a folder
+chroot</span></a><span class="info"><span class="prev">Previous page:
+grub</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Installation of Debian
+based Linux distributions in a folder
+chroot</span></span></span><h1 id="firstHeading">dracut</h1></div>
+<div class="mininav">
+<ul>
+<li><a href="Troubleshooting#General_Troubleshooting">General Troubleshooting</a></li>
+<li><a href="Troubleshooting#Connectivity_Troubleshooting">Connectivity Troubleshooting</a></li>
+<li><a href="VirtualBox/Troubleshooting">VirtualBox
+Troubleshooting</a></li>
+<li><a href="Recovery">Recovery</a></li>
+<li><a href="Grub">GRUB</a></li>
+<li><a class="mw-selflink selflink" aria-current="page">dracut</a></li>
+<li><a href="Broken_Boot">Broken Boot</a></li>
+<li><a href="Factory_Reset">Factory Reset</a></li>
+<li><a href="Download_Issues">Download Issues</a></li>
+</ul>
+</div>
+<p><img src="../media/Dracut.svg" width="100" alt="dracut logo" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p><code>dracut</code> is an initial ramdisk (also called
+<code>initrd</code> or <code>initramfs</code>) generator. It assembles
+the early userspace image used during boot.</p>
+<div class="post-intro-p">
+</div>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li><li class="toc-l1"><a href="#Initial_Ramdisk_Based_Encryption_Password_Prompt"><span class="tocnumber">2</span> <span class="toctext">Initial Ramdisk Based Encryption Password Prompt</span></a></li><li class="toc-l1"><a href="#Terminology"><span class="tocnumber">3</span> <span class="toctext">Terminology</span></a></li><li class="toc-l1"><a href="#Find_out_which_initrd_Generator_is_installed"><span class="tocnumber">4</span> <span class="toctext">Find out which initrd Generator is installed</span></a></li><li class="toc-l1"><a href="#Installation"><span class="tocnumber">5</span> <span class="toctext">Installation</span></a></li><li class="toc-l1"><a href="#Re-Generate_dracut_Initrd"><span class="tocnumber">6</span> <span class="toctext">Re-Generate dracut Initrd</span></a></li><li class="toc-l1"><a href="#Development"><span class="tocnumber">7</span> <span class="toctext">Development</span></a></li><li class="toc-l1"><a href="#Bugs"><span class="tocnumber">8</span> <span class="toctext">Bugs</span></a></li></ul></nav><h1 id="Introduction">Introduction</h1>
+<p>This page documents <code>dracut</code> usage, terminology, and
+common tasks such as checking which initrd generator is installed,
+installing <code>dracut</code>, and re-generating the initrd. It also
+highlights important warnings, typical pitfalls, and where to look for
+upstream development and bug reports.</p>
+<h1 id="Initial_Ramdisk_Based_Encryption_Password_Prompt">Initial
+Ramdisk Based Encryption Password Prompt</h1>
+<p><blockquote><p>Please enter passphrase for disk ... (press TAB for no echo)</p></blockquote></p>
+<p><strong>Figure:</strong> <em>initramfs (initramfs-tools or dracut)
+Based Encryption Password <a href="Full_Disk_Encryption#Pre-Boot_Authentication">Pre-Boot Authentication</a> Prompt - Example
+(cropped)</em></p>
+<p><img src="../media/Dracutpass-cropped.png.webp" width="1200" height="28" alt="initramfs (dracut) Based Encryption Password Prompt" /></p>
+<p><strong>Figure:</strong> <em>initramfs (initramfs-tools or dracut)
+Based Encryption Password Prompt - Example (full)</em></p>
+<p><img src="../media/Dracutpass.png.webp" width="600" height="451" alt="dracutpass.png" /></p>
+<p>This is related to <a href="Full_Disk_Encryption"><u>F</u>ull <u>D</u>isk <u>E</u>ncryption
+(FDE)</a>.</p>
+<h1 id="Terminology">Terminology</h1>
+<p><span class="manually-placed-anchor mpa-visible" id="initrd">initrd</span></p>
+<p><code>initrd</code> is the <code>initial ramdisk</code>. It is a
+small filesystem used as part of the boot process to provide an early
+userspace environment, so the system can load drivers and mount the real
+<u>o</u>perating <u>s</u>ystem (OS) root filesystem. A common synonym is
+<code>initramfs</code>. <sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup></p>
+<p>In modern Linux systems, the <code>initramfs</code> is typically a
+compressed <code>cpio</code> archive that the kernel unpacks into RAM
+and then runs <code>/init</code> from. Older systems used an
+<code>initrd</code> image as a RAM disk style filesystem image.
+<sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup></p>
+<p><span class="manually-placed-anchor mpa-visible" id="exitrd">exitrd</span></p>
+<p><code>exitrd</code> <sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup> is the
+<code>shutdown ramdisk</code> (also called a
+<code>shutdown initramfs</code>). It is conceptually symmetrical to
+<code>initrd</code>, but it is not a standalone kernel feature: it is
+implemented in user space (most commonly by <code>systemd</code>).
+During late shutdown, if <code>/run/initramfs/shutdown</code> exists,
+<code>systemd</code> can switch root into <code>/run/initramfs</code>
+and execute <code>/shutdown</code> from there, so the old root
+filesystem can be unmounted cleanly and complex storage stacks can be
+dismantled. <sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup></p>
+<p>On systems using <code>dracut</code>, this commonly involves
+restoring (unpacking) an initramfs into <code>/run/initramfs</code>
+during shutdown, so it is available for the <code>exitrd</code>
+switch-root step. <sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup></p>
+<p>A synonym is <code>initramfs-shutdown</code>.</p>
+<h1 id="Find_out_which_initrd_Generator_is_installed">Find out which
+initrd Generator is installed</h1>
+<p>To check if <code>dracut</code> is already installed, run. On Debian
+based operating systems such as Kicksecure this can be done using the
+following commands.</p>
+<p><span class="code-select" data-code="dpkg -l | grep dracut">dpkg -l |
+grep dracut</span></p>
+<p>To check if <code>initramfs-tools</code> is already installed,
+run.</p>
+<p><span class="code-select" data-code="dpkg -l | grep initramfs-tools">dpkg
+-l | grep initramfs-tools</span></p>
+<h1 id="Installation">Installation</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Notices.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_notice.png.webp" width="40" height="40" alt="Info" /></span>
+Platform specific.</p>
+<ul>
+<li><strong>Debian:</strong> The following warning is applicable because
+<code>dracut</code> is not installed by default in Debian.</li>
+<li><strong>Kicksecure:</strong> The following warning is only
+applicable if <code>dracut</code> is not yet installed. In newer
+Kicksecure versions, <code>dracut</code> is installed by default.</li>
+</ul>
+</div>
+<p>To check your currently installed initrd generator, see <a href="Dracut#Find_out_which_initrd_Generator_is_installed">Find out which initrd Generator is installed</a>.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Warning.</p>
+<div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" height="34" alt="warning" /></span>
+<strong>Warning:</strong> There is a risk of the system becoming
+unbootable due to changes in the initrd creation tool.</p>
+<ul>
+<li><strong>General risk:</strong> The system may become unbootable when
+changing the initrd creation tool.</li>
+<li><strong>Backups:</strong> Always maintain backups and proceed with
+caution when making changes.</li>
+<li><strong>Dracut bug reports:</strong> If issues with
+<code>dracut</code> occur, do not report them here, as they are <a href="Unspecific">unrelated to Kicksecure</a>.</li>
+</ul>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">3</i>
+Create folder <code>/etc/dracut.conf.d</code>.</p>
+<p><span class="code-select" data-code="sudo mkdir --parents /etc/dracut.conf.d">sudo
+mkdir --parents /etc/dracut.conf.d</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">4</i>
+Create a new configuration file. <sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p>
+<p>Open file <code>/etc/dracut.conf.d/60_user.conf</code> in an editor
+with administrative ("<a href="Root"><code>root</code></a>") rights.</p>
+<div class="info-box ">
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">1</i>
+Select your platform.</p>
+<p><div class="tab-content-controller "><div class="mininav"></div><div class="tcc-content"><p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Kicksecure-logo-icon.svg" width="25" alt="Kicksecure-logo-icon.svg" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="kicksecure" role="heading" aria-level="5">Kicksecure</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/dracut.conf.d/60_user.conf">sudoedit
+/etc/dracut.conf.d/60_user.conf</span></p></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Qubes-logo-blue.png.webp" width="25" height="25" alt="Qubes-logo-blue.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="kicksecure-qubes" role="heading" aria-level="5">Kicksecure-Qubes</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Sudoedit guidance:</u> See <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a> for details on why using <code>sudoedit</code>
+improves security and how to use it.</li>
+<li><u>Editor requirement:</u> Close Featherpad (or the chosen text
+editor) before running the <code>sudoedit</code> command.</li>
+<li><u>Template requirement:</u> When using <a href="Qubes">Kicksecure-Qubes</a>, this must be done inside the
+Template.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/dracut.conf.d/60_user.conf">sudoedit
+/etc/dracut.conf.d/60_user.conf</span></p>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">4</i>
+Notes.</p>
+<ul>
+<li><u>Shut down Template:</u> After applying this change, shut down the
+Template.</li>
+<li><u>Restart App Qubes:</u> All App Qubes based on the Template need
+to be restarted if they were already running.</li>
+<li><u>Qubes persistence:</u> See also <a href="Qubes#Qubes_Persistence">Qubes Persistence</a></li>
+<li><u>General procedure:</u> This is a general procedure required for
+Qubes and is <a href="Unspecific">unspecific to
+Kicksecure-Qubes</a>.</li>
+</ul></div></div></p>
+<p><div class="tcc-section  info-box"><div class="tcc-image"><img src="../media/Any12312.png.webp" width="25" height="40" alt="Any12312.png" /></div><div class="tcc-title"><div class="mw-heading mw-heading5 widget-headline "><h5 id="others-and-alternatives" role="heading" aria-level="5">Others and Alternatives</h5></div></div><div class="tcc-content"><p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">2</i>
+Notes.</p>
+<ul>
+<li><u>Example only:</u> This is just an example. Other tools could
+achieve the same goal.</li>
+<li><u>Troubleshooting and alternatives:</u> If this example does not
+work for you, or if you are not using Kicksecure, please refer to <a href="Software#Open_File_with_Root_Rights">Open File
+with Root Rights</a>.</li>
+</ul>
+<p><i class="padded-content-icon    pci-text fa-solid cs-yellow iconset-h3">3</i>
+Open the file with root rights.</p>
+<p><span class="code-select" data-code="sudoedit /etc/dracut.conf.d/60_user.conf">sudoedit
+/etc/dracut.conf.d/60_user.conf</span></p></div></div></p></div></div></p>
+</div>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">5</i>
+Paste.</p>
+<p><span class="code-select" data-code="hostonly=yes
+hostonly_mode=sloppy">hostonly=yes hostonly_mode=sloppy</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">6</i>
+Save.</p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">7</i>
+Install <code>dracut</code> <u>and</u> systemd-cryptsetup.</p>
+<p><span class="code-select" data-code="sudo apt install --no-install-recommends dracut systemd-cryptsetup">sudo
+apt install --no-install-recommends dracut systemd-cryptsetup</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">8</i>
+Done.</p>
+<p>Installation of <code>dracut</code> has been completed.</p>
+<h1 id="Re-Generate_dracut_Initrd">Re-Generate dracut Initrd</h1>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">1</i>
+Run.</p>
+<p><span class="code-select" data-code="sudo dracut -f">sudo dracut
+-f</span></p>
+<p><i class="padded-content-icon pci-style-circle pci-border-thick pci-shadow pci-text fa-solid cs-green iconset-h1">2</i>
+Done.</p>
+<p>The dracut initrd has been re-generated.</p>
+<h1 id="Development">Development</h1>
+<ul>
+<li><a href="https://systemd.io/INITRD_INTERFACE/">The initrd Interface
+of systemd</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/INITRD_INTERFACE/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="Bugs">Bugs</h1>
+<ul>
+<li><strong>Specific risk:</strong> Issues may occur during migration to
+<code>dracut</code> if full disk encryption is used.
+<ul>
+<li><u>Likely issues:</u>
+<ul>
+<li>Package <code>systemd-cryptsetup</code> is not installed.</li>
+<li><code>hostonly=yes</code> configuration option is not used.</li>
+</ul></li>
+<li><u>Workaround:</u> If boot fails: setting the kernel parameter
+<code>rd.auto</code> might help. (Tested on Debian <code>12</code>/
+<code>bookworm</code>.)</li>
+</ul></li>
+<li><u>Note on bug status:</u> Closed bugs do not necessarily mean the
+issue is resolved in your distribution's APT repository. Fixes may have
+been reverted upstream, making bug status verification difficult.</li>
+<li><u><code>dracut</code> (abandoned)</u>
+<ul>
+<li><a href="https://github.com/dracutdevs/dracut/pull/2520">fix(crypt):
+Encrypted root FS handling with generic initrd #2520</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracutdevs/dracut/pull/2520" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> (abandoned pull
+request for dracut)</li>
+<li><a href="https://github.com/dracutdevs/dracut/issues/2437">Generic
+initrd does not work with encrypted root FS without further
+configuration</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracutdevs/dracut/issues/2437" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+<li><u><code>dracut-ng</code> (maintained)</u> upstream bug reports and
+pull requests:
+<ul>
+<li><a href="https://github.com/dracut-ng/dracut-ng/issues/684">With
+encrypted root + unencrypted boot + systemd, dracut may generate an
+initrd incapable of decrypting the root disk without showing any
+warnings or errors #684</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracut-ng/dracut-ng/issues/684" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/dracut-ng/dracut-ng/pull/319">fix(systemd-crypt):
+add potentially needed modules to generic initrd #319</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracut-ng/dracut-ng/pull/319" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/dracut-ng/dracut-ng/pull/320">fix(crypt):
+unlock encrypted devices by default during boot #320</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracut-ng/dracut-ng/pull/320" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/dracut-ng/dracut-ng/pull/529">revert(crypt): do
+not unlock encrypted devices by default during boot #529</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/dracut-ng/dracut-ng/pull/529" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+<li><u>Debian upstream bug reports:</u>
+<ul>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1041614">unbootable
+system after installing dracut on a standard Debian installation -
+#1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1041614" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078792">unbootable
+system after installing dracut on a standard Debian installation -
+#2</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1078792" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1029324">dracut:
+generic initrd does not work with encrypted root FS without further
+configuration</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1029324" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1103457">Unable
+to boot LUKS-encrypted system</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1103457" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+<li><u>Forum discussion:</u>
+<ul>
+<li><a href="https://forums.whonix.org/t/replacing-initramfs-tools-with-dracut/4487/23">https://forums.whonix.org/t/replacing-initramfs-tools-with-dracut/4487/23</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/replacing-initramfs-tools-with-dracut/4487/23" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul></li>
+<li><u>ram-wipe discussion:</u>
+<ul>
+<li><span class="github-link-widget"><img src="../github-mark.svg" width="14" height="16" alt="GitHub Logo" /><a href="https://github.com/Kicksecure/ram-wipe/issues/2#issuecomment-2813730463">Kicksecure/ram-wipe</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/Kicksecure/ram-wipe/issues/2#issuecomment-2813730463" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ul></li>
+</ul>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html">Linux
+kernel documentation: Ramfs, rootfs and initramfs</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><blockquote><p>Initramfs images are also called
+"initrd".<span class="blockquote-context">dracut man page</span></p></blockquote></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html">Linux
+kernel documentation: Ramfs, rootfs and initramfs</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://docs.kernel.org/filesystems/ramfs-rootfs-initramfs.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://man.archlinux.org/man/bootup.7.en#THE_EXITRD">Arch
+Linux bootup(7): THE_EXITRD</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man.archlinux.org/man/bootup.7.en#THE_EXITRD" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://man7.org/linux/man-pages/man7/bootup.7.html">man7.org
+bootup(7): THE EXITRD</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man7.org/linux/man-pages/man7/bootup.7.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.freedesktop.org/wiki/Software/systemd/InitrdInterface/">systemd
+Initrd Interface: shutdown hook via /run/initramfs/shutdown</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.freedesktop.org/wiki/Software/systemd/InitrdInterface/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><a href="#cite_ref-7" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://man.archlinux.org/man/extra/dracut/dracut-shutdown.service.8.en">dracut-shutdown.service(8):
+restore /run/initramfs on shutdown</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://man.archlinux.org/man/extra/dracut/dracut-shutdown.service.8.en" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">File name '60_user.conf' is important to override the configuration
+file 50-generic.conf by package 'dracut-config-generic', if
+installed.</span></li>
+</ol>
+
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Grub" title="grub"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">grub</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="Installation_of_Debian_based_Linux_distributions_in_a_folder_chroot" title="Installation of Debian based Linux distributions in a folder chroot"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Installation
+of Debian based Linux distributions in a folder
+chroot</span></a><span class="info"><span class="prev">Previous page:
+grub</span><span class="index">Index page: Advanced
+Documentation</span><span class="next">Next page: Installation of Debian
+based Linux distributions in a folder chroot</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="Terms_of_Service">Terms of Service</a></li><li><a href="Privacy_Policy">Privacy Policy</a></li><li><a href="Cookie_Policy">Cookie Policy</a></li><li><a href="E-Sign_Consent">E-Sign Consent</a></li><li><a href="Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy">Privacy Policy</a>, <a href="Cookie_Policy">Cookie Policy</a>, <a href="Terms_of_Service">Terms of Service</a>, and <a href="E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../search-index.js" defer></script>
+<script src="../page-previews.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

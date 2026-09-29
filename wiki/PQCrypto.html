@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Post-Quantum Cryptography (PQCrypto)</title>
+<meta name="description" content="In ~10 years Quantum Computers will break todays common asymmetric public-key cryptography algorithms used for web encryption (https), e-mail encryption (gnupg...), ssh and others.">
+<meta property="og:description" content="In ~10 years Quantum Computers will break todays common asymmetric public-key cryptography algorithms used for web encryption (https), e-mail encryption (gnupg...), ssh and others.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/PQCrypto">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/PQCrypto">
+<meta property="og:title" content="Post-Quantum Cryptography (PQCrypto)">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Quantum-869533640.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="Download">Download</a><ul class="nav-submenu"><li><a href="ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="About">About</a><ul class="nav-submenu"><li><a href="About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Documentation">Docs</a><ul class="nav-submenu"><li><a href="Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Support">Support</a><ul class="nav-submenu"><li><a href="Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/PQCrypto.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/PQCrypto.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/PQCrypto" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[PQCrypto|Post-Quantum Cryptography (PQCrypto)]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[Post-Quantum Cryptography (PQCrypto)](https://www.kicksecure.com/wiki/PQCrypto)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/PQCrypto]Post-Quantum Cryptography (PQCrypto)[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto&amp;text=Post-Quantum%20Cryptography%20%28PQCrypto%29" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto&amp;text=Post-Quantum%20Cryptography%20%28PQCrypto%29" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto&amp;title=Post-Quantum%20Cryptography%20%28PQCrypto%29" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto&amp;summary=Post-Quantum%20Cryptography%20%28PQCrypto%29" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto&amp;t=Post-Quantum%20Cryptography%20%28PQCrypto%29" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=Post-Quantum%20Cryptography%20%28PQCrypto%29%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=Post-Quantum%20Cryptography%20%28PQCrypto%29&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="Cold_Boot_Attack_Defense" title="Cold Boot Attack Defense"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Cold
+Boot Attack
+Defense</span></a><a class="index internal" href="Documentation" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="OpenPGP" title="OpenPGP"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">OpenPGP</span></a><span class="info"><span class="prev">Previous
+page: Cold Boot Attack Defense</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+OpenPGP</span></span></span><h1 id="firstHeading">Post-Quantum Cryptography (PQCrypto)</h1></div>
+<p><img src="../media/Quantum-869533640.jpg.webp" alt="Quantum-869533640.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>In ~10 years Quantum Computers will break todays common asymmetric
+public-key cryptography algorithms used for web encryption (https),
+e-mail encryption (gnupg...), ssh and others.</p>
+<div class="post-intro-p">
+</div>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Introduction"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a></li><li class="toc-l1"><a href="#Broken_and_Impacted_Cryptographic_Algorithms"><span class="tocnumber">2</span> <span class="toctext">Broken and Impacted Cryptographic Algorithms</span></a></li><li class="toc-l1"><a href="#Post-quantum_Cryptography"><span class="tocnumber">3</span> <span class="toctext">Post-quantum Cryptography</span></a></li><li class="toc-l2"><a href="#NIST_PQ_Competition"><span class="tocnumber">3.1</span> <span class="toctext">NIST PQ Competition</span></a></li><li class="toc-l1"><a href="#Software"><span class="tocnumber">4</span> <span class="toctext">Software</span></a></li><li class="toc-l1"><a href="#Setup_Guides"><span class="tocnumber">5</span> <span class="toctext">Setup Guides</span></a></li><li class="toc-l2"><a href="#Codecrypt"><span class="tocnumber">5.1</span> <span class="toctext">Codecrypt</span></a></li><li class="toc-l3"><a href="#Use_Instructions"><span class="tocnumber">5.1.1</span> <span class="toctext">Use Instructions</span></a></li><li class="toc-l4"><a href="#Basic_Commands"><span class="tocnumber">5.1.1.1</span> <span class="toctext">Basic Commands</span></a></li><li class="toc-l4"><a href="#Key_Management"><span class="tocnumber">5.1.1.2</span> <span class="toctext">Key Management</span></a></li><li class="toc-l4"><a href="#Encryption/Decryption,_Signing_and_Verification"><span class="tocnumber">5.1.1.3</span> <span class="toctext">Encryption/Decryption, Signing and Verification</span></a></li><li class="toc-l4"><a href="#Message_Formatting"><span class="tocnumber">5.1.1.4</span> <span class="toctext">Message Formatting</span></a></li><li class="toc-l2"><a href="#OneTime"><span class="tocnumber">5.2</span> <span class="toctext">OneTime</span></a></li><li class="toc-l1"><a href="#Miscellaneous"><span class="tocnumber">6</span> <span class="toctext">Miscellaneous</span></a></li><li class="toc-l1"><a href="#Footnotes"><span class="tocnumber">7</span> <span class="toctext">Footnotes</span></a></li></ul></nav><h1 id="Introduction">Introduction</h1>
+<p><a href="https://en.wikipedia.org/wiki/Quantum_computer">Quantum
+computers</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Quantum_computer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> are based on the phenomena of <a href="https://en.wikipedia.org/wiki/Quantum_mechanics">quantum
+mechanics</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Quantum_mechanics" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>, as opposed to familiar classical computers based on
+transistors which encode data into binary digits (bits). In traditional
+computing, this process always leads to one of two possible states (0 or
+1). <sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup> However, quantum computation relies on <a href="https://en.wikipedia.org/wiki/Qubit">qubits</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Qubit" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> that can express
+many different states simultaneously ("superpositions"), meaning that
+when/if this technology is fully developed, it will be capable of
+solving some types of mathematical problems virtually instantaneously.
+<sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup></p>
+<p>Assembling a quantum computer is now an engineering problem rather
+than one impeded by laws of physics -- a theoretically imperfect machine
+can still yield useful results. Military and government agencies have
+invested heavily in this area because of the implications for today's
+widely used public-key cryptography. <sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup> Ciphertext that
+is invulnerable to classical computing will be shredded into ribbons by
+a large-scale quantum computer. Similarly, all Tor traffic will be
+vulnerable until quantum-resistant cryptography is implemented.</p>
+<p>The Snowden documents reveal that all encrypted data traversing the
+internet is intercepted and stored indefinitely for cryptanalysis should
+there be a scientific breakthrough. A global arms race has ensued
+between the United States, EU, Russia, China, Israel and other global
+powers due to the immense geo-political, economic, intelligence and
+military advantages this technology would confer.</p>
+<p>The academic and corporate consensus is that a large quantum computer
+will be built in around 10-15 years. It is safe to assume that
+well-funded intelligence communities are capable of greatly reducing
+this development period.</p>
+<p>As of July 2020, the <a href="https://csrc.nist.gov/publications/detail/nistir/8309/final">second
+round</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://csrc.nist.gov/publications/detail/nistir/8309/final" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> of NIST PQ cipher standardization has concluded. The 26
+candidates are grouped into <a href="https://www.nist.gov/news-events/news/2020/07/pqc-standardization-process-third-round-candidate-announcement">finalist
+and alternate</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.nist.gov/news-events/news/2020/07/pqc-standardization-process-third-round-candidate-announcement" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> groups which will be reviewed for another 12-18
+months. NIST plans to release the initial standard for quantum-resistant
+cryptography in <a href="https://www.nist.gov/news-events/news/2020/07/nists-post-quantum-cryptography-program-enters-selection-round">2022</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.nist.gov/news-events/news/2020/07/nists-post-quantum-cryptography-program-enters-selection-round" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
+The finalist group has better performance, but less security confidence
+while alternate candidates have a stronger security rationale, but lack
+performance for all use cases. Only one cipher of each design type will
+be standardized, for example one lattice based asymmetric crypto and one
+lattice based signature scheme will be selected out of the group. A
+fourth round looking at alternates for standardization is planned.</p>
+<h1 id="Broken_and_Impacted_Cryptographic_Algorithms">Broken and
+Impacted Cryptographic Algorithms</h1>
+<p>The US National Institute of Standards and Technology has summarized
+the <a href="https://nvlpubs.nist.gov/nistpubs/ir/2016/NIST.IR.8105.pdf">impact
+of quantum computing</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://nvlpubs.nist.gov/nistpubs/ir/2016/NIST.IR.8105.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> on common cryptographic algorithms.</p>
+<table>
+<caption><em>Cryptographic Impacts of Quantum Computing</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Cryptographic Algorithm</strong></p></th>
+<th><p><strong>Type</strong></p></th>
+<th><p><strong>Purpose</strong></p></th>
+<th><p><strong>Quantum Computer Impact</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>AES-256</p></td>
+<td><p>Symmetric Key</p></td>
+<td><p>Encryption</p></td>
+<td><p>Larger Key Sizes Needed
+<sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td><p>SHA-256. SHA-3</p></td>
+<td><p>-</p></td>
+<td><p>Hash Functions</p></td>
+<td><p>Larger Output Needed
+<sup id="cite_ref-7" class="reference"><a href="#cite_note-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td scope="row"><p>RSA</p></td>
+<td><p>Public Key</p></td>
+<td><p>Signatures, Key Establishment</p></td>
+<td><p>No Longer Secure <sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="even">
+<td scope="row"><p>ECDSA, ECDH <sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>Public Key</p></td>
+<td><p>Signatures, Key Exchange</p></td>
+<td><p>No Longer Secure <sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td scope="row"><p>DSA <sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup></p></td>
+<td><p>Public Key</p></td>
+<td><p>Signatures, Key Exchange</p></td>
+<td><p>No Longer Secure <sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+</tbody>
+</table>
+<p>The emergence of quantum computers would break all asymmetric
+public-key cryptography and signature algorithms used today -- the type
+of cryptography that protects communications over the internet. The size
+of symmetric keys is also halved, meaning the strength of 256-bit keys
+would be equivalent to 128-bit keys. This is the type of cryptography
+used for Full Disk Encryption, when data is encrypted with a
+passphrase.</p>
+<p>All current generation symmetric cryptographic authenticated modes
+such as CBC-MAC, PMAC, GMAC, GCM, and OCB are completely broken. This
+also applies to many CAESAR competition candidates: CLOC, AEZ, COPA,
+OTR, POET, OMD, and Minalpher. <sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup></p>
+<p>For more details visit <a href="https://pqcrypto.org/">https://pqcrypto.org/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pqcrypto.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<h1 id="Post-quantum_Cryptography">Post-quantum Cryptography</h1>
+<p>The solution to this threat is Post-quantum Cryptography ("PQ
+Crypto"). This provides a drop-in replacement for cryptographic
+libraries already deployed, except different types of "quantum-hard"
+mathematical problems are used so cryptanalysis is difficult for
+<em>both</em> classical and quantum computers.</p>
+<p>Competent cryptographers are gradually improving the performance of
+PQ Crypto and designing cipher-suites that are efficient for everyday
+use. For instance:</p>
+<ul>
+<li><a href="https://pqcrypto.eu.org/docs/initial-recommendations.pdf">Initial
+recommendations</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://pqcrypto.eu.org/docs/initial-recommendations.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for PQ Crypto algorithms were published in September
+2015.</li>
+<li>The Tor Project is planning to <a href="https://gitlab.torproject.org/legacy/trac/-/issues/17286">migrate
+to quantum-resistant ciphers</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/legacy/trac/-/issues/17286" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> in a future version.
+<sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup> To follow Tor child tickets related to this
+transition, see <a href="https://gitlab.torproject.org/legacy/trac/-/issues/24985">here</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitlab.torproject.org/legacy/trac/-/issues/24985" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
+Progress has <a href="https://lists.torproject.org/pipermail/tor-talk/2020-May/045581.html">stalled</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://lists.torproject.org/pipermail/tor-talk/2020-May/045581.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+until wider cell sizes are implemented.</li>
+</ul>
+<h2 id="NIST_PQ_Competition">NIST PQ Competition</h2><span class="share-tooltip" data-anchor="NIST_PQ_Competition"><a class="headline-anchor" href="#NIST_PQ_Competition" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/PQCrypto#NIST_PQ_Competition">https://www.kicksecure.com/wiki/PQCrypto#NIST_PQ_Competition</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23NIST_PQ_Competition&amp;text=NIST%20PQ%20Competition" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23NIST_PQ_Competition&amp;text=NIST%20PQ%20Competition" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23NIST_PQ_Competition&amp;title=NIST%20PQ%20Competition" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=NIST%20PQ%20Competition&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23NIST_PQ_Competition" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/PQCrypto#NIST_PQ_Competition]NIST PQ Competition[/url]">[url=https://www.kicksecure.com/wiki/PQCrypto#NIST_PQ_Competition]NIST PQ Competition[/url]</span></span></span></span>
+<p>While Bruce Schneier has praised the NIST process for PQ cipher
+standardization as it nears its close <sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup>, Daniel
+Bernstein has pointed out the consistent non-transparency of the
+organization and its secrecy about input from outside entities like the
+NSA who have a vested interest in subverting cryptographic designs. NIST
+non-responsiveness to FOIA requests culminated in a lawsuit by DJB.
+Among many problems he pointed out, is the skewing of design guidelines
+that weaken security in the name of performance despite being illogical
+<sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup>, choosing patent encumbered ciphers like KYBER when
+NTRU Prime would have sufficed <sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup> and refusing (under
+NSA influence) to accommodate hybrid key-encapsulation mechnism (KEM)
+designs where strong non-PQ ciphers are combined with experimental PQ
+ciphers to hedge against fatal weaknesses that these new, less studied
+ciphers may have against the mathematical attacks known today.</p>
+<h1 id="Software">Software</h1>
+<p>The Free Software listed below is known to resist quantum computers,
+but this is not an endorsement for any particular tool. To mitigate
+potential exposure to unknown software implementation failures, it is
+recommended to set up arbitrary protocols over Tor <a href="Onion_Services">Onion Services</a> once PQ Crypto
+is deployed. The exception is the use of one-time pads which are secure
+from an <a href="https://en.wikipedia.org/wiki/Information_theoretic_security">information-theoretic
+perspective</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Information_theoretic_security" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
+<ul>
+<li><a href="https://github.com/exaexa/codecrypt">Codecrypt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/exaexa/codecrypt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/aabmets/quantcrypt">Quantcrypt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/aabmets/quantcrypt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/rnpgp/rnp">RNP (Build with ENABLE_PQC
+option)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/rnpgp/rnp" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://www.cyph.com/">Cyph</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.cyph.com/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://red-bean.com/onetime/">OneTime</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://red-bean.com/onetime/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://tinyssh.org/">TinySSH (PQC planned)</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tinyssh.org/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/open-quantum-safe/liboqs">liboqs</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/open-quantum-safe/liboqs" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> -
+is a FLOSS implementation of many NIST candidates by Douglas Stebila, an
+Associate Professor of cryptography at the University of Waterloo. It
+provides pq for OpenSSL and OpenSSH using software.
+<sup id="cite_ref-20" class="reference"><a href="#cite_note-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup></li>
+</ul>
+<p>Before adopting any software, first consider if:
+<sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup></p>
+<ul>
+<li>Cryptographic libraries were written by competent cryptographers and
+audited for correct implementation.</li>
+<li>Quantum-resistant algorithms have withstood substantial
+cryptanalytic efforts.</li>
+<li>The software has been widely adopted to help users blend in.</li>
+</ul>
+<h1 id="Setup_Guides">Setup Guides</h1>
+<h2 id="Codecrypt">Codecrypt</h2><span class="share-tooltip" data-anchor="Codecrypt"><a class="headline-anchor" href="#Codecrypt" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/PQCrypto#Codecrypt">https://www.kicksecure.com/wiki/PQCrypto#Codecrypt</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Codecrypt&amp;text=Codecrypt" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Codecrypt&amp;text=Codecrypt" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Codecrypt&amp;title=Codecrypt" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Codecrypt&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Codecrypt" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/PQCrypto#Codecrypt]Codecrypt[/url]">[url=https://www.kicksecure.com/wiki/PQCrypto#Codecrypt]Codecrypt[/url]</span></span></span></span>
+<div class="mininav">
+<ul>
+<li><a href="Verifying_Software_Signatures">Verifying
+Software Signatures</a></li>
+<li><a href="OpenPGP">OpenPGP</a></li>
+<li><a href="Air_Gapped_OpenPGP_Key">Air Gapped OpenPGP
+Key</a></li>
+<li><a href="Signify">Signify</a></li>
+<li><a href="PQCrypto#Codecrypt">Codecrypt</a></li>
+<li><a href="Authenticode">Authenticode</a></li>
+<li><a href="Digital_Signature_Policy">Kicksecure
+Digital Signature Policy</a></li>
+</ul>
+</div>
+<p>This is a GnuPG-like Unix program for encryption and signing that
+only uses quantum-resistant algorithms: <sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup>
+<sup id="cite_ref-23" class="reference"><a href="#cite_note-23"><span class="cite-bracket">[</span>23<span class="cite-bracket">]</span></a></sup></p>
+<ul>
+<li>McEliece cryptosystem (compact QC-MDPC variant) for encryption.</li>
+<li>Hash-based Merkle tree algorithm (FMTSeq variant) for digital
+signatures.</li>
+</ul>
+<p>Codecrypt is free software. The code is licensed under terms of LGPL3
+in order to make combinations with other tools easier.</p>
+<h3 id="Use_Instructions">Use Instructions</h3><span class="share-tooltip" data-anchor="Use_Instructions"><a class="headline-anchor" href="#Use_Instructions" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/PQCrypto#Use_Instructions">https://www.kicksecure.com/wiki/PQCrypto#Use_Instructions</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Use_Instructions&amp;text=Use%20Instructions" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Use_Instructions&amp;text=Use%20Instructions" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Use_Instructions&amp;title=Use%20Instructions" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Use%20Instructions&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23Use_Instructions" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/PQCrypto#Use_Instructions]Use Instructions[/url]">[url=https://www.kicksecure.com/wiki/PQCrypto#Use_Instructions]Use Instructions[/url]</span></span></span></span>
+<p>Kicksecure includes Codecrypt by default. <sup id="cite_ref-24" class="reference"><a href="#cite_note-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup> See the
+<a href="https://e-x-a.org/codecrypt/ccr.1.html">Codecrypt manual
+page</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://e-x-a.org/codecrypt/ccr.1.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> for common use-cases.</p>
+<h4 id="Basic_Commands">Basic Commands</h4>
+<p>Generate a strong(er) asymmetric encryption key.</p>
+<p><span class="code-select" data-code="ccr -g ENC-256 -N [keyname]">ccr
+-g ENC-256 -N [keyname]</span></p>
+<p>Generate a strong(er) signature key.</p>
+<p><span class="code-select" data-code="ccr -g SIG-256 -N [keyname]">ccr
+-g SIG-256 -N [keyname]</span></p>
+<h4 id="Key_Management">Key Management</h4>
+<table>
+<caption><em>Codecrypt Key Management Commands</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Command</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Back-up keys</p></td>
+<td><p>It is easier to backup the ccr folder in the home directory,
+changing its name from/to <code>.ccr</code> upon restore. Enable hidden
+file view in the file browser to see it.</p></td>
+</tr>
+<tr class="even">
+<td><p>Export specified public key for sharing with contacts</p></td>
+<td><p>If a signature key was also created, both types of keys will be
+exported for distribution in a single file if they share the same name.
+<span class="code-select" data-code="ccr -F [keyname] -ap &gt; [keyname]">ccr
+-F [keyname] -ap &gt; [keyname]</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Export specified private key</p></td>
+<td><p>The <code>-F</code> parameter chooses the key to be used. To
+enumerate all keys in the keyring run <code>ccr -k</code> for public
+ones and <code>ccr -K</code> for private.
+<span class="code-select" data-code="ccr -F [keyname] -aP &gt; [keyname]">ccr
+-F [keyname] -aP &gt; [keyname]</span></p></td>
+</tr>
+<tr class="even">
+<td><p>Import a public key</p></td>
+<td><p><span class="code-select" data-code="ccr -ai &lt; [contactkey]">ccr
+-ai &lt; [contactkey]</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Import a private key</p></td>
+<td><p><span class="code-select" data-code="ccr -aI &lt; [myprivatekey]">ccr
+-aI &lt; [myprivatekey]</span></p></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Encryption/Decryption,_Signing_and_Verification"><span id="Encryption.2FDecryption.2C_Signing_and_Verification"></span>Encryption/Decryption,
+Signing and Verification</h4>
+<table>
+<caption><em>Codecrypt Encryption/Decryption, Signing and Verification
+Commands</em></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Category</strong></p></th>
+<th><p><strong>Command</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Encrypt a plaintext message file only to an already imported
+contact key</p></td>
+<td><p>Note this will be inaccessible to you. Save a plaintext copy for
+archival purposes.
+<span class="code-select" data-code="ccr -aer [contactkey] -R plaintext &gt; ciphertext">ccr
+-aer [contactkey] -R plaintext &gt; ciphertext</span></p></td>
+</tr>
+<tr class="even">
+<td><p>Encrypt and sign a plaintext message file only to an already
+imported contact key</p></td>
+<td><div class="info-box has-icon">
+<p><span class="info-box-icon"><img src="../media/Ambox_warning_pn.svg.png.webp" width="40" height="34" alt="Ambox_warning_pn.svg.png" /></span>
+Note: A FMTSeq master signature key has a limited number (65536) of
+subkeys each only used once to sign data. Reusing a subkey would break
+its security properties. Beware: Rolling back a VM snapshot or restoring
+a stale snapshot of the private key folder will result in key reuse.
+Codecrypt issues a warning after every time you sign "notice: 65535
+signatures remaining". Backup/restore the private keys everytime after a
+signature is made. <sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span class="cite-bracket">[</span>25<span class="cite-bracket">]</span></a></sup></p>
+</div>
+<p><span class="code-select" data-code="ccr -sea -r [contactkey] -R plaintext &gt; ciphertext">ccr
+-sea -r [contactkey] -R plaintext &gt; ciphertext</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Decrypt a ciphertext message creating plaintext output</p></td>
+<td><p><span class="code-select" data-code="ccr -adR ciphertext &gt; plaintext">ccr
+-adR ciphertext &gt; plaintext</span></p></td>
+</tr>
+<tr class="even">
+<td><p>Decrypt and verify a signed ciphertext message creating plaintext
+output</p></td>
+<td><p>A contact's public signature key must be imported beforehand.
+<sup id="cite_ref-26" class="reference"><a href="#cite_note-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup>
+<span class="code-select" data-code="ccr -advR ciphertext &gt; plaintext">ccr
+-advR ciphertext &gt; plaintext</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Create clearsigned text output</p></td>
+<td><p><span class="code-select" data-code="ccr -s -C -R plaintext &gt; clearsigned">ccr
+-s -C -R plaintext &gt; clearsigned</span> If multiple private signature
+keys have been created, a single one must be specified for clearsigning
+using <code>-u</code>.</p>
+<p><span class="code-select" data-code="ccr -u [keyname] -s -C -R plaintext &gt; clearsigned">ccr
+-u [keyname] -s -C -R plaintext &gt; clearsigned</span></p></td>
+</tr>
+<tr class="even">
+<td><p>Create a detached signature for a binary such as a code
+package</p></td>
+<td><p><span class="code-select" data-code="ccr -sab package.ccr &lt; package">ccr
+-sab package.ccr &lt; package</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Verify detached signature</p></td>
+<td><p><span class="code-select" data-code="ccr -vab package.ccr &lt; package">ccr
+-vab package.ccr &lt; package</span></p></td>
+</tr>
+<tr class="even">
+<td><p>Create hashfile from a large file</p></td>
+<td><p>Contents are not signed asymmetrically in this case, but instead
+a file with cryptographic hashes that can later be used to verify if the
+contents of input was changed, is generated. The contents of the
+hashfile could then be clearsigned asymmetrically, making it act as a
+detached signature file. <sup id="cite_ref-27" class="reference"><a href="#cite_note-27"><span class="cite-bracket">[</span>27<span class="cite-bracket">]</span></a></sup>
+<span class="code-select" data-code="ccr -saS hashfile.ccr &lt; big_data.iso">ccr
+-saS hashfile.ccr &lt; big_data.iso</span></p></td>
+</tr>
+<tr class="odd">
+<td><p>Verify the hashfile</p></td>
+<td><p><span class="code-select" data-code="ccr -vaS hashfile.ccr &lt; the_same_big_data.iso">ccr
+-vaS hashfile.ccr &lt; the_same_big_data.iso</span></p></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Message_Formatting">Message Formatting</h4>
+<p>Even without direct Thunderbird support, it is still possible to
+format messages to account for replies. However users should be careful
+to not mistakenly send unencrypted replies. It is advisable to disable
+the Internet connection temporarily to prevent the accidental sending of
+messages before they are encrypted with Codecrypt, and because TorBirdy
+is no longer available to automatically disable draft syncing on the
+host email server.</p>
+<p>Steps:</p>
+<ol>
+<li>Disable the Internet connection.</li>
+<li>Click reply in Thunderbird and copy the string "John Doe:"</li>
+<li>Format the correspondent's text as a reply by pasting it:
+<code>Edit</code> &#8594; <code>Paste As Quotation</code></li>
+<li>Copy the result to the text editor window. Continue composing the
+message with your replies interspersed between the quotes.</li>
+<li>Save and encrypt.</li>
+<li>Paste the ciphertext into the Thunderbird reply window and
+completely replace the existing text.</li>
+<li>Re-establish the Internet connection, then press send.</li>
+</ol>
+<h2 id="OneTime">OneTime</h2><span class="share-tooltip" data-anchor="OneTime"><a class="headline-anchor" href="#OneTime" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/PQCrypto#OneTime">https://www.kicksecure.com/wiki/PQCrypto#OneTime</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23OneTime&amp;text=OneTime" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23OneTime&amp;text=OneTime" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23OneTime&amp;title=OneTime" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=OneTime&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FPQCrypto%23OneTime" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/PQCrypto#OneTime]OneTime[/url]">[url=https://www.kicksecure.com/wiki/PQCrypto#OneTime]OneTime[/url]</span></span></span></span>
+<p>One-time pads are the only provably unbreakable encryption scheme
+ever invented, assuming a functional and non-backdoored random number
+generator (RNG). <sup id="cite_ref-28" class="reference"><a href="#cite_note-28"><span class="cite-bracket">[</span>28<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-29" class="reference"><a href="#cite_note-29"><span class="cite-bracket">[</span>29<span class="cite-bracket">]</span></a></sup> <a href="https://red-bean.com/onetime/">OneTime</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://red-bean.com/onetime/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> <sup id="cite_ref-30" class="reference"><a href="#cite_note-30"><span class="cite-bracket">[</span>30<span class="cite-bracket">]</span></a></sup> is
+a program that sets up a one-time pad on a user's computer, and helps to
+protect from reuse of pads which breaks the overall security model.</p>
+<p>OneTime can encrypt any kind of file -- it does not matter if the
+file's contents are Base64-encoded or not, because OneTime is not
+interpreting the contents. OneTime simply treats the file as a string of
+bits. Notably this is true for most encryption software; OneTime is not
+unique in this regard.</p>
+<p>One-time pads should be completely secure against cryptographic
+attacks by quantum computers or other avenues. So long as the encryption
+key is truly random and the key is as long as the message, then all
+possible plaintexts are equally likely. Quantum computers are not
+telepathic, so messages properly encrypted with a one-time pad will
+remain impervious to cryptographic attacks. Of course, using the system
+is difficult in practice due to the logistics of key exchange, but
+quantum computing does not affect that reality. <sup id="cite_ref-31" class="reference"><a href="#cite_note-31"><span class="cite-bracket">[</span>31<span class="cite-bracket">]</span></a></sup></p>
+<p>One-time pads come with several limitations:</p>
+<ul>
+<li>The message and the key are identical in size; this issue is negated
+by the large size of contemporary HDD/SSDs.</li>
+<li>It is impossible to securely contact strangers because the pad file
+must be exchanged in person or by other trustworthy peers. Sending the
+pad online only makes it as strong as the asymmetric cryptography that
+is in use.</li>
+<li>Message integrity cannot be verified, meaning there is no way for
+the recipient to discover if the ciphertext was tampered with during
+transit.</li>
+<li>The old pad material must never be reused to encrypt additional
+different messages. If this advice is ignored, the encryption is
+completely broken. <sup id="cite_ref-32" class="reference"><a href="#cite_note-32"><span class="cite-bracket">[</span>32<span class="cite-bracket">]</span></a></sup></li>
+</ul>
+<p>See also: <a href="One_Time_Pad">Physical One-time
+Pad</a>.</p>
+<h1 id="Miscellaneous">Miscellaneous</h1>
+<ul>
+<li><a href="https://forums.whonix.org/t/post-quantum-cryptography-pqc/2011">Forum
+discussion: post-quantum cryptography - PQC</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/post-quantum-cryptography-pqc/2011" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="Footnotes">Footnotes</h1>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/Quantum_computer">https://en.wikipedia.org/wiki/Quantum_computer</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Quantum_computer" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">The technology is still reported to be in its infancy and only
+capable of solving basic problems, but it is developing rapidly. No
+problems have <em>yet</em> been solved faster than with a classical
+computer.</span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">For instance, a single qubit can represent a 0, 1, or <a href="https://en.wikipedia.org/wiki/Quantum_superposition">quantum
+superposition</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Quantum_superposition" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup> of those two qubit states. A qubit pair can be in a
+superposition of 4 states, three qubits can be in a superposition of 8
+states and so on. Quantum computers with <em>n</em> qubits can be in a
+superposition of 2^{n} different states simultaneously.</span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Also explaining why the NSA shifted to <a href="https://web.archive.org/web/20160208201926/https://www.deepdotweb.com/2016/02/08/nsa-switches-to-quantum-resistant-cryptography/">quantum-resistant
+cryptography</a> in 2016.</span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Attacked by Grover's algo</span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">AES-256 is the minimum safe requirement</span></li>
+<li id="cite_note-7"><span class="mw-cite-backlink"><a href="#cite_ref-7" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">SHA-512 is the minimum safe requirement</span></li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><a href="#cite_ref-8" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://ntruprime.cr.yp.to/latticerisks-20211031.pdf">https://ntruprime.cr.yp.to/latticerisks-20211031.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ntruprime.cr.yp.to/latticerisks-20211031.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+p94 Why was "SHA-256/ SHA3-256" assigned only "80 bits quantum
+security"? Surely this alludes to the Brassard-H&#248;yer-Tapp algorithm
+[25], which finds a collision using only about 2256/3 &#8776; 285.33
+evaluations of SHA3-256 on quantum superpositions of inputs. However,
+the Brassard-H&#248;yer-Tapp algorithm also has tremendous overhead to look
+up each superposition of hash outputs in a precomputed table of size
+about 2256/3. If the cost metric for computation includes low-cost
+"random access gates", as explicitly allowed in Ambainis's famous
+distinctness algorithm [5] and many other quantum algorithms, then these
+lookups are not a bottleneck. However, the literature also has various
+cost metrics that assign higher costs to memory, and if these costs are
+high enough then the Brassard-H&#248;yer-Tapp algorithm becomes useless. See
+generally my paper [14].</span></li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><a href="#cite_ref-9" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Attacked by Shor's algo</span></li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><a href="#cite_ref-10" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Technically a 1 Terabyte RSA key size is is immune to quantum
+cryptanalysis, but generating such a key is impractical and would take
+an enormous amount of time and computational resources, obsoleting
+current usecases</span></li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><a href="#cite_ref-11" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Elliptic Curve Cryptography.</span></li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><a href="#cite_ref-12" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Attacked by Shor's algo</span></li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><a href="#cite_ref-13" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Finite Field Cryptography.</span></li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><a href="#cite_ref-14" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Attacked by Shor's algo</span></li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><a href="#cite_ref-15" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://arxiv.org/pdf/1602.05973v3.pdf">Breaking Symmetric
+Cryptosystems using Quantum Period Finding</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://arxiv.org/pdf/1602.05973v3.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><a href="#cite_ref-16" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Progress has been slow and this feature now has an unspecified
+release date, after initially being planned for Tor v0.3.X.</span></li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><a href="#cite_ref-17" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.schneier.com/blog/archives/2022/08/nists-post-quantum-cryptography-standards.html">https://www.schneier.com/blog/archives/2022/08/nists-post-quantum-cryptography-standards.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.schneier.com/blog/archives/2022/08/nists-post-quantum-cryptography-standards.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><a href="#cite_ref-18" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://blog.cr.yp.to/20220805-nsa.html">https://blog.cr.yp.to/20220805-nsa.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://blog.cr.yp.to/20220805-nsa.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><a href="#cite_ref-19" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://web.archive.org/web/20220926112906/https://twitter.com/hashbreaker/status/1544456469038645248">https://web.archive.org/web/20220926112906/https://twitter.com/hashbreaker/status/1544456469038645248</a></span></li>
+<li id="cite_note-20"><span class="mw-cite-backlink"><a href="#cite_ref-20" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.douglas.stebila.ca/">https://www.douglas.stebila.ca/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.douglas.stebila.ca/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-21"><span class="mw-cite-backlink"><a href="#cite_ref-21" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://forums.whonix.org/t/post-quantum-cryptography-pqc/2011/17">https://forums.whonix.org/t/post-quantum-cryptography-pqc/2011/17</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://forums.whonix.org/t/post-quantum-cryptography-pqc/2011/17" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-22"><span class="mw-cite-backlink"><a href="#cite_ref-22" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://gitea.blesmrt.net/exa/codecrypt">https://gitea.blesmrt.net/exa/codecrypt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitea.blesmrt.net/exa/codecrypt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-23"><span class="mw-cite-backlink"><a href="#cite_ref-23" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://e-x-a.org/codecrypt/">https://e-x-a.org/codecrypt/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://e-x-a.org/codecrypt/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-24"><span class="mw-cite-backlink"><a href="#cite_ref-24" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Since Kicksecure 14.</span></li>
+<li id="cite_note-25"><span class="mw-cite-backlink"><a href="#cite_ref-25" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://e-x-a.org/codecrypt/ccr.1.html">https://e-x-a.org/codecrypt/ccr.1.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://e-x-a.org/codecrypt/ccr.1.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-26"><span class="mw-cite-backlink"><a href="#cite_ref-26" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://archive.fosdem.org/2017/schedule/event/quantum/attachments/slides/1774/export/events/attachments/quantum/slides/1774/pqc.pdf">https://archive.fosdem.org/2017/schedule/event/quantum/attachments/slides/1774/export/events/attachments/quantum/slides/1774/pqc.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://archive.fosdem.org/2017/schedule/event/quantum/attachments/slides/1774/export/events/attachments/quantum/slides/1774/pqc.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-27"><span class="mw-cite-backlink"><a href="#cite_ref-27" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://gitea.blesmrt.net/exa/codecrypt/src/branch/master/man/ccr.1">https://gitea.blesmrt.net/exa/codecrypt/src/branch/master/man/ccr.1</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://gitea.blesmrt.net/exa/codecrypt/src/branch/master/man/ccr.1" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-28"><span class="mw-cite-backlink"><a href="#cite_ref-28" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/One-time_pad">https://en.wikipedia.org/wiki/One-time_pad</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/One-time_pad" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-29"><span class="mw-cite-backlink"><a href="#cite_ref-29" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://www.ciphermachinesandcryptology.com/en/onetimepad.htm">https://www.ciphermachinesandcryptology.com/en/onetimepad.htm</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.ciphermachinesandcryptology.com/en/onetimepad.htm" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-30"><span class="mw-cite-backlink"><a href="#cite_ref-30" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://code.librehq.com/kfogel/onetime">https://code.librehq.com/kfogel/onetime</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://code.librehq.com/kfogel/onetime" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-31"><span class="mw-cite-backlink"><a href="#cite_ref-31" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://github.com/kfogel/OneTime/issues/14#issuecomment-218038898">https://github.com/kfogel/OneTime/issues/14#issuecomment-218038898</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/kfogel/OneTime/issues/14#issuecomment-218038898" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-32"><span class="mw-cite-backlink"><a href="#cite_ref-32" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://en.wikipedia.org/wiki/Venona_project#Decryption">https://en.wikipedia.org/wiki/Venona_project#Decryption</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://en.wikipedia.org/wiki/Venona_project#Decryption" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ol>
+
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="Cold_Boot_Attack_Defense" title="Cold Boot Attack Defense"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Cold
+Boot Attack
+Defense</span></a><a class="index internal" href="Documentation" title="Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Documentation</span></a><a class="next internal" href="OpenPGP" title="OpenPGP"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">OpenPGP</span></a><span class="info"><span class="prev">Previous
+page: Cold Boot Attack Defense</span><span class="index">Index page:
+Documentation</span><span class="next">Next page:
+OpenPGP</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="Terms_of_Service">Terms of Service</a></li><li><a href="Privacy_Policy">Privacy Policy</a></li><li><a href="Cookie_Policy">Cookie Policy</a></li><li><a href="E-Sign_Consent">E-Sign Consent</a></li><li><a href="Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy">Privacy Policy</a>, <a href="Cookie_Policy">Cookie Policy</a>, <a href="Terms_of_Service">Terms of Service</a>, and <a href="E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../search-index.js" defer></script>
+<script src="../page-previews.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>

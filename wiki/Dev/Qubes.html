@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Dev/Qubes</title>
+<meta name="description" content="Kicksecure Qubes OS related development documentation.">
+<meta property="og:description" content="Kicksecure Qubes OS related development documentation.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Dev/Qubes">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Dev/Qubes">
+<meta property="og:title" content="Dev/Qubes">
+<link rel="stylesheet" href="../../style.css">
+<link rel="stylesheet" href="../../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="../Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="../Download">Download</a><ul class="nav-submenu"><li><a href="../ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="../USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="../Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="../ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="../Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="../PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="../VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="../MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="../Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="../VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="../Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="../KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="../Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="../Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../About">About</a><ul class="nav-submenu"><li><a href="../About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="../Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="../What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="../Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="../Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Documentation">Docs</a><ul class="nav-submenu"><li><a href="../Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="../FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="../Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="../Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="../Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="../Support">Support</a><ul class="nav-submenu"><li><a href="../Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="../Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="../Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="../Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="../Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="../Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Dev%2FQubes.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Dev%2FQubes.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Dev/Qubes" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Dev/Qubes|Dev/Qubes]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[Dev/Qubes](https://www.kicksecure.com/wiki/Dev/Qubes)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Dev/Qubes]Dev/Qubes[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes&amp;text=Dev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes&amp;text=Dev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes&amp;title=Dev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes&amp;summary=Dev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes&amp;t=Dev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=Dev%2FQubes%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=Dev%2FQubes&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="../Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="../Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div><span class="dev-zone-badge">Developer Zone</span></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="../Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="VirtualBox" title="Dev/VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirtualBox</span></a><a class="index internal" href="../Design" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Entropy" title="Dev/Entropy"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Entropy</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirtualBox</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/Entropy</span></span></span><h1 id="firstHeading">Dev/Qubes</h1></div>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Kicksecure Qubes OS related development documentation.</p>
+<div class="post-intro-p">
+</div>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Kicksecure_Template"><span class="tocnumber">1</span> <span class="toctext">Kicksecure Template</span></a></li><li class="toc-l2"><a href="#Building_the_Template"><span class="tocnumber">1.1</span> <span class="toctext">Building the Template</span></a></li><li class="toc-l3"><a href="#Qubes_Template_Build_Fedora_Version_Number"><span class="tocnumber">1.1.1</span> <span class="toctext">Qubes Template Build Fedora Version Number</span></a></li><li class="toc-l3"><a href="#Setting_up_qubes-builderv2"><span class="tocnumber">1.1.2</span> <span class="toctext">Setting up qubes-builderv2</span></a></li><li class="toc-l4"><a href="#Installing_dependencies"><span class="tocnumber">1.1.2.1</span> <span class="toctext">Installing dependencies</span></a></li><li class="toc-l4"><a href="#Prepare_App_Qube"><span class="tocnumber">1.1.2.2</span> <span class="toctext">Prepare App Qube</span></a></li><li class="toc-l4"><a href="#dom0_Setup"><span class="tocnumber">1.1.2.3</span> <span class="toctext">dom0 Setup</span></a></li><li class="toc-l4"><a href="#qubes-builder-dvm_setup"><span class="tocnumber">1.1.2.4</span> <span class="toctext">qubes-builder-dvm setup</span></a></li><li class="toc-l4"><a href="#dom0_Setup_Continued"><span class="tocnumber">1.1.2.5</span> <span class="toctext">dom0 Setup Continued</span></a></li><li class="toc-l4"><a href="#Installing_qubes-builderv2"><span class="tocnumber">1.1.2.6</span> <span class="toctext">Installing qubes-builderv2</span></a></li><li class="toc-l2"><a href="#Template_Build"><span class="tocnumber">1.2</span> <span class="toctext">Template Build</span></a></li><li class="toc-l2"><a href="#Template_Installation"><span class="tocnumber">1.3</span> <span class="toctext">Template Installation</span></a></li><li class="toc-l1"><a href="#Related"><span class="tocnumber">2</span> <span class="toctext">Related</span></a></li><li class="toc-l1"><a href="#See_Also"><span class="tocnumber">3</span> <span class="toctext">See Also</span></a></li></ul></nav><h1 id="Kicksecure_Template">Kicksecure Template</h1>
+<h2 id="Building_the_Template">Building the Template</h2><span class="share-tooltip" data-anchor="Building_the_Template"><a class="headline-anchor" href="#Building_the_Template" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Qubes#Building_the_Template">https://www.kicksecure.com/wiki/Dev/Qubes#Building_the_Template</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Building_the_Template&amp;text=Building%20the%20Template" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Building_the_Template&amp;text=Building%20the%20Template" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Building_the_Template&amp;title=Building%20the%20Template" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Building%20the%20Template&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Building_the_Template" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Qubes#Building_the_Template]Building the Template[/url]">[url=https://www.kicksecure.com/wiki/Dev/Qubes#Building_the_Template]Building the Template[/url]</span></span></span></span>
+<p>Kicksecure has a Qubes OS template available that can be built and
+installed using <code>qubes-builderv2</code>. This allows Kicksecure to
+be installed into Qubes OS without the need for distribution
+morphing.</p>
+<h3 id="Qubes_Template_Build_Fedora_Version_Number">Qubes Template Build
+Fedora Version Number</h3><span class="share-tooltip" data-anchor="Qubes_Template_Build_Fedora_Version_Number"><a class="headline-anchor" href="#Qubes_Template_Build_Fedora_Version_Number" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Qubes#Qubes_Template_Build_Fedora_Version_Number">https://www.kicksecure.com/wiki/Dev/Qubes#Qubes_Template_Build_Fedora_Version_Number</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Qubes_Template_Build_Fedora_Version_Number&amp;text=Qubes%20Template%20Build%0AFedora%20Version%20Number" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Qubes_Template_Build_Fedora_Version_Number&amp;text=Qubes%20Template%20Build%0AFedora%20Version%20Number" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Qubes_Template_Build_Fedora_Version_Number&amp;title=Qubes%20Template%20Build%0AFedora%20Version%20Number" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Qubes%20Template%20Build%0AFedora%20Version%20Number&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Qubes_Template_Build_Fedora_Version_Number" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Qubes#Qubes_Template_Build_Fedora_Version_Number]Qubes Template Build
+Fedora Version Number[/url]">[url=https://www.kicksecure.com/wiki/Dev/Qubes#Qubes_Template_Build_Fedora_Version_Number]Qubes Template Build
+Fedora Version Number[/url]</span></span></span></span>
+<ul>
+<li><strong>Qubes upstream requirement</strong>: Only Fedora can be used
+to build Qubes Templates.</li>
+<li><strong>Multiple versions exist</strong>: There might be various
+Fedora Template versions.</li>
+<li><strong>Current version at time of writing</strong>: The Qubes
+Fedora Template version used at the time of writing this wiki page was:
+<code>42</code></li>
+<li><strong>Check for newer versions</strong>: There might be a newer
+Qubes Fedora Template version by the time you are reading this. Please
+check if there is already a newer Fedora Template version.</li>
+<li><strong>No special requirements for Qubes Kicksecure</strong>: The
+Qubes Kicksecure Template does not have any special Qubes Fedora
+Template version requirements.</li>
+<li><strong>Follow Qubes upstream recommendations</strong>: The same
+Qubes Fedora Template version that Qubes upstream uses and/or recommends
+to build Debian can be used to build the Qubes Kicksecure Template.</li>
+<li><strong>Wiki editors notice</strong>: The version number can be
+updated by editing <a href="../Template:Version-fedora-build-qubes-template">Template:version-fedora-build-qubes-template</a>.</li>
+</ul>
+<h3 id="Setting_up_qubes-builderv2">Setting up qubes-builderv2</h3><span class="share-tooltip" data-anchor="Setting_up_qubes-builderv2"><a class="headline-anchor" href="#Setting_up_qubes-builderv2" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Qubes#Setting_up_qubes-builderv2">https://www.kicksecure.com/wiki/Dev/Qubes#Setting_up_qubes-builderv2</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Setting_up_qubes-builderv2&amp;text=Setting%20up%20qubes-builderv2" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Setting_up_qubes-builderv2&amp;text=Setting%20up%20qubes-builderv2" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Setting_up_qubes-builderv2&amp;title=Setting%20up%20qubes-builderv2" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Setting%20up%20qubes-builderv2&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Setting_up_qubes-builderv2" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Qubes#Setting_up_qubes-builderv2]Setting up qubes-builderv2[/url]">[url=https://www.kicksecure.com/wiki/Dev/Qubes#Setting_up_qubes-builderv2]Setting up qubes-builderv2[/url]</span></span></span></span>
+<p>It is recommended to use a Fedora-based App Qube for building the
+Kicksecure template. This is because upstream Qubes uses Fedora-based
+App Qubes to build Qubes Templates.</p>
+<p>Determine which Fedora template is used for the
+<code>default-dvm</code> DVM template. For the purposes of this
+document, we will assume it is <code>fedora-42-xfce</code>.</p>
+<h4 id="Installing_dependencies">Installing dependencies</h4>
+<p>1. Launch a terminal in the <code>fedora-42-xfce</code> template.</p>
+<p>2. Install all dependencies for <code>qubes-builderv2</code> into the
+template. The dependencies are listed at:</p>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora.txt">https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora.txt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora.txt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora-qubes-executor.txt">https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora-qubes-executor.txt</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2/blob/main/dependencies-fedora-qubes-executor.txt" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p>All packages from both lists must be installed.</p>
+<p>3. Ensure <code>git</code> is installed by running the following
+command:</p>
+<p><span class="code-select" data-code="sudo dnf install git">sudo dnf
+install git</span></p>
+<p>4. Shut down the template once you have completed installing all
+dependencies.</p>
+<h4 id="Prepare_App_Qube">Prepare App Qube</h4>
+<p><strong>WARNING:</strong> It is not recommended to reuse an existing
+App Qube for running the template build. You will be transferring the
+built template to dom0 and installing it when you are complete. If the
+App Qube used for running the builder is compromised, the template may
+become compromised as well.</p>
+<p><strong>1.</strong> Create a new App Qube for running
+<code>qubes-builderv2</code>.</p>
+<p>You can name this qube anything you want; we will call it
+<code>work-qubesos</code> in this document. Ensure the Template is set
+to <code>fedora-42-xfce</code>.</p>
+<p><strong>2.</strong> Increase <code>qubes-builderv2</code> disk
+space.</p>
+<p>Using Qube Manager, set the private disk space for
+<code>work-qubesos</code> to something reasonably large. 32 GB should
+work.</p>
+<p><strong>3.</strong> Clone the <code>default-dvm</code> Template and
+name it <code>qubes-builder-dvm</code>.</p>
+<p>This DVM Template will be used for fetching and building code.</p>
+<p><strong>4.</strong> Increase <code>qubes-builder-dvm</code> disk
+space.</p>
+<p>Once the Template is cloned, adjust its settings with Qubes Manager
+and increase the private storage space to <em>at least</em> 30 GB (more
+is preferable).</p>
+<p><strong>5.</strong> Once that's done, start a terminal in the
+<code>qubes-builder-dvm</code> <strong>Template</strong>, then set it
+aside for use later.</p>
+<h4 id="dom0_Setup">dom0 Setup</h4>
+<p><strong>1.</strong> Open a dom0 terminal and run:</p>
+<p><span class="code-select" data-code="sudo nano /etc/qubes/policy.d/50-qubesbuilder.policy">sudo
+nano /etc/qubes/policy.d/50-qubesbuilder.policy</span></p>
+<p><strong>2.</strong> Paste.</p>
+<p>Type the contents of <a href="https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy">https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2/blob/main/rpc/policy/50-qubesbuilder.policy" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
+into this file. (Note: If you have chosen names other than
+<code>work-qubesos</code> or <code>qubes-builder-dvm</code> for your
+qubes, you must adjust this configuration file to specify the correct VM
+names.)</p>
+<p><strong>3.</strong> Save.</p>
+<p>Save your changes with <code>Ctrl+S</code> and exit with
+<code>Ctrl+X</code>.</p>
+<h4 id="qubes-builder-dvm_setup">qubes-builder-dvm setup</h4>
+<p>Inside <code>qubes-builder-dvm</code> Template</p>
+<p><strong>1.</strong> Create folders.</p>
+<p><span class="code-select" data-code="sudo mkdir -p /rw/bind-dirs/builder /rw/config/qubes-bind-dirs.d">sudo
+mkdir -p /rw/bind-dirs/builder /rw/config/qubes-bind-dirs.d</span></p>
+<p><strong>2.</strong> Open bind-dires configuration file.</p>
+<p><span class="code-select" data-code="sudo nano /rw/config/qubes-bind-dirs.d/builder.conf">sudo
+nano /rw/config/qubes-bind-dirs.d/builder.conf</span></p>
+<p><strong>3.</strong> Paste.</p>
+<p><span class="code-select" data-code="binds+=(&#x27;/builder&#x27;)">binds+=('/builder')</span></p>
+<p><strong>4.</strong> Save.</p>
+<p><strong>5.</strong> Open rc.local file.</p>
+<p><span class="code-select" data-code="sudo nano /rw/config/rc.local">sudo
+nano /rw/config/rc.local</span></p>
+<p><strong>6.</strong> Paste.</p>
+<p><span class="code-select" data-code="mount /builder -o dev,suid,remount">mount
+/builder -o dev,suid,remount</span></p>
+<p><strong>7.</strong> Save.</p>
+<p><strong>8.</strong> Shut down the Template.</p>
+<h4 id="dom0_Setup_Continued">dom0 Setup Continued</h4>
+<p><strong>1.</strong> In a dom0 terminal, run:</p>
+<p><span class="code-select" data-code="qvm-prefs work-qubesos default_dispvm qubes-builder-dvm">qvm-prefs
+work-qubesos default_dispvm qubes-builder-dvm</span></p>
+<p>Once this is done, all configuration should be complete, and you are
+now ready to install and use <code>qubes-builderv2</code>.</p>
+<h4 id="Installing_qubes-builderv2">Installing qubes-builderv2</h4>
+<p>1. Ensure that <code>fedora-42-xfce</code>,
+<code>qubes-builder-dvm</code>, and <code>work-qubesos</code> are all
+shut down. This ensures that all changes made to the templates apply to
+any new AppVMs and DispVMs launched during the build process.</p>
+<p>2. Start <code>work-qubesos</code> and open a terminal in it. Install
+and verify the authenticity of the Qubes Security Pack by following the
+instructions at <a href="https://www.qubes-os.org/security/pack/">https://www.qubes-os.org/security/pack/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.qubes-os.org/security/pack/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.
+This is necessary to verify the authenticity of the
+<code>qubes-builderv2</code> source code.</p>
+<p>3. Clone the <code>qubes-builderv2</code> repository using:</p>
+<p><span class="code-select" data-code="git clone https://github.com/QubesOS/qubes-builderv2.git">git
+clone <a href="https://github.com/QubesOS/qubes-builderv2.git">https://github.com/QubesOS/qubes-builderv2.git</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2.git" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></p>
+<p>4. Enter the cloned repository:</p>
+<p><span class="code-select" data-code="cd qubes-builderv2">cd
+qubes-builderv2</span></p>
+<p>5. Verify the authenticity of the head commit's tag:</p>
+<p><span class="code-select" data-code="git tag -v $(git describe)">git
+tag -v $(git describe)</span></p>
+<p>The output of this command should indicate that the tag's signature
+is good and should NOT display any warnings. If warnings are displayed,
+you may have installed the Qubes Security Pack improperly (for example,
+by forgetting to install the Qubes Master Signing Key or failing to mark
+it as trusted). If you are told that a tag does not exist, the head
+commit hasn't been tagged by a Qubes OS developer, and you should
+use:</p>
+<p>6. Back up one commit if a tag does not exist:</p>
+<p><span class="code-select" data-code="git checkout HEAD^">git checkout
+HEAD^</span></p>
+<p>Then try to verify the repository's authenticity again. If the
+signature comes back bad, the repository is corrupted (or compromised)
+and should be discarded immediately.</p>
+<h2 id="Template_Build">Template Build</h2><span class="share-tooltip" data-anchor="Template_Build"><a class="headline-anchor" href="#Template_Build" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Qubes#Template_Build">https://www.kicksecure.com/wiki/Dev/Qubes#Template_Build</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Build&amp;text=Template%20Build" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Build&amp;text=Template%20Build" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Build&amp;title=Template%20Build" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Template%20Build&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Build" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Qubes#Template_Build]Template Build[/url]">[url=https://www.kicksecure.com/wiki/Dev/Qubes#Template_Build]Template Build[/url]</span></span></span></span>
+<p>1. Create a new file named <code>builder.yml</code> under the
+<code>qubes-builderv2</code> directory, and fill it with the following
+contents:</p>
+<pre><code>include:
+  - example-configs/kicksecure.yml
+
+qubes-release: r4.3
+use-qubes-repo:
+  version: 4.3
+  testing: true</code></pre>
+<p>2. To build the template, run:</p>
+<p><span class="code-select" data-code="sudo ./qb package fetch prep build &amp;&amp; sudo ./qb -t kicksecure-18 template fetch prep build">sudo
+./qb package fetch prep build &amp;&amp; sudo ./qb -t kicksecure-18
+template fetch prep build</span></p>
+<p>This will download the code needed to build the template and then
+build the template. If all goes well, the built template will be placed
+in folder:</p>
+<p><code>qubes-builderv2/artifacts/templates/rpm</code></p>
+<h2 id="Template_Installation">Template Installation</h2><span class="share-tooltip" data-anchor="Template_Installation"><a class="headline-anchor" href="#Template_Installation" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Dev/Qubes#Template_Installation">https://www.kicksecure.com/wiki/Dev/Qubes#Template_Installation</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Installation&amp;text=Template%20Installation" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Installation&amp;text=Template%20Installation" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Installation&amp;title=Template%20Installation" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Template%20Installation&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FDev%2FQubes%23Template_Installation" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Dev/Qubes#Template_Installation]Template Installation[/url]">[url=https://www.kicksecure.com/wiki/Dev/Qubes#Template_Installation]Template Installation[/url]</span></span></span></span>
+<p>To install the manually built Template.</p>
+<p>1. Copy the template RPM file to dom0:</p>
+<p><u>Note:</u> Substitute the real name of the RPM file (this name
+includes a timestamp and will thus be different for each build).</p>
+<p><span class="code-select" data-code="qvm-run --pass-io work-qubesos &#x27;cat /home/user/qubes-builderv2/artifacts/templates/rpm/qubes-template-kicksecure...rpm&#x27; &gt; qubes-template-kicksecure...rpm">qvm-run
+--pass-io work-qubesos 'cat
+/home/user/qubes-builderv2/artifacts/templates/rpm/qubes-template-kicksecure...rpm'
+&gt; qubes-template-kicksecure...rpm</span></p>
+<p>2. Install the template with:</p>
+<p><span class="code-select" data-code="sudo qvm-template install --nogpgcheck ./qubes-template-kicksecure...rpm">sudo
+qvm-template install --nogpgcheck
+./qubes-template-kicksecure...rpm</span></p>
+<p><strong>WARNING: This action can execute arbitrary code as root on
+dom0! Only do this if you fully trust the App Qube used to build this
+template!</strong></p>
+<p>3. You should now see a <code>kicksecure-18</code> template available
+in the application menu, under the "Templates" section.</p>
+<h1 id="Related">Related</h1>
+<p><span class="manually-placed-anchor " id="Root_Privilege_Isolation_and_libxenvchan"></span></p>
+<ul>
+<li><a href="https://github.com/QubesOS/qubes-issues/issues/9717">Harden
+insecure permissions inside <code>/dev/xen</code> folder / research
+security impact of the Qubes <code>/dev/xen</code> folder
+permissions</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9717" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="../Qubes">Kicksecure for Qubes - User
+Documentation</a></li>
+<li>Qubes feature request: <a href="https://github.com/QubesOS/qubes-issues/issues/9573">build
+Kicksecure Qubes Template #9573</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-issues/issues/9573" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li>qubes-builder-v2 pull request: <a href="https://github.com/QubesOS/qubes-builderv2/pull/170">Add
+Kicksecure template support #170</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://github.com/QubesOS/qubes-builderv2/pull/170" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="VirtualBox" title="Dev/VirtualBox"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">Dev/VirtualBox</span></a><a class="index internal" href="../Design" title="Design"><i class="fa-solid fa-list fa-fw"></i><span class="text">Design</span></a><a class="next internal" href="Entropy" title="Dev/Entropy"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">Dev/Entropy</span></a><span class="info"><span class="prev">Previous
+page: Dev/VirtualBox</span><span class="index">Index page:
+Design</span><span class="next">Next page:
+Dev/Entropy</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="../Category:Documentation">Documentation</a> <a href="../Category:Development">Development</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="../Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="../Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="../Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="../Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="../Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="../Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="../Terms_of_Service">Terms of Service</a></li><li><a href="../Privacy_Policy">Privacy Policy</a></li><li><a href="../Cookie_Policy">Cookie Policy</a></li><li><a href="../E-Sign_Consent">E-Sign Consent</a></li><li><a href="../Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="../Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="../Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="../Privacy_Policy">Privacy Policy</a>, <a href="../Cookie_Policy">Cookie Policy</a>, <a href="../Terms_of_Service">Terms of Service</a>, and <a href="../E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="../Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="../Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../../search-index.js" defer></script>
+<script src="../../page-previews.js" defer></script>
+<script src="../../app.js" defer></script>
+</body>
+</html>

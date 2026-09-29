@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en" data-sn-id="38">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'sha256-l/fh8ukpYJEEaHdwjhEQN+a5jqWe1+pMZqklbYLqwWM='; style-src 'self'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; worker-src 'self'; require-trusted-types-for 'script'">
+<meta name="robots" content="noindex,nofollow">
+<title>Computer Security Threat Modeling</title>
+<meta name="description" content="Computer threat modeling is a process that helps identify potential security risks to a computer system, network, or application. By analyzing these risks, organizations can develop effective strategies to prevent, detect, and respond to security incidents.">
+<meta property="og:description" content="Computer threat modeling is a process that helps identify potential security risks to a computer system, network, or application. By analyzing these risks, organizations can develop effective strategies to prevent, detect, and respond to security incidents.">
+<link rel="canonical" href="https://www.kicksecure.com/wiki/Threat_Modeling">
+<meta property="og:url" content="https://www.kicksecure.com/wiki/Threat_Modeling">
+<meta property="og:title" content="Computer Security Threat Modeling">
+<meta property="og:image" content="https://www.kicksecure.com/media/orig/Threat_Model.jpg">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../fontawesome/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<script>(function(){try{var d=document.documentElement,L=localStorage,t=L.getItem('theme');d.classList.add('client-js');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))d.setAttribute('data-theme','dark');if(L.getItem('legal-agreement-banner-dismissed')==='1')d.classList.add('legal-ack-hidden');var s=d.getAttribute('data-sn-id');if(s&&L.getItem('sitenotice-dismissed')===s)d.classList.add('sitenotice-hidden');}catch(e){}})();</script>
+</head>
+<body>
+<header class="site-header"><div class="site-header-inner"><a class="site-logo" href="/"><img class="site-logo-img" src="../Kicksecure-logo-rectangle.svg" alt="" width="44" height="44">Kicksecure</a><a class="site-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a><input type="checkbox" id="nav-toggle" class="nav-toggle" hidden><label for="nav-toggle" class="nav-toggle-label" aria-label="Menu"><i class="fa-solid fa-bars nav-ico-open" aria-hidden="true"></i><i class="fa-solid fa-xmark nav-ico-close" aria-hidden="true"></i></label><nav class="site-nav"><ul><li class="nav-group"><a class="nav-top" href="Download">Download</a><ul class="nav-submenu"><li><a href="ISO"><i class="fa-solid fa-laptop fa-fw" aria-hidden="true"></i><span>On Computer</span></a></li><li><a href="USB_Installation"><i class="fa-brands fa-usb fa-fw" aria-hidden="true"></i><span>USB Installation</span></a></li><li><a href="Intel_AMD64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>Intel / AMD64</span></a></li><li><a href="ARM64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>ARM64</span></a></li><li><a href="Raspberry_Pi"><i class="fa-brands fa-raspberry-pi fa-fw" aria-hidden="true"></i><span>Raspberry Pi</span></a></li><li><a href="PPC64"><i class="fa-solid fa-microchip fa-fw" aria-hidden="true"></i><span>PPC64</span></a></li><li><a href="VirtualBox"><i class="fa-brands fa-windows fa-fw" aria-hidden="true"></i><span>Windows (VM)</span></a></li><li><a href="MacOS"><i class="fa-brands fa-apple fa-fw" aria-hidden="true"></i><span>Mac</span></a></li><li><a href="Linux"><i class="fa-brands fa-linux fa-fw" aria-hidden="true"></i><span>Linux (VM)</span></a></li><li><a href="VirtualBox"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>VirtualBox (VM)</span></a></li><li><a href="Qubes"><i class="fa-solid fa-cube fa-fw" aria-hidden="true"></i><span>Qubes (VM)</span></a></li><li><a href="KVM"><i class="fa-solid fa-display fa-fw" aria-hidden="true"></i><span>KVM (VM)</span></a></li><li><a href="Debian"><i class="fa-brands fa-debian fa-fw" aria-hidden="true"></i><span>Debian morph to Kicksecure</span></a></li><li><a href="Download"><i class="fa-solid fa-download fa-fw" aria-hidden="true"></i><span>More options</span></a></li><li><a href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-code fa-fw" aria-hidden="true"></i><span>Source Code</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="About">About</a><ul class="nav-submenu"><li><a href="About"><i class="fa-solid fa-binoculars fa-fw" aria-hidden="true"></i><span>Overview</span></a></li><li><a href="../#security"><i class="fa-solid fa-gears fa-fw" aria-hidden="true"></i><span>Features</span></a></li><li><a href="Reasons_for_Freedom_Software"><i class="fa-brands fa-osi fa-fw" aria-hidden="true"></i><span>Why Open Source?</span></a></li><li><a href="What_we_do"><i class="fa-solid fa-flask fa-fw" aria-hidden="true"></i><span>Project Activities</span></a></li><li><a href="Contributors"><i class="fa-solid fa-people-group fa-fw" aria-hidden="true"></i><span>Contributors</span></a></li><li><a href="Security_Roadmap"><i class="fa-solid fa-mountain-sun fa-fw" aria-hidden="true"></i><span>Mission &amp; Vision</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Documentation">Docs</a><ul class="nav-submenu"><li><a href="Documentation"><i class="fa-solid fa-book fa-fw" aria-hidden="true"></i><span>Documentation</span></a></li><li><a href="FAQ"><i class="fa-solid fa-question fa-fw" aria-hidden="true"></i><span>FAQ</span></a></li><li><a href="Troubleshooting"><i class="fa-solid fa-triangle-exclamation fa-fw" aria-hidden="true"></i><span>Troubleshooting</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer">Community</a><ul class="nav-submenu"><li><a href="https://forums.kicksecure.com/" target="_blank" rel="noopener noreferrer"><i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i><span>Forums</span></a></li><li><a href="Forum_Best_Practices"><i class="fa-solid fa-list-check fa-fw" aria-hidden="true"></i><span>Forum Best Practices</span></a></li><li><a href="Contribute"><i class="fa-solid fa-hand-holding-medical fa-fw" aria-hidden="true"></i><span>Contribute</span></a></li></ul></li><li class="nav-group"><a class="nav-top" href="Support">Support</a><ul class="nav-submenu"><li><a href="Self_Support_First_Policy"><i class="fa-solid fa-person fa-fw" aria-hidden="true"></i><span>Self Support First Policy</span></a></li><li><a href="Support"><i class="fa-solid fa-circle-exclamation fa-fw" aria-hidden="true"></i><span>Support (Limited)</span></a></li><li><a href="Plus_Support"><i class="fa-solid fa-circle-plus fa-fw" aria-hidden="true"></i><span>Plus</span></a></li><li><a href="Premium_Support"><i class="fa-solid fa-crown fa-fw" aria-hidden="true"></i><span>Premium</span></a></li><li><a href="Reporting_Bugs"><i class="fa-solid fa-bug-slash fa-fw" aria-hidden="true"></i><span>Reporting Bugs</span></a></li><li><a href="Contact"><i class="fa-solid fa-lock fa-fw" aria-hidden="true"></i><span>Contact (Restricted)</span></a></li></ul></li></ul></nav><div class="site-search" role="search"><input type="checkbox" id="search-toggle" class="search-toggle sr-only"><label for="search-toggle" class="search-icon" aria-label="Search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></label><input type="search" id="search-input" class="search-field" aria-label="Search" placeholder="Search" autocomplete="off"></div><div class="tools"><input type="checkbox" id="tools-toggle" class="tools-toggle sr-only"><label for="tools-toggle" class="tools-label" aria-label="Page tools" title="Page tools"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></label><div class="tools-menu"><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/blob/master/Threat_Modeling.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-pen-to-square fa-fw" aria-hidden="true"></i> Edit</a><a class="tools-item" href="https://github.com/org-ai-assisted/kicksecure-wiki-backup/commits/master/Threat_Modeling.mw" target="_blank" rel="noopener noreferrer nofollow"><i class="fa-solid fa-clock-rotate-left fa-fw" aria-hidden="true"></i> History</a><button type="button" class="tools-item" data-action="print"><i class="fa-solid fa-print fa-fw" aria-hidden="true"></i> Print</button><button type="button" class="tools-item" data-copy="https://www.kicksecure.com/wiki/Threat_Modeling" data-copied="Copied!"><i class="fa-solid fa-link fa-fw" aria-hidden="true"></i> Permalink</button><div class="share-panel"><p class="share-head">Copy or share this direct link!</p><div class="share-copies"><button type="button" class="share-copy" data-copy="[[Threat Modeling|Computer Security Threat Modeling]]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Wikitext</button><button type="button" class="share-copy" data-copy="[Computer Security Threat Modeling](https://www.kicksecure.com/wiki/Threat_Modeling)" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as Markdown</button><button type="button" class="share-copy" data-copy="[url=https://www.kicksecure.com/wiki/Threat_Modeling]Computer Security Threat Modeling[/url]" data-copied="Copied!"><i class="fa-solid fa-copy fa-fw" aria-hidden="true"></i> Copy as phpBB</button></div><div class="share-socials"><a class="share-social" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling&amp;text=Computer%20Security%20Threat%20Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-social" href="https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="share-social" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling&amp;text=Computer%20Security%20Threat%20Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-social" href="https://reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling&amp;title=Computer%20Security%20Threat%20Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-social" href="https://wa.me/?text=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a><a class="share-social" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling&amp;summary=Computer%20Security%20Threat%20Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a><a class="share-social" href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling&amp;t=Computer%20Security%20Threat%20Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Hacker News"><i class="fa-brands fa-hacker-news" aria-hidden="true"></i></a><a class="share-social" href="https://fosstodon.org/share?text=Computer%20Security%20Threat%20Modeling%20https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="share-social" href="mailto:?subject=Computer%20Security%20Threat%20Modeling&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></div><p class="share-note">We don't use embedded scripts. <a href="Privacy_Policy_Technical_Details#Social_Share_Button">Social Share Button</a></p></div></div></div><div class="header-cta"><a class="header-donate" href="Donate"><i class="fa-solid fa-heart" aria-hidden="true"></i> Donate</a></div></div></header>
+<div id="siteNotice"><div class="sitenotice"><button type="button" class="sitenotice-close" data-sitenotice-dismiss title="Hide this notice for me" aria-label="Hide this notice"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button><div class="sitenotice-banner" data-banner-id="38"><a href="Donate"><i class="fa-solid fa-arrow-trend-up icon" aria-hidden="true"></i><span>Help keep Kicksecure strong, independent, and actively maintained.</span></a></div></div></div>
+<main class="wiki-content">
+<div class="robots-nocontent" data-nosnippet="">
+</div>
+<div class="first-heading"><span class="wiki-book-index wbi-for-firstheading"><a class="prev internal" href="VirtualBox/Manual_VM_Import" title="VirtualBox/Manual VM Import"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox/Manual
+VM
+Import</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="NAT_traversal" title="NAT traversal"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">NAT
+traversal</span></a><span class="info"><span class="prev">Previous page:
+VirtualBox/Manual VM Import</span><span class="index">Index page:
+Advanced Documentation</span><span class="next">Next page: NAT
+traversal</span></span></span><h1 id="firstHeading">Computer Security Threat Modeling</h1></div>
+<p><img src="../media/Threat_Model.jpg.webp" alt="Threat_Model.jpg" /></p>
+<div class="pre-intro-p ">
+</div>
+<div class="hidden-thumbnail">
+</div>
+<p>Computer threat modeling is like a security risk assessment for your
+computer or network. It helps you identify potential threats and
+vulnerabilities, so you can develop effective strategies to protect your
+system and data. By analyzing different attack scenarios, you can stay
+one step ahead of cybercriminals and keep your digital assets safe.</p>
+<div class="post-intro-p">
+</div>
+<nav class="toc" aria-label="Contents"><input type="checkbox" id="toc-toggle" class="toc-toggle" checked><label for="toc-toggle" class="toc-title">Contents</label><ul><li class="toc-l1"><a href="#Threat_Modeling"><span class="tocnumber">1</span> <span class="toctext">Threat Modeling</span></a></li><li class="toc-l2"><a href="#Definition"><span class="tocnumber">1.1</span> <span class="toctext">Definition</span></a></li><li class="toc-l2"><a href="#Threat_Model_Examples"><span class="tocnumber">1.2</span> <span class="toctext">Threat Model Examples</span></a></li><li class="toc-l2"><a href="#Threat_Model_Guides"><span class="tocnumber">1.3</span> <span class="toctext">Threat Model Guides</span></a></li><li class="toc-l1"><a href="#See_Also"><span class="tocnumber">2</span> <span class="toctext">See Also</span></a></li><li class="toc-l1"><a href="#References"><span class="tocnumber">3</span> <span class="toctext">References</span></a></li></ul></nav><h1 id="Threat_Modeling">Threat Modeling</h1>
+<h2 id="Definition">Definition</h2><span class="share-tooltip" data-anchor="Definition"><a class="headline-anchor" href="#Definition" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Threat_Modeling#Definition">https://www.kicksecure.com/wiki/Threat_Modeling#Definition</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Definition&amp;text=Definition" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Definition&amp;text=Definition" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Definition&amp;title=Definition" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Definition&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Definition" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Threat_Modeling#Definition]Definition[/url]">[url=https://www.kicksecure.com/wiki/Threat_Modeling#Definition]Definition[/url]</span></span></span></span>
+<p>Various wiki chapters reference the concept of threat modeling.
+Statements like "Conduct a personal threat assessment before proceeding"
+often appear before instructions that install additional software or
+change specific system configurations. Despite this warning, many users
+are unfamiliar with the concept or unsure how to conduct a proper
+assessment in their circumstances. In simple terms, threat modeling
+refers to: <sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup> <sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup> <blockquote><p>A threat model is a list of the most probable threats to your
+security/privacy endeavors. Since it's impossible to protect yourself
+against every attack(er), you should focus on the most probable threats.
+In computer security, a threat is a potential event that could undermine
+your efforts to stay private and secure.</p>
+<p>By focusing on the threats that matter to you, this narrows down your
+thinking about the protection you need, so you can choose the tools that
+are right for the job.</p></blockquote></p>
+<p><blockquote><p>Threat modeling is a form of risk assessment that models aspects of
+the attack and defense sides of a particular logical entity, such as a
+piece of data, an application, a host, a system, or an environment. The
+fundamental principle underlying threat modeling is that there are
+always limited resources for security and it is necessary to determine
+how to use those limited resources effectively.</p></blockquote></p>
+<h2 id="Threat_Model_Examples">Threat Model Examples</h2><span class="share-tooltip" data-anchor="Threat_Model_Examples"><a class="headline-anchor" href="#Threat_Model_Examples" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Examples">https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Examples</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Examples&amp;text=Threat%20Model%20Examples" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Examples&amp;text=Threat%20Model%20Examples" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Examples&amp;title=Threat%20Model%20Examples" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Threat%20Model%20Examples&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Examples" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Examples]Threat Model Examples[/url]">[url=https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Examples]Threat Model Examples[/url]</span></span></span></span>
+<p>Devising a threat model requires a <em>realistic</em> assessment of
+probable threats (adversaries) and the available mitigations that are
+feasible to apply. Adversaries will have varying motivations, skill and
+resources at their disposal. The Electronic Frontier Foundation (EFF)
+has noted proper security planning necessitates answering five key
+questions to determine what should be protected, from whom, and the
+potential consequences of a breach: <sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup></p>
+<ol>
+<li>What do I want to protect?</li>
+<li>Who do I want to protect it from?</li>
+<li>How bad are the consequences if I fail?</li>
+<li>How likely is it that I will need to protect it?</li>
+<li>How much trouble am I willing to go through to try to prevent
+potential consequences?</li>
+</ol>
+<p>To better understand these concepts, consider these questions in
+further detail below.</p>
+<table>
+<caption><em>Threat Modeling Concepts</em> <sup id="cite_ref-1-2" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup></caption>
+<thead>
+<tr class="header">
+<th><p><strong>Concept</strong></p></th>
+<th><p><strong>Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>What I want to protect</p></td>
+<td><p>In terms of computing and digital security, this refers to
+protecting "assets" which is a type of information like browsing
+history, files, messages, emails, personal contacts and so on. To
+determine your assets, take note of what data is stored and where, who
+potentially has access to it, and what protections are in place to
+prevent unwanted access.</p></td>
+</tr>
+<tr class="even">
+<td><p>Who I am protecting it from</p></td>
+<td><p>Consider who might target you or your information; this is your
+"adversary". Potential adversaries include: family, friends or
+ex-partners; employers; business competition; researchers; government
+entities; malicious hackers; advertisers; corporations; and the
+IC.</p></td>
+</tr>
+<tr class="odd">
+<td><p>How likely protection is required</p></td>
+<td><p>A proper risk assessment is required. To determine the
+probability of threats being actualized, consider the capabilities of
+adversaries and their motivation, for example: <sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup></p>
+<ul>
+<li>Family, friends and ex-partners are likely to be unskilled and
+unmotivated threats.</li>
+<li>Advertisers and employers are generally unskilled and motivated
+threats.</li>
+<li>Some corporations are skilled, but unmotivated threats (such as a
+mobile device provider).</li>
+<li>Security researchers, other corporations (like Google and Facebook),
+competent hackers and law enforcement are skilled and motivated threats.
+They also have access to limited global resources.</li>
+<li>The IC are highly skilled, highly motivated and have significant
+global resources.</li>
+</ul></td>
+</tr>
+<tr class="even">
+<td><p>Impact of an adversary breach</p></td>
+<td><p>Skilled adversaries have multiple opportunities to access,
+exfiltrate, delete or corrupt data, but the motives and tactics will
+differ depending on the specific adversary. For example, advertisers
+will remain focused on highly detailed profiling, government may focus
+on reading private communications of journalists, the IC may seek to
+establish full monitoring of systems associated with political activists
+and so on. Consider how harmful a successful breach by an adversary
+would be -- what they can do with private data -- and the probability of
+this occurring; the likelihood obviously increases with more skilled
+adversaries. <sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup></p></td>
+</tr>
+<tr class="odd">
+<td><p>Effort exerted on improved security</p></td>
+<td><p>Security is a process and not an end product. Every individual
+has different priorities, threats, resources, and capabilities. This
+means the "right" strategy is a balance of personal time, convenience,
+privacy and cost. Threat models and mitigation strategies will be very
+different for:</p>
+<ul>
+<li>A journalist willing to disclose whistleblower secrets, since this
+requires protection from government entities.</li>
+<li>A member of the public who is simply seeking to thwart profiling by
+online advertisers/global technology companies.</li>
+<li>Managers protecting themselves against potential hackers employed by
+competitors for the purpose of corporate espionage.</li>
+</ul></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Threat_Model_Guides">Threat Model Guides</h2><span class="share-tooltip" data-anchor="Threat_Model_Guides"><a class="headline-anchor" href="#Threat_Model_Guides" aria-label="Copy or share a link to this section"><i class="fa-solid fa-share-nodes"></i></a><span class="menu-wrapper"><span class="menu"><span class="menu-headline"><i class="fa-solid fa-share-nodes"></i> Copy or share this direct link!</span><span class="code-select" data-code="https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Guides">https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Guides</span><span class="share-social"><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://t.me/share/url?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Guides&amp;text=Threat%20Model%20Guides" aria-label="Share via Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Guides&amp;text=Threat%20Model%20Guides" aria-label="Share via X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="https://www.reddit.com/submit?url=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Guides&amp;title=Threat%20Model%20Guides" aria-label="Share via Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="share-icon" rel="noopener noreferrer nofollow" target="_blank" href="mailto:?subject=Threat%20Model%20Guides&amp;body=https%3A%2F%2Fwww.kicksecure.com%2Fwiki%2FThreat_Modeling%23Threat_Model_Guides" aria-label="Share via email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a></span><span class="menu-subhead">Forum (BBCode)</span><span class="code-select" data-code="[url=https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Guides]Threat Model Guides[/url]">[url=https://www.kicksecure.com/wiki/Threat_Modeling#Threat_Model_Guides]Threat Model Guides[/url]</span></span></span></span>
+<p><a href="https://tldp.org/HOWTO/Security-HOWTO/x82.html">https://tldp.org/HOWTO/Security-HOWTO/x82.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://tldp.org/HOWTO/Security-HOWTO/x82.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></p>
+<p>To better protect yourself against surveillance by adversaries, it is
+recommended to consult the following EFF "Security Scenarios". Detailed
+advice is provided for various user groups regarding appropriate
+resources, tools and tips to mitigate potential threats:
+<sup id="cite_ref-6" class="reference"><a href="#cite_note-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup></p>
+<div>
+<ul>
+<li><a href="https://ssd.eff.org/module/your-security-plan">Your
+Security Plan</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/module/your-security-plan" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/lgbtq-youth">LGBTQ
+Youth</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/lgbtq-youth" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/academic-researcher">Academic
+researcher</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/academic-researcher" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/human-rights-defender">Human
+rights defender</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/human-rights-defender" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/journalism-student">Journalism
+student</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/journalism-student" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/activist-or-protester">Activist or
+protestor</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/activist-or-protester" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/journalist-move">Journalist
+on the move</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/journalist-move" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/online-security-veteran">Online
+security veteran</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/online-security-veteran" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+<li><a href="https://ssd.eff.org/en/playlist/want-security-starter-pack">Want a
+security starter pack?</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/want-security-starter-pack" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></li>
+</ul>
+</div>
+<h1 id="See_Also">See Also</h1>
+<ul>
+<li><a href="Mental_Model">Mental Model</a></li>
+</ul>
+<h1 id="References">References</h1>
+
+<ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink">&#8593; <sup><a href="#cite_ref-1">1</a></sup> <sup><a href="#cite_ref-1-2">2</a></sup></span> <span class="reference-text"><a href="https://www.privacyguides.org/basics/threat-modeling/">https://www.privacyguides.org/basics/threat-modeling/</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.privacyguides.org/basics/threat-modeling/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf">https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://csrc.nist.gov/CSRC/media/Publications/sp/800-154/draft/documents/sp800_154_draft.pdf" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><a href="#cite_ref-3" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://ssd.eff.org/en/playlist/academic-researcher">https://ssd.eff.org/en/playlist/academic-researcher</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/playlist/academic-researcher" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><a href="#cite_ref-4" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">This is admittedly a subjective process which is different for every
+individual. Even though some risks are low, they may be unacceptable to
+specific people. On the other hand, some people disregard probable
+threats, because the consequences are assessed as inconsequential.</span></li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><a href="#cite_ref-5" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">For example, mobile phone providers can access all phone records,
+unencrypted communications are vulnerable to hackers on Wi-Fi networks,
+and government agencies can likely backdoor any Internet-connected
+device.</span></li>
+<li id="cite_note-6"><span class="mw-cite-backlink"><a href="#cite_ref-6" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text"><a href="https://ssd.eff.org/en/module-categories/security-scenarios">https://ssd.eff.org/en/module-categories/security-scenarios</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://ssd.eff.org/en/module-categories/security-scenarios" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
+</ol>
+
+<p><span class="wiki-book-index wbi-for-footer"><a class="prev internal" href="VirtualBox/Manual_VM_Import" title="VirtualBox/Manual VM Import"><i class="fa-solid fa-chevron-left fa-fw"></i><span class="text">VirtualBox/Manual
+VM
+Import</span></a><a class="index internal" href="Advanced_Documentation" title="Advanced Documentation"><i class="fa-solid fa-list fa-fw"></i><span class="text">Advanced
+Documentation</span></a><a class="next internal" href="NAT_traversal" title="NAT traversal"><i class="fa-solid fa-chevron-right fa-fw"></i><span class="text">NAT
+traversal</span></a><span class="info"><span class="prev">Previous page:
+VirtualBox/Manual VM Import</span><span class="index">Index page:
+Advanced Documentation</span><span class="next">Next page: NAT
+traversal</span></span></span></p>
+<div class="robots-nocontent" data-nosnippet="">
+<div id="custom-footer">
+</div>
+</div>
+
+<div class="catlinks"><span class="catlinks-label">Categories:</span> <a href="Category:Documentation">Documentation</a></div></main>
+<footer class="site-footer"><div class="footer-cols"><div class="footer-col footer-brand"><p class="footer-headline">Kicksecure <a class="footer-tm" href="Trademark_Policy" aria-label="Trademark Policy">&trade;</a></p><p class="footer-claim">A secure by default operating system with the latest security research in place.</p><a class="darkmode-toggle" href="#" data-darkmode><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Dark mode</a></div><div class="footer-col footer-social"><p class="footer-subhead">Follow us on social media</p><div class="footer-social-icons"><a class="icon-link" href="https://t.me/s/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram" aria-hidden="true"></i></a><a class="icon-link" href="https://twitter.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a><a class="icon-link" href="https://www.youtube.com/@PrettyGoodSecurity" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a><a class="icon-link" href="https://inv.nadeko.net/channel/UCAHILHRPwI-6dCBFxSLJjlw" target="_blank" rel="noopener noreferrer" aria-label="Invidious"><i class="fa-solid fa-play" aria-hidden="true"></i></a><a class="icon-link" href="https://www.facebook.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a><a class="icon-link" href="https://www.reddit.com/r/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Reddit"><i class="fa-brands fa-reddit" aria-hidden="true"></i></a><a class="icon-link" href="https://github.com/Kicksecure" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a><a class="icon-link" href="https://forums.kicksecure.com/c/news.rss" target="_blank" rel="noopener noreferrer" aria-label="RSS"><i class="fa-solid fa-rss" aria-hidden="true"></i></a><a class="icon-link" href="https://fosstodon.org/@kicksecure" target="_blank" rel="noopener noreferrer" aria-label="Mastodon"><i class="fa-brands fa-mastodon" aria-hidden="true"></i></a><a class="icon-link" href="https://bsky.app/profile/kicksecure.com" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><i class="fa-brands fa-bluesky" aria-hidden="true"></i></a></div><p class="footer-sponsor-head">Supported by Power Up Privacy</p><p class="footer-sponsor">Kicksecure is proudly supported until 2026 by <a href="https://powerupprivacy.com/" target="_blank" rel="noopener noreferrer">Power Up Privacy</a>, a privacy advocacy group that seeks to supercharge privacy projects with resources so they can complete their mission of making our world a better place. (<a href="Transparency">Strictly subject to our sponsorship policy.</a>)</p></div><div class="footer-col footer-legal"><div class="footer-badges"><a href="Reasons_for_Freedom_Software" aria-label="Freedom Software"><img src="../gnu-logo.png" width="50" height="49" alt="GNU logo"></a><a href="Policy_On_Nonfreedom_Software" aria-label="Open Source Initiative"><img src="../osi-logo.png" width="50" height="60" alt="Open Source Initiative logo"></a></div><p class="footer-opensource-note">At Kicksecure we value freedom and trust, supporting Open Source and Freedom Software</p><nav class="footer-freedom"><ul><li><a href="Reasons_for_Freedom_Software">Freedom Software</a></li><li><a href="Policy_On_Nonfreedom_Software">Policy on Nonfreedom Software</a></li></ul></nav><p class="footer-legal-intro">By using this website, you acknowledge you have read, understood, and agree to be bound by these agreements:</p><nav class="footer-links"><ul><li><a href="Terms_of_Service">Terms of Service</a></li><li><a href="Privacy_Policy">Privacy Policy</a></li><li><a href="Cookie_Policy">Cookie Policy</a></li><li><a href="E-Sign_Consent">E-Sign Consent</a></li><li><a href="Terms_of_Service#DMCA_Policy">DMCA</a></li><li><a href="Imprint">Imprint</a></li></ul></nav><p class="copyright"><a href="Copyright" aria-label="Copyright"><i class="fa-regular fa-copyright" aria-hidden="true"></i></a> 2012-2026 ENCRYPTED SUPPORT LLC</p></div></div></footer>
+<div class="bottom-stack">
+<div class="stage-banner" role="alert"><strong>Staging server.</strong> This is a preview of Kicksecure content -- it may be incomplete or unreleased and is not the production website.</div>
+<div class="consent-banner" role="region" aria-label="Legal notice"><span class="consent-text">By using our website, you acknowledge that you have read, understood and agreed to our <a href="Privacy_Policy">Privacy Policy</a>, <a href="Cookie_Policy">Cookie Policy</a>, <a href="Terms_of_Service">Terms of Service</a>, and <a href="E-Sign_Consent">E-Sign Consent</a>.</span><button type="button" class="consent-dismiss" data-consent-dismiss>OK</button></div>
+</div>
+<div id="fly-in-notification-panel" role="region" hidden aria-label="Notification panel"><div class="inner-wrapper"><i class="close-panel fa-solid fa-xmark" role="button" tabindex="0" aria-label="Close this notification"></i><div class="content"><div class="headline"><a href="Donate">Your support makes<br>all the difference!</a></div><p>We believe security software like Kicksecure needs to remain Open Source and independent. <b>Would you help</b> sustain and grow the project? Learn more about our <a href="Donate">14 year success story and maybe DONATE!</a></p></div></div></div>
+<script src="../search-index.js" defer></script>
+<script src="../page-previews.js" defer></script>
+<script src="../app.js" defer></script>
+</body>
+</html>
