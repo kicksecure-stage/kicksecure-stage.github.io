@@ -268,10 +268,10 @@ Better use <code>/dev/random</code>.</p>
 <p>Here is what renowned cryptographer Dr. Daniel J. Bernstein has to
 say on the matter. <sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup> The quote was cut to simplify
 things.</p>
-<p><blockquote><p>[...] but Linux /dev/urandom ([...]) spews predictable data [...]</p></blockquote></p>
+<p><blockquote class="quotation"><p>[...] but Linux /dev/urandom ([...]) spews predictable data [...]</p></blockquote></p>
 <p>Quote without cutting the parentheses. (<u>Underline</u> is mine.
 <code>code</code> is mine.)</p>
-<p><blockquote><p>[...] but Linux
+<p><blockquote class="quotation"><p>[...] but Linux
 <code>/dev/</code><u><code>u</code></u><code>random</code> (unlike Linux
 <code>/dev/random</code>) spews predictable data [...]</p></blockquote></p>
 <p>Oversimplified interpretation:</p>
@@ -285,7 +285,7 @@ random data.</li>
 predictable data.</li>
 </ul>
 <p>Quoting the whole paragraph.</p>
-<p><blockquote><p>I'm not saying that
+<p><blockquote class="quotation"><p>I'm not saying that
 <code>/dev/</code><u><code>u</code></u><code>random</code> has a perfect
 API. It's disappointingly common for vendors to deploy devices where the
 randomness pool has never been initialized; BSD
@@ -315,9 +315,9 @@ golden image) random seeds</li>
 <p>The issue of randomness pool initialization is well explained at <a href="https://systemd.io/RANDOM_SEEDS/">systemd Random Seeds</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/RANDOM_SEEDS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>.</p>
 <p>Finally, I need to address what my interpretation is of what he means
 by "superstitions". Quote:</p>
-<p><blockquote><p>the <code>/dev/random</code> superstitions.</p></blockquote></p>
+<p><blockquote class="quotation"><p>the <code>/dev/random</code> superstitions.</p></blockquote></p>
 <p>Related paragraphs. Quote:</p>
-<p><blockquote><p>Cryptographers are certainly not responsible for this superstitious
+<p><blockquote class="quotation"><p>Cryptographers are certainly not responsible for this superstitious
 nonsense. Think about this for a moment: whoever wrote the /dev/random
 manual page seems to simultaneously believe that</p>
 <p>(1) we can't figure out how to deterministically expand one 256-bit
@@ -335,7 +335,7 @@ randomness pool initialization. Therefore that is a rather theoretical
 consideration.</p>
 <p>Quote <a href="https://systemd.io/RANDOM_SEEDS/">systemd Random
 Seeds</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://systemd.io/RANDOM_SEEDS/" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>:</p>
-<p><blockquote><p>(Strictly speaking there are more APIs, for example
+<p><blockquote class="quotation"><p>(Strictly speaking there are more APIs, for example
 <code>/dev/random</code>, but these should not be used by almost any
 application and hence aren't mentioned here.)</p></blockquote></p>
 <p>This could use some elaboration. Hence, asked, see systemd feature
@@ -393,7 +393,7 @@ engineering at CloudFlare, <code>Entropy_32c3_16-9.pdf</code></a><sup class="ext
 should, according to Patrick Schleizer, not be used to dismiss entropy
 quality considerations. The pdf mentions "The early boot problem",
 quote:</p>
-<p><blockquote><p>Very early at boot, /dev/urandom might not be seeded yet,
+<p><blockquote class="quotation"><p>Very early at boot, /dev/urandom might not be seeded yet,
 predictable. This is a Linux shortcoming. The OS must save the entropy
 pool at poweroff. Your distribution probably does already.</p></blockquote></p>
 <p>Exactly such mechanisms need to be scrutinized. For example, <a href="https://github.com/QubesOS/qubes-issues/issues/1752">Qubes OS does
@@ -1082,7 +1082,7 @@ does Bitcoin Core generate entropy for private keys?</a><sup class="ext-link-to-
 <ol class="references">
 <li id="cite_note-1"><span class="mw-cite-backlink"><a href="#cite_ref-1" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">Peter Gutmann of secure erasure fame <a href="https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html">https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.metzdowd.com/pipermail/cryptography/2019-September/035329.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup></span></li>
 <li id="cite_note-2"><span class="mw-cite-backlink"><a href="#cite_ref-2" aria-label="Jump up" title="Jump up">&#8593;</a></span> <span class="reference-text">The following viewpoint "/dev/random is
-obsolete" has been deprecated. <blockquote><p>This debate comes from a misconception by the Linux manual writer. <a href="https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/">https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/</a>
+obsolete" has been deprecated. <blockquote class="quotation"><p>This debate comes from a misconception by the Linux manual writer. <a href="https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/">https://web.archive.org/web/20230530100652/https://pthree.org/2014/07/21/the-linux-random-number-generator/</a>
 The fact is both APIs use the same CSPRNG. The issue happens when the
 randomness pool has not been properly initialized and entropy is
 requested early at boot. Otherwise the blocking behavior of
@@ -1096,7 +1096,7 @@ despite a properly initialized pool. <a href="https://unix.stackexchange.com/que
 Therefore rate limiting virtio-rng is unnecessary when using urandom as
 a backend. Here is what renowned cryptographer Dr. Daniel J. Bernstein
 has to say on the matter: <a href="https://www.mail-archive.com/cryptography@randombit.net/msg04763.html">https://www.mail-archive.com/cryptography@randombit.net/msg04763.html</a><sup class="ext-link-to-archive has-sibling" title="Link to archived version on web.archive.org"><a rel="noreferrer noopener" target="_blank" href="https://web.archive.org/web/https://www.mail-archive.com/cryptography@randombit.net/msg04763.html" aria-label="Archived version on web.archive.org"><i class="fa-solid fa-box-archive"></i></a></sup>
-<blockquote><p>Cryptographers are certainly not responsible for this superstitious
+<blockquote class="quotation"><p>Cryptographers are certainly not responsible for this superstitious
 nonsense. Think about this for a moment: whoever wrote the /dev/random
 manual page seems to simultaneously believe that (1) we can't figure out
 how to deterministically expand one 256-bit /dev/random output into an
