@@ -1418,6 +1418,9 @@ code:empty { display: none; }
 .share-tooltip .menu-wrapper { display: none; position: absolute; left: 0;
   top: calc(100% + 0.3rem); z-index: 40; }
 .share-tooltip:hover .menu-wrapper, .share-tooltip:focus-within .menu-wrapper { display: block; }
+/* An authored illustration (Figure: Share Button) shows the menu OPEN inline -- a static page
+   has no hover, so flow the menu in place rather than floating it. */
+.share-tooltip.is-open .menu-wrapper { display: block; position: static; margin-top: 0.3rem; }
 /* production ShareTooltip.css: a white, centered menu (not the surface/left-aligned one) */
 .share-tooltip .menu { display: block; width: 315px; max-width: calc(100vw - 10px);
   padding: 10px; font-size: 13px; font-weight: normal; text-align: center;
@@ -1433,10 +1436,10 @@ code:empty { display: none; }
 @media (max-width: 440px) {
   .share-tooltip .menu-wrapper { position: fixed; top: 55px; left: auto; right: 5px; }
 }
-.share-tooltip .share-social { display: flex; gap: 0.6rem; margin: 0.55rem 0 0.2rem; }
-.share-tooltip .share-icon { color: var(--muted); font-size: 1.2rem; }
-.share-tooltip .share-icon:hover { color: var(--link); text-decoration: none; }
-.share-tooltip .menu-subhead {
+.share-tooltip .share-social, .share-panel .share-social { display: flex; justify-content: center; gap: 0.6rem; margin: 0.55rem 0 0.2rem; }
+.share-tooltip .share-icon, .share-panel .share-icon { color: var(--muted); font-size: 1.2rem; }
+.share-tooltip .share-icon:hover, .share-panel .share-icon:hover { color: var(--link); text-decoration: none; }
+.share-tooltip .menu-subhead, .share-panel .menu-subhead {
   display: block; margin: 0.55rem 0 0.25rem; font-weight: 600; font-size: 0.8rem; color: var(--muted);
 }
 /* Footer share tooltip: the icon inherits the footer's own text colour. The white menu
