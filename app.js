@@ -141,7 +141,7 @@
 
   // Generic copy button: any [data-copy] element copies its attribute to the clipboard and
   // flashes a `.copied` class for ~2s (the label's data-copied text is shown via CSS ::after).
-  // Used by the header supermenu's Permalink and the share panel's copy-as-X cards.
+  // Used by the header supermenu's Permalink button (share copy fields are .code-select).
   function initDataCopy() {
     var btns = document.querySelectorAll("[data-copy]");
     for (var i = 0; i < btns.length; i++) {

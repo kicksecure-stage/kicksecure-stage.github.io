@@ -336,25 +336,14 @@ body.site-whonix .site-logo-img { width: auto; }
 .tools-item.copied::after {
   content: attr(data-copied); margin-left: auto; color: #2e7d32; font-size: 0.85em;
 }
-.share-panel { margin-top: 0.35rem; padding: 0.55rem 0.7rem 0.4rem; border-top: 1px solid var(--border); }
-.share-head { margin: 0 0 0.45rem; font-weight: 600; font-size: 0.9rem; color: var(--fg); }
-.share-copies { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.55rem; }
-.share-copy {
-  display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.55rem;
-  border: 1px solid var(--border); background: var(--bg); border-radius: var(--radius-sm);
-  color: var(--fg-soft); font: inherit; font-size: 0.85rem; cursor: pointer; text-align: left;
-}
-.share-copy:hover { background: var(--surface-2); color: var(--fg); }
-.share-copy.copied::after {
-  content: attr(data-copied); margin-left: auto; color: #2e7d32; font-size: 0.9em;
-}
-.share-socials { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
-.share-social {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--surface-2); color: var(--fg-soft);
-}
-.share-social:hover { background: var(--border); color: var(--fg); text-decoration: none; }
+/* Header supermenu share section: holds the SHARED share menu (share_menu_inner, identical
+   markup to the per-heading tooltip + footer). Separator from the tool items above; centre the
+   interior so it reads like the prod share card. Item styling comes from the shared block that
+   also covers .share-tooltip (search `.share-panel .menu-headline`). */
+.share-panel { margin-top: 0.4rem; padding: 10px; border-top: 1px solid var(--border);
+  text-align: center; background: #fff; color: #333; border-radius: 8px;
+  --muted: #6b7177; }   /* white-ground the shared share card (prod is light-only); reground
+                           --muted so subheads/note stay legible on white in dark mode */
 .share-note { display: block; margin: 0; font-size: 0.75rem; color: var(--muted); }
 .share-note a { color: var(--link); }
 @media (max-width: 720px) {
@@ -1434,7 +1423,7 @@ code:empty { display: none; }
   padding: 10px; font-size: 13px; font-weight: normal; text-align: center;
   background: #fff; color: #333; border: 1px solid #eee;
   border-radius: 10px; box-shadow: 1px 1px 3px rgb(0 0 0 / 20%); }
-.share-tooltip .menu-headline {
+.share-tooltip .menu-headline, .share-panel .menu-headline {
   display: block; margin: 8px 0 12px; font-weight: bold; font-size: 20px; color: #333;
 }
 /* keep the menu on-screen on phones (ShareTooltip.css overflow handling) */
