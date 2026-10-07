@@ -173,6 +173,13 @@ hr {
 }
 a { color: var(--link); text-decoration: none; }
 a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 2px; }
+/* a11y (Lighthouse link-in-text-block): a link embedded in body PROSE must not rely on colour
+   alone -- its contrast with the surrounding near-black text is < 3:1 -- so underline it. Scoped
+   to prose contexts; nav / cards / pills / buttons (their own classes) are not in a text block
+   and override this where needed. */
+.wiki-content p a, .wiki-content li a, .wiki-content dd a, .info-box a {
+  text-decoration: underline; text-underline-offset: 2px;
+}
 /* Touch devices report hover:none and keep the :hover state stuck on the last-tapped
    element, so an underline-on-hover leaves the link underlined after a tap (reported on
    the header Donate link). Drop every hover-underline for pointerless devices; the colour
@@ -816,7 +823,9 @@ blockquote.quotation .blockquote-context img.author-image {
 }
 /* min-width:0 lets the address pill shrink below the (unbreakable) address width so the row
    stays on ONE line and the pill scrolls/truncates, instead of wrapping full-width (prod). */
-.payitem .code-select { flex: 1 1 7rem; min-width: 0; font-size: 0.78rem; }
+/* break-all so a long unbreakable crypto address fills each line edge-to-edge (a uniform hash
+   block) instead of dropping a single trailing char to its own line at some box widths. */
+.payitem .code-select { flex: 1 1 7rem; min-width: 0; font-size: 0.78rem; word-break: break-all; }
 /* Pure-CSS collapse toggle (prod parity, NO JS): a visually-hidden-but-focusable checkbox +
    a <label> (the .qr-button / .more-button) as the clickable control. Collapsed by default,
    so a no-JS visitor sees the SAME collapsed panel prod shows -- no overflow, no JS. */
