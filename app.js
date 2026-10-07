@@ -418,6 +418,25 @@
     });
   }
 
+  // Fixed bottom stack (consent + stage banners) overlaps the footer, so reserve its
+  // EXACT rendered height as body padding, recomputed on resize and after any dismiss so
+  // the reservation collapses to 0 once every banner is gone (no leftover gap below the
+  // footer). The CSS body:has(.stage-banner) rule is the no-JS fallback -- without JS the
+  // banners are never dismissable, so a fixed reservation is always correct there.
+  function remeasureBottomStack() {
+    var stack = document.querySelector(".bottom-stack");
+    if (stack) document.body.style.paddingBottom = stack.offsetHeight + "px";
+  }
+  function initBottomStackSpacer() {
+    if (!document.querySelector(".bottom-stack")) return;
+    remeasureBottomStack();
+    var raf = 0;
+    window.addEventListener("resize", function () {
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = 0; remeasureBottomStack(); });
+    });
+  }
+
   // Consent/privacy banner: shown by default (no-JS friendly); dismiss remembers
   // via localStorage (no cookies). TT-safe: hidden attribute + classList only.
   function initConsentBanner() {
@@ -430,6 +449,7 @@
     if (btn) btn.addEventListener("click", function () {
       banner.hidden = true;
       try { localStorage.setItem(LS_LEGAL_ACK, "1"); } catch (err) {}
+      remeasureBottomStack();
     });
   }
 
@@ -445,6 +465,7 @@
     if (btn) btn.addEventListener("click", function () {
       banner.hidden = true;
       try { localStorage.setItem(LS_STAGE, "1"); } catch (err) {}
+      remeasureBottomStack();
     });
   }
 
@@ -901,6 +922,41 @@
     render(null);
   }
 
+  // Wide tables: add a TOP horizontal scrollbar that mirrors the table's own (bottom) one,
+  // so a reader scrolls a wide table from either edge. Built only for tables that actually
+  // overflow. The always-visible classic bars themselves are pure CSS (see style.css); this
+  // only adds + syncs the top rail. No-JS still gets the bottom bar.
+  function initWideTableScroll() {
+    var tables = document.querySelectorAll(
+      ".wiki-content table:not(.toc):not(.storage-table)");
+    tables.forEach(function (table) {
+      if (table.scrollWidth <= table.clientWidth + 1) { return; }
+      var rail = document.createElement("div");
+      rail.className = "table-scroll-top";
+      rail.setAttribute("aria-hidden", "true");
+      var spacer = document.createElement("div");
+      rail.appendChild(spacer);
+      table.parentNode.insertBefore(rail, table);
+      table.style.marginTop = "0";
+      function sizeRail() { spacer.style.width = table.scrollWidth + "px"; }
+      sizeRail();
+      var lock = false;
+      rail.addEventListener("scroll", function () {
+        if (lock) { return; }
+        lock = true; table.scrollLeft = rail.scrollLeft; lock = false;
+      });
+      table.addEventListener("scroll", function () {
+        if (lock) { return; }
+        lock = true; rail.scrollLeft = table.scrollLeft; lock = false;
+      });
+      var raf = 0;
+      window.addEventListener("resize", function () {
+        if (raf) { return; }
+        raf = requestAnimationFrame(function () { raf = 0; sizeRail(); });
+      });
+    });
+  }
+
   ready(function () {
     initDarkMode();
     initCopyButtons();
@@ -916,11 +972,13 @@
     initSearch();
     initConsentBanner();
     initStageBanner();
+    initBottomStackSpacer();
     initSitenotice();
     initFlyin();
     var modals = initModals();
     initDownloadModal(modals);
     initTableExpand(modals);
+    initWideTableScroll();
     initHovercards();
     initStorageViewer();
   });
