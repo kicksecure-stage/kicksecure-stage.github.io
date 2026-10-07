@@ -508,7 +508,7 @@ body.site-whonix .site-logo-img { width: auto; }
   text-decoration: none;
 }
 .header-donate:hover { text-decoration: underline; }
-.header-donate .fa-heart { color: #f80000; font-size: 24px; }   /* prod Donate heart (~27px img) */
+.header-donate .fa-heart { color: #f80000; font-size: 20px; line-height: 1; }   /* prod Donate heart; flex-centered with the label */
 
 /* JS-created search results dropdown */
 .search-results {
@@ -540,7 +540,7 @@ body.site-whonix .site-logo-img { width: auto; }
   .site-header-inner { padding: 5px 1rem; gap: 0.3rem 0.5rem; }
   .site-logo { font-size: 17px; gap: 0.3rem; }
   .site-logo-img { height: 34px; width: 46px; }   /* prod mobile logo box */
-  .site-tm { display: none; }   /* prod omits the trademark mark on mobile */
+  .site-tm { font-size: 0.85rem; margin-left: 0; }   /* keep the trademark mark, compact, on mobile */
   /* hamburger stays top-LEFT like prod (order -1), so it never wraps below the wide CTA */
   .nav-toggle-label { display: inline-flex; align-items: center; margin: 0 0.5rem 0 0; order: -1; }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
@@ -823,6 +823,9 @@ blockquote p:last-child { margin-bottom: 0; }
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
   gap: 0.5rem; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft);
 }
+/* ERC-20 stablecoin symbols are smaller than the coin-row logos (prod) -- the 1.4rem coin
+   icon is too large for this icon-only row. */
+.payitem.symbols .qr-button .icon { width: 1.1rem; height: 1.1rem; }
 .payitem.symbols .qr-button::after {
   content: "\25bc" / ""; margin-left: 0.35rem; font-size: 0.7em; color: var(--muted);
   display: inline-block; transition: transform 0.15s;
@@ -1351,7 +1354,8 @@ code:empty { display: none; }
 .pre-intro-p + .hidden-thumbnail + * {
   padding-top: 1em;
   border-top-left-radius: 9px; border-top-right-radius: 9px;
-  box-shadow: inset 5px 5px 8px -2px rgb(0 0 0 / 9%);
+  /* left-edge inset only (match the other slabs) -- no extra TOP shadow on the first slab. */
+  box-shadow: inset 11px 0 8px -8px rgb(0 0 0 / 9%);
 }
 .intro-like > :last-child,
 .pre-intro-p ~ :has(+ .post-intro-p) {
