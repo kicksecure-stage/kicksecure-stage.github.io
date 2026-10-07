@@ -1811,11 +1811,17 @@ html.stage-notice-hidden .stage-banner { display: none; }
 /* No-JS notice: the pre-paint marks <html class="client-js"> when JS is on, so the
    "works without JavaScript" callout only shows to actual no-JS visitors (no flash). */
 html.client-js .show-for-nojs-only { display: none; }
-#siteNotice { display: block; margin: 1rem 0 1.25rem; text-align: center; }
+#siteNotice { display: block; margin: 1rem 0 0.6rem; text-align: center; }
 /* When a sitenotice is present it already supplies the gap above the content; drop the
    .wiki-content 28px top margin so the sitenotice->headline gap is not doubled (a page
    WITHOUT a notice keeps the 28px header->content gap, matching production). */
 #siteNotice + main.wiki-content { margin-top: 0; }
+/* The page-title box carries a 25px top margin for the no-banner header->title gap; under
+   a banner that stacks on the notice's own margin into a wide empty band, so tighten just
+   the title's top margin when it directly follows a sitenotice (idiomatic: content starts
+   close under the banner, no large gap). */
+#siteNotice + main.wiki-content > #firstHeading,
+#siteNotice + main.wiki-content > .first-heading { margin-top: 0.4rem; }
 .sitenotice { position: relative; display: inline-block; max-width: 100%; }
 .sitenotice-close {
   width: 30px; height: 30px; position: absolute; top: 4px; right: 4px; z-index: 10;
