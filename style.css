@@ -1640,10 +1640,19 @@ code {
   font: inherit; font-weight: 600;
 }
 .stage-dismiss:hover { background: rgba(0, 0, 0, 0.12); }
+/* OK/dismiss placement: a trailing (right-aligned) action with a thumb-friendly
+   >=44px tap target, vertically centered with the message and wrapping to its own
+   right-aligned row when the text needs the full width. Replaces the small centered
+   chip (notice-bar idiom; keeps each stacked banner compact). */
+.consent-dismiss, .stage-dismiss {
+  margin-left: auto; align-self: center;
+  min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.4rem 1.25rem;
+}
 /* Reserve space so the fixed bottom stack never hides the last of the footer (stage builds
-   only). The staging notice wraps to ~3 lines at phone width, so reserve more there. */
-body:has(.stage-banner) { padding-bottom: 3.5rem; }
-@media (max-width: 720px) { body:has(.stage-banner) { padding-bottom: 6rem; } }
+   only). The staging notice wraps to ~3 lines at phone width, plus the 44px action row. */
+body:has(.stage-banner) { padding-bottom: 4.5rem; }
+@media (max-width: 720px) { body:has(.stage-banner) { padding-bottom: 8rem; } }
 
 /* Browser-storage viewer (Special:BrowserStorage) */
 .storage-table {
