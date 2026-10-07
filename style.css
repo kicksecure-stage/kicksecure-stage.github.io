@@ -355,7 +355,7 @@ body.site-whonix .site-logo-img { width: auto; }
   background: var(--surface-2); color: var(--fg-soft);
 }
 .share-social:hover { background: var(--border); color: var(--fg); text-decoration: none; }
-.share-note { margin: 0; font-size: 0.75rem; color: var(--muted); }
+.share-note { display: block; margin: 0; font-size: 0.75rem; color: var(--muted); }
 .share-note a { color: var(--link); }
 @media (max-width: 720px) {
   /* full-width dropped panel on phones so the wide share panel never overflows the viewport */
@@ -508,7 +508,7 @@ body.site-whonix .site-logo-img { width: auto; }
   text-decoration: none;
 }
 .header-donate:hover { text-decoration: underline; }
-.header-donate .fa-heart { color: #f80000; }   /* prod Donate heart red */
+.header-donate .fa-heart { color: #f80000; font-size: 24px; }   /* prod Donate heart (~27px img) */
 
 /* JS-created search results dropdown */
 .search-results {
@@ -780,6 +780,9 @@ blockquote p:last-child { margin-bottom: 0; }
 .paypal > .headline .account-info {
   display: inline-block; font-weight: 400; font-size: 0.85rem; color: var(--muted);
 }
+/* The note's sub-items are LINKS ("No PayPal account required", "(Tor unsupported.)") and
+   must read as links -- prod distinguishes them by the link colour, not muted plain text. */
+.paypal > .headline a.account-info { color: var(--link); }
 .payitem.line {
   display: flex; align-items: center; gap: 0.5rem 0.75rem; flex-wrap: wrap;
   padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft); font-size: 0;
@@ -811,6 +814,20 @@ blockquote p:last-child { margin-bottom: 0; }
 .payitem .expand-checkbox ~ .expand { display: none; }
 .payitem .expand-checkbox:checked ~ .expand { display: block; }
 .payitem.line .expand-checkbox:checked ~ .qr-button .name::after { transform: rotate(180deg); }
+/* Uniform label column so every address pill shares one left edge regardless of coin-name
+   length (Ethereum is the widest and otherwise shoves its pill right). */
+.payitem.line .qr-button { flex: 0 0 8.5rem; }
+/* ERC-20 stablecoin row (USDC/USDT/DAI): center the icon cluster and give it the SAME expand
+   caret as the coin rows -- it is an expandable (icon-only) row too, not a loose icon strip. */
+.payitem.symbols {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft);
+}
+.payitem.symbols .qr-button::after {
+  content: "\25bc" / ""; margin-left: 0.35rem; font-size: 0.7em; color: var(--muted);
+  display: inline-block; transition: transform 0.15s;
+}
+.payitem.symbols .expand-checkbox:checked ~ .qr-button::after { transform: rotate(180deg); }
 .payitem .expand-checkbox:focus-visible ~ .qr-button,
 .more .expand-checkbox:focus-visible ~ .more-button {
   outline: 2px solid var(--link); outline-offset: 2px;
@@ -1084,8 +1101,11 @@ code:empty { display: none; }
    colored circle BADGE (its --callout comes from the item's cs-* class, e.g.
    cs-blue/cs-green), matching production. Targets li > i (the block ul/li variant);
    the inline span= variant is left as flowing text. */
-.icon-bullet-list { list-style: none; padding-left: 0; margin: 1rem 0; }
-.icon-bullet-list li {
+/* Direct-child selectors (> *) so BOTH markup variants render identically: the block ul/li
+   list AND the inline span= variant (the email antispam tooltip uses span=true so it can
+   nest inside a <span>). display:block lets the span items stack like prod's bulleted pills. */
+.icon-bullet-list { list-style: none; padding-left: 0; margin: 1rem 0; display: block; }
+.icon-bullet-list > * {
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -1095,7 +1115,7 @@ code:empty { display: none; }
   border: 1px solid var(--border-soft);
   border-radius: 2rem;
 }
-.icon-bullet-list li > i {
+.icon-bullet-list > * > i {
   flex: 0 0 auto;
   width: 1.9em;
   height: 1.9em;
@@ -1107,7 +1127,7 @@ code:empty { display: none; }
   color: #fff;
   font-size: 0.95em;
 }
-.icon-bullet-list li .has-icon, .icon-bullet-list .info-box-icon {
+.icon-bullet-list > * .has-icon, .icon-bullet-list .info-box-icon {
   flex: 0 0 auto;
   color: var(--accent);
 }
@@ -1426,12 +1446,17 @@ code:empty { display: none; }
 .share-tooltip .menu-subhead {
   display: block; margin: 0.55rem 0 0.25rem; font-weight: 600; font-size: 0.8rem; color: var(--muted);
 }
-/* Footer share tooltip: the icon inherits the footer's own text colour, and on wider
-   screens the menu opens UPWARD (the footer sits at the page bottom; opening down would run
-   off-page). On phones the <=440px rule above already pins it to a fixed viewport slot. */
+/* Footer share tooltip: the icon inherits the footer's own text colour. The white menu
+   re-grounds --muted to a mid-grey so the glyph-only share icons + subheads stay legible on
+   white (the footer sets --muted to a near-white #bcbcbc for its DARK column, which on the
+   white menu was ~1.9:1). */
 .footer-share .headline-anchor { color: inherit; }
+.footer-share .menu { --muted: #6b7177; }
 @media (min-width: 441px) {
-  .footer-share .menu-wrapper { top: auto; bottom: calc(100% + 0.3rem); }
+  /* The footer icon sits at the LEFT of the brand line, so anchor the 315px menu to the left
+     edge and open it UPWARD (footer is at the page bottom). The >=800px rule anchors it right,
+     which would run the menu off the left edge. */
+  .footer-share .menu-wrapper { top: auto; bottom: calc(100% + 0.3rem); left: 0; right: auto; }
 }
 .image-right { float: right; margin: 0 0 1rem 1.25rem; max-width: 45%; }
 /* float rescued from an inline style by sanitize (strict CSP strips style=):
@@ -1578,8 +1603,11 @@ code:empty { display: none; }
   background: var(--surface); padding: 0.4rem; max-width: 100%; box-sizing: border-box;
 }
 .gallery .thumb img {
-  display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
-  object-fit: contain;
+  /* the img reserves the uniform square box (width=height=gallery width, set by the
+     generator) and object-fit:contain centers the real image inside it undistorted, so
+     every cell is the same size and captions share one baseline (prod). height:auto keeps
+     the square proportional when max-width caps it on a narrow screen. */
+  display: block; max-width: 100%; height: auto; object-fit: contain;
 }
 .gallery .gallerytext { display: block; margin-top: 0.3rem; text-align: center; line-height: 1.3; }
 .gallery a:hover img { transform: scale(1.1); }

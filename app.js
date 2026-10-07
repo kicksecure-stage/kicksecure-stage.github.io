@@ -971,6 +971,14 @@
           raf = requestAnimationFrame(function () { raf = 0; sync(); });
         });
       }
+      // A late image load can grow scrollWidth WITHOUT changing the (max-width:100%-capped)
+      // border box, so ResizeObserver never fires for it -- re-sync on each image load too.
+      table.querySelectorAll("img").forEach(function (img) {
+        if (!img.complete) {
+          img.addEventListener("load", sync);
+          img.addEventListener("error", sync);  // a broken image also changes layout
+        }
+      });
     });
   }
 
