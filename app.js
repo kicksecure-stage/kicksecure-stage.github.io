@@ -265,9 +265,19 @@
             if (t) label = t;
           }
           a.appendChild(document.createTextNode(label));
-          (function (idx) {
-            a.addEventListener("click", function (e) { e.preventDefault(); activateTab(ctrl, idx); });
-          })(j);
+          (function (idx, secId) {
+            a.addEventListener("click", function (e) {
+              e.preventDefault();
+              activateTab(ctrl, idx);
+              // Anchor the URL to the chosen tab's section id so the tab is shareable and
+              // restored on reload (syncTabsFromHash re-selects + scrolls then). replaceState,
+              // not `location.hash=`, avoids a scroll jump + back-button history spam on click.
+              if (secId) {
+                try { history.replaceState(null, "", "#" + secId); }
+                catch (e2) { location.hash = secId; }
+              }
+            });
+          })(j, hid);
           li.appendChild(a);
           ul.appendChild(li);
         }
