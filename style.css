@@ -295,9 +295,14 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .download-button-v2 .op-sys > img:last-child { margin-right: 0; }
 /* Narrow phones: a long label ("Download Whonix LXQt (VirtualBox) (stable) (FREE!)") in a
    nowrap table-cell capped at max-width:100% is clipped by the pill. Let it wrap to 2 lines
-   (the left icon is absolutely positioned, so multi-line text keeps its gutter). */
+   (the left icon is absolutely positioned, so multi-line text keeps its gutter). Keep the
+   OS-icon cell SHRINK-TO-FIT (width:1px in the anonymous table) so the now-wrapping label
+   cannot steal its width and squeeze the icon into a distorted sliver (a Lighthouse
+   best-practices image-aspect-ratio regression); object-fit:contain is belt-and-suspenders. */
 @media (max-width: 480px) {
   .download-button-v2 .dbutton { white-space: normal; }
+  .download-button-v2 .op-sys { width: 1px; white-space: nowrap; }
+  .download-button-v2 .op-sys > img { object-fit: contain; }
 }
 
 /* ---- chrome: header + nav (pure-CSS toggle) ---- */

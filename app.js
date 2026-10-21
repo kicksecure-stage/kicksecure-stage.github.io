@@ -273,8 +273,12 @@
               // restored on reload (syncTabsFromHash re-selects + scrolls then). replaceState,
               // not `location.hash=`, avoids a scroll jump + back-button history spam on click.
               if (secId) {
-                try { history.replaceState(null, "", "#" + secId); }
-                catch (e2) { location.hash = secId; }
+                // Percent-encode: a raw `%`/space in the id (e.g. "100%_Anonymous") must
+                // round-trip through syncTabsFromHash's decodeURIComponent on reload, else that
+                // throws URIError and the tab is not restored.
+                var frag = "#" + encodeURIComponent(secId);
+                try { history.replaceState(null, "", frag); }
+                catch (e2) { location.hash = frag; }
               }
             });
           })(j, hid);
