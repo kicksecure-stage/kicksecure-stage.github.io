@@ -83,10 +83,23 @@
         if (block.classList.contains("js-fully-loaded")) return;
         var text = block.getAttribute("data-code");
         if (text === null) text = block.textContent;
+        // A share copy-card carries a logo image src: the button is that logo (prod parity),
+        // not the generic clone glyph, and the raw text is hidden (CSS .cs-image).
+        var imgSrc = block.getAttribute("data-button-image-src");
         var btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "fa-regular fa-clone fa-rotate-90 cbutton";
         btn.setAttribute("aria-label", "Copy code to clipboard");
+        if (imgSrc) {
+          btn.className = "cbutton cbutton-logo";
+          var bimg = document.createElement("img");
+          bimg.className = "cbutton-img";
+          bimg.alt = "";
+          bimg.setAttribute("aria-hidden", "true");
+          bimg.src = imgSrc;
+          btn.appendChild(bimg);
+        } else {
+          btn.className = "fa-regular fa-clone fa-rotate-90 cbutton";
+        }
         var tip = document.createElement("span");
         tip.className = "tooltip2 robots-nocontent";
         var hov = document.createElement("span");
@@ -117,13 +130,18 @@
         var timer;
         function markCopied() {
           block.classList.add("copied");
-          btn.classList.remove("fa-regular", "fa-clone", "fa-rotate-90");
-          btn.classList.add("fa-solid", "fa-check");
+          // the logo-button variant keeps its logo; only the glyph variant swaps to a check.
+          if (!imgSrc) {
+            btn.classList.remove("fa-regular", "fa-clone", "fa-rotate-90");
+            btn.classList.add("fa-solid", "fa-check");
+          }
           clearTimeout(timer);
           timer = setTimeout(function () {
             block.classList.remove("copied");
-            btn.classList.remove("fa-solid", "fa-check");
-            btn.classList.add("fa-regular", "fa-clone", "fa-rotate-90");
+            if (!imgSrc) {
+              btn.classList.remove("fa-solid", "fa-check");
+              btn.classList.add("fa-regular", "fa-clone", "fa-rotate-90");
+            }
           }, 3000);
         }
         btn.addEventListener("click", function () {
@@ -507,34 +525,37 @@
     });
   }
 
-  // Consent/privacy banner: shown by default (no-JS friendly); dismiss remembers
-  // via localStorage (no cookies). TT-safe: hidden attribute + classList only.
+  // Consent/privacy banner: shown by default. The dismiss is now a CSS checkbox-hack (the
+  // sr-only #consent-dismiss-cb + the OK <label>), so it works with NO JS (hides this page
+  // view). Here: reflect the persisted choice into the checkbox on load and persist a toggle
+  // across pages (the pre-paint legal-ack-hidden class already hides it flash-free when set).
+  // TT-safe: only reads/sets checkbox.checked + localStorage.
   function initConsentBanner() {
-    var banner = document.querySelector(".consent-banner");
-    if (!banner) return;
-    try {
-      if (localStorage.getItem(LS_LEGAL_ACK) === "1") { banner.hidden = true; return; }
-    } catch (err) {}
-    var btn = banner.querySelector("[data-consent-dismiss]");
-    if (btn) btn.addEventListener("click", function () {
-      banner.hidden = true;
-      try { localStorage.setItem(LS_LEGAL_ACK, "1"); } catch (err) {}
+    var cb = document.getElementById("consent-dismiss-cb");
+    if (!cb) return;
+    try { if (localStorage.getItem(LS_LEGAL_ACK) === "1") cb.checked = true; } catch (err) {}
+    cb.addEventListener("change", function () {
+      try {
+        if (cb.checked) localStorage.setItem(LS_LEGAL_ACK, "1");
+        else localStorage.removeItem(LS_LEGAL_ACK);
+      } catch (err) {}
       remeasureBottomStack();
     });
   }
 
   // Staging-server notice: shown by default on --stage builds; dismiss remembers via
   // localStorage (no cookies), like the consent banner. TT-safe (hidden attribute only).
+  // Staging notice: dismiss is a CSS checkbox-hack (sr-only #stage-dismiss-cb + OK label), so
+  // it hides with no JS for THIS page view (reappears next page). JS persists across pages.
   function initStageBanner() {
-    var banner = document.querySelector(".stage-banner");
-    if (!banner) return;
-    try {
-      if (localStorage.getItem(LS_STAGE) === "1") { banner.hidden = true; return; }
-    } catch (err) {}
-    var btn = banner.querySelector("[data-stage-dismiss]");
-    if (btn) btn.addEventListener("click", function () {
-      banner.hidden = true;
-      try { localStorage.setItem(LS_STAGE, "1"); } catch (err) {}
+    var cb = document.getElementById("stage-dismiss-cb");
+    if (!cb) return;
+    try { if (localStorage.getItem(LS_STAGE) === "1") cb.checked = true; } catch (err) {}
+    cb.addEventListener("change", function () {
+      try {
+        if (cb.checked) localStorage.setItem(LS_STAGE, "1");
+        else localStorage.removeItem(LS_STAGE);
+      } catch (err) {}
       remeasureBottomStack();
     });
   }
