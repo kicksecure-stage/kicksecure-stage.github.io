@@ -44,12 +44,12 @@
 
   /* interaction */
   /* --link clears axe-core link-in-text-block (WCAG 1.4.1, Use of Color): a body-text
-     link needs 3:1 colour contrast vs the surrounding text. #1d70b8 = 3.3:1 vs --fg,
-     5:1 on white. Dark theme cannot meet it -- a link readable on the dark bg sits too
+     link needs 3:1 colour contrast vs the surrounding text. #1f6feb = 3.65:1 vs --fg,
+     4.6:1 on white. Dark theme cannot meet it -- a link readable on the dark bg sits too
      close in lightness to the near-white body text to reach 3:1 -- so dark is an
      accepted known flag. Rule was experimental until axe-core 4.5.0; its WCAG-A mapping
      is hedged (Deque marks it SHOULD) and the resting-only check is argued to over-report. */
-  --link: #1d70b8;
+  --link: #1f6feb;
   --link-hover: #08409b;
   --accent: #14866d;
   --accent-fg: #ffffff;
@@ -1788,6 +1788,10 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 }
 .references, .footnotes { font-size: 0.9rem; color: var(--fg-soft); }
 .reference { font-size: 0.85em; vertical-align: super; line-height: 0; }
+/* Citation [N] links inside a table cell/header inherit the cell's (contrast-compliant) text
+   colour: the link hue can fail 4.5:1 on a tinted <th> background, and the bracketed
+   superscript is already an unmistakable citation marker (link-colour-independent). */
+:is(td,th) .reference a { color: currentColor; }
 /* Jump-to-footnote target: box + tint the referenced note so a clicked [N] citation
    lands somewhere visible (scroll-margin clears any fixed chrome). */
 .references li:target, .footnotes li:target {
@@ -2030,10 +2034,14 @@ sup.reference:target {
   vertical-align: middle;
 }
 .video-link .icons img { vertical-align: middle; }
-/* shrink the 24px platform icons + the indicator to the text scale (prod shows them small) */
-/* The platform logos are square (600x600); size both axes so the rendered box keeps the 1:1
-   ratio (width:auto alongside the 24x24 width/height attrs tripped Lighthouse image-aspect-ratio). */
-.video-link .icons img { height: 1.1em; width: 1.1em; }
+/* Each platform-icon link is a >=24px square tap target (Lighthouse target-size). The square
+   600x600 logo renders small + centered inside it, flex:none so the inline-flex row cannot
+   shrink its width and distort it off 1:1 (which tripped image-aspect-ratio). */
+.video-link .icons a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; min-height: 24px;
+}
+.video-link .icons img { height: 1.1em; width: 1.1em; flex: none; }
 .video-link .indicator img { height: 1.1em; width: auto; }
 
 /* --- gallery (native image grid) --- */
