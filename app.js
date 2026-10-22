@@ -266,6 +266,11 @@
           var heading = title && title.querySelector("h1, h2, h3, h4, h5, h6");
           var hid = heading && heading.id;
           var li = document.createElement("li");
+          // The <li> wrapper must be transparent to AT: a role=tablist may only contain role=tab
+          // children, and a role=tab needs a tablist parent (APG). Without this, axe flags
+          // aria-required-children / aria-required-parent, and the li (whose <ul> is now a
+          // tablist, not a list) trips the listitem rule.
+          li.setAttribute("role", "presentation");
           var a = document.createElement("a");
           a.className = "tcc-tab";
           // ARIA tabs pattern (injected only now that JS runs -- no-JS stays plain stacked
