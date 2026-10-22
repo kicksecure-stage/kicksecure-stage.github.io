@@ -232,12 +232,19 @@
 
   // A controller's DIRECT sections (nested controllers are handled by their own pass).
   function tabSections(ctrl) { return ctrl.querySelectorAll(":scope > .tcc-content > .tcc-section"); }
-  // Activate section idx of ctrl (toggle both the section and its pill).
+  // Activate section idx of ctrl: toggle the section + its pill, and keep the ARIA tablist
+  // state in sync -- aria-selected on each tab and a roving tabindex (only the selected tab is
+  // in the tab sequence, per the WAI-ARIA tabs pattern).
   function activateTab(ctrl, idx) {
     var secs = tabSections(ctrl);
     var pills = ctrl.querySelectorAll(":scope > .mininav > ul > li > .tcc-tab");
     for (var k = 0; k < secs.length; k++) secs[k].classList.toggle("active", k === idx);
-    for (var b = 0; b < pills.length; b++) pills[b].classList.toggle("active", b === idx);
+    for (var b = 0; b < pills.length; b++) {
+      var on = b === idx;
+      pills[b].classList.toggle("active", on);
+      pills[b].setAttribute("aria-selected", on ? "true" : "false");
+      pills[b].tabIndex = on ? 0 : -1;
+    }
   }
 
   // Tab controllers: build the mininav switcher (one pill per section, labelled by the
@@ -245,6 +252,7 @@
   // sections. TT-safe: createElement/textContent/classList only.
   function initTabs() {
     var controllers = document.querySelectorAll(".tab-content-controller");
+    var tabSeq = 0;  // unique ids for the tab <-> panel ARIA relationship
     for (var i = 0; i < controllers.length; i++) {
       (function (ctrl) {
         var sections = tabSections(ctrl);
@@ -260,6 +268,21 @@
           var li = document.createElement("li");
           var a = document.createElement("a");
           a.className = "tcc-tab";
+          // ARIA tabs pattern (injected only now that JS runs -- no-JS stays plain stacked
+          // sections, never a false "tab" promise): the tab controls its panel (the section),
+          // the panel is labelled back by the tab. Assign ids where missing.
+          a.setAttribute("role", "tab");
+          var uid = "tcc-" + (tabSeq++);
+          a.id = uid + "-tab";
+          if (!sec.id) sec.id = uid + "-panel";
+          a.setAttribute("aria-controls", sec.id);
+          sec.setAttribute("role", "tabpanel");
+          sec.setAttribute("aria-labelledby", a.id);
+          // A panel with no focusable descendant is itself made focusable so keyboard users can
+          // reach its content (APG); a panel with focusable content needs no extra tab stop.
+          if (!sec.querySelector("a[href], button, input, select, textarea, [tabindex]")) {
+            sec.tabIndex = 0;
+          }
           // encodeURIComponent so a raw %/space in the id survives an Open-in-new-tab / copy-link
           // (the href is the shared URL); syncTabsFromHash decodeURIComponent's it back on load.
           a.href = hid ? ("#" + encodeURIComponent(hid)) : "#";
@@ -298,6 +321,31 @@
           ul.appendChild(li);
         }
         nav.appendChild(ul);
+        ul.setAttribute("role", "tablist");
+        ul.setAttribute("aria-label", "Section tabs");
+        // Roving-tabindex keyboard model (WAI-ARIA tabs): Arrow/Home/End move focus AND activate
+        // (automatic activation -- the switch is an instant CSS toggle). Enter/Space fire the
+        // native <a> click (which also updates the hash). Scoped to THIS controller's tablist so
+        // a nested tablist's keys are not stolen by an ancestor (closest tablist wins).
+        ul.addEventListener("keydown", function (e) {
+          var k = e.key;
+          if (k !== "ArrowRight" && k !== "ArrowLeft" && k !== "Home" && k !== "End") return;
+          if (!e.target.closest || e.target.closest('[role="tablist"]') !== ul) return;
+          e.preventDefault();
+          var tabs = ul.querySelectorAll(":scope > li > .tcc-tab");
+          if (!tabs.length) return;
+          var cur = 0;
+          for (var t = 0; t < tabs.length; t++) {
+            if (tabs[t].getAttribute("aria-selected") === "true") { cur = t; break; }
+          }
+          var next = cur;
+          if (k === "ArrowRight") next = (cur + 1) % tabs.length;
+          else if (k === "ArrowLeft") next = (cur - 1 + tabs.length) % tabs.length;
+          else if (k === "Home") next = 0;
+          else if (k === "End") next = tabs.length - 1;
+          activateTab(ctrl, next);
+          tabs[next].focus();
+        });
         ctrl.classList.add("mininav-ready");
         var def = 0;
         for (var d = 0; d < sections.length; d++) {

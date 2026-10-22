@@ -43,7 +43,13 @@
   --pre-fg: #636363;
 
   /* interaction */
-  --link: #0b57d0;
+  /* --link clears axe-core link-in-text-block (WCAG 1.4.1, Use of Color): a body-text
+     link needs 3:1 colour contrast vs the surrounding text. #1d70b8 = 3.3:1 vs --fg,
+     5:1 on white. Dark theme cannot meet it -- a link readable on the dark bg sits too
+     close in lightness to the near-white body text to reach 3:1 -- so dark is an
+     accepted known flag. Rule was experimental until axe-core 4.5.0; its WCAG-A mapping
+     is hedged (Deque marks it SHOULD) and the resting-only check is argued to over-report. */
+  --link: #1d70b8;
   --link-hover: #08409b;
   --accent: #14866d;
   --accent-fg: #ffffff;
@@ -212,10 +218,19 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 /* External links are distinguished by the trailing archive <sup> (see _archive_links /
    .ext-link-to-archive below), matching production -- no separate arrow, to avoid a
    double affordance. */
-/* margin-left is an em on the 0.75em-shrunk sup, so 0.4em here is ~0.3em of body text --
-   a comfortable, subtle gap (0.15em read as ~1.5px, cramped against the preceding word). */
-.ext-link-to-archive { margin-left: 0.4em; font-size: 0.75em; white-space: nowrap; }
-.ext-link-to-archive > a { color: var(--muted); }
+/* The marker is a >=24x24 tap target (WCAG 2.5.8 / Lighthouse target-size) with a larger,
+   centered glyph so the hit box is filled, not mostly empty padding. This deviates from
+   production's tiny superscript -- a deliberate a11y choice. */
+.ext-link-to-archive { margin-left: 0.15em; white-space: nowrap; vertical-align: middle; }
+.ext-link-to-archive > a {
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 1.5rem;   /* glyph nearly fills the 24px target (small inset) */
+}
 .ext-link-to-archive > a:hover { color: var(--link); text-decoration: none; }
 :focus-visible {
   outline: 2px solid var(--focus);
@@ -1091,6 +1106,22 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
 .copy-card .desc {
   font-size: 0.72rem; color: var(--muted); line-height: 1.2; margin-top: 3px; overflow-wrap: anywhere;
 }
+/* Special:Version build-facts list */
+.version-info { margin: 0.6rem 0; }
+.version-info dt { font-weight: 600; margin-top: 0.5rem; }
+.version-info dd { margin: 0 0 0 1rem; color: var(--muted); }
+/* Special:RecentChanges rows + pager */
+.recent-changes { list-style: none; margin: 0.6rem 0; padding: 0; }
+.recent-changes li { margin: 0.25rem 0; line-height: 1.5; }
+.rc-date { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 0.3rem; }
+.rc-editor { color: var(--muted); }
+.rc-summary { color: var(--muted); font-style: italic; }
+.rc-diff { margin-left: 0.3rem; font-size: 0.85em; }
+.rc-pagenav {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem 1rem;
+  margin: 0.8rem 0; font-weight: 600;
+}
+.rc-pagenav .rc-pageof { color: var(--muted); font-weight: 400; }
 code {
   background: var(--code-bg);
   border: 1px solid var(--border-soft);
@@ -2000,7 +2031,10 @@ sup.reference:target {
 }
 .video-link .icons img { vertical-align: middle; }
 /* shrink the 24px platform icons + the indicator to the text scale (prod shows them small) */
-.video-link .icons img, .video-link .indicator img { height: 1.1em; width: auto; }
+/* The platform logos are square (600x600); size both axes so the rendered box keeps the 1:1
+   ratio (width:auto alongside the 24x24 width/height attrs tripped Lighthouse image-aspect-ratio). */
+.video-link .icons img { height: 1.1em; width: 1.1em; }
+.video-link .indicator img { height: 1.1em; width: auto; }
 
 /* --- gallery (native image grid) --- */
 /* Galleries: production card grid (Utility.css). render_galleries emits
