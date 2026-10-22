@@ -1344,13 +1344,17 @@ code:empty { display: none; }
 }
 
 /* ---- tabs (tcc): JS toggles .active; no-JS shows all (progressive) ---- */
-.tab-content-controller, .tcc-section {
+.tcc-section {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   margin: 1rem 0;
   background: var(--bg);
 }
-.tab-content-controller { padding: 0.4rem; }
+/* Match production: the tab controller is a TRANSPARENT structural wrapper, not a bordered
+   card. Nested two deep (controller > info-box > controller) the extra border + padding
+   over-boxed and squeezed phone content (bug #7); production renders only the mininav switcher
+   bar + the active pane, no outer card. So: margin only, no border/background/padding. */
+.tab-content-controller { margin: 1rem 0; }
 .tcc-section { margin: 0.4rem 0; overflow: hidden; }
 .tcc-title {
   font-weight: 600;
@@ -1392,7 +1396,6 @@ code:empty { display: none; }
    (0,2,0) selector outranks the .info-box here, so the icon never overlaps the text.) */
 @media (max-width: 480px) {
   .tcc-content { padding-left: 0.35rem; padding-right: 0.35rem; }
-  .tab-content-controller { padding-left: 0.2rem; padding-right: 0.2rem; }
   .info-box { padding-left: 11px; padding-right: 11px; }
   .toccolours.mw-collapsible { padding-left: 10px; padding-right: 10px; }
 }
