@@ -420,12 +420,15 @@
     // (e.g. "...API...") also contain the term. Scans the whole index, not just the
     // rendered top 20. Returns the root-relative href or "".
     function bestMatch(q) {
-      var first = "";
+      // null (not "") is the no-match sentinel: the Homepage index entry has u="" and,
+      // on the root page, root="" too, so a valid homepage href is the empty string --
+      // treating "" as "no match" would skip it and mis-pick a later substring hit.
+      var first = null;
       for (var i = 0; i < window.MWSEARCH.length; i++) {
         var e = window.MWSEARCH[i];
         var t = e.t.toLowerCase();
         if (t === q) return root + e.u;
-        if (!first && t.indexOf(q) !== -1) first = root + e.u;
+        if (first === null && t.indexOf(q) !== -1) first = root + e.u;
       }
       return first;
     }
@@ -460,11 +463,15 @@
     // always internal "root + e.u" pages, so a same-origin Referer is normal and harmless.
     input.addEventListener("keydown", function (e) {
       if (e.key !== "Enter") return;
+      // Ignore the Enter that CONFIRMS an IME candidate (CJK etc.), else a provisional
+      // query navigates away mid-composition. isComposing covers most engines; keyCode
+      // 229 is the Safari fallback where isComposing is not set on this keydown.
+      if (e.isComposing || e.keyCode === 229) return;
       e.preventDefault();
       var q = input.value.trim().toLowerCase();
       if (q.length < 2) return;   // empty query matches everything via indexOf("")
       var href = bestMatch(q);
-      if (href) window.location.assign(href);
+      if (href !== null) window.location.assign(href);
     });
     // Close the box on an outside click / Escape (JS enhancement of the CSS :checked toggle):
     // uncheck the toggle AND clear/hide the live results so neither lingers. Scoped to the
