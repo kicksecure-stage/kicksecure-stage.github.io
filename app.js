@@ -489,6 +489,13 @@
   function remeasureBottomStack() {
     var stack = document.querySelector(".bottom-stack");
     if (stack) document.body.style.paddingBottom = stack.offsetHeight + "px";
+    // Lift the back-to-top button above the fixed bottom banner stack so they do not overlap;
+    // drops back to 20px once the stack collapses (banners dismissed). CSSOM, so CSP-safe.
+    var btt = document.querySelector(".back-to-top");
+    if (btt) {
+      var h = stack ? stack.offsetHeight : 0;
+      btt.style.bottom = (h ? h + 20 : 20) + "px";
+    }
   }
   function initBottomStackSpacer() {
     if (!document.querySelector(".bottom-stack")) return;
@@ -582,7 +589,10 @@
     }, waitMs);
     function close() {
       clearTimeout(timer);
-      try { localStorage.setItem(LS_FLYIN, String(now)); } catch (err) {}
+      // Privacy: store the dismissal DAY (midnight), not the exact millisecond -- the read
+      // above only compares at day granularity (Math.floor(diff / DAY) < dismissDays), so
+      // rounding down is lossless for the feature while revealing far less precise timing.
+      try { localStorage.setItem(LS_FLYIN, String(now - (now % DAY))); } catch (err) {}
       panel.classList.remove("flyin-shown");
       panel.addEventListener("transitionend", function te() {
         panel.hidden = true; panel.removeEventListener("transitionend", te);
@@ -802,12 +812,14 @@
           for (var k = 0; k < withId.length; k++) withId[k].removeAttribute("id");
           var cb = clone.querySelector(".expand-table-button");
           if (cb) cb.remove();
-          // cloneNode drops event listeners, so a cloned gallery thumb would keep the
-          // glb-thumb affordance (pointer cursor + role=button) with no working lightbox.
-          // Strip it: the expanded table is a read view, no lightbox needed.
-          var dead = clone.querySelectorAll(".glb-thumb");
+          // cloneNode drops event listeners, so a cloned gallery's a.glb-link would, on click,
+          // navigate to the raw image (its no-JS href) -- jarring inside the read-only expanded
+          // table. Neutralize: drop the lightbox class + href so the cloned thumbs are inert.
+          // (Also clears the legacy glb-thumb affordance on any unwrapped thumb.)
+          var dead = clone.querySelectorAll("a.glb-link, .glb-thumb");
           for (var d = 0; d < dead.length; d++) {
-            dead[d].classList.remove("glb-thumb");
+            dead[d].classList.remove("glb-link", "glb-thumb");
+            dead[d].removeAttribute("href");
             dead[d].removeAttribute("tabindex");
             dead[d].removeAttribute("role");
           }
@@ -1072,18 +1084,28 @@
         var items = [];  // {src, alt, cap} per lightbox-eligible thumb
         for (var b = 0; b < boxes.length; b++) {
           var img = boxes[b].querySelector(".thumb img");
-          if (!img || img.closest("a")) continue;  // link= opt-out: its own <a> navigates
+          if (!img) continue;
+          // The no-JS floor wraps a lightbox thumb in a.glb-link (href = the full image);
+          // enhance THAT. A link= opt-out is a plain <a> (navigates elsewhere) -- leave it.
+          var wrapA = img.closest("a");
+          if (wrapA && !wrapA.classList.contains("glb-link")) continue;
           var textEl = boxes[b].querySelector(".gallerytext");
           var cap = (textEl && textEl.textContent.trim()) || img.getAttribute("alt") || "";
-          (function (idx, imgEl) {
-            imgEl.classList.add("glb-thumb");  // CSS cursor affordance
-            imgEl.setAttribute("tabindex", "0");   // keyboard-reachable
-            imgEl.setAttribute("role", "button");
-            imgEl.addEventListener("click", function (e) { e.preventDefault(); openAt(idx); });
-            imgEl.addEventListener("keydown", function (e) {
-              if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openAt(idx); }
-            });
-          })(items.length, img);
+          (function (idx, trigger) {
+            if (trigger) {
+              // a.glb-link is focusable + Enter-activates natively; intercept its navigation.
+              trigger.addEventListener("click", function (e) { e.preventDefault(); openAt(idx); });
+            } else {
+              // Defensive (unwrapped thumb): make the img itself the trigger.
+              img.classList.add("glb-thumb");
+              img.setAttribute("tabindex", "0");
+              img.setAttribute("role", "button");
+              img.addEventListener("click", function (e) { e.preventDefault(); openAt(idx); });
+              img.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openAt(idx); }
+              });
+            }
+          })(items.length, wrapA);
           items.push({
             src: img.currentSrc || img.getAttribute("src") || "",
             alt: img.getAttribute("alt") || "", cap: cap

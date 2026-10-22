@@ -14,15 +14,15 @@
    deploy, where relativize_assets does not rewrite CSS url()s. */
 @font-face {
   font-family: Roboto; font-weight: 400; font-display: swap;
-  src: url(fonts/Roboto-Regular-webfont.woff) format("woff");
+  src: url(fonts/Roboto-Regular-webfont.woff2) format("woff2");
 }
 @font-face {
   font-family: Roboto; font-weight: 300; font-display: swap;
-  src: url(fonts/Roboto-Light-webfont.woff) format("woff");
+  src: url(fonts/Roboto-Light-webfont.woff2) format("woff2");
 }
 @font-face {
   font-family: Cousine; font-display: swap;
-  src: url(fonts/Cousine-Regular.woff) format("woff");
+  src: url(fonts/Cousine-Regular.woff2) format("woff2");
 }
 
 /* ---- design tokens: light (default) ---- */
@@ -212,7 +212,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 /* External links are distinguished by the trailing archive <sup> (see _archive_links /
    .ext-link-to-archive below), matching production -- no separate arrow, to avoid a
    double affordance. */
-.ext-link-to-archive { margin-left: 0.15em; font-size: 0.75em; white-space: nowrap; }
+/* margin-left is an em on the 0.75em-shrunk sup, so 0.4em here is ~0.3em of body text --
+   a comfortable, subtle gap (0.15em read as ~1.5px, cramped against the preceding word). */
+.ext-link-to-archive { margin-left: 0.4em; font-size: 0.75em; white-space: nowrap; }
 .ext-link-to-archive > a { color: var(--muted); }
 .ext-link-to-archive > a:hover { color: var(--link); text-decoration: none; }
 :focus-visible {
@@ -256,6 +258,10 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
   color: var(--fg);
   text-decoration: none;
 }
+/* GitHub link: the shared button block above gives it inline-block with NO gap, so the logo
+   butts against the text. inline-flex + gap (the icon-bullet-list idiom) spaces it and scales
+   with the font; this rule follows the group so it wins the display. */
+.github-link-widget { display: inline-flex; align-items: center; gap: 0.4em; }
 .mw-ui-progressive {
   background: var(--accent);
   border-color: var(--accent);
@@ -1154,6 +1160,14 @@ code:empty { display: none; }
 .wiki-content table:not(.toc):not(.storage-table) th.cell-gray {
   background: color-mix(in srgb, var(--callout) 32%, var(--surface)) !important;
 }
+/* Links inside a status tint: the body --fg passes on the 32% mix but the blue --link does not
+   (e.g. #0b57d0 on cell-red ~3.69:1). Inherit the cell's text color (keeps the underline
+   affordance) so a link -- e.g. a citation marker landing in a Yes/No cell -- meets contrast in
+   both themes. */
+.wiki-content table:not(.toc):not(.storage-table) :is(td, th):is(.cell-green, .cell-red, .cell-yellow, .cell-blue, .cell-gray) a {
+  color: currentColor;
+  text-decoration: underline;
+}
 
 /* ---- callouts / notice boxes ---- */
 .mbox, .info-box, .community-support-info {
@@ -1492,6 +1506,15 @@ details[open] > summary > .mwc-toggle > .mwc-less { display: inline; }
   transition: background 0.12s ease;
 }
 .back-to-top:hover { background: rgba(0, 0, 0, 0.55); color: #fff; }
+/* No-JS floor: keep the back-to-top above the fixed bottom banner stack (consent/stage) so
+   they never overlap -- mirrors the body padding reservation. With JS, remeasureBottomStack
+   sets the exact offset (and drops it back to 20px once the banners are dismissed). */
+body:has(.bottom-stack .consent-banner) .back-to-top,
+body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px); }
+@media (max-width: 720px) {
+  body:has(.bottom-stack .consent-banner) .back-to-top,
+  body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(8rem + 20px); }
+}
 /* No-JS reveal: hidden at the top, revealed in a narrow band at ~400px (a wide range
    would fade in progressively instead of at the threshold). The @supports guard is
    REQUIRED: without scroll timelines the animation would bind to the time timeline and
@@ -1942,7 +1965,8 @@ sup.reference:target {
 /* inline-block + vertical padding gives each TOC link a >=24px tap target and spacing
    (a11y target-size, flagged on desktop). */
 .toc a { color: var(--link); display: inline-block; padding: 3px 0; }
-.toc a:hover { text-decoration: underline; }
+/* Production distinguishes TOC links by colour only -- no underline, even on hover. */
+.toc a:hover { text-decoration: none; }
 
 /* VideoLink: general icon + text link + a small inline row of platform icons. The
    source icons are 600px; width/height attrs (set in videolink()) size them, this just
@@ -2248,7 +2272,8 @@ sup.reference:target {
 .stage-banner {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.4rem 0.9rem;
   padding: 0.5rem 1rem; font-size: 0.9rem; text-align: center;
-  color: #3a2500; background: #ffcf33;
+  /* Semi-transparent like the consent banner (rgba .9), not a solid fill -- still loud yellow. */
+  color: #3a2500; background: rgba(255, 207, 51, 0.9);
   border-top: 2px solid #e0a800;
 }
 .stage-banner strong { color: #7a1f00; }
