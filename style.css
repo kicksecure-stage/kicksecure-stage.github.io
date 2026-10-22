@@ -43,13 +43,16 @@
   --pre-fg: #636363;
 
   /* interaction */
-  /* --link clears axe-core link-in-text-block (WCAG 1.4.1, Use of Color): a body-text
-     link needs 3:1 colour contrast vs the surrounding text. #1f6feb = 3.65:1 vs --fg,
-     4.6:1 on white. Dark theme cannot meet it -- a link readable on the dark bg sits too
-     close in lightness to the near-white body text to reach 3:1 -- so dark is an
-     accepted known flag. Rule was experimental until axe-core 4.5.0; its WCAG-A mapping
-     is hedged (Deque marks it SHOULD) and the resting-only check is argued to over-report. */
-  --link: #1f6feb;
+  /* --link must clear BOTH axe audits, so it is a balance:
+       - link-in-text-block (WCAG 1.4.1): link >=3:1 vs BODY TEXT. #1d70b8 = 3.3:1 vs --fg.
+       - color-contrast: link >=4.5:1 vs its BACKGROUND, incl the tinted mininav pill bar and
+         surface cards (~#f0f0ee), where #1d70b8 = ~4.6:1.
+     A brighter #1f6feb gains link-in-text-block margin but drops to ~3.5:1 on those surfaces
+     -> site-wide color-contrast FAIL (verified: mininav/card/admonition links). So #1d70b8 wins.
+     Dark theme cannot meet link-in-text-block (a link readable on the dark bg is too close in
+     lightness to near-white body text for 3:1) -- accepted known flag. link-in-text-block was
+     experimental until axe-core 4.5.0; its WCAG-A mapping is hedged and resting-only is debated. */
+  --link: #1d70b8;
   --link-hover: #08409b;
   --accent: #14866d;
   --accent-fg: #ffffff;
