@@ -404,6 +404,12 @@ body.site-whonix .site-logo-img { width: auto; }
 }
 .tools-label:hover,
 .tools-toggle:checked ~ .tools-label { background: var(--surface-2); color: var(--fg); }
+/* Keyboard focus ring on the chevron: the toggle checkbox is sr-only (clipped
+   off-screen), so the global :focus-visible outline lands where no one sees it.
+   Mirror it onto the visible label, as search-toggle / toc-toggle do. */
+.tools-toggle:focus-visible ~ .tools-label {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
 .tools-menu {
   display: none; position: absolute; top: 100%; right: 0; z-index: 50;
   min-width: 250px; margin-top: 0.4rem; padding: 0.35rem;
@@ -411,6 +417,14 @@ body.site-whonix .site-logo-img { width: auto; }
   border-radius: 0 0 10px 10px; box-shadow: var(--shadow-md);
 }
 .tools-toggle:checked ~ .tools-menu { display: block; }
+/* Hover bridge: the menu sits 0.4rem below the chevron (margin-top), and it opens on
+   `.tools:hover`. Without this, moving the pointer from the chevron DOWN into that gap leaves
+   `.tools` before reaching the panel, so `.tools:hover` drops and the menu closes under the
+   cursor. A transparent strip spanning the gap (a child of `.tools-menu`, hence of `.tools`)
+   keeps `.tools:hover` true across the whole chevron->panel path. */
+.tools-menu::before {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 0.5rem;
+}
 /* Open supermenu swaps the chevron for an X (FA glyph override on the label's
    icon); the click toggle is the primary open/close on every device. */
 .tools-toggle:checked ~ .tools-label .fa-chevron-down::before { content: "\f00d"; }
@@ -531,6 +545,10 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
 }
 .nav-submenu a i { color: var(--muted); font-size: 0.95em; flex: none; }
 .nav-submenu a:hover { background: var(--surface-2); color: var(--fg); text-decoration: none; }
+/* The toggle checkbox is sr-only (focusable) in the markup; on desktop the nav is always
+   shown, so remove the checkbox from the tab order entirely (the mobile media query puts it
+   back). The hamburger label is likewise desktop-hidden below. */
+.nav-toggle { display: none; }
 .nav-toggle-label {
   display: none;
   cursor: pointer;
@@ -654,6 +672,12 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
   .site-tm { font-size: 0.85rem; margin-left: 0; }   /* keep the trademark mark, compact, on mobile */
   /* hamburger stays top-LEFT like prod (order -1), so it never wraps below the wide CTA */
   .nav-toggle-label { display: inline-flex; align-items: center; margin: 0 0.5rem 0 0; order: -1; }
+  /* Put the focusable checkbox back in the tab order on mobile (sr-only still clips it), and
+     ring the visible hamburger when it is keyboard-focused -- parity with the other toggles. */
+  .nav-toggle { display: block; }
+  .nav-toggle:focus-visible ~ .nav-toggle-label {
+    outline: 2px solid var(--focus); outline-offset: 2px;
+  }
   /* Open menu: a clean full-width panel with its OWN scroll and sectioned groups (bold
      label + separators), not a cramped wall of links. Collapsed by default; the hamburger
      plus outside-tap / Esc (app.js initNavToggle) toggle it. */
@@ -1804,9 +1828,9 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 /* link-in-text-block (axe 4.13 is pure 3:1 link-vs-surrounding and cannot see an underline): a
    link inside a heading or the category bar sits on bold/grey text it cannot reach 3:1 against,
    so match the surrounding colour -- axe treats a same-colour link as distinguished -- while the
-   hover underline still marks it as a link. Body-text links keep the --link blue. */
+   hover underline still marks it as a link. Body-text links keep the --link blue. (The category
+   bar gets the same treatment at its own .catlinks a rule below.) */
 .wiki-content :is(h1, h2, h3, h4, h5, h6) a { color: inherit; }
-.catlinks a { color: inherit; }
 /* Dev/wikitest link-blue comparison demo: applied #1d70b8 vs the brighter #1f6feb candidate
    (reverted -- it fails color-contrast on tinted surfaces). Scoped; used only on that test page. */
 .lk-applied a { color: #1d70b8; }
@@ -2187,7 +2211,7 @@ sup.reference:target {
   border-top: 1px solid var(--border); color: var(--muted);
 }
 .catlinks-label { font-weight: 600; }
-.catlinks a { color: var(--link); margin-right: 0.5rem; }
+.catlinks a { color: inherit; margin-right: 0.5rem; }  /* link-in-text-block: match the grey bar text (axe 4.13 cannot see the hover underline) */
 
 /* --- book prev/index/next nav (#wikibookindex) --- */
 /* Production shows this as a compact prev/index/next ICON cluster at the top-right of the title,

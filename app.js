@@ -473,6 +473,17 @@
     results.className = "search-results";
     results.hidden = true;
     input.parentNode.appendChild(results);
+    // A namespaced page (n:1, e.g. "Template:Foo") is a candidate only for a query that
+    // TARGETS its namespace: the text before the query's first colon must equal the page's
+    // namespace. A plain query (no colon) stays in the main namespace. So "template:" surfaces
+    // Template pages, but "foo:bar" does NOT surface "Template:Foo:Bar". q is already lowercased.
+    function nsEligible(e, q) {
+      if (!e.n) return true;
+      var ci = q.indexOf(":");
+      if (ci === -1) return false;
+      var ti = e.t.indexOf(":");
+      return ti !== -1 && e.t.slice(0, ti).toLowerCase() === q.slice(0, ci);
+    }
     // Best page for a query: an EXACT (case-insensitive) title match wins over a mere
     // substring hit, so "api" + Enter lands on the "API" page even when other titles
     // (e.g. "...API...") also contain the term. Scans the whole index, not just the
@@ -484,6 +495,7 @@
       var first = null;
       for (var i = 0; i < window.MWSEARCH.length; i++) {
         var e = window.MWSEARCH[i];
+        if (!nsEligible(e, q)) continue;   // namespaced page: only for its own namespace query
         var t = e.t.toLowerCase();
         if (t === q) return root + e.u;
         if (first === null && t.indexOf(q) !== -1) first = root + e.u;
@@ -497,6 +509,7 @@
       var shown = 0;
       for (var i = 0; i < window.MWSEARCH.length && shown < 20; i++) {
         var e = window.MWSEARCH[i];
+        if (!nsEligible(e, q)) continue;   // namespaced page: only for its own namespace query
         if (e.t.toLowerCase().indexOf(q) === -1) continue;
         var li = document.createElement("li");
         var a = document.createElement("a");
