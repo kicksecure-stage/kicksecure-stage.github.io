@@ -173,6 +173,13 @@ body {
    container width -- WITHOUT width:100% the `margin: auto` centering makes it shrink to
    its content (a long <pre>/<code> line) in the flex column and overflow the viewport. */
 .wiki-content { flex: 1 0 auto; width: 100%; min-width: 0; }
+/* Each top-level content section (page.py _wrap_sections) skips style+layout+paint while
+   off-screen and renders lazily on scroll -- cuts the up-front Style & Layout cost (hence mobile
+   TBT) on long pages. `auto` in contain-intrinsic-size lets the browser store each section's real
+   height after first render, so the 800px placeholder only affects the very first scroll-past
+   (minimal CLS); display:block keeps normal flow. Modern browsers scroll in-page #anchors and
+   find-in-page INTO cv:auto content. */
+.cv-section { content-visibility: auto; contain-intrinsic-size: auto 800px; display: block; }
 /* video shares img's responsive treatment: max-width stops a fixed width= attr overflowing a
    phone, and height:auto preserves the intrinsic aspect ratio once the cap binds. Applied
    uniformly, exactly like img (height:auto regardless of a height attr) -- a video with a
@@ -1051,7 +1058,9 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
 .other > .content > .more > .more-content { text-align: center; }
 .payitem.line {
   display: flex; align-items: center; gap: 0.5rem 0.75rem; flex-wrap: wrap;
-  padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft); font-size: 0;
+  /* #73: no border-bottom divider (prod has none) + tighter vertical padding so the gap
+     between crypto code-select rows matches prod (~8px, was ~18px). */
+  padding: 0.25rem 0.85rem; font-size: 0;
 }
 .payitem.line > * { font-size: 0.9rem; }
 .payitem .qr-button { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
@@ -1089,7 +1098,7 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
    caret as the coin rows -- it is an expandable (icon-only) row too, not a loose icon strip. */
 .payitem.symbols {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
-  gap: 0.5rem; padding: 0.55rem 0.85rem; border-bottom: 1px solid var(--border-soft);
+  gap: 0.5rem; padding: 0.25rem 0.85rem;   /* #73: match prod (no divider, tighter) */
 }
 /* ERC-20 stablecoin symbols are smaller than the coin-row logos (prod) -- the 1.4rem coin
    icon is too large for this icon-only row. */

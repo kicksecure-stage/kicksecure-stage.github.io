@@ -235,8 +235,15 @@
     try { id = decodeURIComponent((location.hash || "").slice(1)); } catch (e) { return; }
     if (!id) return;
     var el = document.getElementById(id);
-    var d = el && el.closest ? el.closest("details") : null;
+    if (!el) return;
+    var d = el.closest ? el.closest("details") : null;
     if (d) d.open = true;
+    // A .cv-section (content-visibility:auto) estimates its height until rendered, so the native
+    // fragment scroll can land ~a screen off the target. scrollIntoView renders the section and
+    // lands precisely (it scrolls relative to the element, not an estimated absolute position).
+    // Runs on load + hashchange (openHashDetails is wired to both), so TOC/section-link clicks
+    // land exactly; no-JS keeps the native (approximate) scroll.
+    if (el.scrollIntoView) el.scrollIntoView();
   }
 
   // The crypto-panel QR reveal and the "More Payment Options" grid collapse are now pure-CSS
