@@ -1272,6 +1272,106 @@
     }
   }
 
+  // Idiomatic menubar keyboard navigation for the header nav (#69): Left/Right move between
+  // top-level items, Down opens+enters a submenu, Up/Down within it, Escape closes + returns,
+  // Home/End jump, Enter/Space follow the link (native). Progressive: Tab + the CSS :focus-within
+  // path remain the no-JS / Tor-Safest baseline, untouched. Trusted-Types-safe (setAttribute /
+  // classList / focus only). Roving tabindex = one Tab stop into the bar, arrows move within.
+  function initNavKeyboard() {
+    var nav = document.querySelector(".site-nav > ul");
+    if (!nav) return;
+    var tops = [];
+    var lis = nav.querySelectorAll(":scope > li");
+    for (var i = 0; i < lis.length; i++) {
+      var a = lis[i].querySelector(".nav-top") || lis[i].querySelector("a");
+      if (a) tops.push(a);
+    }
+    if (tops.length < 2) return;
+    nav.setAttribute("role", "menubar");
+    tops.forEach(function (a, idx) {
+      a.closest("li").setAttribute("role", "none");
+      a.setAttribute("role", "menuitem");
+      a.tabIndex = idx === 0 ? 0 : -1;
+      var sub = subOf(idx);
+      if (sub.length) {
+        a.setAttribute("aria-haspopup", "true");
+        a.setAttribute("aria-expanded", "false");
+        var ul = a.closest("li").querySelector(".nav-submenu");
+        ul.setAttribute("role", "menu");
+        sub.forEach(function (si) { si.closest("li").setAttribute("role", "none"); si.setAttribute("role", "menuitem"); });
+      }
+    });
+    function subOf(idx) {
+      var ul = tops[idx].closest("li").querySelector(".nav-submenu");
+      return ul ? [].slice.call(ul.querySelectorAll(":scope > li > a")) : [];
+    }
+    function focusTop(idx) {
+      tops.forEach(function (a, j) { a.tabIndex = j === idx ? 0 : -1; });
+      tops[idx].focus();
+    }
+    function setOpen(idx, open) {
+      var li = tops[idx].closest("li");
+      if (!subOf(idx).length) return;
+      if (open) li.classList.add("kb-open"); else li.classList.remove("kb-open");
+      tops[idx].setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    function closeAll() { tops.forEach(function (_, j) { setOpen(j, false); }); }
+    function topIndex(el) { for (var j = 0; j < tops.length; j++) if (tops[j] === el) return j; return -1; }
+    function subPos(el) {
+      for (var j = 0; j < tops.length; j++) { var it = subOf(j); var p = it.indexOf(el); if (p >= 0) return { g: j, p: p, items: it }; }
+      return null;
+    }
+    nav.addEventListener("keydown", function (e) {
+      var k = e.key, ti = topIndex(e.target);
+      if (ti >= 0) {
+        if (k === "ArrowRight" || k === "ArrowLeft") {
+          e.preventDefault(); closeAll();
+          focusTop(k === "ArrowRight" ? (ti + 1) % tops.length : (ti - 1 + tops.length) % tops.length);
+        } else if (k === "ArrowDown") {
+          e.preventDefault(); setOpen(ti, true); var it = subOf(ti); if (it.length) it[0].focus();
+        } else if (k === "Home") { e.preventDefault(); focusTop(0); }
+        else if (k === "End") { e.preventDefault(); focusTop(tops.length - 1); }
+        else if (k === "Escape") { closeAll(); }
+        return;
+      }
+      var cs = subPos(e.target);
+      if (!cs) return;
+      if (k === "ArrowDown") { e.preventDefault(); cs.items[(cs.p + 1) % cs.items.length].focus(); }
+      else if (k === "ArrowUp") { e.preventDefault(); if (cs.p === 0) { setOpen(cs.g, false); focusTop(cs.g); } else cs.items[cs.p - 1].focus(); }
+      else if (k === "Escape") { e.preventDefault(); setOpen(cs.g, false); focusTop(cs.g); }
+      else if (k === "ArrowRight" || k === "ArrowLeft") {
+        e.preventDefault(); setOpen(cs.g, false);
+        var n = k === "ArrowRight" ? (cs.g + 1) % tops.length : (cs.g - 1 + tops.length) % tops.length;
+        setOpen(n, true); var it2 = subOf(n); if (it2.length) it2[0].focus(); else focusTop(n);
+      } else if (k === "Home") { e.preventDefault(); cs.items[0].focus(); }
+      else if (k === "End") { e.preventDefault(); cs.items[cs.items.length - 1].focus(); }
+    });
+    nav.addEventListener("focusout", function (e) { if (!nav.contains(e.relatedTarget)) closeAll(); });
+  }
+
+  // Per-heading share menus are server-rendered into an inert <template class="share-full">
+  // (NOT in the render tree -> zero style/layout, and never queried at load). Move one into its
+  // live .menu on the first PRESS or focus of that heading's share button, then wire its copy
+  // buttons. This keeps the full per-section social+copy menu for JS users while the initial
+  // RENDERED DOM stays ~500 elements (it was ~3881 on ISO -- the 29 full heading menus dominated
+  // mobile Style & Layout / TBT); no-JS / Tor-Safest users keep the static permalink. ONE
+  // delegated listener pair -> ~zero load-time JS, and nothing is built for headings nobody opens.
+  function initShareLazy() {
+    function activate(tip) {
+      var tmpl = tip.querySelector("template.share-full");
+      if (!tmpl) return;                                   // page-level/footer/open menus: no template
+      tmpl.parentNode.insertBefore(tmpl.content, tmpl);    // move the inert nodes into the live menu
+      tmpl.remove();
+      initCopyButtons();                                   // idempotent: wires only the new .code-select
+    }
+    function onPress(e) {
+      var el = e.target;
+      if (el && el.closest) { var tip = el.closest(".share-tooltip"); if (tip) activate(tip); }
+    }
+    document.addEventListener("pointerdown", onPress);     // press (mouse/touch/pen)
+    document.addEventListener("focusin", onPress);         // keyboard focus into the share button
+  }
+
   ready(function () {
     // Paint-, theme-, hash- and layout-critical: run immediately. Deferring these would flash
     // the stored theme, fail to open a hash-targeted tab/<details> on load, or shift layout
@@ -1282,6 +1382,7 @@
     initTabs();
     window.addEventListener("hashchange", syncTabsFromHash);
     initNavToggle();
+    initNavKeyboard();
     initToolsToggle();
     initConsentBanner();
     initStageBanner();
@@ -1306,6 +1407,7 @@
       initWideTableScroll();
       initHovercards();
       initStorageViewer();
+      initShareLazy();
     });
   });
 })();

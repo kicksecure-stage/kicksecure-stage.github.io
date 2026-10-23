@@ -416,23 +416,27 @@ body.site-whonix .site-logo-img { width: auto; }
 .tools-toggle:focus-visible ~ .tools-label {
   outline: 2px solid var(--focus); outline-offset: 2px;
 }
+/* 2-column layout (#70, supersedes the #61 max-height scroll): the Page + Tools sections sit
+   SIDE BY SIDE so the menu is short enough not to scroll, and -- being wider -- gives a larger
+   target the pointer can move into from the chevron (fixes the hard-to-enter hover-close). The
+   share panel spans both columns below. Grid props live here (harmless while display:none); the
+   open state just flips `display` to grid. */
 .tools-menu {
   display: none; position: absolute; top: 100%; right: 0; z-index: 50;
-  min-width: 250px; margin-top: 0.4rem; padding: 0.35rem;
+  width: max-content; max-width: min(94vw, 640px); margin-top: 0.25rem; padding: 0.7rem 0.85rem;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 0 0 10px 10px; box-shadow: var(--shadow-md);
-  /* Grouped sections + the share panel can exceed the viewport (esp. mobile); cap to the
-     screen and scroll instead of overflowing off-screen. */
-  max-height: calc(100vh - 4rem); overflow-y: auto; overscroll-behavior: contain;
+  grid-template-columns: repeat(2, minmax(12rem, 1fr)); gap: 0.2rem 1rem; align-items: start;
 }
-.tools-toggle:checked ~ .tools-menu { display: block; }
+.tools-toggle:checked ~ .tools-menu { display: grid; }
+.tools-menu > .share-panel { grid-column: 1 / -1; }
 /* Hover bridge: the menu sits 0.4rem below the chevron (margin-top), and it opens on
    `.tools:hover`. Without this, moving the pointer from the chevron DOWN into that gap leaves
    `.tools` before reaching the panel, so `.tools:hover` drops and the menu closes under the
    cursor. A transparent strip spanning the gap (a child of `.tools-menu`, hence of `.tools`)
    keeps `.tools:hover` true across the whole chevron->panel path. */
 .tools-menu::before {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 0.5rem;
+  content: ""; position: absolute; left: -12px; right: -12px; bottom: 100%; height: 0.6rem;
 }
 /* Open supermenu swaps the chevron for an X (FA glyph override on the label's
    icon); the click toggle is the primary open/close on every device. */
@@ -442,7 +446,7 @@ body.site-whonix .site-logo-img { width: auto; }
    tap-to-close, so gate it behind hover-capable devices. */
 @media (hover: hover) {
   .tools:hover .tools-menu,
-  .tools:focus-within .tools-menu { display: block; }
+  .tools:focus-within .tools-menu { display: grid; }
 }
 .tools-item {
   display: flex; align-items: center; gap: 0.6rem; width: 100%;
@@ -456,8 +460,9 @@ body.site-whonix .site-logo-img { width: auto; }
 }
 /* Grouped page-tools sections (production-style): a small muted header per section, with a
    hairline separator between sections. */
-.tools-section + .tools-section,
-.tools-menu .share-panel {
+/* Separator above the full-width share panel only; the Page/Tools sections are now side-by-side
+   grid columns (no stacked top-border between them). */
+.tools-menu > .share-panel {
   margin-top: 0.25rem; border-top: 1px solid var(--border); padding-top: 0.25rem;
 }
 .tools-section-label {
@@ -476,10 +481,10 @@ body.site-whonix .site-logo-img { width: auto; }
 .share-note { display: block; margin: 0; font-size: 0.75rem; color: var(--muted); }
 .share-note a { color: var(--link); }
 @media (max-width: 720px) {
-  /* full-width dropped panel on phones so the wide share panel never overflows the viewport */
+  /* Full-width dropped panel on phones. The 2-column Page|Tools layout keeps it short, so NO
+     routine scroll (#70 supersedes the #61 max-height/overflow-y). */
   .tools-menu {
-    position: fixed; left: 8px; right: 8px; top: 52px; min-width: 0;
-    max-height: calc(100vh - 64px); overflow-y: auto;
+    position: fixed; left: 8px; right: 8px; top: 52px; width: auto; max-width: none;
   }
 }
 /* Printable view: strip all chrome, print the article only (the supermenu Print action). */
@@ -550,7 +555,8 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
   box-shadow: var(--shadow-md);
 }
 .nav-group:hover > .nav-submenu,
-.nav-group:focus-within > .nav-submenu { display: block; }
+.nav-group:focus-within > .nav-submenu,
+.nav-group.kb-open > .nav-submenu { display: block; }   /* keyboard (#69): Down opens before focus moves in */
 .nav-submenu li { margin: 0; }
 .nav-submenu a {
   display: flex;
