@@ -459,7 +459,10 @@
     var scripts = document.getElementsByTagName("script");
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].getAttribute("src") || "";
-      var m = src.match(/^(.*?)app\.js$/);
+      // Match BOTH app.js (dev) and app.min.js (deployed/minified). Missing the minified name
+      // made this return "" on every deployed page, so search links on a /wiki/ page resolved
+      // against /wiki/ and doubled (/wiki/wiki/<target>).
+      var m = src.match(/^(.*?)app(?:\.min)?\.js$/);
       if (m) return m[1];
     }
     return "";
