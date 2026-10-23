@@ -203,6 +203,9 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .wiki-content p a, .wiki-content li a, .wiki-content dd a, .info-box a {
   text-decoration: underline; text-underline-offset: 2px;
 }
+/* The TOC is navigation (a list of #anchors), not prose links -- it is inside .wiki-content so
+   the `.wiki-content li a` underline above hits it; override (higher specificity wins). */
+.wiki-content .toc a { text-decoration: none; }
 /* Touch devices report hover:none and keep the :hover state stuck on the last-tapped
    element, so an underline-on-hover leaves the link underlined after a tap (reported on
    the header Donate link). Drop every hover-underline for pointerless devices; the colour
@@ -415,6 +418,9 @@ body.site-whonix .site-logo-img { width: auto; }
   min-width: 250px; margin-top: 0.4rem; padding: 0.35rem;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 0 0 10px 10px; box-shadow: var(--shadow-md);
+  /* Grouped sections + the share panel can exceed the viewport (esp. mobile); cap to the
+     screen and scroll instead of overflowing off-screen. */
+  max-height: calc(100vh - 4rem); overflow-y: auto; overscroll-behavior: contain;
 }
 .tools-toggle:checked ~ .tools-menu { display: block; }
 /* Hover bridge: the menu sits 0.4rem below the chevron (margin-top), and it opens on
@@ -2222,7 +2228,8 @@ sup.reference:target {
   border-top: 1px solid var(--border); color: var(--muted);
 }
 .catlinks-label { font-weight: 600; }
-.catlinks a { color: inherit; margin-right: 0.5rem; }  /* link-in-text-block: match the grey bar text (axe 4.13 cannot see the hover underline) */
+/* Category links must LOOK like links (not grey bar text): link colour + underline. */
+.catlinks a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; margin-right: 0.5rem; }
 
 /* --- book prev/index/next nav (#wikibookindex) --- */
 /* Production shows this as a compact prev/index/next ICON cluster at the top-right of the title,
