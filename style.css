@@ -180,6 +180,14 @@ body {
    (minimal CLS); display:block keeps normal flow. Modern browsers scroll in-page #anchors and
    find-in-page INTO cv:auto content. */
 .cv-section { content-visibility: auto; contain-intrinsic-size: auto 800px; display: block; }
+/* Per-section reserved-height buckets (page.py _cv_size_bucket estimates each section's height):
+   keeps the placeholder close to the real height so native (no-JS) fragment scroll lands near the
+   target and first-render CLS stays small. `auto` still caches the exact size after first render. */
+.cv-section.cv-h300 { contain-intrinsic-size: auto 300px; }
+.cv-section.cv-h600 { contain-intrinsic-size: auto 600px; }
+.cv-section.cv-h1200 { contain-intrinsic-size: auto 1200px; }
+.cv-section.cv-h2400 { contain-intrinsic-size: auto 2400px; }
+.cv-section.cv-h4800 { contain-intrinsic-size: auto 4800px; }
 /* video shares img's responsive treatment: max-width stops a fixed width= attr overflowing a
    phone, and height:auto preserves the intrinsic aspect ratio once the cap binds. Applied
    uniformly, exactly like img (height:auto regardless of a height attr) -- a video with a
