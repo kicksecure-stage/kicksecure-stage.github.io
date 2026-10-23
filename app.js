@@ -11,6 +11,19 @@
     else document.addEventListener("DOMContentLoaded", fn);
   }
 
+  // Run non-paint-critical setup when the main thread is idle, so wiring the interaction-only
+  // widgets does not block during load (cuts Total Blocking Time). requestIdleCallback is in
+  // every modern engine; where it is absent (old browsers, and the jsdom test env, which has
+  // no polyfill) we run SYNCHRONOUSLY -- identical to the previous eager behaviour, so there is
+  // no regression and the js-tests need no change.
+  function whenIdle(fn) {
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(fn, { timeout: 2000 });
+    } else {
+      fn();
+    }
+  }
+
   // Single source of truth for every localStorage key this site may set. The
   // Browser Storage page enumerates THIS (no separate hardcoded list), and the
   // feature code below references the constants -- so each key name lives once.
@@ -1260,30 +1273,39 @@
   }
 
   ready(function () {
+    // Paint-, theme-, hash- and layout-critical: run immediately. Deferring these would flash
+    // the stored theme, fail to open a hash-targeted tab/<details> on load, or shift layout
+    // after first paint (banners show/hide, the bottom-stack spacer, the tab switcher).
     initDarkMode();
-    initCopyButtons();
-    initDataCopy();
-    initPagePrint();
-    initExpandCollapseAll();
     openHashDetails();
     window.addEventListener("hashchange", openHashDetails);
     initTabs();
     window.addEventListener("hashchange", syncTabsFromHash);
     initNavToggle();
     initToolsToggle();
-    initBackToTop();
-    initSearch();
     initConsentBanner();
     initStageBanner();
     initBottomStackSpacer();
     initSitenotice();
-    initFlyin();
-    var modals = initModals();
-    initDownloadModal(modals);
-    initTableExpand(modals);
-    initGalleryLightbox(modals);
-    initWideTableScroll();
-    initHovercards();
-    initStorageViewer();
+    // Everything else is interaction-driven and not needed at first paint -- defer to idle so
+    // its setup does not block the main thread during load. The two that mutate layout
+    // (code-select, table-expand) have reserved CSS space / matched wrapping so running late
+    // does not shift content.
+    whenIdle(function () {
+      initCopyButtons();
+      initDataCopy();
+      initPagePrint();
+      initExpandCollapseAll();
+      initBackToTop();
+      initSearch();
+      initFlyin();
+      var modals = initModals();
+      initDownloadModal(modals);
+      initTableExpand(modals);
+      initGalleryLightbox(modals);
+      initWideTableScroll();
+      initHovercards();
+      initStorageViewer();
+    });
   });
 })();
