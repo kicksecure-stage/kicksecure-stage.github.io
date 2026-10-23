@@ -966,7 +966,10 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
 }
 /* The two notes each drop to their OWN line below the title (3 lines total). */
 .paypal > .headline .account-info {
-  display: block; font-weight: 400; font-size: 0.85rem; color: var(--link);
+  /* >=24px tap height (Lighthouse target-size): two short links stacked in the headline were
+     each < 24px tall. Flex-center keeps the text visually where it was, full panel width. */
+  display: flex; align-items: center; justify-content: center; min-height: 24px;
+  font-weight: 400; font-size: 0.85rem; color: var(--link);
 }
 /* The DONATE button sits in .content, BELOW the box (outside it), centered, and reads as a real
    filled button (prod's light-blue "DONATE via PayPal"); prod's Once/Monthly/Yearly interval
@@ -1791,6 +1794,23 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 }
 .references, .footnotes { font-size: 0.9rem; color: var(--fg-soft); }
 .reference { font-size: 0.85em; vertical-align: super; line-height: 0; }
+/* Footnote back-reference ("jump up" caret): a >=24px tap target (Lighthouse target-size) with
+   the caret enlarged to nearly fill it, so the larger hit area is a bigger visible control, not
+   wasted padding. In the references list each sits on its own line, so size does not crowd text. */
+.mw-cite-backlink a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; min-height: 24px; font-size: 1.3rem; line-height: 1;
+}
+/* link-in-text-block (axe 4.13 is pure 3:1 link-vs-surrounding and cannot see an underline): a
+   link inside a heading or the category bar sits on bold/grey text it cannot reach 3:1 against,
+   so match the surrounding colour -- axe treats a same-colour link as distinguished -- while the
+   hover underline still marks it as a link. Body-text links keep the --link blue. */
+.wiki-content :is(h1, h2, h3, h4, h5, h6) a { color: inherit; }
+.catlinks a { color: inherit; }
+/* Dev/wikitest link-blue comparison demo: applied #1d70b8 vs the brighter #1f6feb candidate
+   (reverted -- it fails color-contrast on tinted surfaces). Scoped; used only on that test page. */
+.lk-applied a { color: #1d70b8; }
+.lk-brighter a { color: #1f6feb; }
 /* Citation [N] links inside a table cell/header inherit the cell's (contrast-compliant) text
    colour: the link hue can fail 4.5:1 on a tinted <th> background, and the bracketed
    superscript is already an unmistakable citation marker (link-colour-independent). */
