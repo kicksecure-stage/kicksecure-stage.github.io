@@ -1792,6 +1792,18 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 /* Sub-slogan pills ({{#sloganpills}}): solid brand-button chips (homepage tagline row). */
 .slogan-pills { list-style: none; margin: 0.6rem 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .slogan-pills .pill { display: inline-block; }
+/* Font-independent hero pill layout (cold-load CLS fix). With plain flex-wrap the 3 chips pair
+   greedily by chip width, which is font-dependent: Roboto wraps to 2 rows at >=359px but the
+   ~0.55%-wider fallback needs 3 rows until ~368px, so in 359-367px Roboto=2 rows / fallback=3 rows
+   -- a ~57px shift when Roboto swaps in. At/above 359px (exactly Roboto's own 3->2 flip) pin the
+   2-row shape STRUCTURALLY via grid (row 1 = first two chips at natural width, row 2 = third chip),
+   so the fallback wraps to the SAME 2 rows. Below 359px both fonts already stack 3 rows (untouched).
+   CSP-safe: a plain stylesheet rule, no inline/JS; grid overrides the base display:flex. */
+@media (min-width: 359px) {
+  .slogan-pills { display: grid; grid-template-columns: max-content max-content;
+                  justify-content: start; align-items: start; }
+  .slogan-pills .pill:last-child { grid-column: 1 / -1; justify-self: start; }
+}
 .slogan-pills .pill a {
   display: block; background: #0b57d0; color: #fff; font-weight: 600; font-size: 0.9rem;
   padding: 7px 16px; border-radius: 8px; text-decoration: none; box-shadow: 0 1px 2px rgb(0 0 0 / 18%);
@@ -2777,11 +2789,14 @@ html.client-js .show-for-nojs-only { display: none; }
 .sitenotice-end-of-year > .eoy-right > .eoy-headline {
   font-weight: bold; text-align: center; font-size: 21px; padding-bottom: 3px;
   border-bottom: 3px solid currentColor; margin-bottom: 19px; color: #c00;
+  line-height: normal;   /* prod; else inherits body 1.6 and runs ~6px tall */
 }
 .sitenotice-end-of-year > .eoy-right > .eoy-donate-button {
   border: 3px solid currentColor; border-radius: 10px; text-align: center; font-weight: bold;
   font-size: 21px; letter-spacing: 1px; margin-top: 20px; display: block;
-  text-decoration: none; color: #22a7df; padding: 6px;
+  /* prod: line-height:normal + no padding -> a single-line ~34px button; inheriting body 1.6
+     (33.6px/line) plus 6px padding ran it ~51px tall (worse when a long label wraps to 2 lines). */
+  text-decoration: none; color: #22a7df; line-height: normal; padding: 0;
 }
 .sitenotice-end-of-year > .eoy-right > .eoy-donate-button:hover { background-color: #fffccf; }
 .sitenotice-end-of-year > .eoy-left > p { font-size: 15px; margin: 10px 0 15px; }
