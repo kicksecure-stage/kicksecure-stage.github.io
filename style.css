@@ -203,6 +203,12 @@ img, video { max-width: 100%; height: auto; }
 .kicksecure-wiki-link-icon {
   display: inline; width: auto; height: 1.15em; vertical-align: -0.18em;
 }
+/* Production wiki image-sizing classes ({{img-height-N}}): a logo sized by HEIGHT, width auto.
+   Prod targets a descendant img (.img-height-N img); the generator stamps the class on the <img>
+   itself -- cover both. !important + width:auto overrides any presentational width attr, so an
+   SVG's arbitrary viewBox-derived width never renders the logo oversized (the About Debian logo). */
+img.img-height-20, .img-height-20 img { height: 20px !important; width: auto; }
+img.img-height-50, .img-height-50 img { height: 50px !important; width: auto; }
 hr {
   height: 0;
   border: 0;
@@ -543,7 +549,10 @@ body.site-whonix .site-logo-img { width: auto; }
   color: var(--fg);
   font-size: 1.2rem;
   vertical-align: super;
-  margin-left: -0.3rem;   /* sit the mark close to the wordmark (prod is tight) */
+  /* The TM is a direct flex child of .site-header-inner, so it inherits that row's 1.1rem
+     column-gap; -0.3rem alone left a ~12.8px gap. Neutralize the column-gap so the mark tucks
+     tight against the wordmark like prod (Kicksecure(TM), not Kicksecure  (TM)). */
+  margin-left: calc(-1.1rem - 0.3rem);
 }
 /* Whonix uses the REGISTERED (R) glyph -- a full-size circled R on the baseline, unlike the
    Kicksecure (TM) which the font already draws small+high. Shrink the (R) so it reads as a
@@ -817,6 +826,11 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
 .wiki-content h4 { font-size: 16px; font-weight: 700; }
 .wiki-content h5 { font-size: 15px; font-weight: 700; }
 .wiki-content h6 { font-size: 13px; font-weight: 700; }
+/* A widget-embedded heading may wrap its text in a block <p> (leftrightimagetext inner pass);
+   keep it inline so the appended edit/share affordances stay on the heading line (the generator
+   also unwraps it -- this guards any stray case). */
+.wiki-content h1 > p, .wiki-content h2 > p, .wiki-content h3 > p,
+.wiki-content h4 > p, .wiki-content h5 > p, .wiki-content h6 > p { display: inline; margin: 0; }
 /* heading wrapper carries no box, so the inner hN margins govern rhythm */
 .widget-headline { margin: 0; }
 .wiki-content > .widget-headline:first-child h1 { margin-top: 0.25rem; }
@@ -975,10 +989,12 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
   padding: 5px 13px 0 40px; position: relative; max-width: 100%; vertical-align: middle;
   min-height: 31px; overflow: auto;
   font-family: var(--font-mono); font-size: 13px; color: var(--link); line-height: 1.6em;
-  /* pre-wrap (not pre) so the box wraps + is the SAME HEIGHT before and after app.js enriches it
-     to .js-fully-loaded (which also wraps). The old pre->wrap transition reflowed height = CLS,
-     made worse now that the enrich is deferred to idle. pre-wrap keeps code formatting too. */
-  white-space: pre-wrap; overflow-wrap: anywhere;
+  /* pre (single line) + overflow:auto so the FIRST-PAINT box is the SAME single-line height as the
+     enriched widget, whose text lives in .viewport > .code (white-space:pre, single line). pre-wrap
+     here wrapped a long address to several lines in a narrow column (the EOY crypto panel), and the
+     idle-deferred initCopyButtons then collapsed it -- a visible reflow/flash. A long address
+     scrolls horizontally inside the box. */
+  white-space: pre;
 }
 .code-select, .code-select > *:not(.cbutton) { cursor: copy; }
 .code-select:hover { border-color: var(--border-soft); background: var(--surface-2); }
@@ -2239,6 +2255,10 @@ sup.reference:target {
 .wiki-content .thumb-gallery {
   display: flex; flex-wrap: wrap; gap: 0.75rem;
   align-items: flex-start; justify-content: flex-start; margin: 1rem 0;
+  /* flex makes a new BFC, which must not overlap a preceding float:right (.image-right) -- that
+     squeezes the gallery into the narrow strip beside the float (tiny stacked logos in the left
+     margin). clear drops it to its own full-width row below the float. */
+  clear: both;
 }
 .wiki-content .thumb-gallery > p { display: contents; }   /* neutralize the pandoc <p> wrapper */
 .wiki-content .thumb-gallery .thumb,
@@ -2740,10 +2760,11 @@ html.client-js .show-for-nojs-only { display: none; }
 
 /* End-of-year donation banner (sitenotice-end-of-year) -- shown when built with
    MW_STATIC_EOY; reuses the crypto panel. Ported from Sitenotice.css section 4. */
-/* Cap the EOY banner to content width + center it (prod is ~936px, not full-viewport) so the
-   .eoy-left column -- and the image that fills it -- stay prod-sized instead of stretching across
-   the whole viewport. */
-.sitenotice-banner.sitenotice-end-of-year { width: 100%; max-width: 960px; margin: 0 auto; display: block; text-align: left; }
+/* Match prod's EOY banner box exactly. Prod: 936px border-box, padding:25px all sides => 886px
+   content box => .eoy-left calc(100% - 330px) = 556px wide. The 25px top/bottom padding plus the
+   12px/9px vertical margins reproduce prod's header->banner (28px) and banner->title (25px) gaps;
+   a 960px/no-padding/no-margin box overshot the width to 630px and collapsed both gaps to 16px. */
+.sitenotice-banner.sitenotice-end-of-year { width: 100%; max-width: 936px; padding: 25px; margin: 12px auto 9px; display: block; text-align: left; }
 .sitenotice-end-of-year > * { display: inline-block; vertical-align: top; }
 .sitenotice-end-of-year > .eoy-left { width: calc(100% - 330px); margin-right: 20px; }
 .sitenotice-end-of-year > .eoy-right { width: 100%; max-width: 300px; }
@@ -2764,11 +2785,12 @@ html.client-js .show-for-nojs-only { display: none; }
 }
 .sitenotice-end-of-year > .eoy-right > .eoy-donate-button:hover { background-color: #fffccf; }
 .sitenotice-end-of-year > .eoy-left > p { font-size: 15px; margin: 10px 0 15px; }
-/* prod puts the promo photo at the top of the left column at FULL column width (prod
-   .eoy-left > img { width:100%; object-fit:cover }). The old max-width:300px capped it well
-   below the column width (misaligned/undersized), especially on mobile where the column is 100%. */
+/* prod puts the promo photo at the top of the left column, full column width, and HONORS its
+   height="215" attribute (object-fit:cover crops it to a letterbox strip). height:auto here
+   overrode the attr and rendered the full-height photo (~2x too tall, stretching the banner);
+   drop it so the attr governs -- the image is then 556x215 like prod. */
 .sitenotice-end-of-year .eoy-image {
-  display: block; width: 100%; height: auto; object-fit: cover; margin: 0 0 12px;
+  display: block; width: 100%; object-fit: cover; margin: 0 0 12px;
 }
 /* prod keeps the crypto panel's "Donate crypto" sub-heading box display:none INSIDE the EOY
    banner (the rows sit straight under the red headline); the Donate PAGE still shows it. */
