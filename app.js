@@ -479,10 +479,11 @@
     var scripts = document.getElementsByTagName("script");
     for (var i = 0; i < scripts.length; i++) {
       var src = scripts[i].getAttribute("src") || "";
-      // Match BOTH app.js (dev) and app.min.js (deployed/minified). Missing the minified name
-      // made this return "" on every deployed page, so search links on a /wiki/ page resolved
-      // against /wiki/ and doubled (/wiki/wiki/<target>).
-      var m = src.match(/^(.*?)app(?:\.min)?\.js$/);
+      // Match BOTH app.js (dev) and app.min.js (deployed/minified), AND tolerate the
+      // post-build ?h=<hash> cache-buster (assets.py fingerprints the src) or a #fragment.
+      // A $-anchored match (or one missing .min) returns "" on every deployed page, so search
+      // links on a /wiki/ page resolve against /wiki/ and double (/wiki/wiki/<target>).
+      var m = src.match(/^(.*?)app(?:\.min)?\.js(?:[?#].*)?$/);
       if (m) return m[1];
     }
     return "";
