@@ -1552,15 +1552,22 @@ code:empty { display: none; }
    overflow:hidden BFC traps its 12px top margin inside the pane; zero it directly. */
 .tcc-content p:empty { display: none; }
 /* Zero the LEADING floated thumb's own top margin so it does not stack on the pane padding.
-   Specificity (0,4,0) beats the later `.wiki-content .thumb.tright` figure-margin rule. */
+   Specificity (0,4,0)+ beats the later `.wiki-content .thumb.tright` figure-margin rule.
+   A tab body may wrap its content in {{GoogleOff}} -> <div data-nosnippet>, pushing the thumb
+   one level deeper (it is still the pane's leading floated block); reach it there too, else the
+   centering below misses it and the thumb floats left with a lopsided top gap (e.g. the CLI tab). */
 .wiki-content .tcc-content > .thumb.tright,
-.wiki-content .tcc-content > .thumb.tleft { margin-top: 0; }
+.wiki-content .tcc-content > .thumb.tleft,
+.wiki-content .tcc-content > [data-nosnippet] > .thumb.tright,
+.wiki-content .tcc-content > [data-nosnippet] > .thumb.tleft { margin-top: 0; }
 @media (max-width: 720px) {
   /* Tab previews: on a phone, center the figure instead of floating it right, so a smaller
      screenshot (e.g. the CLI tab vs the wider GUI tab) sits centered with symmetric whitespace
      rather than shoved against the right edge with a lopsided empty gap. */
   .wiki-content .tcc-content > .thumb.tright,
-  .wiki-content .tcc-content > .thumb.tleft {
+  .wiki-content .tcc-content > .thumb.tleft,
+  .wiki-content .tcc-content > [data-nosnippet] > .thumb.tright,
+  .wiki-content .tcc-content > [data-nosnippet] > .thumb.tleft {
     float: none; margin-left: auto; margin-right: auto; width: fit-content;
   }
 }
