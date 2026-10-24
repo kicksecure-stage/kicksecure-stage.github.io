@@ -549,10 +549,12 @@ body.site-whonix .site-logo-img { width: auto; }
   color: var(--fg);
   font-size: 1.2rem;
   vertical-align: super;
-  /* The TM is a direct flex child of .site-header-inner, so it inherits that row's 1.1rem
-     column-gap; -0.3rem alone left a ~12.8px gap. Neutralize the column-gap so the mark tucks
-     tight against the wordmark like prod (Kicksecure(TM), not Kicksecure  (TM)). */
-  margin-left: calc(-1.1rem - 0.3rem);
+  /* The TM is a SEPARATE link (Trademark Policy) and only ~12px wide, so WCAG target-size
+     (axe 'target-size', the Lighthouse a11y check) passes only via SPACING >= ~7px. -0.3rem left
+     a ~12.8px gap (too far right); fully neutralizing the 1.1rem flex column-gap overlapped the
+     wordmark (gap -4px -> target-size FAIL, the desktop a11y 98->97). -0.7rem = +7px gap: a tight
+     prod-like tuck that still passes target-size. Do NOT push it more negative than -0.7rem. */
+  margin-left: -0.7rem;
 }
 /* Whonix uses the REGISTERED (R) glyph -- a full-size circled R on the baseline, unlike the
    Kicksecure (TM) which the font already draws small+high. Shrink the (R) so it reads as a
@@ -2776,7 +2778,7 @@ html.client-js .show-for-nojs-only { display: none; }
    content box => .eoy-left calc(100% - 330px) = 556px wide. The 25px top/bottom padding plus the
    12px/9px vertical margins reproduce prod's header->banner (28px) and banner->title (25px) gaps;
    a 960px/no-padding/no-margin box overshot the width to 630px and collapsed both gaps to 16px. */
-.sitenotice-banner.sitenotice-end-of-year { width: 100%; max-width: 936px; padding: 25px; margin: 12px auto 9px; display: block; text-align: left; }
+.sitenotice-banner.sitenotice-end-of-year { width: 100%; max-width: 936px; padding: 25px; margin: 4px auto 9px; display: block; text-align: left; }
 .sitenotice-end-of-year > * { display: inline-block; vertical-align: top; }
 .sitenotice-end-of-year > .eoy-left { width: calc(100% - 330px); margin-right: 20px; }
 .sitenotice-end-of-year > .eoy-right { width: 100%; max-width: 300px; }
@@ -2800,12 +2802,13 @@ html.client-js .show-for-nojs-only { display: none; }
 }
 .sitenotice-end-of-year > .eoy-right > .eoy-donate-button:hover { background-color: #fffccf; }
 .sitenotice-end-of-year > .eoy-left > p { font-size: 15px; margin: 10px 0 15px; }
-/* prod puts the promo photo at the top of the left column, full column width, and HONORS its
-   height="215" attribute (object-fit:cover crops it to a letterbox strip). height:auto here
-   overrode the attr and rendered the full-height photo (~2x too tall, stretching the banner);
-   drop it so the attr governs -- the image is then 556x215 like prod. */
+/* prod shows the promo as a fixed 215px-tall letterbox stretched to full column width
+   (object-fit:cover crops the photo into it): prod .eoy-image computes width:556px height:215px.
+   width:100% + height:auto aspect-scaled to ~398px (556 * 215/300) -- too tall; width:100% alone
+   (no height) does the same. PIN height:215px (prod's value, matching the img's height=215 attr)
+   so the box is 556x215 like prod. */
 .sitenotice-end-of-year .eoy-image {
-  display: block; width: 100%; object-fit: cover; margin: 0 0 12px;
+  display: block; width: 100%; height: 215px; object-fit: cover; margin: 0 0 12px;
 }
 /* prod keeps the crypto panel's "Donate crypto" sub-heading box display:none INSIDE the EOY
    banner (the rows sit straight under the red headline); the Donate PAGE still shows it. */
