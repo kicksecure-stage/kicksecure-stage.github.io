@@ -1787,11 +1787,15 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 }
 .footer-sponsor-head { margin: 0.9rem 0 0.3rem; font-weight: bold; color: var(--fg); }
 .footer-sponsor { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--muted); }
-.footer-sponsor a { color: var(--link); }
+/* Underlined: inline in muted prose, so color alone cannot distinguish the link (axe
+   link-in-text-block -- in a light-on-dark footer a link can't clear 3:1 vs the light text
+   AND 4.5:1 vs the dark ground, so a non-colour indicator is required). */
+.footer-sponsor a { color: var(--link); text-decoration: underline; }
 .footer-opensource-note { margin: 0 0 0.9rem; font-size: 0.85rem; color: var(--muted); }
 .footer-legal-intro { margin: 0 0 0.6rem; font-size: 0.85rem; color: var(--muted); }
-/* link-coloured like the other footer links so the copyright reads AS a link (was --muted). */
-.copyright a { color: var(--link); }
+/* link-coloured like the other footer links so the copyright reads AS a link (was --muted).
+   Underlined: inline in muted prose (link-in-text-block, same rationale as .footer-sponsor a). */
+.copyright a { color: var(--link); text-decoration: underline; }
 .copyright a:hover { color: var(--link-hover); text-decoration: underline; }
 /* Production flows these inline as a comma-separated disclaimer, NOT one link per line. */
 .footer-freedom ul, .footer-links ul {
