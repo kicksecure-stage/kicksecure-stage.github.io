@@ -4,7 +4,9 @@ name: Deploy Pages
 # building new commits here (opaque queue, no logs). This runs on every push: deterministic,
 # observable, immune to the legacy build queue. deploy-stage.sh pushes the built tree to master.
 
-on:
+# Quote the key: unquoted `on:` is parsed as the YAML 1.1 boolean True, which trips
+# workflow linters (they cannot find the triggers) -- GitHub Actions accepts "on".
+"on":
   push:
     branches: [master]
   workflow_dispatch:
@@ -22,6 +24,10 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Publish Pages ONLY in the stage orgs; the org-ai-assisted mirror has no Pages site, so the
+    # deploy-pages step would fail there. Byte-identical across both stage repos.
+    if: github.repository_owner != 'org-ai-assisted'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
