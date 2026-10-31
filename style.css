@@ -2075,6 +2075,15 @@ sup.reference:target {
   min-width: 24px; min-height: 24px; vertical-align: middle;
 }
 .share-tooltip .headline-anchor:hover { color: var(--link); text-decoration: none; }
+/* Visible manually-placed anchors ({{Anchor|...|show=true}} -> span.mpa-visible) -- prod
+   Utility.css parity: a block "#id" label (the invisible form, no mpa-visible, stays inert). */
+.manually-placed-anchor { position: relative; }
+.manually-placed-anchor.mpa-visible {
+  display: block; margin: 15px 0; font-size: 18px; letter-spacing: 1px;
+}
+.manually-placed-anchor.mpa-visible::before {
+  content: "#"; font-weight: bold; margin-right: 7px;
+}
 /* Centered under the button; top:100% + padding-top (not a top offset) so the 0.3rem visual gap
    is INSIDE the hovered wrapper -- no dead zone where the pointer leaves :hover moving button->menu. */
 .share-tooltip .menu-wrapper { display: none; position: absolute; left: 50%;
