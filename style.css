@@ -342,6 +342,24 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 /* It is a button, not a prose link -- override the body-prose underline (`.wiki-content p a`).
    Scoped to beat that (0,1,2) rule; the :hover already drops it, this covers the base state. */
 .wiki-content a.download-button-v2 { text-decoration: none; }
+/* Homepage hero download button (Template:DownloadButton): prod's clean solid-blue gradient pill,
+   no grey wrapper / icon / OS cell. Placement via Template:Align (.align-* below). */
+.hero-download-button {
+  display: inline-block; border-radius: 50px;
+  background-image: linear-gradient(#4d8cdd 0%, #0867bb 100%);
+  color: #fff; font-weight: 700; font-size: 16px; line-height: 1.2;
+  padding: 12px 32px;
+  transition: background-color 0.3s;
+}
+.wiki-content a.hero-download-button { text-decoration: none; }
+.hero-download-button:hover, .hero-download-button:focus {
+  background-image: linear-gradient(#4180d1 0%, #005aae 100%); color: #fff; text-decoration: none;
+}
+/* Content alignment wrapper (Template:Align): left / middle / right. text-align governs an
+   inline-block child (e.g. the hero button); inline style= is CSP-stripped, so this is a class. */
+.align-left { text-align: left; }
+.align-center { text-align: center; }
+.align-right { text-align: right; }
 .download-button-v2:hover { background: #e4e4e4; text-decoration: none; }
 .download-button-v2 .dbutton {
   display: table-cell; border-radius: 50px; position: relative;
@@ -1367,7 +1385,7 @@ code:empty { display: none; }
 /* .cta-button is EXCLUDED: it is a styled call-to-action button (white text on a solid blue fill),
    not a prose cell link -- the currentColor+underline treatment turned its text dark-on-blue
    (~3.4:1, an axe color-contrast FAIL) and underlined it. Its own .cta-button rule keeps white. */
-.wiki-content table:not(.toc):not(.storage-table) :is(td, th) a:not(.cta-button),
+.wiki-content table:not(.toc):not(.storage-table):not(.comparison-table) :is(td, th) a:not(.cta-button),
 .wiki-content .info-box a {
   color: currentColor;
   text-decoration: underline;
@@ -1964,6 +1982,25 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
    give the element after the box that gap (prod ~21px). `.wiki-content` prefix outranks the
    margin:0 the box-paragraph rule sets. */
 .wiki-content .post-intro-p + * { margin-top: 1.5em; }
+/* Homepage hero: match prod's centered slogan + sub-slogan (h2.slogan 34px centered #333;
+   p.sub-slogan 19px centered non-italic #222). The shared boxed Title + italic IntroLike
+   callout are reshaped to that clean centered look on the HOMEPAGE ONLY -- every other page
+   keeps the boxed page title and the italic lead callout. */
+.page-home #firstHeading, .page-home .first-heading {
+  background: transparent; border: none; box-shadow: none;
+  padding: 0; margin: 10px 0 12px; text-align: center;
+  font-size: 34px; line-height: 1.2;
+}
+.page-home .wiki-content .intro-like > *,
+.page-home .intro-like > :first-child,
+.page-home .intro-like > :last-child {
+  background: transparent; box-shadow: none; padding: 0; border-radius: 0;
+  font-style: normal; text-align: center; color: var(--fg); font-size: 1.19rem;
+}
+.page-home .intro-like { margin: 0 0 1.2em; }
+/* Homepage "Learn What Is Whonix?" CTA line: prod shows it centered + large (~25px) with the
+   target as a blue link. Centering comes from Template:Align; this sets the prod size. */
+.page-home .hero-learn { font-size: 1.56rem; }
 /* [[File:...|thumb|left|right|none|caption]] -- MediaWiki's framed caption box, floated so
    body text wraps beside it. `.thumb` here is the STANDALONE figure (the gallery's own
    `.gallery .thumb` is separate). Scoped to .wiki-content to outrank the global img rule. */
@@ -2157,7 +2194,7 @@ sup.reference:target {
 .share-open {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
   padding: 0.4rem 0.7rem; border-radius: var(--radius-sm);
-  background: var(--surface-2); color: var(--link); font-size: 0.9rem; text-decoration: none;
+  background: var(--surface-2); color: var(--link-hover); font-size: 0.9rem; text-decoration: none;
 }
 .share-open:hover { text-decoration: underline; }
 .share-icon.si-x-twitter { background: #000; }
@@ -2236,6 +2273,9 @@ sup.reference:target {
   white-space: normal;
 }
 .info-tooltip:hover > span, .info-tooltip:focus-within > span { display: block; }
+/* No underline on links inside the comparison (VPN) table -- prod parity; the feature + tooltip
+   links read as plain text. Scoped higher than `.wiki-content p a` (style.css:234) so it wins. */
+.wiki-content .comparison-table a, .wiki-content .comparison-table a:hover { text-decoration: none; }
 /* comparison Yes/No cells (green check / red cross). Unscoped: pandoc drops the
    wikitable's own class, so these are keyed on the inline span classes that survive. */
 /* verdict cells are now colored circle images (True/False/5050.png); keep these for any
@@ -2297,9 +2337,10 @@ sup.reference:target {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-/* bottom of the frame: last cell rounds + bottom border */
-.comparison-table tr:last-child td:nth-child(2),
-.comparison-table tr:last-child th:nth-child(2) {
+/* bottom of the frame: the BODY's last cell rounds + bottom border. Scoped to tbody so the
+   header row (which is tr:last-child OF THE THEAD) does not also get a blue bottom line. */
+.comparison-table tbody tr:last-child td:nth-child(2),
+.comparison-table tbody tr:last-child th:nth-child(2) {
   border-bottom: 1px solid #007bff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -2382,7 +2423,17 @@ sup.reference:target {
 /* the quote inherits the card text colour (not --link blue) so the italic pull-quote reads as a
    quote, not a link; underline on hover keeps the affordance. */
 .endorsement-quote { color: inherit; text-decoration: none; }
-.endorsement-quote:hover, .endorsement-quote:focus { text-decoration: underline; }
+/* No underline on endorsement links -- scoped higher than `.wiki-content p a` (style.css:234),
+   which otherwise wins and underlines the quote. The external-link affordance stands in for the
+   link cue (prod parity). */
+.wiki-content .endorsement-grid a,
+.wiki-content .endorsement-grid a:hover,
+.wiki-content .endorsement-grid a:focus { text-decoration: none; }
+/* External-link cue after each endorsement text link (prod parity), replacing the underline. The
+   north-east-arrow box glyph is the standard external-link mark; logo-image links are excluded. */
+.wiki-content .endorsement-quote[href^="http"]::after {
+  content: "\2197"; font-size: 0.78em; margin-left: 0.18em; vertical-align: top; color: var(--link);
+}
 .endorsement-archive { margin-left: 0.35rem; color: var(--muted); font-style: normal; white-space: nowrap; }
 .endorsement-archive:hover, .endorsement-archive:focus { color: var(--link); }
 @media (max-width: 900px) { .endorsement-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -2395,6 +2446,17 @@ sup.reference:target {
   }
   .endorsement-card { scroll-snap-align: center; }
 }
+/* "Show more" reveal (prod's slider, CSP-safe): the collapsed grid shows the first 6 cards; the
+   app.js-revealed button expands to show the rest. No-JS leaves every card visible (no collapse). */
+.endorsement-grid.endorsement-collapsed .endorsement-card:nth-child(n+7) { display: none; }
+.endorsement-more {
+  display: block; margin: 0.9rem auto 0; padding: 0.5rem 1.4rem;
+  /* --link on --surface-2 is only 4.48:1 (axe color-contrast fail); --link-hover is darker in
+     light / lighter in dark -> >=7:1 both themes. Same fix on .share-open (same button class). */
+  background: var(--surface-2); color: var(--link-hover); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600; cursor: pointer;
+}
+.endorsement-more:hover { background: var(--surface); }
 /* Homepage "explainer" box (prod .explainer): tinted panel, lead line + green-check items. */
 .explainer {
   background: var(--surface-2, #ececec);
@@ -2513,6 +2575,16 @@ sup.reference:target {
   padding-right: 2rem;
 }
 .page-home .cv-section:has(.cv-darkband) a { color: #8ab4f8; }
+/* Illustration on the dark band: the architecture diagram is black line-art on a transparent
+   ground, so it vanishes on #273445. Prod keeps the band and cards the image on a light rounded
+   panel -- reproduce that (centered light card) so the diagram reads. */
+.page-home .cv-section:has(.cv-darkband) > p:has(> img) { text-align: center; }
+.page-home .cv-section:has(.cv-darkband) > p > img {
+  background: #f0f0ee;
+  padding: 1.25rem 1.75rem;
+  border-radius: 16px;
+  box-sizing: border-box;
+}
 .cv-darkband { display: none; }
 .page-home .cv-section p:has(> .cv-darkband:only-child) { display: none; }
 /* heading affordances legible on the dark band: the "100% FREE" link (direct child <a>) stays a
@@ -2563,6 +2635,12 @@ sup.reference:target {
   padding-top: 56.25%;
   position: relative;
 }
+/* The <video> fills the 16:9 box BEHIND the poster overlay; app.js hides the overlay (and plays)
+   on click, revealing the video + its native controls. */
+.overview-image-and-video-player > video {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+}
+.overview-image { cursor: pointer; }
 .overview-image {
   position: absolute;
   top: 0;

@@ -870,13 +870,25 @@
     if (btt) btt.style.bottom = (h ? h + 20 : 20) + "px";
   }
   function initBottomStackSpacer() {
-    if (!document.querySelector(".bottom-stack")) return;
-    remeasureBottomStack();
-    var raf = 0;
-    window.addEventListener("resize", function () {
-      if (raf) return;
-      raf = requestAnimationFrame(function () { raf = 0; remeasureBottomStack(); });
-    });
+    var stack = document.querySelector(".bottom-stack");
+    if (!stack) return;
+    if (typeof ResizeObserver !== "undefined") {
+      // Drive the measure from a ResizeObserver: its callback runs AFTER the browser's own layout
+      // pass, so reading offsetHeight never forces a SYNCHRONOUS relayout inside the blocking init
+      // task (the ~51ms forced reflow Lighthouse flagged at remeasureBottomStack). The initial
+      // observe fires once (first spacer set) and it also covers window-resize + font/content
+      // reflow + banner-dismiss (the stack shrinks -> refires) with no init-time cost.
+      new ResizeObserver(function () { remeasureBottomStack(); }).observe(stack);
+    } else {
+      // No ResizeObserver (very old browser / jsdom): defer the first read with rAF so even the
+      // fallback does not force a synchronous layout in the init task; resize keeps it in sync.
+      requestAnimationFrame(remeasureBottomStack);
+      var raf = 0;
+      window.addEventListener("resize", function () {
+        if (raf) return;
+        raf = requestAnimationFrame(function () { raf = 0; remeasureBottomStack(); });
+      });
+    }
   }
 
   // Consent/privacy banner: shown by default. The dismiss is now a CSS checkbox-hack (the
@@ -1759,6 +1771,43 @@
   // users while the initial RENDERED DOM stays ~500 elements (it was ~3881 on ISO -- the 29 full
   // heading menus dominated mobile Style & Layout / TBT); no-JS / Tor-Safest users keep the static
   // permalink. Delegated listeners -> ~zero load-time JS, nothing built for headings nobody opens.
+  // Homepage hero video: a poster overlay (.overview-image) sits over the <video>; clicking it
+  // hides the poster and plays the video, so its native controls take over. CSP-safe (no inline
+  // handler), no autoplay, poster is a plain <img>; keyboard users reach the video's own controls.
+  // TT-safe: only toggles display + calls video.play(), no HTML sinks.
+  function initHeroVideo() {
+    var players = document.querySelectorAll(".overview-image-and-video-player");
+    for (var i = 0; i < players.length; i++) {
+      (function (player) {
+        var overlay = player.querySelector(".overview-image");
+        var video = player.querySelector("video");
+        if (!overlay || !video) return;
+        overlay.addEventListener("click", function () {
+          overlay.style.display = "none";
+          if (video.play) video.play();
+        });
+      })(players[i]);
+    }
+  }
+
+  // Endorsement "show more": collapse the testimonial grid to a first set and reveal a button
+  // that expands it (prod's "show more" slider, CSP-safe). Server-rendered button starts hidden,
+  // so no-JS shows every card; JS collapses + reveals it only when there are extras to show.
+  // TT-safe: toggles a class + button text, no HTML sinks.
+  function initEndorsementMore() {
+    var grid = document.querySelector(".endorsement-grid");
+    var btn = document.querySelector(".endorsement-more");
+    if (!grid || !btn) return;
+    if (grid.querySelectorAll(".endorsement-card").length <= 6) return;  // nothing extra to reveal
+    grid.classList.add("endorsement-collapsed");
+    btn.hidden = false;
+    btn.addEventListener("click", function () {
+      var collapsed = grid.classList.toggle("endorsement-collapsed");
+      btn.textContent = collapsed ? "Show more" : "Show less";
+      btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    });
+  }
+
   function initShareLazy() {
     function activate(tip) {
       var tmpl = tip.querySelector("template.share-full");
@@ -1840,6 +1889,8 @@
       initHovercards();
       initStorageViewer();
       initShareLazy();
+      initHeroVideo();
+      initEndorsementMore();
     });
   });
 
