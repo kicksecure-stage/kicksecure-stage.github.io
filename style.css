@@ -213,6 +213,14 @@ img, video { max-width: 100%; height: auto; }
 .kicksecure-wiki-link-icon {
   display: inline; width: auto; height: 1.15em; vertical-align: -0.18em;
 }
+/* The icon is its OWN <a> (File link=), a ~17px glyph sitting right beside a same-URL text link
+   -- a tiny crowded tap target that fails axe target-size (WCAG 2.5.8). Give that anchor a >=24x24
+   hit box (centered glyph), like the archive/reference markers; size-based, so the adjacent prose
+   text link (inline-exempt) needs no gap. */
+a:has(> img.kicksecure-wiki-link-icon) {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; min-height: 24px;
+}
 /* Production wiki image-sizing classes ({{img-height-N}}): a logo sized by HEIGHT, width auto.
    Prod targets a descendant img (.img-height-N img); the generator stamps the class on the <img>
    itself -- cover both. !important + width:auto overrides any presentational width attr, so an
