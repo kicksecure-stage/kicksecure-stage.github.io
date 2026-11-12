@@ -1532,10 +1532,12 @@ code:empty { display: none; }
 .info-box-icon > img { width: 30px; height: auto; }   /* Ambox image icon: match the 30px icon box */
 /* A callout's content image (e.g. the manual's book logo) is a small decorative cue, not a
    figure: cap it so a tall glyph cannot stretch the box past its text. Excludes the type badge. */
-/* Content images/logos embedded in an info-box body size to 46px. EXCLUDE the archive
-   affordance icon: it is a 14x16 UI marker (its own .ia-archive-icon rule sizes it), and the
-   46px!important here distorted it (24x46, Lighthouse image-aspect-ratio fail) in info-boxes. */
-.info-box :not(.info-box-icon) > img:not(.ia-archive-icon) { height: 46px !important; width: auto !important; max-width: 100%; }
+/* Content images/logos embedded in an info-box BODY size to 46px. EXCLUDE the icons that live
+   in the callout but are not body content: the type icon's image (nested .info-box-icon a img,
+   so the parent-guard alone misses it) and the archive affordance marker -- the 46px!important
+   distorted both (square Info icon -> 30x46; 14x16 archive mark -> 24x46; Lighthouse
+   image-aspect-ratio). Each keeps its own sizing rule. */
+.info-box :not(.info-box-icon, .info-box-icon *) > img:not(.ia-archive-icon) { height: 46px !important; width: auto !important; max-width: 100%; }
 
 /* Numbered section/step badge (production "padded-content-icon" widget): a bold
    numeral, coloured by the element's cs-* --callout. pci-style-circle makes it a
