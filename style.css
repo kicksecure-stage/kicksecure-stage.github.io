@@ -1606,12 +1606,17 @@ code:empty { display: none; }
   background: var(--callout, var(--accent)); color: #fff;
 }
 .info-box-icon > img { width: 30px; height: auto; }   /* Ambox image icon: match the 30px icon box */
-/* Content images/logos embedded in an info-box BODY size to 46px. EXCLUDE the icons that live
-   in the callout but are not body content: the type icon's image (nested .info-box-icon a img,
-   so the parent-guard alone misses it) and the archive affordance marker -- the 46px!important
-   distorted both (square Info icon -> 30x46; 14x16 archive mark -> 24x46; Lighthouse
-   image-aspect-ratio). Each keeps its own sizing rule. */
-.info-box :not(.info-box-icon, .info-box-icon *) > img:not(.ia-archive-icon) { height: 46px !important; width: auto !important; max-width: 100%; }
+/* An UNSIZED decorative logo/cue in an info-box BODY sizes to 46px so a tall glyph cannot stretch
+   the box past its text. EXCLUDE:
+     - the icons that live in the callout but are not body content: the type icon's image (nested
+       .info-box-icon a img, so the parent-guard alone misses it) and the archive affordance marker
+       -- the 46px!important distorted both (square Info icon -> 30x46; 14x16 archive mark -> 24x46;
+       Lighthouse image-aspect-ratio); each keeps its own sizing rule.
+     - a figure, which is deliberately sized and must not be collapsed: a .media-sized image (a
+       frameless image with an explicit author px width) and any .thumbframe descendant (a
+       thumb/frame figure, sized via `.thumbframe img`). Without this a full-size figure sitting
+       inside an {{mbox}}/.info-box wrapper was force-collapsed (a 600px screenshot -> ~65px). */
+.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *) > img:not(.ia-archive-icon):not(.media-sized) { height: 46px !important; width: auto !important; max-width: 100%; }
 
 /* Numbered section/step badge (production "padded-content-icon" widget): a bold
    numeral, coloured by the element's cs-* --callout. pci-style-circle makes it a
@@ -2300,13 +2305,21 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1.5rem 0;
 }
 .left-right-image-text.image-right { flex-direction: row-reverse; }
-/* Fixed 40% image column (not natural width): every alternating row shares the same image/text
-   split, so a larger image no longer makes one row's columns differ from the next -- symmetrical. */
-.left-right-image-text > .image { flex: 0 0 40%; max-width: 40%; }
-.left-right-image-text > .image img { max-width: 100%; height: auto; display: block; margin-inline: auto; }
+/* Balanced ~48% image column + ONE uniform 16:9 box (object-fit:cover): every alternating row gets
+   the same image WIDTH and HEIGHT, so the rows line up into a clean grid (production promo look). A
+   bare 40% column at each image's natural aspect read small + ragged (asymmetrical). */
+.left-right-image-text > .image { flex: 0 0 48%; max-width: 48%; }
+.left-right-image-text > .image img {
+  width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover;
+  display: block; border-radius: 6px;
+}
 .left-right-image-text > .text { flex: 1 1 0; min-width: 0; }
 @media (max-width: 640px) {
-  .left-right-image-text { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+  /* Name .image-right too: its row-reverse rule is (0,2,0) and would otherwise beat a bare
+     .left-right-image-text column rule (0,1,0) and keep the image-right rows side-by-side on a
+     phone. Both must stack to one column. */
+  .left-right-image-text,
+  .left-right-image-text.image-right { flex-direction: column; align-items: stretch; gap: 0.75rem; }
   .left-right-image-text > .image { max-width: 100%; }
 }
 .references, .footnotes { font-size: 0.9rem; color: var(--fg-soft); }
