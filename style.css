@@ -2271,9 +2271,11 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   display: flex; gap: 1.5rem; align-items: flex-start; flex-wrap: wrap; margin: 1.5rem 0;
 }
 .left-right-image-text.image-right { flex-direction: row-reverse; }
-.left-right-image-text > .image { flex: 0 0 auto; max-width: 45%; }
-.left-right-image-text > .image img { max-width: 100%; height: auto; display: block; }
-.left-right-image-text > .text { flex: 1 1 15rem; }
+/* Fixed 40% image column (not natural width): every alternating row shares the same image/text
+   split, so a larger image no longer makes one row's columns differ from the next -- symmetrical. */
+.left-right-image-text > .image { flex: 0 0 40%; max-width: 40%; }
+.left-right-image-text > .image img { max-width: 100%; height: auto; display: block; margin-inline: auto; }
+.left-right-image-text > .text { flex: 1 1 0; min-width: 0; }
 @media (max-width: 640px) {
   .left-right-image-text { flex-direction: column; align-items: stretch; gap: 0.75rem; }
   .left-right-image-text > .image { max-width: 100%; }
