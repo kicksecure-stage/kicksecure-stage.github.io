@@ -1290,14 +1290,11 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
 .paypal > .content .submit:hover {
   background: #005a9c; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
 }
-/* Other payment options: center the icon row (prod). The prior fix targeted .payitem.symbols
-   (the crypto ERC-20 row), which does not match this markup -- the icons are inline <a><img> in
-   .other > .content. Keep the "show more" expander left-aligned, as prod does. */
+/* Other payment options: the icon row, the "show more" toggle, and the expanded content all
+   center (operator request; prod kept the toggle left). The icons are inline <a><img> in
+   .other > .content; the toggle also centers via its own margin:auto on .more-button. */
 .other > .content { text-align: center; }
-.other > .content > .more { text-align: left; }
-/* #161: the "show more" label stays left (above), but its EXPANDED icon row must center like
-   the always-visible icons above it (.content). More specific than the .more rule, so it wins
-   for .more-content without disturbing the toggle label. */
+.other > .content > .more { text-align: center; }
 .other > .content > .more > .more-content { text-align: center; }
 .payitem.line {
   display: flex; align-items: center; gap: 0.5rem 0.75rem; flex-wrap: wrap;
@@ -1362,8 +1359,8 @@ blockquote.quotation .blockquote-context:has(img.author-image) .src {
 .payitem > .expand code { overflow-wrap: anywhere; word-break: break-all; white-space: pre-wrap; }
 /* "More Payment Options": same checkbox-hack; collapsed by default (prod). */
 .more-button {
-  display: inline-block; cursor: pointer; color: var(--link); font-weight: 600;
-  margin: 0.5rem 0; user-select: none;
+  display: block; width: fit-content; cursor: pointer; color: var(--link); font-weight: 600;
+  margin: 0.5rem auto; user-select: none;   /* centered (operator request) */
 }
 .more-button:hover { text-decoration: underline; }
 /* `/ ""` keeps the decorative caret out of the label's accessible name. */
