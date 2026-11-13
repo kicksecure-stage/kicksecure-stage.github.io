@@ -363,9 +363,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
    font-size + padding, pushed to the right edge so the controls form one consistent column. */
 .expand-or-collapse-all-button {
   display: block; margin-left: auto; width: fit-content;
-  /* Inset by the collapsible card's border (1px) + padding-right (10px) so the button's right
-     edge lines up with each card's "Learn More" pill (which sits flush to the card's inner edge),
-     forming one right-aligned column rather than overhanging to the card's outer edge. */
+  /* Equal width with the per-card "Learn More"/"Show Less" pills (.mwc-toggle): the same pill
+     stacked vertically, so BOTH left and right edges share one axis -- the idiomatic group-of-
+     same-button alignment (ragged left would read as accidental). min-width covers the widest
+     label state ("Collapse all" / "Learn More") so no pill resizes when its text flips, and the
+     right-edge inset (1px card border + 10px padding) keeps the column flush to the card edge. */
+  min-width: 10rem; text-align: center;
   margin-right: 11px;
   background: var(--link); border-color: var(--link); color: #fff;
   font-weight: 700; font-size: 1rem; padding: 4px 17px 5px 10px;
@@ -1871,6 +1874,9 @@ details.mw-collapsible > summary::-webkit-details-marker { display: none; }
 details.mw-collapsible > summary > p { margin: 0; }
 .mwc-toggle {
   float: right; margin: 0 0 0.5rem 0.5rem;
+  /* Same min-width + centering as .expand-or-collapse-all-button so the global pill and every
+     section toggle form one width-aligned column (both edges on one axis). */
+  min-width: 10rem; text-align: center;
   background: var(--link); color: #fff; font-weight: 700;
   padding: 4px 17px 5px 10px;
 }
@@ -3217,51 +3223,70 @@ sup.reference:target {
 .page-lastmod { margin: 1rem 0 0; font-size: 0.85rem; color: var(--fg-soft); }
 
 /* --- book prev/index/next nav --- */
-/* A full-width bar: Prev (far LEFT) and Next (far RIGHT) are the primary controls; Contents (the
-   index) is demoted to a small centre link. Extracted off the headline (page.py
-   _promote_first_heading) and placed above the content; the footer copy repeats it at the bottom.
-   On a rail page it spans both columns. */
-.wiki-content.has-rail > .wiki-book-index { grid-column: 1 / -1; }
-/* Grid (1fr auto 1fr) with EXPLICIT columns: Contents stays centred even when prev or next is
-   absent (a cover / final / single-page book) -- space-between would left/right-align it. */
-.wiki-book-index {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0.6rem;
-  margin: 0 0 1.5rem; font-size: 1rem;
+/* Book prev/next nav. The "Contents" (index) control was dropped. DESKTOP: the firstheading
+   instance becomes GUTTER affordances via `display: contents` -- Prev in the left gutter, Next in
+   the right gutter above the related rail -- so the headline keeps its natural top position (no
+   bar above the content). MOBILE: the gutters collapse; the footer instance renders inline prev/
+   next at the end of the article (the idiomatic mobile form), and the gutter instance is hidden. */
+
+/* Grid shell: [left gutter | content | right gutter (Next + rail)]. Stacks to one column on mobile.
+   Defined here (not with .related-rail) so the book-nav-only page gets the same grid. */
+.wiki-content.has-rail,
+.wiki-content.has-booknav {
+  max-width: 75rem; display: grid; gap: 1rem 2rem; align-items: start;
 }
-.wiki-book-index.wbi-for-footer { margin: 2.5rem 0 0; }
-/* text-decoration:none on the rows directly (not just `.wiki-book-index a`): the inline footer
-   copy is wrapped in a <p>, so `.wiki-content p a` would otherwise out-specify a bare link rule. */
-.wiki-book-index a { text-decoration: none; color: var(--fg); }
+.wiki-content.has-rail:not(.has-booknav) {
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  grid-template-areas: "content rail";
+}
+.wiki-content.has-booknav.has-rail {
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) 16rem;
+  /* row 1 (auto) sizes to Next; the flexible 1fr row 2 absorbs the tall content column so it does
+     NOT inflate row 1 and push the rail down -- the rail then sits just under Next. */
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "prev content next" ".    content rail";
+}
+.wiki-content.has-booknav:not(.has-rail) {
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) minmax(0, 11rem);
+  grid-template-areas: "prev content next";
+}
+.wiki-content > .content-col { grid-area: content; min-width: 0; }
+.wiki-content > .related-rail { grid-area: rail; }
+
+/* the firstheading nav box disappears; its Prev/Next become grid items in the gutters */
+.wiki-book-index.wbi-for-firstheading { display: contents; }
+.wiki-book-index.wbi-for-firstheading > .prev { grid-area: prev; justify-self: start; align-self: start; }
+.wiki-book-index.wbi-for-firstheading > .next { grid-area: next; justify-self: start; align-self: start; }
+
+/* Prev / Next: compact chips sized to their own label (NOT stretched to the rail width). */
 .wiki-book-index .prev, .wiki-book-index .next {
-  display: flex; align-items: center; gap: 0.6rem; min-width: 0;
+  display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; width: max-content; max-width: 100%;
   border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
-  padding: 0.5rem 0.85rem; text-decoration: none; transition: background-color 0.15s;
+  padding: 0.5rem 0.75rem; text-decoration: none; color: var(--fg); transition: background-color 0.15s;
 }
-.wiki-book-index .prev { grid-column: 1; justify-self: start; }
-.wiki-book-index .next { grid-column: 3; justify-self: end; flex-direction: row-reverse; text-align: right; }
+.wiki-book-index .next { flex-direction: row-reverse; }
 .wiki-book-index .prev:hover, .wiki-book-index .next:hover { background: var(--surface-2); }
-.wiki-book-index .index {
-  grid-column: 2; justify-self: center; align-self: center;
-  display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none;
-  color: var(--muted); font-size: 0.88rem; padding: 0.3rem 0.4rem;
-}
-.wiki-book-index .index:hover { color: var(--link); }
-.wiki-book-index .index .text { display: none; }   /* Contents demoted: icon + "Contents" word only */
 .wiki-book-index i { flex: none; color: var(--link); }
-.wiki-book-index .index i { color: var(--muted); font-size: 0.9em; }
 .wiki-book-index .wbi-label { display: flex; flex-direction: column; min-width: 0; }
 .wiki-book-index .wbi-cap { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
-.wiki-book-index .index .wbi-cap { text-transform: none; letter-spacing: 0; font-size: 0.88rem; color: inherit; }
 .wiki-book-index .text {
   font-size: 0.9rem; font-weight: 600; color: var(--link); white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; max-width: 22ch;
+  overflow: hidden; text-overflow: ellipsis; max-width: 14ch;
 }
 .wiki-book-index .info { display: none; }   /* redundant a11y text; the aria-label carries the name */
-@media (max-width: 760px) {
-  .wiki-book-index { grid-template-columns: 1fr; gap: 0.4rem; }
-  .wiki-book-index .prev, .wiki-book-index .next, .wiki-book-index .index {
-    grid-column: 1; justify-self: stretch; flex-direction: row; text-align: left;
+
+/* footer book-nav: hidden on desktop (the gutter Prev/Next cover it); shown inline on mobile */
+.wiki-book-index.wbi-for-footer { display: none; }
+
+@media (max-width: 900px) {
+  .wiki-content.has-rail, .wiki-content.has-booknav { display: block; max-width: var(--maxw); }
+  .related-rail { position: static; margin-top: 1.75rem; }
+  /* gutters collapse: hide the firstheading (gutter) nav, show the footer nav inline at content end */
+  .wiki-book-index.wbi-for-firstheading { display: none; }
+  .wiki-book-index.wbi-for-footer {
+    display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 2.5rem 0 0;
   }
+  .wiki-book-index.wbi-for-footer .next { margin-left: auto; }
   .wiki-book-index .text { max-width: none; white-space: normal; }
 }
 
@@ -3368,14 +3393,6 @@ sup.reference:target {
    cards (related reading, not tabs) and lifted into a right rail beside the content. A page with
    no such nav keeps the plain single column; .has-rail only applies when cards exist. The inline
    .mininav:not(.mn-switcher) styling above no longer matches these (different markup). --- */
-.wiki-content.has-rail {
-  max-width: 75rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 16rem;
-  gap: 2rem;
-  align-items: start;
-}
-.wiki-content.has-rail > .content-col { min-width: 0; }
 .related-rail {
   position: sticky; top: 4.75rem;
   display: flex; flex-direction: column; gap: 1rem;
@@ -3410,11 +3427,6 @@ sup.reference:target {
   background: var(--surface-2); color: var(--fg); font-weight: 600;
   border-left-color: var(--link); cursor: default;
 }
-@media (max-width: 900px) {
-  .wiki-content.has-rail { display: block; max-width: var(--maxw); }
-  .related-rail { position: static; margin-top: 1.75rem; }
-}
-
 /* current-page selflink: bold everywhere (used outside the mininav too). */
 .mw-selflink, a.selflink { font-weight: 700; color: var(--fg); cursor: default; }
 
