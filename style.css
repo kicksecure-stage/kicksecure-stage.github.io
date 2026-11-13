@@ -42,6 +42,9 @@
      (a non-color cue, WCAG G183) -- so no color-contrast failure. */
   --link: #1d70b8;
   --link-hover: #08409b;
+  /* Redlink (target page missing): MediaWiki's redlink red. 5.9:1 on white (AA text), and
+     darker-yet-redder than near-black body text -- a LIGHTNESS difference, not hue alone. */
+  --link-new: #ba0000;
   --accent: #14866d;
   --accent-fg: #ffffff;
   --focus: #0b57d0;
@@ -93,6 +96,7 @@
 
   --link: #74b1ff;
   --link-hover: #9cc8ff;
+  --link-new: #ff8585;   /* redlink: light red, ~6:1 on the dark ground */
   --accent: #4fd1b0;
   --accent-fg: #08221c;
   --focus: #74b1ff;
@@ -125,6 +129,7 @@
 
     --link: #74b1ff;
     --link-hover: #9cc8ff;
+    --link-new: #ff8585;   /* redlink: light red, ~6:1 on the dark ground */
     --accent: #4fd1b0;
     --accent-fg: #08221c;
     --focus: #74b1ff;
@@ -266,6 +271,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 /* The TOC is navigation (a list of #anchors), not prose links -- it is inside .wiki-content so
    the `.wiki-content li a` underline above hits it; override (higher specificity wins). */
 .wiki-content .toc a { text-decoration: none; }
+/* Redlink: the post-build redlink pass emits a <span class="new"> (NOT an <a>) for an internal
+   link whose target page does not exist -- a static mirror has no edit action to point it at, so
+   it is deliberately non-navigable. Red (the MediaWiki convention), legible without colour vision
+   (the red differs from body text in lightness; the title states the page is missing). */
+.new { color: var(--link-new); cursor: default; }
 /* Touch devices report hover:none and keep the :hover state stuck on the last-tapped
    element, so an underline-on-hover leaves the link underlined after a tap (reported on
    the header Donate link). Drop every hover-underline for pointerless devices; the colour
@@ -1999,6 +2009,12 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   --fg-soft: #ececec;
   --muted: #bcbcbc;
   --link: #8ab4f8;
+  /* The footer ground is dark in BOTH themes, so hover must BRIGHTEN (lighter blue), not
+     inherit the page theme's --link-hover: the light theme's #08409b is a dark navy that
+     drops to ~1.9:1 on the #333/#444 footer ground (an AA fail, lower contrast on hover
+     than at rest). Set it in-scope so .copyright/.footer-freedom/.footer-links hover is
+     legible. */
+  --link-hover: #b3cdfa;
   --border: #565656;
   --border-soft: #4a4a4a;
   --surface: #424242;
@@ -2440,7 +2456,7 @@ sup.reference:target {
   padding: 0.4rem 0.7rem; border-radius: var(--radius-sm);
   background: var(--surface-2); color: var(--link-hover); font-size: 0.9rem; text-decoration: none;
 }
-.share-open:hover { text-decoration: underline; }
+.share-open:hover { text-decoration: none; background: var(--surface); }
 /* Per-network brand colours, SINGLE SOURCE: each .si-<network> sets the --brand custom
    property, which every surface that shows the badge reads -- the share tooltip/panel icons
    (background: var(--brand) above) AND the footer social row (.footer-social-icons .icon-link).
