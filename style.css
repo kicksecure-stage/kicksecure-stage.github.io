@@ -1615,8 +1615,12 @@ code:empty { display: none; }
      - a figure, which is deliberately sized and must not be collapsed: a .media-sized image (a
        frameless image with an explicit author px width) and any .thumbframe descendant (a
        thumb/frame figure, sized via `.thumbframe img`). Without this a full-size figure sitting
-       inside an {{mbox}}/.info-box wrapper was force-collapsed (a 600px screenshot -> ~65px). */
-.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *) > img:not(.ia-archive-icon):not(.media-sized) { height: 46px !important; width: auto !important; max-width: 100%; }
+       inside an {{mbox}}/.info-box wrapper was force-collapsed (a 600px screenshot -> ~65px).
+   SPECIFICITY: keep the image exclusions in ONE :not() list, NOT chained :not():not(). A :not()
+   list counts as its single most-specific arg, so the rule stays (0,3,1) -- the original. A second
+   chained :not() would make it (0,4,1) and out-specify the donor-card logo's `height:90%!important`
+   (.donor-card .logo span.logo-image img, (0,3,2)), collapsing a donor logo in an info-box to 46px. */
+.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *) > img:not(.ia-archive-icon, .media-sized) { height: 46px !important; width: auto !important; max-width: 100%; }
 
 /* Numbered section/step badge (production "padded-content-icon" widget): a bold
    numeral, coloured by the element's cs-* --callout. pci-style-circle makes it a
@@ -2410,6 +2414,10 @@ sup.reference:target {
 .share-tooltip .headline-anchor {
   color: var(--muted); display: inline-flex; align-items: center; justify-content: center;
   min-width: 24px; min-height: 24px; vertical-align: middle;
+  /* The per-heading trigger is a <button> (menu toggle, no scroll-jump); strip UA button chrome
+     so it renders identically to the footer/authored <a>. font:inherit keeps the 0.75em glyph
+     (a button does not inherit font-size) and the .share-tooltip gap/color stay as set. */
+  background: none; border: 0; margin: 0; padding: 0; font: inherit; line-height: 1; cursor: pointer;
 }
 .share-tooltip .headline-anchor:hover { color: var(--link); text-decoration: none; }
 /* Visible manually-placed anchors ({{Anchor|...|show=true}} -> span.mpa-visible) -- prod
@@ -2477,11 +2485,18 @@ sup.reference:target {
    other, so no exclusive-group bookkeeping is needed. A popover-unaware browser ignores the
    attribute and shows the panel inline -- still a deliberate see-the-URL-first confirm, so the
    degraded path stays privacy-safe (it never auto-connects). */
+/* NO `display` on the base rule. This is a native [popover]: a base `display` overrides the UA
+   `[popover]:not(:popover-open) { display:none }`, so every CLOSED confirm panel stays laid out
+   and leaks inline -- the Mastodon card floated over the "Copy as Wikitext/Markdown/phpBB" row
+   with no click. Layout (flex) is applied only when the popover is OPEN. A popover-unaware browser
+   has no UA hide and ignores `:popover-open`, so the panel still shows inline (block) as the
+   JS-off, see-the-URL-first confirm fallback. */
 .share-open-panel {
-  display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; max-width: min(18rem, 88vw);
+  flex-direction: column; gap: 0.3rem; min-width: 0; max-width: min(18rem, 88vw);
   background: var(--surface); color: var(--fg); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 0.6rem;
 }
+.share-open-panel:popover-open { display: flex; }
 /* Close (x) for the share-open popover: native popovertargetaction=hide (no JS), top-right. */
 .share-close {
   align-self: flex-end; margin: -0.2rem -0.3rem 0 0; padding: 0.15rem 0.35rem;

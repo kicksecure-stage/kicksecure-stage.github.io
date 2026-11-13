@@ -1883,9 +1883,23 @@
       tip.setAttribute("data-sh-built", "1");
       initCopyButtons();                                   // idempotent: wires the new .code-select
     }
+    // Set a tip's open state. On CLOSE, blur the trigger: a touch tap leaves the trigger focused,
+    // and .menu-wrapper is also revealed by :focus-within, so merely dropping .share-open would
+    // leave the menu open (the "2nd tap does not close" bug). Blurring releases :focus-within so
+    // the menu actually hides. aria-expanded tracks the state for assistive tech.
+    function setOpen(tip, open) {
+      var t = tip.querySelector(".headline-anchor");
+      if (open) {
+        tip.classList.add("share-open");
+      } else {
+        tip.classList.remove("share-open");
+        if (t && t.blur && tip.contains(document.activeElement)) t.blur();
+      }
+      if (t && t.setAttribute) t.setAttribute("aria-expanded", open ? "true" : "false");
+    }
     function closeAll(except) {
       var open = document.querySelectorAll(".share-tooltip.share-open");
-      for (var i = 0; i < open.length; i++) if (open[i] !== except) open[i].classList.remove("share-open");
+      for (var i = 0; i < open.length; i++) if (open[i] !== except) setOpen(open[i], false);
     }
     // Prime: inject the full menu on first press/focus so :hover and :focus-within reveal it.
     function onPrime(e) {
@@ -1903,7 +1917,7 @@
       activate(tip);
       var open = !tip.classList.contains("share-open");
       closeAll(tip);
-      if (open) tip.classList.add("share-open"); else tip.classList.remove("share-open");
+      setOpen(tip, open);
     }
     document.addEventListener("pointerover", onPrime);     // prime on HOVER -> desktop hover reveals the FULL menu, no click
     document.addEventListener("pointerdown", onPrime);     // prime on press (touch/pen may skip hover)
@@ -1913,6 +1927,30 @@
       if (!(e.target && e.target.closest && e.target.closest(".share-tooltip"))) closeAll(null);
     });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(null); });
+  }
+
+  // Warm below-the-fold lazy images ~1.5 viewports before they enter view, so the fetch AND the
+  // decode finish before the user scrolls to them (no visible pop-in). No-JS falls back to native
+  // loading=lazy (unchanged). Bounded on bandwidth: only images the user is scrolling toward are
+  // warmed, and Save-Data / 2g / reduced-data links are skipped (native lazy only), preserving
+  // lazy-load's data savings; fetchpriority=low so a warmed image never contends with the LCP.
+  function initImageWarmAhead() {
+    if (typeof IntersectionObserver !== "function") return;   // old engines: native lazy only
+    // Skip metered / data-saver / very slow links (incl. Tor-ish): native lazy only, no warming.
+    var c = navigator.connection;
+    if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ""))) return;
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) continue;
+        var img = entries[i].target;
+        io.unobserve(img);
+        img.setAttribute("fetchpriority", "low");
+        img.loading = "eager";                                 // start the fetch now (deterministic)
+        if (typeof img.decode === "function") img.decode().catch(function () {});  // pre-decode
+      }
+    }, { root: null, rootMargin: "150% 0px" });                // ~1.5 viewports ahead
+    var imgs = document.querySelectorAll('img[loading="lazy"]');
+    for (var j = 0; j < imgs.length; j++) io.observe(imgs[j]);
   }
 
   ready(function () {
@@ -1953,6 +1991,7 @@
       initShareLazy();
       initHeroVideo();
       initEndorsementMore();
+      initImageWarmAhead();
     });
   });
 
