@@ -2438,12 +2438,24 @@ sup.reference:target {
   background: var(--surface); color: var(--fg); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 0.6rem;
 }
+/* Close (x) for the share-open popover: native popovertargetaction=hide (no JS), top-right. */
+.share-close {
+  align-self: flex-end; margin: -0.2rem -0.3rem 0 0; padding: 0.15rem 0.35rem;
+  background: none; border: none; color: var(--muted); cursor: pointer; line-height: 1;
+  min-width: 24px; min-height: 24px; display: inline-flex; align-items: center; justify-content: center;
+}
+.share-close:hover { color: var(--fg); }
 /* Pin under the invoking icon where CSS anchor positioning exists (Chromium); a popover's invoker
    is its implicit anchor, so no explicit anchor-name is needed. Firefox ESR 128 lacks anchor
    positioning and falls back to the UA default -- a small viewport-centred card, which reads fine
    as a confirm. Both are top-layer, so neither touches the menu's height. */
 @supports (anchor-name: --a) {
-  .share-open-panel:popover-open { margin: 0; inset: auto; top: anchor(bottom); left: anchor(left); }
+  .share-open-panel:popover-open {
+    margin: 0; inset: auto; top: anchor(bottom); left: anchor(left);
+    /* A right-edge icon's panel would run off-screen with left-anchoring; flip to the opposite
+       edge (and/or above) when the default placement overflows the viewport. */
+    position-try-fallbacks: flip-inline, flip-block, flip-inline flip-block;
+  }
 }
 /* The long URL scrolls inside the code-select viewport (overflow-x:auto) rather than widening the
    panel: min-width:0 lets the flex item shrink below its pre-wrapped content so the viewport clips. */
