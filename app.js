@@ -1888,14 +1888,13 @@
     // leave the menu open (the "2nd tap does not close" bug). Blurring releases :focus-within so
     // the menu actually hides. aria-expanded tracks the state for assistive tech.
     function setOpen(tip, open) {
-      var t = tip.querySelector(".headline-anchor");
-      if (open) {
-        tip.classList.add("share-open");
-      } else {
-        tip.classList.remove("share-open");
-        if (t && t.blur && tip.contains(document.activeElement)) t.blur();
-      }
-      if (t && t.setAttribute) t.setAttribute("aria-expanded", open ? "true" : "false");
+      var t = tip.querySelector(".headline-anchor");   // every share-tooltip carries one
+      tip.classList.toggle("share-open", open);
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      // On close, blur the trigger IF it holds focus, so :focus-within releases and the menu
+      // actually hides (a touch tap leaves the trigger focused; .menu-wrapper is also revealed
+      // by :focus-within, so dropping .share-open alone would not close it).
+      if (!open && tip.contains(document.activeElement)) t.blur();
     }
     function closeAll(except) {
       var open = document.querySelectorAll(".share-tooltip.share-open");
@@ -1932,13 +1931,13 @@
   // Warm below-the-fold lazy images ~1.5 viewports before they enter view, so the fetch AND the
   // decode finish before the user scrolls to them (no visible pop-in). No-JS falls back to native
   // loading=lazy (unchanged). Bounded on bandwidth: only images the user is scrolling toward are
-  // warmed, and Save-Data / 2g / reduced-data links are skipped (native lazy only), preserving
-  // lazy-load's data savings; fetchpriority=low so a warmed image never contends with the LCP.
+  // warmed, and Save-Data / 2g links are skipped (native lazy only), preserving lazy-load's data
+  // savings; fetchpriority=low so a warmed image never contends with the LCP.
   function initImageWarmAhead() {
     if (typeof IntersectionObserver !== "function") return;   // old engines: native lazy only
     // Skip metered / data-saver / very slow links (incl. Tor-ish): native lazy only, no warming.
     var c = navigator.connection;
-    if (c && (c.saveData || /(^|-)2g$/.test(c.effectiveType || ""))) return;
+    if (c && (c.saveData || /2g$/.test(c.effectiveType || ""))) return;   // "2g" / "slow-2g"
     var io = new IntersectionObserver(function (entries) {
       for (var i = 0; i < entries.length; i++) {
         if (!entries[i].isIntersecting) continue;

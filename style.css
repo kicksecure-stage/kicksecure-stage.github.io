@@ -156,6 +156,11 @@ html {
    back-to-top control honours the same preference -- keep them consistent). */
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
+  /* Cross-document View Transitions: a smooth cross-fade between same-origin page loads. Pure CSS
+     (no JS, no CSP change); browsers without support (Firefox/Tor Browser) just do a normal instant
+     navigation. Opted in only inside this motion-welcome block, so reduced-motion users (and the
+     reduced default) get the instant swap. */
+  @view-transition { navigation: auto; }
 }
 body {
   margin: 0;
