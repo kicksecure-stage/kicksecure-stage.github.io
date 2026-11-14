@@ -663,6 +663,12 @@ body.site-whonix .site-logo-img { width: auto; }
     font-size: 0.9em;
     word-break: break-all;
   }
+  /* But NOT on an icon/image-only external link: the URL would overflow a fixed-size inline-flex
+     box and paint over neighbouring text. The auto-appended archive marker (.ext-link-to-archive
+     > a, a 24px target, white-space:nowrap) is the pervasive case -- cancel it explicitly so no
+     :has support is required; the :has(img) rule additionally covers any logo/image link. */
+  .wiki-content .ext-link-to-archive > a::after { content: none !important; }
+  .wiki-content a[href^="http"]:has(img)::after { content: none !important; }
 
   /* Keep atomic blocks whole across a page break. A table may legitimately span pages, so
      only its ROWS stay intact and the header repeats on each printed page. */
@@ -686,6 +692,26 @@ body.site-whonix .site-logo-img { width: auto; }
   .wiki-content h2,
   .wiki-content h3,
   .wiki-content h4 { break-after: avoid; }
+
+  /* A handful of status-colour classes hard-code their colour (no token), so the token reset
+     above does not reach them; under an explicit dark theme they would print their dark-mode
+     hue (low contrast on white paper). Restate their LIGHT values (mirroring the base rules:
+     .text-* line ~3131, .cmp-* ~2698, .mw-unrendered ~4049, .pill a ~2249). !important because
+     those dark rules sit LATER in the file, so an equal-specificity reset would lose on order. */
+  :root[data-theme="dark"] .text-green,  :root:not([data-theme="light"]) .text-green  { color: #157a15 !important; }
+  :root[data-theme="dark"] .text-red,    :root:not([data-theme="light"]) .text-red    { color: #c0392b !important; }
+  :root[data-theme="dark"] .text-orange, :root:not([data-theme="light"]) .text-orange { color: #a35908 !important; }
+  :root[data-theme="dark"] .text-yellow, :root:not([data-theme="light"]) .text-yellow { color: #866900 !important; }
+  :root[data-theme="dark"] .cmp-yes,     :root:not([data-theme="light"]) .cmp-yes     { color: #157f15 !important; }
+  :root[data-theme="dark"] .cmp-no,      :root:not([data-theme="light"]) .cmp-no      { color: #c0392b !important; }
+  :root[data-theme="dark"] .mw-unrendered,
+  :root:not([data-theme="light"]) .mw-unrendered {
+    color: #b00020 !important; background: #fdecea !important; border-color: #b00020 !important;
+  }
+  :root[data-theme="dark"] .page-home .slogan-pills .pill a,
+  :root:not([data-theme="light"]) .page-home .slogan-pills .pill a {
+    color: #0b57d0 !important; border-color: #9dc0f5 !important;
+  }
 }
 /* DIRECT-child ul only: the horizontal top bar. `.site-nav ul` (unscoped) also matched the
    nested .nav-submenu ul and -- at higher specificity than `.nav-submenu {display:none}` --
@@ -2338,9 +2364,24 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   font-style: normal; text-align: center; color: var(--fg); font-size: 1.19rem;
 }
 .page-home .intro-like { margin: 0 0 1.2em; }
-/* Homepage "Learn What Is Whonix?" CTA line: prod shows it centered + large (~25px) with the
-   target as a blue link. Centering comes from Template:Align; this sets the prod size. */
-.page-home .hero-learn { font-size: 1.56rem; }
+/* Homepage hero CTA + "Learn:" line: both are {{Align|middle}} -> <div class="align-center"><p>.
+   The global `.wiki-content p{max-width:66ch}` pins that <p> to the column's LEFT edge, so
+   `text-align:center` only centers within a left-anchored box -- the button/link land well left
+   of the column center. Drop the cap on homepage align wrappers so centering spans the full
+   column (matches the Whonix prod hero + the Fedora/Qubes idiom). (.hero-learn is dead code -- no
+   element emits that class -- so the old size rule is removed.) */
+.page-home .align-center > p,
+.page-home .align-right > p { max-width: none; margin-inline: auto; }
+/* Homepage content sections: a centered <h2> (set below) over a LEFT-anchored 66ch body reads as
+   two different alignments. Put each section body in a centered max-width column, left-aligned
+   inside for readability -- the Ubuntu u-fixed-width / Qubes col-offset / Tailwind prose mx-auto
+   idiom. The Download band's body is nested in .section-download (a div, not a direct p/ul/ol/dl
+   child), so the `>` combinator leaves it untouched; at phone width 66ch exceeds the viewport, so
+   the cap collapses to full-width left-aligned -- no mobile change. */
+.page-home .cv-section > :is(p, ul, ol, dl) { max-width: 66ch; margin-inline: auto; }
+/* Homepage "Kicksecure gives you" checklist box: the post-intro gap rule (.post-intro-p + *)
+   gives it a 1.5em top while its own margin is 1.25rem, so it renders ~4px top-heavy. Match them. */
+.page-home .post-intro-p + .explainer { margin-top: 1.25rem; }
 /* [[File:...|thumb|left|right|none|caption]] -- a semantic <figure> framed caption box, floated
    so body text wraps beside it. The figure IS the frame (no inner wrapper div) and holds a
    direct <figcaption>; the image is styled via `.thumbframe img`. Named `.thumbframe` (not the
@@ -2915,7 +2956,8 @@ sup.reference:target {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 1rem;
+  /* symmetric block gap (prod had margin-top only -> card sat top-heavy over the tiles) */
+  margin-block: 1rem;
 }
 .section-download .col-container > div { width: 46%; margin: 1%; display: flex; }
 @media (min-width: 560px) { .section-download .col-container > div { width: 30%; } }
@@ -2951,6 +2993,10 @@ sup.reference:target {
 }
 .section-download .tcc-section.active .tcc-title { color: #fff; box-shadow: none; }
 .section-download .tcc-content { border-top: none; padding: 0; }
+/* JS adds .mininav-ready at runtime, which re-applies a light-prose padding-top:0.3rem that
+   out-specifies the padding:0 above -- the active download card then sits ~4.8px top-heavy. Zero
+   it so the card whitespace is symmetric top/bottom (pairs with the col-container margin-block). */
+.section-download .tab-content-controller.mininav-ready .tcc-content { padding-top: 0; }
 .section-download .col-container > div a {
   background: #3c495a;
   display: flex; flex-direction: column; height: 100%;   /* equal-height tiles: a 2-line label

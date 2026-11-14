@@ -1883,18 +1883,16 @@
       tip.setAttribute("data-sh-built", "1");
       initCopyButtons();                                   // idempotent: wires the new .code-select
     }
-    // Set a tip's open state. On CLOSE, blur the trigger: a touch tap leaves the trigger focused,
-    // and .menu-wrapper is also revealed by :focus-within, so merely dropping .share-open would
-    // leave the menu open (the "2nd tap does not close" bug). Blurring releases :focus-within so
-    // the menu actually hides. aria-expanded tracks the state for assistive tech.
+    // Set a tip's open state. .menu-wrapper is also revealed by :focus-within, so merely dropping
+    // .share-open would leave the menu open while focus stays inside (the "2nd tap does not close"
+    // bug). On CLOSE, blur whatever element inside the tooltip holds focus -- the trigger (a touch
+    // tap leaves it focused) OR a menu child a keyboard user tabbed into -- so :focus-within
+    // releases and the menu actually hides. aria-expanded tracks the state for assistive tech.
     function setOpen(tip, open) {
       var t = tip.querySelector(".headline-anchor");   // every share-tooltip carries one
       tip.classList.toggle("share-open", open);
       t.setAttribute("aria-expanded", open ? "true" : "false");
-      // On close, blur the trigger IF it holds focus, so :focus-within releases and the menu
-      // actually hides (a touch tap leaves the trigger focused; .menu-wrapper is also revealed
-      // by :focus-within, so dropping .share-open alone would not close it).
-      if (!open && tip.contains(document.activeElement)) t.blur();
+      if (!open && tip.contains(document.activeElement)) document.activeElement.blur();
     }
     function closeAll(except) {
       var open = document.querySelectorAll(".share-tooltip.share-open");
@@ -1957,6 +1955,11 @@
     // the stored theme, fail to open a hash-targeted tab/<details> on load, or shift layout
     // after first paint (banners show/hide, the bottom-stack spacer, the tab switcher).
     initDarkMode();
+    // These hashchange handlers are the ONLY window-level listeners. Do NOT add an "unload" or
+    // "beforeunload" listener anywhere: either one makes the page ineligible for the back/forward
+    // cache (bfcache), so a back navigation reloads instead of restoring instantly. Use
+    // "pagehide"/"pageshow" if a page-lifecycle hook is ever needed. Enforced by a jscov test
+    // (dist-ai website-tests/jscov/app.test.js) that fails CI on a (before)unload registration.
     openHashDetails();
     window.addEventListener("hashchange", openHashDetails);
     initTabs();
