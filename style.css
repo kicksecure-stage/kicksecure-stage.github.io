@@ -3988,8 +3988,11 @@ html.client-js .show-for-nojs-only { display: none; }
   border-radius: 10px; box-shadow: 0 8px 30px rgb(0 0 0 / 35%); padding: 24px;
 }
 .mini-modal .mm-close {
-  position: absolute; top: 8px; right: 10px; z-index: 3; background: transparent;
+  position: absolute; top: 2px; right: 2px; z-index: 3; background: transparent;
   border: 0; color: inherit; font-size: 22px; cursor: pointer; line-height: 1;
+  /* >=44px hit area (WCAG 2.5.8 / Material) with the glyph centered -- the bare 22px glyph was
+     an under-size touch target on a phone. */
+  min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
 }
 .mini-modal .mm-close:hover { opacity: .7; }
 body.mini-modal-active { overflow: hidden; }
