@@ -658,7 +658,13 @@
     var searchToggle = document.getElementById("search-toggle");
     if (searchToggle) {
       searchToggle.addEventListener("change", function () {
-        if (searchToggle.checked) { input.focus(); }
+        // Defer the focus: clicking the <label> focuses the checkbox as its native default
+        // action, and that lands AFTER this change handler -- a direct input.focus() here is
+        // immediately stolen back to the toggle (caret never enters the box). requestAnimationFrame
+        // runs after the click settles, so the caret stays in the search field.
+        if (searchToggle.checked) {
+          requestAnimationFrame(function () { input.focus(); });
+        }
       });
     }
     var root = rootPrefix();

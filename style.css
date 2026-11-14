@@ -2960,9 +2960,11 @@ sup.reference:target {
   margin-block: 1rem;
 }
 .section-download .col-container > div { width: 46%; margin: 1%; display: flex; }
-@media (min-width: 560px) { .section-download .col-container > div { width: 30%; } }
+/* 4 tiles/line from tablet up (22% + 2% margin ~= 4 across); 2-up on the mobile base above.
+   4 is the one column count that balances BOTH tabs with no lonely orphan: Virtual Machine(6)
+   -> 4+2, Other(7) -> 4+3. 3-up would orphan Other (3+3+1) and 5-up orphaned VM (5+1 -- the
+   reported bug). justify-content:center (set above) centers the short last row. */
 @media (min-width: 768px) { .section-download .col-container > div { width: 22%; } }
-@media (min-width: 960px) { .section-download .col-container > div { width: 18%; } }
 /* pandoc wraps each card's <a> in a <p>; descendant selectors + a zeroed <p> margin keep
    the card compact regardless of that wrapper. */
 .section-download .col-container > div p { margin: 0; }
