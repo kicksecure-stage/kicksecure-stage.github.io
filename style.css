@@ -429,7 +429,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 .download-button-v2 .dbutton {
   display: table-cell; border-radius: 50px; position: relative;
   background-image: linear-gradient(#4d8cdd 0%, #0867bb 100%);
-  padding: 6px 16px 6px 50px; color: #eaf1ff; font-weight: 600; white-space: nowrap;
+  padding: 6px 16px 6px 50px; color: #eaf1ff; font-weight: 600;
+  /* NO white-space:nowrap: the label wraps whenever the width is insufficient, at EVERY viewport
+     (desktop still fits on one line). This is the structural fix for the recurring text-spill --
+     a reworded/longer label ("(stable) (FREE!)") or a narrower column can no longer pin the text
+     to one rigid line that overflows the pill; the old 480px breakpoint was a fragile band-aid. */
 }
 .download-button-v2:hover .dbutton {
   background-image: linear-gradient(#4180d1 0%, #005aae 100%); color: #fff;
@@ -1722,7 +1726,11 @@ code:empty { display: none; }
    list counts as its single most-specific arg, so the rule stays (0,3,1) -- the original. A second
    chained :not() would make it (0,4,1) and out-specify the donor-card logo's `height:90%!important`
    (.donor-card .logo span.logo-image img, (0,3,2)), collapsing a donor logo in an info-box to 46px. */
-.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *) > img:not(.ia-archive-icon, .media-sized) { height: 46px !important; width: auto !important; max-width: 100%; }
+/* Exempt the mininav switcher pills (.mn-switcher icons -- the "stable" brick blew to 46px,
+   defeating the 1.2em pill cap) and the download button's OS-logo cell (.op-sys -- the ISO logo
+   blew to 46px, defeating its 16px cap). Both are icons with their OWN cap; the 46px blanket is
+   for donor/content logos, not these. */
+.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *, .mn-switcher *, .op-sys) > img:not(.ia-archive-icon, .media-sized) { height: 46px !important; width: auto !important; max-width: 100%; }
 
 /* Numbered section/step badge (production "padded-content-icon" widget): a bold
    numeral, coloured by the element's cs-* --callout. pci-style-circle makes it a
