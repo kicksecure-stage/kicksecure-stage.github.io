@@ -663,6 +663,12 @@
         // magnifier label keeps focus). Retry focus each frame until it sticks (or ~20 frames
         // pass) -- self-correcting, with no coupling to the CSS transition duration.
         if (!searchToggle.checked) return;
+        // Auto-focus only on precise-pointer (mouse/desktop) devices. On touch, focusing the field
+        // pops the on-screen keyboard, which shifts the page on open + collapse -- so there the box
+        // just opens and the user taps it to type (keyboard appears only then). (pointer:fine) is
+        // the primary "has a mouse / no soft keyboard" test; (hover:hover) guards the rare touch
+        // device that still reports fine.
+        if (window.matchMedia && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
         var tries = 0;
         (function putCaret() {
           if (!searchToggle.checked) return;   // reclosed mid-retry
