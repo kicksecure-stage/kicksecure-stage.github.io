@@ -658,13 +658,19 @@
     var searchToggle = document.getElementById("search-toggle");
     if (searchToggle) {
       searchToggle.addEventListener("change", function () {
-        // Defer the focus: clicking the <label> focuses the checkbox as its native default
-        // action, and that lands AFTER this change handler -- a direct input.focus() here is
-        // immediately stolen back to the toggle (caret never enters the box). requestAnimationFrame
-        // runs after the click settles, so the caret stays in the search field.
-        if (searchToggle.checked) {
-          requestAnimationFrame(function () { input.focus(); });
-        }
+        // The field reveals via a 0.18s width/visibility transition and is NOT focusable until it
+        // settles: a focus() call mid-transition silently no-ops (the caret never enters, the
+        // magnifier label keeps focus). Retry focus each frame until it sticks (or ~20 frames
+        // pass) -- self-correcting, with no coupling to the CSS transition duration.
+        if (!searchToggle.checked) return;
+        var tries = 0;
+        (function putCaret() {
+          if (!searchToggle.checked) return;   // reclosed mid-retry
+          input.focus();
+          if (document.activeElement !== input && tries++ < 20) {
+            requestAnimationFrame(putCaret);
+          }
+        })();
       });
     }
     var root = rootPrefix();
