@@ -2997,6 +2997,10 @@ sup.reference:target {
    out-specifies the padding:0 above -- the active download card then sits ~4.8px top-heavy. Zero
    it so the card whitespace is symmetric top/bottom (pairs with the col-container margin-block). */
 .section-download .tab-content-controller.mininav-ready .tcc-content { padding-top: 0; }
+/* The dark band is #273445, but .tcc-section's base `background: var(--bg)` (white) + border
+   paint a white card behind the OS tiles. Clear both so the tiles sit directly on the dark band
+   (prod has no white card); covers the no-JS bordered state and the mininav-ready state. */
+.section-download .tcc-section { background: transparent; border: none; }
 .section-download .col-container > div a {
   background: #3c495a;
   display: flex; flex-direction: column; height: 100%;   /* equal-height tiles: a 2-line label
