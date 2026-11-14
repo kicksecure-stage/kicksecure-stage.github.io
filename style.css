@@ -3277,7 +3277,10 @@ sup.reference:target {
 .gallery > p { display: contents; }
 .gallery .gallerybox {
   display: flex; flex-direction: column; align-items: center;
-  max-width: 12rem; font-size: 0.85rem; color: var(--muted);
+  /* Uniform cell width: a long or {{nowrap}} caption wraps INSIDE the cell instead of widening
+     it and shoving its neighbours (what desynced the groups' column rhythm and pushed rows
+     off-centre). max-width:100% keeps 2-up on a phone. */
+  width: 8.5rem; max-width: 100%; font-size: 0.85rem; color: var(--muted);
 }
 /* Border/padding/background live on the WRAPPER, not the img: uniform padding on a
    non-square img skews its border-box ratio vs the intrinsic one (image-aspect-ratio fail). */
@@ -3296,7 +3299,10 @@ sup.reference:target {
      the square proportional when max-width caps it on a narrow screen. */
   display: block; max-width: 100%; height: auto; object-fit: contain;
 }
-.gallery .gallerytext { display: block; margin-top: 0.3rem; text-align: center; line-height: 1.3; }
+.gallery .gallerytext { display: block; margin-top: 0.3rem; text-align: center; line-height: 1.3; min-height: 2.6em; }
+/* a {{nowrap}} caption (e.g. the Architecture labels) must not force its tile wider than the
+   uniform cell width above -- inside a gallery caption, let it wrap. */
+.gallery .gallerytext .nowrap { white-space: normal; }
 .gallery a:hover img { transform: scale(1.1); }
 /* ISO/TOC thumb galleries hold WIDE screenshots, not square icons: the square cell above leaves
    ~80% empty vertical space around a wide image, so let the cell size to the image aspect and
