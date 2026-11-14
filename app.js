@@ -668,7 +668,7 @@
         // just opens and the user taps it to type (keyboard appears only then). (pointer:fine) is
         // the primary "has a mouse / no soft keyboard" test; (hover:hover) guards the rare touch
         // device that still reports fine.
-        if (window.matchMedia && !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+        if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
         var tries = 0;
         (function putCaret() {
           if (!searchToggle.checked) return;   // reclosed mid-retry
