@@ -1980,6 +1980,31 @@
     for (var j = 0; j < imgs.length; j++) io.observe(imgs[j]);
   }
 
+  // Hover-to-open for the antispam e-mail info popover (native [popover]; tap/click + the
+  // explicit (x)/Esc/outside-tap dismissal still work, and remain the ONLY path on touch).
+  // Gated to a precise-pointer (hover:hover) and (pointer:fine) device, so a phone never
+  // opens it on a stray touch and keeps the deliberate tap. A short close delay bridges the
+  // gap between the icon and the card so moving onto the card does not dismiss it.
+  function initHoverPopovers() {
+    if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var invokers = document.querySelectorAll(".antispam-email-info[popovertarget]");
+    for (var i = 0; i < invokers.length; i++) {
+      (function (btn) {
+        var pop = document.getElementById(btn.getAttribute("popovertarget"));
+        if (!pop || typeof pop.showPopover !== "function") return;   // missing / popover-unaware engine
+        var timer;
+        function show() { clearTimeout(timer); try { pop.showPopover(); } catch (e) {} }  // throws if already open
+        function hideSoon() { timer = setTimeout(function () { try { pop.hidePopover(); } catch (e) {} }, 160); }
+        btn.addEventListener("mouseenter", show);
+        btn.addEventListener("focus", show);
+        btn.addEventListener("mouseleave", hideSoon);
+        btn.addEventListener("blur", hideSoon);
+        pop.addEventListener("mouseenter", function () { clearTimeout(timer); });
+        pop.addEventListener("mouseleave", hideSoon);
+      })(invokers[i]);
+    }
+  }
+
   ready(function () {
     // Paint-, theme-, hash- and layout-critical: run immediately. Deferring these would flash
     // the stored theme, fail to open a hash-targeted tab/<details> on load, or shift layout
@@ -2024,6 +2049,7 @@
       initHeroVideo();
       initEndorsementMore();
       initImageWarmAhead();
+      initHoverPopovers();
     });
   });
 
