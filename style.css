@@ -876,6 +876,11 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
 /* Open-state affordance on the magnifier so open vs closed is visually distinct (not a
    "stuck" look): the icon carries the active surface while the box is open. */
 .search-toggle:checked ~ .search-icon { background: var(--surface-2); }
+/* noJS: hide the dead toggle+field (live search needs JS) so only the Special:AllPages browse
+   link (.search-nojs-browse, shown by .show-for-nojs-only) remains as the magnifier. */
+html:not(.client-js) .site-search .search-toggle,
+html:not(.client-js) .site-search label.search-icon,
+html:not(.client-js) .site-search .search-field { display: none; }
 /* Outside-click close is handled in app.js (initSearch): it unchecks #search-toggle AND
    hides the live .search-results, and -- unlike a header-nested full-viewport label -- does
    not swallow the mobile nav's own outside-tap close. No-JS still closes via the lens. */
