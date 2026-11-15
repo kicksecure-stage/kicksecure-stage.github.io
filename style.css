@@ -3902,47 +3902,40 @@ sup.reference:target {
 /* current-page selflink: bold everywhere (used outside the mininav too). */
 .mw-selflink, a.selflink { font-weight: 700; color: var(--fg); cursor: default; }
 
-/* Anti-spam e-mail (Template:Name-email): the obfuscated address stays visible; an info-icon
-   <button popovertarget> after it opens the "please do not e-mail for..." reasons as a native
-   [popover] via a popovertargetaction="show" button (click/tap/Enter all open it; it never
-   toggles shut on a second activation). On a precise-pointer device app.js (initHoverPopovers)
-   also opens it on hover. Dismiss with the (x), Esc, an outside tap, or moving the pointer away;
-   touch keeps the deliberate tap and never opens on a stray touch. */
-/* anchor-scope confines the shared --antispam-info name to each wrapper, so every popover anchors
-   to the icon in ITS OWN instance (the page transcludes this template many times). */
-.antispam-email-tooltip { position: relative; anchor-scope: --antispam-info; }
-.antispam-email-info {  /* small info-icon invoker after the address; strip the UA button chrome */
-  display: inline-flex; vertical-align: middle; margin-left: 4px; anchor-name: --antispam-info;
-  border: 0; padding: 0; background: none; cursor: pointer; color: var(--link); font: inherit; line-height: 1;
+/* Anti-spam e-mail (Template:Name-email): the obfuscated address stays visible; the reasons
+   ("please do not e-mail for...") reveal purely via CSS :hover / :focus-within -- NO JavaScript
+   and NO Popover API, so it works on every browser, including Tor Browser with JS disabled and
+   older Firefox ESR that lacks [popover]. The wrapper span is tabindex="0" so a tap anywhere on
+   the snippet (not just the tiny icon) focuses it -> :focus-within reveal on touch; a precise
+   pointer reveals on :hover of the address or the icon. It dismisses when the pointer leaves or
+   focus moves away -- no explicit close control needed. */
+.antispam-email-tooltip { position: relative; }
+.antispam-email-info {  /* small info-icon after the address (decorative; the "i" badge is drawn in CSS) */
+  display: inline-flex; vertical-align: middle; margin-left: 4px; color: var(--link); line-height: 1;
 }
-.antispam-email-info:hover { color: var(--link-hover); }
-/* NO base `display`: it is a native [popover] (the UA hides it until open); layout only on
-   :popover-open, so the wide reasons card never adds inline width when closed. */
-.antispam-email-popover {
+.antispam-email-tooltip:hover .antispam-email-info,
+.antispam-email-tooltip:focus-within .antispam-email-info { color: var(--link-hover); }
+/* Hidden until hover/focus; `display:block` on reveal makes it a block container so the reasons
+   (incl. the icon-bullet-list block) stay inside the card. */
+.antispam-email-reasons {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0; z-index: 30;
   width: max-content; max-width: min(90vw, 30rem);
+  max-height: calc(100dvh - 2rem); overflow-y: auto; overscroll-behavior: contain;
   padding: 0.7rem 0.9rem; text-align: left; font-weight: normal; font-size: 0.88rem;
   background: var(--surface); color: var(--fg);
   border: 1px solid var(--border); border-radius: var(--radius-md, 6px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
-.antispam-email-popover:popover-open { display: block; }
-.antispam-email-popover .icon-bullet-list { margin-top: 0.4rem; }
-/* Pin under the invoking icon via an EXPLICIT position-anchor (the implicit popovertarget anchor
-   did not resolve -- the card landed off-screen -- and is not set at all when app.js hover-opens
-   it). An engine without anchor positioning (e.g. Firefox ESR 128) falls back to the UA-centred
-   card. */
-@supports (anchor-name: --a) {
-  .antispam-email-popover:popover-open {
-    position: absolute; position-anchor: --antispam-info; margin: 0; inset: auto;
-    top: anchor(bottom); left: anchor(left);
-    position-try-fallbacks: flip-block, flip-inline, flip-inline flip-block;
-  }
-}
+.antispam-email-tooltip:hover .antispam-email-reasons,
+.antispam-email-tooltip:focus-within .antispam-email-reasons { display: block; }
+.antispam-email-reasons .icon-bullet-list { margin-top: 0.4rem; }
 @media (max-width: 480px) {
-  /* The wide reasons card would spill past the right edge on phones. Pin it to the viewport (like
-     the share tooltip) so it fits with no horizontal overflow -- overrides the anchor block above. */
-  .antispam-email-popover:popover-open {
-    position: fixed; left: 8px; right: 8px; top: 60px; width: auto; max-width: none; inset: auto; margin: 0;
+  /* The wide card would spill past the right edge on phones. Pin it to the viewport so it always
+     fits with no horizontal overflow, and cap its height so a long list scrolls inside the card. */
+  .antispam-email-tooltip:hover .antispam-email-reasons,
+  .antispam-email-tooltip:focus-within .antispam-email-reasons {
+    position: fixed; inset: auto; left: 8px; right: 8px; top: 60px;
+    width: auto; max-width: none; max-height: calc(100dvh - 68px);
   }
 }
 
