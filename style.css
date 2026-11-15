@@ -2500,6 +2500,13 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   display: block; border-radius: 6px;
 }
 .left-right-image-text > .text { flex: 1 1 0; min-width: 0; }
+/* Align the image with its heading. The row is flex-start so the image box top and the text box
+   top already coincide, but two default margins broke the visual alignment: the image's <p>
+   wrapper left ~14px dead space UNDER the picture, and the heading's own top margin dropped the
+   first line ~26px BELOW the image top -- so the image floated above, unmoored from its text.
+   Zero both: the picture fills its box and the heading's cap aligns with the image top. */
+.left-right-image-text > .image p { margin: 0; }
+.left-right-image-text > .text > :first-child { margin-top: 0; }
 @media (max-width: 640px) {
   /* Name .image-right too: its row-reverse rule is (0,2,0) and would otherwise beat a bare
      .left-right-image-text column rule (0,1,0) and keep the image-right rows side-by-side on a
