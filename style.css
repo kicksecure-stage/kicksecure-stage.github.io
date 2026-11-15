@@ -916,6 +916,21 @@ html:not(.client-js) .site-search .search-field { display: none; }
   .site-header-inner:has(#search-toggle:checked) .site-nav { display: none; }
   .search-toggle:checked ~ .search-field { width: min(50vw, 22rem); box-shadow: none; }
 }
+/* Desktop (>720px): the lens expands the field INLINE into an in-header search bar, not a
+   floating overlay -- in-flow after the magnifier, so it reads as a real header search box.
+   The header is pinned nowrap here so the growing field can NEVER reflow the row to a 2nd line
+   (the sole reason the field was kept absolute); the nav yields (display:none) while the bar is
+   open to free the room the small nav->lens slack cannot. Mobile (<=720px) keeps the overlay. */
+@media (min-width: 721px) {
+  .site-header-inner { flex-wrap: nowrap; }
+  .search-field { position: static; top: auto; right: auto; box-shadow: none; }
+  /* A usable inline bar needs more room than the ~60-120px nav->lens slack, so the nav yields
+     to the search WHILE IT IS OPEN (it returns on close). :has() keys the ancestor off the
+     toggle, which sits AFTER the nav in the DOM (a `~` combinator cannot reach a preceding
+     sibling). The header stays nowrap so the bar never reflows the row to a 2nd line. */
+  .site-header-inner:has(#search-toggle:checked) .site-nav { display: none; }
+  .search-toggle:checked ~ .search-field { width: min(50vw, 22rem); box-shadow: none; }
+}
 .edit-source { color: var(--muted); font-size: 0.9rem; }
 /* Header Donate call-to-action (production parity). Red heart glyph + link. */
 .header-donate {
@@ -2492,7 +2507,7 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 }
 .left-right-image-text.image-right { flex-direction: row-reverse; }
 /* Balanced ~48% image column + ONE uniform 16:9 box (object-fit:cover): every alternating row gets
-   the same image WIDTH and HEIGHT, so the rows line up into a clean grid (production promo look). A
+   the same image WIDTH and HEIGHT, so the rows line up into a clean grid (production image-text row look). A
    bare 40% column at each image's natural aspect read small + ragged (asymmetrical). */
 .left-right-image-text > .image { flex: 0 0 48%; max-width: 48%; }
 .left-right-image-text > .image img {
@@ -2511,9 +2526,19 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
   /* Name .image-right too: its row-reverse rule is (0,2,0) and would otherwise beat a bare
      .left-right-image-text column rule (0,1,0) and keep the image-right rows side-by-side on a
      phone. Both must stack to one column. */
+  /* nowrap is the fix: the desktop base rule sets flex-wrap:wrap (so a too-wide row can wrap on
+     desktop), but once the row is a COLUMN that wrap packs the image and text into compressed flex
+     LINES -- the image's line is sized SHORTER than the <img> inside it (e.g. a 169px line box vs a
+     214px picture), and overflow:visible lets the picture spill ~33px down over the text below (the
+     reported mobile "image overlaps text"). A stacked row is one image over one text: nowrap keeps
+     it a single-line column where the image line takes its natural height and the text clears it. */
   .left-right-image-text,
-  .left-right-image-text.image-right { flex-direction: column; align-items: stretch; gap: 0.75rem; }
-  .left-right-image-text > .image { max-width: 100%; }
+  .left-right-image-text.image-right {
+    flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: 0.75rem;
+  }
+  /* Drop the desktop `flex: 0 0 48%`: 48% is a WIDTH basis on desktop but becomes a meaningless
+     MAIN-axis (height) basis once stacked. flex: 0 0 auto sizes the image to its natural height. */
+  .left-right-image-text > .image { flex: 0 0 auto; max-width: 100%; }
 }
 .references, .footnotes { font-size: 0.9rem; color: var(--fg-soft); }
 /* In-text citation marker [N]: a real SUPERSCRIPT (idiomatic -- matches MediaWiki/Wikipedia's
@@ -4130,7 +4155,7 @@ body:has(.stage-banner) { padding-bottom: 4.5rem; }
 .donor-card.range-s .range > div.s, .donor-card.range-m .range > div.m,
 .donor-card.range-l .range > div.l, .donor-card.range-xl .range > div.xl { display: block; }
 
-/* Site-notice banner (#siteNotice, the id=38 donation promo) -- adapted from
+/* Site-notice banner (#siteNotice, the id=38 donation banner) -- adapted from
    Sitenotice.css: shown by default (no-JS friendly), JS dismisses; a vendored FA
    icon replaces the former wiki image. */
 /* Flash-free dismiss: the <head> pre-paint (page.py THEME_INIT_JS) marks <html> when
@@ -4188,7 +4213,7 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
 
 /* Fly-in donate toast (#fly-in-notification-panel) -- adapted from
    FlyInNotification.css. JS-only gadget: the [hidden] attribute keeps it hidden
-   until app.js shows it. The former promo photo is dropped. */
+   until app.js shows it. The former banner photo is dropped. */
 #fly-in-notification-panel {
   width: 300px; background: #fff; color: #555; box-shadow: 3px 3px 7px rgba(0,0,0,.2);
   border-radius: 10px 0 0 10px; position: fixed; right: 0; top: calc(50% - 160px);
@@ -4253,7 +4278,7 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
 }
 .sitenotice-end-of-year > .eoy-right > .eoy-donate-button:hover { background-color: #fffccf; }
 .sitenotice-end-of-year > .eoy-left > p { font-size: 15px; margin: 10px 0 15px; }
-/* prod shows the promo as a fixed 215px-tall letterbox stretched to full column width
+/* prod shows the banner as a fixed 215px-tall letterbox stretched to full column width
    (object-fit:cover crops the photo into it): prod .eoy-image computes width:556px height:215px.
    width:100% + height:auto aspect-scaled to ~398px (556 * 215/300) -- too tall; width:100% alone
    (no height) does the same. PIN height:215px (prod's value, matching the img's height=215 attr)
