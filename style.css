@@ -42,6 +42,9 @@
      (a non-color cue, WCAG G183) -- so no color-contrast failure. */
   --link: #1d70b8;
   --link-hover: #08409b;
+  /* Link inside a COLORED qualitative cell (.cell-*): the bright --link fails 4.5:1 on the tint,
+     so a (rare) link there uses this darker-but-still-blue. Clears 4.5:1 on every tint, both themes. */
+  --link-on-shade: #0f4c81;
   /* Redlink (target page missing): MediaWiki's redlink red. 5.9:1 on white (AA text), and
      darker-yet-redder than near-black body text -- a LIGHTNESS difference, not hue alone. */
   --link-new: #ba0000;
@@ -110,13 +113,14 @@
 
   --link: #74b1ff;
   --link-hover: #9cc8ff;
+  --link-on-shade: #aecfff;
   --link-new: #ff8585;   /* redlink: light red, ~6:1 on the dark ground */
   --accent: #4fd1b0;
   --accent-fg: #08221c;
   --focus: #74b1ff;
 
   --btn-primary: #1d70b8;
-  --btn-primary-hover: #2f7bbe;
+  --btn-primary-hover: #15568c;
   --btn-primary-fg: #ffffff;
   --btn-danger: #b32424;
   --btn-danger-fg: #ffffff;
@@ -156,13 +160,14 @@
 
     --link: #74b1ff;
     --link-hover: #9cc8ff;
+    --link-on-shade: #aecfff;
     --link-new: #ff8585;   /* redlink: light red, ~6:1 on the dark ground */
     --accent: #4fd1b0;
     --accent-fg: #08221c;
     --focus: #74b1ff;
 
     --btn-primary: #1d70b8;
-    --btn-primary-hover: #2f7bbe;
+    --btn-primary-hover: #15568c;
     --btn-primary-fg: #ffffff;
     --btn-danger: #b32424;
     --btn-danger-fg: #ffffff;
@@ -1698,9 +1703,8 @@ code:empty { display: none; }
   vertical-align: top;
 }
 .wiki-content table:not(.toc):not(.storage-table):not(.comparison-table) th {
-  background: color-mix(in srgb, var(--surface) 70%, var(--fg) 12%);
   font-weight: 700;
-  border-bottom-width: 2px;
+  border-bottom: 2px solid color-mix(in srgb, var(--border) 40%, var(--fg) 60%);
 }
 /* zebra: explicit .odd/.even hooks and an nth-child fallback */
 .wiki-content table:not(.toc):not(.storage-table):not(.comparison-table) tr.even td,
@@ -1752,16 +1756,12 @@ code:empty { display: none; }
 .wiki-content table:not(.toc):not(.storage-table) th.cell-gray {
   background: color-mix(in srgb, var(--callout) 32%, var(--surface)) !important;
 }
-/* Links inside a status tint: the body --fg passes on the 32% mix but the blue --link does not
-   (e.g. #0b57d0 on cell-red ~3.69:1). Inherit the cell's text color (keeps the underline
-   affordance) so a link -- e.g. a citation marker landing in a Yes/No cell -- meets contrast in
-   both themes. */
-/* Colored status cells (cell-*) + tinted <th> headers carry a tint the --link blue cannot clear
-   WCAG 4.5:1 on (axe-confirmed: cell-red fails; a <th> ~#d6d7d9 is ~3.6:1), so THEIR links inherit
-   the high-contrast text colour + keep the underline. .cta-button stays excluded (solid-fill button). */
-.wiki-content table:not(.toc):not(.storage-table) :is(td, th):is(.cell-green, .cell-red, .cell-yellow, .cell-blue, .cell-gray) a,
-.wiki-content table:not(.toc):not(.storage-table):not(.comparison-table) th a:not(.cta-button) {
-  color: currentColor;
+/* Links inside a COLORED qualitative cell (.cell-*: good/bad/depends/N-A/caution): the bright --link
+   fails WCAG 4.5:1 on the 32% tint, so the (rare) link there uses the darker --link-on-shade -- still a
+   visible blue link, clears 4.5:1 on every tint in both themes. Unfilled <th> headers now use the
+   normal --link with no override. .cta-button stays excluded (solid-fill button). */
+.wiki-content table:not(.toc):not(.storage-table) :is(td, th):is(.cell-green, .cell-red, .cell-yellow, .cell-blue, .cell-gray) a:not(.cta-button) {
+  color: var(--link-on-shade);
   text-decoration: underline;
 }
 /* info-box callouts sit on a LIGHT ~7% tint where --link blue clears 4.5:1 (~4.75:1), so callout
@@ -1769,11 +1769,10 @@ code:empty { display: none; }
 .wiki-content .info-box a {
   text-decoration: underline;
 }
-/* Homepage .explainer tinted panel (--surface-2 ~#ececec): --link blue is ~4.35:1 there, just under
-   4.5. currentColor + underline is theme-safe (dark text on the light panel, light text in dark mode)
-   and matches the tinted-surface treatment above. */
+/* Homepage .explainer tinted panel (--surface-2): the bright --link is ~4.35:1 there (just under 4.5),
+   so its links use the darker --link-on-shade blue -- a visible blue link that clears 4.5:1 both themes. */
 .explainer a {
-  color: currentColor;
+  color: var(--link-on-shade);
   text-decoration: underline;
 }
 
@@ -2550,11 +2549,12 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
    bare `.thumb`) so it never collides with the <gallery> tag's own `.gallery .thumb`. Scoped to
    .wiki-content to outrank the global img rule. */
 .wiki-content .thumbframe {
-  border: 1px solid var(--border); background: var(--surface);
-  padding: 6px; text-align: center; overflow: hidden; font-size: 0.94rem;
+  /* Borderless: no card, no frame, no shadow -- just the image and a typographic caption (the
+     modern docs/KB idiom: Antora/Fedora, Read the Docs, MkDocs Material, Docusaurus). With no
+     auto-frame, a self-framed image (a badge/seal/screenshot that already carries its own border)
+     can never show a spurious SECOND border -- the structural fix for the double-border class. */
+  text-align: center; font-size: 0.94rem;
   width: fit-content; max-width: 100%;   /* shrink-wrap to the image, not the column */
-  border-radius: var(--radius-sm);   /* single rounded frame + soft shadow (prod Kicksecure parity) */
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.07), 0 6px 16px rgb(0 0 0 / 0.07);
   margin-bottom: 0.8em;
 }
 .wiki-content .thumbframe.tright { float: right; clear: right; margin: 0.4em 0 0.8em 1.4em; }
@@ -2563,24 +2563,14 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 .wiki-content .thumbframe.tnone { float: none; margin: 0.4em 0 0.8em; }
 .wiki-content .thumbframe p { margin: 0; }   /* defensive: neutralize any pandoc <p> wrap */
 .wiki-content .thumbframe img {
-  /* no inner border, no forced bg: the frame is the ONLY box. A forced --bg behind a
-     transparent logo (Debian/Tux/OSI/GNU are transparent PNGs) printed the white "double box". */
-  display: block; margin: 0 auto; max-width: 100%; height: auto; border-radius: 3px;
+  /* The bare image is the whole figure now -- no inner border, no forced bg (a forced --bg behind
+     a transparent logo, e.g. Debian/Tux/OSI/GNU, printed a white box). */
+  display: block; margin: 0 auto; max-width: 100%; height: auto;
 }
-/* Opaque photo/illustration (media.py `opaque()` -> .thumb-opaque): the image already fills its
-   box, so the 6px surface-bg padding ring reads as a spurious SECOND border around it. Drop the
-   padding so the image meets the frame edge (overflow:hidden + the frame radius clip its corners
-   = ONE clean rounded frame). A transparent logo never gets this class, so its padded card is
-   unchanged. The caption keeps its own inset so it is not flush to the frame edge. */
-.wiki-content .thumbframe.thumb-opaque { padding: 0; }
-.wiki-content .thumbframe.thumb-opaque img { border-radius: 0; }
-.wiki-content .thumbframe.thumb-opaque .thumbcaption { padding: 6px 8px 7px; }
-/* With no frame padding, an EMPTY caption would still show a bare surface strip under the image;
-   collapse it so an uncaptioned opaque thumb is just the framed image. */
-.wiki-content .thumbframe.thumb-opaque .thumbcaption:empty { display: none; }
 .wiki-content .thumbcaption {
-  text-align: left; line-height: 1.4; padding: 4px 2px 2px;
-  font-size: 0.94rem; color: var(--fg-soft);
+  /* Set the caption apart by TYPE, not a box: centered under the image, smaller, muted. */
+  text-align: center; line-height: 1.4; padding-top: 0.35rem;
+  font-size: 0.85rem; color: var(--fg-soft);
 }
 /* Phone: a floated thumb on a narrow column crowds the text -- let it span full width. */
 @media (max-width: 560px) {
@@ -2659,10 +2649,9 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
    (reverted -- it fails color-contrast on tinted surfaces). Scoped; used only on that test page. */
 .lk-applied a { color: #1d70b8; }
 .lk-brighter a { color: #1f6feb; }
-/* Citation [N] links inside a table cell/header inherit the cell's (contrast-compliant) text
-   colour: the link hue can fail 4.5:1 on a tinted <th> background, and the bracketed
-   superscript is already an unmistakable citation marker (link-colour-independent). */
-:is(td,th) .reference a { color: currentColor; }
+/* Citation [N] links in cells follow normal link colouring: --link in plain (now-unfilled) cells,
+   and --link-on-shade inside a colored .cell-* (via the colored-cell link rule above, which wins on
+   specificity) so they still clear 4.5:1 on the tint. No per-cell override needed. */
 /* Jump-to-footnote target: box + tint the referenced note so a clicked [N] citation
    lands somewhere visible (scroll-margin clears any fixed chrome). */
 .references li:target, .footnotes li:target {
@@ -2807,6 +2796,7 @@ sup.reference:target {
 .share-tooltip .menu, .share-panel {
   --surface: #f6f7f9; --surface-2: #eceff2; --fg: #1b1d1f; --muted: #6b7177;
   --border: #d5d9de; --border-soft: #e6e9ec; --link: #1d70b8; --link-hover: #08409b;
+  --focus: #0b57d0;  /* always-light panel: ground --focus too, so a dark-theme focus ring (#74b1ff) is not low-contrast on the #f6f7f9 card */
   --shadow-md: 0 4px 12px rgba(20, 24, 31, 0.10);
 }
 .share-tooltip .menu-headline, .share-panel .menu-headline {
@@ -3007,18 +2997,13 @@ sup.reference:target {
 .wiki-content .float-right table:not(.toc):not(.storage-table) td {
   border: none; padding: 10px 15px; vertical-align: middle;
 }
-.wiki-content .float-right table:not(.toc):not(.storage-table) td { background: var(--surface); }
-/* header row + label column: shaded, CENTERED and BOLD (prod), value cells stay left/regular */
+.wiki-content .float-right table:not(.toc):not(.storage-table) td { background: var(--bg); }
+/* header row + label column: a light --surface shade, CENTERED and BOLD. Both --bg value cells and
+   the --surface label column are light enough that the normal --link blue clears 4.5:1, so links
+   everywhere in the infobox use --link with NO override (modern Wikipedia drops the heavy label fill). */
 .wiki-content .float-right table:not(.toc):not(.storage-table) th,
 .wiki-content .float-right table:not(.toc):not(.storage-table) td:first-child {
-  background: var(--surface-2); text-align: center; font-weight: 700;
-}
-/* Links in that shaded label column/header: --link blue is only 4.47:1 on --surface-2 (axe
-   color-contrast fail), so inherit the cell's dark text colour + keep the underline affordance
-   (matches the th-tinted-surface rule for generic content tables). */
-.wiki-content .float-right table:not(.toc):not(.storage-table) th a,
-.wiki-content .float-right table:not(.toc):not(.storage-table) td:first-child a {
-  color: currentColor; text-decoration: underline;
+  background: var(--surface); text-align: center; font-weight: 700;
 }
 [hidden] { display: none !important; }
 
@@ -3767,7 +3752,12 @@ sup.reference:target {
    object-fit:contain with inset padding -- so every logo is centered with breathing room and
    never touches the cell border, whatever its native ratio. */
 .wiki-content .thumb-gallery .thumbframe {
+  /* A gallery cell is a deliberate FRAMED context (the opt-in frame the borderless default drops):
+     a bordered card per cell so a wrapping grid of mixed-ratio logos/thumbs reads as one unit.
+     mode-logos overrides this back to frameless below. */
   width: 8.5rem; box-sizing: border-box;   /* uniform cell (overrides the fit-content shrink) */
+  border: 1px solid var(--border); background: var(--surface);
+  border-radius: var(--radius-sm); overflow: hidden;
 }
 .wiki-content .thumb-gallery .thumbframe > a,
 .wiki-content .thumb-gallery .thumbframe > p > a {
