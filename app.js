@@ -704,6 +704,61 @@
     results.className = "search-results";
     results.hidden = true;
     input.parentNode.appendChild(results);
+    // ARIA combobox (APG "list autocomplete"): DOM focus STAYS in the input; the highlighted
+    // result is tracked via aria-activedescendant, never by moving real focus. That is also why
+    // the page-level book-nav arrow handler (which bails on a focused input) stays dormant here.
+    results.id = "mw-search-results";
+    results.setAttribute("role", "listbox");
+    results.setAttribute("aria-label", "Search results");
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", "mw-search-results");
+    input.setAttribute("aria-expanded", "false");
+    // -1 = no active option: aria-activedescendant empty, so Enter keeps the bestMatch fallback.
+    var activeIndex = -1;
+    function setExpanded(open) { input.setAttribute("aria-expanded", open ? "true" : "false"); }
+    // Highlight via CSSOM (.style.*, not gated by style-src -- CSP-safe, same idiom as
+    // results.style.top): a --surface-2 fill PLUS an inset --link ring, so the keyboard-active
+    // option is distinct from a mere :hover (fill only) and from the link text (--fg). No
+    // style.css rule, so the feature ships from app.js alone with no asset-fingerprint coupling.
+    function paint(li, on) {
+      var a = li.firstElementChild;   // every option li carries exactly one <a> (appendResult)
+      a.style.background = on ? "var(--surface-2)" : "";
+      a.style.outline = on ? "2px solid var(--link)" : "";
+      a.style.outlineOffset = on ? "-2px" : "";   // inset so the listbox's overflow never clips it
+    }
+    // Move the active option to index i (-1 = none, i.e. back to the typed query). Clears the old
+    // highlight + aria-selected, paints the new one, and keeps aria-activedescendant pointing at a
+    // PRESENT option id or "" -- it must never dangle to a removed row.
+    // Callers only ever pass a valid index or a negative sentinel, and every clear happens while
+    // the active row is still present (before a rebuild), so activeIndex>=0 always resolves.
+    function setActive(i) {
+      var opts = results.children;
+      if (activeIndex >= 0) {
+        opts[activeIndex].setAttribute("aria-selected", "false");
+        paint(opts[activeIndex], false);
+      }
+      if (i < 0) {   // none: back to the typed query
+        activeIndex = -1;
+        input.setAttribute("aria-activedescendant", "");
+        return;
+      }
+      activeIndex = i;
+      var li = opts[i];
+      li.setAttribute("aria-selected", "true");
+      paint(li, true);
+      input.setAttribute("aria-activedescendant", li.id);
+      if (li.scrollIntoView) li.scrollIntoView({ block: "nearest" });   // guarded: absent in old engines
+    }
+    function clearActive() { setActive(-1); }
+    // Pointer + keyboard share ONE highlight: moving the mouse over a row makes it the active
+    // option (so Enter follows the pointer too). mousemove (not mouseover) so a stationary cursor
+    // left hovering after a keyboard move does not steal the highlight back.
+    results.addEventListener("mousemove", function (e) {
+      var li = e.target.closest("li");   // null when the pointer is over the panel's own padding
+      if (!li) return;
+      setActive(Array.prototype.indexOf.call(results.children, li));
+    });
     // The index is DATA fetched on first focus, memoized single-flight: a page view with no
     // search pays nothing. Until it resolves, queries no-op (no-JS Browse link is the fallback);
     // a late arrival is still honored -- the input/keydown handlers run their body after the
@@ -747,6 +802,9 @@
       var href = root + e.u;
       if (!navSafe(href, false)) return false;   // drop a row whose (tampered) target is not same-origin
       var li = document.createElement("li");
+      li.setAttribute("role", "option");
+      li.setAttribute("aria-selected", "false");
+      li.id = "mw-sr-" + results.children.length;   // this row's index; unique + stable per render
       var a = document.createElement("a");
       a.setAttribute("href", href);
       a.textContent = e.t;
@@ -790,7 +848,7 @@
             shownCount++;
             added++;
           }
-          if (added) { results.hidden = false; positionPanel(); }
+          if (added) { results.hidden = false; setExpanded(true); positionPanel(); }
         });
       });
     }
@@ -828,8 +886,9 @@
       ensureIndex().then(function () {
         var q = input.value.trim().toLowerCase();
         var gen = ++queryGen;
+        clearActive();   // reset highlight + aria-activedescendant before the rows are rebuilt
         while (results.firstChild) results.removeChild(results.firstChild);
-        if (q.length < 2) { results.hidden = true; return; }
+        if (q.length < 2) { results.hidden = true; setExpanded(false); return; }
         // Title pass (instant, no extra fetch): substring title matches, tracked by pageId so the
         // full-text pass never double-lists a page.
         var shownIds = {}, shown = 0;
@@ -842,6 +901,7 @@
           shown++;
         }
         results.hidden = shown === 0;
+        setExpanded(shown > 0);
         positionPanel();
         // Full-text pass (async, appended when the on-demand shards arrive). A namespace-qualified
         // query stays title-only -- its body words would wrongly surface main-namespace pages.
@@ -853,17 +913,50 @@
     // location.assign (not a noreferrer anchor like the download path): search targets are
     // always internal "root + e.u" pages, so a same-origin Referer is normal and harmless.
     input.addEventListener("keydown", function (e) {
-      if (e.key !== "Enter") return;
-      // Ignore the Enter that CONFIRMS an IME candidate (CJK etc.), else a provisional
-      // query navigates away mid-composition. isComposing covers most engines; keyCode
-      // 229 is the Safari fallback where isComposing is not set on this keydown.
+      // Ignore keys that CONFIRM/MOVE an IME candidate (CJK etc.), else a provisional query
+      // navigates or the list steps mid-composition. isComposing covers most engines; keyCode
+      // 229 is the Safari fallback where isComposing is not set. Same guard book-nav uses.
       if (e.isComposing || e.keyCode === 229) return;
+      var opts = results.children, n = opts.length;
+      // Arrow navigation only while the dropdown is on screen. Cycle THROUGH the input: stepping
+      // past either end lands on -1 (no active option, the typed query in view), then re-enters
+      // the list -- so the user can always get back to their raw query (DocSearch/APG wrap).
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !results.hidden) {
+        e.preventDefault();
+        if (e.key === "ArrowDown") setActive(activeIndex + 1 >= n ? -1 : activeIndex + 1);
+        else setActive(activeIndex < 0 ? n - 1 : activeIndex - 1);   // from none -> last; from 0 -> none
+        return;
+      }
+      if (e.key === "Escape") {
+        // Stage 1 (dropdown open): dismiss it, KEEP the typed query (aria-activedescendant never
+        // overwrote input.value, so the query is intact). stopPropagation so the document-level
+        // Escape does not ALSO collapse the lens. Stage 2 (already dismissed): fall through, and
+        // the document handler collapses the lens.
+        if (!results.hidden) {
+          e.preventDefault();
+          e.stopPropagation();
+          clearActive();
+          setExpanded(false);
+          results.hidden = true;
+          while (results.firstChild) results.removeChild(results.firstChild);
+        }
+        return;
+      }
+      if (e.key !== "Enter") return;
       e.preventDefault();
+      // A keyboard-selected option wins; navigate straight to it. Its href was already navSafe-
+      // validated at append (a failed row is never added), so no re-check is needed.
+      if (activeIndex >= 0) {
+        window.location.assign(opts[activeIndex].firstElementChild.getAttribute("href"));
+        return;
+      }
+      // No active option: the existing bestMatch fallback -- prefer an exact/substring TITLE match,
+      // else the top rendered row (may be a body-only full-text hit), so Enter is never inert while
+      // results are on screen. This site has no server results page, so this is the whole no-active
+      // behaviour (DocSearch-sanctioned).
       var q = input.value.trim().toLowerCase();
       if (q.length < 2) return;   // empty query matches everything via indexOf("")
       ensureIndex().then(function () {
-        // Prefer an exact/substring TITLE match; else fall back to the top rendered row (which may
-        // be a body-only full-text hit) so Enter is never inert while results are on screen.
         var href = bestMatch(q);
         if (href === null) {
           var firstLink = results.querySelector("li a");
@@ -883,6 +976,8 @@
       // closing (its gen !== queryGen guard then drops it).
       queryGen++;
       if (toggle) toggle.checked = false;
+      clearActive();       // drop any highlight + aria-activedescendant while the rows still exist
+      setExpanded(false);
       results.hidden = true;
       while (results.firstChild) results.removeChild(results.firstChild);
     }
