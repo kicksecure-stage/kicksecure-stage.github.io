@@ -1831,10 +1831,12 @@ code:empty { display: none; }
 /* info-box callouts sit on a LIGHT ~7% tint where --link blue clears 4.5:1 (~4.75:1), so callout
    links stay the SAME blue as ordinary prose links (the case the operator flagged) -- just underline.
    EXCLUDE the button-link classes: a solid-fill button in a callout (download-button-v2 / hero /
-   cta) is not a prose link and its own `text-decoration:none` only TIES this rule on specificity
-   (both 0,2,1), so without the exclusion source order underlines the button label. Single-list
-   :not() keeps the rule at one extra class of specificity; the buttons simply stop matching. */
-.wiki-content .info-box a:not(.cta-button, .button, .pill, .download-button-v2, .hero-download-button) {
+   cta) is not a prose link; its own `text-decoration:none` only TIES this rule on specificity, so
+   without the exclusion source order underlines the button label. The exclusion is wrapped in
+   :where() so it adds ZERO specificity -- the rule stays (0,2,1): raising it to (0,3,1) would
+   out-specify the `.mininav.mn-switcher a` tab-underline reset (0,2,1) and underline every switcher
+   tab. With :where() the excluded buttons simply stop matching, and every tie is unchanged. */
+.wiki-content .info-box a:where(:not(.cta-button, .button, .pill, .download-button-v2, .hero-download-button)) {
   text-decoration: underline;
 }
 /* Homepage .explainer tinted panel (--surface-2): the bright --link is ~4.35:1 there (just under 4.5),
