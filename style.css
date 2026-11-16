@@ -1811,25 +1811,25 @@ code:empty { display: none; }
   padding: 12px 21px;
 }
 .info-box.has-icon {
-  display: flow-root; position: relative; padding-left: 55px;
+  display: flow-root; position: relative; padding-left: 46px;
 }
 .info-box-icon {
   position: absolute; left: 12px; top: 9px; margin: 0;
-  width: 30px; height: 30px; font-size: 0;   /* kill the inline whitespace gap */
+  width: 24px; height: 24px; font-size: 0;   /* kill the inline whitespace gap */
 }
 /* the glyph becomes a filled round badge coloured by its OWN cs-* --callout, white icon
    (the accent lives on the <i>, not the wrapping span, so target the <i>). */
 .info-box-icon > .fa-solid, .info-box-icon > i {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 5px; font-size: 0.95rem;  /* prod: rounded square */
+  width: 24px; height: 24px; border-radius: 5px; font-size: 0.875rem;  /* prod: rounded square; chip tier */
   background: var(--callout, var(--accent)); color: #fff;
 }
-.info-box-icon > img { width: 30px; height: auto; }   /* Ambox image icon: match the 30px icon box */
+.info-box-icon > img { width: 24px; height: auto; }   /* Ambox image icon: match the 24px icon box */
 /* An UNSIZED decorative logo/cue in an info-box BODY sizes to 46px so a tall glyph cannot stretch
    the box past its text. EXCLUDE:
      - the icons that live in the callout but are not body content: the type icon's image (nested
        .info-box-icon a img, so the parent-guard alone misses it) and the archive affordance marker
-       -- the 46px!important distorted both (square Info icon -> 30x46; 14x16 archive mark -> 24x46;
+       -- the 46px!important distorted both (square Info icon -> 24x46; 14x16 archive mark -> 24x46;
        Lighthouse image-aspect-ratio); each keeps its own sizing rule.
      - a figure, which is deliberately sized and must not be collapsed: a .media-sized image (a
        frameless image with an explicit author px width) and any .thumbframe descendant (a
@@ -1858,21 +1858,13 @@ code:empty { display: none; }
    sets (same specificity as the base rule, wins on source order) -- that gave "FAILURE" the
    icon-font's cramped metrics. The extra class outranks `.fa-solid`. */
 .padded-content-icon.pci-text { font-family: inherit; }
-/* A bare-character IconSet (iconset-false, e.g. the warning "!") renders as a FILLED chip
-   tinted by its cs-* --callout with a white glyph -- matching prod, not a loose coloured
-   character. Scoped to iconset-false so the numbered/keycap/circle IconSets (their own rules
-   below) are untouched; the warning bang is cs-red, saturated enough for white. */
+/* A bare-character IconSet (iconset-false, e.g. the warning "!") is an INLINE status marker,
+   so it stays a bare ~1em glyph in its cs-* colour (severity shown by colour, not size) --
+   matching the {{Icon}} info/warn markers that share the base rule. No chip: the filled-chip
+   treatment is reserved for the numbered/callout tier (the numbered badges + the callout-box
+   icon). cs-yellow legibility is covered by the base `.padded-content-icon.cs-yellow { #444 }`. */
 .padded-content-icon.pci-text.iconset-false {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 1.6em; min-height: 1.6em; padding: 0 0.4em; border-radius: 5px;
-  background: var(--callout, var(--accent)); color: #fff;
-  line-height: 1; vertical-align: middle; margin-right: 0.35rem;
-}
-/* Yellow is too light for a white glyph -- dark text on a yellow chip (prod uses #444).
-   Higher specificity than the white-text rule above so it wins for a yellow bang. */
-.padded-content-icon.pci-text.iconset-false.cs-yellow,
-.padded-content-icon.pci-text.iconset-false.cs-yellow-light {
-  color: #444;
+  margin-right: 0.35rem;
 }
 /* Step/section badges ({{IconSet|hN|M}}): ONE subordinate treatment across all four
    levels so the ordinal never out-shouts its heading (the heading says WHERE IN THE DOC,
@@ -1881,18 +1873,18 @@ code:empty { display: none; }
 .padded-content-icon.iconset-h2,
 .padded-content-icon.iconset-h3,
 .padded-content-icon.iconset-h4 {
-  font-size: 0.8rem;   /* 12.8px numeral: below body (16px) and the smallest heading (h4, 18px) */
+  font-size: 0.875rem; /* 14px numeral: below body (16px) and the smallest heading (h4, 18px) */
   font-weight: 600;    /* heading weight, not the base-icon 700 -- the numeral is never heavier than its heading */
 }
-/* h1's circle (pci-style-circle, 1.9em) matched to the square badges' 1.7em box so all
-   four read as one marker size regardless of shape. The white numeral on the neon
-   --c-green (#1a9e3f) is only ~3.5:1, so pin the fill to the AA green (#157a33, already
-   the iconset-true text green) -- white clears 4.5:1, and the darker green also mutes the
-   loudest badge. Theme-independent (dark green + white reads on both backgrounds). The thick
-   white ring is thinned to 2px here (vs the shared 3px, which the large fa-2x banners keep) so
-   it does not weigh down the now-subordinate circle. */
+/* h1's circle matched to the square badges' 24px box so all four read as one marker size
+   regardless of shape -- the fixed chip tier (shared with the callout-box icon). The white
+   numeral on the neon --c-green (#1a9e3f) is only ~3.5:1, so pin the fill to the AA green
+   (#157a33, already the iconset-true text green) -- white clears 4.5:1, and the darker green
+   also mutes the loudest badge. Theme-independent (dark green + white reads on both
+   backgrounds). The thick white ring is thinned to 2px here (vs the shared 3px, which the
+   large fa-2x banners keep) so it does not weigh down the now-subordinate circle. */
 .padded-content-icon.pci-style-circle.iconset-h1 {
-  width: 1.7em; height: 1.7em; background: #157a33; border-width: 2px;
+  width: 24px; height: 24px; background: #157a33; border-width: 2px;
 }
 /* IconSet h2/h3/h4 (step/section numbers, e.g. {{IconSet|h2|3}}) render as prod's filled
    rounded-square badge with a white numeral, coloured by the element's cs-* --callout --
@@ -1901,7 +1893,7 @@ code:empty { display: none; }
 .padded-content-icon.iconset-h3,
 .padded-content-icon.iconset-h4 {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 1.7em; height: 1.7em; padding: 0 0.3em; border-radius: 5px;
+  min-width: 24px; height: 24px; padding: 0 0.3em; border-radius: 5px;
   background: var(--callout, var(--accent)); color: #fff;
   margin-right: 0.5rem; vertical-align: middle; line-height: 1;
 }
@@ -2720,6 +2712,12 @@ sup.reference:target {
   transform: translateY(-0.035em);
 }
 .mw-editsection a:hover { color: var(--link); text-decoration: none; }
+/* #127: a section heading can sit inside an .info-box (e.g. the ISO step boxes). There the content
+   link rule `.wiki-content .info-box a` (0,2,1) outranks the base `.mw-editsection a` no-underline
+   (0,1,1) and underlines the edit-pen/share affordance icons. This (0,3,1) rule wins wiki-wide,
+   order-independent, so heading affordance icons are never underlined; real content links stay so. */
+.wiki-content .heading-actions .mw-editsection a,
+.wiki-content .heading-actions .share-tooltip a { text-decoration: none; }
 /* fa-pencil fills its whole em (ink ~0.999em) while fa-share-nodes is ~0.875em, so at EQUAL
    font-size the pencil reads ~14% larger per side (user: "edit symbol too large"). Scale the
    pencil GLYPH alone -- by the share/pencil advance ratio (0.875/1.0) -- so its ink matches the
@@ -3771,13 +3769,15 @@ sup.reference:target {
    brand logos sit directly on the page background -- no card border/fill/shadow -- at uniform
    height, centered, with a roomy gap. Strips the .thumbframe card chrome; keeps object-fit:contain
    from the rule above for even alignment across mixed aspect ratios. */
-/* Symmetric logo cloud: flex-wrap let each row center its own differently-WIDTH logos, so columns
-   did not line up row-to-row (a wide wordmark pushed its neighbours off the column below). A GRID
-   of equal auto-fit 1fr tracks pins every logo to a shared column; the fixed logo-box height makes
-   a tall logo and a wide wordmark occupy the SAME slot (object-fit:contain scales each to fit). */
+/* Symmetric logo cloud: a 3-column grid, capped + centered, so 6 logos read as a tidy 3x2 block on
+   every width -- NOT stretched edge-to-edge (the auto-fit 1fr row did that on desktop). The cap sits
+   below desktop content width so the cluster centers; on a phone (narrower than the cap) the three
+   1fr columns shrink to keep the same 3-up rows. The fixed logo-box height makes a tall logo and a
+   wide wordmark occupy the SAME slot (object-fit:contain scales each to fit). */
 .wiki-content .thumb-gallery.mode-logos {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
-  gap: 1.5rem 1rem; justify-items: center; align-items: start;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  max-width: 34rem; margin-inline: auto;
+  gap: 1.5rem 1.75rem; justify-items: center; align-items: start;
 }
 .wiki-content .thumb-gallery.mode-logos .thumbframe {
   width: 100%; border: none; background: none; box-shadow: none;
