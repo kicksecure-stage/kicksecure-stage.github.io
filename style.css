@@ -282,20 +282,9 @@ img, video { max-width: 100%; height: auto; }
 /* Keep a token together across a line wrap (e.g. a project name + its trailing TM/R sup, so
    the mark never orphans onto its own line -- see render/pipeline._bind_trademarks). */
 .nowrap { white-space: nowrap; }
-/* Inline wiki cross-link icon ({{kicksecure_wiki}} etc.): the source File is a bare 50x50 px
-   image placed inline before a link, so cap it to a text-sized inline glyph instead of a giant
-   block (overrides the presentational width/height attrs). */
-.kicksecure-wiki-link-icon {
-  display: inline; width: auto; height: 1.15em; vertical-align: -0.18em;
-}
-/* The icon is its OWN <a> (File link=), a ~17px glyph sitting right beside a same-URL text link
-   -- a tiny crowded tap target that fails axe target-size (WCAG 2.5.8). Give that anchor a >=24x24
-   hit box (centered glyph), like the archive/reference markers; size-based, so the adjacent prose
-   text link (inline-exempt) needs no gap. */
-a:has(> img.kicksecure-wiki-link-icon) {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 24px; min-height: 24px;
-}
+/* Cross-wiki link icons ({{kicksecure_wiki}}/{{whonix_wiki}}) are decorative inline
+   <img class="link-icon"> (empty File link= -> no anchor) -- see the unified inline link-icon
+   family below. No own anchor, so no WCAG-2.5.8 tap-box rule is needed. */
 /* WCAG 2.5.8 Target Size (Minimum, AA): a link that is the whole content of a content list item,
    table cell, definition, caption, or info-box is a STANDALONE tap target -- NOT the inline-
    sentence exception. At body-text height (~20px) stacked in a list/cell these fail 2.5.8:
@@ -1914,7 +1903,7 @@ code:empty { display: none; }
    defeating the 1.2em pill cap) and the download button's OS-logo cell (.op-sys -- the ISO logo
    blew to 46px, defeating its 16px cap). Both are icons with their OWN cap; the 46px blanket is
    for donor/content logos, not these. */
-.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *, .mn-switcher *, .op-sys) > img:not(.ia-archive-icon, .media-sized, .link-icon, .kicksecure-wiki-link-icon) { height: 46px !important; width: auto !important; max-width: 100%; }
+.info-box :not(.info-box-icon, .info-box-icon *, .thumbframe, .thumbframe *, .mn-switcher *, .op-sys) > img:not(.ia-archive-icon, .media-sized, .link-icon) { height: 46px !important; width: auto !important; max-width: 100%; }
 
 /* Numbered section/step badge (production "padded-content-icon" widget): a bold
    numeral, coloured by the element's cs-* --callout. pci-style-circle makes it a

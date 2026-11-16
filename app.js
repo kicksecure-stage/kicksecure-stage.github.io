@@ -322,8 +322,12 @@
           // encodeURIComponent so a raw %/space in the id survives an Open-in-new-tab / copy-link
           // (the href is the shared URL); syncTabsFromHash decodeURIComponent's it back on load.
           a.href = hid ? ("#" + encodeURIComponent(hid)) : "#";
-          var img = sec.querySelector(":scope > .tcc-image img");
-          if (img) a.appendChild(img);
+          // Carry the section's declared icon into the pill: an <img> from [[File:...]] OR a
+          // FontAwesome <i> (|image=<i ...>). Scoped to the section's OWN direct-child .tcc-image
+          // so a nested controller's image is never hoisted into this outer pill.
+          var tccImage = sec.querySelector(":scope > .tcc-image");
+          var icon = tccImage ? tccImage.querySelector("img, i") : null;
+          if (icon) a.appendChild(icon);
           // Label from the title text ONLY -- a section title is also a real heading, so it
           // carries BOTH injected affordances (.share-tooltip permalink menu + .mw-editsection
           // edit-icon link); strip both by element so neither leaks into the tab label.
