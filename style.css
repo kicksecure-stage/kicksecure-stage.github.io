@@ -1858,14 +1858,19 @@ code:empty { display: none; }
    sets (same specificity as the base rule, wins on source order) -- that gave "FAILURE" the
    icon-font's cramped metrics. The extra class outranks `.fa-solid`. */
 .padded-content-icon.pci-text { font-family: inherit; }
-/* A bare-character IconSet (iconset-false, e.g. the warning "!") is an INLINE status marker,
-   so it stays a bare ~1em glyph in its cs-* colour (severity shown by colour, not size) --
-   matching the {{Icon}} info/warn markers that share the base rule. No chip: the filled-chip
-   treatment is reserved for the numbered/callout tier (the numbered badges + the callout-box
-   icon). cs-yellow legibility is covered by the base `.padded-content-icon.cs-yellow { #444 }`. */
+/* A bare-character IconSet (iconset-false, e.g. the warning "!") is a CALLOUT-BOX title icon
+   ({{Collapsible}} |title=), NOT an inline-in-a-sentence marker -- so it joins the 24px filled
+   chip tier (same box as .info-box-icon + the numbered step badges): a white glyph on its cs-*
+   --callout. Truly-inline {{Icon}} glyphs stay bare via the base rule. */
 .padded-content-icon.pci-text.iconset-false {
-  margin-right: 0.35rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; height: 24px; padding: 0 0.3em; border-radius: 5px;
+  background: var(--callout, var(--accent)); color: #fff;
+  font-size: 0.875rem; line-height: 1; vertical-align: middle; margin-right: 0.5rem;
 }
+/* a light (yellow) chip needs dark text, not white (prod: #444). */
+.padded-content-icon.pci-text.iconset-false.cs-yellow,
+.padded-content-icon.pci-text.iconset-false.cs-yellow-light { color: #444; }
 /* Step/section badges ({{IconSet|hN|M}}): ONE subordinate treatment across all four
    levels so the ordinal never out-shouts its heading (the heading says WHERE IN THE DOC,
    the number says WHERE IN THE LIST). Per-level hue stays (depth-as-color). */
