@@ -1860,6 +1860,58 @@
     nav.addEventListener("focusout", function (e) { if (!nav.contains(e.relatedTarget)) closeAll(); });
   }
 
+  // Keyboard page-turn for the authored WikiBookIndex "book" chain: Left/Right move to the
+  // previous/next book page. PROGRESSIVE enhancement over the visible .wiki-book-index Prev/Next
+  // buttons (they work with no JS) -- the target is read from <link rel=prev/next> in <head> (as
+  // Material for MkDocs and Sphinx do), emitted only on indexed pages, so an un-indexed page has
+  // no links and this silently no-ops. Only the HORIZONTAL pair is bound; Up/Down/PageUp/PageDown/
+  // Space stay free so vertical scrolling is never swallowed (mdBook's rule). The guard set bails
+  // whenever the key belongs to the browser, an editable field, or an in-page widget that owns
+  // arrows, so native scroll / IME / tablist / menubar / modal / lightbox / hovercard all keep it.
+  function initBookNav() {
+    var nextLink = document.querySelector('link[rel="next"]');
+    var prevLink = document.querySelector('link[rel="prev"]');
+    if (!nextLink && !prevLink) return;              // un-indexed page: nothing to navigate to
+    var nextHref = nextLink ? nextLink.href : "";    // .href is the resolved absolute URL
+    var prevHref = prevLink ? prevLink.href : "";
+    var rtl = document.documentElement.dir === "rtl";
+    document.addEventListener("keydown", function (e) {
+      // A modifier means the key is the browser's/OS's (Alt+Arrow = back/forward) or a text
+      // selection (Shift+Arrow) -- never ours.
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      // Mid-IME-composition (CJK etc.): isComposing covers most engines, keyCode 229 is the
+      // Safari fallback -- same guard the search box uses.
+      if (e.isComposing || e.keyCode === 229) return;
+      // keydown targets the focused element, so e.target owns the key (house idiom; the wiki has
+      // no shadow DOM, so composedPath / an e.target existence guard would only add an unreachable
+      // branch).
+      var t = e.target;
+      // Editable focus owns arrows (caret movement) -- an input/select, or anywhere inside a
+      // contenteditable region (the attribute form matches nested focus and works headless too,
+      // unlike the isContentEditable property).
+      var tag = t.nodeName.toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      if (t.closest('[contenteditable]:not([contenteditable="false"])')) return;
+      // A focused composite widget owns Left/Right (tabs + top-menubar roving: initTabs /
+      // initNavKeyboard). Leave them to it.
+      if (t.closest('[role="tablist"],[role="menubar"]')) return;
+      // An open modal or gallery lightbox (both via the shared modals system) traps focus and
+      // binds its own arrow/Escape keys.
+      if (document.body.classList.contains("mini-modal-active")) return;
+      // An open reference/page-preview hovercard steps footnotes with Left/Right in place.
+      if (document.querySelector(".hovercard:not([hidden])")) return;
+      // A FOCUSED horizontally-scrollable region (wide code block .viewport / wide table) keeps
+      // Left/Right for native scroll -- these are made keyboard-focusable for exactly that.
+      var sc = t.closest("[tabindex]");
+      if (sc && sc.scrollWidth > sc.clientWidth + 1) return;
+      var dest = (rtl ? (e.key === "ArrowRight") : (e.key === "ArrowLeft")) ? prevHref : nextHref;
+      if (!dest) return;                             // no neighbour this direction (chain end)
+      e.preventDefault();
+      window.location.assign(dest);
+    });
+  }
+
   // Per-heading share menus are DEDUPED to ONE page-level <template class="share-proto"> that
   // carries the full menu with opaque sentinels; each heading's .share-tooltip carries only its
   // 7 real per-context values as data-sh-*. On first HOVER, press or focus of a heading's share button
@@ -2059,6 +2111,7 @@
     window.addEventListener("hashchange", syncTabsFromHash);
     initNavToggle();
     initNavKeyboard();
+    initBookNav();
     initToolsToggle();
     initConsentBanner();
     initStageBanner();
