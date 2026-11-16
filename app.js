@@ -937,6 +937,10 @@
           e.stopPropagation();
           clearActive();
           setExpanded(false);
+          // Invalidate any in-flight full-text shard batch so its late arrival cannot REOPEN
+          // the panel we are dismissing (its gen !== queryGen guard then drops it) -- same
+          // reason closeSearch bumps queryGen; stopPropagation keeps closeSearch from running.
+          queryGen++;
           results.hidden = true;
           while (results.firstChild) results.removeChild(results.firstChild);
         }
@@ -1126,9 +1130,25 @@
       // rounding down is lossless for the feature while revealing far less precise timing.
       try { localStorage.setItem(LS_FLYIN, String(now - (now % DAY))); } catch (err) {}
       panel.classList.remove("flyin-shown");
-      panel.addEventListener("transitionend", function te() {
-        panel.hidden = true; panel.removeEventListener("transitionend", te);
-      });
+      // Robust hide: a bare transitionend never fires if the transition is zeroed (reduced-motion /
+      // transition:none), interrupted (transitioncancel), or the tab is backgrounded -- leaving the
+      // toast stuck visible. Read the actual duration; hide synchronously when there is none, else
+      // hide on transitionend OR a wall-clock fallback, whichever first. hide() is idempotent.
+      var done = false;
+      function hide(e) {
+        if (e && e.target !== panel) return;            // ignore bubbled child transitions
+        if (done) return;
+        done = true;
+        panel.removeEventListener("transitionend", hide);
+        panel.removeEventListener("transitioncancel", hide);
+        panel.hidden = true;
+      }
+      var cs = getComputedStyle(panel);
+      var secs = (parseFloat(cs.transitionDuration) || 0) + (parseFloat(cs.transitionDelay) || 0);
+      if (secs <= 0) { hide(); return; }                // reduced-motion / transition:none -> sync
+      panel.addEventListener("transitionend", hide);
+      panel.addEventListener("transitioncancel", hide);
+      setTimeout(hide, secs * 1000 + 50);               // fallback: never stuck visible
     }
     var btn = panel.querySelector(".close-panel");
     if (btn) {
@@ -1137,6 +1157,10 @@
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); close(); }
       });
     }
+    // #169: Esc dismisses the toast while shown (consistent with the hovercard/modal idiom).
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) close();
+    });
   }
 
   // Generic modal (MiniModal): a .mini-modal element toggled active; closed by its
@@ -1594,6 +1618,15 @@
     }
     content.addEventListener("mouseover", onEnter);
     content.addEventListener("mouseout", function () { hovered = null; clearTimeout(showTimer); hideSoon(); });
+    // Keyboard parity (WCAG 2.1.1 + 1.4.13): a FOCUSED citation / internal link opens the same
+    // preview, not only mouse hover -- onEnter's 200ms delay debounces Tab-through. Dismiss when
+    // focus leaves the trigger and does not move into the card. Esc (below) + Left/Right already
+    // serve an open card; focus stays on the trigger.
+    content.addEventListener("focusin", onEnter);
+    content.addEventListener("focusout", function (e) {
+      if (card && e.relatedTarget && card.contains(e.relatedTarget)) return;  // focus moved INTO the card
+      hovered = null; clearTimeout(showTimer); hideSoon();
+    });
     // While a reference card is open, Left/Right arrows step through the footnotes in place
     // (same wrap as the prev/next buttons); Escape dismisses any open card. Gated on a reference
     // card being shown (.hovercard-ref present) so arrows never hijack a page-preview card.
@@ -2054,6 +2087,73 @@
     });
   }
 
+  // Native [popover] confirm/info cards -- the share "Open in <network>" confirm (.share-open-panel),
+  // the comparison (i) info notes (.info-popover), and the anti-spam e-mail reasons
+  // (.antispam-email-reasons) -- are opened by a <button popovertarget> and live in the TOP LAYER
+  // (UA position:fixed, viewport containing block). CSS anchor positioning is Chromium-only, so
+  // tether in JS -- the same measure-and-place idiom as the reference hovercard place(): on the
+  // popover's `toggle` -> open, read the opener's viewport rect and write fixed top/left via CSSOM
+  // (allowed under strict CSP -- a property write, not an inline style= attribute). Below the opener
+  // by default, flipped above when there is no room, clamped into the viewport, centred on a phone
+  // (a small confirm reads as "about the icon you tapped"). JS off -> the native viewport-centred
+  // popover stays. Close buttons carry popovertargetaction="hide", so the OPENER is the
+  // popovertarget control that is NOT a hide.
+  function initPopoverTether() {
+    var GAP = 6, MARGIN = 8;
+    var active = null;  // { pop, opener } currently open + tracked on scroll/resize
+    function openerFor(pop) {
+      if (!pop.id) return null;
+      var sel = '[popovertarget="' + (window.CSS && CSS.escape ? CSS.escape(pop.id) : pop.id) + '"]';
+      var ctrls = document.querySelectorAll(sel);
+      for (var i = 0; i < ctrls.length; i++) {
+        if (ctrls[i].getAttribute("popovertargetaction") !== "hide") return ctrls[i];  // the opener
+      }
+      return null;
+    }
+    function place(pop, opener) {
+      // Own the position: override the UA `inset:0; margin:auto` centring AND any stylesheet
+      // transform (the @media phone rule uses translate(-50%,-50%)) so our top/left win outright.
+      pop.style.position = "fixed";
+      pop.style.margin = "0";
+      pop.style.inset = "auto";
+      pop.style.transform = "none";
+      var r = opener.getBoundingClientRect();
+      var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+      var pw = pop.offsetWidth, ph = pop.offsetHeight;   // measured while OPEN (toggle fires after show)
+      var top, left;
+      if (vw <= 480) {                                   // phone: centre, clamped on-screen
+        left = Math.max(MARGIN, (vw - pw) / 2);
+        top = Math.max(MARGIN, (vh - ph) / 2);
+      } else {
+        top = r.bottom + GAP;                            // below the opener
+        if (top + ph > vh - MARGIN && r.top - GAP - ph > MARGIN) top = r.top - GAP - ph;  // flip above
+        left = Math.max(MARGIN, Math.min(r.left, vw - pw - MARGIN));
+        top = Math.max(MARGIN, Math.min(top, vh - ph - MARGIN));
+      }
+      pop.style.top = top + "px";
+      pop.style.left = left + "px";
+    }
+    function reposition() { place(active.pop, active.opener); }  // only attached while open -> active is set
+    // `toggle` does NOT bubble, but a CAPTURING document listener still receives it at the target.
+    // Guard on the `popover` attribute so a <details> toggle (also a ToggleEvent) is ignored.
+    document.addEventListener("toggle", function (e) {
+      var pop = e.target;
+      if (!pop.hasAttribute("popover")) return;   // a <details> ToggleEvent carries no popover attr
+      if (e.newState === "open") {
+        var opener = openerFor(pop);
+        if (!opener) return;                             // no invoker -> leave the native default
+        place(pop, opener);
+        active = { pop: pop, opener: opener };
+        window.addEventListener("scroll", reposition, true);
+        window.addEventListener("resize", reposition);
+      } else if (active && active.pop === pop) {
+        window.removeEventListener("scroll", reposition, true);
+        window.removeEventListener("resize", reposition);
+        active = null;
+      }
+    }, true);
+  }
+
   function initShareLazy() {
     // Replace each of the 7 opaque sentinels 1:1 with this heading's value -- PURE string
     // substitution, NO encoding. chrome.share_menu_values already applied every context transform
@@ -2121,6 +2221,9 @@
       tip.classList.toggle("share-open", open);
       t.setAttribute("aria-expanded", open ? "true" : "false");
       if (!open && tip.contains(document.activeElement)) document.activeElement.blur();
+      // On reopen, clear any x-dismiss display override (see the .menu-close handler) so the
+      // menu can show again.
+      if (open) { var w = tip.querySelector(".menu-wrapper"); if (w) w.style.display = ""; }
     }
     function closeAll(except) {
       var open = document.querySelectorAll(".share-tooltip.share-open");
@@ -2159,7 +2262,19 @@
       var x = e.target && e.target.closest ? e.target.closest(".menu-close") : null;
       if (!x) return;
       var tip = x.closest(".share-tooltip");
-      if (tip) setOpen(tip, false);
+      if (!tip) return;
+      setOpen(tip, false);
+      // Beat the sticky desktop :hover (@media(hover:hover) .share-tooltip:hover .menu-wrapper
+      // {display:block}), which re-reveals the menu while the pointer still sits on the (x). An
+      // inline display:none wins the cascade; cleared when the pointer leaves the tooltip so a
+      // fresh hover re-opens (an explicit reopen clears it via setOpen too). Touch has no :hover to
+      // fight; the override is harmless there and cleared on the next tap-reopen.
+      var wrap = tip.querySelector(".menu-wrapper");
+      if (wrap) {
+        wrap.style.display = "none";
+        var clear = function () { wrap.style.display = ""; tip.removeEventListener("pointerleave", clear); };
+        tip.addEventListener("pointerleave", clear);
+      }
     });
   }
 
@@ -2232,6 +2347,7 @@
       initHovercards();
       initStorageViewer();
       initShareLazy();
+      initPopoverTether();
       initHeroVideo();
       initEndorsementMore();
       initImageWarmAhead();
