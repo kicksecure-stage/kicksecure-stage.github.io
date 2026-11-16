@@ -324,10 +324,23 @@
           a.href = hid ? ("#" + encodeURIComponent(hid)) : "#";
           // Carry the section's declared icon into the pill: an <img> from [[File:...]] OR a
           // FontAwesome <i> (|image=<i ...>). Scoped to the section's OWN direct-child .tcc-image
-          // so a nested controller's image is never hoisted into this outer pill.
+          // so a nested controller's image is never hoisted into this outer pill. PREFER the <img>
+          // over an incidental <i>: app.js and the check-tab-pill-images gate must agree on which
+          // node the pill carries, and the authored image wins over a decorative glyph
+          // (querySelector("img, i") picks DOM order, not image-first).
           var tccImage = sec.querySelector(":scope > .tcc-image");
-          var icon = tccImage ? tccImage.querySelector("img, i") : null;
-          if (icon) a.appendChild(icon);
+          var icon = tccImage ? (tccImage.querySelector("img") || tccImage.querySelector("i")) : null;
+          if (icon) {
+            // The pill IS an <a role=tab>. A nested <a> inside the carried icon (a wiki author can
+            // put [[link]] inside an |image=<i>...</i> param, which pandoc renders as an <a>) would
+            // be an anchor-in-anchor: invalid HTML the browser re-parents, plus a stray clickable
+            // link in the tablist. Drop any descendant anchor; carry only the glyph/image.
+            var nestedLinks = icon.querySelectorAll("a");
+            for (var nl = 0; nl < nestedLinks.length; nl++) {
+              nestedLinks[nl].parentNode.removeChild(nestedLinks[nl]);
+            }
+            a.appendChild(icon);
+          }
           // Label from the title text ONLY -- a section title is also a real heading, so it
           // carries BOTH injected affordances (.share-tooltip permalink menu + .mw-editsection
           // edit-icon link); strip both by element so neither leaks into the tab label.
@@ -344,9 +357,12 @@
             a.addEventListener("click", function (e) {
               e.preventDefault();
               activateTab(ctrl, idx);
-              // Anchor the URL to the chosen tab's section id so the tab is shareable and
-              // restored on reload (syncTabsFromHash re-selects + scrolls then). replaceState,
-              // not `location.hash=`, avoids a scroll jump + back-button history spam on click.
+              // BY DESIGN: anchor the URL to the chosen tab's section id -- the tab's deep link IS
+              // the heading id, one fragment shared by tab clicks, TOC links, and pasted #heading
+              // URLs (all resolve to the same tab via syncTabsFromHash). Updating the #anchor on
+              // click is the intended shareable-tab feature, NOT the "don't rewrite the URL to a
+              // heading anchor" anti-pattern: replaceState (not location.hash=, not pushState)
+              // avoids the scroll jump + back-button history spam that guidance targets.
               if (secId) {
                 // Percent-encode: a raw `%`/space in the id (e.g. "100%_Anonymous") must
                 // round-trip through syncTabsFromHash's decodeURIComponent on reload, else that
