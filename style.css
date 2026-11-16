@@ -1822,8 +1822,26 @@ code:empty { display: none; }
 .padded-content-icon.pci-text.iconset-false.cs-yellow-light {
   color: #444;
 }
-.padded-content-icon.iconset-h1 { font-size: 1.5rem; }
-.padded-content-icon.iconset-h2 { font-size: 1.1rem; }
+/* Step/section badges ({{IconSet|hN|M}}): ONE subordinate treatment across all four
+   levels so the ordinal never out-shouts its heading (the heading says WHERE IN THE DOC,
+   the number says WHERE IN THE LIST). Per-level hue stays (depth-as-color). */
+.padded-content-icon.iconset-h1,
+.padded-content-icon.iconset-h2,
+.padded-content-icon.iconset-h3,
+.padded-content-icon.iconset-h4 {
+  font-size: 0.8rem;   /* 12.8px numeral: below body (16px) and the smallest heading (h4, 18px) */
+  font-weight: 600;    /* heading weight, not the base-icon 700 -- the numeral is never heavier than its heading */
+}
+/* h1's circle (pci-style-circle, 1.9em) matched to the square badges' 1.7em box so all
+   four read as one marker size regardless of shape. The white numeral on the neon
+   --c-green (#1a9e3f) is only ~3.5:1, so pin the fill to the AA green (#157a33, already
+   the iconset-true text green) -- white clears 4.5:1, and the darker green also mutes the
+   loudest badge. Theme-independent (dark green + white reads on both backgrounds). The thick
+   white ring is thinned to 2px here (vs the shared 3px, which the large fa-2x banners keep) so
+   it does not weigh down the now-subordinate circle. */
+.padded-content-icon.pci-style-circle.iconset-h1 {
+  width: 1.7em; height: 1.7em; background: #157a33; border-width: 2px;
+}
 /* IconSet h2/h3/h4 (step/section numbers, e.g. {{IconSet|h2|3}}) render as prod's filled
    rounded-square badge with a white numeral, coloured by the element's cs-* --callout --
    not a bare coloured digit. (h1 keeps its circle via pci-style-circle.) */
@@ -1837,6 +1855,15 @@ code:empty { display: none; }
 }
 /* a light-coloured (yellow) badge needs DARK text, not the default white (prod: #444). */
 .padded-content-icon.cs-yellow, .padded-content-icon.cs-yellow-light { color: #444; }
+/* Step badges carry WHITE text, which needs a DARK fill in BOTH themes -- so pin each
+   level's hue instead of var(--callout) (the callout flips to a LIGHT tint in dark mode,
+   giving white-on-light ~2.5:1). The yellow level was also the loud light-mode outlier
+   (dark text on a neon-yellow chip); a gold fill lets it carry white like the rest. Hues
+   stay distinct (depth-as-color: green h1 / blue h2 / gold h3 / gray h4), each >=4.5:1
+   with white in both themes. (h1's green is pinned on its circle rule above.) */
+.padded-content-icon.iconset-h2.cs-blue { background: #2f6fd0; }
+.padded-content-icon.iconset-h3.cs-yellow { background: #8f6200; color: #fff; }
+.padded-content-icon.iconset-h4.cs-gray { background: #565c64; }
 /* a bare cs-green status glyph (iconset-true -> base `color: var(--callout)`, no filled chip) is
    ~3.5:1 as light-mode text (#1a9e3f); darken to AA, keeping the green hue. Dark mode's --c-green
    (#57cc6a) already clears on the dark bg, so reset there. cs-red/cs-blue glyphs are ~4.9:1 (no
@@ -1862,7 +1889,9 @@ code:empty { display: none; }
 }
 /* Prod's numbered step badge is a coloured circle with a WHITE ring, which insets the fill so it
    reads crisp and compact; stage's translucent-coloured border blended into the page so the badge
-   looked heavier/larger. Match prod's white ring (the badge keeps its existing soft shadow). */
+   looked heavier/larger. Match prod's white ring (the badge keeps its existing soft shadow).
+   NOTE: shared with the large fa-2x WELL-DONE/CONGRATULATIONS banners, which keep this 3px ring;
+   the subordinate h1 step circle thins its own ring to 2px on its scoped rule above. */
 .padded-content-icon.pci-border-thick {
   border: 3px solid #fff;
 }
@@ -2489,6 +2518,17 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
      transparent logo (Debian/Tux/OSI/GNU are transparent PNGs) printed the white "double box". */
   display: block; margin: 0 auto; max-width: 100%; height: auto; border-radius: 3px;
 }
+/* Opaque photo/illustration (media.py `opaque()` -> .thumb-opaque): the image already fills its
+   box, so the 6px surface-bg padding ring reads as a spurious SECOND border around it. Drop the
+   padding so the image meets the frame edge (overflow:hidden + the frame radius clip its corners
+   = ONE clean rounded frame). A transparent logo never gets this class, so its padded card is
+   unchanged. The caption keeps its own inset so it is not flush to the frame edge. */
+.wiki-content .thumbframe.thumb-opaque { padding: 0; }
+.wiki-content .thumbframe.thumb-opaque img { border-radius: 0; }
+.wiki-content .thumbframe.thumb-opaque .thumbcaption { padding: 6px 8px 7px; }
+/* With no frame padding, an EMPTY caption would still show a bare surface strip under the image;
+   collapse it so an uncaptioned opaque thumb is just the framed image. */
+.wiki-content .thumbframe.thumb-opaque .thumbcaption:empty { display: none; }
 .wiki-content .thumbcaption {
   text-align: left; line-height: 1.4; padding: 4px 2px 2px;
   font-size: 0.94rem; color: var(--fg-soft);
@@ -2642,6 +2682,12 @@ sup.reference:target {
   transform: translateY(-0.035em);
 }
 .mw-editsection a:hover { color: var(--link); text-decoration: none; }
+/* fa-pencil fills its whole em (ink ~0.999em) while fa-share-nodes is ~0.875em, so at EQUAL
+   font-size the pencil reads ~14% larger per side (user: "edit symbol too large"). Scale the
+   pencil GLYPH alone -- by the share/pencil advance ratio (0.875/1.0) -- so its ink matches the
+   share glyph. NOT the 24px box, NOT the 0.75em anchor em (that sets the shared vertical nudge),
+   so edit + share stay same-centered AND now same-sized, in the heading AND the footer. */
+.mw-editsection a .fa-pencil, .footer-edit a .fa-pencil { font-size: 0.875em; }
 .share-tooltip { position: relative; display: inline-block; margin-left: 0.45rem;
   font-size: 0.75em; vertical-align: middle; }
 /* match the edit affordance: same MUTED color + size + 24x24 inline-flex box so edit + share
@@ -2865,6 +2911,11 @@ sup.reference:target {
    the dark band). Sits left of share. */
 .footer-edit a {
   color: inherit; text-decoration: none;
+  /* Match the footer share glyph size: .share-tooltip sets 0.75em, so the footer edit must too --
+     without it the pencil inherits the 25px .footer-headline size and reads ~33% larger than the
+     share, breaking the project-name line symmetry. The pencil then scales by the shared .fa-pencil
+     0.875em ink-match rule, landing equal to the footer share. */
+  font-size: 0.75em;
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 24px; min-height: 24px; padding: 0 0.15em; vertical-align: middle;
 }
@@ -2996,7 +3047,24 @@ sup.reference:target {
   border-spacing: 3px;
   margin: 1.25rem auto;
   background: transparent;
+  /* Fixed layout so the two compared columns share one authored width: under auto layout the
+     longer "Kicksecure" header out-grows the "Debian" column. width+max-width keep the table
+     centered and capped near its prior size. */
+  table-layout: fixed;
+  width: 100%;
+  max-width: 820px;
 }
+/* Equal compared columns: pin ONLY the two compared columns (Kicksecure, Debian) to one width, so
+   they always render identical regardless of header/content length. The label column is left auto;
+   under fixed layout any un-pinned column (the label, and any further columns a table may carry)
+   shares the remaining width equally -- so a wider-than-3-column comparison table never collapses a
+   column to zero. The two homepage tables (the only comparison tables) are 3-column, so the label
+   takes the remaining 50%. Widths track the VIEWPORT; the homepage content column is full-width
+   (no rail), so viewport == the table's container there. */
+.comparison-table th:nth-child(2),
+.comparison-table td:nth-child(2),
+.comparison-table th:nth-child(3),
+.comparison-table td:nth-child(3) { width: 25%; }
 .comparison-table th,
 .comparison-table td {
   padding: 12px 20px;
@@ -3008,9 +3076,30 @@ sup.reference:target {
   background: #fff;
   color: #202122;
 }
+/* Fluid band below the 820px max-width: the table scales with the viewport, so the desktop 25%
+   compared columns shrink too narrow for the "Kicksecure" header and the CTA button (they would
+   spill into the Debian column). Widen the compared columns, tighten cell padding, and let the
+   button fill its cell and wrap, so content stays within its own column. Columns stay equal. */
+@media (max-width: 819px) {
+  .comparison-table th,
+  .comparison-table td { padding: 10px 8px; }
+  .comparison-table th:nth-child(2),
+  .comparison-table td:nth-child(2),
+  .comparison-table th:nth-child(3),
+  .comparison-table td:nth-child(3) { width: 32%; }
+  /* block so the button fills the cell (max room for whole-word wrapping); trim side padding;
+     break the word only if even the full cell width cannot hold it (the narrowest phones). */
+  .comparison-table .cta-button { display: block; padding: 0.5rem 0.5rem; overflow-wrap: break-word; }
+}
 @media (max-width: 480px) {
   .comparison-table th,
   .comparison-table td { padding: 8px 6px; font-size: 15px; }
+  /* On phones give the compared columns a bit more width still, so the CTA button holds
+     "Kicksecure" whole at common phone widths (360px+); the auto label column wraps fine. */
+  .comparison-table th:nth-child(2),
+  .comparison-table td:nth-child(2),
+  .comparison-table th:nth-child(3),
+  .comparison-table td:nth-child(3) { width: 34%; }
 }
 .comparison-table tr:first-child th { font-weight: 700; }
 /* feature column: left-aligned labels */
@@ -3660,9 +3749,23 @@ sup.reference:target {
 .wiki-content .thumb-gallery.mode-logos .thumbframe > p > a {
   width: 100%; height: 4.5rem; padding: 0;   /* equal logo slot for every aspect ratio */
 }
-.wiki-content .thumb-gallery.mode-logos .thumbframe img { border-radius: 0; }
+/* "Built on" strip: uniform grayscale so a mixed-palette logo row (Debian red, Tor purple,
+   GNU/OSI line art) reads as one cohesive credit, not a sponsor jumble. Hover restores colour
+   on pointer devices (progressive -- no effect on touch). */
+.wiki-content .thumb-gallery.mode-logos .thumbframe img {
+  border-radius: 0; filter: grayscale(1); opacity: 0.8;
+  transition: filter 0.2s, opacity 0.2s;
+}
+@media (hover: hover) {
+  .wiki-content .thumb-gallery.mode-logos .thumbframe:hover img { filter: grayscale(0); opacity: 1; }
+}
 .wiki-content .thumb-gallery.mode-logos .thumbcaption {
   text-align: center; color: var(--fg-soft); font-size: 0.82rem; padding-top: 0.3rem;
+}
+/* "Built on free software" label above the homepage logo strip. */
+.wiki-content .built-on-label {
+  text-align: center; text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.8rem; color: var(--fg-soft); margin: 1.75rem 0 0.5rem;
 }
 
 /* --- tab mininav SWITCHER (JS builds a pill cloud; the production Mininav.css look:
