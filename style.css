@@ -3787,15 +3787,12 @@ sup.reference:target {
 .wiki-content .thumb-gallery.mode-logos .thumbframe > p > a {
   width: 100%; height: 4.5rem; padding: 0;   /* equal logo slot for every aspect ratio */
 }
-/* "Built on" strip: uniform grayscale so a mixed-palette logo row (Debian red, Tor purple,
-   GNU/OSI line art) reads as one cohesive credit, not a sponsor jumble. Hover restores colour
-   on pointer devices (progressive -- no effect on touch). */
+/* "Built on free software" strip: each upstream logo in its ORIGINAL brand colour -- a credits strip
+   honours each project (uniform grayscale is a sales-wall convention; Tor/Mozilla brand guidelines
+   also disallow an arbitrary grey). Cohesion comes from the uniform cell size + spacing, not
+   desaturation. No hover-restore (dated; nothing to reveal, and no hover on touch). */
 .wiki-content .thumb-gallery.mode-logos .thumbframe img {
-  border-radius: 0; filter: grayscale(1); opacity: 0.8;
-  transition: filter 0.2s, opacity 0.2s;
-}
-@media (hover: hover) {
-  .wiki-content .thumb-gallery.mode-logos .thumbframe:hover img { filter: grayscale(0); opacity: 1; }
+  border-radius: 0;
 }
 .wiki-content .thumb-gallery.mode-logos .thumbcaption {
   text-align: center; color: var(--fg-soft); font-size: 0.82rem; padding-top: 0.3rem;
@@ -3805,6 +3802,9 @@ sup.reference:target {
   text-align: center; text-transform: uppercase; letter-spacing: 0.08em;
   font-size: 0.8rem; color: var(--fg-soft); margin: 1.75rem 0 0.5rem;
 }
+/* Center the eyebrow label over the FULL logo-row width: its inner <p> inherits the base 66ch cap
+   left-anchored, so without this the centered text sits left-of-centre above the cloud. */
+.wiki-content .built-on-label p { max-width: none; margin: 0 auto; }
 
 /* --- tab mininav SWITCHER (JS builds a pill cloud; the production Mininav.css look:
    a rounded blue bar of pills, inactive #9aabed, active white/#36b) --- */
