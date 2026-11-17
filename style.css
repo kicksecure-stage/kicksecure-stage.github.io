@@ -559,9 +559,11 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
 @media (max-width: 480px) {
   .download-button-v2 .dbutton { white-space: normal; }
   /* width:1px makes the anonymous-table OS-icon cell shrink to its content (no nowrap -- that
-     could push a multi-icon list past a narrow viewport); object-fit keeps the icon undistorted. */
+     could push a multi-icon list past a narrow viewport). min-width FLOORS the icon: without it
+     the width:auto img collapses to 0 inside the shrunk anonymous-table cell, so the OS logo
+     vanishes on phones (width:auto still governs wider logos). object-fit keeps it undistorted. */
   .download-button-v2 .op-sys { width: 1px; }
-  .download-button-v2 .op-sys > img { object-fit: contain; }
+  .download-button-v2 .op-sys > img { object-fit: contain; min-width: 16px; }
 }
 /* Verify-asset download links (Template:DownloadTableUnified + signing-key subtemplates):
    secondary to the primary download CTA, so a quiet Qubes-style bordered box (one uniform
@@ -2645,6 +2647,12 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
 .wiki-content .thumbframe.tleft { float: left; clear: left; margin: 0.4em 1.4em 0.8em 0; }
 .wiki-content .thumbframe.tcenter { float: none; margin: 0.4em auto 0.8em; }
 .wiki-content .thumbframe.tnone { float: none; margin: 0.4em 0 0.8em; }
+/* Opt-in lead treatments (File class=lead-wide / lead-hero): block, full content width, never
+   floated. The image keeps `.thumbframe img` (max-width:100%), so a large source fills the column
+   and a small one centers -- no upscale. lead-hero is emitted ABOVE the title (page.py); lead-wide
+   sits below it. Both already span full width on a phone (no float to unfloat). */
+.wiki-content .thumbframe.lead-wide { float: none; clear: both; width: 100%; max-width: 100%; margin: 0.4em 0 1.2em; }
+.wiki-content .thumbframe.lead-hero { float: none; clear: both; width: 100%; max-width: 100%; margin: 0 0 1.2em; }
 .wiki-content .thumbframe p { margin: 0; }   /* defensive: neutralize any pandoc <p> wrap */
 .wiki-content .thumbframe img {
   /* The bare image is the whole figure now -- no inner border, no forced bg (a forced --bg behind
