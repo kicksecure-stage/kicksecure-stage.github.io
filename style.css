@@ -439,6 +439,14 @@ a:hover { color: var(--link-hover); text-decoration: underline; text-underline-o
    oversize. GitHub, cross-wiki, and external brand icons all route through this shape. */
 .link-icon-widget { display: inline-flex; align-items: center; gap: 0.4em; }
 .link-icon { display: inline; width: auto; height: var(--link-icon-size); vertical-align: -0.18em; }
+/* WCAG 2.5.8 target-size: the trailing icon-only .onion-link (tor glyph, no text label) is a
+   STANDALONE tap target, so it needs a >=24x24 CSS-px hit box -- the glyph keeps its small size,
+   centred in the box. Sizing the ANCHOR (not the <img>) keeps the box >=24 even before the lazy
+   icon loads, which is the real geometry an a11y tap-target check measures. */
+.onion-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; min-height: 24px; vertical-align: middle;
+}
 .mw-ui-button {
   background: var(--btn-secondary-bg); border-color: var(--btn-secondary-border);
   border-radius: var(--btn-radius); color: var(--btn-secondary-fg);
@@ -3011,6 +3019,15 @@ sup.reference:target {
   color: var(--link); text-decoration: underline; text-underline-offset: 0.15em;
 }
 .mirror-confirm:hover { color: var(--link-hover); }
+/* WCAG 2.5.8 target-size: the video-widget privacy-mirror icon buttons (Invidious/onion logos, no
+   text label) are STANDALONE tap targets -- give each a >=24x24 CSS-px hit box, the logo centred.
+   Scoped to .video-link so the INLINE text mirror trigger (e.g. "nitter" in running prose, already
+   large enough / inline-exempt) keeps its plain-link flow. Box on the BUTTON, so it stays >=24 even
+   before the lazy logo loads. */
+.video-link .mirror-confirm {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; min-height: 24px; vertical-align: middle;
+}
 /* The anonymous-operator caution inside .mirror-open-panel: small, muted, above the URL. */
 .mirror-disclaimer { margin: 0.1rem 0 0.3rem; font-size: 0.8rem; color: var(--muted); }
 /* Per-network brand colours, SINGLE SOURCE: each .si-<network> sets the --brand custom
