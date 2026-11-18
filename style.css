@@ -279,6 +279,21 @@ body {
    fixed height would otherwise distort when the width cap shrinks it. (Generated videos are
    width-only anyway; an authored <video height> is rare and better scaled than distorted.) */
 img, video { max-width: 100%; height: auto; }
+/* A frameless explicit-px image that is a standalone block figure (the sole, DIRECT child of its
+   content paragraph) must reserve the SAME box whether it loads or not, so a slow/blocked/broken
+   image never shifts the text below it (the images-blocked CLS gate, check-img-blocked-shift). As
+   an inline <img> it builds a line box: present, it sits on the baseline with a font descender
+   below it; broken, that descender collapses asymmetrically AND Chromium floors the broken box a
+   couple px taller than the loaded one -- so the following paragraph moves. display:block drops the
+   line box entirely (no baseline, no descender) and min-height:0 lets the broken box collapse to
+   the attr-derived height, so loaded and blocked render an identical box. height stays auto (base
+   rule above) -- the width/height attrs still drive the aspect.
+   SCOPE `p > img.media-sized` (DIRECT child): media.py tags EVERY frameless sized image
+   .media-sized, including inline icons/logos that sit in a link or an .info-box-icon (rendered
+   `a > img`, `p > a > img`, `span.info-box-icon > a > img`) -- making those block would stack a
+   horizontal icon/logo row onto separate lines. A direct `p > img` is the standalone figure case;
+   the link-wrapped inline icons are excluded and keep their inline flow. */
+p > img.media-sized { display: block; min-height: 0; }
 /* Keep a token together across a line wrap (e.g. a project name + its trailing TM/R sup, so
    the mark never orphans onto its own line -- see render/pipeline._bind_trademarks). */
 .nowrap { white-space: nowrap; }
@@ -2202,14 +2217,19 @@ code:empty { display: none; }
 .tcc-image img { height: 23px; width: auto; vertical-align: middle; }
 /* Collapse to the active panel at FIRST PAINT, keyed off the pre-paint client-js marker
    (page.py THEME_INIT_JS sets it in <head> before body render), NOT the JS-runtime
-   .mininav-ready. Hiding only once app.js adds .mininav-ready happens AFTER first paint, so a
-   tab-heavy page rendered every stacked panel then collapsed ~all of them upward -- a large
-   content shift on every (re)load. no-JS (no client-js) keeps all panels stacked + readable. */
-html.client-js .tab-content-controller .tcc-section:not(.active) { display: none; }
-/* No panel marked active=true -> reveal the first, matching app.js initTabs (def = index 0),
-   so a controller relying on the JS default is not blanked pre-paint. Scoped to each
-   controller's OWN direct sections (nesting-safe); :has beats the hide rule on specificity. */
-html.client-js .tab-content-controller:not(:has(> .tcc-content > .tcc-section.active)) > .tcc-content > .tcc-section:first-child { display: block; }
+   .mininav-ready -- hiding only once app.js adds .mininav-ready happens AFTER first paint, so a
+   tab-heavy page rendered every stacked panel then collapsed ~all upward: a large content shift
+   on every (re)load. no-JS (no client-js) keeps all panels stacked + readable.
+   Two mutually-exclusive :has cases pick the ONE pre-paint panel, matching app.js initTabs:
+   - a controller WITH an explicit active=true panel -> show only it;
+   - a controller WITHOUT one -> show only the FIRST .tcc-section (app.js def = index 0). The
+     `.tcc-section ~ .tcc-section` selector hides every section preceded by another, i.e. all but
+     the first, counting ONLY .tcc-section siblings -- so a leading non-section child (an intro
+     <p> before the tabs) does not break it, unlike :first-child, which would then match nothing
+     and blank the panel pre-paint until JS. Scoped to each controller's OWN direct sections
+     (nesting-safe). */
+html.client-js .tab-content-controller:has(> .tcc-content > .tcc-section.active) > .tcc-content > .tcc-section:not(.active) { display: none; }
+html.client-js .tab-content-controller:not(:has(> .tcc-content > .tcc-section.active)) > .tcc-content > .tcc-section ~ .tcc-section { display: none; }
 html.client-js .tab-content-controller .tcc-section { border: none; margin: 0; }
 /* With the pill switcher built + the title sr-only, the content's own top border becomes a
    redundant separator line DIRECTLY under the pill bar -- an extra bordered level prod does
