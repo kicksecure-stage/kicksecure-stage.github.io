@@ -946,6 +946,12 @@ body.site-whonix .site-tm { font-size: 0.72rem; }
 .nav-toggle-label .nav-ico-close { display: none; }   /* 2 classes: beat FontAwesome's .fa-solid (loaded after) */
 .nav-toggle:checked ~ .nav-toggle-label .nav-ico-open { display: none; }
 .nav-toggle:checked ~ .nav-toggle-label .nav-ico-close { display: inline-block; }
+/* Fixed-width glyph box: fa-bars (~20px) and fa-xmark (~17px) have different advance widths,
+   so without it the bars->xmark swap on open shrinks the label and shifts the logo beside it
+   ~3px left (a header layout shift). Same width normalization the other header glyphs get below.
+   width only (no display) so the :checked show/hide rules above still govern visibility. */
+.nav-toggle-label .nav-ico-open,
+.nav-toggle-label .nav-ico-close { width: 1.25em; text-align: center; }
 /* Production Vector search: a magnifier ICON that expands the search box on click
    (pure-CSS checkbox toggle) so the header stays compact like prod. */
 .site-search {
