@@ -1810,12 +1810,11 @@
         }
       }
     }
-    // scheduleSync coalesces the triggers that fire MID-TASK (an in-table image finishing its
-    // decode; the no-RO resize fallback) into ONE rAF measurement per frame. Each such trigger
-    // runs while layout is dirty, so its scrollWidth read forces a synchronous layout; coalescing
-    // a burst of late image loads into one rAF caps that at one forced layout per frame, not one
-    // per image (~41ms on a dense page with many in-table images). The ResizeObserver path below
-    // does NOT go through here -- it reads for free (see below).
+    // scheduleSync is the LEGACY (no-ResizeObserver) fallback ONLY: it coalesces resize + late
+    // image-load re-syncs into one rAF measurement per frame. A rAF runs BEFORE the frame's layout,
+    // so its scrollWidth read forces a synchronous layout -- accepted only because a browser lacking
+    // ResizeObserver is one this project does not otherwise support. The RO path below reads for free
+    // (post-layout) and never goes through here.
     var raf = 0;
     function scheduleSync() {
       if (raf) { return; }
@@ -1826,24 +1825,35 @@
       // AFTER the browser's layout pass, so reading scrollWidth there returns an already-computed
       // value and forces NO synchronous reflow -- the same post-layout free read initBottomStackSpacer
       // relies on. Bouncing it through rAF (which runs BEFORE the frame's layout) is exactly what
-      // turned this free read into the Lighthouse-flagged forced reflow on the homepage. The initial
-      // observe fires once (first measure) and also covers resize + any content-box-changing reflow.
+      // turned this free read into the Lighthouse-flagged forced reflow. One observer, batched: N
+      // boxes changing in a frame deliver ONE callback -> one sync().
       var ro = new ResizeObserver(function () { sync(); });
-      items.forEach(function (item) { ro.observe(item.table); });
-    } else {
-      sync();   // no-RO path keeps the immediate first measure (js-test asserts rails post-init)
-      window.addEventListener("resize", scheduleSync);
-    }
-    // A late image load can grow scrollWidth WITHOUT changing the (max-width:100%-capped)
-    // border box, so ResizeObserver never fires for it -- re-sync on each image load too.
-    items.forEach(function (item) {
-      item.table.querySelectorAll("img").forEach(function (img) {
-        if (!img.complete) {
-          img.addEventListener("load", scheduleSync);
-          img.addEventListener("error", scheduleSync);  // a broken image also changes layout
-        }
+      items.forEach(function (item) {
+        ro.observe(item.table);
+        // A late in-table image grows the table's scrollWidth WITHOUT changing the table's
+        // (max-width:100%-capped) border box, so observing the table alone misses it. Observe each
+        // not-yet-loaded image too: an unsized image's OWN box changes 0 -> intrinsic when it
+        // decodes, firing this same post-layout callback -- a FREE re-measure. The old
+        // img.load -> requestAnimationFrame path read scrollWidth PRE-layout and forced the reflow
+        // this lane gates (it survived the homepage fix on image-heavy pages like Dev/wikitest).
+        item.table.querySelectorAll("img").forEach(function (img) {
+          if (!img.complete) { ro.observe(img); }
+        });
       });
-    });
+    } else {
+      // No ResizeObserver (legacy only): first measure now, then rAF-coalesced resize + image-load
+      // re-syncs (one forced layout per frame, on a path modern browsers never take).
+      sync();   // immediate first measure (js-test asserts rails post-init)
+      window.addEventListener("resize", scheduleSync);
+      items.forEach(function (item) {
+        item.table.querySelectorAll("img").forEach(function (img) {
+          if (!img.complete) {
+            img.addEventListener("load", scheduleSync);
+            img.addEventListener("error", scheduleSync);  // a broken image also changes layout
+          }
+        });
+      });
+    }
   }
 
   // Gallery lightbox: clicking a gallery thumbnail opens a full-viewport overlay with the
