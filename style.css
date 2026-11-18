@@ -288,12 +288,14 @@ img, video { max-width: 100%; height: auto; }
    line box entirely (no baseline, no descender) and min-height:0 lets the broken box collapse to
    the attr-derived height, so loaded and blocked render an identical box. height stays auto (base
    rule above) -- the width/height attrs still drive the aspect.
-   SCOPE `p > img.media-sized` (DIRECT child): media.py tags EVERY frameless sized image
-   .media-sized, including inline icons/logos that sit in a link or an .info-box-icon (rendered
-   `a > img`, `p > a > img`, `span.info-box-icon > a > img`) -- making those block would stack a
-   horizontal icon/logo row onto separate lines. A direct `p > img` is the standalone figure case;
-   the link-wrapped inline icons are excluded and keep their inline flow. */
-p > img.media-sized { display: block; min-height: 0; }
+   SCOPE `img.media-figure`: media.py tags EVERY frameless sized image .media-sized, including
+   inline icons/logos that sit in a link or an .info-box-icon -- making those block would stack a
+   horizontal icon/logo row onto separate lines. A standalone FIGURE (the sole content of its <p>,
+   link-wrapped `<p><a><img></a></p>` or not) and an inline icon can BOTH be `p > a > img` and
+   differ only by text-node siblings, which CSS cannot test -- so the GENERATOR, which sees the
+   paragraph's content, marks only the standalone figure .media-figure (media.py
+   mark_standalone_figures), and this rule targets that class. Inline icons keep their inline flow. */
+img.media-figure { display: block; min-height: 0; }
 /* Keep a token together across a line wrap (e.g. a project name + its trailing TM/R sup, so
    the mark never orphans onto its own line -- see render/pipeline._bind_trademarks). */
 .nowrap { white-space: nowrap; }
