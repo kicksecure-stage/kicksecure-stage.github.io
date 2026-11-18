@@ -78,6 +78,11 @@
   --btn-icon-radius: 50%;
   --btn-icon-media: rgba(0, 0, 0, 0.5);
   --btn-icon-chrome: var(--surface-2);
+  /* Close-control (dismiss-X) family: one shared hit-target size. --close-size is the comfortable
+     default (>=24px WCAG 2.5.8, near-AAA 2.5.5) for the popover/modal close; --close-size-compact
+     fits the thin one-line sitenotice bar and the small fly-in toast whose box caps the control. */
+  --close-size: 44px;
+  --close-size-compact: 36px;
 
   /* callout accents (referenced by .cs-* below) */
   --c-red: #d33426;
@@ -1839,16 +1844,19 @@ code:empty { display: none; }
   background: color-mix(in srgb, var(--surface) 55%, var(--bg));
 }
 .table-wrap { overflow-x: auto; }
-/* Mobile: pin content tables to fixed layout so column widths cannot renegotiate by image load
-   state. Under the default auto layout a cell image feeds its load-state-dependent width into the
-   column's preferred width -- a broken image renders at its attr width, a loaded one is scaled to
-   the column by max-width:100% -- so the columns, and the text wrapping they drive, differ between
-   the image-present and image-absent render, reflowing the table by thousands of px on a phone
-   (the About "Kicksecure Hardening Features" table: -2770px). Fixed layout + width:100% size the
-   columns from the table width alone, identical in both states. Desktop keeps auto layout + the
-   overflow-x scroll for wide tables -- the reflow is mobile-only (desktop has room). */
+/* Mobile: an in-cell floated image renders WIDER when its load is blocked (a broken image takes its
+   attr width, uncapped) than when loaded (scaled to the column by max-width:100%). Under auto
+   table-layout the wider broken box grows its column and rewraps the text, reflowing the table by
+   thousands of px on a phone (the About "Kicksecure Hardening Features" table: -2770px when its
+   images are absent). Pin ONLY the image-bearing tables (:has(.thumbframe)) to fixed layout, so
+   column widths come from the table width alone -- identical whether the image loads or not, and no
+   image is shrunk. The nowrap command/sysctl tables carry no thumbframe, so :has() leaves them on
+   auto-layout + the overflow-x scroll: a fixed layout there would overflow an unbreakable cell
+   instead of scrolling it. Mobile-only -- desktop has room, no reflow. Residual edge (rare, not in
+   About/ISO): a table with BOTH a thumbframe AND an unbreakable nowrap-wide cell still gets fixed
+   layout and could overflow that cell; reserve the in-cell image box if that ever appears. */
 @media (max-width: 480px) {
-  .wiki-content table:not(.toc):not(.storage-table):not(.comparison-table) {
+  .wiki-content table:has(.thumbframe):not(.toc):not(.storage-table):not(.comparison-table) {
     display: table;
     table-layout: fixed;
     width: 100%;
@@ -3068,10 +3076,11 @@ sup.reference:target {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 /* The close: a ghost ICON BUTTON with a subtle filled rounded-rect -- clearly a button (not a faint
-   glyph), with a 44px tap target and an aria-label. One rule for every surface via .popover-close. */
+   glyph), on the shared --close-size tap target with an aria-label. One rule for every surface via
+   .popover-close. */
 .popover-close {
   flex: none; display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; padding: 0; border: 0;
+  width: var(--close-size); height: var(--close-size); padding: 0; border: 0;
   border-radius: var(--btn-radius); cursor: pointer;
   background: var(--btn-icon-chrome); color: var(--muted); font-size: 1.05rem; line-height: 1;
 }
@@ -4655,7 +4664,7 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
   /* Ghost dismiss (idiomatic Primer/Carbon icon-button): a small glyph in a transparent,
      padded hit box -- never a filled square. The hit box stays >=24px CSS-px for WCAG 2.5.8;
      positive offsets only (the #89/#91 guard forbids negatives that cause mobile overflow). */
-  width: 34px; height: 34px; position: absolute; top: 50%; right: 6px; z-index: 10;
+  width: var(--close-size-compact); height: var(--close-size-compact); position: absolute; top: 50%; right: 6px; z-index: 10;
   transform: translateY(-50%);
   display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer; border: 0; border-radius: var(--btn-radius);
@@ -4666,6 +4675,12 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
 /* Placement by shape: center-right on the thin default bar (above); top-right CORNER on the
    tall EOY card, where a vertically-centred close would float in the middle of the card. */
 .sitenotice:has(.sitenotice-end-of-year) .sitenotice-close { top: 14px; transform: none; }
+/* Default thin bar: a vertically-centred X reads clean on one desktop line, but on a narrow phone
+   the bar flex-wraps to several rows and the centred X floats mid-card. Pin it to the top-right
+   corner once the bar can wrap (positive offsets only, per the #89/#91 guard). */
+@media (max-width: 600px) {
+  .sitenotice-banner[data-banner-id="39"] .sitenotice-close { top: 7px; transform: none; }
+}
 .sitenotice-banner[data-banner-id="39"] {
   /* Placement A neutral bar: theme-aware surface, left-aligned content, the Donate button
      right-aligned (margin-left:auto) so on a narrow phone it wraps to the RIGHT under the
@@ -4702,11 +4717,13 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
   }
 }
 #fly-in-notification-panel .close-panel {
-  /* Decent glyph, big hit box: a 16px mark centred in a 36px padded target (>=24px, WCAG 2.5.8).
-     Pinned top-left -- the corner away from the screen's right edge the toast docks against. */
+  /* Real <button> (native Enter/Space + focus), on the shared dismiss-X size token: a 16px mark
+     centred in the --close-size-compact target (>=24px, WCAG 2.5.8). Pinned top-left -- the corner
+     away from the screen's right edge the toast docks against. */
   color: #fff; font-size: 16px; cursor: pointer; position: absolute;
-  left: 3px; top: 3px; z-index: 10; padding: 0;
-  width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+  left: 3px; top: 3px; z-index: 10; padding: 0; border: 0; background: transparent;
+  width: var(--close-size-compact); height: var(--close-size-compact);
+  display: inline-flex; align-items: center; justify-content: center;
   text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000;
 }
 #fly-in-notification-panel .close-panel:hover { transform: scale(1.2); }
@@ -4876,6 +4893,7 @@ body.mini-modal-active { overflow: hidden; }
   color: var(--btn-secondary-fg);
 }
 .popover-close,
+#fly-in-notification-panel .close-panel,
 .gallery-lightbox .glb-nav {
   cursor: pointer;
   transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
@@ -4898,6 +4916,7 @@ body.mini-modal-active { overflow: hidden; }
 .stage-dismiss:focus-visible,
 .sitenotice-close:focus-visible,
 .popover-close:focus-visible,
+#fly-in-notification-panel .close-panel:focus-visible,
 .gallery-lightbox .glb-nav:focus-visible {
   outline: 2px solid transparent; outline-offset: 2px;
   box-shadow: 0 0 0 2px var(--focus);
@@ -4938,6 +4957,7 @@ body.mini-modal-active { overflow: hidden; }
   .stage-dismiss,
   .sitenotice-close,
   .popover-close,
+  #fly-in-notification-panel .close-panel,
   .gallery-lightbox .glb-nav { transition: none; }
   .cta-button:active,
   .hero-download-button:active,
