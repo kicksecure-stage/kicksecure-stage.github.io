@@ -941,19 +941,16 @@
       // null (not "") is the no-match sentinel: the Homepage index entry has u="" and,
       // on the root page, root="" too, so a valid homepage href is the empty string --
       // treating "" as "no match" would skip it and mis-pick a later substring hit.
-      var bestHref = null, bestTier = 3, bestLen = Infinity;
-      for (var i = 0; i < index.length; i++) {
-        var e = index[i];
-        if (!nsEligible(e, q)) continue;   // namespaced page: only for its own namespace query
-        var t = e.t.toLowerCase();
-        var tier = titleRank(t, q);
-        if (tier === 0) return root + e.u;   // exact title: unbeatable, take the first
-        if (tier === -1) continue;
-        if (tier < bestTier || (tier === bestTier && t.length < bestLen)) {
-          bestTier = tier; bestLen = t.length; bestHref = root + e.u;
-        }
+      // Single source of truth with the dropdown: the first rankedTitleIds id whose target is
+      // navSafe IS the dropdown's first row (same ranking basis, same navSafe filter appendResult
+      // applies), so Enter and the first row can never diverge -- no separate length/tier/safety
+      // path to drift (lowercased-length vs e.t.length, first-exact vs shortest, unsafe no-op).
+      var ids = rankedTitleIds(q);
+      for (var i = 0; i < ids.length; i++) {
+        var href = root + index[ids[i]].u;
+        if (navSafe(href, false)) return href;
       }
-      return bestHref;
+      return null;
     }
     input.addEventListener("input", function () {
       // Render after the index resolves (a microtask once loaded); before then, no-op.

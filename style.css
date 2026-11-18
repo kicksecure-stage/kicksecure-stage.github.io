@@ -1848,15 +1848,20 @@ code:empty { display: none; }
    attr width, uncapped) than when loaded (scaled to the column by max-width:100%). Under auto
    table-layout the wider broken box grows its column and rewraps the text, reflowing the table by
    thousands of px on a phone (the About "Kicksecure Hardening Features" table: -2770px when its
-   images are absent). Pin ONLY the image-bearing tables (:has(.thumbframe)) to fixed layout, so
-   column widths come from the table width alone -- identical whether the image loads or not, and no
-   image is shrunk. The nowrap command/sysctl tables carry no thumbframe, so :has() leaves them on
-   auto-layout + the overflow-x scroll: a fixed layout there would overflow an unbreakable cell
-   instead of scrolling it. Mobile-only -- desktop has room, no reflow. Residual edge (rare, not in
-   About/ISO): a table with BOTH a thumbframe AND an unbreakable nowrap-wide cell still gets fixed
-   layout and could overflow that cell; reserve the in-cell image box if that ever appears. */
+   images are absent -- the Malware img's 220px width attr drives the broken box, not its alt text).
+   Pin ONLY image-bearing tables (:has(.thumbframe)) to fixed layout, so column widths come from the
+   table width alone -- identical whether the image loads or not, and no image is shrunk. Three guards
+   keep fixed layout from overflowing an unbreakable cell:
+   - :not(.toc):not(.storage-table):not(.comparison-table) -- these manage their own layout.
+   - :not(:has(.nowrap)) -- a table mixing a thumbframe with an unbreakable nowrap cell keeps
+     auto-layout + the overflow-x scroll; fixed layout would paint the nowrap token off-screen,
+     worse than the images-off reflow it would prevent.
+   - :not(:has(table .thumbframe)) -- :has() matches ANCESTOR tables, so a thumbframe in a nested
+     table would wrongly pin the OUTER table (whose own cells may be nowrap); pin only the innermost
+     table that directly holds the image.
+   Mobile-only -- desktop has room, no reflow. */
 @media (max-width: 480px) {
-  .wiki-content table:has(.thumbframe):not(.toc):not(.storage-table):not(.comparison-table) {
+  .wiki-content table:has(.thumbframe):not(:has(.nowrap)):not(:has(table .thumbframe)):not(.toc):not(.storage-table):not(.comparison-table) {
     display: table;
     table-layout: fixed;
     width: 100%;
@@ -4679,7 +4684,7 @@ html:not(.sitenotice-hidden) #siteNotice:not([hidden]) + main.wiki-content { mar
    the bar flex-wraps to several rows and the centred X floats mid-card. Pin it to the top-right
    corner once the bar can wrap (positive offsets only, per the #89/#91 guard). */
 @media (max-width: 600px) {
-  .sitenotice-banner[data-banner-id="39"] .sitenotice-close { top: 7px; transform: none; }
+  .sitenotice:has(.sitenotice-banner[data-banner-id="39"]) .sitenotice-close { top: 7px; transform: none; }
 }
 .sitenotice-banner[data-banner-id="39"] {
   /* Placement A neutral bar: theme-aware surface, left-aligned content, the Donate button
