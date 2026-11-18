@@ -2200,14 +2200,21 @@ code:empty { display: none; }
    50px square, but prod renders it as a ~23px inline tab marker. Cap it so a 500x500
    logo is not a giant block atop the active section. */
 .tcc-image img { height: 23px; width: auto; vertical-align: middle; }
-/* Once the JS mininav switcher is built, hide the WHOLE inactive section (production);
-   no-JS shows every section (progressive enhancement). */
-.tab-content-controller.mininav-ready .tcc-section:not(.active) { display: none; }
-.tab-content-controller.mininav-ready .tcc-section { border: none; margin: 0; }
+/* Collapse to the active panel at FIRST PAINT, keyed off the pre-paint client-js marker
+   (page.py THEME_INIT_JS sets it in <head> before body render), NOT the JS-runtime
+   .mininav-ready. Hiding only once app.js adds .mininav-ready happens AFTER first paint, so a
+   tab-heavy page rendered every stacked panel then collapsed ~all of them upward -- a large
+   content shift on every (re)load. no-JS (no client-js) keeps all panels stacked + readable. */
+html.client-js .tab-content-controller .tcc-section:not(.active) { display: none; }
+/* No panel marked active=true -> reveal the first, matching app.js initTabs (def = index 0),
+   so a controller relying on the JS default is not blanked pre-paint. Scoped to each
+   controller's OWN direct sections (nesting-safe); :has beats the hide rule on specificity. */
+html.client-js .tab-content-controller:not(:has(> .tcc-content > .tcc-section.active)) > .tcc-content > .tcc-section:first-child { display: block; }
+html.client-js .tab-content-controller .tcc-section { border: none; margin: 0; }
 /* With the pill switcher built + the title sr-only, the content's own top border becomes a
    redundant separator line DIRECTLY under the pill bar -- an extra bordered level prod does
    not show. Drop it so a tabbed section reads as one mininav bar + one expand box (prod). */
-.tab-content-controller.mininav-ready .tcc-content { border-top: none; padding-top: 0.3rem; padding-bottom: 0; }
+html.client-js .tab-content-controller .tcc-content { border-top: none; padding-top: 0.3rem; padding-bottom: 0; }
 /* A short/collapsed box ending a (possibly nested) tab pane stacked each pane's bottom padding
    + the box's own bottom margin into a big empty gap under it inside a numbered-step box (vs a
    normally-filled step). The enclosing box's padding is the only bottom spacing wanted, so the
@@ -3526,10 +3533,10 @@ sup.reference:target {
 }
 .section-download .tcc-section.active .tcc-title { color: #fff; box-shadow: none; }
 .section-download .tcc-content { border-top: none; padding: 0; }
-/* JS adds .mininav-ready at runtime, which re-applies a light-prose padding-top:0.3rem that
-   out-specifies the padding:0 above -- the active download card then sits ~4.8px top-heavy. Zero
+/* The client-js tab-pane rule above re-applies a light-prose padding-top:0.3rem that
+   out-specifies the padding:0 here -- the active download card then sits ~4.8px top-heavy. Zero
    it so the card whitespace is symmetric top/bottom (pairs with the col-container margin-block). */
-.section-download .tab-content-controller.mininav-ready .tcc-content { padding-top: 0; }
+html.client-js .section-download .tab-content-controller .tcc-content { padding-top: 0; }
 /* The dark band is #273445, but .tcc-section's base `background: var(--bg)` (white) + border
    paint a white card behind the OS tiles. Clear both so the tiles sit directly on the dark band
    (prod has no white card); covers the no-JS bordered state and the mininav-ready state. */
