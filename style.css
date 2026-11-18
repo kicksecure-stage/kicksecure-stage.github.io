@@ -1903,7 +1903,10 @@ code:empty { display: none; }
   display: flow-root; position: relative; padding-left: 46px;
 }
 .info-box-icon {
-  position: absolute; left: 12px; top: 9px; margin: 0;
+  /* top optically centers the 24px badge on the FIRST text line (12px pad-top +
+     (25.6px line-height - 24px)/2), level with line 1 -- the admonition idiom
+     (GitHub/MkDocs/Docusaurus), NOT centered on the whole multi-line box. */
+  position: absolute; left: 12px; top: 13px; margin: 0;
   width: 24px; height: 24px; font-size: 0;   /* kill the inline whitespace gap */
 }
 /* the glyph becomes a filled round badge coloured by its OWN cs-* --callout, white icon
@@ -2585,12 +2588,12 @@ body:has(.bottom-stack .stage-banner) .back-to-top { bottom: calc(4.5rem + 20px)
    give the element after the box that gap (prod ~21px). `.wiki-content` prefix outranks the
    margin:0 the box-paragraph rule sets. */
 .wiki-content .post-intro-p + * { margin-top: 1.5em; }
-/* Flush-left content column: no page has a left gutter (the book-nav is an in-flow bar in the
-   content column, not a margin affordance), so the band's -12px left bleed has nowhere to sit and
-   would shove the lead text 12px off the page-title's left axis. Cancel the LEFT bleed on every
-   page -- text stays flush with the heading (the right bleed into the rail gutter is unaffected). */
-.wiki-content .intro-like > :not(:where(blockquote, .info-box, .mbox, .community-support-info)),
-.wiki-content .pre-intro-p ~ :not(:where(.post-intro-p, .post-intro-p ~ *, .hidden-thumbnail, blockquote, .info-box, .mbox, .community-support-info)) {
+/* Flush-left content column (the has-rail-only grid and the plain non-grid page have NO left
+   `prev` gutter): the band's -12px left bleed has nowhere to sit, so it shoves the lead text
+   12px off the page-title's left axis. Cancel the LEFT bleed there -- text stays flush with the
+   heading (the right bleed into the rail gutter is unaffected). has-booknav pages keep the bleed. */
+.wiki-content:not(.has-booknav) .intro-like > :not(:where(blockquote, .info-box, .mbox, .community-support-info)),
+.wiki-content:not(.has-booknav) .pre-intro-p ~ :not(:where(.post-intro-p, .post-intro-p ~ *, .hidden-thumbnail, blockquote, .info-box, .mbox, .community-support-info)) {
   /* blockquote + callout boxes excluded: each carries its own box model (border-left/indent, or a
      full border + the .info-box.has-icon 46px left inset that clears the absolutely-positioned type
      icon). Zeroing padding-left here (0,3,0) outranks .info-box.has-icon (0,2,0), so an {{mbox}}/
@@ -4036,70 +4039,74 @@ sup.reference:target {
    sits below the category box at the end of the article. */
 .page-lastmod { margin: 1rem 0 0; font-size: 0.85rem; color: var(--fg-soft); }
 
-/* --- book prev/next nav --- */
-/* Fixed-size symmetric prev/next bars INSIDE the content column (the "Contents" index control is
-   dropped). The firstheading instance renders as a TOP bar directly under the page title; the
-   footer instance as a BOTTOM bar at the article end. Every button is the SAME fixed width on every
-   page -- the title column is fixed (32ch) and clamped to ONE line with an ellipsis -- so Prev and
-   Next stay symmetric regardless of title length (title-length survey: 603 titles, median 15ch,
-   p90 32ch; 32ch fits ~90% on one line, the rest clamp). DESKTOP shows both bars; MOBILE hides the
-   top bar (no room under the title) and shows only the bottom bar with full-width stacked buttons. */
+/* --- book prev/index/next nav --- */
+/* Book prev/next nav. The "Contents" (index) control was dropped. DESKTOP: the firstheading
+   instance becomes GUTTER affordances via `display: contents` -- Prev in the left gutter, Next in
+   the right gutter above the related rail -- so the headline keeps its natural top position
+   (prev | headline | next, no bar above the content). The long neighbour titles that would overflow
+   a gutter chip are shortened at source by the book-nav short-label map (booknav-short-titles.tsv).
+   MOBILE: the gutters collapse; the footer instance renders inline prev/next at the end of the
+   article (the idiomatic mobile form), and the gutter instance is hidden. */
 
-/* Grid shell: [content | rail]. Only the related rail needs the grid -- the book-nav bars sit
-   inside the content column, so a book page WITHOUT a rail is a normal single-column article. */
-.wiki-content.has-rail {
+/* Grid shell: [left gutter | content | right gutter (Next + rail)]. Stacks to one column on mobile.
+   Defined here (not with .related-rail) so the book-nav-only page gets the same grid. */
+.wiki-content.has-rail,
+.wiki-content.has-booknav {
   max-width: 75rem; display: grid; gap: 1rem 2rem; align-items: start;
+}
+.wiki-content.has-rail:not(.has-booknav) {
   grid-template-columns: minmax(0, 1fr) 16rem;
   grid-template-areas: "content rail";
+}
+.wiki-content.has-booknav.has-rail {
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) 16rem;
+  /* row 1 (auto) sizes to Next; the flexible 1fr row 2 absorbs the tall content column so it does
+     NOT inflate row 1 and push the rail down -- the rail then sits just under Next. */
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "prev content next" ".    content rail";
+}
+.wiki-content.has-booknav:not(.has-rail) {
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) minmax(0, 11rem);
+  grid-template-areas: "prev content next";
 }
 .wiki-content > .content-col { grid-area: content; min-width: 0; }
 .wiki-content > .related-rail { grid-area: rail; }
 
-/* The two bars: full content width, Prev pinned left + Next pinned right (auto margins); a lone
-   neighbour on the first/last page keeps its own edge. flex-wrap so that when the content column is
-   narrow (a related rail present near the grid breakpoint), the two FIXED-width buttons wrap to two
-   rows instead of overflowing the column into the rail -- the button size stays stable either way. */
-.wiki-book-index { display: flex; flex-wrap: wrap; gap: 1rem; align-items: stretch; }
-.wiki-book-index.wbi-for-firstheading { border-bottom: 1px solid var(--border); margin-bottom: 1.1rem; padding-bottom: 0.7rem; }
-.wiki-book-index.wbi-for-footer { border-top: 1px solid var(--border); margin-top: 2.5rem; padding-top: 0.9rem; }
-/* The footer instance is emitted inline, so pandoc wraps it in a <p> that the 66ch prose
-   measure-cap would otherwise shrink -- making the bottom bar narrower than the top bar. Let its
-   wrapper span the full content column so the two bars align. */
-.wiki-content p:has(> .wiki-book-index) { max-width: none; margin: 0; }
-/* a single-page book has neither prev nor next: the span carries only the hidden .info, so suppress
-   the otherwise-empty bordered strip (border + padding + margin with no buttons). */
-.wiki-book-index:not(:has(.prev, .next)) { display: none; }
+/* the firstheading nav box disappears; its Prev/Next become grid items in the gutters */
+.wiki-book-index.wbi-for-firstheading { display: contents; }
+.wiki-book-index.wbi-for-firstheading > .prev { grid-area: prev; justify-self: start; align-self: start; }
+.wiki-book-index.wbi-for-firstheading > .next { grid-area: next; justify-self: end; align-self: start; }
 
-/* Prev / Next: fixed-size filled bordered boxes (the 32ch title column makes both identical width). */
+/* Prev / Next: compact chips sized to their own label (NOT stretched to the rail width). */
 .wiki-book-index .prev, .wiki-book-index .next {
-  flex: none; display: flex; align-items: center; gap: 0.5rem; box-sizing: border-box;
+  display: inline-flex; align-items: center; gap: 0.5rem; min-width: 0; width: max-content; max-width: 100%;
   border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
-  padding: 0.45rem 0.7rem; text-decoration: none; color: var(--fg);
-  transition: background-color 0.15s, border-color 0.15s;
+  padding: 0.5rem 0.75rem; text-decoration: none; color: var(--fg); transition: background-color 0.15s;
 }
-.wiki-book-index .prev { margin-right: auto; }                                    /* pin left  */
-.wiki-book-index .next { margin-left: auto; flex-direction: row-reverse; text-align: end; }  /* pin right */
-.wiki-book-index .prev:hover, .wiki-book-index .next:hover { background: var(--surface-2); border-color: var(--link); }
+.wiki-book-index .next { flex-direction: row-reverse; }
+.wiki-book-index .prev:hover, .wiki-book-index .next:hover { background: var(--surface-2); }
 .wiki-book-index i { flex: none; color: var(--link); }
-.wiki-book-index .wbi-label { display: flex; flex-direction: column; min-width: 0; width: 32ch; }
-.wiki-book-index .next .wbi-label { align-items: flex-end; }
+.wiki-book-index .wbi-label { display: flex; flex-direction: column; min-width: 0; }
 .wiki-book-index .wbi-cap { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
 .wiki-book-index .text {
-  width: 100%; font-size: 0.9rem; font-weight: 600; color: var(--link);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;   /* ONE line, ellipsis past 32ch */
+  font-size: 0.9rem; font-weight: 600; color: var(--link); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; max-width: 14ch;
 }
 .wiki-book-index .info { display: none; }   /* redundant a11y text; the aria-label carries the name */
 
+/* footer book-nav: hidden on desktop (the gutter Prev/Next cover it); shown inline on mobile */
+.wiki-book-index.wbi-for-footer { display: none; }
+
 @media (max-width: 900px) {
-  .wiki-content.has-rail { display: block; max-width: var(--maxw); }
+  .wiki-content.has-rail, .wiki-content.has-booknav { display: block; max-width: var(--maxw); }
   .related-rail { position: static; margin-top: 1.75rem; }
-  /* no room for a top bar under the mobile title: hide it, keep the bottom bar, stack buttons full-width */
+  /* gutters collapse: hide the firstheading (gutter) nav, show the footer nav inline at content end */
   .wiki-book-index.wbi-for-firstheading { display: none; }
-  .wiki-book-index.wbi-for-footer { flex-direction: column; }
-  .wiki-book-index.wbi-for-footer .prev,
-  .wiki-book-index.wbi-for-footer .next { width: 100%; margin: 0; }
-  .wiki-book-index.wbi-for-footer .wbi-label { width: auto; flex: 1 1 auto; }
-  .wiki-book-index.wbi-for-footer .text { white-space: normal; }   /* phone: full-width button, let the title wrap */
+  .wiki-book-index.wbi-for-footer {
+    display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 2.5rem 0 0;
+  }
+  .wiki-book-index.wbi-for-footer .next { margin-left: auto; }
+  .wiki-book-index .text { max-width: none; white-space: normal; }
 }
 
 /* Book / related-links nav box: a .mininav carrying a title + link list (e.g. the
