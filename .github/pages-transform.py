@@ -17,10 +17,21 @@ import re
 import sys
 from pathlib import Path
 
-# The one directive that actually keeps a page out of the index (robots.txt Disallow cannot).
-# nofollow matches the generator's own --stage convention (do not crawl the stage link graph).
+# SCOPE: the input is this generator's own --prod/--stage HTML, which emits at most one
+# <meta name="robots" content="..."> per page (name before content, double-quoted) and never a
+# commented-out or single-quoted robots meta -- so the regexes below need not handle arbitrary
+# hand-authored HTML. verify (below) is the fail-loud guard that confirms the real output.
+#
+# noindex is the one directive that actually keeps a page out of the index. robots.txt Disallow
+# alone cannot, and pairing Disallow: / WITH this noindex is a DELIBERATE operator decision
+# (belt-and-suspenders) -- a disallowed crawler will not see the meta, which is accepted; do not
+# "fix" the pairing. nofollow matches the generator's own --stage convention.
 ROBOTS_CONTENT = "noindex,nofollow"
 ROBOTS_META = '<meta name="robots" content="%s">' % ROBOTS_CONTENT
+
+# A robots.txt line that disallows the WHOLE site: the root path exactly, not a prefix such as
+# `Disallow: /private` and not a `# ...` comment. Matched per stripped line in verify.
+_RE_DISALLOW_ALL = re.compile(r'Disallow:\s*/\s*', re.IGNORECASE)
 
 # A <meta name="robots" ...> whose content is captured in group 2 (name before content, which is
 # how the generator emits it, e.g. the --prod `max-image-preview:large`).
@@ -37,7 +48,9 @@ _RE_CARD_ORIGIN = re.compile(
 
 
 def stage_host(explicit):
-    """The host the artifact is served at: the <name>.github.io Pages repo name."""
+    """The host the artifact is served at. These are <host>.github.io user/org Pages repos
+    (GITHUB_REPOSITORY = <owner>/<host>.github.io) served at the domain root, so the repo name IS
+    the served host and og:image root-absolute paths resolve under it. --stage-host overrides."""
     if explicit:
         return explicit
     repo = os.environ.get("GITHUB_REPOSITORY", "")
@@ -99,12 +112,18 @@ def cmd_verify(args):
     for path in iter_html(root):
         total += 1
         m = _RE_ROBOTS.search(path.read_text(encoding="utf-8"))
-        if not m or "noindex" not in m.group(2).lower():
+        # Exact directive token, not a substring: `noindexable` / `max-image-preview:large` must
+        # NOT pass as noindex.
+        tokens = {t.strip().lower() for t in (m.group(2) if m else "").split(",")}
+        if "noindex" not in tokens:
             failures.append("missing noindex robots meta: %s" % path.relative_to(root))
     robots = root / "robots.txt"
     if not robots.is_file():
         failures.append("missing robots.txt")
-    elif "Disallow: /" not in robots.read_text(encoding="utf-8"):
+    # A whole-line root Disallow, not a substring: `Disallow: /private` or `# Disallow: /` must
+    # NOT pass.
+    elif not any(_RE_DISALLOW_ALL.fullmatch(ln.strip())
+                 for ln in robots.read_text(encoding="utf-8").splitlines()):
         failures.append("robots.txt does not Disallow: /")
     if failures:
         for f in failures:
