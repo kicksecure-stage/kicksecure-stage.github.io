@@ -4425,12 +4425,20 @@ body.page-home { container-type: inline-size; }
   display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0 2px;
   list-style: none; margin: 0; padding: 0;
 }
-/* flex:none keeps each tab at its label width (no shrink) so it wraps whole; max-width:none
-   because the prose reading-measure cap `.wiki-content li { max-width: 66ch }` is for body text. */
-.mininav.mn-switcher > ul > li { flex: none; display: block; margin: 0; padding: 0; max-width: none; }
+/* flex:0 1 auto keeps each tab at its label width in the common case (flex-wrap moves a tab that
+   does not fit to the next ROW, never shrinks it) but lets a LONE tab wider than the whole row
+   shrink to the row instead of overflowing the page -- no h-scroll contains it now. min-width:0
+   permits that shrink. max-width:none because the prose cap `.wiki-content li { max-width: 66ch }`
+   is for body text, not these tab pills. */
+.mininav.mn-switcher > ul > li { flex: 0 1 auto; min-width: 0; display: block; margin: 0; padding: 0; max-width: none; }
 /* `li > :not(span, img)` = the tab anchor (its leading icon <span>/<img> excluded). */
 .mininav.mn-switcher li > :not(span, img) {
-  display: inline-flex; align-items: center; white-space: nowrap; cursor: pointer;
+  display: inline-flex; align-items: center; cursor: pointer;
+  /* A LONG single-tab label ("Debian Bookworm (oldstable) or Bullseye (oldoldstable)", ~54 chars,
+     wider than a 320px phone) WRAPS inside the pill instead of overflowing the page sideways:
+     max-width caps it to the row, overflow-wrap breaks an unbreakable token. Short labels, having
+     room, stay on one line. */
+  max-width: 100%; white-space: normal; overflow-wrap: anywhere;
   color: var(--muted); font-size: 0.95rem; font-weight: 400; text-decoration: none;
   padding: 0.5rem 0.85rem;
   background: none; border: 0; border-bottom: 2px solid var(--border-soft);
