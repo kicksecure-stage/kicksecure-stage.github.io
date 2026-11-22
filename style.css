@@ -1183,6 +1183,50 @@ html:not(.client-js) .site-search .search-submit { display: none; }
 .search-results .search-all { border-top: 1px solid var(--border); margin-top: 0.15rem; padding-top: 0.15rem; }
 .search-results .search-all a { font-style: italic; }
 
+/* Special:Search results page field (built by app.js setupResultsPage): a role=search row with the
+   input, an inside-right clear-x shown while typing, and a trailing blue Search submit. The Codex/
+   Vector cdx-search-input idiom; blue + muted X reuse the SAME tokens as the header controls so the
+   two surfaces match. No <form> (CSP form-action 'none') -- app.js drives submit. */
+.search-page-box {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  max-width: 34rem;
+  margin: 0.5rem 0 0;
+}
+.search-page-field { position: relative; flex: 1 1 auto; display: flex; }
+.search-page-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5em 2.3rem 0.5em 0.7em;   /* right pad reserves room for the inside clear-x */
+  font-size: 1rem;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.search-page-input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--accent); }
+/* Suppress the native type=search clear so it never doubles the custom clear-x (as the header does). */
+.search-page-input::-webkit-search-cancel-button,
+.search-page-input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
+.search-page-clear {
+  position: absolute; right: 0.4rem; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.7rem; height: 1.7rem; padding: 0; border: 0; border-radius: var(--radius-sm);
+  background: none; color: var(--muted); cursor: pointer; font-size: 0.95rem;
+}
+.search-page-clear:hover { color: var(--fg); background: var(--surface-2); }
+.search-page-clear[hidden] { display: none; }   /* explicit display beats the hidden attr's UA display:none */
+.search-page-submit {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 0.9rem; border: 0; border-radius: var(--btn-radius);
+  /* Site primary-action color, the SAME token as the header's .search-submit (not green --accent). */
+  background: var(--btn-primary); color: var(--btn-primary-fg);
+  font-size: 0.9rem; font-weight: 600; white-space: nowrap; cursor: pointer;
+}
+.search-page-submit:hover { background: var(--btn-primary-hover); }
+
 /* Compact header: collapse the nav to a hamburger and shrink the logo to a 46x34 box; the wordmark
    + Donate text stay, the trademark mark drops. Prod (Vector legacy) does this at <=720px, but OUR
    inline header is wider (logo + wordmark + full nav + search + Donate), so we collapse at <=959.98
