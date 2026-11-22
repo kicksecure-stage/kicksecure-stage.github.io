@@ -3205,9 +3205,10 @@ sup.reference:target {
 /* A pure anchor-only paragraph: pandoc wraps a lone {{Anchor|...}} jump target in its OWN <p>,
    whose default margins + line box inject a blank band. An invisible scroll target must take no
    vertical space, so collapse the wrapping paragraph (e.g. {{Anchor|starting}} atop the step-4
-   {{Box}} no longer pushes the heading down). Scoped to the only-child, non-visible anchor, so an
-   inline anchor that shares a paragraph with text, or a visible mpa label, is left untouched. */
-.wiki-content p:has(> .manually-placed-anchor:only-child:not(.mpa-visible)) {
+   {{Box}} no longer pushes the heading down). Keyed to the generator's `mpa-only` class (a <p>
+   holding ONLY non-visible anchors): CSS :only-child is text-node-blind and would also collapse
+   `{{Anchor|x}}visible text`, so the generator, which can see the text, tags the pure case. */
+.wiki-content p.mpa-only {
   margin: 0; line-height: 0;
 }
 /* A box resets its FIRST child's top margin (.info-box/.mbox/.tcc-content > :first-child margin-top:0)
@@ -3215,7 +3216,7 @@ sup.reference:target {
    reset lands on the (now 0-height) anchor and the real first element -- the heading -- keeps its top
    margin, reopening the gap. Zero the margin of the element FOLLOWING a leading collapsed anchor so it
    sits flush, exactly as a true first child would. */
-:is(.mbox, .info-box, .tcc-content) > p:has(> .manually-placed-anchor:only-child:not(.mpa-visible)):first-child + * {
+:is(.mbox, .info-box, .tcc-content) > p.mpa-only:first-child + * {
   margin-top: 0;
 }
 .manually-placed-anchor.mpa-visible {
