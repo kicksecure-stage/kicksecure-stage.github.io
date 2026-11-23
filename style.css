@@ -1197,6 +1197,30 @@ html:not(.client-js) .site-search .search-submit { display: none; }
    link color + the shared :hover / keyboard-active highlight so it reads as actionable. */
 .search-results .search-all { border-top: 1px solid var(--border); margin-top: 0.15rem; padding-top: 0.15rem; }
 .search-results .search-all a { font-style: italic; }
+/* Wikipedia-style suggestion row (desktop dropdown AND mobile popover share this): a narrow
+   thumbnail, then the title (typed prefix highlighted) over a one-line summary. Scoped to the
+   result options so the "search for all" footer stays a plain block link. */
+.search-results li:not(.search-all) > a { display: flex; align-items: center; gap: 0.6rem; }
+.search-thumb {
+  flex: 0 0 auto; width: 64px; height: 64px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden;
+  background: var(--surface-2); display: inline-flex; align-items: center; justify-content: center;
+}
+/* The 128px (2x) downscale is cover-cropped square in the 64px box -- no server-side square crop. */
+.search-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* No #seo-image thumb -> a grey document glyph (Font Awesome, already loaded for the search controls). */
+.search-thumb--fallback { color: var(--muted); }
+.search-thumb--fallback i { font-size: 1.8rem; line-height: 1; }
+.search-row-text { min-width: 0; flex: 1; }   /* min-width:0 lets the text column ellipsize */
+.search-row-title {
+  display: block; font-weight: 700; line-height: 1.2;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-row-title .match { text-decoration: underline; text-underline-offset: 2px; }
+.search-row-desc {
+  display: block; margin-top: 0.1rem; color: var(--muted); font-size: 0.85rem; line-height: 1.25;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 
 /* Special:Search results page field (built by app.js setupResultsPage): a role=search row with the
    input, an inside-right clear-x shown while typing, and a trailing blue Search submit. The Codex/
@@ -1316,9 +1340,26 @@ html:not(.client-js) .site-search .search-submit { display: none; }
   /* Lens toggles the overlay open. Mobile-only (see the base note): kept out of the unscoped base
      so a stale :checked cannot leak into the desktop tier. */
   .search-toggle:checked ~ .search-field {
-    width: min(80vw, 16rem); padding: 0.55rem 0.8rem; border: 1px solid var(--border);
+    width: min(80vw, 16rem); height: 2.4rem; padding: 0 5rem 0 0.8rem; border: 1px solid var(--border);
     opacity: 1; pointer-events: auto; visibility: visible; z-index: 50;
     box-shadow: var(--shadow-md);
+  }
+  /* The mobile popover reuses the SAME blue Search submit + clear-x as desktop (their markup and
+     app.js wiring are tier-agnostic; only this reveal was desktop-only). They overlay the open
+     field, which hangs below the header at top: calc(100% + 0.3rem); the field is 2.4rem tall, so
+     its vertical centre is +1.5rem. clear-x shows only while the field holds text (app.js un-hides
+     it); the submit tracks the #q= query like desktop. */
+  .search-toggle:checked ~ .search-clear:not([hidden]) {
+    display: inline-flex; right: 4.3rem; top: calc(100% + 1.5rem); transform: translateY(-50%);
+  }
+  .search-toggle:checked ~ .search-submit {
+    display: inline-flex; right: 0.35rem; top: calc(100% + 1.5rem); transform: translateY(-50%);
+  }
+  /* A custom clear-x now ships on mobile too -> suppress the native type=search cancel glyph so the
+     field does not show a double-x (same reason as the desktop tier). */
+  .search-field::-webkit-search-cancel-button,
+  .search-field::-webkit-search-decoration {
+    -webkit-appearance: none; appearance: none; display: none;
   }
 }
 /* Narrow phones: drop the "Donate" word (heart glyph only) so the CTA stays on the logo
@@ -2593,6 +2634,13 @@ details.mw-collapsible > summary > p { margin: 0; }
   details.mw-collapsible > summary { display: flex; flex-direction: column; }
   .mwc-label { order: 1; }
   .mwc-toggle { order: 2; float: none; align-self: flex-end; margin: 0.4rem 0 0; }
+  /* A badge/chip that leaks in as a DIRECT summary child (a title authored as a bare
+     {{IconSet|false|!}} chip sitting beside a block heading, so render/collapsibles cannot tuck
+     it inside .mwc-label) is a flex item here; the column's default align-items:stretch
+     blockifies its inline-flex and stretches it to full width -- the "!" renders as a full-width
+     coloured BAR instead of a compact square. Pin every non-pill, non-label direct child to its
+     own width so a stray chip stays a chip. The label/heading (.mwc-label) still spans the column. */
+  details.mw-collapsible > summary > :not(.mwc-label):not(.mwc-toggle) { align-self: flex-start; }
 }
 .mwc-toggle::before { content: "\25BC"; margin-right: 0.4rem; font-size: 0.8em; }
 .mwc-less { display: none; }
@@ -3528,7 +3576,7 @@ sup.reference:target {
 .si-youtube { --brand: #ff0000; }
 .si-github { --brand: #181717; }
 .si-bluesky { --brand: #1185fe; }
-.si-play { --brand: #d32f2f; }   /* Invidious (YouTube front-end), keyed by its fa-play glyph */
+.si-circle-play { --brand: #d32f2f; }   /* Invidious (YouTube front-end), keyed by its fa-circle-play glyph */
 .si-rss { --brand: #ee802f; }    /* RSS feed orange */
 /* Section label splitting the menu into prod's two groups (copy-to-clipboard / open-social). */
 .menu-section {

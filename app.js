@@ -821,6 +821,63 @@
       }
       return shardCache[name];
     }
+    // Wikipedia-style dropdown row: a narrow thumbnail, then the title (typed prefix highlighted)
+    // over a one-line summary. TT-safe: createElement + textContent + setAttribute only, never an
+    // HTML-string sink -- same discipline as the plain row. Fields come from the prebuilt index:
+    // e.img (root-relative #seo-image thumb) and e.d (the page's published one-line description).
+    function buildSuggestionRow(a, e, q) {
+      var thumb = document.createElement("span");
+      thumb.className = "search-thumb";
+      // A same-origin <img> (governed by img-src 'self') -- NOT an inline background-image, so
+      // style-src 'self' without unsafe-inline is untouched. navSafe drops a tampered cross-origin
+      // url to the glyph, same defense the row href gets.
+      var imgHref = e.img ? root + e.img : null;
+      if (imgHref && navSafe(imgHref, false)) {
+        var img = document.createElement("img");
+        img.setAttribute("src", imgHref);
+        img.setAttribute("alt", "");                 // decorative: the title names the result
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("width", "64");
+        img.setAttribute("height", "64");            // reserve the box so rows do not shift as thumbs load
+        thumb.appendChild(img);
+      } else {
+        // No usable thumb -> the grey document glyph (the same Font Awesome set the header search
+        // controls use), drawn by CSS -- no shipped asset, no img-src dependency.
+        thumb.className = "search-thumb search-thumb--fallback";
+        var glyph = document.createElement("i");
+        glyph.className = "fa-solid fa-file-lines";
+        glyph.setAttribute("aria-hidden", "true");
+        thumb.appendChild(glyph);
+      }
+      a.appendChild(thumb);
+      var text = document.createElement("span");
+      text.className = "search-row-text";
+      var title = document.createElement("span");
+      title.className = "search-row-title";
+      // Set the typed run off inside the title (Codex idiom). q is the current (>=2 char) query,
+      // always set by renderResults before a row builds. A full-text BODY hit whose title does not
+      // contain the query (indexOf -1) renders unhighlighted, which is correct.
+      var off = e.t.toLowerCase().indexOf(q);
+      if (off < 0) {
+        title.textContent = e.t;
+      } else {
+        if (off > 0) title.appendChild(document.createTextNode(e.t.slice(0, off)));
+        var m = document.createElement("span");
+        m.className = "match";
+        m.textContent = e.t.slice(off, off + q.length);
+        title.appendChild(m);
+        var tail = e.t.slice(off + q.length);
+        if (tail) title.appendChild(document.createTextNode(tail));
+      }
+      text.appendChild(title);
+      if (e.d) {
+        var desc = document.createElement("span");
+        desc.className = "search-row-desc";
+        desc.textContent = e.d;                      // plain text, one line (CSS ellipsis)
+        text.appendChild(desc);
+      }
+      a.appendChild(text);
+    }
     function appendResult(e, sink) {        // TT-safe: textContent + setAttribute only, no HTML-string sink
       var href = root + e.u;
       if (!navSafe(href, false)) return false;   // drop a row whose (tampered) target is not same-origin
@@ -832,7 +889,11 @@
       }
       var a = document.createElement("a");
       a.setAttribute("href", href);
-      a.textContent = e.t;
+      if (sink.option) {                    // dropdown: the rich thumbnail + title + summary row
+        buildSuggestionRow(a, e, sink.query);
+      } else {                              // Special:Search results page: a plain title link
+        a.textContent = e.t;
+      }
       li.appendChild(a);
       // Keep the "search for all" footer row (when present) LAST: title + async body rows insert
       // before it, so it never moves off the end of the listbox. footerNode is only ever set on a
@@ -998,6 +1059,7 @@
     // fires after the title pass AND after each full-text batch that adds rows. Used by BOTH the
     // header dropdown and the Special:Search results page, so their ranking + de-dup are identical.
     function renderResults(q, gen, sink) {
+      sink.query = q;   // the (lowercased) query, so a dropdown row can highlight the typed run
       var shownIds = {}, shown = 0;
       // Create the "search for all" footer row FIRST so the title + async body rows insert before
       // it (appendResult) and it stays the last option. Dropdown only (sink.footer).
