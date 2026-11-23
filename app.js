@@ -588,7 +588,9 @@
     // its scheme, so "ja\tvascript:" and " javascript:" still execute -- strip that set for the
     // scheme CHECK (mirrors parserfunctions.safe_url), then test the cleaned value.
     var p = h.replace(/[\u0000- \u007f]/g, "");
-    if (p.slice(0, 2) === "//") return false;               // protocol-relative -> cross-origin
+    if (/^[/\\]{2}/.test(p)) return false;                   // // /\ \/ \\ -> browsers normalize
+                                                             // a backslash to '/', so all four are
+                                                             // protocol-relative -> cross-origin
     var m = /^([a-z][a-z0-9+.-]*):/i.exec(p);                // a leading URL scheme?
     if (!m) return true;                                     // relative (incl. "") -> same-origin
     var s = m[1].toLowerCase();                              // an absolute target: only http(s),
@@ -857,7 +859,11 @@
       // Set the typed run off inside the title (Codex idiom). q is the current (>=2 char) query,
       // always set by renderResults before a row builds. A full-text BODY hit whose title does not
       // contain the query (indexOf -1) renders unhighlighted, which is correct.
-      var off = e.t.toLowerCase().indexOf(q);
+      // A few characters lower-case to a DIFFERENT length (e.g. U+0130), so an offset found in
+      // the lower-cased title would mis-slice the original-case title; only highlight when the two
+      // line up 1:1, else show the plain title (the match highlight is purely cosmetic).
+      var lower = e.t.toLowerCase();
+      var off = lower.length === e.t.length ? lower.indexOf(q) : -1;
       if (off < 0) {
         title.textContent = e.t;
       } else {

@@ -2294,7 +2294,9 @@ code:empty { display: none; }
    theme-independent. Ring thinned to 2px here (vs the shared 3px the large fa-2x banners keep)
    so it does not weigh down the subordinate badge. */
 .padded-content-icon.pci-style-circle.iconset-h1 {
-  min-width: 1.3em; height: 1.3em; background: #157a33; border-width: 2px;
+  /* width:auto cancels the base .pci-style-circle width:1.9em -- without it the base width
+     leaks through and every badge (even 1 digit) renders as a 1.9em-wide oval. */
+  width: auto; min-width: 1.3em; height: 1.3em; background: #157a33; border-width: 2px;
   /* full radius: perfect circle at 1 digit, clean stadium ends at 2+ -- overrides the base
      .pci-style-circle 50%, which on a grown (wider-than-tall) box would give an ellipse. */
   border-radius: 999px;
