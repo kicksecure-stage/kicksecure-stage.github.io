@@ -2811,42 +2811,34 @@
     });
   }
 
-  // Touch click-to-activate for the per-heading affordances (permalink '#', edit, share).
-  // A fine-pointer device reveals them on heading :hover (CSS); a touch device has no hover, so
-  // here a TAP on the heading toggles a persistent .heading-active that CSS reveals THAT heading's
-  // affordances on. Toggle semantics: tap the same heading again, tap another heading, tap away,
-  // or Escape hides it; only ONE heading is active at a time (opening one closes the rest --
-  // mirrors the share-menu closeAll). Keyboard focus-within / :target reveal is CSS and
-  // platform-independent, so this adds nothing there. Bound ONLY on a no-hover / coarse pointer so
-  // a desktop mouse stays pure-hover (no stray click-latch). NO-JS touch keeps the affordances
-  // always-visible via the CSS html:not(.client-js) fallback -- never unreachable. TT-safe:
-  // classList only, no HTML sink.
+  // Click/tap-to-reveal the per-heading edit/share affordances, EVERY pointer. There is no visible
+  // '#' permalink glyph (operator decision: the revealed edit/share suffice) -- the heading ITSELF
+  // is the permalink. A click/tap on a content heading NAVIGATES to its anchor (location.hash =
+  // its id): that sets the URL :target, which CSS reveals the edit/share cluster, and because
+  // :target is SINGLE it is the authoritative single-active reveal -- targeting one heading drops
+  // the previously-targeted one, with no class bookkeeping. Scroll-to-anchor + a history entry on
+  // click are intended (operator-approved: a click is "take me to / give me the link for this
+  // section"). Desktop hover + keyboard :focus-within reveals stay pure CSS. A click on an actual
+  // affordance (edit/share) or any link/button inside a heading must ACT, not navigate -- the
+  // hidden cluster is pointer-events:none, so a tap over its invisible zone hit-tests to the
+  // heading and falls through here. Escape clears the reveal (drops :target). NO-JS keeps hover
+  // (desktop) + the always-visible touch fallback. TT-safe: only navigation, no HTML sink.
   function initHeadingReveal() {
-    if (!window.matchMedia("(hover: none), (pointer: coarse)").matches) return;   // desktop uses CSS :hover
-    function closeAll(except) {
-      var active = document.querySelectorAll(".wiki-content .heading-active");
-      for (var i = 0; i < active.length; i++) {
-        if (active[i] !== except) active[i].classList.remove("heading-active");
-      }
-    }
     document.addEventListener("click", function (e) {
       var t = e.target;
-      // A tap on an actual affordance (permalink / edit / share) must ACT, not toggle the panel --
-      // leave it to the anchor nav / initShareLazy. The hidden cluster is pointer-events:none, so a
-      // tap over its invisible icon zone hit-tests to the heading and falls through to the reveal.
-      if (t.closest(".h-anchor, .heading-actions")) return;
+      if (!t || !t.closest) return;                           // a document / non-element target has no heading
+      if (t.closest(".heading-actions, a, button")) return;   // edit/share + any link/button act, not navigate
       var h = t.closest("h1, h2, h3, h4, h5, h6");
-      // Tap off a content heading, OR on a content heading with nothing to reveal (a widget h4-h6
-      // has neither affordance): nothing to toggle, so just collapse any open heading -- keeps the
-      // documented one-active-at-a-time contract (an affordance-less heading acts like tap-away).
-      if (!h || !h.closest(".wiki-content") || !h.querySelector(".h-anchor, .heading-actions")) {
-        closeAll(null); return;
-      }
-      var open = !h.classList.contains("heading-active");
-      closeAll(h);
-      h.classList.toggle("heading-active", open);
+      // Only a content heading that actually HAS affordances to reveal (h1-h3; a widget / h4-h6 has
+      // none). An id is required to navigate. A click elsewhere is left alone (no forced collapse --
+      // :target clears itself when another heading is targeted, or on Escape).
+      if (!h || !h.closest(".wiki-content") || !h.id || !h.querySelector(".heading-actions")) return;
+      var frag = encodeURIComponent(h.id);
+      if (location.hash !== "#" + frag) location.hash = frag;   // reveal + single-active via :target (skip a redundant re-nav)
     });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(null); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && location.hash) location.hash = "";   // clear the active reveal
+    });
   }
 
   // Warm below-the-fold lazy images ~3 viewports before they enter view, so the fetch AND the
