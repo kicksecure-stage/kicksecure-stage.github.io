@@ -2437,15 +2437,17 @@
 
   // Keyboard page-turn for the authored WikiBookIndex "book" chain: Left/Right move to the
   // previous/next book page. PROGRESSIVE enhancement over the visible .wiki-book-index Prev/Next
-  // buttons (they work with no JS) -- the target is read from <link rel=prev/next> in <head> (as
-  // Material for MkDocs and Sphinx do), emitted only on indexed pages, so an un-indexed page has
-  // no links and this silently no-ops. Only the HORIZONTAL pair is bound; Up/Down/PageUp/PageDown/
+  // buttons (they work with no JS) -- the target is read from the inert <link rel=mw-book-prev/
+  // mw-book-next> carriers in <head> (a custom rel, NOT rel=next, so Firefox network.prefetch-next
+  // never speculatively loads it into the strict default-src 'none' CSP -- see page.py), emitted
+  // only on indexed pages, so an un-indexed page has no links and this silently no-ops. Only the
+  // HORIZONTAL pair is bound; Up/Down/PageUp/PageDown/
   // Space stay free so vertical scrolling is never swallowed (mdBook's rule). The guard set bails
   // whenever the key belongs to the browser, an editable field, or an in-page widget that owns
   // arrows, so native scroll / IME / tablist / menubar / modal / lightbox / hovercard all keep it.
   function initBookNav() {
-    var nextLink = document.querySelector('link[rel="next"]');
-    var prevLink = document.querySelector('link[rel="prev"]');
+    var nextLink = document.querySelector('link[rel="mw-book-next"]');
+    var prevLink = document.querySelector('link[rel="mw-book-prev"]');
     if (!nextLink && !prevLink) return;              // un-indexed page: nothing to navigate to
     // getAttribute, not the IDL .href: .href resolves href="" to the document URL, so a book
     // entry with a title but no URL would self-navigate (reload); the raw attribute stays ""
@@ -2747,6 +2749,44 @@
     });
   }
 
+  // Touch click-to-activate for the per-heading affordances (permalink '#', edit, share).
+  // A fine-pointer device reveals them on heading :hover (CSS); a touch device has no hover, so
+  // here a TAP on the heading toggles a persistent .heading-active that CSS reveals THAT heading's
+  // affordances on. Toggle semantics: tap the same heading again, tap another heading, tap away,
+  // or Escape hides it; only ONE heading is active at a time (opening one closes the rest --
+  // mirrors the share-menu closeAll). Keyboard focus-within / :target reveal is CSS and
+  // platform-independent, so this adds nothing there. Bound ONLY on a no-hover / coarse pointer so
+  // a desktop mouse stays pure-hover (no stray click-latch). NO-JS touch keeps the affordances
+  // always-visible via the CSS html:not(.client-js) fallback -- never unreachable. TT-safe:
+  // classList only, no HTML sink.
+  function initHeadingReveal() {
+    if (!window.matchMedia("(hover: none), (pointer: coarse)").matches) return;   // desktop uses CSS :hover
+    function closeAll(except) {
+      var active = document.querySelectorAll(".wiki-content .heading-active");
+      for (var i = 0; i < active.length; i++) {
+        if (active[i] !== except) active[i].classList.remove("heading-active");
+      }
+    }
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      // A tap on an actual affordance (permalink / edit / share) must ACT, not toggle the panel --
+      // leave it to the anchor nav / initShareLazy. The hidden cluster is pointer-events:none, so a
+      // tap over its invisible icon zone hit-tests to the heading and falls through to the reveal.
+      if (t.closest(".h-anchor, .heading-actions")) return;
+      var h = t.closest("h1, h2, h3, h4, h5, h6");
+      // Tap off a content heading, OR on a content heading with nothing to reveal (a widget h4-h6
+      // has neither affordance): nothing to toggle, so just collapse any open heading -- keeps the
+      // documented one-active-at-a-time contract (an affordance-less heading acts like tap-away).
+      if (!h || !h.closest(".wiki-content") || !h.querySelector(".h-anchor, .heading-actions")) {
+        closeAll(null); return;
+      }
+      var open = !h.classList.contains("heading-active");
+      closeAll(h);
+      h.classList.toggle("heading-active", open);
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeAll(null); });
+  }
+
   // Warm below-the-fold lazy images ~3 viewports before they enter view, so the fetch AND the
   // decode finish before the user scrolls to them (no visible pop-in). No-JS falls back to native
   // loading=lazy (unchanged). Bounded on bandwidth: only images the user is scrolling toward are
@@ -2816,6 +2856,7 @@
       initHovercards();
       initStorageViewer();
       initShareLazy();
+      initHeadingReveal();
       initPopoverTether();
       initHeroVideo();
       initEndorsementMore();
