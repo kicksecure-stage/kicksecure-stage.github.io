@@ -2541,6 +2541,21 @@ code:empty { display: none; }
      (nesting-safe). */
 html.client-js .tab-content-controller:has(> .tcc-content > .tcc-section.active) > .tcc-content > .tcc-section:not(.active) { display: none; }
 html.client-js .tab-content-controller:not(:has(> .tcc-content > .tcc-section.active)) > .tcc-content > .tcc-section ~ .tcc-section { display: none; }
+/* Degraded-state reachability net. If app.js is BLOCKED (CSP-hash desync, network loss of the
+   larger app.js, a content-blocker) AFTER theme-init.js set client-js, the collapse above has
+   hidden panels 2+ and no handler exists to reveal them. Every server pill is a real
+   `<a href="#id">` (page.py _tab_pill: a heading id, else a synthesized section id), so a click
+   still does NATIVE fragment nav -> the section that IS or CONTAINS the :target is revealed here,
+   keeping every panel reachable with no JS. ADDITIVE (the hide rules above stay pristine) and
+   gated on `:not([role="tabpanel"])`: app.js sets role="tabpanel" on every section it enhances,
+   so the instant app.js runs these rules go inert and the collapse alone governs -- i.e. they fire
+   ONLY in the un-enhanced state (pre-paint, or app.js blocked). This is why the working-JS path is
+   byte-unchanged: a pill click there is preventDefaulted + history.replaceState (never sets
+   :target), AND the section now carries role=tabpanel, so a stale :target left by a deep-link load
+   can NOT leak a second panel visible. One reveal rule per collapse-rule type, each outscoping its
+   hide counterpart so `display:block` wins. */
+html.client-js .tab-content-controller:has(> .tcc-content > .tcc-section.active) > .tcc-content > .tcc-section:is(:target, :has(:target)):not([role="tabpanel"]) { display: block; }
+html.client-js .tab-content-controller:not(:has(> .tcc-content > .tcc-section.active)) > .tcc-content > .tcc-section:is(:target, :has(:target)):not([role="tabpanel"]) { display: block; }
 html.client-js .tab-content-controller .tcc-section { border: none; margin: 0; }
 /* With the pill switcher built + the title sr-only, the content's own top border becomes a
    redundant separator line DIRECTLY under the pill bar -- an extra bordered level prod does
@@ -3314,18 +3329,30 @@ sup.reference:target {
    revealed edit/share suffice, and app.js makes the heading ITSELF the permalink -- a click
    navigates to its anchor). The cluster is OUT OF FLOW (absolute), so a HIDDEN one reserves NO
    space and nothing wraps to a second line (issues 1+2); a revealed one adds no height either. The
-   heading reserves a right zone (padding-right, >= the ~55px cluster) so a revealed cluster never
-   overlaps a LEFT-aligned heading's text. Themed --muted/--link, so dark mode follows. The
-   reservation is one-sided, so it is DROPPED for centered headings (homepage) below -- a one-sided
-   pad shifts centered text off-centre, and it wastes a column on narrow screens. */
-.wiki-content :is(h1, h2, h3, h4, h5, h6) { position: relative; padding-right: 3.5rem; }
-/* The homepage centers ONLY h2 (.page-home .wiki-content h2 below), so ONLY h2 drops the one-sided
-   right reservation -- it otherwise pushes the centered text ~26px left of the column axis and eats
-   width on mobile. Centered text expands from the middle, so only a near-full-width centered heading
-   reaches the right cluster, and then only the transient hover/:target cluster overlaps its end. A
-   left-aligned homepage heading (h1, h3-h6) KEEPS the reservation -- its text flows to the right
-   edge, where the cluster would otherwise overlap it. */
-.page-home .wiki-content h2 { padding-right: 0; }
+   right zone (padding-right, >= the ~55px cluster) is reserved ONLY on a heading that ACTUALLY has
+   the cluster (:has) so a revealed cluster never overlaps a LEFT-aligned heading's text. Only h1-h3
+   content headings get a cluster; h4-h6 and role="heading" widgets / tab labels never do, so they
+   neither reserve (no wasted gutter) nor shift. Themed --muted/--link, so dark mode follows. The
+   reservation is one-sided, so it is DROPPED for the homepage's centered headings below. */
+.wiki-content :is(h1, h2, h3, h4, h5, h6) { position: relative; }
+.wiki-content :is(h1, h2, h3, h4, h5, h6):has(> .heading-actions) { padding-right: 3.5rem; }
+/* A CENTERED cluster-bearing heading must DROP the one-sided reservation, else its centered text
+   sits ~28px off the column axis. Two centered contexts drop it: the homepage's forced-center h2
+   sections, and a heading whose IMMEDIATE wrapper centers it -- `.align-center > heading`, which is
+   what {{Align|middle}} and {{#headline|addToClass=align-center}} emit. The level set is all six:
+   _enrich_headings adds the cluster BEFORE level normalization, so a centered content `=== h3 ===`
+   is emitted as an h4 and must still match. `:not(.align-left):not(.align-right)` keeps the gutter
+   for a heading that RE-aligns itself off-center inside a center wrapper, else its revealed cluster
+   overlaps its own right-aligned text. The direct-child `>` is the stated boundary: a heading nested
+   under an INTERMEDIATE wrapper is a grandchild and does NOT match -- correct for a right/left-resolved
+   grandchild (`.align-center > .align-right > h4`, keeps the gutter), and a KNOWN 0-occurrence gap for
+   a centered grandchild (`{{Align|middle|{{#headline}}}}` -> `.align-center > div.mw-heading > h2`),
+   which keeps the gutter and shifts ~28px. Not chased: CSS cannot read resolved text-align, a
+   descendant combinator would re-break the right/left grandchild, and there are 0 real occurrences
+   across both wikis. test_assets pins the `>` so this gap cannot silently widen. Each override carries
+   an extra class, beating the (0,2,1) reserve. */
+.page-home .wiki-content h2:has(> .heading-actions),
+.wiki-content .align-center > :is(h1, h2, h3, h4, h5, h6):not(.align-left):not(.align-right):has(> .heading-actions) { padding-right: 0; }
 .wiki-content :is(h1, h2, h3, h4, h5, h6) > .heading-actions {
   position: absolute; right: 0; top: 0; margin: 0;   /* top:0 -> first line; out of flow -> no wrap, no reserved height */
 }
