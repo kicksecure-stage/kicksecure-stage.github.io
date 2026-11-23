@@ -2553,10 +2553,12 @@ html.client-js .tab-content-controller > .tcc-content { padding-top: 0.3rem; pad
    balance -- idiomatic card/note padding (Bootstrap/Primer/MkDocs all pad top==bottom). L/R
    unchanged; the ragged word-wrap right edge is accepted. */
 html.client-js .tab-content-controller .tcc-section > .tcc-content { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-/* But a pane whose LAST child is itself a padded box (numbered-step box, notice box, nested
-   collapsible or tabs) already carries its own bottom spacing -- the pane adds none, so the two
-   do not stack into a double gap (the reason the bottom was blanket-0 before, now scoped here). */
-html.client-js .tab-content-controller .tcc-section > .tcc-content:has(> :last-child:is(.info-box, .mbox, .toccolours, .mw-collapsible, details, .tcc-section, .tab-content-controller)) { padding-bottom: 0; }
+/* But a pane whose LAST child is itself a padded box (the .mbox/.info-box/.community-support-info
+   notice family, a {{#callout:}} .admonition, a collapsible, or nested tabs) already carries its
+   own bottom spacing -- the pane adds none, so the two do not stack into a double gap (the reason
+   the bottom was blanket-0 before, now scoped here). The box list is the full self-contained-box
+   family, so every box-ending pane collapses uniformly. */
+html.client-js .tab-content-controller .tcc-section > .tcc-content:has(> :last-child:is(.info-box, .mbox, .community-support-info, .admonition, .toccolours, .mw-collapsible, details, .tcc-section, .tab-content-controller)) { padding-bottom: 0; }
 /* A short/collapsed box ending a (possibly nested) tab pane stacked each pane's bottom padding
    + the box's own bottom margin into a big empty gap under it inside a numbered-step box (vs a
    normally-filled step). The enclosing box's padding is the only bottom spacing wanted, so the
@@ -3312,9 +3314,18 @@ sup.reference:target {
    revealed edit/share suffice, and app.js makes the heading ITSELF the permalink -- a click
    navigates to its anchor). The cluster is OUT OF FLOW (absolute), so a HIDDEN one reserves NO
    space and nothing wraps to a second line (issues 1+2); a revealed one adds no height either. The
-   heading reserves a right zone (padding-right) so a revealed cluster never overlaps the text.
-   Themed --muted/--link, so dark mode follows. */
-.wiki-content :is(h1, h2, h3, h4, h5, h6) { position: relative; padding-right: 3.25rem; }
+   heading reserves a right zone (padding-right, >= the ~55px cluster) so a revealed cluster never
+   overlaps a LEFT-aligned heading's text. Themed --muted/--link, so dark mode follows. The
+   reservation is one-sided, so it is DROPPED for centered headings (homepage) below -- a one-sided
+   pad shifts centered text off-centre, and it wastes a column on narrow screens. */
+.wiki-content :is(h1, h2, h3, h4, h5, h6) { position: relative; padding-right: 3.5rem; }
+/* The homepage centers ONLY h2 (.page-home .wiki-content h2 below), so ONLY h2 drops the one-sided
+   right reservation -- it otherwise pushes the centered text ~26px left of the column axis and eats
+   width on mobile. Centered text expands from the middle, so only a near-full-width centered heading
+   reaches the right cluster, and then only the transient hover/:target cluster overlaps its end. A
+   left-aligned homepage heading (h1, h3-h6) KEEPS the reservation -- its text flows to the right
+   edge, where the cluster would otherwise overlap it. */
+.page-home .wiki-content h2 { padding-right: 0; }
 .wiki-content :is(h1, h2, h3, h4, h5, h6) > .heading-actions {
   position: absolute; right: 0; top: 0; margin: 0;   /* top:0 -> first line; out of flow -> no wrap, no reserved height */
 }
@@ -3382,6 +3393,14 @@ sup.reference:target {
    is INSIDE the hovered wrapper -- no dead zone where the pointer leaves :hover moving button->menu. */
 .share-tooltip .menu-wrapper { display: none; position: absolute; left: 50%;
   top: 100%; transform: translateX(-50%); padding-top: 0.3rem; z-index: 40; }
+/* A HEADING's share tooltip sits at the heading's absolute right edge (.heading-actions is
+   position:absolute; right:0), so the default centered menu (left:50%, translateX(-50%)) runs off
+   the right of the viewport at ~800-1000px widths -- a horizontal scrollbar. Right-align it there,
+   as the <=800px rule below already does for all tooltips. Scoped from 441px up so the <=440px
+   fixed-centered phone menu still wins. */
+@media (min-width: 441px) {
+  .wiki-content .heading-actions .share-tooltip .menu-wrapper { left: auto; right: 0; transform: none; }
+}
 /* `:focus-within` reveals for keyboard; `:hover` ONLY where a real pointer exists. On TOUCH a tap
    leaves a STICKY :hover on the tapped element and its ancestors, so after tapping the close (x)
    the sticky `.share-tooltip:hover` kept the whole menu revealed -- "the x darkens but the pop-up

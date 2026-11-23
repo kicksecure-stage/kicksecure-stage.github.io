@@ -2836,14 +2836,25 @@
       if (t.closest(".heading-actions, a, button")) return;   // edit/share + any link/button act, not navigate
       var h = t.closest("h1, h2, h3, h4, h5, h6");
       // Only a content heading that actually HAS affordances to reveal (h1-h3; a widget / h4-h6 has
-      // none). An id is required to navigate. A click elsewhere is left alone (no forced collapse --
-      // :target clears itself when another heading is targeted, or on Escape).
+      // none). An id is required to navigate. A click elsewhere is left alone -- no forced collapse;
+      // :target single-active re-hides any previously revealed heading when another is targeted. No
+      // Escape-to-clear: clearing :target needs a real hash change (replaceState does not clear it),
+      // which scrolls to the top and would clobber an unrelated #fragment -- a bad trade for a
+      // reveal that already auto-hides on the next heading click / navigation.
       if (!h || !h.closest(".wiki-content") || !h.id || !h.querySelector(".heading-actions")) return;
-      var frag = encodeURIComponent(h.id);
-      if (location.hash !== "#" + frag) location.hash = frag;   // reveal + single-active via :target (skip a redundant re-nav)
-    });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && location.hash) location.hash = "";   // clear the active reveal
+      // Navigate to the heading's anchor -> :target reveal. The skip-if-already-there test compares
+      // the DECODED current fragment to the raw id, which is what the browser's own :target match
+      // does -- so it holds no matter how the fragment was encoded. encodeURIComponent and the
+      // generator's urllib.quote hrefs disagree on which chars to percent-encode (quote encodes
+      // ( ) ' , etc.; encodeURIComponent leaves ( ) ' * ! raw), and Firefox keeps the percent form
+      // in location.hash, so an id like `Anchor_(Template)` arrived via its `#Anchor_%28Template%29`
+      // TOC href fails any single-form string compare and re-navigates forever (duplicate history).
+      // A malformed existing %-sequence makes decodeURIComponent throw -> fall back to a raw compare
+      // (at worst one extra nav; the written hash is well-formed, so no loop).
+      var cur = location.hash.slice(1);
+      var atHeading;
+      try { atHeading = decodeURIComponent(cur) === h.id; } catch (e) { atHeading = cur === h.id; }
+      if (!atHeading) location.hash = encodeURIComponent(h.id);
     });
   }
 
