@@ -2284,21 +2284,27 @@ code:empty { display: none; }
      line box, so this never re-inflates the heading line. em-based -> balanced in every context. */
   position: relative; top: -0.17em;
 }
-/* h1's circle matched to the square badges' em box so all four read as one marker size
-   regardless of shape -- the fixed chip tier (shared with the callout-box icon). The white
-   numeral on the neon --c-green (#1a9e3f) is only ~3.5:1, so pin the fill to the AA green
-   (#157a33, already the iconset-true text green) -- white clears 4.5:1, and the darker green
-   also mutes the loudest badge. Theme-independent (dark green + white reads on both
-   backgrounds). The thick white ring is thinned to 2px here (vs the shared 3px, which the
-   large fa-2x banners keep) so it does not weigh down the now-subordinate circle. */
+/* h1 step badge: a green pill. One digit = a perfect 1.3em circle; a 2-digit number (steps
+   10+) GROWS the box horizontally into a rounded stadium (min-width lets it grow, border-radius
+   999px rounds the ends, side padding gives the digits room) so both digits sit on the full
+   green fill. A FIXED-width 1.3em circle clipped the 2nd digit onto the white ring/page --
+   barely visible. Matches how the h2/h3/h4 square badges already grow. White numeral on the neon
+   --c-green (#1a9e3f) is only ~3.5:1, so pin the fill to the AA green (#157a33, already the
+   iconset-true text green) -- white clears 4.5:1, the darker green mutes the loudest badge,
+   theme-independent. Ring thinned to 2px here (vs the shared 3px the large fa-2x banners keep)
+   so it does not weigh down the subordinate badge. */
 .padded-content-icon.pci-style-circle.iconset-h1 {
-  width: 1.3em; height: 1.3em; background: #157a33; border-width: 2px;
+  min-width: 1.3em; height: 1.3em; background: #157a33; border-width: 2px;
+  /* full radius: perfect circle at 1 digit, clean stadium ends at 2+ -- overrides the base
+     .pci-style-circle 50%, which on a grown (wider-than-tall) box would give an ellipse. */
+  border-radius: 999px;
   /* Optical centering: line-height:1 flex-centres the LINE BOX, but a figure's ink sits above
      the baseline, so a plain centre leaves the digit hanging HIGH (measured: ~7px top/bottom gap
-     imbalance at a 185px circle, i.e. the digit ~3.5px high). A small em-based top pad (box-sizing
-     is border-box, so the circle keeps its size) drops the digit onto the true optical centre --
-     scale-invariant across every heading context. 0.04em equalises the gaps (virtual-ruler tuned). */
-  padding-top: 0.04em;
+     imbalance at a 185px circle, i.e. the digit ~3.5px high). box-sizing is border-box, so the
+     box keeps min-width; the top pad drops the digit onto the true optical centre, scale-invariant.
+     0.04em equalises the gaps (virtual-ruler tuned). 0.15em sides give a 2-digit number breathing
+     room while a 1-digit badge stays within min-width (an exact circle). */
+  padding: 0.04em 0.15em 0;
 }
 /* IconSet h2/h3/h4 (step/section numbers, e.g. {{IconSet|h2|3}}) render as prod's filled
    rounded-square badge with a white numeral, coloured by the element's cs-* --callout --
