@@ -359,6 +359,23 @@ img.media-sized:not(.media-figure)[width][height] { contain: size; }
 .wiki-content li > a:has(> img) + a {
   padding-inline: 3px;
 }
+/* References/footnotes render at 0.9rem, so the base li-link tap-box (padding-block:3px above)
+   reaches only ~23px -- 1px under WCAG 2.5.8's 24px minimum (the same smaller-font case as the
+   gallery caption). Clear 24px for the reference-TEXT content link (NOT the tiny cite backlink /
+   footnote sup, which stay exempt superscripts). The selector mirrors the base rule's specificity
+   + its button exclusions so it wins the cascade over that rule. */
+.wiki-content :is(.references, .footnotes) .reference-text a:not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button):not(.headline-anchor) {
+  padding-block: 4px;
+}
+/* External-resource link lines (e.g. "<Project> homepage [archive] <logo> Debian package [archive]"
+   in a comparison section) are standalone WCAG 2.5.8 tap targets, not inline-sentence links -- but
+   the base tap-box above deliberately skips bare <p>. At body height these content links are ~19px,
+   so box them to clear 24px. Scoped to a <p> that carries a direct .ext-link-to-archive marker (the
+   resource-line signature), and only its DIRECT-child content anchors -- never the archive sup's
+   nested <a> (it has its own 24x24 rule) nor the .link-icon <img>; buttons keep their own sizing. */
+.wiki-content .cv-section > p:has(> .ext-link-to-archive) > a:not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button) {
+  padding-block: 3px;
+}
 /* Production wiki image-sizing classes ({{img-height-N}}): a logo sized by HEIGHT, width auto.
    Prod targets a descendant img (.img-height-N img); the generator stamps the class on the <img>
    itself -- cover both. !important + width:auto overrides any presentational width attr, so an
@@ -2143,7 +2160,7 @@ code:empty { display: none; }
 /* flow-root gives each box its own block-formatting-context so a preceding
    .thumbframe.tright (float:right) sibling sits BESIDE it instead of the full-width
    box sliding under the float. Matches how the intro box wraps beside a thumb. */
-.mbox, .info-box, .community-support-info {
+.mbox, .info-box, .community-support-info, .admonition {
   display: flow-root;
   margin: 1.25rem 0;
   padding: 0.75rem 1rem;
@@ -2173,7 +2190,7 @@ code:empty { display: none; }
    (0,2,0)/(0,3,0) outrank the (0,1,0) box cap above. */
 .wiki-content .tcc-section,
 .wiki-content .tab-content-controller,
-.wiki-content :is(.mbox, .info-box, .community-support-info).width-100 { max-width: none; }
+.wiki-content :is(.mbox, .info-box, .community-support-info, .admonition).width-100 { max-width: none; }
 /* Only an icon callout is a horizontal icon|content row. A plain/step info-box (a
    numbered section box, an OS-chooser wrapper) has block children that must STACK --
    flex-row here laid them side by side and overflowed the viewport horizontally.
@@ -2390,16 +2407,9 @@ code:empty { display: none; }
 .cs-purple, .cs-purple-light { --callout: var(--c-purple); }
 .cs-amber, .cs-amber-light { --callout: var(--c-amber); }
 
-/* GitHub-style admonition (Template:Callout -> #callout). Self-contained component; hue comes
-   from the cs-* -> --callout cascade, mirroring the .mbox/.info-box border-left+tint above. */
-.admonition {
-  margin: 1.25rem 0;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--callout, var(--accent));
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--callout, var(--accent)) 7%, var(--surface));
-}
+/* GitHub-style admonition (Template:Callout -> #callout, Template:Mbox -> #mbox). The box frame
+   (border-left + tint + prose-measure cap) is the shared .mbox/.info-box rule above; only the
+   titled icon+label header is specific here. hue comes from the cs-* -> --callout cascade. */
 .admonition-title {
   display: flex;
   align-items: center;
@@ -2411,6 +2421,29 @@ code:empty { display: none; }
 .admonition-title > i { font-size: 1rem; line-height: 1; width: 1.1em; text-align: center; }
 .admonition-body > :first-child { margin-top: 0; }
 .admonition-body > :last-child { margin-bottom: 0; }
+/* #34: the title's brand-hue LABEL text dips just under WCAG AA 4.5:1 on the component's own 7%
+   LIGHT tint (blue 4.17, green 3.02, purple 4.30, amber 4.16, red 4.13). Darken the LABEL to the
+   house status-hue set (same treatment as the qualitative .cell-* glyphs), keeping the bright
+   --callout ICON (passes 3:1 non-text) and the bright label in DARK mode (clears >=5.6:1). Screen-
+   scoped restore so @media print keeps these darker light-mode hues. */
+.admonition.cs-blue   .admonition-label { color: #2c68c4; }  /* 4.62:1 */
+.admonition.cs-green  .admonition-label { color: #147b31; }  /* 4.65:1 */
+.admonition.cs-purple .admonition-label { color: #7d4dd6; }  /* 4.58:1 */
+.admonition.cs-amber  .admonition-label { color: #916100; }  /* 4.59:1 */
+.admonition.cs-red    .admonition-label { color: #c63124; }  /* 4.58:1 */
+@media screen {
+  :root[data-theme="dark"] .admonition .admonition-label { color: var(--callout); }
+}
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .admonition .admonition-label { color: var(--callout); }
+}
+/* Body links sit on the same tint where the bright --link dips to 4.42:1, so use the darker
+   --link-on-shade (7.6:1 light / 9:1 dark), mirroring .cell-* / .explainer. Buttons excluded via
+   :where() (zero added specificity); color beats the base `a` rule, decoration mirrors prose. */
+.admonition a:where(:not(.cta-button, .button, .pill, .download-button-v2, .hero-download-button)) {
+  color: var(--link-on-shade);
+  text-decoration: underline;
+}
 .cs-orange, .cs-orange-light { --callout: var(--c-orange); }
 .cs-gray, .cs-gray-light, .cs-black, .cs-white { --callout: var(--c-gray); }
 .cs-red-font { color: var(--c-red); }
