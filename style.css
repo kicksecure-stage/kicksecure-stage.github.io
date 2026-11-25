@@ -360,13 +360,14 @@ img.media-sized:not(.media-figure)[width][height] { contain: size; }
   padding-inline: 3px;
 }
 /* References/footnotes render at 0.9rem, so the base li-link tap-box (padding-block:3px above)
-   reaches only ~23px -- under WCAG 2.5.8's 24px minimum. Box the reference-TEXT content link only
-   (`> a` DIRECT child -- not the archive sup's nested <a>, which taptarget.py exempts and which
-   carries its own 24x24 rule, nor the cite backlink). Out-specifies the base rule's heavy :not
-   chain so it wins the cascade. padding-block grows the inline link's measured box but NOT the line
-   box, so stacked content links (some refs carry >=2) would overlap on wrap -- the line-height
-   below opens the lines so the ~25px box clears, no mis-tap. */
-.wiki-content :is(.references, .footnotes) .reference-text > a:not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button):not(.headline-anchor) {
+   reaches only ~23px -- under WCAG 2.5.8's 24px minimum. Box the reference-TEXT content link
+   (DESCENDANT `a`, so a link wrapped in formatting like ''italic'' -> .reference-text em a is still
+   caught), EXCLUDING the archive sup's nested <a> (`:not(.ext-link-to-archive a)` -- taptarget.py
+   exempts it and it carries its own 24x24 rule). Out-specifies the base rule's heavy :not chain so
+   it wins the cascade. padding-block grows the inline link's measured box but NOT the line box, so
+   stacked content links (some refs carry >=2) would overlap on wrap -- the line-height below opens
+   the lines so the ~25px box clears, no mis-tap. */
+.wiki-content :is(.references, .footnotes) .reference-text a:not(.ext-link-to-archive a):not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button):not(.headline-anchor) {
   padding-block: 4px;
 }
 .wiki-content :is(.references, .footnotes) {
@@ -376,10 +377,11 @@ img.media-sized:not(.media-figure)[width][height] { contain: size; }
    standalone WCAG 2.5.8 tap targets, not inline-sentence links -- the base tap-box deliberately
    skips bare <p>. Box the resource link to clear 24px. Section-INDEPENDENT (a <p> carrying a direct
    .ext-link-to-archive marker; _wrap_sections emits NO .cv-section on a 0/1-section page, so a
-   .cv-section scope would miss those), DIRECT-child anchors only (`> a` excludes the archive sup's
-   nested <a> and the .link-icon <img>). At body line-height (~25.6px) the ~25px box does not overlap,
-   so a prose <p> that happens to carry an external link is padded harmlessly; buttons keep sizing. */
-.wiki-content p:has(> .ext-link-to-archive) > a:not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button) {
+   .cv-section scope would miss those). DESCENDANT `a` (catches a formatting-wrapped resource link),
+   EXCLUDING the archive sup's nested <a> (`:not(.ext-link-to-archive a)`); the .link-icon is an
+   <img>, not matched. At body line-height (~25.6px) the ~25px box does not overlap, so a prose <p>
+   that happens to carry an external link is padded harmlessly; buttons keep their own sizing. */
+.wiki-content p:has(> .ext-link-to-archive) a:not(.ext-link-to-archive a):not(.cta-button):not(.button):not(.pill):not(.download-button-v2):not(.hero-download-button) {
   padding-block: 3px;
 }
 /* Production wiki image-sizing classes ({{img-height-N}}): a logo sized by HEIGHT, width auto.
@@ -3802,6 +3804,14 @@ sup.reference:target {
   white-space: normal;
 }
 .info-popover:popover-open { display: block; }
+/* The popover bg is hard-coded white (#fff) in BOTH themes, so in dark mode a link inside it
+   must NOT inherit the light-blue dark --link (~2.2:1 on white, below AA). Pin it to the
+   on-white link color (#0f4c81, ~8.5:1 on white). The .admonition recolor already EXCLUDES
+   .info-popover a (white surface, not the tint); this is the paired AA fix for its own bg. */
+:root[data-theme="dark"] .info-popover a { color: #0f4c81; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .info-popover a { color: #0f4c81; }
+}
 /* Close (x), top-right: native popovertargetaction=hide (no JS). */
 /* info/antispam popover close: a circular .popover-close floated to the top-right; the note text
    wraps to its left (the popover is small, so a reserved header row would waste its width). */
